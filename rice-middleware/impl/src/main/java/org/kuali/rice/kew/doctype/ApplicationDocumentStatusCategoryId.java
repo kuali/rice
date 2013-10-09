@@ -26,9 +26,10 @@ import java.io.Serializable;
 @Embeddable
 public class ApplicationDocumentStatusCategoryId implements Serializable {
 
-    @Column(name="DOC_TYP_ID")
+    @Column(name="DOC_TYP_ID", nullable = false)
     private String documentTypeId;
-    @Column(name="NM")
+
+    @Column(name="CAT_NM", nullable = false)
     private String categoryName;
 
     /**

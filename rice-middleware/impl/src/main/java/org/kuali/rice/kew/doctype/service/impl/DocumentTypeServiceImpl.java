@@ -17,15 +17,21 @@ package org.kuali.rice.kew.doctype.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,6 +39,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * The standard implementation of the DocumentTypeService.
@@ -47,6 +54,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     protected static final String XML_FILE_PARSE_ERROR = "general.error.parsexml";
 
     private DocumentTypeDAO documentTypeDAO;
+    private DataObjectService dataObjectService;
 
     public Collection<DocumentType> find(DocumentType documentType, String docTypeParentName, boolean climbHierarchy) {
        DocumentType docTypeParent = this.findByName(docTypeParentName);
@@ -57,16 +65,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	if (documentTypeId == null) {
     		return null;
     	}
-
-   		return getDocumentTypeDAO().findById(documentTypeId);
+        return getDataObjectService().find(DocumentType.class,documentTypeId);
     }
 
     public DocumentType findByDocumentId(String documentId) {
     	if (documentId == null) {
     		return null;
     	}
-    	String documentTypeId = getDocumentTypeDAO().findDocumentTypeIdByDocumentId(documentId);
-    	return findById(documentTypeId);
+
+        return documentTypeDAO.findDocumentTypeByDocumentId(documentId);
     }
 
     public DocumentType findByName(String name) {
@@ -89,7 +96,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	if (name == null) {
     		return null;
     	}
-        return getDocumentTypeDAO().findByName(name, caseSensitive);
+        return documentTypeDAO.findByName(name, caseSensitive);
     }
 
     public void versionAndSave(DocumentType documentType) {
@@ -124,7 +131,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         // set up the previous current doc type on the new doc type
         documentType.setPreviousVersionId(existingDocTypeId);
         documentType.setCurrentInd(Boolean.TRUE);
-        save(documentType);
+        documentType = save(documentType);
         if ( LOG.isInfoEnabled() ) {
             LOG.info("Saved current document type Id " + documentType.getDocumentTypeId() + " name '" + documentType.getName() + "' (current = " + documentType.getCurrentInd() + ")");
         }
@@ -147,7 +154,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         // which has modified the parent (and therefore made it non-current)
         // be sure to get the parent doc type directly from the db and not from the cache
         if (documentType.getDocTypeParentId() != null) {
-            DocumentType parent = getDocumentTypeDAO().findById(documentType.getDocTypeParentId());
+            DocumentType parent = getDataObjectService().find(DocumentType.class,documentType.getDocTypeParentId());
             save(parent);
             if ( LOG.isInfoEnabled() ) {
                 LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
@@ -155,8 +162,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
     }
 
-    public void save(DocumentType documentType) {
-    	getDocumentTypeDAO().save(documentType);
+    public DocumentType save(DocumentType documentType) {
+    	return getDataObjectService().save(documentType);
     }
 
     public DocumentTypeDAO getDocumentTypeDAO() {
@@ -168,15 +175,32 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public synchronized List findAllCurrentRootDocuments() {
-   		return getDocumentTypeDAO().findAllCurrentRootDocuments();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                isNull("docTypeParentId"),
+                equal("currentInd", Boolean.TRUE)
+        );
+        QueryResults<DocumentType> results = getDataObjectService().findMatching(DocumentType.class, builder.build());
+        return results.getResults();
     }
 
     public List findAllCurrent() {
-        return getDocumentTypeDAO().findAllCurrent();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                equal("currentInd", Boolean.TRUE)
+        );
+        QueryResults<DocumentType> results = getDataObjectService().findMatching(DocumentType.class, builder.build());
+        return results.getResults();
     }
 
     public List<DocumentType> findPreviousInstances(String documentTypeName) {
-        return getDocumentTypeDAO().findPreviousInstances(documentTypeName);
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                equal("name",documentTypeName),
+                equal("currentInd", Boolean.FALSE)
+        );
+        QueryResults<DocumentType> results = getDataObjectService().findMatching(DocumentType.class, builder.build());
+        return results.getResults();
     }
 
     public DocumentType findRootDocumentType(DocumentType docType) {
@@ -216,6 +240,16 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 			childDocumentTypes.add(findById(childDocumentTypeId));
 		}
     	return childDocumentTypes;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

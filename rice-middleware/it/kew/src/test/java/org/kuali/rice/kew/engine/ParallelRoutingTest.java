@@ -15,25 +15,22 @@
  */
 package org.kuali.rice.kew.engine;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class ParallelRoutingTest extends KEWTestCase {
     
@@ -133,7 +130,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("Should have request.", document.isApprovalRequested());
         document.approve("Git-r-dun");
-        
+
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of active nodes.", 2, nodeInstances.size());
         boolean isAtJoin = false;
@@ -173,16 +170,6 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         assertTrue("Document should be processed.", document.isProcessed());
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
-        //commented out because the final RouteNodeInstance is now not active when the doc goes final
-//        assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
-//        isAtWDF = false;
-//        for (Iterator iter = nodeInstances.iterator(); iter.hasNext();) {
-//            RouteNodeInstance nodeInstance = (RouteNodeInstance) iter.next();
-//            if (nodeInstance.getRouteNode().getRouteNodeName().equals(WORKFLOW_DOCUMENT_FINAL_NODE)) {
-//                isAtWDF = true;
-//            }
-//        }
-//        assertTrue("Not at WDF", isAtWDF);
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue("Should have request.", document.isAcknowledgeRequested());

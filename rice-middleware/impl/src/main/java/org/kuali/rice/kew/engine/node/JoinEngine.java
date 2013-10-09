@@ -31,5 +31,5 @@ public interface JoinEngine {
     
     public boolean isJoined(RouteNodeInstance nodeInstance);
     
-    public void createExpectedJoinState(RouteContext context, RouteNodeInstance joinInstance, RouteNodeInstance previousNodeInstance);
+    public RouteNodeInstance createExpectedJoinState(RouteContext context, RouteNodeInstance joinInstance, RouteNodeInstance previousNodeInstance);
 }

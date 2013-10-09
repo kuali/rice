@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,16 +45,15 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="KREW_RULE_EXT_VAL_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionValueId")
 public class RuleExtensionValue implements Serializable {
 
 	private static final long serialVersionUID = 8909789087052290261L;
 	@Id
+    @PortableSequenceGenerator(name="KREW_RTE_TMPL_S")
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@Column(name="RULE_EXT_VAL_ID")
 	private String ruleExtensionValueId;
-    @Column(name="RULE_EXT_ID", insertable=false, updatable=false)
-	private String ruleExtensionId;
+
     @Column(name="VAL")
 	private String value;
     @Column(name="KEY_CD")
@@ -62,8 +62,8 @@ public class RuleExtensionValue implements Serializable {
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="RULE_EXT_ID")
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="RULE_EXT_ID", nullable = false)
 	private RuleExtensionBo extension;
     
     public RuleExtensionValue() {
@@ -97,12 +97,6 @@ public class RuleExtensionValue implements Serializable {
     public void setKey(String key) {
         this.key = key;
     }
-    public String getRuleExtensionId() {
-        return ruleExtensionId;
-    }
-    public void setRuleExtensionId(String ruleExtensionId) {
-        this.ruleExtensionId = ruleExtensionId;
-    }
     public String getRuleExtensionValueId() {
         return ruleExtensionValueId;
     }
@@ -126,7 +120,6 @@ public class RuleExtensionValue implements Serializable {
     public String toString() {
         return "[RuleExtensionValue:"
                +  " ruleExtensionValueId=" + ruleExtensionValueId
-               + ", ruleExtensionId=" + ruleExtensionId
                + ", value=" + value
                + ", key=" + key
                + ", lockVerNbr=" + lockVerNbr

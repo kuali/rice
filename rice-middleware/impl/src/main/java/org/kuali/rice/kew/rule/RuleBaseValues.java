@@ -35,9 +35,13 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -66,64 +70,90 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="id")
 public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
-    @GeneratedValue(generator="KREW_RTE_TMPL_S")
+    @GeneratedValue(generator = "KREW_RTE_TMPL_S")
+    @PortableSequenceGenerator(name = "KREW_RTE_TMPL_S")
 	@Column(name="RULE_ID")
     private String id;
+
     /**
      * Unique Rule name
      */
     @Column(name="NM")
 	private String name;
+
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private String ruleTemplateId;
+
     @Column(name="PREV_VER_RULE_ID")
 	private String previousRuleId;
+
     @Column(name="ACTV_IND")
+    @Convert(converter=Boolean01Converter.class)
 	private boolean active = true;
+
     @Column(name="RULE_BASE_VAL_DESC")
 	private String description;
+
     @Column(name="DOC_TYP_NM")
 	private String docTypeName;
+
     @Column(name="DOC_HDR_ID")
 	private String documentId;
+
 	@Column(name="FRM_DT")
 	private Timestamp fromDateValue;
+
 	@Column(name="TO_DT")
 	private Timestamp toDateValue;
+
 	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
+
     @Column(name="CUR_IND")
+    @Convert(converter=Boolean01Converter.class)
 	private Boolean currentInd = Boolean.TRUE;
+
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr = new Integer(0);
+
     @Column(name="FRC_ACTN")
+    @Convert(converter=Boolean01Converter.class)
 	private boolean forceAction;
+
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleResponsibilityBo> ruleResponsibilities;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
+
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL},mappedBy="ruleBaseValues")
 	private List<RuleExtensionBo> ruleExtensions;
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_TMPL_ID")
+
+    @ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
+	@JoinColumn(name="RULE_TMPL_ID", nullable = false)
 	private RuleTemplateBo ruleTemplate;
+
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
 	@JoinColumn(name="RULE_EXPR_ID")
 	private RuleExpressionDef ruleExpressionDef;
+
     @Transient
     private RuleBaseValues previousVersion;
+
     @Column(name="ACTVN_DT")
 	private Timestamp activationDate;
+
     @Column(name="DLGN_IND")
+    @Convert(converter=Boolean01Converter.class)
     private Boolean delegateRule = Boolean.FALSE;
+
     /**
      * Indicator that signifies that this rule is a defaults/template rule which contains
      * template-defined rule defaults for other rules which use the associated template
      */
     @Column(name="TMPL_RULE_IND")
+    @Convert(converter=Boolean01Converter.class)
     private Boolean templateRuleInd = Boolean.FALSE;
 
     // required to be lookupable

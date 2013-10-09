@@ -19,6 +19,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.kew.api.rule.RuleExpression;
 import org.kuali.rice.kew.api.rule.RuleExpressionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +41,7 @@ public class RuleExpressionDef extends PersistableBusinessObjectBase implements 
      * Primary key
      */
     @Id
+    @PortableSequenceGenerator(name="KREW_RULE_EXPR_S")
     @GeneratedValue(generator="KREW_RULE_EXPR_S")
 	@Column(name="RULE_EXPR_ID")
 	private String id;

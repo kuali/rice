@@ -19,7 +19,10 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -32,12 +35,15 @@ import java.util.LinkedHashMap;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-//@Sequence(name="KREW_RTE_NODE_S", property="stateId")
+@AttributeOverride(name="objectId", column=@Column(name="VAL", updatable = false, insertable = false))
 public abstract class State extends PersistableBusinessObjectBase implements KeyValue {
     @Id
+    @PortableSequenceGenerator(name="KREW_RTE_NODE_S")
     @GeneratedValue(generator="KREW_RTE_NODE_S")
 	protected String stateId;
+    @Column(name="KEY_CD")
 	private String key;
+    @Column(name="VAL")
     private String value;
 
     public State() {}
@@ -45,11 +51,6 @@ public abstract class State extends PersistableBusinessObjectBase implements Key
     public State(String key, String value) {
     	this.key = key;
     	this.value = value;
-    }
-
-    @PrePersist
-    public void customPrePersist(){
-        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 
     public String getStateId() {
@@ -77,12 +78,9 @@ public abstract class State extends PersistableBusinessObjectBase implements Key
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	protected LinkedHashMap<String, Object> toStringMapperFields() {
-		final LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("stateId", stateId);
-		map.put("key", key);
-		map.put("value", value);
-		return map;
-	}
+
+    @Override
+    public String toString(){
+        return "stateId: " +getStateId();
+    }
 }

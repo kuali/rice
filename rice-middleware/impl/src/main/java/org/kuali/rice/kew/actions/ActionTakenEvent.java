@@ -331,7 +331,7 @@ public abstract class ActionTakenEvent {
 		}
 		//val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);
-		KEWServiceLocator.getActionTakenService().saveActionTaken(val);
+		val = KEWServiceLocator.getActionTakenService().saveActionTaken(val);
 		return val;
 	}
 
@@ -413,8 +413,11 @@ public abstract class ActionTakenEvent {
         }
         ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
         Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByDocumentId(getDocumentId());
-        //one notification per person
+
+        //one notification per person, also, it would be silly for us to notify the person who just took the action, so don't include them in the notification
         Set<String> usersNotified = new HashSet<String>();
+        usersNotified.add(getPrincipal().getPrincipalId());
+
         for (ActionTakenValue action : actions)
         {
             if ((action.isApproval() || action.isCompletion()) && !usersNotified.contains(action.getPrincipalId()))

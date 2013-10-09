@@ -15,6 +15,27 @@
  */
 package org.kuali.rice.kew.server;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -23,6 +44,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -54,34 +76,18 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
-import java.rmi.RemoteException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.*;
-
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
 
-	protected void loadTestData() throws Exception {
+	@Override
+    protected void loadTestData() throws Exception {
         loadXmlFile("WorkflowUtilityConfig.xml");
     }
 
@@ -92,9 +98,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.route("");
         WorkflowDocumentService documentService = KewApiServiceLocator.getWorkflowDocumentService();
         DocumentDetail doc= documentService.getDocumentDetailByAppId(SeqSetup.DOCUMENT_TYPE_NAME, "123456789");
-    	
+
     	assertNotNull(doc);
-    	
+
         document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
         document.setApplicationDocumentId("123456789");
         document.route("");
@@ -105,28 +111,28 @@ public class WorkflowUtilityTest extends KEWTestCase {
         }catch(RiceIllegalStateException e){
         	assertTrue(true);
         }
-        
+
         try{
         	documentService.getDocumentDetailByAppId("notExist", "wrong");
         	assertTrue(false);
         }catch(RiceIllegalStateException e){
         	assertTrue(true);
         }
-        
+
         try{
         	documentService.getDocumentDetailByAppId("notExist", null);
         	assertTrue(false);
         }catch(RiceIllegalArgumentException e){
         	assertTrue(true);
         }
-    	
+
         try{
         	documentService.getDocumentDetailByAppId(null, null);
         	assertTrue(false);
         }catch(RiceIllegalArgumentException e){
         	assertTrue(true);
         }
-        
+
     }
 
     @Test public void testGetActionsRequested() throws Exception {
@@ -261,23 +267,23 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertFalse("User should NOT be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), false));
         assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
     }
-    
+
     @Test
     public void testIsUserInRouteLogWithSplits() throws Exception {
     	loadXmlFile("WorkflowUtilitySplitConfig.xml");
-    	
+
     	// initialize the split node to both branches
     	TestSplitNode.setLeftBranch(true);
     	TestSplitNode.setRightBranch(true);
-    	
+
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("admin"), "UserInRouteLog_Split");
         document.route("");
-        
+
         // document should be in ewestfal action list
         document = TestUtilities.switchByPrincipalName("ewestfal", document);
         assertTrue("should have approve", document.isApprovalRequested());
         TestUtilities.assertAtNode(document, "BeforeSplit");
-        
+
         // now let's run some simulations
         WorkflowDocumentActionsService wdas = KewApiServiceLocator.getWorkflowDocumentActionsService();
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("ewestfal"), true));
@@ -286,24 +292,24 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
         assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("user1"), true));
-        
+
         // now let's activate only the left branch and make sure the split is properly executed
         TestSplitNode.setRightBranch(false);
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
         assertFalse("should NOT be in route log because right branch is not active", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
-        
+
         // now let's do a flattened evaluation, it should hit both branches
         assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true, true));
         assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true, true));
         assertTrue("should be in route log because we've flattened nodes", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("jhopf"), true, true));
         assertTrue("should be in route log", wdas.isUserInRouteLogWithOptionalFlattening(document.getDocumentId(), getPrincipalIdForName("natjohns"), true, true));
-        
+
         // now let's switch to the right branch
         TestSplitNode.setRightBranch(true);
         TestSplitNode.setLeftBranch(false);
-        
+
         assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
         assertFalse("should NOT be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
@@ -312,41 +318,45 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // now let's switch back to the left branch and approve it
         TestSplitNode.setLeftBranch(true);
         TestSplitNode.setRightBranch(false);
-        
+
         // now let's approve it so that we're inside the right branch of the split
         document.approve("");
         // shoudl be at SplitLeft1 node
         TestUtilities.assertAtNode(document, "SplitLeft1");
-        
+
         document = TestUtilities.switchByPrincipalName("rkirkend", document);
         assertTrue("should have an approve request", document.isApprovalRequested());
-        
+
         // now let's run the simulation so we can test running from inside a split branch
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("rkirkend"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("bmcgough"), true));
         assertFalse("should NOT be in route log because right branch is not active", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("jhopf"), true));
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
     }
-    
+
     public abstract interface ReportCriteriaGenerator { public abstract RoutingReportCriteria buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}
 
     private class ReportCriteriaGeneratorUsingXML implements ReportCriteriaGenerator {
+        @Override
         public RoutingReportCriteria buildCriteria(WorkflowDocument workflowDoc) throws Exception {
             RoutingReportCriteria.Builder criteria = RoutingReportCriteria.Builder.createByDocumentTypeName(
                     workflowDoc.getDocumentTypeName());
             criteria.setXmlContent(workflowDoc.getDocumentContent().getApplicationContent());
             return criteria.build();
         }
+        @Override
         public boolean isCriteriaRouteHeaderBased() {
             return false;
         }
     }
 
     private class ReportCriteriaGeneratorUsingDocumentId implements ReportCriteriaGenerator {
+        @Override
         public RoutingReportCriteria buildCriteria(WorkflowDocument workflowDoc) throws Exception {
             RoutingReportCriteria.Builder criteria = RoutingReportCriteria.Builder.createByDocumentId(workflowDoc.getDocumentId());
             return criteria.build();
         }
+        @Override
         public boolean isCriteriaRouteHeaderBased() {
             return true;
         }
@@ -601,7 +611,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getValue()));
         String originalParameterValue = lastApproverActivateParameter.getValue();
-        
+
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.route("");
 
@@ -694,7 +704,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME);
         document.route("");
-        
+
         // on this document type approval progression will go as follows:
         // Workflow Document   (Sequential): bmcgough (1, fa=false),  rkirkend (2, fa=false), ewestfal (3, fa=true)
         // Workflow Document 2 (Sequential): pmckown (1, fa=false), ewestfal (2, fa=false)
@@ -715,14 +725,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // verify that ewestfal does not have permissions to approve the document yet since his request has not yet been activated
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertFalse("Ewestfal should not have permissions to approve", document.isApprovalRequested());
-        
+
         // approve as rkirkend
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         document.approve("");
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         assertTrue("Ewestfal should now have permission to approve", document.isApprovalRequested());
-        
+
         // ewestfal should now be the final approver
         assertTrue("Ewestfal should now be the final approver.", wdas.isLastApproverAtNode(document.getDocumentId(), getPrincipalIdForName("ewestfal"), SeqSetup.WORKFLOW_DOCUMENT_NODE));
 
@@ -732,7 +742,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         TestUtilities.assertAtNode(document, SeqSetup.WORKFLOW_DOCUMENT_2_NODE);
         List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
         assertEquals("We should have 2 requests here.", 2, requests.size());
-        
+
         // now, there are requests to pmckown and ewestfal here, the request to ewestfal is forceAction=false and since ewestfal
         // routed the document, this request should be auto-approved.  However, it's priority is 2 so it is activated after the
         // request to pmckown which is the situation we are testing
@@ -819,31 +829,31 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.approve("");
         assertTrue("Document should be processed.", document.isProcessed());
     }
-    
+
     @Test public void testGetPrincipalIdsInRouteLog() throws Exception {
     	Set<String> NonSITMembers = new HashSet<String>(
     			Arrays.asList(
 						new String[] {
-								getPrincipalIdForName("user1"), 
-								getPrincipalIdForName("user2"), 
-								getPrincipalIdForName("user3"), 
+								getPrincipalIdForName("user1"),
+								getPrincipalIdForName("user2"),
+								getPrincipalIdForName("user3"),
 								getPrincipalIdForName("dewey")}
 				)
     	);
-    	
+
     	Set<String> WorkflowAdminMembers = new HashSet<String>(
     			Arrays.asList(
     					new String[] {
-    							getPrincipalIdForName("ewestfal"), 
-    							getPrincipalIdForName("rkirkend"), 
-    							getPrincipalIdForName("jhopf"), 
-    							getPrincipalIdForName("bmcgough"), 
-    							getPrincipalIdForName("shenl"), 
+    							getPrincipalIdForName("ewestfal"),
+    							getPrincipalIdForName("rkirkend"),
+    							getPrincipalIdForName("jhopf"),
+    							getPrincipalIdForName("bmcgough"),
+    							getPrincipalIdForName("shenl"),
     							getPrincipalIdForName("quickstart")
     					}
     			)
     	);
-    	
+
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), RouteLogTestSetup.DOCUMENT_TYPE_NAME);
 		document.route("");
 
@@ -853,14 +863,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
 		// should contain ewestfal and NonSIT group members
 		assertTrue(principalIds.contains(getPrincipalIdForName("ewestfal")));
 		assertTrue(principalIds.containsAll(NonSITMembers));
-		
+
 		// should NOT contain jitrue and WorkflowAdmin group members as they are in the rule for the future node
 		assertFalse(principalIds.contains(getPrincipalIdForName("jitrue")));
 		assertFalse(principalIds.containsAll(WorkflowAdminMembers));
-		
+
 		// this time look at future nodes too
 		principalIds = 	wdas.getPrincipalIdsInRouteLog(document.getDocumentId(), true);
-		
+
 		// should contain ewestfal and NonSIT group members
 		assertTrue(principalIds.contains(getPrincipalIdForName("ewestfal")));
 		assertTrue(principalIds.containsAll(NonSITMembers));
@@ -943,7 +953,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("Did not find request for pmckown", foundPmckown);
 
     }
-    
+
     protected void verifyEmptyArray(String qualifier, Object[] array) {
     	assertNotNull("Array should not be empty", array);
         assertEquals("Number of " + qualifier + "s Returned Should be 0",0,array.length);
@@ -1226,11 +1236,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
     @Test public void testGetUserActionItemCount() throws Exception {
         String principalId = getPrincipalIdForName("ewestfal");
+        ActionListService als = KewApiServiceLocator.getActionListService();
+        assertEquals("Count (test start) is incorrect for user " + principalId, Integer.valueOf(0), als.getUserActionItemCount(principalId));
+
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(principalId, SeqSetup.DOCUMENT_TYPE_NAME);
         document.route("");
         assertTrue(document.isEnroute());
 
-        ActionListService als = KewApiServiceLocator.getActionListService();
         assertEquals("Count is incorrect for user " + principalId, Integer.valueOf(0), als.getUserActionItemCount(principalId));
         principalId = getPrincipalIdForName("bmcgough");
         document = WorkflowDocumentFactory.loadDocument(principalId, document.getDocumentId());
@@ -1760,7 +1772,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String ACKNOWLEDGE_1_NODE = "Acknowledge1";
         public static final String ACKNOWLEDGE_2_NODE = "Acknowledge2";
     }
-    
+
     private class RouteLogTestSetup {
         public static final String DOCUMENT_TYPE_NAME = "UserAndGroupTestDocType";
         public static final String RULE_TEST_TEMPLATE_1 = "WorkflowDocumentTemplate";

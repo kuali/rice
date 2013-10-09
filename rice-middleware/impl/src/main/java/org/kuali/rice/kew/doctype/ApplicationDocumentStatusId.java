@@ -15,36 +15,39 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
+ * Composite primary key for {@link ApplicationDocumentStatus}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Embeddable
 public class ApplicationDocumentStatusId implements Serializable {
 
-    @Column(name="DOC_TYP_ID")
+    @Column(name="DOC_TYP_ID", nullable = false)
     private String documentTypeId;
-    @Column(name="DOC_STAT_NM")
+    @Column(name="DOC_STAT_NM", nullable = false)
     private String statusName;
 
-    public ApplicationDocumentStatusId() {}
+    public String getDocumentTypeId() {
+        return documentTypeId;
+    }
 
-    public String getDocumentTypeId() { return documentTypeId; }
-
-    public void setDocumentTypeId(String documentTypeId) { this.documentTypeId = documentTypeId; }
+    public void setDocumentTypeId(String documentTypeId) {
+        this.documentTypeId = documentTypeId;
+    }
     
-    public String getStatusName() { return statusName; }
+    public String getStatusName() {
+        return statusName;
+    }
 
-    public void setStatusName(String statusName) { this.statusName = statusName; }
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
     
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -58,11 +61,6 @@ public class ApplicationDocumentStatusId implements Serializable {
 		return result;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -84,22 +82,6 @@ public class ApplicationDocumentStatusId implements Serializable {
 			return false;
 		return true;
 	}
-
-/*
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof DocumentTypePolicyId)) return false;
-        if (o == null) return false;
-        DocumentTypePolicyId pk = (DocumentTypePolicyId) o;
-        // TODO: Finish implementing this method.  Compare o to pk and return true or false.
-        throw new UnsupportedOperationException("Please implement me!");
-    }
-
-    public int hashCode() {
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Please implement me!");
-    }
-*/    
 
 }
 

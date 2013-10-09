@@ -33,7 +33,7 @@ public class JoinTransitionEngine extends TransitionEngine {
         if (context.getNodeInstance().getBranch().getJoinNode() != null) {
             nextNodeInstance = context.getNodeInstance().getBranch().getJoinNode();
         } else{
-            getRouteHelper().getJoinEngine().createExpectedJoinState(context, nextNodeInstance, context.getNodeInstance());
+            nextNodeInstance = getRouteHelper().getJoinEngine().createExpectedJoinState(context, nextNodeInstance, context.getNodeInstance());
         }
         getRouteHelper().getJoinEngine().addActualJoiner(nextNodeInstance, context.getNodeInstance().getBranch());
         return nextNodeInstance;

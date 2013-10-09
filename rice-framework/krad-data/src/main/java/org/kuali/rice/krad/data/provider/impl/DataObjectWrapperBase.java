@@ -330,6 +330,11 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
                 if(DataObjectUtils.isNestedAttribute(attributeName)){
                     return getPropertyTypeChild(relatedObjectMetadata,attributeName);
                 } else{
+                    if(relatedObjectMetadata.getAttribute(attributeName) == null &&
+                            relatedObjectMetadata.getRelationship(attributeName)!=null){
+                        DataObjectRelationship relationship = relatedObjectMetadata.getRelationship(attributeName);
+                        return relationship.getRelatedType();
+                    }
                     return relatedObjectMetadata.getAttribute(attributeName).getDataType().getType();
                 }
             }

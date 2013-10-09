@@ -31,6 +31,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id
+    @PortableSequenceGenerator(name="KREW_RSP_S")
 	@GeneratedValue(generator="KREW_RSP_S")
 	@Column(name="RULE_RSP_ID")
 	private String id;

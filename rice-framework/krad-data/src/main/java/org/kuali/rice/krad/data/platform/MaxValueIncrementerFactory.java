@@ -17,6 +17,7 @@ package org.kuali.rice.krad.data.platform;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -150,7 +151,7 @@ public final class MaxValueIncrementerFactory {
             return null;
         }
         Map<String,String> incrementerPropToIncrementer = ConfigContext.getCurrentContextConfig().
-                                getPropertiesWithPrefix("rice.krad.data.platform.incrementer.",true);
+                                getPropertiesWithPrefix(ConfigConstants.PLATFORM_INCREMENTER_PREFIX, true);
         String platformNameVersion = platformInfo.getName().toLowerCase() + "." + platformInfo.getMajorVersion();
         String incrementerClassName = "";
 

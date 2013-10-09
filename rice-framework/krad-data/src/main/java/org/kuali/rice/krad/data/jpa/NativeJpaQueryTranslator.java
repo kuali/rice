@@ -27,6 +27,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
@@ -98,7 +99,21 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         }
 
         Path attr(String attr) {
-            return root.get(attr);
+            if (StringUtils.isBlank(attr)) {
+                throw new IllegalArgumentException("Encountered an empty attribute path");
+            }
+
+            Path path = root;
+            // split the attribute based on a period for nested property paths, for example if you want to pass an attribute
+            // like "property1.property2" then JPA will not interpret that properly, you have to split in manually
+            String[] attrArray = attr.split("\\.");
+            for (String attrElement : attrArray) {
+                if (StringUtils.isBlank(attrElement)) {
+                    throw new IllegalArgumentException("Encountered an empty path element in property path: " + attr);
+                }
+                path = path.get(attrElement);
+            }
+            return path;
         }
     }
 
@@ -192,6 +207,13 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 		criteria.addPredicate(criteria.builder.like(criteria.attr(propertyPath), fixSearchPattern(value.toString())));
     }
 
+    @Override
+    protected void addLikeIgnoreCase(TranslationContext criteria, String propertyPath, String value){
+        criteria.addPredicate(criteria.builder.like(criteria.builder.upper(criteria.attr(propertyPath)),
+                fixSearchPattern(value.toUpperCase())));
+    }
+
+
 	/**
 	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their respective JPQL
 	 * wildcards ("%" and "_"). Any lookup wildcards escaped by a backslash are converted into their non-backslashed
@@ -254,11 +276,8 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     @Override
     protected String genUpperFunc(String pp) {
         throw new IllegalStateException("genUpperFunc should not have been invoked for NativeJpaQueryTranslator");
-//        if (StringUtils.contains(pp, "__JPA_ALIAS[[")) {
-//            pp = "UPPER(" + pp + ")";
-//        } else {
-//            pp = "UPPER(__JPA_ALIAS[[0]]__." + pp + ")";
-//        }
-//        return pp;
     }
+
+
+
 }

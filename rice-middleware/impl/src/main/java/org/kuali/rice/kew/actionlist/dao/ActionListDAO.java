@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.kew.actionlist.dao;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
-import org.kuali.rice.kew.actionlist.ActionListFilter;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
 /**
@@ -32,22 +29,22 @@ import org.kuali.rice.kew.actionlist.ActionListFilter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionListDAO {
-    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter);
-    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
-    public int getCount(String workflowId);
+
+    /**
+     * Get the total count of items in the given person's action list.
+     */
+    public int getCount(String principalId);
+
+    /**
+     * Get the maximum last action taken date and total count for items in the person's action list.
+     *
+     * This is used to help with the action list caching and detection of changes.
+     */
     public List<Object> getMaxActionItemDateAssignedAndCountForUser(String principalId);
 
     /**
-     *
-     * Retrieves {@link OutboxItemActionListExtension} items for the given user
-     *
-     * @param principalId
-     * @param filter
-     * @return
+     * Pulls a proxied version of the document route header with only the properties needed by the
+     * action list display.
      */
-    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter);
-    public void removeOutboxItems(String principalId, List<String> outboxItems);
-    public void saveOutboxItem(OutboxItemActionListExtension outboxItem);
-    public OutboxItemActionListExtension getOutboxByDocumentId(String documentId);
-    public OutboxItemActionListExtension getOutboxByDocumentIdUserId(String documentId, String userId);
+    DocumentRouteHeaderValue getMinimalRouteHeader( String documentId );
 }

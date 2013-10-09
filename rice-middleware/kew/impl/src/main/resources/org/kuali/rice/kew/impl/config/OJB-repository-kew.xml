@@ -134,27 +134,7 @@
     	<foreignkey field-ref="noteId"/>
     </reference-descriptor>
   </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" table="KREW_DOC_HDR_T" >
-    <field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR"
-      primarykey="true" autoincrement="true" sequence-name="KREW_DOC_HDR_S" />
-    <field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="docRouteStatus" column="DOC_HDR_STAT_CD" jdbc-type="VARCHAR" />
-    <field-descriptor name="docRouteLevel" column="RTE_LVL" jdbc-type="INTEGER" />
-    <field-descriptor name="appDocStatus" column="APP_DOC_STAT" jdbc-type="VARCHAR" />
-    <field-descriptor name="dateModified" column="STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="createDate" column="CRTE_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="approvedDate" column="APRV_DT"  jdbc-type="TIMESTAMP" />
-    <field-descriptor name="finalizedDate" column="FNL_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="routeStatusDate"  column="RTE_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="appDocStatusDate" column="APP_DOC_STAT_MDFN_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="docTitle" column="TTL" jdbc-type="VARCHAR" />
-    <field-descriptor name="appDocId" column="APP_DOC_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="docVersion"  column="DOC_VER_NBR"  jdbc-type="INTEGER" />
-    <field-descriptor name="initiatorWorkflowId" column="INITR_PRNCPL_ID"  jdbc-type="VARCHAR" />
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-  </class-descriptor>
-
+<!-- Converted to JPA 
   <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItem" table="KREW_ACTN_ITM_T">
     <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true"
       autoincrement="true" sequence-name="KREW_ACTN_ITM_S" />
@@ -174,57 +154,10 @@
     <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
-      <foreignkey field-ref="documentId" />
-    </reference-descriptor>-->
   </class-descriptor>
+ -->
 
-  <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItemActionListExtension" table="KREW_ACTN_ITM_T">
-    <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_ACTN_ITM_S" />
-    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="dateAssigned" column="ASND_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="actionRequestCd" column="RQST_CD" jdbc-type="CHAR" />
-    <field-descriptor name="actionRequestId" column="ACTN_RQST_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR"  />
-    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="roleName" column="ROLE_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="docTitle" column="DOC_HDR_TTL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
-    <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
-      <foreignkey field-ref="documentId" />
-    </reference-descriptor>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kew.actionitem.OutboxItemActionListExtension" table="KREW_OUT_BOX_ITM_T">
-    <field-descriptor column="ACTN_ITM_ID" name="id" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KREW_OUT_BOX_ITM_S" />
-    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="dateAssigned" column="ASND_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="actionRequestCd" column="RQST_CD" jdbc-type="CHAR" />
-    <field-descriptor name="actionRequestId" column="ACTN_RQST_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="documentId" column="DOC_HDR_ID" jdbc-type="VARCHAR"  />
-    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="roleName" column="ROLE_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="docTitle" column="DOC_HDR_TTL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docLabel" column="DOC_TYP_LBL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docHandlerURL" column="DOC_HDLR_URL" jdbc-type="VARCHAR" />
-    <field-descriptor name="docName" column="DOC_TYP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorPrincipalId" column="DLGN_PRNCPL_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegatorGroupId" column="DLGN_GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
-    <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
-      <foreignkey field-ref="documentId" />
-    </reference-descriptor>
-  </class-descriptor>
-
+<!--
   <class-descriptor class="org.kuali.rice.kew.actiontaken.ActionTakenValue" table="KREW_ACTN_TKN_T">
     <field-descriptor name="actionTakenId" column="ACTN_TKN_ID" jdbc-type="VARCHAR" primarykey="true"
       autoincrement="true" sequence-name="KREW_ACTN_TKN_S"/>
@@ -283,23 +216,16 @@
     	class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" name="actionTaken">
     	<foreignkey field-ref="actionTakenId" />
     </reference-descriptor>
-    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
-      class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
-      <foreignkey field-ref="documentId" />
-    </reference-descriptor>-->
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
     	class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="nodeInstance">
     	<foreignkey field-ref="nodeInstanceId"/>
     </reference-descriptor>
-    <!--<collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
-      auto-delete="false" name="actionItems" proxy="true">
-      <inverse-foreignkey field-ref="actionRequestId" />
-    </collection-descriptor>-->
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="true"
       auto-delete="false" name="childrenRequests">
       <inverse-foreignkey field-ref="parentActionRequestId" />
     </collection-descriptor>
   </class-descriptor>
+-->
 
   <class-descriptor class="org.kuali.rice.kew.docsearch.SearchableAttributeValue">
   	<extent-class class-ref="org.kuali.rice.kew.docsearch.SearchableAttributeStringValue" />
@@ -483,13 +409,6 @@
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="documentTypeId" />
     </reference-descriptor>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kew.useroptions.UserOptions" table="KREW_USR_OPTN_T">
-    <field-descriptor name="optionId" column="PRSN_OPTN_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="optionVal" column="VAL" jdbc-type="VARCHAR" />
-    <field-descriptor name="workflowId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" />
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.rule.bo.RuleTemplateBo" table="KREW_RULE_TMPL_T">
@@ -687,7 +606,7 @@
   <class-descriptor class="org.kuali.rice.kew.rule.RuleExtensionValue" table="KREW_RULE_EXT_VAL_T">
     <field-descriptor column="RULE_EXT_VAL_ID" name="ruleExtensionValueId" jdbc-type="VARCHAR" primarykey="true"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
-    <field-descriptor column="RULE_EXT_ID" name="ruleExtensionId" jdbc-type="VARCHAR" />
+    <field-descriptor column="RULE_EXT_ID" name="ruleExtensionId" jdbc-type="VARCHAR" access="anonymous"/>
     <field-descriptor column="VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="KEY_CD" name="key" jdbc-type="VARCHAR" />
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />

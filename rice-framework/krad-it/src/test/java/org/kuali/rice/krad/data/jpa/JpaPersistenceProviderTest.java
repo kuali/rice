@@ -133,7 +133,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         Object a = createLinkedTestObject();
         Object id = getIdForLookup(a);
 
-        Object saved = provider.save(a, PersistenceOption.SKIP_LINKING);
+        Object saved = provider.save(a);
         assertTestObjectIdentityEquals(a, saved);
 
         Object found = provider.find((Class<Object>)a.getClass(), id);
@@ -149,7 +149,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
     public void testSaveUnlinkedSkipLinking() {
         Object a = createUnlinkedTestObject();
 
-        provider.save(a, PersistenceOption.SKIP_LINKING);
+        provider.save(a);
 
         fail("save should have resulted in an exception as references have not been linked correctly");
     }

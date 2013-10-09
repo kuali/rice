@@ -169,7 +169,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         // Save the object and test the result
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
+        acct = getDOS().find(acct.getClass(), acct.getNumber());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After saving, the acct type code on the object should have been the one from the parent object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
 
@@ -185,7 +186,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // test what object getter does
         LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
+        acct = getDOS().find(acct.getClass(), acct.getNumber());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
@@ -218,7 +220,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // test what object getter does
         LOG.debug( "Account Type After setting FK to 'IAT': " + acct.getAccountType());
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
+        acct = getDOS().find(acct.getClass(), acct.getNumber());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         assertEquals( "After Saving, the acct type code on the reference should be the same as the object", acct.getAccountTypeCode(), acct.getAccountType().getAccountTypeCode());
         disableJotmLogging();
@@ -323,7 +326,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         // test what object getter does
         LOG.debug( "Account Type After setting FK to null: " + acct.getAccountType());
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
         assertNull( "After saving, the acct type code should be null", acct.getAccountTypeCode());
         assertNull( "After saving, the acct type object should not be available", acct.getAccountType());
         disableJotmLogging();
@@ -337,7 +340,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         // test what object getter does
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct, PersistenceOption.FLUSH);
+        acct = getDOS().find(acct.getClass(), acct.getNumber());
         assertEquals( "After saving, the acct type code should be unchanged", EXPENSE_ACCOUNT_TYPE_CODE, acct.getAccountTypeCode());
         assertNotNull( "After saving, the acct type object should be available", acct.getAccountType());
         disableJotmLogging();
@@ -360,7 +364,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         obj.setUpdatableChildsKey("ABC");
         assertEquals( "Child object's key should not be changed before save", "123", obj.getUpdatableChild().getChildKey());
         System.err.println( "Before Saving: " + obj );
-        obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        obj = getDOS().save(obj);
         // if the field is a PK field, it may not be updated
         // In fact, in the case where we have embedded an updatable reference object which is linked by the PK,
         // we should always copy that PK value back to the parent
@@ -403,7 +407,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         obj.setUpdatableChildsKey("456");
         System.err.println( "Before Saving: " + obj );
-        obj = getDOS().save(obj,PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        obj = getDOS().save(obj,PersistenceOption.FLUSH);
+        obj = getDOS().find(obj.getClass(), obj.getPrimaryKey());
         System.err.println( "After Saving: " + obj );
         assertEquals( "Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
         assertEquals( "Child object's key should not have been reverted after save", "456", obj.getUpdatableChild().getChildKey());
@@ -429,7 +434,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         obj.setUpdatableChild(child456);
         System.err.println( "Before Saving: " + obj );
-        obj = getDOS().save(obj);//, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        obj = getDOS().save(obj);
         System.err.println( "After Saving: " + obj );
         assertEquals( "??? IS THIS RIGHT ??? : Parent object's foreign key should have been changed after save", "456", obj.getUpdatableChildsKey());
         assertEquals( "Child object's key should not have been reverted after save", "456", obj.getUpdatableChild().getChildKey());
@@ -469,7 +474,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
         obj.setUpdatableChild(child);
 
         System.err.println( "Before Saving: " + obj );
-        obj = getDOS().save(obj, PersistenceOption.FLUSH, PersistenceOption.REFRESH);
+        obj = getDOS().save(obj, PersistenceOption.FLUSH);
+        obj = getDOS().find(obj.getClass(), obj.getPrimaryKey());
         System.err.println( "After Saving: " + obj );
         child = getDOS().find(UpdatableChildObject.class, "789");
         assertNotNull("after reload from DB, unable to find child object", child);
@@ -521,7 +527,9 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         // Save the object and test the result
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
+        ParentWithMultipleFieldKeyId id = new ParentWithMultipleFieldKeyId(acct.getChartOfAccountsCode(), acct.getAccountNumber());
+        acct = getDOS().find(acct.getClass(), id);
         assertNotNull( "After saving, the child object should be available", acct.getOrganization());
         assertEquals( "After saving, the org code on the object should have been the one from the parent object", acct.getOrganizationCode(), acct.getOrganization().getOrganizationCode());
 
@@ -546,7 +554,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         // Save the object and test the result
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
         assertNull( "After saving, the child object no longer be available", acct.getOrganization());
 
         disableJotmLogging();
@@ -612,8 +620,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
         sqlDataLoader = new SQLDataLoader("INSERT INTO KRTST_PARENT_WITH_MULTI_KEY_T(FIN_COA_CD, ACCOUNT_NBR, ORG_CD) VALUES('3', '6620110', 'ACCT')");
         sqlDataLoader.runSql();
         // Create a new object and add an existing account type by object
-        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class,
-                new ParentWithMultipleFieldKeyId("3", "6620110"));
+        ParentWithMultipleFieldKeyId id = new ParentWithMultipleFieldKeyId("3", "6620110");
+        ParentWithMultipleFieldKey acct = getDOS().find(ParentWithMultipleFieldKey.class, id);
         assertNotNull("Unable to retreive 3-6620110 from database", acct);
         assertNotNull( "After loading, organization object should not have been null", acct.getOrganization());
 
@@ -622,7 +630,8 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
         // Save the object and test the result
         enableJotmLogging();
-        acct = getDOS().save(acct,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        acct = getDOS().save(acct,PersistenceOption.FLUSH);
+        acct = getDOS().find(acct.getClass(), id);
         assertNotNull( "After saving, the child object should have refreshed", acct.getOrganization());
         assertEquals( "After saving, the FK field should still be set", "XXXX", acct.getOrganizationCode());
         assertEquals( "After saving, the child should reference the new key", "XXXX", acct.getOrganization().getOrganizationCode());
@@ -653,7 +662,7 @@ public class ReferenceLinkerTest extends KRADTestCase {
         assertNull("Child 2 should be missing from the child list - before refresh", parent.getChildByKey(2L));
         System.err.println(parent);
 
-        parent = getDOS().save(parent,PersistenceOption.FLUSH,PersistenceOption.REFRESH);
+        parent = getDOS().save(parent,PersistenceOption.FLUSH);
         System.err.println(parent);
         assertNull("Child 2 should be missing from the child list - after refresh", parent.getChildByKey(2L));
 

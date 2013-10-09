@@ -35,7 +35,7 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
     void versionAndSave(DocumentType documentType);
 
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
-    void save(DocumentType documentType);
+    DocumentType save(DocumentType documentType);
 
     @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}allCurrentRootDocuments'")
     List<DocumentType> findAllCurrentRootDocuments();

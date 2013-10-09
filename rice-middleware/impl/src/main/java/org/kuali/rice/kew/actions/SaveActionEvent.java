@@ -121,7 +121,9 @@ public class SaveActionEvent extends ActionTakenEvent {
 		getRouteHeader().markDocumentSaved();
 		String newStatus = getRouteHeader().getDocRouteStatus();
 		notifyStatusChange(newStatus, oldStatus);
-		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(routeHeader);
+            setRouteHeader(routeHeaderValue);
 	    } catch (WorkflowException ex) {
 		LOG.warn(ex, ex);
 		throw new InvalidActionTakenException(ex.getMessage());
@@ -140,9 +142,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     	ActionRequestValue saveRequest = arFactory.createActionRequest(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,
                 0, new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KewApiConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
     		Boolean.TRUE, annotation);
-    	//      this.getActionRequestService().saveActionRequest(saveRequest);
-    	this.getActionRequestService().activateRequest(saveRequest);
-    	return saveRequest;
+    	return getActionRequestService().activateRequest(saveRequest);
     }
 
 }

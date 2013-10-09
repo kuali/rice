@@ -1044,5 +1044,12 @@ public final class KewApiConstants {
     public static final String ACTION_TAKEN_CANCELED_CD = "X";
     public static final String ACTION_TAKEN_ROUTED_CD = "O";
 
+    public static final class ActionRequestStatusVals{
+        public static final String DONE = "D";
+        public static final String INITIALIZED = "I";
+        public static final String ACTIVATED = "A";
+
+    }
+
 
 }

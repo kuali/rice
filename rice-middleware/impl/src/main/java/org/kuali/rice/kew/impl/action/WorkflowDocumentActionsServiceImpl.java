@@ -222,7 +222,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         if (LOG.isDebugEnabled()) {
             LOG.debug("Initializing Document from incoming documentId: " + documentId);
         }
-        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
 
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         if (document == null) {
@@ -241,7 +241,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         }
 
         if (modified) {
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+            document = KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
 
             /* 
              * Branch data is not persisted when we call saveRouteHeader so we must Explicitly
@@ -270,12 +270,15 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     private void saveRouteNodeInstances(DocumentRouteHeaderValue routeHeader) {
 
         List<RouteNodeInstance> routeNodes = routeHeader.getInitialRouteNodeInstances();
+        List<RouteNodeInstance> persistedRouteNodes = new ArrayList<RouteNodeInstance>();
+        RouteNodeInstance persistedRni = null;
         if (routeNodes != null && !routeNodes.isEmpty()) {
             for (RouteNodeInstance rni : routeNodes) {
-                KEWServiceLocator.getRouteNodeService().save(rni);
+                persistedRni = KEWServiceLocator.getRouteNodeService().save(rni);
+                persistedRouteNodes.add(persistedRni);
             }
         }
-
+        routeHeader.setInitialRouteNodeInstances(persistedRouteNodes);
     }
 
     @Override
@@ -1212,7 +1215,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         if (principal == null) {
             throw new IllegalArgumentException("Principal for principalId: " + principalId + " does not exist");
         }
-        List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentIdWorkflowId(documentId, principal.getPrincipalId());
+        List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentIdPrincipalId(documentId, principal.getPrincipalId());
 
         if(routeHeader.getInitiatorWorkflowId().equals(principal.getPrincipalId())){
         	return true;

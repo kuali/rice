@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.collect.CollectionUtils;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,14 +33,13 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.w3c.dom.Element;
 
 /**
  * Defines a criteria-based query.  Consists of a {@link Predicate} definition
@@ -280,6 +281,18 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
             return this;
         }
 
+        public QueryByCriteria.Builder setOrderByAscending(String... orderByFields) {
+            if (orderByFields == null) {
+                throw new IllegalArgumentException("orderByFields was null");
+            }
+            List<OrderByField> obf = new ArrayList<OrderByField>(orderByFields.length);
+            for ( String fieldName : orderByFields ) {
+                obf.add(OrderByField.Builder.create(fieldName, OrderDirection.ASCENDING).build());
+            }
+            setOrderByFields(obf);
+            return this;
+        }
+
         /**
          * will return an array of the predicates.  may return null if no predicates were set.
          * @return the predicates
@@ -314,6 +327,17 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         public static QueryByCriteria fromPredicates(Predicate... predicates) {
             final Builder b = Builder.create();
             b.setPredicates(predicates);
+            return b.build();
+        }
+
+        /** convenience method to create an immutable criteria from one or more predicates. */
+        public static QueryByCriteria fromPredicates(Collection<Predicate> predicates) {
+            final Builder b = Builder.create();
+            if ( predicates != null ) {
+                b.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+            } else {
+                b.setPredicates( (Predicate[])null );
+            }
             return b.build();
         }
 

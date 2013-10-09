@@ -61,7 +61,7 @@ public class DocumentRefreshQueueImpl implements DocumentRefreshQueue {
         }
 
         PerformanceLogger performanceLogger = new PerformanceLogger();
-        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
         Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(documentId);
         List<ActionRequestValue> requestsToDelete = new ArrayList<ActionRequestValue>();
         

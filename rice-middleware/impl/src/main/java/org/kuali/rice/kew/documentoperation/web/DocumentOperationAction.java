@@ -27,22 +27,22 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
-import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
-import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
-import org.kuali.rice.kew.api.action.ActionInvocation;
-import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.document.OrchestrationConfig;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
@@ -54,11 +54,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -208,7 +205,9 @@ public class DocumentOperationAction extends KewKualiAction {
 			}
 			dHeader.setInitialRouteNodeInstances(lInitials);
 			getRouteHeaderService().validateRouteHeader(docForm.getRouteHeader());
-			getRouteHeaderService().saveRouteHeader(docForm.getRouteHeader());
+			DocumentRouteHeaderValue documentRouteHeaderValue = getRouteHeaderService().
+                                        saveRouteHeader(docForm.getRouteHeader());
+            docForm.setRouteHeader(documentRouteHeaderValue);
 			change = true;
 		}
 
@@ -235,7 +234,7 @@ public class DocumentOperationAction extends KewKualiAction {
 						actionRequest.setNodeInstance(KEWServiceLocator.getRouteNodeService().findRouteNodeInstanceById(actionRequest.getNodeInstance().getRouteNodeInstanceId()));
 					}
 					// getActionRequestService().validateActionRequest(actionRequest);
-					getActionRequestService().saveActionRequest(actionRequest);
+					actionRequest = getActionRequestService().saveActionRequest(actionRequest);
 					change = true;
 				} catch (ParseException pe) {
 					throw new WorkflowServiceErrorException("Action request create date parsing error", new WorkflowServiceErrorImpl("Action request create date parsing error", "docoperation.actionrequests.dateparsing.error", actionRequest.getActionRequestId().toString()));
@@ -262,8 +261,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				try {
 					actionTaken.setActionDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(actionDateParamName)).getTime()));
 					actionTaken.setActionDateString(RiceConstants.getDefaultDateFormat().format(actionTaken.getActionDate()));
-					// getActionTakenService().validateActionTaken(actionTaken);
-					getActionTakenService().saveActionTaken(actionTaken);
+					actionTaken = getActionTakenService().saveActionTaken(actionTaken);
 					change = true;
 				} catch (ParseException pe) {
 					throw new WorkflowServiceErrorException("Action taken action date parsing error", new WorkflowServiceErrorImpl("Action taken action date parse error", "docoperation.actionstaken.dateparsing.error", actionTaken.getActionTakenId().toString()));
@@ -354,7 +352,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					   }
 				    }
 				}
-				getRouteNodeService().save(routeNodeInstance);
+				routeNodeInstance = getRouteNodeService().save(routeNodeInstance);
 				LOG.debug("saved");
 				change = true;
 			}

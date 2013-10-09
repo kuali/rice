@@ -160,7 +160,9 @@ public class CompleteAction extends ActionTakenEvent {
             getRouteHeader().markDocumentEnroute();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(getRouteHeader());
+            setRouteHeader(routeHeaderValue);
         }
     }
 

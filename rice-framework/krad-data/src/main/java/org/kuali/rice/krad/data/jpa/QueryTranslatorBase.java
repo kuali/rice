@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.criteria.InIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.InPredicate;
 import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.LessThanPredicate;
+import org.kuali.rice.core.api.criteria.LikeIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
@@ -81,6 +82,10 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
     }
     protected void addNotEqualToIgnoreCase(C criteria, String propertyPath, String value) {
         addNotEqualTo(criteria, genUpperFunc(propertyPath), value.toUpperCase());
+    }
+
+    protected void addLikeIgnoreCase(C criteria, String propertyPath, String value){
+        addLike(criteria, genUpperFunc(propertyPath),value.toUpperCase());
     }
 
     /** this is a fatal error since this implementation should support all known predicates. */
@@ -144,6 +149,8 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         } else if (p instanceof LikePredicate) {
             //no need to convert * or ? since ojb handles the conversion/escaping
             addLike(parent, pp, value);
+        } else if(p instanceof LikeIgnoreCasePredicate){
+            addLikeIgnoreCase(parent,pp,(String)value);
         } else if (p instanceof NotEqualPredicate) {
             addNotEqualTo(parent, pp, value);
         } else if (p instanceof NotEqualIgnoreCasePredicate) {

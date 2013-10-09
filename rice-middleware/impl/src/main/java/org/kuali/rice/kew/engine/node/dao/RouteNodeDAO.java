@@ -25,12 +25,6 @@ import java.util.List;
 
 
 public interface RouteNodeDAO {
-
-    public void save(RouteNode node);
-    public void save(RouteNodeInstance nodeInstance);
-    public void save(NodeState nodeState);
-    public void save(Branch branch);
-    public RouteNode findRouteNodeById(String nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId);
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId);
     public List<String> getActiveRouteNodeNames(String documentId);

@@ -22,60 +22,86 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.krad.data.DataObjectService;
+
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
+/**
+ * /**
+ * An implementation of the {@link UserOptionsService}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Transactional
 public class UserOptionsServiceImpl implements UserOptionsService {
 
-    private UserOptionsDAO userOptionsDAO;
+    // KRAD Data Layer API containing basic CRUD operations and access to a metadata repository.
+    private DataObjectService dataObjectService;
 
+    // default properties for this class
     private static final Properties defaultProperties = new Properties();
 
+    // set the default properties for this class
     static {
         defaultProperties.setProperty(KewApiConstants.EMAIL_RMNDR_KEY, KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
     }
 
-    private Long getNewOptionIdForActionList() {
-		return getUserOptionsDAO().getNewOptionIdForActionList();
-	}
+    /** {@inheritDoc}
+     */
+    @Override
+    public Collection<UserOptions> findByWorkflowUser(String principalId) {
 
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("workflowId", principalId));
+
+        return dataObjectService.findMatching(UserOptions.class, criteria.build()).getResults();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<UserOptions> findByUserQualified(String principalId, String likeString) {
         if ((principalId == null)) {
             return new ArrayList<UserOptions>(0);
         }
-        return this.getUserOptionsDAO().findByUserQualified(principalId, likeString);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(and(equal("workflowId", principalId),like("optionId", likeString)));
+        return this.dataObjectService.findMatching(UserOptions.class, criteria.build()).getResults();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UserOptions findByOptionId(String optionId, String principalId) {
         if (optionId == null || "".equals(optionId) || principalId == null || "".equals(principalId)) {
             return null;
         }
-        return this.getUserOptionsDAO().findByOptionId(optionId, principalId);
+
+        return this.dataObjectService.find(UserOptions.class, new UserOptionsId(principalId, optionId));
     }
 
-    public Collection<UserOptions> findByOptionValue(String optionId, String optionValue){
-        return this.getUserOptionsDAO().findByOptionValue(optionId, optionValue);
-    }
-
-    public Collection<UserOptions> findByWorkflowUser(String principalId) {
-        return this.getUserOptionsDAO().findByWorkflowUser(principalId);
-    }
-
-    public void save(UserOptions userOptions) {
-        this.getUserOptionsDAO().save(userOptions);
-    }
-    
     /**
-     * This overridden method saves an option for each optionsMap entry, all for the given principalId
-     * 
-     * @see org.kuali.rice.kew.useroptions.UserOptionsService#save(java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
+    @Override
+    public void save(UserOptions userOptions) {
+        this.dataObjectService.save(userOptions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void save(String principalId, Map<String,String> optionsMap) {
-    	// create a collection of UserOptions and save it
-    	if (optionsMap != null && optionsMap.size() > 0) {
-    		List<UserOptions> toSave = new ArrayList<UserOptions>();
+
+    	// build UserOptions from the principalId and optionMap and save them
+        if (optionsMap != null && !optionsMap.isEmpty()) {
     		for (Entry<String, String> entry : optionsMap.entrySet()) {
     			UserOptions option = findByOptionId(entry.getKey(), principalId);
     			if (option == null) {
@@ -84,16 +110,15 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     			}
     			option.setOptionId(entry.getKey());
     			option.setOptionVal(entry.getValue());
-    			toSave.add(option);
+                this.save(option);
     		}
-			getUserOptionsDAO().save(toSave);
     	}
     }
-    
-    public void deleteUserOptions(UserOptions userOptions) {
-        this.getUserOptionsDAO().deleteUserOptions(userOptions);
-    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void save(String principalId, String optionId, String optionValue) {
         //KULRICE-7796 Don't save where val is greater than field length
         if(optionValue.length() <= 2000)
@@ -105,20 +130,48 @@ public class UserOptionsServiceImpl implements UserOptionsService {
             }
             option.setOptionId(optionId);
             option.setOptionVal(optionValue);
-            getUserOptionsDAO().save(option);
+            this.save(option);
         }
     }
 
-    public UserOptionsDAO getUserOptionsDAO() {
-        return userOptionsDAO;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteUserOptions(UserOptions userOptions) {
+        this.dataObjectService.delete(userOptions);
     }
 
-    public void setUserOptionsDAO(UserOptionsDAO optionsDAO) {
-        userOptionsDAO = optionsDAO;
-    }
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<UserOptions> retrieveEmailPreferenceUserOptions(String emailSetting) {
-        return this.getUserOptionsDAO().findEmailUserOptionsByType(emailSetting);
+
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(
+                or(
+                    equal("optionId", KewApiConstants.EMAIL_RMNDR_KEY),
+                    like("optionId", "%" + KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX)
+                ),
+                equal("optionVal", emailSetting)
+        );
+
+        return this.dataObjectService.findMatching(UserOptions.class, criteria.build()).getResults();
+    }
+
+    /**
+     * Returns an instance of the {@link DataObjectService}.
+     * @return  a instance of {@link DataObjectService}
+     */
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.useroptions.UserOptionsServiceImpl#getDataObjectService()
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

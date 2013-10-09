@@ -15,30 +15,29 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
-import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class is used to test the {@link DocumentTypeMaintainable} 
@@ -162,7 +161,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
 
         // verify that the outbox item was updated properly
         userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_1;
-        Collection<OutboxItemActionListExtension> outboxItems = KEWServiceLocator.getActionListService().getOutbox(getPrincipalIdForName(userPrincipalName), new ActionListFilter());
+        Collection<OutboxItem> outboxItems = KEWServiceLocator.getActionListService().getOutbox(getPrincipalIdForName(userPrincipalName), new ActionListFilter());
         assertEquals("There should be one outbox item", 1, outboxItems.size());
         ActionItem outboxItem = outboxItems.iterator().next();
         assertEquals("The label on the outbox item should have been changed", new_label, outboxItem.getDocLabel());

@@ -53,7 +53,6 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_EXT_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
 public class RuleExtensionBo implements RuleExtensionContract, Serializable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
@@ -66,22 +65,23 @@ public class RuleExtensionBo implements RuleExtensionContract, Serializable {
 	@Column(name="RULE_TMPL_ATTR_ID", insertable=false, updatable=false)
 	private String ruleTemplateAttributeId;
 
-	@Column(name="RULE_ID", insertable=false, updatable=false)
-	private String ruleBaseValuesId;
+    @Column(name="RULE_ID", insertable = false, updatable = false)
+    private String ruleBaseValuesId;
+
 
 	@Version
 	@Column(name="VER_NBR")
 	private Long versionNumber;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_ID")
+	@JoinColumn(name="RULE_ID", nullable = false)
 	private RuleBaseValues ruleBaseValues;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ATTR_ID")
 	private RuleTemplateAttributeBo ruleTemplateAttribute;
 
-	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
+	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL}, mappedBy="extension")
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtensionBo() {

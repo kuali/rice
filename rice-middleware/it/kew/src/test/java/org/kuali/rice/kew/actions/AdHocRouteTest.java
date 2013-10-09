@@ -17,7 +17,6 @@ package org.kuali.rice.kew.actions;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -491,7 +490,7 @@ public class AdHocRouteTest extends KEWTestCase {
 		// now route the document, it should activate the request and create an action item
 		doc.route("");
 		
-		Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
+		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
 		assertEquals("Should have 1 action item.", 1, actionItems.size());
 		ActionItem actionItem = actionItems.iterator().next();
 		assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());
@@ -515,14 +514,14 @@ public class AdHocRouteTest extends KEWTestCase {
 		// now route the document, it should activate the request and create action items
 		doc.route("");
 		
-		Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
+		Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
 		assertTrue("Should have more than 1 action item.", actionItems.size() > 1);
 		for (ActionItem actionItem : actionItems) {
 			assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());
 			assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
 		}
 	}
-	
+
 	   @Test
 	    public void testAdHocWithNoNodes() throws Exception {
 	        WorkflowDocument doc = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), ADHOC_NO_NODE_DOC);
@@ -541,7 +540,7 @@ public class AdHocRouteTest extends KEWTestCase {
 	        // now route the document, it should activate the request and create an action item
 	        doc.route("");
 	        
-	        Collection<ActionItemActionListExtension> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
+	        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().getActionListForSingleDocument(doc.getDocumentId());
 	        assertEquals("Should have 0 action item.", 0, actionItems.size());
 	        //ActionItem actionItem = actionItems.iterator().next();
 	        //assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());

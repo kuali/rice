@@ -21,9 +21,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+  <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
   <import resource="classpath:org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/kew/config/_KewJpaSpringBeans.xml"/>
 
   <!-- the distributed cache manager that calls into the kewCacheAdminService on the ksb -->
   <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
@@ -125,6 +128,7 @@
         <property name="attachmentDir" value="${attachment.dir.location}"/>
       </bean>
     </property>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <!--  QuickLinksService -->
@@ -136,6 +140,7 @@
 
   <bean id="rice.kew.noteService" class="org.kuali.rice.kew.impl.note.NoteServiceImpl">
     <property name="noteDao" ref="enNoteDAO"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="rice.kew.import.criteriaLookupService"
@@ -144,8 +149,7 @@
   </bean>
 
   <bean id="rice.kew.ruleService" class="org.kuali.rice.kew.impl.rule.RuleServiceImpl"
-        p:businessObjectService-ref="rice.kew.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kew.import.criteriaLookupService"/>
+        p:dataObjectService-ref="dataObjectService"/>
 
   <bean id="rice.kew.extensionRepositoryService"
         class="org.kuali.rice.kew.impl.extension.ExtensionRepositoryServiceImpl">

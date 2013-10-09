@@ -23,14 +23,13 @@ import org.kuali.rice.kew.api.action.RecipientType;
 
 /**
  * Compares an action item to another action item.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionItemComparator implements Comparator {
+public class ActionItemComparator implements Comparator<ActionItemContract> {
 
-	public int compare(Object object1, Object object2) throws ClassCastException {
-		ActionItemContract actionItem1 = (ActionItemContract)object1;
-		ActionItemContract actionItem2 = (ActionItemContract)object2;
+	@Override
+    public int compare(ActionItemContract actionItem1, ActionItemContract actionItem2) throws ClassCastException {
 		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd(), true);
 		if (actionCodeValue != 0) {
 			return actionCodeValue;

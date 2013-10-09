@@ -43,12 +43,12 @@ import org.kuali.rice.kew.actions.SuperUserDisapproveEvent;
 import org.kuali.rice.kew.actions.SuperUserNodeApproveEvent;
 import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
-import org.kuali.rice.kew.api.action.ActionInvocation;
-import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
@@ -57,8 +57,8 @@ import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
-import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -86,7 +86,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentServiceImpl.class);
 
 	private void init(DocumentRouteHeaderValue routeHeader) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeader.getDocumentId(), true);
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeader.getDocumentId());
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 	}
 
@@ -264,10 +264,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			routeHeader.setDocContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT);
 		}
 		routeHeader.setDateModified(new Timestamp(new Date().getTime()));
-		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+		routeHeader = KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD);
 		KEWServiceLocator.getWorkflowEngineFactory().newEngine(config).initializeDocument(routeHeader);
-		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+		routeHeader = KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
 		return routeHeader;
 	}
 

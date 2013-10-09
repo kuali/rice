@@ -27,37 +27,75 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public interface DocumentTypeDAO {
 
-    public DocumentType findById(String docTypeId);
+    /**
+     * Find Document Type by name (case sensitive by default)
+     * @param name
+     * @return DocumentType or null
+     */
+    public DocumentType findByName(String name);
 
-    public DocumentType findByName(String name); // docType is case sensitive by default
-
+    /**
+     * Find Document Type by name
+     * @param name
+     * @param caseSensitive
+     * @return DocumentType or null
+     */
     public DocumentType findByName(String name, boolean caseSensitive);
 
-    public void save(DocumentType documentType);
-
+    /**
+     * Find Document Types by document type and parent name
+     * @param documentType
+     * @param docTypeParentName
+     * @param climbHierarchy
+     * @return Collection of matching document types
+     */
     public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParentName, boolean climbHierarchy);
 
-    public void delete(DocumentType documentType);
-
-    public List findByDocumentId(String documentId);
-
+    /**
+     * Get Max version number of document type
+     * @param docTypeName
+     * @return max version number
+     */
     public Integer getMaxVersionNumber(String docTypeName);
 
-    public List findAllCurrentRootDocuments();
-
+    /**
+     * Find all current document types
+     * @return List of current DocumentTypes
+     */
     public List findAllCurrent();
 
+    /**
+     * Find all current with name
+     * @param name
+     * @return List of Document Type by name
+     */
     public List findAllCurrentByName(String name);
 
-    public List<DocumentType> findPreviousInstances(String documentTypeName);
-
+    /**
+     * Get Child Document Type ids by parent id
+     * @param parentDocumentTypeId
+     * @return List of child document type ids
+     */
     public List<String> getChildDocumentTypeIds(String parentDocumentTypeId);
 
-    public List findDocumentTypeAttributes(RuleAttribute ruleAttribute);
-
-    public String findDocumentTypeIdByDocumentId(String documentId);
-    
+    /**
+     * Find document type id by name
+     * @param documentTypeName
+     * @return document type id
+     */
     public String findDocumentTypeIdByName(String documentTypeName);
-    
+
+    /**
+     * Find Document type name by id
+     * @param documentTypeId
+     * @return document type name
+     */
     public String findDocumentTypeNameById(String documentTypeId);
+
+    /**
+     * Find Document Type by document id
+     * @param documentId
+     * @return DocumentType
+     */
+    public DocumentType findDocumentTypeByDocumentId(String documentId);
 }

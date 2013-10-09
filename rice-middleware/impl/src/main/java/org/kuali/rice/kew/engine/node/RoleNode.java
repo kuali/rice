@@ -243,6 +243,8 @@ public class RoleNode extends RequestsNode {
 			List<ActionRequestValue> requests, List<ActionItem> generatedActionItems,
 			DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance)
 			throws WorkflowException {
+        // copy the list so's we can sort it
+        requests = new ArrayList<ActionRequestValue>(requests);
 		Collections.sort( requests, ROLE_REQUEST_SORTER );
 		String activationType = nodeInstance.getRouteNode().getActivationType();
 		boolean isParallel = KewApiConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );

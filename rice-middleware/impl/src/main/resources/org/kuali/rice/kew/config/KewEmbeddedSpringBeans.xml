@@ -47,10 +47,12 @@
   <!--  DocumentTypeService -->
   <bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl">
     <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="rice.kew.documentTypeService" class="org.kuali.rice.kew.impl.doctype.DocumentTypeServiceImpl">
     <property name="documentTypeDao" ref="enDocumentTypeDAO"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <!--  Routing Report Service -->
@@ -62,12 +64,13 @@
         class="org.kuali.rice.kew.routeheader.service.impl.RouteHeaderServiceImpl"
         lazy-init="true"
         p:routeHeaderDAO-ref="enDocumentRouteHeaderDAO"
-        p:searchableAttributeDAO-ref="enSearchableAttributeDAO"/>
+        p:searchableAttributeDAO-ref="enSearchableAttributeDAO"
+        p:dataObjectService-ref="dataObjectService"/>
 
   <bean id="enRouteNodeService"
         class="org.kuali.rice.kew.engine.node.service.impl.RouteNodeServiceImpl"
         lazy-init="true"
-        p:routeNodeDAO-ref="enRouteNodeDAO"/>
+        p:routeNodeDAO-ref="enRouteNodeDAO" p:dataObjectService-ref="dataObjectService"/>
 
   <bean id="workflowEngineFactory"
         class="org.kuali.rice.kew.engine.WorkflowEngineFactoryImpl"
@@ -141,45 +144,40 @@
   </bean>
 
   <bean id="enBranchService" class="org.kuali.rice.kew.engine.node.service.impl.BranchServiceImpl" lazy-init="true">
-    <property name="branchDAO">
-      <ref bean="enBranchDAO"/>
-    </property>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <!--  ActionRequestService -->
-  <bean id="enActionRequestService" class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl"
-        lazy-init="true">
-    <property name="actionRequestDAO">
-      <ref bean="enActionRequestDAO"/>
-    </property>
-  </bean>
+  <bean id="enActionRequestService"
+        class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl"
+        lazy-init="true"
+        p:dataObjectService-ref="dataObjectService"/>
 
   <!--  ActionListService -->
-  <bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl"
-        lazy-init="true">
-    <property name="actionListDAO">
-      <ref bean="enActionListDAO"/>
-    </property>
-    <property name="actionItemDAO">
-      <ref bean="enActionItemDAO"/>
-    </property>
-  </bean>
+  <bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl" lazy-init="true"
+  		p:dataObjectService-ref="dataObjectService"
+  		p:notificationService-ref="enNotificationService"
+  		p:actionRequestService-ref="enActionRequestService"
+  		p:documentTypeService-ref="enDocumentTypeService"
+  		p:userOptionsService-ref="enUserOptionsService"
+  		p:routeHeaderService-ref="enDocumentRouteHeaderService"
+  		p:actionListDAO-ref="enActionListDAO"
+  		/>
 
   <!--  UserOptionsService -->
   <bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
-    <property name="userOptionsDAO">
-      <ref bean="enUserOptionsDAO"/>
+    <property name="dataObjectService">
+      <ref bean="dataObjectService"/>
     </property>
   </bean>
 
 
   <!--  ActionTakenService -->
-  <bean id="enActionTakenService" class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl"
-        lazy-init="true">
-    <property name="actionTakenDAO">
-      <ref bean="enActionTakenDAO"/>
-    </property>
-  </bean>
+  <bean id="enActionTakenService"
+        class="org.kuali.rice.kew.actiontaken.service.impl.ActionTakenServiceImpl"
+        lazy-init="true"
+        p:dataObjectService-ref="dataObjectService"
+        p:actionTakenDao-ref="enActionTakenDAO"/>
 
   <bean id="enDocumentLinkService" class="org.kuali.rice.kew.documentlink.service.impl.DocumentLinkServiceImpl"
         lazy-init="true">
@@ -382,6 +380,13 @@
         <entry key="org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEbo"
                value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
       </map>
+    </property>
+    <property name="entityManager" ref="sharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
     </property>
   </bean>
 

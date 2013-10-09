@@ -22,12 +22,14 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceUtil;
 import javax.persistence.metamodel.ManagedType;
 
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
@@ -48,6 +50,13 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     private ProviderRegistry providerRegistry;
     private DataObjectService dataObjectService;
     private ReferenceLinker referenceLinker;
+
+    /**
+     * Initialization-on-demand holder idiom for thread-safe lazy loading of configuration.
+     */
+    private static final class LazyConfigHolder {
+        private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(ConfigConstants.JPA_AUTO_FLUSH, false);
+    }
 
     public EntityManager getSharedEntityManager() {
         return sharedEntityManager;
@@ -80,16 +89,12 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
 
 		dataObject = sharedEntityManager.merge(dataObject);
 
-        if (!optionSet.contains(PersistenceOption.SKIP_LINKING)) {
+        if (optionSet.contains(PersistenceOption.LINK)) {
             referenceLinker.linkObjects(dataObject);
         }
 
-
-        if(optionSet.contains(PersistenceOption.FLUSH)){
+        if(optionSet.contains(PersistenceOption.FLUSH) || LazyConfigHolder.autoFlush){
 			sharedEntityManager.flush();
-			if (optionSet.contains(PersistenceOption.REFRESH)) {
-				sharedEntityManager.refresh(dataObject);
-			}
         }
 
 		return dataObject;

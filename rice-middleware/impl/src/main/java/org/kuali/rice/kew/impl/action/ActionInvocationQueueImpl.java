@@ -57,7 +57,7 @@ public class ActionInvocationQueueImpl implements ActionInvocationQueue {
         }
 
 
-        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 
         Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);

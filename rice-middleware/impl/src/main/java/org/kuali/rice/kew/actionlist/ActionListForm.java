@@ -15,32 +15,28 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionlist.ActionToTake;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.preferences.Preferences;
-import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.displaytag.pagination.PaginatedList;
-import org.kuali.rice.kns.web.ui.ExtraButton;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.kew.api.action.ActionItem;
-
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Action List form implementation for the action list.
@@ -327,13 +323,13 @@ public class ActionListForm extends UifFormBase {
     }
 
     private boolean helpDeskActionList;
-    private List<ActionItemActionListExtension> actionList;
-    private List<ActionItem> ApiActionItems;
+    private List<ActionItem> actionList;
+    private List<org.kuali.rice.kew.api.action.ActionItem> ApiActionItems;
 
-    public List<ActionItemActionListExtension> getActionList() {
+    public List<ActionItem> getActionList() {
         return actionList;
     }
-    public void setActionList(ArrayList<ActionItemActionListExtension> actionList) {
+    public void setActionList(ArrayList<ActionItem> actionList) {
         this.actionList = actionList;
     }
 
@@ -602,10 +598,10 @@ public class ActionListForm extends UifFormBase {
     }
 
     // convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS
-    public List<ActionItem> getApiActionList() {
+    public List<org.kuali.rice.kew.api.action.ActionItem> getApiActionList() {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
 
-        for (ActionItemActionListExtension actionItemObj : actionList) {
+        for (org.kuali.rice.kew.actionitem.ActionItem actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }

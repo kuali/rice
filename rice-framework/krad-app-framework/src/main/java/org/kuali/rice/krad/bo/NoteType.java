@@ -22,7 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
-
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 /**
  *
@@ -40,6 +40,7 @@ public class NoteType extends PersistableBusinessObjectBase implements MutableIn
 	@Column(name="TYP_DESC_TXT",length=100,nullable=false)
 	private String noteTypeDescription;
 	@Column(name="ACTV_IND",length=1)
+    @javax.persistence.Convert(converter=BooleanYNConverter.class)
 	private Boolean noteTypeActiveIndicator;
 
 	/**

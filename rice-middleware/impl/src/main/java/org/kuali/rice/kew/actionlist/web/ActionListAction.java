@@ -15,11 +15,31 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
-import org.apache.commons.collections.ComparatorUtils;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.struts.action.*;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
@@ -27,10 +47,8 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
@@ -41,13 +59,11 @@ import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
@@ -58,13 +74,6 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Action doing Action list stuff
@@ -189,7 +198,7 @@ public class ActionListAction extends KualiAction {
 
         boolean freshActionList = true;
         // retrieve cached action list
-        List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>)request.getSession().getAttribute(ACTION_LIST_KEY);
+        List<? extends ActionItem> actionList = (List<? extends ActionItem>)request.getSession().getAttribute(ACTION_LIST_KEY);
         plog.log("Time to initialize");
         try {
             //UserSession uSession = getUserSession(request);
@@ -267,7 +276,7 @@ public class ActionListAction extends KualiAction {
             }
 
             if (isOutboxMode(form, request, preferences)) {
-                actionList = new ArrayList<OutboxItemActionListExtension>(actionListSrv.getOutbox(principalId, filter));
+                actionList = new ArrayList<OutboxItem>(actionListSrv.getOutbox(principalId, filter));
                 form.setOutBoxEmpty(actionList.isEmpty());
             } else {
 
@@ -283,14 +292,14 @@ public class ActionListAction extends KualiAction {
                             }
                         }
                         request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
                         // fetch the action list
-                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
 
                         request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                     } else if (forceListRefresh) {
                         // force a refresh... usually based on filter change or parameter specifying refresh needed
-                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                         request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                         List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
                         if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
@@ -302,10 +311,10 @@ public class ActionListAction extends KualiAction {
                             }
                         }
                         request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
 
                     }else if (refreshList(request,principalId)){
-                        actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                         request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
 
                     } else {
@@ -389,13 +398,13 @@ public class ActionListAction extends KualiAction {
            maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
         }
         request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssignedForUserKey);
-        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Integer)countAndMaxDate.get(1));
+        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
     }
 
     private boolean refreshList(HttpServletRequest request,String principalId ){
         List<Object> maxActionItemDateAssignedAndCount = KEWServiceLocator.getActionListService().getMaxActionItemDateAssignedAndCountForUser(
                 principalId);
-        int count = (Integer) maxActionItemDateAssignedAndCount.get(1);
+        long count = (Long) maxActionItemDateAssignedAndCount.get(1);
         int previousCount = 0;
         Object actionItemCountFromSession = request.getSession().getAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY);
         if ( actionItemCountFromSession != null ) {
@@ -497,28 +506,29 @@ public class ActionListAction extends KualiAction {
         return outBoxView;
     }
 
-    private void sortActionList(List<? extends ActionItemActionListExtension> actionList, String sortName, SortOrderEnum sortOrder) {
+    private void sortActionList(List<? extends ActionItem> actionList, String sortName, SortOrderEnum sortOrder) {
         if (StringUtils.isEmpty(sortName)) {
             return;
         }
-        Comparator<ActionItemActionListExtension> comparator = new ActionItemComparator(sortName);
-        if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
-            comparator = ComparatorUtils.reversedComparator(comparator);
-        }
-        Collections.sort(actionList, comparator);
+        // FIXME : sort items are causing problems after the JPA conversion - need to restore this
+//        Comparator<ActionItem> comparator = new ActionItemComparator(sortName);
+//        if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
+//            comparator = ComparatorUtils.reversedComparator(comparator);
+//        }
+//        Collections.sort(actionList, comparator);
         // re-index the action items
         int index = 0;
-        for (ActionItemActionListExtension actionItem : actionList) {
+        for (ActionItem actionItem : actionList) {
             actionItem.setActionListIndex(index++);
         }
     }
 
-    private void initializeActionList(List<? extends ActionItemActionListExtension> actionList, Preferences preferences) {
+    private void initializeActionList(List<? extends ActionItem> actionList, Preferences preferences) {
         List<String> actionItemProblemIds = new ArrayList<String>();
         int index = 0;
         generateActionItemErrors(actionList);
-        for (Iterator<? extends ActionItemActionListExtension> iterator = actionList.iterator(); iterator.hasNext();) {
-            ActionItemActionListExtension actionItem = iterator.next();
+        for (Iterator<? extends ActionItem> iterator = actionList.iterator(); iterator.hasNext();) {
+            ActionItem actionItem = iterator.next();
             if (actionItem.getDocumentId() == null) {
                 LOG.error("Somehow there exists an ActionItem with a null document id!  actionItemId=" + actionItem.getId());
                 iterator.remove();
@@ -547,9 +557,9 @@ public class ActionListAction extends KualiAction {
         return Integer.parseInt(preferences.getPageSize());
     }
 
-    protected PaginatedList buildCurrentPage(List<? extends ActionItemActionListExtension> actionList, Integer page, String sortCriterion, String sortDirection,
+    protected PaginatedList buildCurrentPage(List<? extends ActionItem> actionList, Integer page, String sortCriterion, String sortDirection,
                                              int pageSize, Preferences preferences, ActionListForm form) throws WorkflowException {
-        List<ActionItemActionListExtension> currentPage = new ArrayList<ActionItemActionListExtension>(pageSize);
+        List<ActionItem> currentPage = new ArrayList<ActionItem>(pageSize);
 
         boolean haveCustomActions = false;
         boolean haveDisplayParameters = false;
@@ -577,7 +587,7 @@ public class ActionListAction extends KualiAction {
         LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
 
         for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
-            ActionItemActionListExtension actionItem = actionList.get(index);
+            ActionItem actionItem = actionList.get(index);
             // evaluate custom action list component for mass actions
             try {
                 ActionItemCustomization customization = customizationMap.get(actionItem.getId());
@@ -654,10 +664,10 @@ public class ActionListAction extends KualiAction {
     }
 
     // convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS
-    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItemActionListExtension> actionList) {
+    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItem> actionList) {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
 
-        for (ActionItemActionListExtension actionItemObj : actionList) {
+        for (ActionItem actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }
@@ -671,8 +681,8 @@ public class ActionListAction extends KualiAction {
         }
     }
 
-    private void generateActionItemErrors(List<? extends ActionItemActionListExtension> actionList) {
-        for (ActionItemActionListExtension actionItem : actionList) {
+    private void generateActionItemErrors(List<? extends ActionItem> actionList) {
+        for (ActionItem actionItem : actionList) {
             if(!KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
                 GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getId()+"");
             }
@@ -682,7 +692,7 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward takeMassActions(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListForm actionListForm = (ActionListForm) form;
-        List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>) request.getSession().getAttribute(ACTION_LIST_KEY);
+        List<? extends ActionItem> actionList = (List<? extends ActionItem>) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
             return start(mapping, new ActionListForm(), request, response);
         }
@@ -695,7 +705,7 @@ public class ActionListAction extends KualiAction {
                     !"".equals(actionToTake.getActionTakenCd()) &&
                     !"NONE".equalsIgnoreCase(actionToTake.getActionTakenCd()) &&
                     actionToTake.getActionItemId() != null) {
-                ActionItemActionListExtension actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
+                ActionItem actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
                 if (actionItem == null) {
                     LOG.warn("Could not locate the ActionItem to take mass action against in the action list: " + actionToTake.getActionItemId());
                     continue;
@@ -713,8 +723,8 @@ public class ActionListAction extends KualiAction {
         return start(mapping, cleanForm, request, response);
     }
 
-    protected ActionItemActionListExtension getActionItemFromActionList(List<? extends ActionItemActionListExtension> actionList, String actionItemId) {
-        for (ActionItemActionListExtension actionItem : actionList) {
+    protected ActionItem getActionItemFromActionList(List<? extends ActionItem> actionList, String actionItemId) {
+        for (ActionItem actionItem : actionList) {
             if (actionItem.getId().equals(actionItemId)) {
                 return actionItem;
             }
@@ -806,7 +816,7 @@ public class ActionListAction extends KualiAction {
         return mapping.findForward("viewPreferences");
     }
 
-    private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
+    private boolean isActionCompatibleRequest(ActionItem actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();
 
@@ -837,7 +847,7 @@ public class ActionListAction extends KualiAction {
         return GlobalVariables.getUserSession();
     }
 
-    private static class ActionItemComparator implements Comparator<ActionItemActionListExtension> {
+    private static class ActionItemComparator implements Comparator<ActionItem> {
 
         private static final String ACTION_LIST_DEFAULT_SORT = "routeHeader.createDate";
 
@@ -851,7 +861,7 @@ public class ActionListAction extends KualiAction {
         }
 
         @Override
-        public int compare(ActionItemActionListExtension actionItem1, ActionItemActionListExtension actionItem2) {
+        public int compare(ActionItem actionItem1, ActionItem actionItem2) {
             try {
                 // invoke the power of the lookup functionality provided by the display tag library, this LookupUtil method allows for us
                 // to evaulate nested bean properties (like workgroup.groupNameId.nameId) in a null-safe manner.  For example, in the

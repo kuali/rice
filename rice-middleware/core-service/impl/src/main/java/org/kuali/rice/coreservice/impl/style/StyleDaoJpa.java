@@ -32,8 +32,12 @@ public class StyleDaoJpa implements StyleDao{
     @Override
     @SuppressWarnings("unchecked")
     public List<String> getAllStyleNames() {
-        return (List<String>)entityManager.createNamedQuery("StyleBo.findAllStyleNames").
+        return (List<String>)getEntityManager().createNamedQuery("StyleBo.findAllStyleNames").
                 getResultList();
+    }
+
+    public EntityManager getEntityManager(){
+        return this.entityManager;
     }
 
     public void setEntityManager(EntityManager entityManager){

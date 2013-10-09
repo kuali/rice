@@ -1437,7 +1437,6 @@ public class DocumentTypeXmlParser {
 
         for (int i = 0; i < documentTypePolicies.getLength(); i++) {
             DocumentTypePolicy policy = new DocumentTypePolicy();
-            policy.setDocumentType(documentType);
             try {
                 String policyName = (String) getXPath().evaluate("./name", documentTypePolicies.item(i), XPathConstants.STRING);
                 policy.setPolicyName(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.fromCode(policyName).getCode().toUpperCase());
@@ -1495,6 +1494,7 @@ public class DocumentTypeXmlParser {
             } else {
                 policies.add(policy);
             }
+            policy.setDocumentType(documentType);
         }
 
         return policies;
@@ -1712,7 +1712,6 @@ public class DocumentTypeXmlParser {
 
                     ApplicationDocumentStatusCategory category = new ApplicationDocumentStatusCategory();
                     category.setCategoryName(categoryName);
-                    category.setDocumentType(documentType);
 
                     // iterate through children
                     NodeList categoryChildren = child.getChildNodes();
@@ -1750,7 +1749,6 @@ public class DocumentTypeXmlParser {
 
             ApplicationDocumentStatus status = new ApplicationDocumentStatus();
             status.setStatusName(statusName);
-            status.setDocumentType(documentType);
             // order the statuses according to the order we encounter them
             status.setSequenceNumber(newStatusSequence.nextValue());
 

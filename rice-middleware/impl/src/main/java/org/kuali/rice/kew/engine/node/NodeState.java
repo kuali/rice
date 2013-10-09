@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -24,14 +26,25 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_ST_T")
-@AttributeOverride(name="stateId", column=@Column(name="RTE_NODE_INSTN_ST_ID"))
-@NamedQueries({
+@AttributeOverrides({
+@AttributeOverride(name="stateId", column=@Column(name="RTE_NODE_INSTN_ST_ID")) ,
+@AttributeOverride(name="versionNumber", column=@Column(name="VER_NBR", updatable=false, insertable=false)),
+//HACK since this super attribute does not exist on the table
+@AttributeOverride(name="objectId", column=@Column(name="KEY_CD", updatable=false, insertable=false) )
+})
+        @NamedQueries({
 	@NamedQuery(name="NodeState.FindNodeState", query="select n from NodeState as n where n.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and n.key = :key"),
 	@NamedQuery(name="NodeState.FindNodeStateById", query="select n from NodeState as n where n.stateId = :nodeStateId")
 })
 public class NodeState extends State {
 
     private static final long serialVersionUID = -4382379569851955918L;
+//
+//    @Id
+//    @PortableSequenceGenerator(name="KREW_RTE_NODE_S")
+//    @GeneratedValue(generator="KREW_RTE_NODE_S")
+//    @Column(name="RTE_NODE_INSTN_ST_ID")
+//    protected String stateId;
 
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
@@ -39,6 +52,7 @@ public class NodeState extends State {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
+
     
     public NodeState() {}
     
@@ -69,4 +83,15 @@ public class NodeState extends State {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
+//
+//    @Override
+//    public String getStateId() {
+//        return stateId;
+//    }
+//
+//    @Override
+//    public void setStateId(String stateId) {
+//        this.stateId = stateId;
+//    }
+
 }

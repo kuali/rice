@@ -32,26 +32,6 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kew/impl/config/OJB-repository-kew.xml" />
 	</bean>
 
-  <bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
-  <bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-  
-  <bean id="enActionItemDAO" class="org.kuali.rice.kew.actionitem.dao.impl.ActionItemDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-  
-  <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
-  <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
   <bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
@@ -76,28 +56,8 @@
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
 
-  <bean id="enBranchDAO" class="org.kuali.rice.kew.engine.node.dao.impl.BranchDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
-  <bean id="enRouteNodeDAO" class="org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-  
-  <bean id="enDocumentRouteHeaderDAO" class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
   <bean id="enSearchableAttributeDAO" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOOjbImpl" lazy-init="true">
     <property name="jcdAlias" value="kewDataSource" />
   </bean>
 
-  <bean id="enUserOptionsDAO" class="org.kuali.rice.kew.useroptions.dao.impl.UserOptionsDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-
-  <bean id="enDocumentLinkDAO" class="org.kuali.rice.kew.documentlink.dao.impl.DocumentLinkDAOOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
-  
 </beans>

@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,28 +39,28 @@ import org.joda.time.DateTime;
 /**
  * A class which includes various utilities and constants for use within the criteria API.
  * This class is intended to be for internal use only within the criteria API.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 final class CriteriaSupportUtils {
-	
+
 	private CriteriaSupportUtils () {}
-	
+
     /**
      * Defines various property constants for internal use within the criteria package.
      */
     static class PropertyConstants {
-    	
+
     	/**
     	 * A constant representing the property name for {@link PropertyPathPredicate#getPropertyPath()}
     	 */
         final static String PROPERTY_PATH = "propertyPath";
-        
+
     	/**
     	 * A constant representing the property name for {@link SingleValuedPredicate#getValue()}
     	 */
         final static String VALUE = "value";
-        
+
         /**
          * A constant representing the method name for {@link SingleValuedPredicate#getValue()}
          */
@@ -78,11 +79,11 @@ final class CriteriaSupportUtils {
 
     /**
      * Validates the various properties of a {@link SingleValuedPredicate}.
-     * 
+     *
      * @param valuedPredicateClass the type of the predicate
      * @param propertyPath the propertyPath which is being configured on the predicate
      * @param value the value which is being configured on the predicate
-     * 
+     *
      * @throws IllegalArgumentException if the propertPath is null or blank
      * @throws IllegalArgumentException if the value is null
      * @throws IllegalArgumentException if the given {@link SingleValuedPredicate} class does not support the {@link CriteriaValue}
@@ -117,7 +118,7 @@ final class CriteriaSupportUtils {
 	    }
 	    return false;
 	}
-	
+
 	private static XmlElements findXmlElementsAnnotation(Class<?> simplePredicateClass) {
 		if (simplePredicateClass != null) {
 			try{
@@ -142,7 +143,7 @@ final class CriteriaSupportUtils {
 		}
 		return null;
 	}
-	
+
 	static CriteriaValue<?> determineCriteriaValue(Object object) {
 		if (object == null) {
 			throw new IllegalArgumentException("Given criteria value cannot be null.");
@@ -177,7 +178,7 @@ final class CriteriaSupportUtils {
 		}
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}
-	
+
 	static Set<CriteriaValue<?>> determineCriteriaValueList(Object[] values) {
 		if (values == null) {
 			return null;
@@ -193,6 +194,21 @@ final class CriteriaSupportUtils {
 		return criteriaValues;
 	}
 
+    static Set<CriteriaValue<?>> determineCriteriaValueList(Collection<?> values) {
+        if (values == null) {
+            return null;
+        } else if (values.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<CriteriaValue<?>> criteriaValues = new HashSet<CriteriaValue<?>>();
+        for (Object value : values) {
+            if (value != null) {
+                criteriaValues.add(determineCriteriaValue(value));
+            }
+        }
+        return criteriaValues;
+    }
+
     static Set<CriteriaStringValue> createCriteriaStringValueList(CharSequence[] values) {
 		if (values == null) {
 			return null;
@@ -207,11 +223,26 @@ final class CriteriaSupportUtils {
 		}
 		return criteriaValues;
 	}
-	
+
+    static Set<CriteriaStringValue> createCriteriaStringValueList(Collection<? extends CharSequence> values) {
+        if (values == null) {
+            return null;
+        } else if (values.isEmpty() ) {
+            return Collections.emptySet();
+        }
+        Set<CriteriaStringValue> criteriaValues = new HashSet<CriteriaStringValue>();
+        for (CharSequence value : values) {
+            if (value != null) {
+                criteriaValues.add(new CriteriaStringValue(value));
+            }
+        }
+        return criteriaValues;
+    }
+
 	/**
      * Validates the incoming list of CriteriaValue to ensure they are valid for a
      * {@link MultiValuedPredicate}.  To be valid, the following must be true:
-     * 
+     *
      * <ol>
      *   <li>The list of values must not be null.</li>
      *   <li>The list of values must not be empty.</li>

@@ -267,7 +267,7 @@ public class PostProcessorTest extends KEWTestCase {
 			TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
 			template.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus status) {
-					KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+					KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
 					DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 					KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
 					return null;

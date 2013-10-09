@@ -40,8 +40,8 @@ import java.util.List;
  * <p>The (optional) valid application statuses element within a document type definition may (again, optionally) contain
  * category elements which define these groupings of valid statuses.
  * </p>
- * @author Peter Giles
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_DOC_TYP_APP_STAT_CAT_T")
@@ -50,16 +50,6 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
 
 	@EmbeddedId
 	private ApplicationDocumentStatusCategoryId applicationDocumentStatusCategoryId;
-
-	@MapsId("documentTypeId")
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID")
-	private DocumentType documentType;
-
-	@Transient
-	private String documentTypeId;
-	@Transient
-	private String categoryName;
 
     /**
      * Gets the composite identifier, a {@link org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategoryId}
@@ -85,11 +75,7 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
      * @return the document type id
      */
 	public String getDocumentTypeId() {
-		if (this.getApplicationDocumentStatusCategoryId().getDocumentTypeId() != null) {
-            return this.getApplicationDocumentStatusCategoryId().getDocumentTypeId();
-        } else {
-            return this.documentTypeId;
-        }
+        return this.getApplicationDocumentStatusCategoryId().getDocumentTypeId();
 	}
 
     /**
@@ -97,7 +83,6 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
      * @param documentTypeId the document type id to set
      */
 	public void setDocumentTypeId(String documentTypeId) {
-		this.documentTypeId = documentTypeId;
 		this.getApplicationDocumentStatusCategoryId().setDocumentTypeId(documentTypeId);
 	}
 
@@ -106,11 +91,7 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
      * @return the category name
      */
 	public String getCategoryName() {
-        if (this.getApplicationDocumentStatusCategoryId().getCategoryName() != null) {
-            return this.getApplicationDocumentStatusCategoryId().getCategoryName();
-        } else {
-            return this.categoryName;
-        }
+        return this.getApplicationDocumentStatusCategoryId().getCategoryName();
 	}
 
     /**
@@ -118,24 +99,7 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
      * @param statusName the category name to set
      */
 	public void setCategoryName(String statusName) {
-		this.categoryName = statusName;
 		this.getApplicationDocumentStatusCategoryId().setCategoryName(statusName);
-	}
-
-    /**
-     * Get the document type that this category is associated with
-     * @return the document type for this category
-     */
-	public DocumentType getDocumentType() {
-		return this.documentType;
-	}
-
-    /**
-     * Set the document type that this category is associated with
-     * @param documentType the document type to set
-     */
-	public void setDocumentType(DocumentType documentType) {
-		this.documentType = documentType;
 	}
 
 }

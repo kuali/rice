@@ -16,12 +16,16 @@
 package org.kuali.rice.kew.routeheader;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.krad.bo.NoteType;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
@@ -53,6 +57,10 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 	
 	@Column(name="STAT_TRANS_DATE")
 	private java.sql.Timestamp statusTransitionDate;
+
+    @ManyToOne
+    @JoinColumn(name="DOC_HDR_ID", insertable = false, updatable = false)
+    private DocumentRouteHeaderValue documentRouteHeaderValue;
 	
     public DocumentStatusTransition() {
     }
@@ -127,5 +135,13 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
             builder.setStatusTransitionDate(new DateTime(bo.getStatusTransitionDate().getTime()));
         }
         return builder.build();
+    }
+
+    public DocumentRouteHeaderValue getDocumentRouteHeaderValue() {
+        return documentRouteHeaderValue;
+    }
+
+    public void setDocumentRouteHeaderValue(DocumentRouteHeaderValue documentRouteHeaderValue) {
+        this.documentRouteHeaderValue = documentRouteHeaderValue;
     }
 }

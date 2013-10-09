@@ -15,27 +15,25 @@
  */
 package org.kuali.rice.kew.actiontaken.service.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CountFlag;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
+import org.kuali.rice.kew.actiontaken.dao.ActionTakenDao;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.GroupService;
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Default implementation of the {@link ActionTakenService}.
@@ -43,23 +41,29 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenServiceImpl implements ActionTakenService {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenServiceImpl.class);
-    private ActionTakenDAO actionTakenDAO;
 
-    public ActionTakenValue load(String id) {
-        return getActionTakenDAO().load(id);
-    }
+    private static final String DOCUMENT_ID = "documentId";
+    private static final String PRINCIPAL_ID = "principalId";
+    private static final String CURRENT_INDICATOR = "currentIndicator";
+    private static final String ACTION_DATE = "actionDate";
 
+    private DataObjectService dataObjectService;
+    private ActionTakenDao actionTakenDao;
+
+    @Override
     public ActionTakenValue findByActionTakenId(String actionTakenId) {
-        return getActionTakenDAO().findByActionTakenId(actionTakenId);
+        return getDataObjectService().find(ActionTakenValue.class, actionTakenId);
     }
 
+    @Override
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest) {
     	return getPreviousAction(actionRequest, null);
     }
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
-    {
+    @Override
+    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken) {
         GroupService ims = KimApiServiceLocator.getGroupService();
         ActionTakenValue foundActionTaken = null;
         List<String> principalIds = new ArrayList<String>();
@@ -69,25 +73,20 @@ public class ActionTakenServiceImpl implements ActionTakenService {
             principalIds.add(actionRequest.getPrincipalId());
         }
 
-        for (String id : principalIds)
-        {
+        for (String id : principalIds) {
             List<ActionTakenValue> actionsTakenByUser =
-                getActionTakenDAO().findByDocumentIdWorkflowId(actionRequest.getDocumentId(), id );
+                findByDocumentIdPrincipalId(actionRequest.getDocumentId(), id);
             if (simulatedActionsTaken != null) {
-                for (ActionTakenValue simulatedAction : simulatedActionsTaken)
-                {
-                    if (id.equals(simulatedAction.getPrincipalId()))
-                    {
+                for (ActionTakenValue simulatedAction : simulatedActionsTaken) {
+                    if (id.equals(simulatedAction.getPrincipalId())) {
                         actionsTakenByUser.add(simulatedAction);
                     }
                 }
             }
 
-            for (ActionTakenValue actionTaken : actionsTakenByUser)
-            {
+            for (ActionTakenValue actionTaken : actionsTakenByUser) {
                 if (ActionRequestValue.compareActionCode(actionTaken.getActionTaken(),
-                        actionRequest.getActionRequested(), true) >= 0)
-                {
+                        actionRequest.getActionRequested(), true) >= 0) {
                   foundActionTaken = actionTaken;
                 }
             }
@@ -96,96 +95,96 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return foundActionTaken;
     }
 
-    public Collection findByDocIdAndAction(String docId, String action) {
-        return getActionTakenDAO().findByDocIdAndAction(docId, action);
-    }
-
+    @Override
     public Collection<ActionTakenValue> findByDocumentId(String documentId) {
-        return getActionTakenDAO().findByDocumentId(documentId);
+        LOG.debug("finding Action Takens by documentId " + documentId);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(equal(DOCUMENT_ID,
+                documentId), equal(CURRENT_INDICATOR, Boolean.TRUE));
+        criteria.setOrderByFields(OrderByField.Builder.create(ACTION_DATE, OrderDirection.ASCENDING).build());
+        return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getResults();
     }
 
-    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId) {
-        return getActionTakenDAO().findByDocumentIdWorkflowId(documentId, workflowId);
+    @Override
+    public List<ActionTakenValue> findByDocumentIdPrincipalId(String documentId, String principalId) {
+        LOG.debug("finding Action Takens by documentId " + documentId + " and principalId" + principalId);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(equal(DOCUMENT_ID,
+                documentId), equal(PRINCIPAL_ID, principalId), equal(CURRENT_INDICATOR, Boolean.TRUE));
+        return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getResults();
     }
 
-    public Collection getActionsTaken(String documentId) {
-        return getActionTakenDAO().findByDocumentId(documentId);
+    @Override
+    public List<ActionTakenValue> findByDocumentIdIgnoreCurrentInd(String documentId) {
+        LOG.debug("finding ActionsTaken ignoring currentInd by documentId:" + documentId);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(equal(DOCUMENT_ID,
+                documentId));
+        criteria.setOrderByFields(OrderByField.Builder.create(ACTION_DATE, OrderDirection.ASCENDING).build());
+        return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getResults();
     }
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId) {
-        return getActionTakenDAO().findByDocumentIdIgnoreCurrentInd(documentId);
+    @Override
+    public ActionTakenValue saveActionTaken(ActionTakenValue actionTaken) {
+        LOG.debug("saving ActionTaken");
+        checkNull(actionTaken.getDocumentId(), "Document ID");
+        checkNull(actionTaken.getActionTaken(), "action taken code");
+        checkNull(actionTaken.getDocVersion(), "doc version");
+        checkNull(actionTaken.getPrincipal(), "user principalId");
+
+        if (actionTaken.getActionDate() == null) {
+            actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
+        }
+        if (actionTaken.getCurrentIndicator() == null) {
+            actionTaken.setCurrentIndicator(Boolean.TRUE);
+        }
+        LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getDocumentId() +
+                ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());
+        return getDataObjectService().save(actionTaken);
     }
 
-    public void saveActionTaken(ActionTakenValue actionTaken) {
-        this.getActionTakenDAO().saveActionTaken(actionTaken);
-    }
-
+    @Override
     public void delete(ActionTakenValue actionTaken) {
-        getActionTakenDAO().deleteActionTaken(actionTaken);
+        LOG.debug("deleting ActionTaken " + actionTaken.getActionTakenId());
+        getDataObjectService().delete(actionTaken);
     }
 
-    public ActionTakenDAO getActionTakenDAO() {
-        return actionTakenDAO;
-    }
-
-    public void setActionTakenDAO(ActionTakenDAO actionTakenDAO) {
-        this.actionTakenDAO = actionTakenDAO;
-    }
-
-    public void deleteByDocumentId(String documentId){
-        actionTakenDAO.deleteByDocumentId(documentId);
-    }
-
-    public void validateActionTaken(ActionTakenValue actionTaken){
-        LOG.debug("Enter validateActionTaken(..)");
-        List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
-
-        String documentId = actionTaken.getDocumentId();
-        if(documentId == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken documentid null.", "actiontaken.documentid.empty", actionTaken.getActionTakenId().toString()));
-        } else if(getRouteHeaderService().getRouteHeader(documentId) == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken documentid invalid.", "actiontaken.documentid.invalid", actionTaken.getActionTakenId().toString()));
-        }
-
-        String principalId = actionTaken.getPrincipalId();
-        if(StringUtils.isBlank(principalId)){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken personid null.", "actiontaken.personid.empty", actionTaken.getActionTakenId().toString()));
-        } else {
-        	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
-        	if (principal == null) {
-                errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
-            }
-        }
-        String actionTakenCd = actionTaken.getActionTaken();
-        if(actionTakenCd == null || actionTakenCd.trim().equals("")){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken cd null.", "actiontaken.actiontaken.empty", actionTaken.getActionTakenId().toString()));
-        } else if(!KewApiConstants.ACTION_TAKEN_CD.containsKey(actionTakenCd)){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken invalid.", "actiontaken.actiontaken.invalid", actionTaken.getActionTakenId().toString()));
-        }
-        if(actionTaken.getActionDate() == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken actiondate null.", "actiontaken.actiondate.empty", actionTaken.getActionTakenId().toString()));
-        }
-
-        if(actionTaken.getDocVersion() == null){
-            errors.add(new WorkflowServiceErrorImpl("ActionTaken docversion null.", "actiontaken.docverion.empty", actionTaken.getActionTakenId().toString()));
-        }
-        LOG.debug("Exit validateActionRequest(..) ");
-        if (!errors.isEmpty()) {
-            throw new WorkflowServiceErrorException("ActionRequest Validation Error", errors);
-        }
-    }
-
+    @Override
     public boolean hasUserTakenAction(String principalId, String documentId) {
-    	return getActionTakenDAO().hasUserTakenAction(principalId, documentId);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(DOCUMENT_ID, documentId),
+                equal(PRINCIPAL_ID, principalId),
+                equal(CURRENT_INDICATOR, Boolean.TRUE)
+        );
+        criteria.setCountFlag(CountFlag.ONLY);
+        return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount() > 0;
     }
 
-    private RouteHeaderService getRouteHeaderService() {
-        return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
-    }
 
+    @Override
     public Timestamp getLastApprovedDate(String documentId)
     {
-        return getActionTakenDAO().getLastActionTakenDate(documentId, ActionType.APPROVE);
+        return getActionTakenDao().getLastActionTakenDate(documentId, ActionType.APPROVE);
     }
 
+    private void checkNull(Object value, String valueName) throws RuntimeException {
+        if (value == null) {
+            throw new IllegalArgumentException("Null value for " + valueName);
+        }
+    }
+
+
+    public ActionTakenDao getActionTakenDao() {
+        return actionTakenDao;
+    }
+
+    public void setActionTakenDao(ActionTakenDao actionTakenDao) {
+        this.actionTakenDao = actionTakenDao;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 }

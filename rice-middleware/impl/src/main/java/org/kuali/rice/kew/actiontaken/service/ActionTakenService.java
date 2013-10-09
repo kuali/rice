@@ -30,33 +30,24 @@ import java.util.List;
  */
 public interface ActionTakenService {
 
-    public ActionTakenValue load(String id);
+    ActionTakenValue findByActionTakenId(String actionTakenId);
 
-    public ActionTakenValue findByActionTakenId(String actionTakenId);
+    ActionTakenValue saveActionTaken(ActionTakenValue actionTaken);
 
-    public Collection getActionsTaken(String documentId);
+    ActionTakenValue getPreviousAction(ActionRequestValue actionRequest);
 
-    public void saveActionTaken(ActionTakenValue actionTaken);
+    ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken);
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest);
+    Collection<ActionTakenValue> findByDocumentId(String documentId);
 
-    public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken);
+    List<ActionTakenValue> findByDocumentIdPrincipalId(String documentId, String workflowId);
 
-    public Collection<ActionTakenValue> findByDocumentId(String documentId);
+    void delete(ActionTakenValue actionTaken);
 
-    public Collection findByDocIdAndAction(String docId, String action);
+    List<ActionTakenValue> findByDocumentIdIgnoreCurrentInd(String documentId);
 
-    public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String workflowId);
+    boolean hasUserTakenAction(String principalId, String documentId);
 
-    public void delete(ActionTakenValue actionTaken);
+    Timestamp getLastApprovedDate(String documentId);
 
-    public List findByDocumentIdIgnoreCurrentInd(String documentId);
-
-    public void deleteByDocumentId(String documentId);
-
-    public void validateActionTaken(ActionTakenValue actionTaken);
-
-    public boolean hasUserTakenAction(String principalId, String documentId);
-
-    public Timestamp getLastApprovedDate(String documentId);
 }

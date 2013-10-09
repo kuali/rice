@@ -23,9 +23,6 @@
 
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml"/>
 
-  <bean id="enNoteDAO" class="org.kuali.rice.kew.notes.dao.impl.NoteDAOOjbImpl">
-    <property name="jcdAlias" value="kewDataSource" />
-  </bean>
 
   <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOOjbImpl">
     <property name="jcdAlias" value="kewDataSource" />

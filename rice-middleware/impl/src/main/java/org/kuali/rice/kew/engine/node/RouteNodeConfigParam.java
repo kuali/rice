@@ -18,6 +18,7 @@ package org.kuali.rice.kew.engine.node;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -40,7 +41,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_CFG_PARM_T")
-@AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="KEY_CD")), @AttributeOverride(name="value", column=@Column(name="VAL"))})
+@AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="KEY_CD")), @AttributeOverride(name="value", column=@Column(name="VAL")),
+    @AttributeOverride(name="objectId",column=@Column(name="KEY_CD", insertable = false, updatable = false)),
+        @AttributeOverride(name="versionNumber", column=@Column(name="KEY_CD", updatable=false, insertable=false))})
 public class RouteNodeConfigParam extends PersistableBusinessObjectBase implements KeyValue, RouteNodeConfigurationParameterContract {
     private static final long serialVersionUID = 5592421070149273014L;
 
@@ -49,8 +52,8 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
      */ 
     @Id
 	@Column(name="RTE_NODE_CFG_PARM_ID")
+    @PortableSequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_S")
 	@GeneratedValue(generator="KREW_RTE_NODE_CFG_PARM_S")
-    //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")
 	private String id;
 	private String key;
     private String value;
@@ -60,6 +63,8 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
 	private RouteNode routeNode;
+
+    private String versionNumber;
 
     public RouteNodeConfigParam() {}
 

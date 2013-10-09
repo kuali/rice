@@ -37,11 +37,11 @@ public class LogDocumentActionTest extends KEWTestCase {
 
     @Test public void testLogAnnotation() throws Exception {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
-        Collection actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTaken(document.getDocumentId());
+        Collection actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(document.getDocumentId());
         assertEquals(0, actionsTaken.size());
         
         document.logAnnotation("going to route doc");
-        actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTaken(document.getDocumentId());
+        actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(document.getDocumentId());
         assertEquals(1, actionsTaken.size());
         ActionTakenValue actionTaken = (ActionTakenValue) actionsTaken.iterator().next();
         assertTrue(actionTaken.getCurrentIndicator());

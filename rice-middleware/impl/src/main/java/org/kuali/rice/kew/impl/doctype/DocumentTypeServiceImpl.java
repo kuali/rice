@@ -28,6 +28,8 @@ import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +46,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     private static final Logger LOG = Logger.getLogger(DocumentTypeServiceImpl.class);
 
     private DocumentTypeDAO documentTypeDao;
+
+    private DataObjectService dataObjectService;
 
     @Override
     public String getIdByName(String documentTypeName) {
@@ -66,7 +70,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (StringUtils.isBlank(documentTypeId)) {
             throw new RiceIllegalArgumentException("documentTypeId was null or blank");
         }
-        org.kuali.rice.kew.doctype.bo.DocumentType documentTypeBo = documentTypeDao.findById(documentTypeId);
+        org.kuali.rice.kew.doctype.bo.DocumentType documentTypeBo = getDataObjectService().
+                find(org.kuali.rice.kew.doctype.bo.DocumentType.class,documentTypeId);
         return org.kuali.rice.kew.doctype.bo.DocumentType.to(documentTypeBo);
     }
 
@@ -311,6 +316,16 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     public void setDocumentTypeDao(DocumentTypeDAO documentTypeDao) {
         this.documentTypeDao = documentTypeDao;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

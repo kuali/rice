@@ -19,7 +19,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionItem;

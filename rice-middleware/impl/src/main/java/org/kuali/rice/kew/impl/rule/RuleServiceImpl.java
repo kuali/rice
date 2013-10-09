@@ -15,18 +15,15 @@
  */
 package org.kuali.rice.kew.impl.rule;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.rule.Rule;
@@ -37,28 +34,21 @@ import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateQueryResults;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+
 
 /**
  *
@@ -66,16 +56,15 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
  *
  */
 public class RuleServiceImpl implements RuleService {
+
     private static final Logger LOG = Logger.getLogger(RuleServiceImpl.class);
-    //private RuleDAO ruleDAO;
-    private BusinessObjectService businessObjectService;
-    private CriteriaLookupService criteriaLookupService;
+
+    private DataObjectService dataObjectService;
 
     @Override
     public Rule getRule(String id) throws RiceIllegalArgumentException, RiceIllegalStateException{
         incomingParamCheck("id", id);
-        Map<String, String> criteria = Collections.singletonMap("id", id);
-        RuleBaseValues rbv = this.businessObjectService.findByPrimaryKey(RuleBaseValues.class, criteria);
+        RuleBaseValues rbv = getDataObjectService().find(RuleBaseValues.class, id);
         if (rbv == null) {
             throw new RiceIllegalStateException("Rule with specified id: " + id + " does not exist");
         }
@@ -85,27 +74,30 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public Rule getRuleByName(String name) {
         incomingParamCheck("name", name);
-        Map<String, Object> criteria = new HashMap<String, Object>(2);
-        criteria.put("name", name);
-        criteria.put("currentInd", Boolean.TRUE);
-        RuleBaseValues rbv = this.businessObjectService.findByPrimaryKey(RuleBaseValues.class, criteria);
-        if (rbv == null) {
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                equal("name", name),
+                equal("currentInd", Boolean.TRUE)
+        );
+        QueryResults<RuleBaseValues> results = getDataObjectService().findMatching(RuleBaseValues.class, builder.build());
+        if (results.getResults().isEmpty()) {
             throw new RiceIllegalStateException("Rule with specified name: " + name + " does not exist");
         }
-        return RuleBaseValues.to(rbv);
+        if (results.getResults().size() > 1) {
+            throw new RiceIllegalStateException("Found more than one current rule with specified name " + name);
+        }
+        return RuleBaseValues.to(results.getResults().get(0));
     }
 
     @Override
     public List<Rule> getRulesByTemplateId(
             @WebParam(name = "templateId") String templateId) throws RiceIllegalArgumentException {
         incomingParamCheck("templateId", templateId);
-        Map<String, Object> criteria = new HashMap<String, Object>();
-        criteria.put("ruleTemplateId", templateId);
-        criteria.put("currentInd", Boolean.TRUE);
-        Collection<RuleBaseValues> ruleValues = this.businessObjectService.findMatching(RuleBaseValues.class, criteria);
-
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("ruleTemplateId", templateId), equal("currentInd", Boolean.TRUE));
+        QueryResults<RuleBaseValues> results = getDataObjectService().findMatching(RuleBaseValues.class, builder.build());
         final List<Rule> rules = new ArrayList<Rule>();
-        for (RuleBaseValues bo : ruleValues) {
+        for (RuleBaseValues bo : results.getResults()) {
             rules.add(Rule.Builder.create(bo).build());
         }
         return rules;
@@ -139,9 +131,9 @@ public class RuleServiceImpl implements RuleService {
                            or(isNull("fromDateValue"), lessThanOrEqual("fromDateValue", currentTime)),
                            or(isNull("toDateValue"), greaterThan("toDateValue", currentTime))
                       ));
-        predicates.add(equal("active", new Integer(1))); //true
-        predicates.add(equal("delegateRule", new Integer(0)));  //false
-        predicates.add(equal("templateRuleInd", new Integer(0))); //false
+        predicates.add(equal("active", Boolean.TRUE));
+        predicates.add(equal("delegateRule", Boolean.FALSE));
+        predicates.add(equal("templateRuleInd", Boolean.FALSE));
         if (effectiveDate != null) {
             predicates.add(
                     and(
@@ -149,7 +141,7 @@ public class RuleServiceImpl implements RuleService {
                         or(isNull("deactivationDate"), greaterThan("deactivationDate", effectiveDate))
                     ));
         } else {
-            predicates.add(equal("currentInd", new Integer(1))); //true
+            predicates.add(equal("currentInd", Boolean.TRUE));
         }
         Predicate p = and(predicates.toArray(new Predicate[]{}));
         query.setPredicates(p);
@@ -165,7 +157,8 @@ public class RuleServiceImpl implements RuleService {
         LookupCustomizer.Builder<RuleBaseValues> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<RuleBaseValues> results = criteriaLookupService.lookup(RuleBaseValues.class, queryByCriteria, lc.build());
+        QueryResults<RuleBaseValues> results = dataObjectService.findMatching(RuleBaseValues.class, queryByCriteria,
+                lc.build());
 
         RuleQueryResults.Builder builder = RuleQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -203,8 +196,7 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public RuleTemplate getRuleTemplate(@WebParam(name = "id") String id) {
         incomingParamCheck("id", id);
-        Map<String, String> criteria = Collections.singletonMap("id", id);
-        RuleTemplateBo template = this.businessObjectService.findByPrimaryKey(RuleTemplateBo.class, criteria);
+        RuleTemplateBo template = dataObjectService.find(RuleTemplateBo.class, id);
         if (template == null) {
             throw new RiceIllegalStateException("RuleTemplate with specified id: " + id + " does not exist");
         }
@@ -214,13 +206,16 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public RuleTemplate getRuleTemplateByName(@WebParam(name = "name") String name) {
         incomingParamCheck("name", name);
-        Map<String, Object> criteria = new HashMap<String, Object>(2);
-        criteria.put("name", name);
-        RuleTemplateBo template = this.businessObjectService.findByPrimaryKey(RuleTemplateBo.class, criteria);
-        if (template == null) {
-            throw new RiceIllegalStateException("RuleTemplate with specified name: " + name + " does not exist");
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("name", name));
+        QueryResults<RuleTemplateBo> results = dataObjectService.findMatching(RuleTemplateBo.class, builder.build());
+        if (results.getResults().isEmpty()) {
+            throw new RiceIllegalStateException("Rule Template with specified name: " + name + " does not exist");
         }
-        return RuleTemplateBo.to(template);
+        if (results.getResults().size() > 1) {
+            throw new RiceIllegalStateException("Found more than one rule template with specified name " + name);
+        }
+        return RuleTemplateBo.to(results.getResults().get(0));
     }
 
     @Override
@@ -233,7 +228,8 @@ public class RuleServiceImpl implements RuleService {
         LookupCustomizer.Builder<RuleTemplateBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<RuleTemplateBo> results = criteriaLookupService.lookup(RuleTemplateBo.class, queryByCriteria, lc.build());
+        QueryResults<RuleTemplateBo> results = dataObjectService.findMatching(RuleTemplateBo.class, queryByCriteria,
+                lc.build());
 
         RuleTemplateQueryResults.Builder builder = RuleTemplateQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -251,32 +247,33 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public RuleResponsibility getRuleResponsibility(String responsibilityId) {
         incomingParamCheck("responsibilityId", responsibilityId);
-        Map<String, String> criteria = Collections.singletonMap("responsibilityId", responsibilityId);
-        RuleResponsibilityBo responsibility = this.businessObjectService.findByPrimaryKey(RuleResponsibilityBo.class, criteria);
-        if (responsibility == null) {
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("responsibilityId", responsibilityId));
+        QueryResults<RuleResponsibilityBo> results = dataObjectService.findMatching(RuleResponsibilityBo.class, builder.build());
+        if (results.getResults().isEmpty()) {
             throw new RiceIllegalStateException("RuleResponsibility with specified id: " + responsibilityId + " does not exist");
         }
-        return RuleResponsibilityBo.to(responsibility);
+        if (results.getResults().size() > 1) {
+            throw new RiceIllegalStateException("Found more than one rule responsibility with responsibility id: " + responsibilityId);
+        }
+        return RuleResponsibilityBo.to(results.getResults().get(0));
     }
 
     @Override
     public List<RuleDelegation> getRuleDelegationsByResponsibiltityId(
             @WebParam(name = "id") String id) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck("id", id);
-        Map<String, Object> criteria = new HashMap<String, Object>(2);
-    	criteria.put("responsibilityId", id);
-    	criteria.put("delegationRule.currentInd", Boolean.TRUE);
-    	Collection<RuleDelegationBo> delegations = this.businessObjectService.findMatching(RuleDelegationBo.class,
-                criteria);
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(
+                equal("responsibilityId", id),
+                equal("delegationRule.currentInd", Boolean.TRUE)
+        );
+        QueryResults<RuleDelegationBo> results = dataObjectService.findMatching(RuleDelegationBo.class, builder.build());
         List<RuleDelegation> ruleDelegations = new ArrayList<RuleDelegation>();
-        if (CollectionUtils.isNotEmpty(delegations)) {
-            for (RuleDelegationBo bo : delegations) {
-                ruleDelegations.add(RuleDelegationBo.to(bo));
-            }
+        for (RuleDelegationBo bo : results.getResults()) {
+            ruleDelegations.add(RuleDelegationBo.to(bo));
         }
-
     	return ruleDelegations;
-
     }
 
     private void incomingParamCheck(Object object, String name) {
@@ -288,19 +285,12 @@ public class RuleServiceImpl implements RuleService {
         }
     }
 
-    public BusinessObjectService getBusinessObjectService() {
-        return this.businessObjectService;
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
-    public CriteriaLookupService getCriteriaLookupService() {
-        return this.criteriaLookupService;
-    }
-
-    public void setCriteriaLookupService(CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
 }

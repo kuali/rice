@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Attribute.PersistentAttributeType;
 import javax.persistence.metamodel.EmbeddableType;
 import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.IdentifiableType;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -107,14 +108,23 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		masterMetadataMap.clear();
 		// QUESTION: When is JPA loaded so this service can initialize itself?
 		// Build and store the map
-		for ( EntityType<?> type : entityManager.getMetamodel().getEntities() ) {
-			try {
-				masterMetadataMap.put(type.getBindableJavaType(), getMetadataForClass(type.getBindableJavaType()));
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Added Metadata For: " + type.getBindableJavaType());
-				}
-			} catch (Exception ex) {
-				LOG.error("Error obtaining JPA metadata for type: " + type.getJavaType(), ex);
+
+        //Only extract the metadata if EntityType and not a MappedSuperClass
+		for ( IdentifiableType<?> identifiableType : entityManager.getMetamodel().getEntities() ) {
+            if(identifiableType instanceof EntityType<?>){
+                EntityType<?> type = (EntityType<?>)identifiableType;
+                try {
+                    masterMetadataMap.put(type.getBindableJavaType(), getMetadataForClass(type.getBindableJavaType()));
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Added Metadata For: " + type.getBindableJavaType());
+                    }
+                    masterMetadataMap.put(type.getBindableJavaType(), getMetadataForClass(type.getBindableJavaType()));
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Added Metadata For: " + type.getBindableJavaType());
+                    }
+                } catch (Exception ex) {
+                    LOG.error("Error obtaining JPA metadata for type: " + type.getJavaType(), ex);
+                }
 			}
 		}
 	}

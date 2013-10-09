@@ -18,12 +18,12 @@ package org.kuali.rice.kew.actiontaken;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -33,12 +33,16 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -50,64 +54,69 @@ import java.util.Collection;
 
 
 /**
- * Model object mapped to ojb for representing actions taken on documents by
- * users.
+ * Model object mapped to ojb for representing actions taken on documents by users. The type of the action is indicated
+ * by the {@link #actionTaken} code which will be a valid code value from {@link ActionType}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-//@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
-@Table(name="KREW_ACTN_TKN_T")
+@Table(name = "KREW_ACTN_TKN_T")
+@NamedQueries({
+        @NamedQuery(name = ActionTakenDaoJpa.GET_LAST_ACTION_TAKEN_DATE_NAME,
+                query = ActionTakenDaoJpa.GET_LAST_ACTION_TAKEN_DATE_QUERY)
+})
 public class ActionTakenValue implements Serializable {
 
-    /**
-	 *
-	 */
 	private static final long serialVersionUID = -81505450567067594L;
+
 	@Id
-	@GeneratedValue(generator="KREW_ACTN_TKN_S")
-	@Column(name="ACTN_TKN_ID")
+	@GeneratedValue(generator = "KREW_ACTN_TKN_S")
+    @PortableSequenceGenerator(name = "KREW_ACTN_TKN_S")
+	@Column(name="ACTN_TKN_ID", nullable = false)
     private String actionTakenId;
-    @Column(name="DOC_HDR_ID")//,insertable=false, updatable=false)
+
+    @Column(name="DOC_HDR_ID", nullable = false)
 	private String documentId;
-    @Column(name="ACTN_CD")
+
+    @Column(name="ACTN_CD", nullable = false)
 	private String actionTaken;
-	@Column(name="ACTN_DT")
+
+	@Column(name="ACTN_DT", nullable = false)
 	private Timestamp actionDate;
+
     @Column(name="ANNOTN")
     private String annotation = "";
-    @Column(name="DOC_VER_NBR")
+
+    @Column(name="DOC_VER_NBR", nullable = false)
 	private Integer docVersion;
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
-    @Column(name="PRNCPL_ID")
+
+    @Column(name="PRNCPL_ID", nullable = false)
 	private String principalId;
+
     @Column(name="DLGTR_PRNCPL_ID")
 	private String delegatorPrincipalId;
+
     @Column(name="DLGTR_GRP_ID")
 	private String delegatorGroupId;
-    //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-    //@JoinColumn(name="DOC_HDR_ID")
-    //private DocumentRouteHeaderValue routeHeader;
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="actionTaken")
-	private Collection<ActionRequestValue> actionRequests;
+
     @Column(name="CUR_IND")
+    @Convert(converter = Boolean01Converter.class)
     private Boolean currentIndicator = Boolean.TRUE;
-    @Transient
-    private String actionDateString;
+
+    @Version
+    @Column(name="VER_NBR")
+    private Integer lockVerNbr;
+
+    @OneToMany(mappedBy = "actionTaken")
+	private Collection<ActionRequestValue> actionRequests;
+
+    @Transient private String actionDateString;
 
     public Principal getPrincipal() {
     	return getPrincipalForId( principalId );
     }
-    
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
-	}
 
     public String getPrincipalDisplayName() {
-    	// TODO this stinks to have to have a dependency on UserSession here
     	return KEWServiceLocator.getIdentityHelperService().getPerson(getPrincipalId()).getName();
     }
 
@@ -138,7 +147,6 @@ public class ActionTakenValue implements Serializable {
 
     public String getDelegatorDisplayName() {
         if (getDelegatorPrincipalId() != null) {
-        	// TODO this stinks to have to have a dependency on UserSession here
         	return KEWServiceLocator.getIdentityHelperService().getPerson(this.getDelegatorPrincipalId()).getName();
         } else if (getDelegatorGroupId() != null) {
             return getDelegatorGroup().getName();
@@ -182,33 +190,21 @@ public class ActionTakenValue implements Serializable {
         this.actionRequests = actionRequests;
     }
 
-    //public DocumentRouteHeaderValue getRouteHeader() {
-    //    return routeHeader;
-    //}
-
-    //public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-    //    this.routeHeader = routeHeader;
-    //}
-
     public Timestamp getActionDate() {
         return actionDate;
     }
-
 
     public void setActionDate(Timestamp actionDate) {
         this.actionDate = actionDate;
     }
 
-
     public String getActionTaken() {
         return actionTaken;
     }
 
-
     public void setActionTaken(String actionTaken) {
         this.actionTaken = actionTaken;
     }
-
 
     public String getActionTakenId() {
         return actionTakenId;
@@ -296,11 +292,11 @@ public class ActionTakenValue implements Serializable {
     }
 
     private ActionRequestService getActionRequestService() {
-        return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
+        return KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
 
     public String getActionDateString() {
-        if(actionDateString == null || actionDateString.trim().equals("")){
+        if(StringUtils.isBlank(actionDateString)) {
             return RiceConstants.getDefaultDateFormat().format(getActionDate());
         } else {
             return actionDateString;

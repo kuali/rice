@@ -38,9 +38,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -78,29 +75,24 @@ public class PreferencesServiceTest extends KEWTestCase {
        // now delete one of the options
        final UserOptions refreshRateOption = userOptionsService.findByOptionId("REFRESH_RATE", principal.getPrincipalId());
        assertNotNull("REFRESH_RATE option should exist.", refreshRateOption);
-       TransactionTemplate template = new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager());
-       template.execute(new TransactionCallback() {
-           public Object doInTransaction(TransactionStatus status) {
-               userOptionsService.deleteUserOptions(refreshRateOption);
-               return null;
-           }
-       });
+       userOptionsService.deleteUserOptions(refreshRateOption);
+
        assertNull("REFRESH_RATE option should no longer exist.", userOptionsService.findByOptionId("REFRESH_RATE", principal.getPrincipalId()));
 
        preferences = preferencesService.getPreferences(principal.getPrincipalId());
        assertTrue("Preferences should now require a save again.", preferences.isRequiresSave());
 
        // save refresh rate again
-       template.execute(new TransactionCallback() {
-           public Object doInTransaction(TransactionStatus status) {
-               userOptionsService.save(refreshRateOption);
-               return null;
-           }
-       });
+       refreshRateOption.setLockVerNbr(null);
+       userOptionsService.save(refreshRateOption);
+
        preferences = preferencesService.getPreferences(principal.getPrincipalId());
        assertFalse("Preferences should no longer require a save.", preferences.isRequiresSave());
     }
 
+    /**
+     * Tests preference marshalling with invalid json.
+     */
     @Test
     public void testPreferencesMarshallingWithInvalidJson() {
         final UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
@@ -168,7 +160,7 @@ public class PreferencesServiceTest extends KEWTestCase {
 
 	/**
      * Tests default saving concurrently which can cause a race condition on startup
-     * that leads to constraint violations
+     * that leads to constraint violations.
      */
     @Test public void testPreferencesConcurrentDefaultSave() throws Throwable {
        //verify that user doesn't have any preferences in the db.

@@ -204,7 +204,7 @@ public class RecallAction extends ReturnToPreviousNodeAction {
                 validActionTypes.add(at);
             }
 
-            Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTaken(getRouteHeader().getDocumentId());
+            Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(getRouteHeader().getDocumentId());
 
             for (ActionTakenValue actionTaken: actionsTaken) {
                 ActionType at = ActionType.fromCode(actionTaken.getActionTaken());
@@ -315,7 +315,9 @@ public class RecallAction extends ReturnToPreviousNodeAction {
             getRouteHeader().markDocumentSaved();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(routeHeader);
+            setRouteHeader(routeHeaderValue);
         }
         // we don't have an established mechanism for exposing the action taken that is saved as the result of a (nested) action
         // so use the last action take saved
@@ -332,7 +334,7 @@ public class RecallAction extends ReturnToPreviousNodeAction {
      */
     protected static ActionTakenValue getLastActionTaken(String docId) {
         ActionTakenValue last = null;
-        Collection<ActionTakenValue> actionsTaken = (Collection<ActionTakenValue>) KEWServiceLocator.getActionTakenService().getActionsTaken(docId);
+        Collection<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().findByDocumentId(docId);
         for (ActionTakenValue at: actionsTaken) {
             if (last == null || at.getActionDate().after(last.getActionDate())) {
                 last = at;

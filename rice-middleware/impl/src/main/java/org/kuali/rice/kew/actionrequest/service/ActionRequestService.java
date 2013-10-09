@@ -28,108 +28,88 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Service to handle the building, sorting, saving, activating and deactivating of action request graphs.  These lists are
- * what determine role and delegation behaviors in graphs of action requests.
+ * INTERNAL: Service to handle the building, sorting, saving, activating and deactivating of action request graphs.
  *
- * Fetching that is being done is also taking into account the 'weight' of action request codes.
+ * <p>These lists are what determine role and delegation behaviors in graphs of action requests. Fetching that is being
+ * done is also taking into account the 'weight' of action request codes.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionRequestService {
-	public ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance);
 
-    public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest);
+	ActionRequestValue initializeActionRequestGraph(ActionRequestValue actionRequest, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance);
 
-    public void deactivateRequests(ActionTakenValue actionTaken, List actionRequests);
+    List<ActionRequestValue> findAllValidRequests(String principalId, String documentId, String requestCode);
 
-    public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest, boolean simulate);
+    List<ActionRequestValue> findAllValidRequests(String principalId, List<ActionRequestValue> actionRequests, String requestCode);
 
-    public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest, ActivationContext activationContext);
+    List<ActionRequestValue> findPendingByDoc(String documentId);
 
-    public void deactivateRequests(ActionTakenValue actionTaken, List actionRequests, boolean simulate);
+    ActionRequestValue saveActionRequest(ActionRequestValue actionRequest);
 
-    public void deactivateRequests(ActionTakenValue actionTaken, List actionRequests, ActivationContext activationContext);
+    ActionRequestValue activateRequest(ActionRequestValue actionRequest);
 
-    public void deleteActionRequestGraph(ActionRequestValue actionRequest);
+    ActionRequestValue activateRequest(ActionRequestValue actionRequest, boolean simulate);
 
-    public List findAllValidRequests(String principalId, String documentId, String requestCode);
+    ActionRequestValue activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext);
 
-    public List findAllValidRequests(String principalId, Collection actionRequests, String requestCode);
+    List<ActionRequestValue> activateRequests(List<ActionRequestValue> actionRequests);
 
-    public List<ActionRequestValue> findPendingByDoc(String documentId);
+    List<ActionRequestValue> activateRequests(List<ActionRequestValue> actionRequests, boolean simulate);
 
-    public void saveActionRequest(ActionRequestValue actionRequest);
+    List<ActionRequestValue> activateRequests(List<ActionRequestValue> actionRequests, ActivationContext activationContext);
 
-    public void activateRequest(ActionRequestValue actionRequest);
+    ActionRequestValue activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext);
 
-    public void activateRequest(ActionRequestValue actionRequest, boolean simulate);
+    ActionRequestValue deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest);
 
-    public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext);
+    List<ActionRequestValue> deactivateRequests(ActionTakenValue actionTaken, List<ActionRequestValue> actionRequests);
 
-    public void activateRequests(Collection actionRequests);
+    ActionRequestValue deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest, ActivationContext activationContext);
 
-    public void activateRequests(Collection actionRequests, boolean simulate);
+    List<ActionRequestValue> deactivateRequests(ActionTakenValue actionTaken, List<ActionRequestValue> actionRequests, boolean simulate);
 
-	public void activateRequests(Collection actionRequests, ActivationContext activationContext);
+    List<ActionRequestValue> deactivateRequests(ActionTakenValue actionTaken, List<ActionRequestValue> actionRequests, ActivationContext activationContext);
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate);
+    void deleteActionRequestGraph(ActionRequestValue actionRequest);
 
-    public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext);
+    ActionRequestValue findByActionRequestId(String actionRequestId);
 
-    public ActionRequestValue findByActionRequestId(String actionRequestId);
+    List<ActionRequestValue> findPendingRootRequestsByDocId(String documentId);
 
-    public List<ActionRequestValue> findPendingRootRequestsByDocId(String documentId);
+    List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
 
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
-
-    public List<ActionRequestValue> findAllActionRequestsByDocumentId(String documentId);
+    List<ActionRequestValue> findAllActionRequestsByDocumentId(String documentId);
     
-    public List<ActionRequestValue> findAllRootActionRequestsByDocumentId(String documentId);
+    List<ActionRequestValue> findAllRootActionRequestsByDocumentId(String documentId);
 
-    public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
+    List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCdCd, String documentId);
 
     /**
-     *
      * This method gets a list of ids of all principals who have a pending action request for a document.
-     *
-     * @param actionRequestedCd
-     * @param documentId
-     * @return
      */
-    public List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId);
+    List<String> getPrincipalIdsWithPendingActionRequestByActionRequestedAndDocId(String actionRequestedCd, String documentId);
 
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
+    List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
 
-    public void alterActionRequested(List actionRequests, String actionRequestCd);
+    List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId);
 
-    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId);
+    List<ActionRequestValue> findActivatedByGroup(String groupId);
 
-    public List findActivatedByGroup(String groupId);
+    void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
 
-    public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
+    ActionRequestValue getRoot(ActionRequestValue actionRequest);
 
-    public ActionRequestValue getRoot(ActionRequestValue actionRequest);
+    List<ActionRequestValue> getRootRequests(Collection<ActionRequestValue> actionRequests);
 
-    public List<ActionRequestValue> getRootRequests(Collection<ActionRequestValue> actionRequests);
-
-    public boolean isDuplicateRequest(ActionRequestValue actionRequest);
-
-    public List<ActionRequestValue> findPendingByDocRequestCdRouteLevel(String documentId, String requestCode, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
+    List<ActionRequestValue> findPendingByDocRequestCdNodeName(String documentId, String requestCode, String nodeName);
     
     /**
      * Returns all pending requests for a given routing entity
      * @param documentId the id of the document header being routed
      * @return a List of all pending ActionRequestValues for the document
      */
-    public abstract List<ActionRequestValue> findAllPendingRequests(String documentId);
+    List<ActionRequestValue> findAllPendingRequests(String documentId);
     
 	/**
 	 * Filters action requests based on if they occur after the given requestCode, and if they relate to 
@@ -140,46 +120,33 @@ public interface ActionRequestService {
 	 * @param requestCode the request code for all ActionRequestValues to be after
 	 * @return the filtered List of ActionRequestValues
 	 */
-	public abstract List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String principalId, List<String> principalGroupIds, String requestCode);
+	List<ActionRequestValue> filterActionRequestsByCode(List<ActionRequestValue> actionRequests, String principalId, List<String> principalGroupIds, String requestCode);
 
     /**
      * Returns the highest priority delegator in the list of action requests.
      */
-    public Recipient findDelegator(List actionRequests);
+    Recipient findDelegator(List<ActionRequestValue> actionRequests);
 
-    /**
-     * Returns the closest delegator for the given ActionRequest
-     */
-    public Recipient findDelegator(ActionRequestValue actionRequest);
+    ActionRequestValue findDelegatorRequest(ActionRequestValue actionRequest);
 
-    public ActionRequestValue findDelegatorRequest(ActionRequestValue actionRequest);
+    List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
-    public void deleteByDocumentId(String documentId);
+    List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
 
-    public void deleteByActionRequestId(String actionRequestId);
-
-    public void validateActionRequest(ActionRequestValue actionRequest);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
-
-    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
-
-    public List getDelegateRequests(ActionRequestValue actionRequest);
+    List<ActionRequestValue> getDelegateRequests(ActionRequestValue actionRequest);
 
     /**
      * If this is a role request, then this method returns a List of the action request for each recipient within the
      * role.  Otherwise, it will return a List with just the original action request.
      */
-    public List getTopLevelRequests(ActionRequestValue actionRequest);
-
-    public boolean isValidActionRequestCode(String actionRequestCode);
+    List<ActionRequestValue> getTopLevelRequests(ActionRequestValue actionRequest);
 
     /**
      * Checks if the given user has any Action Requests on the given document.
      */
-    public boolean doesPrincipalHaveRequest(String principalId, String documentId);
+    boolean doesPrincipalHaveRequest(String principalId, String documentId);
 
-    public Map<String, String> getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
+    Map<String, String> getActionsRequested(DocumentRouteHeaderValue routeHeader, String principalId, boolean completeAndApproveTheSame);
 
-    public ActionRequestValue getActionRequestForRole(String actionTakenId);
+    ActionRequestValue getActionRequestForRole(String actionTakenId);
 }

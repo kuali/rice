@@ -15,34 +15,27 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.sql.Timestamp;
-
 import org.junit.Test;
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.exception.LockingException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
+import java.sql.Timestamp;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RouteHeaderServiceTest extends KEWTestCase {
 
-    private Object lock = new Object();
     private RouteHeaderService routeHeaderService;
 
     protected void setUpAfterDataLoad() throws Exception {
@@ -74,7 +67,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
         assertNotNull(documentType);
         document.setDocumentTypeId(documentType.getDocumentTypeId());
-        routeHeaderService.saveRouteHeader(document);
+        document = routeHeaderService.saveRouteHeader(document);
         assertNotNull("Document was saved, it should have an ID now.", document.getDocumentId());
         
         // now reload from database and verify it's the right size
@@ -98,87 +91,85 @@ public class RouteHeaderServiceTest extends KEWTestCase {
     }
 
     @Test public void testLockRouteHeader() throws Exception {
+
+        long timeout = 60 * 1000;
+
     	WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestDocumentType");
     	document.saveDocumentData();
-    	final String documentId = document.getDocumentId();
-        Locker locker = null;
-        synchronized (lock) {
-            locker = new Locker(documentId);
-            locker.start();
-            lock.wait();
-        }
-        // document should be locked by the other thread at this point
-        try {
-            routeHeaderService.lockRouteHeader(documentId, false);
-            fail("The route header should be locked.");
-        } catch (LockingException e) {
-            // should have been thrown!
-        }
-        synchronized (lock) {
-            lock.notify();
-        }
-        locker.join();
-        // document should be unlocked now
-        routeHeaderService.lockRouteHeader(documentId, false);
-        assertTrue("Locker thread should have completed.", locker.isCompleted());
+    	String documentId = document.getDocumentId();
 
-        // now configure a lock timeout for 2 seconds
-        ConfigContext.getCurrentContextConfig().putProperty(Config.DOCUMENT_LOCK_TIMEOUT, "2");
-        synchronized (lock) {
-            locker = new Locker(documentId);
-            locker.start();
-            lock.wait();
-        }
-        // document should be locked by the other thread at this point
-        long millisStart = System.currentTimeMillis();
-        try {
-        	routeHeaderService.lockRouteHeader(documentId, true);
-        	fail("The route header should be locked.");
-        }  catch (LockingException e) {
-        	// should have been thrown!
-        }
+        final Locker locker1 = new Locker(documentId);
+        locker1.start();
+        locker1.latch1.await(timeout, TimeUnit.MILLISECONDS);
 
-        long millisEnd = System.currentTimeMillis();
-        long timeLocked = (millisEnd - millisStart);
+        // the locker show now be waiting on the second latch
+        assertTrue(locker1.waiting);
+        assertFalse(locker1.completed);
 
-        synchronized(lock) {
-        	lock.notify();
-        }
-        locker.join();
+        // now start a second locker thread to attempt to lock the document as well, it should end up getting blocked
+        // from locking
+        final Locker locker2 = new Locker(documentId);
+        locker2.start();
 
-        // assert that the time locked was close to 2000 milliseconds += 250 of a millisecond
-//        assertTrue("Time locked should have been around 2000 milliseconds but was " + timeLocked, timeLocked > (2000-250) && timeLocked < (2000+250));
-        
-        // document should be unlocked again
-        routeHeaderService.lockRouteHeader(document.getDocumentId(), false);
-        assertTrue("Locker thread should have completed.", locker.isCompleted());
+        // the thread has been started, let's give it a little bit of time to attempt to lock the doc, it should get
+        // blocked in the select ... for update
+        Thread.sleep(2000);
+
+        // this locker should essentially be blocked on the call to lock the route header
+        assertTrue(locker2.prelock);
+        assertFalse(locker2.waiting);
+
+        // now, release the first lock
+        locker1.latch2.countDown();
+        locker1.join(timeout);
+
+        // at this point locker1 should have completed
+        assertTrue(locker1.completed);
+
+        // give locker2 a little bit of time to finish it's lock on the route header and proceed to it's wait
+        Thread.sleep(2000);
+        locker2.latch2.countDown();
+        locker2.join(timeout);
+
+        // locker 2 should be completed as well
+        assertTrue(locker2.completed);
+
     }
 
     private class Locker extends Thread {
-        private String documentId;
-        private boolean isCompleted = false;
-        public Locker(String documentId) {
+
+        private static final long TIMEOUT = 60 * 1000;
+
+        String documentId;
+        CountDownLatch latch1;
+        CountDownLatch latch2;
+
+        volatile boolean prelock;
+        volatile boolean waiting;
+        volatile boolean completed;
+
+        Locker(String documentId) {
             this.documentId = documentId;
+            this.latch1 = new CountDownLatch(1);
+            this.latch2 = new CountDownLatch(1);
         }
+
         public void run() {
             getTransactionTemplate().execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
-                	synchronized (lock) {
-                        routeHeaderService.lockRouteHeader(documentId, true);
-                        try {
-                            lock.notify();
-                            lock.wait();
-                        } catch (InterruptedException e) {
-                            fail("Shouldn't have been interrupted");
-                        }
+                    prelock = true;
+                    routeHeaderService.lockRouteHeader(documentId);
+                    try {
+                        waiting = true;
+                        latch1.countDown();
+                        latch2.await(TIMEOUT, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException e) {
+                         throw new RuntimeException("Shouldn't have been interrupted but was.", e);
                     }
                     return null;
                 }
             });
-            isCompleted = true;
-        }
-        public boolean isCompleted() {
-            return isCompleted;
+            completed = true;
         }
     }
 

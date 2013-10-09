@@ -22,7 +22,7 @@ public class WorkflowDocumentServiceImplTest extends KEWTestCase {
 
     @Test
     public void testGetDocumentTypeName() {
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("admin"), "TestDocumentType");
         assertNotNull(document.getDocumentId());
         assertEquals("TestDocumentType", document.getDocumentTypeName());
         assertEquals("TestDocumentType", workflowDocumentService.getDocumentTypeName(document.getDocumentId()));

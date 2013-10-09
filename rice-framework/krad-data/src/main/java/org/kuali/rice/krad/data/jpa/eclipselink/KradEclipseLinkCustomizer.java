@@ -82,12 +82,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             if (sequenceGenerator != null) {
                 sequenceGenerators.add(sequenceGenerator);
             }
-            for (Field field : entityClass.getDeclaredFields()) {
-                PortableSequenceGenerator fieldSequenceGenerator = field.getAnnotation(PortableSequenceGenerator.class);
-                if (fieldSequenceGenerator != null) {
-                    sequenceGenerators.add(fieldSequenceGenerator);
-                }
-            }
+            loadFieldSequences(entityClass, sequenceGenerators);
             for (Method method : entityClass.getMethods()) {
                 PortableSequenceGenerator methodSequenceGenerator = method.getAnnotation(
                         PortableSequenceGenerator.class);
@@ -102,6 +97,19 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             sequences.add(sequence);
         }
         return sequences;
+    }
+
+    protected void loadFieldSequences(Class<?> entityClass, List<PortableSequenceGenerator> sequenceGenerators) {
+        for (Field field : entityClass.getDeclaredFields()) {
+            PortableSequenceGenerator fieldSequenceGenerator = field.getAnnotation(PortableSequenceGenerator.class);
+            if (fieldSequenceGenerator != null) {
+                sequenceGenerators.add(fieldSequenceGenerator);
+            }
+        }
+        // next, walk up and check the super class...
+        if (entityClass.getSuperclass() != null) {
+            loadFieldSequences(entityClass.getSuperclass(), sequenceGenerators);
+        }
     }
 
     private static final class MaxValueIncrementerSequenceWrapper extends Sequence {

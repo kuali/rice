@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 @XmlRootElement(name = "actionRequestStatus")
 @XmlType(name = "ActionRequestStatusType")
@@ -30,17 +31,20 @@ public enum ActionRequestStatus implements Coded {
 	/**
 	 * Code to indicate the request has been satisfied
 	 */
-    @XmlEnumValue("D") DONE("D", "DONE"),
+    @XmlEnumValue(KewApiConstants.ActionRequestStatusVals.DONE)
+        DONE(KewApiConstants.ActionRequestStatusVals.DONE, "DONE"),
     
     /**
      * Code to indicate the request is currently active
      */
-    @XmlEnumValue("A") ACTIVATED("A", "ACTIVATED"),
+    @XmlEnumValue(KewApiConstants.ActionRequestStatusVals.ACTIVATED)
+            ACTIVATED(KewApiConstants.ActionRequestStatusVals.ACTIVATED, "ACTIVATED"),
     
     /**
      * Code to indicate the request has not been activated
      */
-    @XmlEnumValue("I") INITIALIZED("I", "INITIALIZED");
+    @XmlEnumValue(KewApiConstants.ActionRequestStatusVals.INITIALIZED)
+            INITIALIZED(KewApiConstants.ActionRequestStatusVals.INITIALIZED, "INITIALIZED");
 	
 	private final String code;
 	private final String label;

@@ -32,6 +32,7 @@ import javax.persistence.spi.PersistenceUnitInfo;
 import javax.sql.DataSource;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -142,8 +143,6 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 			.getLogger(KradEntityManagerFactoryBean.class);
 
     private static final boolean DEFAULT_EXCLUDE_UNLISTED_CLASSES = true;
-    private static final String JPA_PROPERTY_PREFIX = "rice.krad.jpa.";
-    private static final String GLOBAL_JPA_PROPERTY_PREFIX = JPA_PROPERTY_PREFIX + "global.";
     private static final String DEFAULT_CONVERTERS_PACKAGE = BooleanYNConverter.class.getPackage().getName();
 
     private final DefaultPersistenceUnitManager persistenceUnitManager;
@@ -241,7 +240,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     protected void loadGlobalJpaDefaults(Map<String, String> jpaProperties) {
-        jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(GLOBAL_JPA_PROPERTY_PREFIX,
+        jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(ConfigConstants.GLOBAL_JPA_PROPERTY_PREFIX,
                 true));
     }
 
@@ -251,7 +250,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     protected String constructPersistenceUnitJpaPropertyPrefix() {
-        return GLOBAL_JPA_PROPERTY_PREFIX + getPersistenceUnitName() + ".";
+        return ConfigConstants.JPA_PROPERTY_PREFIX + getPersistenceUnitName() + ".";
     }
 
     protected PersistenceUnitPostProcessor[] assemblePersistenceUnitPostProcessors() {

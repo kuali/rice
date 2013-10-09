@@ -17,29 +17,30 @@ package org.kuali.rice.krad.data.jpa.converters;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
- * 
+ * A JPA converter that converts integer types of 0 or 1 to and from Boolean false and true.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
-public class Boolean01Converter implements AttributeConverter<Boolean, String> {
+public class Boolean01Converter implements AttributeConverter<Boolean, BigInteger> {
 
 	@Override
-	public String convertToDatabaseColumn(Boolean objectValue) {
+	public BigInteger convertToDatabaseColumn(Boolean objectValue) {
 		if (objectValue == null) {
-			return "0";
+			return BigInteger.valueOf(0);
 		}
-		return objectValue ? "1" : "0";
+		return objectValue ? BigInteger.valueOf(1) : BigInteger.valueOf(0);
 	}
 
 	@Override
-	public Boolean convertToEntityAttribute(String dataValue) {
+	public Boolean convertToEntityAttribute(BigInteger dataValue) {
 		if (dataValue == null) {
 			return false;
 		}
-		return dataValue.equals("1");
+		return dataValue.intValue() == 1;
 	}
-
 
 }

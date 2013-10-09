@@ -22,27 +22,22 @@ import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.dao.BranchDAO;
 import org.kuali.rice.kew.engine.node.service.BranchService;
-
-
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 public class BranchServiceImpl implements BranchService {
     private static final Logger LOG = Logger.getLogger(BranchServiceImpl.class);
 
-    private BranchDAO branchDAO;
+    private DataObjectService dataObjectService;
     
     public void save(Branch branch){
-        getBranchDAO().save(branch);
-    }
-    
-     public BranchDAO getBranchDAO() {
-        return branchDAO;
-    }
-    public void setBranchDAO(BranchDAO branchDAO) {
-        this.branchDAO = branchDAO;
+        dataObjectService.save(branch);
     }
     
     public void deleteBranchStates(List statesToBeDeleted){
-        getBranchDAO().deleteBranchStates(statesToBeDeleted);
+        for(BranchState bs : (List<BranchState>)statesToBeDeleted){
+            dataObjectService.delete(bs);
+        }
     }
 
     /**
@@ -93,6 +88,16 @@ public class BranchServiceImpl implements BranchService {
         // now save the Branch whose state we just modified
         save(bs.getBranch());
         return oldValue;
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
     
 }

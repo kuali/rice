@@ -1,18 +1,18 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2005-2013 The Kuali Foundation
+*
+* Licensed under the Educational Community License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.opensource.org/licenses/ecl2.php
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 package org.kuali.rice.kew.routeheader.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +32,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.exception.LockingException;
+import org.kuali.rice.kew.docsearch.SearchableAttributeBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
@@ -77,7 +78,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
         } catch ( RuntimeException ex ) {
             if ( ex.getCause() instanceof OptimisticLockException ) {
-                 LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() 
+                 LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject()
                  + "; DocumentId = " + routeHeader.getDocumentId() + " ;  Version Number = " + routeHeader.getVersionNumber());
             }
             LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
@@ -112,8 +113,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 
-    public void lockRouteHeader(final String documentId, final boolean wait) {
-
+    public void lockRouteHeader(final String documentId) {
+        final boolean wait = true;
         /*
          * String sql = (wait ? LOCK_SQL_WAIT : LOCK_SQL_NOWAIT); try { getJdbcTemplate().update(sql, new Object[] { documentId }); } catch (CannotAcquireLockException e) { throw new LockingException("Could not aquire lock on document, documentId=" + documentId, e); }
          */
@@ -163,7 +164,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds) {
     	return findRouteHeaders(documentIds, false);
     }
-    
+
     public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache) {
     	if (documentIds == null || documentIds.isEmpty()) {
     		return null;
@@ -340,20 +341,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
     	}
     	return status;
     }
-    
+
     public String getAppDocId(String documentId) {
- 	 	Criteria crit = new Criteria();
- 	 	crit.addEqualTo("documentId", documentId);
- 	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
- 	 	query.setAttributes(new String[] { "appDocId" });
- 	 	String appDocId = null;
- 	 	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
- 	 	while (iter.hasNext()) {
- 	 		Object[] row = (Object[]) iter.next();
- 	 		appDocId = (String)row[0];
- 	 	}
- 	 	return appDocId;
- 	 }
+	 	Criteria crit = new Criteria();
+	 	crit.addEqualTo("documentId", documentId);
+	 	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
+	 	query.setAttributes(new String[] { "appDocId" });
+	 	String appDocId = null;
+	 	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+	 	while (iter.hasNext()) {
+	 		Object[] row = (Object[]) iter.next();
+	 		appDocId = (String)row[0];
+	 	}
+	 	return appDocId;
+	 }
 
     public String getAppDocStatus(String documentId) {
         Criteria crit = new Criteria();
@@ -384,7 +385,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             broker = getPersistenceBroker(false);
             conn = broker.serviceConnectionManager().getConnection();
 
-            String query = 
+            String query =
             	 	"SELECT DISTINCT " +
             		"    (docHdr.doc_hdr_id) " +
             		"FROM " +
@@ -394,14 +395,14 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             		"    docHdr.APP_DOC_ID     = ? " +
             		"    AND docHdr.DOC_TYP_ID = docTyp.DOC_TYP_ID " +
             		"    AND docTyp.DOC_TYP_NM = ?";
-            
+
             LOG.debug("Query to find documents by app id: " + query);
-            
+
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, appId);
             stmt.setString(2, documentTypeName);
             rs = stmt.executeQuery();
-            
+
             while (rs.next()) {
             	documentIds.add(new String(rs.getString(1)));
             }

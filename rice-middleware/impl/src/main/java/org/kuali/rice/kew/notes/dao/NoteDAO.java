@@ -22,16 +22,5 @@ import org.kuali.rice.kew.notes.Note;
 
 
 public interface NoteDAO {
-
-    public Note getNoteByNoteId(String noteId);
-
     public List<Note> getNotesByDocumentId(String documentId);
-    
-    public void saveNote(Note note);
-
-    public void deleteNote(Note note);    
-    
-    public void deleteAttachment(Attachment attachment);
-
-    public Attachment findAttachment(String attachmentId);
 }

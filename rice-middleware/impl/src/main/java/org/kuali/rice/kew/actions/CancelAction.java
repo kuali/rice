@@ -140,7 +140,9 @@ public class CancelAction extends ActionTakenEvent {
             String oldStatus = getRouteHeader().getDocRouteStatus();
             markDocumentStatus();
             String newStatus = getRouteHeader().getDocRouteStatus();
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(getRouteHeader());
+            setRouteHeader(routeHeaderValue);
             notifyStatusChange(newStatus, oldStatus);
         } catch (WorkflowException ex) {
             LOG.warn(ex, ex);

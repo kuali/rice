@@ -82,7 +82,7 @@ public class DocumentLinkServiceImpl implements DocumentLinkService {
 	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#deleteDocumentLinksByDocId(java.lang.Long)
 	 */
 	public void deleteDocumentLinksByDocId(String docId) {
-		getDocumentLinkDAO().deleteDocmentLinksByDocId(docId);
+		getDocumentLinkDAO().deleteDocumentLinksByDocId(docId);
 		
 	}
 

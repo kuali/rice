@@ -101,12 +101,7 @@ public class ReferenceLinker {
 					LOG.debug("Referenced object for field " + fieldName + " is null, skipping");
 				}
 				continue;
-			} else if (referenceSet.contains(childObject)) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("We've previously linked the object assigned to " + fieldName + ", skipping");
-				}
-                continue;
-            }
+			}
 
             // recursively link object
 			linkObjectsWithCircularReferenceCheck(childObject, referenceSet);
@@ -285,8 +280,10 @@ public class ReferenceLinker {
 				// something they shouldn't (swapping Collection items between parent data objects)
 				// And it will blow up with an JPA exception anyway.
 				for (DataObjectAttributeRelationship rel : collectionAttributeRelationships) {
-					collItemWrapper.setPropertyValue(rel.getChildAttributeName(),
+                    if(rel.getChildAttributeName() != null && rel.getParentAttributeName() != null){
+					    collItemWrapper.setPropertyValue(rel.getChildAttributeName(),
 							parentObjectWrapper.getPropertyValueNullSafe(rel.getParentAttributeName()));
+                    }
 				}
 			}
 		}

@@ -36,10 +36,10 @@ import java.util.List;
  */
 public interface RouteNodeService {
 
-    public void save(RouteNode node);
-    public void save(RouteNodeInstance nodeInstance);
+    public RouteNode save(RouteNode node);
+    public RouteNodeInstance save(RouteNodeInstance nodeInstance);
     public void save(NodeState nodeState);
-    public void save(Branch branch);
+    public Branch save(Branch branch);
     public RouteNode findRouteNodeById(String nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId);
     

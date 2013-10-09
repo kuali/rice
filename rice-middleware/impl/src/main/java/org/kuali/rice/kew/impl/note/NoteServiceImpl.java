@@ -25,6 +25,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.note.Note;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * TODO 
@@ -35,6 +37,8 @@ import org.kuali.rice.kew.notes.dao.NoteDAO;
 public class NoteServiceImpl implements NoteService {
 
 	private NoteDAO noteDao;
+
+    private DataObjectService dataObjectService;
 	
 	@Override
 	public List<Note> getNotes(String documentId) {
@@ -57,7 +61,8 @@ public class NoteServiceImpl implements NoteService {
 		if (StringUtils.isBlank(noteId)) {
 			throw new RiceIllegalArgumentException("noteId was null or blank");
 		}
-		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(noteId);
+		org.kuali.rice.kew.notes.Note noteBo = getDataObjectService().find(org.kuali.rice.kew.notes.Note.class,
+                                                    noteId);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 
@@ -76,7 +81,7 @@ public class NoteServiceImpl implements NoteService {
 		if (noteBo.getNoteCreateDate() == null) {
 			noteBo.setNoteCreateDate(new Timestamp(System.currentTimeMillis()));
 		}
-		getNoteDao().saveNote(noteBo);
+		getDataObjectService().save(noteBo);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 
@@ -99,7 +104,7 @@ public class NoteServiceImpl implements NoteService {
 			throw new RiceIllegalArgumentException("Attempted to udpate a note with an id for a not that does not exist: " + note.getId());
 		}
 		org.kuali.rice.kew.notes.Note noteBo = org.kuali.rice.kew.notes.Note.from(note);
-		getNoteDao().saveNote(noteBo);
+		getDataObjectService().save(noteBo);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 
@@ -108,12 +113,12 @@ public class NoteServiceImpl implements NoteService {
 		if (StringUtils.isBlank(noteId)) {
 			throw new RiceIllegalArgumentException("noteId was null or blank");
 		}
-		org.kuali.rice.kew.notes.Note noteBo = getNoteDao().getNoteByNoteId(noteId);
+		org.kuali.rice.kew.notes.Note noteBo = getDataObjectService().find(org.kuali.rice.kew.notes.Note.class, noteId);
 		if (noteBo == null) {
 			throw new RiceIllegalArgumentException("A note does not exist for the given note id: " + noteId);
 		}
 		Note deletedNote = org.kuali.rice.kew.notes.Note.to(noteBo);
-		getNoteDao().deleteNote(noteBo);
+		getDataObjectService().delete(noteBo);
 		return deletedNote;
 	}
 	
@@ -124,5 +129,15 @@ public class NoteServiceImpl implements NoteService {
 	public NoteDAO getNoteDao() {
 		return noteDao;
 	}
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 
 }

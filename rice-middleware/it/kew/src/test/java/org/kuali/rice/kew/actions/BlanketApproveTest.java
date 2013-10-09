@@ -477,6 +477,7 @@ public class BlanketApproveTest extends KEWTestCase {
     	document.saveDocument("");
     	assertTrue(document.isSaved());
     	TestUtilities.assertNotInActionList(jitruePrincipalId, document.getDocumentId());
+
     	document.blanketApprove("");
     	
     	// document should now be processed

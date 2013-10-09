@@ -18,11 +18,14 @@ package org.kuali.rice.kew.documentlink;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.document.DocumentLinkContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -35,12 +38,20 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="KREW_DOC_LNK_T")
-//@Sequence(name="KREW_DOC_LNK_S",property="docLinkId")
+@NamedQueries({
+    @NamedQuery(name="DocumentLink.GetLinkedDocument",query="select dl from DocumentLink dl WHERE dl.orgnDocId = "
+        + ":orgnDocId and dl.destDocId = :destDocId"),
+    @NamedQuery(name="DocumentLink.GetLinkedDocumentsByDocId",query="select dl from DocumentLink dl "
+            + "WHERE dl.orgnDocId = :orgnDocId"),
+    @NamedQuery(name="DocumentLink.GetOutgoingLinkedDocumentsByDocId",query="select dl from DocumentLink dl "
+                + "WHERE dl.destDocId = :destDocId")
+})
 public class DocumentLink implements Serializable, DocumentLinkContract {
 
 	private static final long serialVersionUID = 551926904795633010L;
 	
 	@Id
+    @PortableSequenceGenerator(name="KREW_DOC_LNK_S")
 	@GeneratedValue(generator="KREW_DOC_LNK_S")
 	@Column(name="DOC_LNK_ID")
 	private String docLinkId;

@@ -71,10 +71,12 @@ import java.util.UUID;
 public abstract class DataObjectBase implements Versioned, GloballyUnique, Serializable {
 
 	@Version
-    @Column(name="VER_NBR",length=8)
+    @Column(name="VER_NBR", length=8)
     protected Long versionNumber;
-    @Column(name="OBJ_ID",length=36,unique=true)
+
+    @Column(name="OBJ_ID", length=36, unique=true, nullable = false)
     protected String objectId;
+
     @Transient
     Object extensionObject;
 

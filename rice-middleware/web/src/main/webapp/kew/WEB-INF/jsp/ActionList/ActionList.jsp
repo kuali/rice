@@ -326,7 +326,7 @@
                         </display:column>
 					</c:if>
 					<c:if test="${preferences.showDocumentStatus == Constants.PREFERENCES_YES_VAL}">
-						<display:column property="routeHeader.combinedStatus"
+						<display:column property="routeHeaderCombinedStatus"
 							sortable="true" title="${routeStatusLabel}" class="infocell" />
 					</c:if>
 					<c:if test="${preferences.showActionRequested == Constants.PREFERENCES_YES_VAL}">
@@ -335,11 +335,11 @@
 					</c:if>
 					<c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
 						<display:column sortable="true" title="${initiatorLabel}"
-							sortProperty="routeHeader.initiatorName" class="infocell">
+							sortProperty="routeHeaderInitiatorName" class="infocell">
                             <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
-                                keyValues="principalId=${result.routeHeader.initiatorPrincipalId}"
+                                keyValues="principalId=${result.routeHeaderInitiatorWorkflowId}"
                                 render="true">
-                                  <c:out value="${result.routeHeader.initiatorName}" />
+                                  <c:out value="${result.routeHeaderInitiatorName}" />
                             </kul:inquiry>
 						</display:column>
 					</c:if>
@@ -369,8 +369,8 @@
 					<c:if
 						test="${preferences.showDateCreated == Constants.PREFERENCES_YES_VAL}">
 						<display:column sortable="true" title="${dateCreatedLabel}"
-							sortProperty="routeHeader.createDate" class="infocell">
-							<fmt:formatDate value="${result.routeHeader.createDate}"
+							sortProperty="routeHeaderCreateDate" class="infocell">
+							<fmt:formatDate value="${result.routeHeaderCreateDate}"
 								pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
                          </display:column>
 					</c:if>
@@ -405,8 +405,8 @@
 						test="${preferences.showCurrentNode == Constants.PREFERENCES_YES_VAL}">
 						<display:column sortable="true"
 							title="${currentRouteNodesLabel}"
-							sortProperty="routeHeader.currentRouteLevelName" class="infocell">
-							<c:out value="${result.routeHeader.currentRouteLevelName}" />&nbsp;
+							sortProperty="routeHeaderCurrentRouteLevelName" class="infocell">
+							<c:out value="${result.routeHeaderCurrentRouteLevelName}" />&nbsp;
                         </display:column>
 					</c:if>
 

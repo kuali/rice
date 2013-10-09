@@ -54,7 +54,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_TMPL_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="id")
-@NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
+@NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplateBo rt ORDER BY rt.name ASC")})
 public class RuleTemplateBo extends PersistableBusinessObjectBase implements RuleTemplateContract {
 
     private static final long serialVersionUID = -3387940485523951302L;

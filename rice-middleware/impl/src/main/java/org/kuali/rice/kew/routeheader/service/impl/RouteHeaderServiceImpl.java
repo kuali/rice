@@ -15,16 +15,9 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
@@ -36,11 +29,21 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.springframework.beans.factory.annotation.Required;
 
-
+import javax.persistence.OptimisticLockException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RouteHeaderServiceImpl implements RouteHeaderService {
 
@@ -49,8 +52,10 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     private DocumentRouteHeaderDAO routeHeaderDAO;
     private SearchableAttributeDAO searchableAttributeDAO;
 
+    private DataObjectService dataObjectService;
+
     public DocumentRouteHeaderValue getRouteHeader(String documentId) {
-        return getRouteHeaderDAO().findRouteHeader(documentId);
+        return getDataObjectService().find(DocumentRouteHeaderValue.class, documentId);
     }
 
     public DocumentRouteHeaderValue getRouteHeader(String documentId, boolean clearCache) {
@@ -58,7 +63,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     }
 
     public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<String> documentIds) {
-    	return getRouteHeaderDAO().findRouteHeaders(documentIds);
+         return getRouteHeaderDAO().findRouteHeaders(documentIds);
     }
     
     public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<String> documentIds, boolean clearCache) {
@@ -80,17 +85,47 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     	return routeHeaders;
     }
     
-    public void lockRouteHeader(String documentId, boolean wait) {
-        getRouteHeaderDAO().lockRouteHeader(documentId, wait);
+    public void lockRouteHeader(String documentId) {
+        getRouteHeaderDAO().lockRouteHeader(documentId);
         LOG.debug("Successfully locked document [docId=" + documentId + "]");
     }
 
-    public void saveRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.getRouteHeaderDAO().saveRouteHeader(routeHeader);
+    public DocumentRouteHeaderValue saveRouteHeader(DocumentRouteHeaderValue routeHeader) {
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug( "About to Save the route Header: " + routeHeader.getDocumentId() + " / version="
+                    + routeHeader.getVersionNumber() );
+            DocumentRouteHeaderValue currHeader = getDataObjectService().find(DocumentRouteHeaderValue.class,
+                    routeHeader.getDocumentId());
+            if ( currHeader != null ) {
+                LOG.debug( "Current Header Version: " + currHeader.getVersionNumber() );
+            } else {
+                LOG.debug( "Current Header: null" );
+            }
+            LOG.debug( ExceptionUtils.getStackTrace(new Throwable()) );
+        }
+        try {
+            // before saving, copy off the document content, since it's transient it will get erased during a JPA merge
+            DocumentRouteHeaderValueContent content = routeHeader.getDocumentContent();
+            DocumentRouteHeaderValue drvPersisted = dataObjectService.save(routeHeader, PersistenceOption.FLUSH);
+            // now let's save the content and reattach it to our document
+            content.setDocumentId(drvPersisted.getDocumentId());
+            content = dataObjectService.save(content);
+            drvPersisted.setDocumentContent(content);
+            return drvPersisted;
+        } catch ( RuntimeException ex ) {
+            if ( ex.getCause() instanceof OptimisticLockException) {
+                LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: "
+                        + ex.getCause()
+                        + "; DocumentId = " + routeHeader.getDocumentId() + " ;  Version Number = "
+                        + routeHeader.getVersionNumber());
+            }
+            LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
+            throw ex;
+        }
     }
 
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        getRouteHeaderDAO().deleteRouteHeader(routeHeader);
+        dataObjectService.delete(routeHeader);
     }
 
     public String getNextDocumentId() {
@@ -108,7 +143,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes) {
     	getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
     	for (SearchableAttributeValue searchAttribute : searchAttributes) {
-    		getRouteHeaderDAO().save(searchAttribute);
+    		getDataObjectService().save(searchAttribute);
     	}
     }
 
@@ -170,7 +205,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     	if (documentId == null) {
     		return new DocumentRouteHeaderValueContent();
     	}
-    	DocumentRouteHeaderValueContent content = getRouteHeaderDAO().getContent(documentId);
+        DocumentRouteHeaderValueContent content = getRouteHeaderDAO().getContent(documentId);
     	if (content == null) {
     		content = new DocumentRouteHeaderValueContent(documentId);
     	}
@@ -240,4 +275,13 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 			String appId) {
 		return getRouteHeaderDAO().findByDocTypeAndAppId(documentTypeName, appId);
 	}
+
+    public DataObjectService getDataObjectService(){
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 }

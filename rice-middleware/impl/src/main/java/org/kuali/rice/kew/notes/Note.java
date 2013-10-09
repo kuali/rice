@@ -21,6 +21,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.note.NoteContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,32 +54,37 @@ import java.util.List;
  */
 @Entity(name="org.kuali.rice.kew.notes.Note")
 @Table(name="KREW_DOC_NTE_T")
-//@Sequence(name="KREW_DOC_NTE_S",property="noteId")
 @NamedQueries({
-	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
-	@NamedQuery(name="KewNote.FindNoteByDocumentId", query="select n from org.kuali.rice.kew.notes.Note as n where n.documentId = :documentId order by n.noteId")
+	@NamedQuery(name="KewNote.FindNoteByDocumentId", query="select n from org.kuali.rice.kew.notes.Note as n "
+            + "where n.documentId = :documentId order by n.noteId")
 })
 public class Note implements Serializable, NoteContract {
 
 	private static final long serialVersionUID = -6136544551121011531L;
+
 	@Id
-	@GeneratedValue(generator="KREW_DOC_NTE_S")
+    @GeneratedValue(generator = "KREW_DOC_NTE_S")
+	@PortableSequenceGenerator(name="KREW_DOC_NTE_S")
 	@Column(name="DOC_NTE_ID")
 	private String noteId;
+
     @Column(name="DOC_HDR_ID")
 	private String documentId;
+
     @Column(name="AUTH_PRNCPL_ID")
 	private String noteAuthorWorkflowId;
+
 	@Column(name="CRT_DT")
 	private Timestamp noteCreateDate;
+
     @Column(name="TXT")
 	private String noteText;
+
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
     
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-    	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="note")
     private List<Attachment> attachments = new ArrayList<Attachment>();
 
     //additional data not in database

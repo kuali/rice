@@ -98,7 +98,9 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 			getRouteHeader().markDocumentEnroute();
 			String newStatus = getRouteHeader().getDocRouteStatus();
 			notifyStatusChange(newStatus, oldStatus);
-			KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(getRouteHeader());
+            setRouteHeader(routeHeaderValue);
 		}
 
 		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, new HashSet<String>(), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());
@@ -116,13 +118,15 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	@SuppressWarnings("unchecked")
 	protected void completeAnyOutstandingCompleteApproveRequests(ActionTakenValue actionTaken, boolean sendNotifications) throws Exception {
-		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, getDocumentId());
+        List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, getDocumentId()));
 		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, getDocumentId()));
+        List<ActionRequestValue> deactivatedRequests = new ArrayList<ActionRequestValue>();
 		for (ActionRequestValue actionRequest : actionRequests) {
-			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
+            deactivatedRequests.add(KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest));
 		}
 		if (sendNotifications) {
-			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, getPrincipal(), this.findDelegatorForActionRequests(actionRequests), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD);
+			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(deactivatedRequests, getPrincipal(), this.findDelegatorForActionRequests(deactivatedRequests), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD);
 		}
 	}
 

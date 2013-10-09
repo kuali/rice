@@ -251,20 +251,25 @@ public class IteratedRequestActivationNode implements SimpleNode {
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue siblingRequest = (ActionRequestValue) iterator.next();
                 if (actionRequest.getRoleName().equals(siblingRequest.getRoleName())) {
-                    generatedActionItems.addAll(KEWServiceLocator.getActionRequestService().activateRequestNoNotification(siblingRequest, context.getActivationContext()));
+                    KEWServiceLocator.getActionRequestService().activateRequestNoNotification(siblingRequest, context.getActivationContext());
+                    // the generated action items can be found in the activation context
+                    generatedActionItems.addAll(context.getActivationContext().getGeneratedActionItems());
                 }
             }
         }
-        generatedActionItems.addAll(KEWServiceLocator.getActionRequestService().activateRequestNoNotification(actionRequest, context.getActivationContext()));
+        KEWServiceLocator.getActionRequestService().activateRequestNoNotification(actionRequest, context.getActivationContext());
+        // the generated action items can be found in the activation context
+        generatedActionItems.addAll(context.getActivationContext().getGeneratedActionItems());
         return actionRequest.isApproveOrCompleteRequest() && ! actionRequest.isDone();
     }
     
-    protected void saveActionRequest(RouteContext context, ActionRequestValue actionRequest) {
+    protected ActionRequestValue saveActionRequest(RouteContext context, ActionRequestValue actionRequest) {
         if (!context.isSimulation()) {
-            KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
+            return KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
         } else {
             actionRequest.setActionRequestId(String.valueOf(generatedRequestPriority++));
-            context.getEngineState().getGeneratedRequests().add(actionRequest);    
+            context.getEngineState().getGeneratedRequests().add(actionRequest);
+            return actionRequest;
         }
         
     }

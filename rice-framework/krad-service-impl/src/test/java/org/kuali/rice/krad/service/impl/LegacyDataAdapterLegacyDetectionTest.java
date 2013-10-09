@@ -167,7 +167,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
     public void testSave() {
         Serializable obj = newDataObject();
         lda.save(obj);
-        verify(dataObjectService).save(obj, PersistenceOption.SKIP_LINKING);
+        verify(dataObjectService).save(obj);
         verify(businessObjectService, never()).save(any(PersistableBusinessObject.class));
     }
 
@@ -184,7 +184,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
     public void testLinkAndSave() {
         Serializable obj = newDataObject();
         lda.linkAndSave(obj);
-        verify(dataObjectService).save(obj);
+        verify(dataObjectService).save(obj, PersistenceOption.LINK);
         verify(businessObjectService, never()).linkAndSave(any(PersistableBusinessObject.class));
     }
 
@@ -194,7 +194,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
         PersistableBusinessObject obj = newPersistableBusinessObject();
         lda.linkAndSave(obj);
         verify(businessObjectService).linkAndSave(obj);
-        verify(dataObjectService, never()).save(any(PersistableBusinessObject.class));
+        verify(dataObjectService, never()).save(any(PersistableBusinessObject.class), any(PersistenceOption.class));
     }
 
     @Test
@@ -489,8 +489,10 @@ public class LegacyDataAdapterLegacyDetectionTest {
             @Override
 			public Object call() throws Exception {
                 lda.getByDocumentHeaderId(id);
-                verify(documentHeaderDaoOjb).getByDocumentHeaderId(id);
-                verify(dataObjectService, never()).find(any(Class.class), any());
+//                verify(documentHeaderDaoOjb).getByDocumentHeaderId(id);
+//                verify(dataObjectService, never()).find(any(Class.class), any());
+                verify(dataObjectService).find(DocumentHeader.class, id);
+                verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
                 return null;
             }
         });

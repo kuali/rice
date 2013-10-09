@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kew.impl.actionlist;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.api.actionlist.ActionListService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.api.actionlist.ActionListService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
  * Reference implementation of the {@link org.kuali.rice.kew.api.actionlist.ActionListService} api.
@@ -43,7 +42,7 @@ public class ActionListServiceNewImpl implements ActionListService {
     @Override
     public List<ActionItem> getActionItemsForPrincipal(String principalId) {
         incomingParamCheck(principalId, "principalId");
-        Collection<ActionItemActionListExtension> actionItems
+        Collection<org.kuali.rice.kew.actionitem.ActionItem> actionItems
                 = KEWServiceLocator.getActionListService().getActionList(principalId, null);
         List<ActionItem> actionItemVOs = new ArrayList<ActionItem>(actionItems.size());
         for (org.kuali.rice.kew.actionitem.ActionItem actionItem : actionItems) {
@@ -55,7 +54,7 @@ public class ActionListServiceNewImpl implements ActionListService {
     @Override
     public List<ActionItem> getAllActionItems(String documentId) {
         incomingParamCheck(documentId, "documentId");
-        Collection<ActionItemActionListExtension> actionItems
+        Collection<org.kuali.rice.kew.actionitem.ActionItem> actionItems
                 = KEWServiceLocator.getActionListService().getActionListForSingleDocument(documentId);
         List<ActionItem> actionItemVOs = new ArrayList<ActionItem>(actionItems.size());
         for (org.kuali.rice.kew.actionitem.ActionItem actionItem : actionItems) {

@@ -374,7 +374,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 					RuleExtensionValue value = (RuleExtensionValue) iter2.next();
 					value.setExtension(extension);
 					value.setLockVerNbr(null);
-					value.setRuleExtensionId(null);
+					value.getExtension().setRuleExtensionId(null);
 					value.setRuleExtensionValueId(null);
 				}
 			}

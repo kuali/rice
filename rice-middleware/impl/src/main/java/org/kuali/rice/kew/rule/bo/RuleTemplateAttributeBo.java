@@ -27,8 +27,10 @@ import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -63,8 +65,10 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private String ruleAttributeId;
     @Column(name="REQ_IND")
+    @Convert(converter=Boolean01BigDecimalConverter.class)
 	private Boolean required;
     @Column(name="ACTV_IND")
+    @Convert(converter=Boolean01BigDecimalConverter.class)
 	private Boolean active;
     @Column(name="DSPL_ORD")
 	private Integer displayOrder;

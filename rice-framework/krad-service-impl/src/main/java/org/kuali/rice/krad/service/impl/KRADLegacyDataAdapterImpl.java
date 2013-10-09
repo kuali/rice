@@ -107,14 +107,14 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
             }
             return (T) newList;
         } else {
-            return dataObjectService.save(dataObject, PersistenceOption.SKIP_LINKING);
+            return dataObjectService.save(dataObject);
         }
     }
 
     @Override
     public <T> T linkAndSave(T dataObject) {
         // This method is only used from MaintainableImpl
-        return dataObjectService.save(dataObject);
+        return dataObjectService.save(dataObject, PersistenceOption.LINK);
     }
 
     @Override

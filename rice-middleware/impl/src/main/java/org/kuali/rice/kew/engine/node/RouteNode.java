@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -52,6 +53,8 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -60,9 +63,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_T")
-//@Sequence(name="KREW_RTE_NODE_S", property="routeNodeId")
 @NamedQueries({
-	@NamedQuery(name="RouteNode.FindByRouteNodeId",query="select r from RouteNode as r where r.routeNodeId = :routeNodeId"),
 	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
 	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
 })
@@ -74,26 +75,41 @@ public class RouteNode implements Serializable, RouteNodeContract {
     public static final String RULE_SELECTOR_CFG_KEY = "ruleSelector";
 
     @Id
-    @GeneratedValue(generator="KREW_RTE_NODE_S")
-	@Column(name="RTE_NODE_ID")
+    @PortableSequenceGenerator(name = "KREW_RTE_NODE_S")
+    @GeneratedValue(generator = "KREW_RTE_NODE_S")
+	@Column(name = "RTE_NODE_ID", nullable = false)
 	private String routeNodeId;
-    @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
+
+    @Column(name = "DOC_TYP_ID", insertable = false, updatable = false)
 	private String documentTypeId;
-    @Column(name="NM")
+
+    @ManyToOne
+    @JoinColumn(name="DOC_TYP_ID", nullable = false)
+    private DocumentType documentType;
+
+    @Column(name="NM", nullable = false)
 	private String routeNodeName;
+
     @Column(name="RTE_MTHD_NM")
 	private String routeMethodName;
+
     @Column(name="FNL_APRVR_IND")
+    @Convert(converter=Boolean01BigDecimalConverter.class)
 	private Boolean finalApprovalInd;
+
     @Column(name="MNDTRY_RTE_IND")
+    @Convert(converter=Boolean01BigDecimalConverter.class)
 	private Boolean mandatoryRouteInd;
+
     @Column(name="GRP_ID")
 	private String exceptionWorkgroupId;
+
     @Column(name="RTE_MTHD_CD")
 	private String routeMethodCode;
+
     @Column(name="ACTVN_TYP")
     private String activationType = ActivationTypeEnum.PARALLEL.getCode();
-    
+
     /**
      * The nextDocStatus property represents the value of the ApplicationDocumentStatus to be set 
      * in the RouteHeader upon transitioning from this node.
@@ -104,36 +120,32 @@ public class RouteNode implements Serializable, RouteNodeContract {
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID")
-	private DocumentType documentType;
-    @Transient
-    private String exceptionWorkgroupName;
 
-    @Transient
-    private RuleTemplateBo ruleTemplate;
     @Column(name="TYP")
     private String nodeType = RequestsNode.class.getName();
-    
-    //@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}, mappedBy="nextNodes")
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy="nextNodes")
-    //@JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"))
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "nextNodes")
     private List<RouteNode> previousNodes = new ArrayList<RouteNode>();
-    //@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "KREW_RTE_NODE_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_ID"))
     private List<RouteNode> nextNodes = new ArrayList<RouteNode>();
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="BRCH_PROTO_ID")
-	private BranchPrototype branch;
-    @OneToMany(fetch=FetchType.EAGER,mappedBy="routeNode",cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "routeNode", cascade = CascadeType.ALL)
     private List<RouteNodeConfigParam> configParams  = new ArrayList<RouteNodeConfigParam>(0);
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "BRCH_PROTO_ID")
+    private BranchPrototype branch;
+
+    @Transient private String exceptionWorkgroupName;
+    @Transient private RuleTemplateBo ruleTemplate;
+
     /**
-     * Looks up a config parameter for this route node definition
-     * @param key the config param key 
-     * @return the RouteNodeConfigParam if present
-     */
+    * Looks up a config parameter for this route node definition
+    * @param key the config param key
+    * @return the RouteNodeConfigParam if present
+    */
     protected RouteNodeConfigParam getConfigParam(String key) {
         Map<String, RouteNodeConfigParam> configParamMap = Utilities.getKeyValueCollectionAsLookupTable(configParams);
         return configParamMap.get(key);
@@ -483,7 +495,6 @@ public class RouteNode implements Serializable, RouteNodeContract {
         }
         return nextNodeIds;
     }
-	
 	
 
 }

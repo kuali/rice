@@ -176,6 +176,7 @@ public enum DocumentTypePolicy implements Coded {
                 return policy;
             }
         }
+
         throw new IllegalArgumentException("Failed to locate the DocumentTypePolicy with the given code: " + code);
     }
         

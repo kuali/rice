@@ -29,16 +29,16 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
-@NamedQuery(name="DocumentRouteHeaderValueContent.FindByDocumentId", query="select d from DocumentRouteHeaderValueContent as d where d.documentId = :documentId")
+@NamedQuery(name="DocumentRouteHeaderValueContent.FindByDocumentId", query="select d from "
+        + "DocumentRouteHeaderValueContent as d where d.documentId = :documentId")
 public class DocumentRouteHeaderValueContent implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name="DOC_HDR_ID")
 	private String documentId;
+
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="DOC_CNTNT_TXT")

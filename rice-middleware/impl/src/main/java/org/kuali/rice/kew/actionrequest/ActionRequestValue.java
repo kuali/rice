@@ -21,7 +21,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -45,9 +44,12 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -66,31 +68,19 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 /**
- * Bean mapped to DB. Represents ActionRequest to a workgroup, user or role.  Contains
- * references to children/parent if a member of a graph
+ * Entity which represents a request for action against a document. Contains references to children/parent if a member of a graph.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name="KREW_ACTN_RQST_T")
-//@Sequence(name="KREW_ACTN_RQST_S", property="actionRequestId")
 @NamedQueries({
-  @NamedQuery(name="ActionRequestValue.FindByDocumentId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId"),
-  @NamedQuery(name="ActionRequestValue.GetUserRequestCount", query="select count(arv) from ActionRequestValue arv where arv.documentId = :documentId and arv.recipientTypeCd = :recipientTypeCd and arv.principalId = :principalId and arv.currentIndicator = :currentIndicator"),
-  @NamedQuery(name="ActionRequestValue.FindActivatedByGroup", query="select count(arv) from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status"),
-  @NamedQuery(name="ActionRequestValue.FindAllByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator"),
-  @NamedQuery(name="ActionRequestValue.FindAllPendingByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
-  @NamedQuery(name="ActionRequestValue.FindAllRootByDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null"),
-  @NamedQuery(name="ActionRequestValue.FindByStatusAndDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.status = :status"),
-  @NamedQuery(name="ActionRequestValue.FindPendingByActionRequestedAndDocId", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.actionRequested = :actionRequested and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
-  @NamedQuery(name="ActionRequestValue.FindPendingByDocIdAtOrBelowRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.status <> :status and arv.routeLevel <= :routeLevel"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtOrBelowRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel <= :routeLevel"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteLevel", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel = :routeLevel"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.documentId in (select drhv.documentId from DocumentRouteHeaderValue drhv where drhv.documentTypeId = :documentTypeId) and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = :actionRequestStatus1 or arv.status = :actionRequestStatus2)"),
-  @NamedQuery(name="ActionRequestValue.FindRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId"),
   @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.documentId = :documentId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd"),
-  @NamedQuery(name="ActionRequestValue.FindByStatusAndGroupId", query="select arv from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status")
+  @NamedQuery(name="ActionRequestValue.FindPendingByResponsibilityIds", query = "SELECT DISTINCT(arv.documentId) FROM ActionRequestValue arv WHERE (arv.status = '"
+          + KewApiConstants.ActionRequestStatusVals.INITIALIZED + "' OR arv.status = '" +
+                  KewApiConstants.ActionRequestStatusVals.ACTIVATED
+          + "') AND arv.responsibilityId IN :respIds")
 })
 public class ActionRequestValue implements Serializable {
 
@@ -103,99 +93,107 @@ public class ActionRequestValue implements Serializable {
     private static final List DELEGATION_TYPE_RANK = Arrays.asList(new Object[]{DelegationType.SECONDARY, DelegationType.PRIMARY, null});
 
     @Id
-    @GeneratedValue(generator="KREW_ACTN_RQST_S")
-	@Column(name="ACTN_RQST_ID")
+    @GeneratedValue(generator = "KREW_ACTN_RQST_S")
+    @PortableSequenceGenerator(name = "KREW_ACTN_RQST_S")
+	@Column(name = "ACTN_RQST_ID", nullable = false)
 	private String actionRequestId;
-    @Column(name="ACTN_RQST_CD")
+
+    @Column(name = "ACTN_RQST_CD", nullable = false)
 	private String actionRequested;
-    @Column(name="DOC_HDR_ID")
+
+    @Column(name = "DOC_HDR_ID", nullable = false)
 	private String documentId;
-    @Column(name="STAT_CD")
+
+    @Column(name = "RULE_ID")
+    private String ruleBaseValuesId;
+
+    @Column(name = "STAT_CD", nullable = false)
 	private String status;
-    @Column(name="RSP_ID")
+
+    @Column(name = "RSP_ID", nullable = false)
 	private String responsibilityId;
-    @Column(name="GRP_ID")
+
+    @Column(name = "GRP_ID")
 	private String groupId;
-    @Column(name="RECIP_TYP_CD")
+
+    @Column(name = "ROLE_NM")
+    private String roleName;
+
+    @Column(name = "QUAL_ROLE_NM")
+    private String qualifiedRoleName;
+
+    @Column(name = "QUAL_ROLE_NM_LBL_TXT")
+    private String qualifiedRoleNameLabel;
+
+    @Column(name = "RECIP_TYP_CD")
 	private String recipientTypeCd;
-    @Column(name="PRIO_NBR")
+
+    @Column(name = "PRIO_NBR", nullable = false)
 	private Integer priority;
-    @Column(name="RTE_LVL_NBR")
+
+    @Column(name = "RTE_LVL_NBR", nullable = false)
 	private Integer routeLevel;
-    @Column(name="ACTN_TKN_ID", insertable=false, updatable=false)
-	private String actionTakenId;
-    @Column(name="DOC_VER_NBR")
-    private Integer docVersion = 1;
-	@Column(name="CRTE_DT")
+
+    @Column(name = "DOC_VER_NBR", nullable = false)
+    private Integer docVersion = Integer.valueOf(1);
+
+	@Column(name = "CRTE_DT", nullable = false)
 	private java.sql.Timestamp createDate;
-    @Column(name="RSP_DESC_TXT")
+
+    @Column(name = "RSP_DESC_TXT")
 	private String responsibilityDesc;
-    @Column(name="ACTN_RQST_ANNOTN_TXT")
+
+    @Column(name = "ACTN_RQST_ANNOTN_TXT")
 	private String annotation;
-    @Column(name="VER_NBR")
+
+    @Column(name = "VER_NBR")
 	private Integer jrfVerNbr;
-    @Column(name="PRNCPL_ID")
+
+    @Column(name = "PRNCPL_ID")
 	private String principalId;
-    @Column(name="FRC_ACTN")
+
+    @Column(name = "FRC_ACTN")
+    @Convert(converter = Boolean01Converter.class)
 	private Boolean forceAction;
-    @Column(name="PARNT_ID", insertable=false, updatable=false)
-	private String parentActionRequestId;
-    @Column(name="QUAL_ROLE_NM")
-	private String qualifiedRoleName;
-    @Column(name="ROLE_NM")
-	private String roleName;
-    @Column(name="QUAL_ROLE_NM_LBL_TXT")
-	private String qualifiedRoleNameLabel;
-    @Transient
-    private String displayStatus;
-    @Column(name="RULE_ID")
-	private String ruleBaseValuesId;
 
-    @Column(name="DLGN_TYP")
-    private String delegationTypeCode;
-    @Column(name="APPR_PLCY")
-	private String approvePolicy;
-
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="PARNT_ID")
-	private ActionRequestValue parentActionRequest;
-    @OneToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
-    private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ACTN_TKN_ID")
-	private ActionTakenValue actionTaken;
-    //@OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
-    //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
-    @Column(name="CUR_IND")
+    @Column(name = "CUR_IND")
+    @Convert(converter = Boolean01Converter.class)
     private Boolean currentIndicator = true;
-    @Transient
-    private String createDateString;
 
-    /* New Workflow 2.1 Field */
-    // The node instance at which this request was generated
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RTE_NODE_INSTN_ID")
-	private RouteNodeInstance nodeInstance;
+    @Column(name = "APPR_PLCY")
+    private String approvePolicy;
 
-    @Column(name="RQST_LBL")
+    @Column(name = "DLGN_TYP")
+    private String delegationTypeCode;
+
+    @Column(name = "RQST_LBL")
     private String requestLabel;
-    
-    @Transient
-    private boolean resolveResponsibility = true;
-    @Transient
-    private DocumentRouteHeaderValue routeHeader;
-    @Transient
-    private List<ActionItem> simulatedActionItems;
+
+    @ManyToOne
+	@JoinColumn(name = "PARNT_ID")
+	private ActionRequestValue parentActionRequest;
+
+    @ManyToOne
+    @JoinColumn(name = "ACTN_TKN_ID")
+    private ActionTakenValue actionTaken;
+
+    @ManyToOne
+    @JoinColumn(name = "RTE_NODE_INSTN_ID")
+    private RouteNodeInstance nodeInstance;
+
+    @OneToMany(mappedBy = "parentActionRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
+
+    @Transient private String createDateString;
+    @Transient private String displayStatus;
+    @Transient private boolean resolveResponsibility = true;
+    @Transient private DocumentRouteHeaderValue routeHeader;
+    @Transient private List<ActionItem> simulatedActionItems;
     
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());
     }
-    
-    //@PrePersist
-    public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
-   
+
     public Group getGroup() {
         if (getGroupId() == null) {
             LOG.error("Attempting to get a group with a blank group id");
@@ -333,16 +331,12 @@ public class ActionRequestValue implements Serializable {
      * @return Returns the actionTakenId.
      */
     public String getActionTakenId() {
-        return actionTakenId;
+        if (getActionTaken() == null) {
+            return null;
+        }
+        return getActionTaken().getActionTakenId();
     }
 
-    /**
-     * @param actionTakenId
-     *            The actionTakenId to set.
-     */
-    public void setActionTakenId(String actionTakenId) {
-        this.actionTakenId = actionTakenId;
-    }
 
     /**
      * @return Returns the annotation.
@@ -701,11 +695,10 @@ public class ActionRequestValue implements Serializable {
     }
 
     public String getParentActionRequestId() {
-        return parentActionRequestId;
-    }
-
-    public void setParentActionRequestId(String parentActionRequestId) {
-        this.parentActionRequestId = parentActionRequestId;
+        if (getParentActionRequest() == null) {
+            return null;
+        }
+        return getParentActionRequest().getActionRequestId();
     }
 
     public ActionRequestValue getParentActionRequest() {
@@ -919,7 +912,6 @@ public class ActionRequestValue implements Serializable {
             .append("recipientTypeCd", recipientTypeCd)
             .append("priority", priority)
             .append("routeLevel", routeLevel)
-            .append("actionTakenId", actionTakenId)
             .append("docVersion", docVersion)
             .append("createDate", createDate)
             .append("responsibilityDesc", responsibilityDesc)
@@ -927,7 +919,6 @@ public class ActionRequestValue implements Serializable {
             .append("jrfVerNbr", jrfVerNbr)
             .append("principalId", principalId)
             .append("forceAction", forceAction)
-            .append("parentActionRequestId", parentActionRequestId)
             .append("qualifiedRoleName", qualifiedRoleName)
             .append("roleName", roleName)
             .append("qualifiedRoleNameLabel", qualifiedRoleNameLabel)
@@ -1074,7 +1065,6 @@ public class ActionRequestValue implements Serializable {
         populateActionRequest(actionRequestBo, actionRequest, routeNodeInstanceLoader);
         if (parentActionRequestBo != null) {
             actionRequestBo.setParentActionRequest(parentActionRequestBo);
-            actionRequestBo.setParentActionRequestId(parentActionRequestBo.getActionRequestId());
         }
         if (actionRequest.getChildRequests() != null) {
             for (ActionRequest childRequest : actionRequest.getChildRequests()) {
@@ -1098,7 +1088,7 @@ public class ActionRequestValue implements Serializable {
         if (actionRequest.getActionTaken() != null) {
             // actionRequestBo.setActionTaken(ActionTakenValue.from(actionRequest.getActionTaken()));
             if (!StringUtils.isBlank(actionRequest.getActionTaken().getId())) {
-                actionRequestBo.setActionTakenId(actionRequest.getActionTaken().getId());
+                actionRequestBo.setActionTaken(KEWServiceLocator.getActionTakenService().findByActionTakenId(actionRequest.getActionTaken().getId()));
             }
         }
         actionRequestBo.setAnnotation(actionRequest.getAnnotation());

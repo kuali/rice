@@ -20,6 +20,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -50,9 +51,9 @@ import java.util.Map;
 @Table(name="KREW_RULE_ATTR_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="id")
 @NamedQueries({
-  @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.ruleAttributeId = :ruleAttributeId"),
+  @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.id = :ruleAttributeId"),
   @NamedQuery(name="RuleAttribute.FindByName",  query="select ra from RuleAttribute ra where ra.name = :name"),
-  @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.className = :className"),
+  @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.resourceDescriptor = :className"),
   @NamedQuery(name="RuleAttribute.GetAllRuleAttributes",  query="select ra from RuleAttribute ra")
 })
 public class RuleAttribute extends PersistableBusinessObjectBase implements ExtensionDefinitionContract {
@@ -60,6 +61,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
 	private static final long serialVersionUID = 1027673603158346349L;
 
 	@Id
+    @PortableSequenceGenerator(name="KREW_RTE_TMPL_S")
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@Column(name="RULE_ATTR_ID")
 	private String id;

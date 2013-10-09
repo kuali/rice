@@ -16,10 +16,20 @@
 package org.kuali.rice.kew.doctype;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
 
@@ -29,47 +39,40 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
+@IdClass(DocumentTypePolicyId.class)
 @Table(name="KREW_DOC_TYP_PLCY_RELN_T")
 public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
 
-	@EmbeddedId
-	private DocumentTypePolicyId documentTypePolicyId;
-    @Column(name="PLCY_NM")
-	private Boolean policyValue;
-    @Column(name="PLCY_VAL")
-    private String policyStringValue;
-    @Transient
-    private Boolean inheritedFlag;
-    @MapsId("documentTypeId")
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID")
-	private DocumentType documentType;
-    
-    @Transient
-    private String documentTypeId;
-    @Transient
+//    @Id
+//    @Column(name = "DOC_TYP_ID", nullable = false)
+//    private String documentTypeId;
+
+    @Id
+    @Column(name = "DOC_PLCY_NM", nullable = false)
     private String policyName;
 
-    public DocumentTypePolicy() {
-    }
+    @Column(name="PLCY_NM", nullable = false)
+    @Convert(converter=Boolean01BigDecimalConverter.class)
+	private Boolean policyValue;
 
-    public DocumentTypePolicy(String policyName, Boolean policyValue) {
-    	this.policyName = policyName;
-    	this.getDocumentTypePolicyId().setPolicyName(policyName);
+    @Column(name="PLCY_VAL")
+    private String policyStringValue;
+
+    @Id
+    @JoinColumn(name="DOC_TYP_ID", nullable = false)
+    @ManyToOne
+    private DocumentType documentType;
+
+    @Transient private Boolean inheritedFlag;
+
+    public DocumentTypePolicy() {}
+
+    public DocumentTypePolicy(String documentTypeId, String policyName, Boolean policyValue) {
+        //this.documentTypeId = documentTypeId;
+        this.policyName = policyName;
         this.policyValue = policyValue;
     }
-
-    public DocumentTypePolicyId getDocumentTypePolicyId() {
-    	if (this.documentTypePolicyId == null) {
-    		this.documentTypePolicyId = new DocumentTypePolicyId();
-    	}
-		return this.documentTypePolicyId;
-	}
-
-	public void setDocumentTypePolicyId(DocumentTypePolicyId documentTypePolicyId) {
-		this.documentTypePolicyId = documentTypePolicyId;
-	}
 
 	public String getPolicyDisplayValue() {
         if(policyValue != null){
@@ -101,18 +104,17 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public boolean isDisApprove() {
         return DISAPPROVE.getCode().equals(this.getPolicyName());
     }
-
-    public String getDocumentTypeId() {
-        return (getDocumentTypePolicyId().getDocumentTypeId() != null) ? getDocumentTypePolicyId().getDocumentTypeId() : this.documentTypeId;
-    }
-
-    public void setDocumentTypeId(String documentTypeId) {
-    	this.documentTypeId = documentTypeId;
-        this.getDocumentTypePolicyId().setDocumentTypeId(documentTypeId);
-    }
+//
+//    public String getDocumentTypeId() {
+//        return documentTypeId;
+//    }
+//
+//    public void setDocumentTypeId(String documentTypeId) {
+//        this.documentTypeId = documentTypeId;
+//    }
 
     public String getPolicyName() {
-        return (this.getDocumentTypePolicyId().getPolicyName() != null) ? this.getDocumentTypePolicyId().getPolicyName() : this.policyName;
+        return policyName;
     }
 
     public void setPolicyName(String policyName) {
@@ -126,7 +128,6 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
          */
         org.kuali.rice.kew.api.doctype.DocumentTypePolicy policy = fromCode(policyName);
         this.policyName = policy.getCode();
-        this.getDocumentTypePolicyId().setPolicyName(policy.getCode());
     }
 
     public Boolean getPolicyValue() {
@@ -147,22 +148,16 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 
     public Object copy(boolean preserveKeys) {
         DocumentTypePolicy clone = new DocumentTypePolicy();
-
-        if(preserveKeys && this.getDocumentTypeId() != null){
-            clone.setDocumentTypeId(this.getDocumentTypeId());
+        if (preserveKeys) {
+            //clone.setDocumentTypeId(getDocumentTypeId());
+            clone.setPolicyName(getPolicyName());
         }
-        if(this.getPolicyName() != null){
-            clone.setPolicyName(new String(this.getPolicyName()));
-        }
-
         if(policyValue != null){
             clone.setPolicyValue(new Boolean(policyValue.booleanValue()));
         }
-        
         if(policyStringValue != null){
             clone.setPolicyStringValue(new String(policyStringValue));
         }
-
         return clone;
     }
 
@@ -173,4 +168,5 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
     }
+
 }

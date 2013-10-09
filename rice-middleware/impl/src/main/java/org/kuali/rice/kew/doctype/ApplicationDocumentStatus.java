@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
 /**
@@ -41,26 +44,16 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREW_DOC_TYP_APP_DOC_STAT_T")
-public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
+public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
 	private static final long serialVersionUID = -2212481684546954746L;
 
 	@EmbeddedId
 	private ApplicationDocumentStatusId applicationDocumentStatusId;
 
-    // TODO: JPA map ordering field
+    @Column(name = "SEQ_NO")
     private Integer sequenceNumber;
 
-	@MapsId("documentTypeId")
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID")
-	private DocumentType documentType;
-
-	@Transient
-	private String documentTypeId;
-	@Transient
-	private String statusName;
-
-    // TODO: JPA map
+    @Column(name="CAT_NM")
     private String categoryName;
 
     public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
@@ -75,20 +68,18 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 	}
 
 	public String getDocumentTypeId() {
-		return (this.getApplicationDocumentStatusId().getDocumentTypeId() != null) ? this.getApplicationDocumentStatusId().getDocumentTypeId() : this.documentTypeId;
+		return this.getApplicationDocumentStatusId().getDocumentTypeId();
 	}
 
 	public void setDocumentTypeId(String documentTypeId) {
-		this.documentTypeId = documentTypeId;
 		this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
 	}
 
 	public String getStatusName() {
-		return (this.getApplicationDocumentStatusId().getStatusName() != null) ? this.getApplicationDocumentStatusId().getStatusName() : this.statusName;
+		return this.getApplicationDocumentStatusId().getStatusName();
 	}
 
 	public void setStatusName(String statusName) {
-		this.statusName = statusName;
 		this.getApplicationDocumentStatusId().setStatusName(statusName);
 	}
 
@@ -108,11 +99,4 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
         this.categoryName = categoryName;
     }
 
-    public DocumentType getDocumentType() {
-		return this.documentType;
-	}
-
-	public void setDocumentType(DocumentType documentType) {
-		this.documentType = documentType;
-	}
 }

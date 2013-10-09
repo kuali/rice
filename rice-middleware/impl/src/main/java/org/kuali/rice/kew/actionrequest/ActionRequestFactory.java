@@ -186,7 +186,9 @@ public class ActionRequestFactory {
 
     /**
      * Generates a notification request for each action request specified, filtering out the specified principal
-     * and delegator, and exclusion workgroup members from notification list
+     * and delegator, and exclusion workgroup members from notification list. This method only returns requests that are
+     * "root" requests.
+     *
      * @param parentRequest if non-null, attaches generated notification requests to this parent action request
      * @param requests list of ActionRequestValues for which to generate corresponding notification requests
      * @param principal principal to exclude from notifications
@@ -201,25 +203,22 @@ public class ActionRequestFactory {
             String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
-        for (Iterator iter = requests.iterator(); iter.hasNext();) 
-        {
+        for (Iterator iter = requests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator)))
-            {
+            if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator))) {
                 // skip user requests to system users
                 if ((notifyExclusionWorkgroup != null) &&
-                        (isRecipientInGroup(notifyExclusionWorkgroup, actionRequest.getRecipient())))
-                {
+                        (isRecipientInGroup(notifyExclusionWorkgroup, actionRequest.getRecipient()))) {
                     continue;
                 }
                 ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, principal, notificationRequestCode, actionTakenCode);
-                notificationRequests.add(notificationRequest);
-                if (parentRequest != null)
-                {
+                if (parentRequest == null) {
+                    notificationRequests.add(notificationRequest);
+                    generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
+                } else {
                     notificationRequest.setParentActionRequest(parentRequest);
                     parentRequest.getChildrenRequests().add(notificationRequest);
                 }
-                notificationRequests.addAll(generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup));
             }
         }
         return notificationRequests;

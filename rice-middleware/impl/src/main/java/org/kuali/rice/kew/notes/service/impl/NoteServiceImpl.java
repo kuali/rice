@@ -24,7 +24,8 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
 import org.kuali.rice.kew.notes.service.AttachmentService;
 import org.kuali.rice.kew.notes.service.NoteService;
-
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 public class NoteServiceImpl implements NoteService {
 
@@ -32,8 +33,10 @@ public class NoteServiceImpl implements NoteService {
 
 	private AttachmentService attachmentService;
 
+    private DataObjectService dataObjectService;
+
 	public Note getNoteByNoteId(String noteId) {
-		return getNoteDAO().getNoteByNoteId(noteId);
+		return getDataObjectService().find(Note.class,noteId);
 	}
 
 	public List<Note> getNotesByDocumentId(String documentId) {
@@ -50,7 +53,7 @@ public class NoteServiceImpl implements NoteService {
 					}
 				}
 			}
-			getNoteDAO().saveNote(note);
+			getDataObjectService().save(note);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -65,23 +68,15 @@ public class NoteServiceImpl implements NoteService {
                }
            }
            if (note != null) {
-               getNoteDAO().deleteNote(note);
+               getDataObjectService().delete(note);
            }
 		} catch (Exception e) {
 			throw new RuntimeException("caught exception deleting attachment", e);
 		}
 	}
 
-	public NoteDAO getNoteDAO() {
-		return noteDAO;
-	}
-
-	public void setNoteDAO(NoteDAO noteDAO) {
-		this.noteDAO = noteDAO;
-	}
-
 	public void deleteAttachment(Attachment attachment) {
-		this.noteDAO.deleteAttachment(attachment);
+        getDataObjectService().delete(attachment);
 		try {
 			attachmentService.deleteAttachedFile(attachment);
 		} catch (Exception e) {
@@ -99,7 +94,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	public Attachment findAttachment(String attachmentId) {
-		return noteDAO.findAttachment(attachmentId);
+		return getDataObjectService().find(Attachment.class,attachmentId);
 	}
 
 	public AttachmentService getAttachmentService() {
@@ -109,4 +104,21 @@ public class NoteServiceImpl implements NoteService {
 	public void setAttachmentService(AttachmentService attachmentService) {
 		this.attachmentService = attachmentService;
 	}
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    public NoteDAO getNoteDAO() {
+        return noteDAO;
+    }
+
+    public void setNoteDAO(NoteDAO noteDAO) {
+        this.noteDAO = noteDAO;
+    }
 }

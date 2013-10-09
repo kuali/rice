@@ -15,13 +15,9 @@
  */
 package org.kuali.rice.kew.impl.action;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actions.BlanketApproveAction;
-import org.kuali.rice.kew.actions.MoveDocumentAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -32,8 +28,6 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-
-import javax.jws.WebParam;
 
 /**
  * References implementation of the {@code DocumentOrchestrationQueue}.
@@ -63,7 +57,7 @@ public class DocumentOrchestrationQueueImpl implements DocumentOrchestrationQueu
         }
 
         LOG.info("Performing document orchestration on documentId=" + documentId);
-        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(orchestrationConfig.getActionTakenId());
 		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);

@@ -82,7 +82,9 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
                 getRouteHeader().markDocumentEnroute();
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 notifyStatusChange(newStatus, oldStatus);
-                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                        saveRouteHeader(getRouteHeader());
+                setRouteHeader(routeHeaderValue);
             }
 
             OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, Collections.singleton(nodeName), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());

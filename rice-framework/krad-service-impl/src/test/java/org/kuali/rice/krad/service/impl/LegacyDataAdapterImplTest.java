@@ -489,6 +489,9 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
+    /**
+     * Even when in legacy mode, the document header is still retrieved via JPA
+     */
     @Test
     public void testGetByDocumentHeaderId_Legacy() throws Exception {
         enableLegacy();
@@ -499,8 +502,10 @@ public class LegacyDataAdapterImplTest {
                 return null;
             }
         });
-        verify(knsLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-        verifyZeroInteractions(kradLegacyDataAdapter);
+//        verify(knsLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
+        verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
     @Test

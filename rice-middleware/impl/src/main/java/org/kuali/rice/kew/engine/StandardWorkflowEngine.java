@@ -19,6 +19,7 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -44,7 +45,6 @@ import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -83,10 +83,6 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	    this.config = config;
 	}
 
-//	public void setRunPostProcessorLogic(boolean runPostProcessorLogic) {
-//	    this.runPostProcessorLogic = runPostProcessorLogic;
-//	}
-
 	public boolean isRunPostProcessorLogic() {
 	    return this.config.isRunPostProcessorLogic();
 	}
@@ -102,7 +98,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Aquiring lock on document " + documentId);
 			}
-			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+			KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Aquired lock on document " + documentId);
 			}
@@ -233,6 +229,12 @@ public class StandardWorkflowEngine implements WorkflowEngine {
  					// TODO update document content on context?
  				}
  				// assign our local list here so the post processor doesn't save a RouteNodeInstance in an intermediate state
+                // also, we clear out the next node instances here because it's legal for a transition engine (like the
+                // DynamicTransitionEngine) to return a RouteNodeInstance which already has nextNodeInstances that have
+                // been setup in advance. In these cases, depending on the type that those next node instances are, they
+                // might also get replaced during a "transitionTo" on the transaction, so we need to make sure we link
+                // our node instance to the proper version of it's next node instances
+                nodeInstance.clearNextNodeInstances();
 				for (RouteNodeInstance nextNodeInstance : nextNodeInstances) {
 					nodeInstance.addNextNodeInstance(nextNodeInstance);
 				}
@@ -249,7 +251,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		    nodeInstance.setComplete(false);
         }
 
-		saveNode(context, nodeInstance);
+		nodeInstance = saveNode(context, nodeInstance);
 		return new ProcessContext(nodeInstance.isComplete(), nodeInstance.getNextNodeInstances());
 	}
 
@@ -358,19 +360,23 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
 	private void saveDocument(RouteContext context) {
 		if (!context.isSimulation()) {
-			getRouteHeaderService().saveRouteHeader(context.getDocument());
+
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(context.getDocument());
+            context.setDocument(routeHeaderValue);
 		}
 	}
 
-	private void saveBranch(RouteContext context, Branch branch) {
+	private Branch saveBranch(RouteContext context, Branch branch) {
 		if (!context.isSimulation()) {
-			KEWServiceLocator.getRouteNodeService().save(branch);
+			return KEWServiceLocator.getRouteNodeService().save(branch);
 		}
+        return branch;
 	}
 
-	protected void saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
+	protected RouteNodeInstance saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
 		if (!context.isSimulation()) {
-			getRouteNodeService().save(nodeInstance);
+			nodeInstance = getRouteNodeService().save(nodeInstance);
 		} else {
 			// if we are in simulation mode, lets go ahead and assign some id
 			// values to our beans
@@ -387,6 +393,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				nodeInstance.getBranch().setBranchId(context.getEngineState().getNextSimulationId());
 			}
 		}
+
+        return nodeInstance;
 	}
 
 	// TODO extract this into some sort of component which handles transitioning
@@ -572,7 +580,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	 * than the nodeInstance
 	 */
 	private DocumentRouteHeaderValue notifyPostProcessor(DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance, DocumentRouteLevelChange event) {
-		getRouteHeaderService().saveRouteHeader(document);
+		document = getRouteHeaderService().saveRouteHeader(document);
 		ProcessDocReport report = null;
 		try {
 	        PostProcessor postProcessor = null;
@@ -646,7 +654,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         		if ( LOG.isInfoEnabled() ) {
     				LOG.info("Aquiring additional lock on document " + documentId);
     			}
-        		getRouteHeaderService().lockRouteHeader(documentId, true);
+        		getRouteHeaderService().lockRouteHeader(documentId);
         		if ( LOG.isInfoEnabled() ) {
         			LOG.info("Aquired lock on document " + documentId);
         		}
@@ -719,9 +727,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         if (process.getInitialRouteNode() != null) {
             RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
             nodeInstance.setActive(true);
-            helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+            Branch branch = helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+            nodeInstance = saveNode(context, nodeInstance);
             document.getInitialRouteNodeInstances().add(nodeInstance);
-            saveNode(context, nodeInstance);
         }
 	}
 

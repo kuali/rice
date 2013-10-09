@@ -123,6 +123,8 @@ public class RequestActivationNode extends RequestActivationNodeBase {
 
     protected boolean activateRequestsCustom( RouteContext context, List<ActionRequestValue> requests, List<ActionItem> generatedActionItems, 
     		DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
+        // make a copy of the list so that we can sort it
+        requests = new ArrayList<ActionRequestValue>(requests);
         Collections.sort(requests, new Utilities.PrioritySorter());
         String activationType = nodeInstance.getRouteNode().getActivationType();
         if (StringUtils.isBlank(activationType)) {
@@ -169,28 +171,35 @@ public class RequestActivationNode extends RequestActivationNodeBase {
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue siblingRequest = (ActionRequestValue) iterator.next();
                 if (actionRequest.getRoleName().equals(siblingRequest.getRoleName())) {
-                    generatedActionItems.addAll(KEWServiceLocator.getActionRequestService().activateRequestNoNotification(siblingRequest, context.getActivationContext()));
+                    KEWServiceLocator.getActionRequestService().activateRequestNoNotification(siblingRequest, context.getActivationContext());
+                    // the generated action items can be found in the activation context
+                    generatedActionItems.addAll(context.getActivationContext().getGeneratedActionItems());
                 }
             }
         }
-        generatedActionItems.addAll(KEWServiceLocator.getActionRequestService().activateRequestNoNotification(actionRequest, context.getActivationContext()));
+        KEWServiceLocator.getActionRequestService().activateRequestNoNotification(actionRequest, context.getActivationContext());
+        // the generated action items can be found in the activation context
+        generatedActionItems.addAll(context.getActivationContext().getGeneratedActionItems());
         return actionRequest.isApproveOrCompleteRequest() && ! actionRequest.isDone();
     }
     
-    protected void saveActionRequest(RouteContext context, ActionRequestValue actionRequest) {
+    protected ActionRequestValue saveActionRequest(RouteContext context, ActionRequestValue actionRequest) {
         if (!context.isSimulation()) {
-            KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
+            return KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
         } else {
             actionRequest.setActionRequestId(String.valueOf(generatedRequestPriority++));
-            context.getEngineState().getGeneratedRequests().add(actionRequest);    
+            context.getEngineState().getGeneratedRequests().add(actionRequest);
+            return actionRequest;
         }
         
     }
     
-    protected void saveDocument(RouteContext context, DocumentRouteHeaderValue document) {
+    protected DocumentRouteHeaderValue saveDocument(RouteContext context, DocumentRouteHeaderValue document) {
         if (!context.isSimulation()) {
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+            document = KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+            context.setDocument(document);
         }
+        return document;
     }
 
     protected void logProcessingMessage(ActionRequestValue request) {

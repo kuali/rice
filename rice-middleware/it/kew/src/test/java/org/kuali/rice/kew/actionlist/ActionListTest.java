@@ -15,10 +15,27 @@
  */
 package org.kuali.rice.kew.actionlist;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionlist.web.ActionListUtil;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -28,7 +45,6 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -45,19 +61,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -71,6 +74,7 @@ public class ActionListTest extends KEWTestCase {
     private DocumentRouteHeaderValue routeHeader3;
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
 
+    @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionListConfig.xml");
     }
@@ -83,10 +87,10 @@ public class ActionListTest extends KEWTestCase {
         routeHeader1 = generateDocRouteHeader();
         routeHeader2 = generateDocRouteHeader();
         routeHeader3 = generateDocRouteHeader();
-        
-        getRouteHeaderService().saveRouteHeader(routeHeader1);
-        getRouteHeaderService().saveRouteHeader(routeHeader2);
-        getRouteHeaderService().saveRouteHeader(routeHeader3);
+
+        routeHeader1 = getRouteHeaderService().saveRouteHeader(routeHeader1);
+        routeHeader2 = getRouteHeaderService().saveRouteHeader(routeHeader2);
+        routeHeader3 = getRouteHeaderService().saveRouteHeader(routeHeader3);
 
         for (int i = 0; i < AUTHENTICATION_IDS.length; i++) {
             actionItems1.add(generateActionItem(routeHeader1, "K", AUTHENTICATION_IDS[i], null));
@@ -95,7 +99,7 @@ public class ActionListTest extends KEWTestCase {
         for (int i = 0; i < WORKGROUP_IDS.length; i++) {
             actionItems3.add(generateActionItem(routeHeader3, "A", AUTHENTICATION_IDS[i], WORKGROUP_IDS[i]));
         }
-        
+
         actionItems.addAll(actionItems1);
         actionItems.addAll(actionItems2);
         actionItems.addAll(actionItems3);
@@ -120,9 +124,11 @@ public class ActionListTest extends KEWTestCase {
     	setUpOldSchool();
         TransactionTemplate transactionTemplate = getTransactionTemplate();
         transactionTemplate.execute(new TransactionCallback() {
+            @Override
             public Object doInTransaction(TransactionStatus status) {
             	return TestUtilities.getJdbcTemplate().execute(new StatementCallback() {
-            		public Object doInStatement(Statement stmt) {
+            		@Override
+                    public Object doInStatement(Statement stmt) {
                         try {
                             Connection conn = stmt.getConnection();
                             PreparedStatement ps = conn.prepareStatement("select distinct PRNCPL_ID from krew_actn_itm_t");
@@ -159,18 +165,22 @@ public class ActionListTest extends KEWTestCase {
 
     @Test
     public void testActionListMaxActionItemDateAssignedAndCountForUser() throws Exception {
+        // sanity check first - just attempt to call the method
+        getActionListService().getMaxActionItemDateAssignedAndCountForUser("123456");
         setUpOldSchool();
         TransactionTemplate transactionTemplate = getTransactionTemplate();
         transactionTemplate.execute(new TransactionCallback() {
+            @Override
             public Object doInTransaction(TransactionStatus status) {
                 return TestUtilities.getJdbcTemplate().execute(new StatementCallback() {
+                    @Override
                     public Object doInStatement(Statement stmt) {
                         try {
                             Connection conn = stmt.getConnection();
                             PreparedStatement ps = conn.prepareStatement(
                                     "select distinct PRNCPL_ID from krew_actn_itm_t");
                             ResultSet rs = ps.executeQuery();
-                            int cnt = 0;
+                            long cnt = 0;
                             Date maxDate = null;
                             int loopCnt = 0;
                             //do first 5 for time sake
@@ -187,16 +197,19 @@ public class ActionListTest extends KEWTestCase {
                                 ResultSet rsWorkflowIdCnt = ps1.executeQuery();
                                 if (rsWorkflowIdCnt.next()) {
                                     maxDate = rsWorkflowIdCnt.getTimestamp(1);
-                                    cnt = rsWorkflowIdCnt.getInt(2);
+                                    cnt = rsWorkflowIdCnt.getLong(2);
                                 } else {
                                     throw new Exception(
                                             "WorkflowId " + workflowId + " didn't return a result set.  Test SQL invalid.");
                                 }
                                 List<Object> ls = getActionListService().getMaxActionItemDateAssignedAndCountForUser(workflowId);
-                                assertEquals((Integer) cnt, ls.get(1));
+                                assertEquals((Long) cnt, ls.get(1));
                                 assertEquals(maxDate, ls.get(0));
                                 ps1.close();
                                 rsWorkflowIdCnt.close();
+                            }
+                            if ( loopCnt == 0 ) {
+                                Assert.fail( "ERROR - NO PRINCIPAL IDs RETURNED FROM ACTION ITEM SEARCH - TEST DID NOT RUN" );
                             }
                             rs.close();
                             ps.close();
@@ -242,7 +255,7 @@ public class ActionListTest extends KEWTestCase {
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
     	secondaryFilter.setDelegationType(DelegationType.SECONDARY.getCode());
-    	Collection<ActionItemActionListExtension> actionItems = null;
+    	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
@@ -371,7 +384,7 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(DelegationType.PRIMARY.getCode());
-    	Collection<ActionItemActionListExtension> actionItems = null;
+    	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items
@@ -504,12 +517,12 @@ public class ActionListTest extends KEWTestCase {
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("jhopf"),
                 "ActionListDocumentType");
         document.route("");
-        Collection<ActionItemActionListExtension> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
+        Collection<ActionItem> actionItems = getActionListService().getActionList(getPrincipalIdForName("bmcgough"),
                 new ActionListFilter());
         assertEquals("bmcgough should have 1 item in his action list.", 1, actionItems.size());
         //delete one of the action items
         ActionItem itm = null;
-        for (Iterator<ActionItemActionListExtension> iterator = actionItems.iterator(); iterator.hasNext(); ) {
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext(); ) {
             ActionItem actionItem = iterator.next();
             itm = getActionListService().findByActionItemId(actionItem.getId());
             getActionListService().deleteActionItem(itm);

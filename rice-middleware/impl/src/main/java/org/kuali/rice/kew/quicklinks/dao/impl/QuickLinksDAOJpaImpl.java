@@ -54,7 +54,7 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
                 final String docTypeName = (String) res[0];
                 final Long count = (Long) res[1];
 
-                final List<String> docTypeLabel = entityManager.createNamedQuery("DocumentType.QuickLinks.FindLabelByTypeName").setParameter("docTypeName", docTypeName).getResultList();
+                final List<String> docTypeLabel = entityManager.createNamedQuery("DocumentType.GetDocumentTypeByName").setParameter("name", docTypeName).getResultList();
                 if (docTypeLabel.size() > 0) {
                     docTypes.add(new ActionListStats(docTypeName, docTypeLabel.get(0), count.intValue()));
                 }

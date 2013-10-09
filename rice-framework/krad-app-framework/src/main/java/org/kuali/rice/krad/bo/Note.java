@@ -31,6 +31,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -72,12 +73,12 @@ public class Note extends PersistableBusinessObjectBase {
     @Transient
     private String attachmentIdentifier;
 
-    @OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="NTE_TYP_CD",updatable=false,insertable=false)
+    @ManyToOne(targetEntity=NoteType.class,fetch=FetchType.EAGER)
+	@JoinColumn(name="NTE_TYP_CD",referencedColumnName = "NTE_TYP_CD",updatable=false,insertable=false)
 	private NoteType noteType;
     @Transient
     private transient Person authorUniversal;
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "NTE_ID",updatable=false,insertable=false)
 	private Attachment attachment;
     @Transient

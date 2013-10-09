@@ -15,35 +15,47 @@
  */
 package org.kuali.rice.kew.actionitem;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionItemContract;
 import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.api.util.CodeTranslator;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
@@ -54,33 +66,34 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-
-
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_ACTN_ITM_T")
-//@Sequence(name="KREW_ACTN_ITM_S",property="id")
 @NamedQueries({
-    @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
-        "AND (delegationType IS null OR delegationType != :delegationType) GROUP BY docName")
+    @NamedQuery(name="ActionItem.DistinctDocumentsForPrincipalId", query="SELECT COUNT(DISTINCT(ai.documentId)) FROM ActionItem ai"
+            + "  WHERE ai.principalId = :principalId AND (ai.delegationType IS NULL OR ai.delegationType = 'P')"),
+    @NamedQuery(name="ActionItem.GetMaxDateAndCountForPrincipalId", query="SELECT MAX(ai.dateAssigned) AS max_date, COUNT(DISTINCT(ai.documentId)) AS total_records FROM ActionItem ai"
+            + "  WHERE ai.principalId = :principalId")
 })
 public class ActionItem implements ActionItemContract, Serializable {
 
     private static final long serialVersionUID = -1079562205125660151L;
 
     @Id
-    @GeneratedValue(generator="KREW_ACTN_ITM_S")
+    @GeneratedValue(generator = "KREW_ACTN_ITM_S")
+    @PortableSequenceGenerator(name = "KREW_ACTN_ITM_S")
     @Column(name="ACTN_ITM_ID")
 	private String id;
+
     @Column(name="PRNCPL_ID")
 	private String principalId;
 	@Column(name="ASND_DT")
 	private Timestamp dateAssigned;
     @Column(name="RQST_CD")
 	private String actionRequestCd;
-    @Column(name="ACTN_RQST_ID", nullable=false)
+    @Column(name="ACTN_RQST_ID")
 	private String actionRequestId;
-    @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
+    @Column(name="DOC_HDR_ID")
 	private String documentId;
     @Column(name="GRP_ID")
 	private String groupId;
@@ -109,11 +122,45 @@ public class ActionItem implements ActionItemContract, Serializable {
     @Transient
     private String dateAssignedStringValue;
 
+    @Transient
+    private Timestamp lastApprovedDate;
 
-    //@PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
+    @Transient
+    private Map<String, String> customActions = new HashMap<String, String>();
+
+    @Transient
+    private String rowStyleClass;
+
+    @Transient
+    private Integer actionListIndex;
+
+    @Transient
+    private String delegatorName = "";
+
+    @Transient
+    private String groupName = "";
+
+    @Transient
+    private DisplayParameters displayParameters;
+
+    @Transient
+    private boolean isInitialized = false;
+
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.DETACH})
+    @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+    private DocumentRouteHeaderValue routeHeader;
+
+    @Transient
+    private DocumentRouteHeaderValue minimalRouteHeader;
+
+    @Transient
+    private boolean lastApprovedDateInitialized = false;
+
+    @Transient
+    private boolean delegatorNameInitialized = false;
+
+    @Transient
+    private boolean groupNameInitialized = false;
 
     @Deprecated
     @Override
@@ -139,71 +186,87 @@ public class ActionItem implements ActionItemContract, Serializable {
     public void setDateAssignedStringValue(String dateAssignedStringValue) {
         this.dateAssignedStringValue = dateAssignedStringValue;
     }
-    
+
+    @Override
     public String getId() {
         return id;
     }
-    
+
+    @Override
     public String getPrincipalId() {
         return principalId;
     }
-    
+
     public Timestamp getDateAssigned() {
         return dateAssigned;
     }
 
+    @Override
     public DateTime getDateTimeAssigned() {
         return new DateTime(dateAssigned);
     }
-    
+
+    @Override
     public String getActionRequestCd() {
         return actionRequestCd;
     }
-    
+
+    @Override
     public String getActionRequestId() {
         return actionRequestId;
     }
-    
+
+    @Override
     public String getDocumentId() {
         return documentId;
     }
-    
+
+    @Override
     public String getGroupId() {
         return groupId;
     }
 
+    @Override
     public String getDocTitle() {
         return docTitle;
     }
-    
+
+    @Override
     public String getDocLabel() {
         return docLabel;
     }
-    
+
+    @Override
     public String getDocHandlerURL() {
         return docHandlerURL;
     }
-    
+
+    @Override
     public String getDocName() {
         return docName;
     }
 
+    @Override
     public String getResponsibilityId() {
         return responsibilityId;
     }
 
+    @Override
     public String getRoleName() {
         return roleName;
     }
 
+    @Override
     public String getDelegatorPrincipalId() {
         return delegatorPrincipalId;
     }
 
+    @Override
     public String getDelegatorGroupId() {
         return delegatorGroupId;
     }
 
+    @Override
     public DelegationType getDelegationType() {
         return DelegationType.fromCode(delegationType);
     }
@@ -233,7 +296,7 @@ public class ActionItem implements ActionItemContract, Serializable {
         }
         return recipientTypeCode;
     }
-    
+
     public String getActionRequestLabel() {
     	if (StringUtils.isNotBlank(getRequestLabel())) {
     		return getRequestLabel();
@@ -244,7 +307,7 @@ public class ActionItem implements ActionItemContract, Serializable {
     public boolean isWorkgroupItem() {
         return getGroupId() != null;
     }
-    
+
     public Principal getPrincipal(){
         return KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
     }
@@ -252,7 +315,7 @@ public class ActionItem implements ActionItemContract, Serializable {
     public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
-    
+
     public void setDocName(String docName) {
         this.docName = docName;
     }
@@ -268,7 +331,7 @@ public class ActionItem implements ActionItemContract, Serializable {
     public void setPrincipalId(String principalId) {
         this.principalId = principalId;
     }
-    
+
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
@@ -296,15 +359,15 @@ public class ActionItem implements ActionItemContract, Serializable {
     public void setDocTitle(String docTitle) {
         this.docTitle = docTitle;
     }
-    
+
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    
+
     public void setDelegatorPrincipalId(String delegatorPrincipalId) {
         this.delegatorPrincipalId = delegatorPrincipalId;
     }
-    
+
     public void setDelegatorGroupId(String delegatorGroupId) {
         this.delegatorGroupId = delegatorGroupId;
     }
@@ -312,7 +375,7 @@ public class ActionItem implements ActionItemContract, Serializable {
     public void setDelegationType(DelegationType delegationType) {
         this.delegationType = delegationType == null ? null : delegationType.getCode();
     }
-    
+
     public void setRequestLabel(String requestLabel) {
         this.requestLabel = requestLabel;
     }
@@ -324,6 +387,7 @@ public class ActionItem implements ActionItemContract, Serializable {
         return null;
     }
 
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id)
                                         .append("principalId", principalId)
@@ -344,19 +408,179 @@ public class ActionItem implements ActionItemContract, Serializable {
                                         .toString();
     }
 
+    public String getRouteHeaderRouteStatus() {
+        return getMinimalRouteHeader().getDocRouteStatus();
+    }
+
+    public String getRouteHeaderCombinedStatus() {
+        return getMinimalRouteHeader().getCombinedStatus();
+    }
+
+    public Timestamp getRouteHeaderCreateDate() {
+        return getMinimalRouteHeader().getCreateDate();
+    }
+
+    public String getRouteHeaderInitiatorName() {
+        return getMinimalRouteHeader().getInitiatorDisplayName();
+    }
+
+    public Timestamp getRouteHeaderApprovedDate() {
+        return getMinimalRouteHeader().getApprovedDate();
+    }
+
+    public String getRouteHeaderCurrentRouteLevelName() {
+        return getMinimalRouteHeader().getCurrentRouteLevelName();
+    }
+
+    public String getRouteHeaderInitiatorWorkflowId() {
+        return getMinimalRouteHeader().getInitiatorWorkflowId();
+    }
+
+    public Integer getActionListIndex() {
+        return actionListIndex;
+    }
+
+    public void setActionListIndex(Integer actionListIndex) {
+        this.actionListIndex = actionListIndex;
+    }
+
+    public Timestamp getLastApprovedDate() {
+        initializeLastApprovedDate();
+        return this.lastApprovedDate;
+    }
+
+    public Map<String, String> getCustomActions() {
+        return customActions;
+    }
+
+    public void setCustomActions(Map<String, String> customActions) {
+        this.customActions = customActions;
+    }
+
+    public String getRowStyleClass() {
+        return rowStyleClass;
+    }
+
+    public void setRowStyleClass(String rowStyleClass) {
+        this.rowStyleClass = rowStyleClass;
+    }
+
+    public String getDelegatorName() {
+        initializeDelegatorName();
+        return delegatorName;
+    }
+
+    public String getGroupName() {
+        initializeGroupName();
+        return groupName;
+    }
+
+    public void initialize(Preferences preferences) {
+        // always re-initialize row style class, just in case they changed a preference!
+        initializeRowStyleClass(preferences);
+    	if (isInitialized) {
+    		return;
+    	}
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowWorkgroupRequest())) {
+            initializeGroupName();
+        }
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDelegator())) {
+            initializeDelegatorName();
+        }
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
+        	initializeLastApprovedDate();
+        }
+        isInitialized = true;
+    }
+
+    private void initializeRowStyleClass(Preferences preferences) {
+        //set background colors for document statuses
+        String docRouteStatus = getRouteHeaderRouteStatus();
+        if (KewApiConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
+        } else if (KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDisapproved()));
+        } else if (KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
+        } else if (KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
+        } else if (KewApiConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
+        } else if (KewApiConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
+        } else if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProcessed()));
+        } else if (KewApiConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(docRouteStatus)) {
+            setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
+        }
+    }
+
+    private void initializeGroupName() {
+        if (!groupNameInitialized) {
+            if (getGroupId() != null) {
+                Group group = this.getGroup();
+                groupName = group.getName();
+            }
+            groupNameInitialized = true;
+        }
+    }
+
+    private void initializeDelegatorName() {
+        if (!delegatorNameInitialized) {
+            if (getDelegatorPrincipalId() != null) {
+                EntityNamePrincipalName name = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(getDelegatorPrincipalId());
+                if (name != null) {
+                    delegatorName = name.getDefaultName().getCompositeName();
+                }
+            }
+            if (getDelegatorGroupId() != null) {
+                Group delegatorGroup = KimApiServiceLocator.getGroupService().getGroup(getDelegatorGroupId());
+                if (delegatorGroup !=null)
+                    delegatorName = delegatorGroup.getName();
+            }
+            delegatorNameInitialized = true;
+        }
+    }
+
+    private void initializeLastApprovedDate() {
+        if (!lastApprovedDateInitialized) {
+            lastApprovedDate = KEWServiceLocator.getActionTakenService().getLastApprovedDate(getDocumentId());
+            lastApprovedDateInitialized = true;
+        }
+    }
+
+    public DisplayParameters getDisplayParameters() {
+    	return displayParameters;
+    }
+
+    public void setDisplayParameters(DisplayParameters displayParameters) {
+    	this.displayParameters = displayParameters;
+    }
+
+    public DocumentRouteHeaderValue getRouteHeader() {
+    	return routeHeader;
+    }
+
+    public DocumentRouteHeaderValue getMinimalRouteHeader() {
+        if ( minimalRouteHeader == null ) {
+            minimalRouteHeader = KEWServiceLocator.getActionListService().getMinimalRouteHeader(documentId);
+        }
+        return minimalRouteHeader;
+    }
+
     public static org.kuali.rice.kew.api.action.ActionItem to(ActionItem bo) {
         if (bo == null) {
             return null;
         }
         return org.kuali.rice.kew.api.action.ActionItem.Builder.create(bo).build();
     }
-    
+
     public static List<org.kuali.rice.kew.api.action.ActionItem> to(Collection<ActionItem> bos) {
         if (bos == null)
             return null;
-        if (bos.isEmpty()) 
+        if (bos.isEmpty())
             return new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
-        
+
         List<org.kuali.rice.kew.api.action.ActionItem> dtos = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(bos.size());
         for (ActionItem bo : bos) {
             dtos.add(ActionItem.to(bo));

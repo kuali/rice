@@ -1082,7 +1082,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 RuleExtensionValue extensionValue = new RuleExtensionValue();
                 PropertyUtils.copyProperties(extensionValue, existingExtensionValue);
                 extensionValue.setExtension(extension);
-                extensionValue.setRuleExtensionId(null);
+                extensionValue.getExtension().setRuleExtensionId(null);
                 extensionValue.setLockVerNbr(0);
                 extensionValue.setRuleExtensionValueId(null);
                 extension.getExtensionValues().add(extensionValue);

@@ -191,7 +191,7 @@ public class RequestsNode extends RequestActivationNode {
 				actionRequest = KEWServiceLocator.getActionRequestService()
 						.initializeActionRequestGraph( actionRequest, context.getDocument(),
 								nodeInstance );
-				saveActionRequest( context, actionRequest );
+				actionRequest = saveActionRequest( context, actionRequest );
 				newRequests.add( actionRequest );
 			}
 		} catch ( WorkflowException ex ) {

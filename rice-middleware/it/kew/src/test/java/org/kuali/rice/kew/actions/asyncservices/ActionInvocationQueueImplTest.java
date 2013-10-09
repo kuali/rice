@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -33,10 +26,15 @@ import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 /**
+ * Integration test for the {@link ActionInvocationQueueImpl}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class ActionInvocationQueueImplTest extends KEWTestCase {
 

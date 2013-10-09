@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.exception;
 
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
 /**
@@ -23,8 +24,8 @@ import org.kuali.rice.ksb.messaging.PersistedMessageBO;
  */
 public interface WorkflowDocumentExceptionRoutingService {
 	
-	public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception;
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception;
+	public DocumentRouteHeaderValue placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception;
+	public DocumentRouteHeaderValue placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception;
 	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception;
 	
 }

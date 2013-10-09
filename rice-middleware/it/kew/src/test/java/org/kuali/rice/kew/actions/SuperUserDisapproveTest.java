@@ -25,9 +25,9 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import static org.junit.Assert.*;
 
 /**
- * 
  * Test SuperUserDissaprove actions from WorkflowDocument
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SuperUserDisapproveTest extends KEWTestCase {
     private static final String DOC_TYPE = NotifySetup.DOCUMENT_TYPE_NAME;
@@ -57,10 +57,13 @@ public class SuperUserDisapproveTest extends KEWTestCase {
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_DISAPPROVE));
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).isAcknowledgeRequested());
+        if (notify) {
+            assertTrue(WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(), document.getDocumentId()).isAcknowledgeRequested());
+            assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).isAcknowledgeRequested());
+            assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).isAcknowledgeRequested());
+            // jhopf took the super user action so should not be notified of disapproval (see KULRICE-752)
+            assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).isAcknowledgeRequested());
+        }
 	}
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
@@ -83,11 +86,12 @@ public class SuperUserDisapproveTest extends KEWTestCase {
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_DISAPPROVE));
         document.superUserDisapprove("");
         assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
-        // initiator doesn't get Ack for their own action
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).isAcknowledgeRequested());
-        assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).isAcknowledgeRequested());
+        if (notify) {
+            assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).isAcknowledgeRequested());
+            assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).isAcknowledgeRequested());
+            // initiator doesn't get Ack for their own action
+            assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).isAcknowledgeRequested());
+        }
 	}
 
     @Test public void testSuperUserInitiatorImmediateDisapprove() throws Exception {

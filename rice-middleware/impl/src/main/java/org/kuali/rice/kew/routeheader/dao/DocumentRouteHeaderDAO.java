@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kew.routeheader.dao;
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
+
+import java.util.Collection;
+import java.util.Set;
 
 
 
@@ -29,16 +29,14 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
  */
 public interface DocumentRouteHeaderDAO {
 
-  public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
+  //public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
   /**
    * "Locks" the route header at the datasource level.
    */
-  public void lockRouteHeader(String documentId, boolean wait);
-  public DocumentRouteHeaderValue findRouteHeader(String documentId);
+  public void lockRouteHeader(String documentId);
   public DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache);
   public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds);
   public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache);
-  public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
   public String getNextDocumentId();
   public Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds);
   public void clearRouteHeaderSearchValues(String documentId);

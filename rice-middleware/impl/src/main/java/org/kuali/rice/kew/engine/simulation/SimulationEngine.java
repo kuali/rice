@@ -575,7 +575,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
      * Resolves KULRICE-368
      */
     @Override
-    protected void saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
+    protected RouteNodeInstance saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
 		// we shold be in simulation mode here
 
     	if (nodeInstance.getRouteNodeInstanceId() == null) {
@@ -596,6 +596,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     	if (nodeInstance.getBranch() != null && nodeInstance.getBranch().getBranchId() == null) {
     		nodeInstance.getBranch().setBranchId(context.getEngineState().getNextSimulationId());
     	}
+        return nodeInstance;
     }
 
 }

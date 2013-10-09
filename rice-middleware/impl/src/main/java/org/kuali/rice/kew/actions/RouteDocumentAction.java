@@ -138,7 +138,9 @@ public class RouteDocumentAction extends ActionTakenEvent {
 
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 notifyStatusChange(newStatus, oldStatus);
-                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                DocumentRouteHeaderValue persistedRouteHeader = KEWServiceLocator.
+                        getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                setRouteHeader(persistedRouteHeader);
             } catch (WorkflowException ex) {
                 LOG.warn(ex, ex);
 	            throw new InvalidActionTakenException(ex.getMessage());

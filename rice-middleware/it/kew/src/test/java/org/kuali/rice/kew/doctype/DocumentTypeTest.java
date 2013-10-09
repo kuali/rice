@@ -610,9 +610,6 @@ public class DocumentTypeTest extends KEWTestCase {
     	for (DocumentType leaf : leafs) {
 			verifyHierarchy(leaf, rootDocIds);
 		}
-    	for (DocumentType leaf : leafs) {
-			verifyHierarchy(leaf, rootDocIds);
-		}
     	// we should have the same number of roots as we did from the original roots query
     	assertEquals("Should have the same number of roots", numRoots, rootDocIds.size());
     }

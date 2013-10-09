@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.docsearch.SearchableAttributeBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -43,8 +44,8 @@ public interface RouteHeaderService {
     public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds);
     public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds, boolean clearCache);
     public Map<String,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
-    public void lockRouteHeader(String documentId, boolean wait);
-    public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
+    public void lockRouteHeader(String documentId);
+    public DocumentRouteHeaderValue saveRouteHeader(DocumentRouteHeaderValue routeHeader);
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
     public String getNextDocumentId();
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader);

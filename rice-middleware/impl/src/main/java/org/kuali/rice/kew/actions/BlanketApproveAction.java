@@ -155,7 +155,9 @@ public class BlanketApproveAction extends ActionTakenEvent {
             getActionRequestService().deactivateRequests(actionTaken, actionRequests);
             notifyActionTaken(actionTaken);
 
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+        DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                saveRouteHeader(getRouteHeader());
+        setRouteHeader(routeHeaderValue);
 
 //        } else {
 //            LOG.warn("Document not in state to be approved.");
@@ -204,7 +206,9 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
         String newStatus = routeHeader.getDocRouteStatus();
         notifyStatusChange(newStatus, oldStatus);
-        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+        DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                saveRouteHeader(routeHeader);
+        setRouteHeader(routeHeaderValue);
     }
 
     private RouteNodeService getRouteNodeService() {

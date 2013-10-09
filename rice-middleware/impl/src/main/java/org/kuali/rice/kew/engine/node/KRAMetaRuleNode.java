@@ -58,7 +58,7 @@ public class KRAMetaRuleNode extends IteratedRequestActivationNode {
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
 			actionRequest = KEWServiceLocator.getActionRequestService().initializeActionRequestGraph(actionRequest, context.getDocument(), context.getNodeInstance());
-			saveActionRequest(context, actionRequest);
+			actionRequest = saveActionRequest(context, actionRequest);
 			newRequests.add(actionRequest);
 		}
 		return newRequests;

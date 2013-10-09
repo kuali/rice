@@ -155,7 +155,9 @@ public class DisapproveAction extends ActionTakenEvent {
             String oldStatus = getRouteHeader().getDocRouteStatus();
             routeHeader.markDocumentDisapproved();
             String newStatus = getRouteHeader().getDocRouteStatus();
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(routeHeader);
+            setRouteHeader(routeHeaderValue);
             notifyStatusChange(newStatus, oldStatus);
         } catch (WorkflowException ex) {
             LOG.warn(ex, ex);

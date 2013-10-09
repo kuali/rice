@@ -33,6 +33,9 @@ import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,25 +62,27 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 		ComparatorUtils.reversedComparator(NODE_INSTANCE_FORWARD_SORT);
     private RouteHelper helper = new RouteHelper();
 	private RouteNodeDAO routeNodeDAO;
+
+    private DataObjectService dataObjectService;
 	
-    public void save(RouteNode node) {
-    	routeNodeDAO.save(node);
+    public RouteNode save(RouteNode node) {
+    	return dataObjectService.save(node);
     }
     
-    public void save(RouteNodeInstance nodeInstance) {
-    	routeNodeDAO.save(nodeInstance);
+    public RouteNodeInstance save(RouteNodeInstance nodeInstance) {
+        return dataObjectService.save(nodeInstance);
     }
     
     public void save(NodeState nodeState) {
-        routeNodeDAO.save(nodeState);
+        dataObjectService.save(nodeState, PersistenceOption.FLUSH);
     }
     
-    public void save(Branch branch) {
-        routeNodeDAO.save(branch);
+    public Branch save(Branch branch) {
+        return dataObjectService.save(branch, PersistenceOption.FLUSH);
     }
 
     public RouteNode findRouteNodeById(String nodeId) {
-    	return routeNodeDAO.findRouteNodeById(nodeId);
+    	return dataObjectService.find(RouteNode.class,nodeId);
     }
     
     public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId) {
@@ -526,6 +531,16 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 		}
     	return revokedNodeInstances;
 	}
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
     
     
 }

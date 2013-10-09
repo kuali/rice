@@ -22,21 +22,19 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import javax.persistence.CascadeType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.ResultSet;
@@ -53,13 +51,20 @@ import java.util.regex.Pattern;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_DOC_HDR_EXT_LONG_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeLongValue.FindByDocumentId", query="select s from SearchableAttributeLongValue as s where s.documentId = :documentId"),
-	@NamedQuery(name="SearchableAttributeLongValue.FindByKey", query="select s from SearchableAttributeLongValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeLongValue.FindByDocumentId", query="select s from "
+            + "SearchableAttributeLongValue as s where s.documentId = :documentId"),
+	@NamedQuery(name="SearchableAttributeLongValue.FindByKey", query="select s from "
+            + "SearchableAttributeLongValue as s where s.documentId = :documentId and "
+            + "s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeLongValue implements SearchableAttributeValue, Serializable {
+@AttributeOverrides({
+        @AttributeOverride(name="searchableAttributeValueId", column=@Column(name="DOC_HDR_EXT_LONG_ID"))
+})
+public class SearchableAttributeLongValue extends SearchableAttributeBase implements SearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = 5786144436732198346L;
 
@@ -75,18 +80,8 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")
 	@Column(name="DOC_HDR_EXT_LONG_ID")
 	private String searchableAttributeValueId;
-    @Column(name="KEY_CD")
-	private String searchableAttributeKey;
     @Column(name="VAL")
 	private Long searchableAttributeValue;
-    @Transient
-    protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
-
-    @Column(name="DOC_HDR_ID")
-	private String documentId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -230,38 +225,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
         return null;
     }
 
-    public String getOjbConcreteClass() {
-        return ojbConcreteClass;
-    }
-
-    public void setOjbConcreteClass(String ojbConcreteClass) {
-        this.ojbConcreteClass = ojbConcreteClass;
-    }
-
-    public DocumentRouteHeaderValue getRouteHeader() {
-        return routeHeader;
-    }
-
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.routeHeader = routeHeader;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
-    public String getSearchableAttributeKey() {
-        return searchableAttributeKey;
-    }
-
-    public void setSearchableAttributeKey(String searchableAttributeKey) {
-        this.searchableAttributeKey = searchableAttributeKey;
-    }
-
+    @Override
     public Long getSearchableAttributeValue() {
         return searchableAttributeValue;
     }

@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 package org.kuali.rice.kew.actionlist;
-import org.apache.struts.action.*;
-import org.apache.commons.collections.ComparatorUtils;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.displaytag.pagination.PaginatedList;
-import org.displaytag.properties.SortOrderEnum;
-import org.displaytag.util.LookupUtil;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionlist.web.ActionListUtil;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -45,42 +53,19 @@ import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationMediator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.kuali.rice.krad.web.form.UifFormBase;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A controller for the action list view.
@@ -88,7 +73,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/new/actionList")
+@RequestMapping(value = "/kew/actionList")
 public class ActionListController extends UifControllerBase{
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListController.class);
     protected static final String MAX_ACTION_ITEM_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss.S";
@@ -115,6 +100,7 @@ public class ActionListController extends UifControllerBase{
     * @param response - http response
     * @return start - forwards to start method
     */
+    @Override
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
@@ -153,7 +139,7 @@ public class ActionListController extends UifControllerBase{
     * @param filter - action list filter
     * @return String
     */
-    protected String initializePrinicpalId(ActionListForm actionListForm,ActionListFilter filter) {
+    protected String initializePrincipalId(ActionListForm actionListForm,ActionListFilter filter) {
         String principalId = null;
         Principal principal = actionListForm.getHelpDeskActionListPrincipal();
         if (principal != null) {
@@ -199,7 +185,7 @@ public class ActionListController extends UifControllerBase{
     * @param request - http request
     * @return void
     */
-    protected void initializeDelegators(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
+    protected void initializeDelegators(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItem> actionList,HttpServletRequest request)   {
         if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
             // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
             // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
@@ -254,7 +240,7 @@ public class ActionListController extends UifControllerBase{
      * @param request - http request
      * @return void
      */
-    protected void initializePrimaryDelegate(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemActionListExtension> actionList,HttpServletRequest request)   {
+    protected void initializePrimaryDelegate(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItem> actionList,HttpServletRequest request)   {
         if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
 
             // If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
@@ -303,7 +289,7 @@ public class ActionListController extends UifControllerBase{
         boolean freshActionList = true;
 
         // retrieve cached action list
-        List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>)actionListForm.getActionList();
+        List<? extends ActionItem> actionList = actionListForm.getActionList();
         plog.log("Time to initialize");
 
 
@@ -312,7 +298,7 @@ public class ActionListController extends UifControllerBase{
             initializeFilter(actionListForm);
             final ActionListFilter filter = actionListForm.getFilter();
 
-            String principalId = initializePrinicpalId(actionListForm,filter);
+            String principalId = initializePrincipalId(actionListForm,filter);
 
             /* 'forceListRefresh' variable used to signify that the action list filter has changed
              * any time the filter changes the action list must be refreshed or filter may not take effect on existing
@@ -321,7 +307,7 @@ public class ActionListController extends UifControllerBase{
              */
             boolean forceListRefresh = actionListForm.isRequeryActionList();
 
-            final Preferences preferences = (Preferences)actionListForm.getPreferences();
+            final Preferences preferences = actionListForm.getPreferences();
 
             //set primary delegation id
             if (!StringUtils.isEmpty(actionListForm.getDelegationId())) {
@@ -339,7 +325,7 @@ public class ActionListController extends UifControllerBase{
             }
 
             if (isOutboxMode(actionListForm, request, preferences)) {
-                actionList = new ArrayList<OutboxItemActionListExtension>(actionListSrv.getOutbox(principalId, filter));
+                actionList = new ArrayList<OutboxItem>(actionListSrv.getOutbox(principalId, filter));
                 actionListForm.setOutBoxEmpty(actionList.isEmpty());
                 //added because we now use the actionList rather than the actionListPage
                 actionListForm.setActionList((ArrayList) actionList);
@@ -347,11 +333,11 @@ public class ActionListController extends UifControllerBase{
 
                 if (actionList == null) {
                     // fetch the action list
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     actionListForm.setUser(principalId);
                 } else if (forceListRefresh) {
                     // force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList<ActionItemActionListExtension>(actionListSrv.getActionList(principalId, filter));
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     actionListForm.setUser(principalId);
                 } else {
                     Boolean update = actionListForm.isUpdateActionList();
@@ -472,13 +458,13 @@ public class ActionListController extends UifControllerBase{
      * @param preferences KEW user preferences
      * @return void
      */
-    private void initializeActionList(List<? extends ActionItemActionListExtension> actionList, Preferences preferences) {
+    private void initializeActionList(List<? extends ActionItem> actionList, Preferences preferences) {
         List<String> actionItemProblemIds = new ArrayList<String>();
         int index = 0;
         generateActionItemErrors(actionList);
 
-        for (Iterator<? extends ActionItemActionListExtension> iterator = actionList.iterator(); iterator.hasNext();) {
-            ActionItemActionListExtension actionItem = iterator.next();
+        for (Iterator<? extends ActionItem> iterator = actionList.iterator(); iterator.hasNext();) {
+            ActionItem actionItem = iterator.next();
             if (actionItem.getDocumentId() == null) {
                 LOG.error("Somehow there exists an ActionItem with a null document id!  actionItemId=" + actionItem.getId());
                 iterator.remove();
@@ -529,7 +515,7 @@ public class ActionListController extends UifControllerBase{
     * @form action list form
     * @return void
     */
-    protected void addCustomActions(List<? extends ActionItemActionListExtension> actionList,
+    protected void addCustomActions(List<? extends ActionItem> actionList,
             Preferences preferences, ActionListForm form) throws WorkflowException {
 
         boolean haveCustomActions = false;
@@ -552,7 +538,7 @@ public class ActionListController extends UifControllerBase{
         long end = System.currentTimeMillis();
         LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
 
-        for(ActionItemActionListExtension actionItem : actionList ){
+        for(ActionItem actionItem : actionList ){
             // evaluate custom action list component for mass actions
             try {
                 ActionItemCustomization customization = customizationMap.get(actionItem.getId());
@@ -632,9 +618,9 @@ public class ActionListController extends UifControllerBase{
     * @param actionList list of action items
     * @return List<org.kuali.rice.kew.api.action.ActionItem>
     */
-    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItemActionListExtension> actionList) {
+    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItem> actionList) {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
-        for (ActionItemActionListExtension actionItemObj : actionList) {
+        for (ActionItem actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }
@@ -671,8 +657,8 @@ public class ActionListController extends UifControllerBase{
     * @param actionList list of action items.
     * @return void
     */
-    private void generateActionItemErrors(List<? extends ActionItemActionListExtension> actionList) {
-        for (ActionItemActionListExtension actionItem : actionList) {
+    private void generateActionItemErrors(List<? extends ActionItem> actionList) {
+        for (ActionItem actionItem : actionList) {
             if(!KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
                 GlobalVariables.getMessageMap().putError("actionRequestCd","actionitem.actionrequestcd.invalid",actionItem.getId()+"");
             }
@@ -700,7 +686,7 @@ public class ActionListController extends UifControllerBase{
 
         Object obj = ObjectPropertyUtils.getPropertyValue(form, "extensionData['actionInputField_actionSelect_line2']");
 
-        List<? extends ActionItemActionListExtension> actionList = (List<? extends ActionItemActionListExtension>) actionListForm.getActionList();
+        List<? extends ActionItem> actionList = actionListForm.getActionList();
         if (actionList == null) {
             return getUIFModelAndView(form);
         }
@@ -715,7 +701,7 @@ public class ActionListController extends UifControllerBase{
                     !"".equals(actionToTake.getActionTakenCd()) &&
                     !"NONE".equalsIgnoreCase(actionToTake.getActionTakenCd()) &&
                     actionToTake.getActionItemId() != null) {
-                ActionItemActionListExtension actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
+                ActionItem actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
                 if (actionItem == null) {
                     LOG.warn("Could not locate the ActionItem to take mass action against in the action list: " + actionToTake.getActionItemId());
                     continue;
@@ -744,10 +730,10 @@ public class ActionListController extends UifControllerBase{
     *
     * @param actionList - list of action items
     * @param actionItemId - primary key for action item
-    * @return ActionItemActionListExtension or null
+    * @return ActionItem or null
     */
-    protected ActionItemActionListExtension getActionItemFromActionList(List<? extends ActionItemActionListExtension> actionList, String actionItemId) {
-        for (ActionItemActionListExtension actionItem : actionList) {
+    protected ActionItem getActionItemFromActionList(List<? extends ActionItem> actionList, String actionItemId) {
+        for (ActionItem actionItem : actionList) {
             if (actionItem.getId().equals(actionItemId)) {
                 return actionItem;
             }
@@ -917,7 +903,7 @@ public class ActionListController extends UifControllerBase{
 
         actionListForm.setRequeryActionList(true);
 
-        return start((UifFormBase)actionListForm,result,request,response);
+        return start(actionListForm,result,request,response);
     }
 
     /**
@@ -1028,7 +1014,7 @@ public class ActionListController extends UifControllerBase{
     * @param actionTakenCode - code of action taken on the action item
     * @return boolean
     */
-    private boolean isActionCompatibleRequest(ActionItemActionListExtension actionItem, String actionTakenCode) {
+    private boolean isActionCompatibleRequest(ActionItem actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();
 

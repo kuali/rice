@@ -225,6 +225,21 @@
       <artifactId>xmlunit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-krad-data</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-it-krad</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
   </dependencies>
 
 </project>

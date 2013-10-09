@@ -37,7 +37,7 @@ public class RolePokerQueueImpl implements RolePokerQueue {
 			throw new RiceIllegalArgumentException("roleName is null or blank");
 		}
 
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		if (qualifiedRoleNameLabel == null) {
 			KEWServiceLocator.getRoleService().reResolveRole(document, roleName);

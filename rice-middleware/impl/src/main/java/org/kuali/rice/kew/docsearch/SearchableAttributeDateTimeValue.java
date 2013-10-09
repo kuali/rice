@@ -27,12 +27,16 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -55,13 +59,20 @@ import java.util.Calendar;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByDocumentId", query="select s from SearchableAttributeDateTimeValue as s where s.documentId = :documentId"),
-	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByDocumentId", query="select s from "
+        + "SearchableAttributeDateTimeValue as s where s.documentId = :documentId"),
+@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from "
+        + "SearchableAttributeDateTimeValue as s where s.documentId = :documentId and "
+        + "s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeDateTimeValue implements SearchableAttributeValue, Serializable {
+@AttributeOverrides({
+        @AttributeOverride(name="searchableAttributeValueId", column=@Column(name="DOC_HDR_EXT_DT_ID"))
+})
+public class SearchableAttributeDateTimeValue extends SearchableAttributeBase implements SearchableAttributeValue, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
 
     private static final long serialVersionUID = 3045621112943214772L;
@@ -76,18 +87,8 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")
 	@Column(name="DOC_HDR_EXT_DT_ID")
 	private String searchableAttributeValueId;
-    @Column(name="KEY_CD")
-	private String searchableAttributeKey;
 	@Column(name="VAL")
 	private Timestamp searchableAttributeValue;
-    @Transient
-    protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
-
-    @Column(name="DOC_HDR_ID")
-	private String documentId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -210,38 +211,6 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
             return true;
         }
         return null;
-    }
-
-	public String getOjbConcreteClass() {
-        return ojbConcreteClass;
-    }
-
-    public void setOjbConcreteClass(String ojbConcreteClass) {
-        this.ojbConcreteClass = ojbConcreteClass;
-    }
-
-    public DocumentRouteHeaderValue getRouteHeader() {
-        return routeHeader;
-    }
-
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.routeHeader = routeHeader;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
-    public String getSearchableAttributeKey() {
-        return searchableAttributeKey;
-    }
-
-    public void setSearchableAttributeKey(String searchableAttributeKey) {
-        this.searchableAttributeKey = searchableAttributeKey;
     }
 
     public Timestamp getSearchableAttributeValue() {

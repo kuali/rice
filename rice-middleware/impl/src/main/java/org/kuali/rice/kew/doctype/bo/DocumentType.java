@@ -54,17 +54,23 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -93,13 +99,22 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-//@Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
 @Table(name = "KREW_DOC_TYP_T")
 @NamedQueries({
-        @NamedQuery(name = "DocumentType.QuickLinks.FindLabelByTypeName", query = "SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
-        @NamedQuery(name = "DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId", query = "SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv " +
-                "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
-                "ORDER BY UPPER(dt.label)")
+        @NamedQuery(name = "DocumentType.GetAppIdByDocumentId", query = "SELECT DT.actualApplicationId FROM DocumentType DT, "
+                + "DocumentRouteHeaderValue DH WHERE DH.documentTypeId=DT.documentTypeId AND DH.documentId = :documentId"),
+        @NamedQuery(name = "DocumentType.GetIdByName", query = "SELECT d.documentTypeId FROM DocumentType d WHERE "+
+                "d.name = :docTypeName AND d.currentInd = true"),
+        @NamedQuery(name = "DocumentType.FindDocumentTypeNameById", query = "SELECT d.name FROM DocumentType d WHERE "+
+                "d.documentTypeId = :documentTypeId AND d.currentInd = true"),
+        @NamedQuery(name = "DocumentType.GetMaxVersionNumber", query = "SELECT MAX(d.version) FROM DocumentType d WHERE "+
+                "d.name = :docTypeName"),
+        @NamedQuery(name = "DocumentType.GetChildDocumentTypeIds", query = "SELECT d.documentTypeId FROM DocumentType d "
+                + "WHERE d.currentInd = true AND d.docTypeParentId = :parentDocumentTypeId"),
+        @NamedQuery(name = "DocumentType.GetDocumentTypeByDocumentId", query = "SELECT DT FROM DocumentType DT, "
+                + "DocumentRouteHeaderValue DH WHERE DH.documentTypeId=DT.documentTypeId AND DH.documentId = :documentId"),
+        @NamedQuery(name = "DocumentType.GetDocumentTypeByName", query = "SELECT d FROM DocumentType d "
+                + "WHERE d.currentInd = true AND d.name = :name")
 })
 public class DocumentType extends PersistableBusinessObjectBase implements MutableInactivatable, DocumentTypeEBO, DocumentTypeContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
@@ -108,24 +123,36 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     @Id
     @GeneratedValue(generator = "KREW_DOC_HDR_S")
-    @Column(name = "DOC_TYP_ID")
+    @PortableSequenceGenerator(name = "KREW_DOC_HDR_S")
+    @Column(name = "DOC_TYP_ID", nullable = false)
     private String documentTypeId;
+
     @Column(name = "PARNT_ID")
     private String docTypeParentId;
+
     @Column(name = "DOC_TYP_NM")
     private String name;
+
     @Column(name = "DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
+
     @Column(name = "ACTV_IND")
+    @Convert(converter=Boolean01Converter.class)
     private Boolean active;
+
     @Column(name = "CUR_IND")
+    @Convert(converter=Boolean01Converter.class)
     private Boolean currentInd;
+
     @Column(name = "DOC_TYP_DESC")
     private String description;
-    @Column(name = "LBL")
+
+    @Column(name = "LBL", nullable = false)
     private String label;
+
     @Column(name = "PREV_DOC_TYP_VER_NBR")
     private String previousVersionId;
+
     /**
      * The id of the document which caused the last modification of this document type.
      * Null if this doc type was never modified via a document routing (UI).
@@ -141,17 +168,22 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     @Column(name = "DOC_HDLR_URL")
     private String unresolvedDocHandlerUrl;
+
     @Column(name = "POST_PRCSR")
     private String postProcessorName;
+
     @Column(name = "GRP_ID")
-    //private Long superUserWorkgroupId;
     private String workgroupId;
+
     @Column(name = "BLNKT_APPR_GRP_ID")
     private String blanketApproveWorkgroupId;
+
     @Column(name = "BLNKT_APPR_PLCY")
     private String blanketApprovePolicy;
+
     @Column(name = "RPT_GRP_ID")
     private String reportingWorkgroupId;
+
     @Column(name = "APPL_ID")
     private String actualApplicationId;
 
@@ -161,64 +193,59 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     @Column(name = "AUTHORIZER")
     private String authorizer;
 
-
-    /* these two fields are for the web tier lookupable
-     * DocumentType is doing double-duty as a web/business tier object
-     */
-    @Transient
-    private String returnUrl;
-    @Transient
-    private String actionsUrl;
-    @Transient
-    private Boolean applyRetroactively = Boolean.FALSE;
-
-    /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
-     * Used at parse-time only; not stored in db.
-     */
-    @Transient
-    private Group defaultExceptionWorkgroup;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "documentType")
     private Collection<DocumentTypePolicy> documentTypePolicies;
 
-    /* This property contains the list of valid ApplicationDocumentStatus values, 
+    /* This property contains the list of valid ApplicationDocumentStatus values,
     * if defined, for the document type.  If these status values are defined, only these
     * values may be assigned as the status.  If not valid values are defined, the status may
     * be set to any value by the client.
     */
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "DOC_TYP_ID")
     private List<ApplicationDocumentStatus> validApplicationStatuses;
 
-    // TODO: map this for JPA
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "DOC_TYP_ID", referencedColumnName = "DOC_TYP_ID")
     private List<ApplicationDocumentStatusCategory> applicationStatusCategories;
 
-    @Transient
-    private List routeLevels;
-    @Transient
-    private Collection childrenDocTypes;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "documentType")
     @OrderBy("orderIndex ASC")
     private List<DocumentTypeAttributeBo> documentTypeAttributes;
 
-    /* New Workflow 2.1 Field */
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
-    private List<ProcessDefinitionBo> processes = new ArrayList();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "documentType")
+    private List<ProcessDefinitionBo> processes = new ArrayList<ProcessDefinitionBo>();
+
     @Column(name = "RTE_VER_NBR")
     private String routingVersion = KewApiConstants.CURRENT_ROUTING_VERSION;
 
-    /* Workflow 2.2 Fields */
     @Column(name = "NOTIFY_ADDR")
     private String actualNotificationFromAddress;
+
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "SEC_XML")
     private String documentTypeSecurityXml;
-    @Transient
-    private DocumentTypeSecurity documentTypeSecurity;
 
-    /* Workflow 2.4 XSLT-based email message customization */
+    /* XSLT-based email message customization */
     @Column(name = "EMAIL_XSL")
     private String customEmailStylesheet;
+
+
+    /* these two fields are for the web tier lookupable
+     * DocumentType is doing double-duty as a web/business tier object
+     */
+    @Transient private String returnUrl;
+    @Transient private String actionsUrl;
+    @Transient private Boolean applyRetroactively = Boolean.FALSE;
+
+    /* The default exception workgroup to apply to nodes that lack an exception workgroup definition.
+     * Used at parse-time only; not stored in db.
+     */
+    @Transient private Group defaultExceptionWorkgroup;
+    @Transient private List routeLevels;
+    @Transient private Collection childrenDocTypes;
+    @Transient private DocumentTypeSecurity documentTypeSecurity;
 
     public DocumentType() {
         routeLevels = new ArrayList();
@@ -1383,17 +1410,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return documentTypeAttributes;
     }
 
-//	public List<DocumentTypeAttribute> getDocumentTypeAttributesWithPotentialInheritance() {
-//    	if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
-//    		if (getParentDocType() != null) {
-//    			return getParentDocType().getDocumentTypeAttributesWithPotentialInheritance();
-//    		} else {
-//    			return documentTypeAttributes;
-//    		}
-//    	}
-//		return new ArrayList<DocumentTypeAttribute>();
-//	}
-
     public void addProcess(ProcessDefinitionBo process) {
         processes.add(process);
     }
@@ -1789,7 +1805,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
                 // NOTE: The policy value is actually a boolean field stored to a Decimal(1) column (although the db column is named PLCY_NM)
                 // I'm not sure what the string value should be but the BO is simply toString'ing the Boolean value
                 // so I am assuming here that "true"/"false" are the acceptable values
-                policies.add(new DocumentTypePolicy(entry.getKey().getCode(), Boolean.TRUE.toString().equals(entry.getValue())));
+                policies.add(new DocumentTypePolicy(dt.getId(), entry.getKey().getCode(), Boolean.TRUE.toString().equals(
+                        entry.getValue())));
             }
         }
         if (CollectionUtils.isNotEmpty(dt.getDocumentTypeAttributes())) {
@@ -1803,4 +1820,13 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         ebo.setAuthorizer(dt.getAuthorizer());
         return ebo;
     }
+
+    public String getWorkgroupId() {
+        return workgroupId;
+    }
+
+    public void setWorkgroupId(String workgroupId) {
+        this.workgroupId = workgroupId;
+    }
+
 }

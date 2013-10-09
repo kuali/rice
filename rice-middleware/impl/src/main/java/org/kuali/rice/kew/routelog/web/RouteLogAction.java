@@ -164,17 +164,14 @@ public class RouteLogAction extends KewKualiAction {
     		actionRequest.getChildrenRequests().remove(primaryDelegateRequest);
     		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
     		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
-    		primaryDelegateRequest.setParentActionRequestId(actionRequest.getParentActionRequestId());
-    		
+
     		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
     		actionRequest.setParentActionRequest(primaryDelegateRequest);
-    		actionRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
-    		
+
     		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
     		
     		for (ActionRequestValue delegateRequest : primaryDelegateRequest.getChildrenRequests()) {
     			delegateRequest.setParentActionRequest(primaryDelegateRequest);
-    			delegateRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
     		}
     		
     		return primaryDelegateRequest;

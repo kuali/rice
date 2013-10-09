@@ -104,5 +104,5 @@ public class AttachmentServiceImpl implements AttachmentService {
 	public void setAttachmentDir(String attachmentDir) {
 		this.attachmentDir = attachmentDir;
 	}
-	
+
 }

@@ -37,32 +37,20 @@ public class BasicJoinEngine implements JoinEngine {
     public static final String EXPECTED_JOINERS = "ExpectedJoiners";
     public static final String ACTUAL_JOINERS = "ActualJoiners";
     
-    public void createExpectedJoinState(RouteContext context, RouteNodeInstance joinInstance, RouteNodeInstance previousNodeInstance) {
+    public RouteNodeInstance createExpectedJoinState(RouteContext context, RouteNodeInstance joinInstance, RouteNodeInstance previousNodeInstance) {
         RouteNodeInstance splitNode = previousNodeInstance.getBranch().getSplitNode();
         if (splitNode == null) {
             throw new WorkflowRuntimeException("The split node retrieved from node with name '" + previousNodeInstance.getName() + "' and branch with name '" + previousNodeInstance.getBranch().getName() + "' was null");
         }
         for (Iterator iter = splitNode.getNextNodeInstances().iterator(); iter.hasNext();) {
             RouteNodeInstance splitNodeNextNode = (RouteNodeInstance) iter.next();
-            // Dilemma: we are given an unsaved join node. For linking to work in absence of joinNode auto-update we must
-            // ensure the join node instance is saved before we save the branch, however this save is done afterwards in
-            // the caller (StandardWorkflowEngine).
-            // If we save here we should probably be sure to take into account simulation context
-            saveNode(context, joinInstance);
+            joinInstance = saveNode(context, joinInstance);
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);
-            // The saveBranch() call below is necessary for parallel routing to work properly with OJB, but it breaks parallel routing with JPA,
-            // so only perform it if KEW is not JPA-enabled.
-            // TODO: this isn't really the same test as isJpaEnabled
-            // i.e. JPA will be present even when the legacy data framework is enabled
-            // what do we do in this case?
-            //if (!OrmUtils.isJpaEnabled("rice.kew")) {
-            if (LegacyUtils.isLegacyDataFrameworkEnabled()) {
-            	saveBranch(context, splitNodeNextNode.getBranch());
-            }
             addExpectedJoiner(joinInstance, splitNodeNextNode.getBranch());
         }
         joinInstance.setBranch(splitNode.getBranch());
         joinInstance.setProcess(splitNode.getProcess());
+        return joinInstance;
     }
     
     public void addExpectedJoiner(RouteNodeInstance nodeInstance, Branch branch) {
@@ -110,22 +98,14 @@ public class BasicJoinEngine implements JoinEngine {
         }
         return set;
     }
-    
-    private void saveBranch(RouteContext context, Branch branch) {
+
+    private RouteNodeInstance saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
         if (!context.isSimulation()) {
-            KEWServiceLocator.getRouteNodeService().save(branch);
-        }
-    }
-    
-    // see {@link StandardWorkflowEngine#saveNode}
-    private void saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getRouteNodeService().save(nodeInstance);
+            return KEWServiceLocator.getRouteNodeService().save(nodeInstance);
         } else {
             // if we are in simulation mode, lets go ahead and assign some id
             // values to our beans
-            for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
-                RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iterator.next();
+            for (RouteNodeInstance routeNodeInstance : nodeInstance.getNextNodeInstances()) {
                 if (routeNodeInstance.getRouteNodeInstanceId() == null) {
                     routeNodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
                 }
@@ -136,6 +116,7 @@ public class BasicJoinEngine implements JoinEngine {
             if (nodeInstance.getBranch() != null && nodeInstance.getBranch().getBranchId() == null) {
                 nodeInstance.getBranch().setBranchId(context.getEngineState().getNextSimulationId());
             }
+            return nodeInstance;
         }
     }
 

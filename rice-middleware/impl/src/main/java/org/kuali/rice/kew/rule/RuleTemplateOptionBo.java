@@ -20,6 +20,7 @@ import org.kuali.rice.kew.api.rule.RuleTemplateOptionContract;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
@@ -49,6 +50,7 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
 
 	private static final long serialVersionUID = 8913119135197149224L;
 	@Id
+    @PortableSequenceGenerator(name="KREW_RULE_TMPL_OPTN_S")
 	@GeneratedValue(generator="KREW_RULE_TMPL_OPTN_S")
 	@Column(name="RULE_TMPL_OPTN_ID")
 	private String id;

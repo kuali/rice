@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.search.SearchOperator;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This is a factory class to construct {@link Predicate Predicates}.
@@ -149,6 +150,30 @@ public final class PredicateFactory {
 		return new EqualIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
 	}
 
+    /**
+     * Creates a like ignore case predicate.  Defines that the property
+     * represented by the given path should be like to the specified value ignoring
+     * the case of the value.
+     *
+     * <p>Supports the following types of values:
+     *
+     * <ul>
+     *   <li>character data</li>
+     * </ul>
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value the value to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the value is null or of an invalid type
+     */
+    public static Predicate likeIgnoreCase(String propertyPath, CharSequence value) {
+        return new LikeIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
+    }
+
 	/**
 	 * Creates a not equals ignore case predicate.  Defines that the property
      * represented by the given path should <strong>not</strong> be
@@ -247,9 +272,31 @@ public final class PredicateFactory {
 	 * @throws IllegalArgumentException if the values list is null, empty,
 	 * contains object of different types, or includes objects of an invalid type
 	 */
-	public static <T> Predicate in(String propertyPath, T... values) {
+	public static <T> Predicate in(String propertyPath, Collection<T> values ) {
 		return new InPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
 	}
+
+    /**
+     * Create an in predicate.  Defines that the property
+     * represented by the given path should be contained within the
+     * specified list of values.
+     *
+     * <p>Supports any of the valid types of value in the value list, with the
+     * restriction that all items in the list of values must be of the same type.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param values the values to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the values list is null, empty,
+     * contains object of different types, or includes objects of an invalid type
+     */
+    public static <T> Predicate in(String propertyPath, T... values) {
+        return new InPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
+    }
 
 	/**
 	 * Create a not in predicate.  Defines that the property
@@ -274,6 +321,28 @@ public final class PredicateFactory {
 	}
 
     /**
+     * Create a not in predicate.  Defines that the property
+     * represented by the given path should <strong>not</strong> be
+     * contained within the specified list of values.
+     *
+     * <p>Supports any of the valid types of value in the value list, with the
+     * restriction that all items in the list of values must be of the same type.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param values the values to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the values list is null, empty,
+     * contains object of different types, or includes objects of an invalid type
+     */
+    public static <T> Predicate notIn(String propertyPath, Collection<T> values) {
+        return new NotInPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValueList(values));
+    }
+
+    /**
 	 * Create an in ignore case predicate.  Defines that the property
      * represented by the given path should be contained within the
 	 * specified list of values ignoring the case of the values.
@@ -295,27 +364,71 @@ public final class PredicateFactory {
 		return new InIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
 	}
 
-	/**
-	 * Create a not in ignore case.  Defines that the property
+    /**
+     * Create an in ignore case predicate.  Defines that the property
+     * represented by the given path should be contained within the
+     * specified list of values ignoring the case of the values.
+     *
+     * <p>Supports any of CharSequence value in the value list, with the
+     * restriction that all items in the list of values must be of the same type.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param values the values to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the values list is null, empty,
+     * contains object of different types, or includes objects of an invalid type
+     */
+    public static <T extends CharSequence> Predicate inIgnoreCase(String propertyPath, Collection<T> values) {
+        return new InIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
+    }
+
+    /**
+     * Create a not in ignore case.  Defines that the property
      * represented by the given path should <strong>not</strong> be
-	 * contained within the specified list of values ignoring the case of the values.
-	 *
-	 * <p>Supports any CharSequence value in the value list, with the
-	 * restriction that all items in the list of values must be of the same type.
-	 *
-	 * @param propertyPath the path to the property which should be evaluated
-	 * @param values the values to compare with the property value located at the
-	 * propertyPath
-	 *
-	 * @return a predicate
-	 *
-	 * @throws IllegalArgumentException if the propertyPath is null
-	 * @throws IllegalArgumentException if the values list is null, empty,
-	 * contains object of different types, or includes objects of an invalid type
-	 */
-	public static <T extends CharSequence> Predicate notInIgnoreCase(String propertyPath, T... values) {
-		return new NotInIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
-	}
+     * contained within the specified list of values ignoring the case of the values.
+     *
+     * <p>Supports any CharSequence value in the value list, with the
+     * restriction that all items in the list of values must be of the same type.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param values the values to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the values list is null, empty,
+     * contains object of different types, or includes objects of an invalid type
+     */
+    public static <T extends CharSequence> Predicate notInIgnoreCase(String propertyPath, T... values) {
+        return new NotInIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
+    }
+
+    /**
+     * Create a not in ignore case.  Defines that the property
+     * represented by the given path should <strong>not</strong> be
+     * contained within the specified list of values ignoring the case of the values.
+     *
+     * <p>Supports any CharSequence value in the value list, with the
+     * restriction that all items in the list of values must be of the same type.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param values the values to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the values list is null, empty,
+     * contains object of different types, or includes objects of an invalid type
+     */
+    public static <T extends CharSequence> Predicate notInIgnoreCase(String propertyPath, Collection<T> values) {
+        return new NotInIgnoreCasePredicate(propertyPath, CriteriaSupportUtils.createCriteriaStringValueList(values));
+    }
 
 	/**
 	 * Creates a greater than predicate.  Defines that the property
@@ -459,6 +572,18 @@ public final class PredicateFactory {
     }
 
     /**
+     * Creates a (min/max -inclusive) between predicate, excluding those within.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value1 the first (lower bound) value
+     * @param value2 the second (upper bound) value
+     * @return a predicate representing the between expression
+     */
+    public static Predicate notBetween(String propertyPath, Object value1, Object value2) {
+        return notBetween(propertyPath, value1, value2, SearchOperator.BETWEEN);
+    }
+
+    /**
      * Creates a between predicate of the specified type
      * @param propertyPath the path to the property which should be evaluated
      * @param value1 the first (lower bound) value
@@ -487,6 +612,42 @@ public final class PredicateFactory {
             case BETWEEN_EXCLUSIVE_UPPER2:
                 lower = greaterThanOrEqual(propertyPath, value1);
                 upper = lessThan(propertyPath, value2);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid between operator: " + betweenType);
+        }
+        return and(lower, upper);
+    }
+
+    /**
+     * Creates a not between predicate of the specified type
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value1 the first (lower bound) value
+     * @param value2 the second (upper bound) value
+     * @param betweenType the type of between inclusivity/exclusivity
+     * @return a predicate representing the between expression
+     * @throws IllegalArgumentException of betweenType is not a valid BETWEEN search operator
+     */
+    public static Predicate notBetween(String propertyPath, Object value1, Object value2, SearchOperator betweenType) {
+        Predicate lower;
+        Predicate upper;
+        switch (betweenType) {
+            case BETWEEN:
+                lower = lessThan(propertyPath, value1);
+                upper = greaterThan(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE:
+                lower = lessThanOrEqual(propertyPath, value1);
+                upper = greaterThanOrEqual(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE_LOWER:
+                lower = lessThanOrEqual(propertyPath, value1);
+                upper = greaterThan(propertyPath, value2);
+                break;
+            case BETWEEN_EXCLUSIVE_UPPER:
+            case BETWEEN_EXCLUSIVE_UPPER2:
+                lower = lessThan(propertyPath, value1);
+                upper = greaterThanOrEqual(propertyPath, value2);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid between operator: " + betweenType);
@@ -565,11 +726,19 @@ public final class PredicateFactory {
         }
 
         final String correctedName = CriteriaSupportUtils.findDynName(name);
-        for (Method m : PredicateFactory.class.getMethods()) {
-
-            //currently this class does NOT overload therefore this method doesn't have to worry about
-            //overload resolution - just get the Method handle based on the passed in name
+        outer:for (Method m : PredicateFactory.class.getMethods()) {
+            // this class does overload some methods, so we need to make sure we call a version which accepts
+            // the passed in arguments
             if (m.getName().equals(correctedName)) {
+                Class<?>[] parameterTypes = m.getParameterTypes();
+                for (int parameterIndex = 0; parameterIndex < parameterTypes.length; parameterIndex++) {
+                    Class<?> parameterType = parameterTypes[parameterIndex];
+                    Object arg = args[parameterIndex];
+                    if (arg != null && !parameterType.isInstance(arg)) {
+                        // this means the types don't match
+                        continue outer;
+                    }
+                }
                 try {
                     return (Predicate) m.invoke(null, args);
                 } catch (InvocationTargetException e) {

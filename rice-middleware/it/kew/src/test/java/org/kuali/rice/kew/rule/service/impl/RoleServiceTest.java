@@ -204,7 +204,7 @@ public class RoleServiceTest extends KEWTestCase {
 	 */
 	private List getTestRoleRequests(DocumentRouteHeaderValue document) {
 		List testRoleRequests = new ArrayList();
-		List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteLevel(document.getDocumentId(), document.getDocRouteLevel());
+		List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
 		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
 			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
 			if (TEST_ROLE.equals(actionRequest.getRoleName())) {

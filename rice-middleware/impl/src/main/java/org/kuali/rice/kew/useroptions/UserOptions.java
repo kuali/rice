@@ -19,8 +19,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -32,92 +30,72 @@ import org.kuali.rice.kew.api.preferences.Preferences;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@IdClass(org.kuali.rice.kew.useroptions.UserOptionsId.class)
+@IdClass(UserOptionsId.class)
 @Entity
 @Table(name="KREW_USR_OPTN_T")
-@NamedQueries({
-  @NamedQuery(name="UserOptions.FindByUserQualified", query="select uo from UserOptions uo where uo.workflowId = :workflowId and uo.optionId like :optionId"), 
-  @NamedQuery(name="UserOptions.FindByWorkflowId",  query="select uo from UserOptions uo where uo.workflowId = :workflowId"),
-  @NamedQuery(name="UserOptions.FindByOptionValue", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.optionVal = :optionValue"),
-  @NamedQuery(name="UserOptions.FindByOptionId", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.workflowId = :workflowId"),
-  @NamedQuery(name="UserOptions.FindEmailUserOptionsByType", query="select uo from UserOptions uo where (uo.optionId = :optionId or uo.optionId like :optionIdLike) and uo.optionVal = :optionValue")
-})
 public class UserOptions implements Comparable {
 
 	@Id
-	@Column(name="PRNCPL_ID",insertable=false,updatable=false)
+	@Column(name="PRNCPL_ID")
 	private String workflowId;
+
 	@Id
-	@Column(name="PRSN_OPTN_ID",insertable=false,updatable=false)
+	@Column(name="PRSN_OPTN_ID")
 	private String optionId;
+
 	@Column(name="VAL")
 	private String optionVal;
+
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
 
-	/**
-	 * @return
-	 */
 	public Integer getLockVerNbr() {
 		return lockVerNbr;
 	}
 
-	/**
-	 * @return
-	 */
 	public String getOptionId() {
 		return optionId;
 	}
 
-	/**
-	 * @return
-	 */
 	public String getOptionVal() {
 		return optionVal;
 	}
 
-	/**
-	 * @return
-	 */
 	public String getWorkflowId() {
 		return workflowId;
 	}
 
-	/**
-	 * @param integer
-	 */
 	public void setLockVerNbr(Integer integer) {
 		lockVerNbr = integer;
 	}
 
-	/**
-	 * @param string
-	 */
 	public void setOptionId(String string) {
 		optionId = string;
 	}
 
-	/**
-	 * @param string
-	 */
 	public void setOptionVal(String string) {
 		optionVal = string;
 	}
 
-	/**
-	 * @param string
-	 */
 	public void setWorkflowId(String string) {
 	    workflowId = string;
 	}
 
-	
+    /**
+     * Compares the given object is an instance of this class, then determines comparison based on the option id.
+     * @param o the object to compare with
+     * @return The value 0 if the argument is a string lexicographically equal to this string; a value less than 0 if
+     * the argument is a string lexicographically greater than this string; and a value greater than 0 if the argument
+     * is a string lexicographically less than this string.
+     */
+    @Override
     public int compareTo(Object o) {
         if (o instanceof UserOptions) {
             return this.getOptionId().compareTo(((UserOptions)o).getOptionId());
         }
         return 0;
     }
+
 }
 

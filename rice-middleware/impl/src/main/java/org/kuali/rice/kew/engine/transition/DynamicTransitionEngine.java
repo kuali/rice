@@ -37,7 +37,7 @@ public class DynamicTransitionEngine extends TransitionEngine {
 
     // TODO interate the all the nodes and attach the dynamic node as the 'process'
     // don't include the dynamic node instance in the routing structure - require a correctly built graph
-    // change dynamic node signiture to next node because of above
+    // change dynamic node signature to next node because of above
     // reconcile branching if necessary
     public RouteNodeInstance transitionTo(RouteNodeInstance dynamicNodeInstance, RouteContext context) throws Exception {
         dynamicNodeInstance.setInitial(false);
@@ -92,7 +92,7 @@ public class DynamicTransitionEngine extends TransitionEngine {
 
     /**
      * This method checks the next node returned by the user and walks the resulting node graph, filling in required data where possible.
-     * Will throw errors if there is a problem with what the implementor has returned to us. This allows them to do things like return next
+     * Will throw errors if there is a problem with what the implementer has returned to us. This allows them to do things like return next
      * nodes with no attached branches, and we will go ahead and generate the branches for them, etc.
      */
     private void initializeNodeGraph(RouteContext context, RouteNodeInstance dynamicNodeInstance, RouteNodeInstance nodeInstance, Set<RouteNodeInstance> nodeInstances, RouteNodeInstance finalNodeInstance) throws Exception {

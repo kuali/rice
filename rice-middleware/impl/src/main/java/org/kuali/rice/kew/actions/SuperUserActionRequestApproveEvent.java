@@ -134,7 +134,9 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
                 String newStatus = getRouteHeader().getDocRouteStatus();
                 this.notifyStatusChange(newStatus, oldStatus);
-                KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                        saveRouteHeader(getRouteHeader());
+                setRouteHeader(routeHeaderValue);
             }
             else if (getRouteHeader().isStateSaved()) {
         	if (KewApiConstants.SAVED_REQUEST_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
@@ -144,7 +146,9 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
                     this.getRouteHeader().markDocumentEnroute();
                     String newStatus = getRouteHeader().getDocRouteStatus();
                     this.notifyStatusChange(newStatus, oldStatus);
-                    KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+                DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                        saveRouteHeader(getRouteHeader());
+                setRouteHeader(routeHeaderValue);
         	}
             }
         }

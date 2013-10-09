@@ -15,7 +15,14 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
@@ -24,7 +31,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="KREW_RTE_BRCH_ST_T")
-@AttributeOverride(name="stateId", column=@Column(name="RTE_BRCH_ST_ID"))
+@AttributeOverrides({
+@AttributeOverride(name="stateId", column=@Column(name="RTE_BRCH_ST_ID")),
+@AttributeOverride(name="versionNumber", column=@Column(name="VER_NBR", insertable = false, updatable = false))
+})
 public class BranchState extends State {
     /**
      * Prefix under which "variables" are stored in the branch state table, to distinguish
@@ -34,13 +44,14 @@ public class BranchState extends State {
 
     private static final long serialVersionUID = -7642477013444817952L;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne
 	@JoinColumn(name="RTE_BRCH_ID")
 	private Branch branch;
+
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
-    
+
     public BranchState() {}
     
     public BranchState(String key, String value) {
@@ -59,10 +70,6 @@ public class BranchState extends State {
         return getStateId();
     }
 
-    public void setBranchStateId(String branchStateId) {
-        setStateId(branchStateId);
-    }
-
     public Integer getLockVerNbr() {
         return lockVerNbr;
     }
@@ -70,5 +77,15 @@ public class BranchState extends State {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
+
+//
+//    public String getBranchId() {
+//        return branchId;
+//    }
+//
+//    public void setBranchId(String branchId) {
+//        this.branchId = branchId;
+//    }
+
 }
 

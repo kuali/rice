@@ -60,6 +60,8 @@ public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
     protected void markDocument() throws WorkflowException {
         //this.event = new DocumentRouteStatusChange(this.documentId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD);
         getRouteHeader().markDocumentDisapproved();
-        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+        DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                saveRouteHeader(getRouteHeader());
+        setRouteHeader(routeHeaderValue);
     }
 }

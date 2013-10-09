@@ -105,8 +105,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
      * TODO will this work properly in the case of an ALL APPROVE role requests with some of the requests already completed?
      */
     private void revokePendingRequests(List<ActionRequestValue> pendingRequests, ActionTakenValue actionTaken, PrincipalContract principal, Recipient delegator) {
-        revokeRequests(pendingRequests);
-        getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
+        pendingRequests = revokeRequests(pendingRequests);
+        pendingRequests = getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
             generateNotificationsForRevokedRequests(pendingRequests, principal, delegator);
         }
@@ -115,11 +115,12 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Revokes requests (not deactivating them).  Sends FYI notifications if sendNotifications is true.
      */
-    private void revokePreviousRequests(List<ActionRequestValue> actionRequests, PrincipalContract principal, Recipient delegator) {
-        revokeRequests(actionRequests);
+    private List<ActionRequestValue> revokePreviousRequests(List<ActionRequestValue> actionRequests, PrincipalContract principal, Recipient delegator) {
+        actionRequests = revokeRequests(actionRequests);
         if (sendNotificationsForPreviousRequests) {
             generateNotificationsForRevokedRequests(actionRequests, principal, delegator);
         }
+        return actionRequests;
     }
 
     /**
@@ -137,17 +138,19 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Takes a list of root action requests and marks them and all of their children as "non-current".
      */
-    private void revokeRequests(List<ActionRequestValue> actionRequests) {
+    private List<ActionRequestValue> revokeRequests(List<ActionRequestValue> actionRequests) {
+        List<ActionRequestValue> revokedRequests = new ArrayList<ActionRequestValue>();
         for (Iterator<ActionRequestValue> iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = iterator.next();
             actionRequest.setCurrentIndicator(Boolean.FALSE);
             if (actionRequest.getActionTaken() != null) {
                 actionRequest.getActionTaken().setCurrentIndicator(Boolean.FALSE);
-                KEWServiceLocator.getActionTakenService().saveActionTaken(actionRequest.getActionTaken());
+                actionRequest.setActionTaken(KEWServiceLocator.getActionTakenService().saveActionTaken(actionRequest.getActionTaken()));
             }
-            revokeRequests(actionRequest.getChildrenRequests());
-            KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
+            actionRequest.setChildrenRequests(revokeRequests(actionRequest.getChildrenRequests()));
+            revokedRequests.add(KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest));
         }
+        return revokedRequests;
     }
 
     /**
@@ -395,7 +398,9 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             newRouteLevel = oldRouteLevel - returnPathLength;
             LOG.debug("Changing route header "+ getRouteHeader().getDocumentId()+" route level for backward compatibility to "+newRouteLevel);
             getRouteHeader().setDocRouteLevel(newRouteLevel);
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(routeHeader);
+            setRouteHeader(routeHeaderValue);
         }
         List<RouteNodeInstance> startingNodes = determineStartingNodes(result.getPath(), activeNodes);
         RouteNodeInstance newNodeInstance = materializeReturnPoint(startingNodes, result);
@@ -410,7 +415,9 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         try {
             LOG.debug("Notifying post processor of route node change '"+oldNodeInstance.getName()+"'->'"+newNodeInstance.getName());
             PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-            KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
+            DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                    saveRouteHeader(getRouteHeader());
+            setRouteHeader(routeHeaderValue);
             DocumentRouteLevelChange routeNodeChange = new DocumentRouteLevelChange(routeHeader.getDocumentId(),
                     routeHeader.getAppDocId(),
                     oldRouteLevel, newRouteLevel,
@@ -458,7 +465,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         newNodeInstance.setProcess(returnInstance.getProcess());
         newNodeInstance.setComplete(false);
         newNodeInstance.setActive(true);
-        nodeService.save(newNodeInstance);
+        newNodeInstance = nodeService.save(newNodeInstance);
         for (RouteNodeInstance activeNodeInstance : startingNodes) {
             // TODO what if the activeNodeInstance already has next nodes?
             activeNodeInstance.setComplete(true);

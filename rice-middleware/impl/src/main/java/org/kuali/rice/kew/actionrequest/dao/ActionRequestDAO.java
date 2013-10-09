@@ -17,59 +17,18 @@ package org.kuali.rice.kew.actionrequest.dao;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 
-import java.util.Collection;
 import java.util.List;
 
 
 /**
- * Data Access Object for {@link ActionRequestValue}s.
+ * Data Access Object for {@link ActionRequestValue}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ActionRequestDAO {
 
-    public ActionRequestValue getActionRequestByActionRequestId(String actionRequestId);
+    List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
 
-    public void saveActionRequest(ActionRequestValue actionRequest);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteLevel(String documentId, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtOrBelowRouteLevel(String documentId, Integer routeLevel);
-
-    public void delete(String actionRequestId);
-
-     public List<ActionRequestValue> findPendingByActionRequestedAndDocId(String actionRequestedCd, String documentId);
-
-    public List<ActionRequestValue> findAllPendingByDocId(String documentId);
-
-    public List<ActionRequestValue> findAllByDocId(String documentId);
-
-    public List<ActionRequestValue> findAllRootByDocId(String documentId);
-
-    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, String documentId);
-
-    public List<ActionRequestValue> findByDocumentIdIgnoreCurrentInd(String documentId);
-
-    public List<ActionRequestValue> findActivatedByGroup(String groupId);
-
-    public List<ActionRequestValue> findPendingByResponsibilityIds(Collection responsibilityIds);
-
-    public  void deleteByDocumentId(String documentId);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocumentType(String documentTypeId);
-
-    public List<ActionRequestValue> findPendingRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
-
-    public List<ActionRequestValue> findRootRequestsByDocIdAtRouteNode(String documentId, String nodeInstanceId);
-
-    //public List findFutureAdHocRequestsByDocIdAtRouteNode(String documentId, String nodeName);
-
-    public boolean doesDocumentHaveUserRequest(String workflowId, String documentId);
-  
-    public List<String> getRequestGroupIds(String documentId);
-
-    public ActionRequestValue getRoleActionRequestByActionTakenId(String actionTakenId);
+    List<String> getRequestGroupIds(String documentId);
 
 }

@@ -22,6 +22,11 @@ import java.util.Map;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Model bean mapped to ojb that holds a single piece of searchable data for a document.

@@ -32,10 +32,12 @@ import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.expressions.Expression;
 import org.eclipse.persistence.internal.expressions.FunctionExpression;
 import org.eclipse.persistence.internal.helper.DatabaseField;
+import org.eclipse.persistence.internal.jpa.metamodel.EmbeddableTypeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.EntityTypeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.PluralAttributeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.SingularAttributeImpl;
 import org.eclipse.persistence.jpa.JpaEntityManager;
+import org.eclipse.persistence.mappings.AggregateObjectMapping;
 import org.eclipse.persistence.mappings.CollectionMapping;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.DirectToFieldMapping;
@@ -202,7 +204,9 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
         protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
 		for (SingularAttributeImpl attr : (Set<SingularAttributeImpl>) entityType.getSingularAttributes()) {
 			if (!attr.isAssociation()) {
-				if (attr.getMapping().getField().getName().equals(databaseColumnName)) {
+				if (!(attr.getClass().isAssignableFrom(EmbeddableTypeImpl.class)) &&
+                        !(attr.getMapping().getClass().isAssignableFrom(AggregateObjectMapping.class)) &&
+                        attr.getMapping().getField().getName().equals(databaseColumnName)) {
 					return attr.getName();
 				}
 			}

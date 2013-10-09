@@ -18,20 +18,18 @@ package org.kuali.rice.kew.actionlist;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
-import org.kuali.rice.kew.api.action.ActionInvocation;
-import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.actionitem.OutboxItem;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.preferences.Preferences;
-import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -82,7 +80,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.saveDocument("");
 
-        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should not be any outbox items", 0, outbox.size());
     }
 
@@ -105,7 +103,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         outbox = KEWServiceLocator.getActionListService().getOutboxItemsByDocumentType(document.getDocumentTypeName());
@@ -113,7 +111,7 @@ public class OutboxTest extends KEWTestCase {
 
         List<String> outBoxItemIds = new ArrayList();
         ActionItem actionItem = null;
-        for (Iterator<OutboxItemActionListExtension> iterator = outbox.iterator(); iterator.hasNext(); ) {
+        for (Iterator<OutboxItem> iterator = outbox.iterator(); iterator.hasNext(); ) {
             actionItem = iterator.next();
             outBoxItemIds.add(actionItem.getId());
         }
@@ -148,7 +146,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection<OutboxItemActionListExtension> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<OutboxItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         document = WorkflowDocumentFactory.loadDocument(user1PrincipalId, document.getDocumentId());

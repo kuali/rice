@@ -42,7 +42,7 @@ public interface DocumentLinkDAO {
     public void deleteDocumentLink(DocumentLink link); 
     
     //delete all links to orgn doc
-    public void deleteDocmentLinksByDocId(String docId);
+    public void deleteDocumentLinksByDocId(String docId);
     
     public DocumentLink getDocumentLink(Long documentLinkId);
 

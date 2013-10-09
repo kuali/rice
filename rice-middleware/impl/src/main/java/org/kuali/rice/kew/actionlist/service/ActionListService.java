@@ -19,11 +19,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
-import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
+import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
 
@@ -37,9 +37,9 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 public interface ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest);
 
-    public Collection<ActionItemActionListExtension> getActionList(String principalId, ActionListFilter filter);
+    public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter);
 
-    public Collection<ActionItemActionListExtension> getActionListForSingleDocument(String documentId);
+    public Collection<ActionItem> getActionListForSingleDocument(String documentId);
 
     /**
      * Returns a list of recipients <i>which secondary-delegate to</i> the target principalId
@@ -55,7 +55,7 @@ public interface ActionListService {
      */
     public Collection<Recipient> findUserPrimaryDelegations(String principalId);
 
-    public void saveActionItem(ActionItem actionItem);
+    public ActionItem saveActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem);
 
@@ -72,8 +72,6 @@ public interface ActionListService {
     public Collection<ActionItem> findByDocumentTypeName(String documentTypeName);
 
     public void updateActionItemsForTitleChange(String documentId, String newTitle);
-
-    public void validateActionItem(ActionItem actionItem);
 
     public ActionItem findByActionItemId(String actionItemId);
 
@@ -93,15 +91,21 @@ public interface ActionListService {
 
     /**
      *
-     * Retrieves {@link OutboxItemActionListExtension} items for the given user
+     * Retrieves {@link OutboxItem} items for the given user
      *
      * @param principalId
      * @param filter
      * @return
      */
-    public Collection<OutboxItemActionListExtension> getOutbox(String principalId, ActionListFilter filter);
-    public Collection<OutboxItemActionListExtension> getOutboxItemsByDocumentType(String documentTypeName);
+    public Collection<OutboxItem> getOutbox(String principalId, ActionListFilter filter);
+    public Collection<OutboxItem> getOutboxItemsByDocumentType(String documentTypeName);
     public void removeOutboxItems(String principalId, List<String> outboxItems);
     public void saveOutboxItem(ActionItem actionItem);
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);
+
+    /**
+     * Pulls a proxied version of the document route header with only the properties needed by the
+     * action list display.
+     */
+    DocumentRouteHeaderValue getMinimalRouteHeader( String documentId );
 }

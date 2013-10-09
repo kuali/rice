@@ -115,6 +115,42 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
     }
 
     @Test
+    public void testSequences_AnnotationAtFieldLevel_MappedSuperClass() throws Exception {
+        EntityManagerFactory factory = (EntityManagerFactory)context.getBean("entityManagerFactory");
+        assertNotNull(factory);
+
+        TestEntity5 testEntity1 = new TestEntity5();
+        testEntity1.setName("MyAwesomeTestEntity1");
+
+        // number in this case is generated from a sequence
+        assertNull(testEntity1.getNumber());
+
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            entityManager.persist(testEntity1);
+            assertNotNull(testEntity1.getNumber());
+        } finally {
+            entityManager.close();
+        }
+
+        TestEntity5 testEntity2 = new TestEntity5();
+        testEntity2.setName("MyAwesomeTestEntity2");
+
+        assertNull(testEntity2.getNumber());
+
+        entityManager = factory.createEntityManager();
+        try {
+            // try merge here and make sure it works with that as well
+            testEntity2 = entityManager.merge(testEntity2);
+            assertNotNull(testEntity2.getNumber());
+            assertEquals(Integer.valueOf(Integer.valueOf(testEntity1.getNumber()).intValue() + 1), Integer.valueOf(testEntity2.getNumber()));
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
+    @Test
     public void testSequences_AnnotationAtMethodLevel() throws Exception {
         EntityManagerFactory factory = (EntityManagerFactory)context.getBean("entityManagerFactory");
         assertNotNull(factory);
@@ -368,5 +404,53 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
         }
 
     }
+
+    @MappedSuperclass
+    public abstract static class ParentTestEntity2 extends DataObjectBase {
+
+        @Id
+        @GeneratedValue(generator = "TRVL_ID_SEQ_5")
+        @PortableSequenceGenerator(name = "TRVL_ID_SEQ_5", sequenceName = "TRVL_ID_SEQ", initialValue = 1000)
+        @Column(name="ACCT_NUM")
+        private String number;
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+
+    }
+
+    @Entity
+    @Table(name="TRV_ACCT")
+    public static class TestEntity5 extends ParentTestEntity2 {
+
+        @Column(name="ACCT_NAME")
+        private String name;
+
+        @Column(name="ACCT_FO_ID")
+        private Long amId;
+
+        public Long getAmId() {
+            return amId;
+        }
+
+        public void setAmId(Long amId) {
+            this.amId = amId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+    }
+
 
 }

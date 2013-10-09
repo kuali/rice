@@ -19,25 +19,25 @@ import java.util.List;
 
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
+import org.kuali.rice.kew.actionitem.ActionItem;
 
 /**
- * Implements the display tags paginated list to provide effecient paging for the action list.  
+ * Implements the display tags paginated list to provide effecient paging for the action list.
  * This allows us not to have to fetch an entire action list each time a user pages their list.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PaginatedActionList implements PaginatedList {
 
-	private final List<? extends ActionItemActionListExtension> list;
+	private final List<? extends ActionItem> list;
 	private final int fullListSize;
 	private final int pageNumber;
 	private final int objectsPerPage;
 	private final String searchId;
 	private final String sortCriterion;
-	private final SortOrderEnum sortDirection; 
-	
-	public PaginatedActionList(List<? extends ActionItemActionListExtension> list, int fullListSize, int pageNumber, int objectsPerPage, String searchId, String sortCriterion, SortOrderEnum sortDirection) {
+	private final SortOrderEnum sortDirection;
+
+	public PaginatedActionList(List<? extends ActionItem> list, int fullListSize, int pageNumber, int objectsPerPage, String searchId, String sortCriterion, SortOrderEnum sortDirection) {
 		this.list = list;
 		this.fullListSize = fullListSize;
 		this.pageNumber = pageNumber;
@@ -46,33 +46,40 @@ public class PaginatedActionList implements PaginatedList {
 		this.sortCriterion = sortCriterion;
 		this.sortDirection = sortDirection;
 	}
-	
-	public int getFullListSize() {
+
+	@Override
+    public int getFullListSize() {
 		return fullListSize;
 	}
 
-	public List getList() {
+	@Override
+    public List getList() {
 		return list;
 	}
 
-	public int getObjectsPerPage() {
+	@Override
+    public int getObjectsPerPage() {
 		return objectsPerPage;
 	}
 
-	public int getPageNumber() {
+	@Override
+    public int getPageNumber() {
 		return pageNumber;
 	}
 
-	public String getSearchId() {
+	@Override
+    public String getSearchId() {
 		return searchId;
 	}
 
-	public String getSortCriterion() {
+	@Override
+    public String getSortCriterion() {
 		return sortCriterion;
 	}
 
-	public SortOrderEnum getSortDirection() {
+	@Override
+    public SortOrderEnum getSortDirection() {
 		return sortDirection;
 	}
-	
+
 }

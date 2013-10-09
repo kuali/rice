@@ -130,8 +130,8 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 	public DocumentType findByNameIgnoreCache(String documentTypeId) {
 		return null;
 	}
-	public void save(DocumentType documentType) {
-
+	public DocumentType save(DocumentType documentType) {
+       return null;
 	}
     public void save(DocumentType documentType, boolean flushCache) {
 

@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +26,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
@@ -41,38 +39,37 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-//@Sequence(name="KREW_RTE_NODE_S",property="branchId")
-@Table(name="KREW_RTE_BRCH_T")
+@Table(name = "KREW_RTE_BRCH_T")
 public class Branch implements Serializable {
 
 	private static final long serialVersionUID = 7164561979112939112L;
 	
 	@Id
-	@GeneratedValue(generator="KREW_RTE_NODE_S")
-	@Column(name="RTE_BRCH_ID")
+	@GeneratedValue(generator = "KREW_RTE_NODE_S")
+    @PortableSequenceGenerator(name = "KREW_RTE_NODE_S")
+	@Column(name = "RTE_BRCH_ID")
 	private String branchId;
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
-	@JoinColumn(name="PARNT_ID")
+
+	@ManyToOne
+	@JoinColumn(name = "PARNT_ID")
 	private Branch parentBranch;
-	@Column(name="NM")
+
+	@Column(name = "NM")
 	private String name;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch", orphanRemoval=true)
+
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "branch", orphanRemoval = true)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
-//	  apache lazy list commented out due to not being serializable
-//    private List branchState = ListUtils.lazyList(new ArrayList(),
-//            new Factory() {
-//				public Object create() {
-//					return new BranchState();
-//				}
-//			});
-    @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST})
-	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "INIT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance initialNode;
-    @ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
-	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "SPLT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance splitNode;
-	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
-	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
 		
 	@Version
@@ -136,14 +133,13 @@ public class Branch implements Serializable {
     public void setBranchState(List<BranchState> branchState) {
         this.branchState.clear();
         this.branchState.addAll(branchState);
-    	//this.branchState = branchState;
     }
     
     public BranchState getDocBranchState(int index){
     	while (branchState.size() <= index) {
             branchState.add(new BranchState());
         }
-        return (BranchState) branchState.get(index);
+        return branchState.get(index);
    
     }
     
@@ -160,9 +156,5 @@ public class Branch implements Serializable {
                       "]";
     }
 
-	//@PrePersist
-    public void beforeInsert(){
-    	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-    }    
 }
 

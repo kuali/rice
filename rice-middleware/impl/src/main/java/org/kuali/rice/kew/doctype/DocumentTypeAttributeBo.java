@@ -15,14 +15,9 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
-import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,13 +27,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
+
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
+import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 
 /**
- * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute, 
+ * Data bean representing an attribute associated at the document type level.  e.g. NoteAttribute,
  * EmailAttribute, SearchableAttribute, etc.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -50,6 +51,7 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	private static final long serialVersionUID = -4429421648373903566L;
 
 	@Id
+    @PortableSequenceGenerator(name="KREW_DOC_TYP_ATTR_S")
 	@GeneratedValue(generator="KREW_DOC_TYP_ATTR_S")
 	@Column(name="DOC_TYP_ATTRIB_ID")
 	private String id;
@@ -60,18 +62,13 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	private RuleAttribute ruleAttribute;
     @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
 	private String documentTypeId;
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
     @Column(name="ORD_INDX")
 	private int orderIndex;
     @Transient
     private Integer lockVerNbr;
-    
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
 
 	/**
 	 * @param id The id to set.
@@ -83,7 +80,8 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	/**
 	 * @return Returns the id.
 	 */
-	public String getId() {
+	@Override
+    public String getId() {
 		return id;
 	}
 
@@ -97,7 +95,8 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	/**
 	 * @return Returns the documentTypeId.
 	 */
-	public String getDocumentTypeId() {
+	@Override
+    public String getDocumentTypeId() {
 		return documentTypeId;
 	}
 
@@ -131,14 +130,16 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	/**
 	 * @return Returns the ruleAttribute.
 	 */
-	public RuleAttribute getRuleAttribute() {
+	@Override
+    public RuleAttribute getRuleAttribute() {
 		return ruleAttribute;
 	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(Object o) {
+	@Override
+    public int compareTo(Object o) {
         if (o instanceof DocumentTypeAttributeBo) {
             return this.getRuleAttribute().getName().compareTo(((DocumentTypeAttributeBo) o).getRuleAttribute().getName());
         }
@@ -152,7 +153,8 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
 	}
-	
+
+    @Override
     public int getOrderIndex() {
         return orderIndex;
     }

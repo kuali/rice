@@ -24,12 +24,16 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -46,13 +50,16 @@ import java.sql.SQLException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
+@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_DOC_HDR_EXT_T")
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
-	@NamedQuery(name="SearchableAttributeStringValue.FindByDocumentId", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId"),
-	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeStringValue.FindByDocumentId", query="select s from "
+            + "SearchableAttributeStringValue as s where s.documentId = :documentId"),
+	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as "
+            + "s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeStringValue implements CaseAwareSearchableAttributeValue, Serializable {
+public class SearchableAttributeStringValue extends SearchableAttributeBase implements CaseAwareSearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = 8696089933682052078L;
 
@@ -67,18 +74,8 @@ public class SearchableAttributeStringValue implements CaseAwareSearchableAttrib
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")
 	@Column(name="DOC_HDR_EXT_ID")
 	private String searchableAttributeValueId;
-    @Column(name="KEY_CD")
-	private String searchableAttributeKey;
     @Column(name="VAL")
 	private String searchableAttributeValue;
-    @Transient
-    protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
-
-    @Column(name="DOC_HDR_ID")
-	private String documentId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-	private DocumentRouteHeaderValue routeHeader;
 
     /**
      * Default constructor.
@@ -177,38 +174,6 @@ public class SearchableAttributeStringValue implements CaseAwareSearchableAttrib
         }
         return null;
     }
-
-	public String getOjbConcreteClass() {
-		return ojbConcreteClass;
-	}
-
-	public void setOjbConcreteClass(String ojbConcreteClass) {
-		this.ojbConcreteClass = ojbConcreteClass;
-	}
-
-	public DocumentRouteHeaderValue getRouteHeader() {
-		return routeHeader;
-	}
-
-	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-		this.routeHeader = routeHeader;
-	}
-
-	public String getDocumentId() {
-		return documentId;
-	}
-
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
-	}
-
-	public String getSearchableAttributeKey() {
-		return searchableAttributeKey;
-	}
-
-	public void setSearchableAttributeKey(String searchableAttributeKey) {
-		this.searchableAttributeKey = searchableAttributeKey;
-	}
 
 	public String getSearchableAttributeValue() {
 		return searchableAttributeValue;

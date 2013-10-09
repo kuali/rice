@@ -13,7 +13,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-
+                  trv_sub_acct
 DROP TABLE TRVL_AUTH_DOC_T  
 ;
 CREATE TABLE TRVL_AUTH_DOC_T  ( 

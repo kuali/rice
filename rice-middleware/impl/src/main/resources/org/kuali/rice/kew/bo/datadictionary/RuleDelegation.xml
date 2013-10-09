@@ -63,14 +63,6 @@
 
     <property name="relationships">
       <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="ruleResponsibility.ruleBaseValues"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="ruleResponsibility.ruleBaseValuesId" p:targetName="id"/>
-            </list>
-          </property>
-        </bean>
         <!--<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="documentType"/>
           <property name="primitiveAttributes">

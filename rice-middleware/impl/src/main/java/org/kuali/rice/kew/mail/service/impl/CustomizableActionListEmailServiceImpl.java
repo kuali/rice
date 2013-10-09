@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.mail.EmailBody;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.core.api.mail.EmailSubject;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.preferences.Preferences;
@@ -53,34 +52,35 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         return contentService;
     }
 
+    @Override
     public void sendImmediateReminder(org.kuali.rice.kew.api.action.ActionItem actionItem, Boolean skipOnApprovals) {
         if (actionItem == null) {
             LOG.warn("Request to send immediate reminder to recipient of a null action item... aborting.");
             return;
         }
-        
+
         if (actionItem.getPrincipalId() == null) {
             LOG.warn("Request to send immediate reminder to null recipient of an action item... aborting.");
             return;
         }
-        
+
         if (skipOnApprovals != null && skipOnApprovals.booleanValue()
                 && actionItem.getActionRequestCd().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
             LOG.debug("As requested, skipping immediate reminder notification on action item approval for " + actionItem.getPrincipalId());
             return;
         }
-        
+
         Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
         if(!checkEmailNotificationPreferences(actionItem, preferences, KewApiConstants.EMAIL_RMNDR_IMMEDIATE)) {
             LOG.debug("Email suppressed due to the user's preferences");
             return;
         }
-        
+
         if (!sendActionListEmailNotification()) {
             LOG.debug("not sending immediate reminder");
             return;
         }
-        
+
         // since this is a message for a single document, we can customize the from
         // line based on DocumentType
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
@@ -93,7 +93,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
     }
 
     @Override
-    protected void sendPeriodicReminder(String principalId, Collection<ActionItemActionListExtension> actionItems, String emailSetting) {
+    protected void sendPeriodicReminder(String principalId, Collection<ActionItem> actionItems, String emailSetting) {
         actionItems = filterActionItemsToNotify(principalId, actionItems, emailSetting);
         Collection<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
         for(ActionItem actionItem : actionItems) {

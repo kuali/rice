@@ -50,9 +50,9 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
-    public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception {
+    public DocumentRouteHeaderValue placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, String documentId) throws Exception {
  	 	RouteNodeInstance nodeInstance = null;
- 	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+ 	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
  	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
  	 	RouteContext routeContext = establishRouteContext(document, null);
  	 	List<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId);
@@ -60,11 +60,11 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
  	 		// take the first active nodeInstance found.
  	 		nodeInstance = activeNodeInstances.get(0);
  	 	}
- 	 	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, true);
+ 	 	return placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, true);
  	 }
     
-    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception {
-    	placeInExceptionRouting(throwable, persistedMessage, documentId, true);
+    public DocumentRouteHeaderValue placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId) throws Exception {
+    	return placeInExceptionRouting(throwable, persistedMessage, documentId, true);
     }
     
     /**
@@ -75,18 +75,18 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	placeInExceptionRouting(throwable, persistedMessage, documentId, false);
     }
     
-    protected void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId, boolean invokePostProcessor) throws Exception {
-    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+    protected DocumentRouteHeaderValue placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, String documentId, boolean invokePostProcessor) throws Exception {
+    	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
     	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
     	throwable = unwrapRouteManagerExceptionIfPossible(throwable);
         RouteContext routeContext = establishRouteContext(document, throwable);
         RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
     	Throwable cause = determineActualCause(throwable, 0);
         String errorMessage = (cause != null && cause.getMessage() != null) ? cause.getMessage() : "";
-    	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, invokePostProcessor);
+    	return placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, invokePostProcessor);
     }
     
-    protected void placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessageBO persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document, boolean invokePostProcessor) throws Exception {
+    protected DocumentRouteHeaderValue placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessageBO persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document, boolean invokePostProcessor) throws Exception {
     	String documentId = document.getDocumentId();
         MDC.put("docId", documentId);
         PerformanceLogger performanceLogger = new PerformanceLogger(documentId);
@@ -120,7 +120,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (exceptionRequests.isEmpty()) {
                 LOG.warn("Failed to generate exception requests for exception routing!");
             }
-            activateExceptionRequests(routeContext, exceptionRequests, errorMessage, invokePostProcessor);
+            document = activateExceptionRequests(routeContext, exceptionRequests, errorMessage, invokePostProcessor);
 
             if (persistedMessage == null) {
                 LOG.warn("Attempting to delete null persisted message.");
@@ -131,6 +131,8 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             performanceLogger.log("Time to generate exception request.");
             MDC.remove("docId");
         }
+
+        return document;
     }
 
     protected void notifyStatusChange(DocumentRouteHeaderValue routeHeader, String newStatusCode, String oldStatusCode) throws InvalidActionTakenException {
@@ -197,7 +199,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
      * @throws Exception
      */
     
-    protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage, boolean invokePostProcessor) throws Exception {
+    protected DocumentRouteHeaderValue activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage, boolean invokePostProcessor) throws Exception {
     	setExceptionAnnotations(exceptionRequests, exceptionMessage);
     	// TODO is there a reason we reload the document here?
     	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeContext.getDocument().getDocumentId());
@@ -206,8 +208,10 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	if (invokePostProcessor) {
     		notifyStatusChange(rh, KewApiConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
     	}
-    	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
+    	DocumentRouteHeaderValue documentRouteHeaderValue = KEWServiceLocator.getRouteHeaderService().
+                                                        saveRouteHeader(rh);
     	KEWServiceLocator.getActionRequestService().activateRequests(exceptionRequests);
+        return documentRouteHeaderValue;
     }
     
     /**

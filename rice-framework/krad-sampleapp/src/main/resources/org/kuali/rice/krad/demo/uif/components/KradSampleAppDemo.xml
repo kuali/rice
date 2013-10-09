@@ -751,6 +751,8 @@
     <property name="items">
       <list>
         <bean id="KradSampleAppLookupsDemo-Row2-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppLookupsDemo-Row2-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppLookupsDemo-Row2-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>

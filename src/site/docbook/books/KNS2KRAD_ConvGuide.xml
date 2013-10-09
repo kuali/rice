@@ -1593,7 +1593,7 @@
       &lt;/property>
     &lt;/bean>
   &lt;/property>
-  &lt;property name="renderSearchButtons" value="false"/>
+  &lt;property name="renderCriteriaActions" value="false"/>
   &lt;property name="criteriaFields">
     &lt;list>
       &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
@@ -1727,7 +1727,7 @@
           <listitem xml:id="LCF6">
             <para>The property that specifies wether or not to show the search buttons changed from
                 <emphasis role="keyword">disableSearchButtons</emphasis> to <emphasis role="keyword"
-                >renderSearchButtons</emphasis>. [KNS line: 8, KRAD line: 21] <inlinemediaobject>
+                >renderCriteriaActions</emphasis>. [KNS line: 8, KRAD line: 21] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1858,7 +1858,7 @@
           </listitem>
           <listitem xml:id="LRF7">
             <para>To display the maintenance links (create new, edit, copy, delete) on non
-              maintenance documents the <emphasis role="keyword">showMaintenanceLinks</emphasis> on
+              maintenance documents the <emphasis role="keyword">renderMaintenanceLinks</emphasis> on
               the LookupForm needs to be set. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>

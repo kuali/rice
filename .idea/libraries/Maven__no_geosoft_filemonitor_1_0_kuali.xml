@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: no.geosoft:filemonitor:1.0-kuali">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/no/geosoft/filemonitor/1.0-kuali/filemonitor-1.0-kuali.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/no/geosoft/filemonitor/1.0-kuali/filemonitor-1.0-kuali-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/no/geosoft/filemonitor/1.0-kuali/filemonitor-1.0-kuali-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

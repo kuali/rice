@@ -26,7 +26,7 @@
   <section>
     <title>Introduction</title>
     <para>This technical documentation assists with the conversion of existing Kuali Rice
-      application to utelize the new KRAD framework. It does so by identifying the changes between
+      application to utilize the new KRAD framework. It does so by identifying the changes between
       the KNS and KRAD implementations of Kuali Rice application features. Overview and detailed
       documentation of features of the KRAD frame work can be found in the <link xlink:show="new"
         xlink:href="KRAD_Guide.html">KRAD Guide</link> and are omitted in this document.</para>
@@ -1624,6 +1624,7 @@
   &lt;/property>
   &lt;property name="translateCodesOnReadOnlyDisplay" value="true"/>
   &lt;property name="multipleValuesSelectResultSetLimit" value="100"/>
+  &lt;property name="resultSetLimit" value="200"/>
 &lt;/bean></programlisting>
       </para>
     </section>
@@ -1667,6 +1668,24 @@
               line: 4-9] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="LBB5">
+            <para><emphasis role="keyword">multipleValuesSelectResultSetLimit</emphasis> [KRAD line 51]
+              overrides the MULTIPLE_VALUE_RESULTS_PER_PAGE  application/system parameter.
+            <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="LBB6">
+            <para><emphasis role="keyword">resultSetLimit</emphasis> [KRAD line 52]
+              overrides the application/system parameter RESULTS_LIMIT.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>

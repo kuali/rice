@@ -1596,7 +1596,7 @@
   &lt;property name="renderCriteriaActions" value="false"/>
   &lt;property name="criteriaFields">
     &lt;list>
-      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" p:triggerOnChange="true"/>
+      &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="code"/>
       &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:enableAutoQuickfinder="false"
                                                      p:disableWildcardsAndOperators="true"/>
       &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
@@ -1606,7 +1606,7 @@
     &lt;list>
       &lt;bean parent="Uif-DataField" p:propertyName="code"/>
       &lt;bean parent="Uif-DataField" p:propertyName="name"/>
-      &lt;bean parent="Uif-DataField" p:propertyName="sortCode" p:enableAutoDirectInquiry="false"/>
+      &lt;bean parent="Uif-DataField" p:propertyName="sortCode" p:enableAutoInquiry="false"/>
       &lt;bean parent="Uif-DataField" p:propertyName="amount"/>
       &lt;bean parent="Uif-DataField" p:propertyName="active"/>
     &lt;/list>
@@ -1714,8 +1714,8 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF5">
-            <para>Adding additional buttons to the bottom of the search criterias is done by adding
-              a <emphasis role="keyword">Uif-PrimaryActionButton</emphasis> to the <emphasis
+            <para>Adding additional buttons to the bottom of the search criteria is done by adding a
+                <emphasis role="keyword">Uif-PrimaryActionButton</emphasis> to the <emphasis
                 role="keyword">criteriaGroup.footer</emphasis> item list instead of using the
                 <emphasis role="keyword">extraButtonSource</emphasis> and <emphasis role="keyword"
                 >extraButtonParms</emphasis> properties. [KNS line: 6-7, KRAD line: 12-20] <inlinemediaobject>
@@ -1725,7 +1725,7 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF6">
-            <para>The property that specifies wether or not to show the search buttons changed from
+            <para>The property that specifies whether or not to show the search buttons changed from
                 <emphasis role="keyword">disableSearchButtons</emphasis> to <emphasis role="keyword"
                 >renderCriteriaActions</emphasis>. [KNS line: 8, KRAD line: 21] <inlinemediaobject>
                 <imageobject>
@@ -1734,7 +1734,7 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF7">
-            <para>The rendering of search criterias was suppressed in KNS by adding the <emphasis
+            <para>The rendering of search criteria was suppressed in KNS by adding the <emphasis
                 role="keyword">searchCriteriaEnabled=false</emphasis> parameter to the URL. In KRAD
               the URL parameter is renamed to <emphasis role="keyword"
                 >renderLookupCriteria</emphasis>. Alternatively the <emphasis role="keyword"
@@ -1772,7 +1772,7 @@
             <para>A default value could be specified in KNS by adding the <emphasis role="keyword"
                 >&lt;attribute-name></emphasis> parameter to the URL. In KRAD the URL parameter
               naming convention changed to <emphasis role="keyword"
-                >lookupCriteria[&lt;attribute-name>]</emphasis>. Aleernatively the defaultValue can
+                >lookupCriteria[&lt;attribute-name>]</emphasis>. Alternatively the defaultValue can
               be set on the Uif-LookupCriteriaInputField. [KNS line: n/a, KRAD line: 14] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -1813,8 +1813,8 @@
           <listitem xml:id="LRF3">
             <para>The <emphasis role="keyword">forceInquiry</emphasis> property does not need to be
               set as inquiry links are rendered automatically. Set the <emphasis role="keyword"
-                >enableAutoDirectInquiry</emphasis> property on the <emphasis role="keyword"
-                >Uif-DataField</emphasis> to false to supress the rendering of the inquiry link.
+                >enableAutoInquiry</emphasis> property on the <emphasis role="keyword"
+                >Uif-DataField</emphasis> to false to suppress the rendering of the inquiry link.
               [KNS line: 21, KRAD line: 34] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -1858,8 +1858,10 @@
           </listitem>
           <listitem xml:id="LRF7">
             <para>To display the maintenance links (create new, edit, copy, delete) on non
-              maintenance documents the <emphasis role="keyword">renderMaintenanceLinks</emphasis> on
-              the LookupForm needs to be set. <inlinemediaobject>
+              maintenance documents the <emphasis role="keyword">renderMaintenanceLinks</emphasis>
+              on the LookupForm needs to be set. Not however the framework has logic based on
+              whether a quickfinder is used to determine whether to show the return links or
+              maintenance links.<inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1909,8 +1911,8 @@
             </listitem>
             <listitem xml:id="LLA2">
               <para><emphasis role="keyword">getHtmlMenuBar/getSupplementalMenuBar</emphasis> have
-                been removed. Instead these menu bars are configred via Uif. The HtmlMenuBar used to
-                add additional HTML content to the right of the "Create New" button, while the
+                been removed. Instead these menu bars are configured via Uif. The HtmlMenuBar used
+                to add additional HTML content to the right of the "Create New" button, while the
                 SupplementalMenuBar replaces the "Create New" button with the specified HTML
                 content. Note that with KRAD the "Create New" has been moved out of the lookup
                 header area and instead is right below the header, still at the right side. The
@@ -1980,9 +1982,10 @@
                 as an additional parameter. </para>
             </listitem>
             <listitem xml:id="LLA7">
-              <para><emphasis role="keyword">getSearchResults</emphasis> takes the LookupForm and
-                indicator for bounded/unbounded search as additional parameters. <emphasis
-                  role="keyword">getSearchResultsUnbounded</emphasis> has been removed. </para>
+              <para><emphasis role="keyword">getSearchResults</emphasis> and <emphasis
+                  role="keyword">getSearchResultsUnbounded</emphasis> have been removed. Override
+                  <emphasis>executeSearch</emphasis> for implementing a custom search
+                routine.</para>
             </listitem>
             <listitem xml:id="LLA8">
               <para><emphasis role="keyword">performClear</emphasis> takes the <emphasis
@@ -1993,8 +1996,9 @@
             </listitem>
             <listitem xml:id="LLA9">
               <para><emphasis role="keyword">getReturnUrl</emphasis> has been renamed to
-                getReturnUrlForResults which accepts the LinkField that returns the result from the
-                lookup and the model. Configuration via the Uif-LookupView is also possible:
+                  <emphasis>buildReturnUrlForResult</emphasis> which accepts the Link that returns
+                the result from the lookup and the model. Configuration via the Uif-LookupView is
+                also possible:
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="resultsReturnField">

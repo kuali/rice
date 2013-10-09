@@ -27,7 +27,8 @@ ricedictionaryvalidator.corefiles=classpath\\:org/kuali/rice/kns/bo/datadictiona
                                   classpath\\:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml,\\
                                   classpath\\:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml,\\
                                   classpath\\:org/kuali/rice/krad/uif/UifRiceDefinitions.xml,\\
-                                  classpath\\:org/kuali/rice/krad/uif/UifElementDefinitions.xml
+                                  classpath\\:org/kuali/rice/krad/uif/UifElementDefinitions.xml<% for(corefile in corefiles) { %>,\\
+                                  classpath\\:${corefile}<% } %>
 # How should the results of the validation be displayed
 ## Accepted values = gui, file, console
 ricedictionaryvalidator.display.method=console

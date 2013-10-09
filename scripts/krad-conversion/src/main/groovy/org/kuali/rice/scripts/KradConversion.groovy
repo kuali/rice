@@ -11,8 +11,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+ * limitations under the License.*/
 
 /**
  *  uses properties file to load settings, builds scaffolding for project and runs related conversion
@@ -20,8 +19,7 @@
  *  script pulls an input and target directory
  *  target directory is wiped and a structure is setup based on a web application maven project
  *  using the struts-config.xml the file is parsed and processed into creating a basic web-overlay project
- *  so the generated code can be tested without mixing with existing source
- */
+ *  so the generated code can be tested without mixing with existing source*/
 import org.apache.commons.io.FilenameUtils
 import org.apache.commons.lang.StringUtils
 import org.kuali.rice.scripts.ConversionUtils
@@ -53,7 +51,7 @@ def performStrutsConversion = config.bool.script.performStrutsConversion;
 def copyWebXml = config.bool.script.copyWebXml;
 def copyPortalTags = config.bool.script.copyPortalTags;
 def includeRiceValidationTest = config.bool.script.includeRiceValidationTest;
-
+def coreXmlFilePathList = config.map.scaffold.rdvconfig.additionalCorefiles;
 def strutsSearchDirPath = config.input.dir + config.input.path.src.webapp
 def ignoreStrutsPattern = config.pattern.script.ignoreStruts;
 
@@ -122,7 +120,7 @@ springBeansFileList.each { file -> springBeansFilePathList << file.path }
 // includes a spring validation test to allow for testing before running the server application
 if (includeRiceValidationTest) {
     System.out.println "Generating spring validation test based on resulting output from conversion"
-    scaffold.buildSpringBeansValidationTest(outputDir, springBeansFilePathList);
+    scaffold.buildSpringBeansValidationTest(outputDir, springBeansFilePathList, coreXmlFilePathList);
 }
 
 

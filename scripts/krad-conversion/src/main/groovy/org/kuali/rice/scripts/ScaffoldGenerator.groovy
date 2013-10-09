@@ -11,8 +11,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+ * limitations under the License.*/
 package org.kuali.rice.scripts
 
 import groovy.util.logging.Log
@@ -130,21 +129,21 @@ class ScaffoldGenerator {
      * @param targetPath
      * @param springBeanfiles
      */
-    def buildSpringBeansValidationTest(targetDirPath, springXmlFilePathList) {
+    def buildSpringBeansValidationTest(targetDirPath, springXmlFilePathList, coreXmlFilePathList) {
         targetDirPath = FilenameUtils.normalizeNoEndSeparator(targetDirPath, true)
         def testJavaDirPath = targetDirPath + FilenameUtils.normalizeNoEndSeparator(outputPaths.test.java) + "/org/kuali/rdv/"
         def testResourcesDirPath = targetDirPath + "/src/test/resources/"
 
         def validTestBinding = [:]
-        def configBinding = buildValidationTestBinding(targetDirPath, springXmlFilePathList)
+        def configBinding = buildValidationTestBinding(targetDirPath, springXmlFilePathList, coreXmlFilePathList);
 
         ConversionUtils.buildTemplateFile(testJavaDirPath, "RiceSpringBeansValidationTest.java", ConversionUtils.getTemplateDir(), "RiceSpringBeansValidationTest.java.tmpl", validTestBinding)
         ConversionUtils.buildTemplateFile(testResourcesDirPath, "rdv-config.properties", ConversionUtils.getTemplateDir(), "rdv-config.properties.tmpl", configBinding)
     }
 
-    def buildValidationTestBinding(targetPath, springXmlFilePathList) {
+    def buildValidationTestBinding(targetPath, springXmlFilePathList, coreXmlFilePathList) {
         def resourcePath = FilenameUtils.normalize(FilenameUtils.concat(targetPath, outputPaths.src.resources), true)
-        def binding = ["springBeanFiles": []]
+        def binding = ["springBeanFiles": [], "corefiles": coreXmlFilePathList];
         def rdvSpringXmlPathList = []
         springXmlFilePathList.removeAll(springXmlFilePathList.findAll { path -> path =~ /META-INF/ })
         springXmlFilePathList.each { springFilePath ->

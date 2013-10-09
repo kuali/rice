@@ -17,7 +17,6 @@ package org.kuali.rice.krad.web.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -62,11 +61,10 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -150,7 +148,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     protected void loadDocument(DocumentFormBase form) throws WorkflowException {
         String docId = form.getDocId();
 
-        LOG.debug("Loading document" + docId);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Loading document" + docId);
+        }
 
         Document doc = null;
         doc = getDocumentService().getByDocumentHeaderId(docId);
@@ -187,7 +187,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      * the new document instance should be set
      */
     protected void createDocument(DocumentFormBase form) throws WorkflowException {
-        LOG.debug("Creating new document instance for doc type: " + form.getDocTypeName());
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Creating new document instance for doc type: " + form.getDocTypeName());
+        }
         Document doc = getDocumentService().getNewDocument(form.getDocTypeName());
 
         form.setDocument(doc);
@@ -374,7 +376,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action, boolean checkSensitiveData) {
         Document document = form.getDocument();
 
-        LOG.debug("Performing workflow action " + action.name() + "for document: " + document.getDocumentNumber());
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Performing workflow action " + action.name() + "for document: " + document.getDocumentNumber());
+        }
 
         // TODO: need question and prompt framework
         if (checkSensitiveData) {
@@ -389,46 +393,46 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             String successMessageKey = null;
             switch (action) {
                 case SAVE:
-                    getDocumentService().saveDocument(document);
+                    document = getDocumentService().saveDocument(document);
                     successMessageKey = RiceKeyConstants.MESSAGE_SAVED;
                     break;
                 case ROUTE:
-                    getDocumentService().routeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
+                    document = getDocumentService().routeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
                     break;
                 case BLANKETAPPROVE:
-                    getDocumentService().blanketApproveDocument(document, form.getAnnotation(), combineAdHocRecipients(
+                    document = getDocumentService().blanketApproveDocument(document, form.getAnnotation(), combineAdHocRecipients(
                             form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_APPROVED;
                     break;
                 case APPROVE:
-                    getDocumentService().approveDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
+                    document = getDocumentService().approveDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_APPROVED;
                     break;
                 case DISAPPROVE:
                     // TODO: need to get disapprove note from user
                     String disapprovalNoteText = "";
-                    getDocumentService().disapproveDocument(document, disapprovalNoteText);
+                    document = getDocumentService().disapproveDocument(document, disapprovalNoteText);
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED;
                     break;
                 case FYI:
-                    getDocumentService().clearDocumentFyi(document, combineAdHocRecipients(form));
+                    document = getDocumentService().clearDocumentFyi(document, combineAdHocRecipients(form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_FYIED;
                     break;
                 case ACKNOWLEDGE:
-                    getDocumentService().acknowledgeDocument(document, form.getAnnotation(), combineAdHocRecipients(
+                    document = getDocumentService().acknowledgeDocument(document, form.getAnnotation(), combineAdHocRecipients(
                             form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED;
                     break;
                 case CANCEL:
                     if (getDocumentService().documentExists(document.getDocumentNumber())) {
-                        getDocumentService().cancelDocument(document, form.getAnnotation());
+                        document = getDocumentService().cancelDocument(document, form.getAnnotation());
                         successMessageKey = RiceKeyConstants.MESSAGE_CANCELLED;
                     }
                     break;
                 case COMPLETE:
                     if (getDocumentService().documentExists(document.getDocumentNumber())) {
-                        getDocumentService().completeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
+                        document = getDocumentService().completeDocument(document, form.getAnnotation(), combineAdHocRecipients(form));
                         successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
                     }
                     break;
@@ -437,6 +441,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
                     break;
             }
+            // push potentially updated document back into the form
+            form.setDocument(document);
 
             if (successMessageKey != null) {
                 GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey);

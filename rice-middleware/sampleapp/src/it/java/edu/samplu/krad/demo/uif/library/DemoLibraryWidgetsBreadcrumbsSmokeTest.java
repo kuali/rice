@@ -17,7 +17,6 @@ package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import edu.samplu.common.SmokeTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -1,5 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/data/jpa/eclipselink/KradEclipseLinkCustomizerTest.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountExtension.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountManager.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/KRADOverrideTestSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountType.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountType2.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/TravelAccountUseRate.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountTypeDivergent.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/BOContainingPerson.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/Account.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/datadictionary/TestDataObject.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Employee.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Person.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountRequestDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/document/AccountWithDDAttributesDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/test/java/org/kuali/rice/krad/data/provider/spring/test-spring-metadata.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/datadictionary/MessageProcessorTestBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Company.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/test/datadictionary/validation/Address.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/DictionaryValidationServiceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/TestDataDictionary.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/KRADTestHarnessSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/uif/TestViewTheme.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/uif/UifBeanFactoryPostProcessorTestBeans.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />

@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/campus/CampusTypeMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/state/State.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCode.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/country/CountryMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/county/CountyMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/country/Country.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/campus/Campus.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/campus/CampusType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/county/County.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/location/web/campus/CampusMaintenanceDocument.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />

@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/IdentityManagementReviewResponsibilityMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/ReviewResponsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionAttribute.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/permission/UberPermission.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionTemplate.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/ResponsibilityAttribute.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/ResponsibilityTemplate.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/Responsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/responsibility/UberResponsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/type/KimType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/role/RoleMemberBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/_KimServiceBusSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/identity/PersonImpl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/KimRemoteSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/_KimJpaSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/KimLocalSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/KimThinSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/common/attribute/KimAttributeData.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />

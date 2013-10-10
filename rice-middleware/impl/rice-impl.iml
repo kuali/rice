@@ -1,5 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/config/RiceServiceRegistrySpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/config/RiceServiceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/KewRemoteSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/KewWebSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewDataSourceSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleTemplateAttribute.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewJpaSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/PersonRuleResponsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RoleRuleResponsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/DocumentType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewCommonSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleDelegation.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/GroupRuleResponsibility.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/KewLocalSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleBaseValues.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/Style.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/KewThinSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleTemplate.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/DocumentRouteHeaderValue.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/bo/datadictionary/RuleAttribute.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmail.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupDocumentQualifier.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPhone.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleResponsibilityAction.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentName.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/ken/config/KENLocalSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/ken/config/_KenCommonSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/actionlist/UifActionListView.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/ken/config/KENRemoteSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/ken/config/_KenLocalServiceBusSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/ken/config/_KenOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmailType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kcb/config/_KcbOjbSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GenericPermission.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAddressType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentRole.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentEmploymentInfo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentExternalId.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMemberQualifier.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimAttributes.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAffiliation.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupDocumentMember.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleQualifier.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleDocumentDelegationMember.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementRoleDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/document/datadictionary/IdentityManagementPersonDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EntityType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EntityNameType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/ExternalIdentifierType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimPhoneType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimDocumentRoleMember.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentPrivacy.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentAddress.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonDocumentCitizenship.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />

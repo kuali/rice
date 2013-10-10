@@ -4,13 +4,9 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-framework/krad-theme-builder/src/test/builder" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-framework/krad-web" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-middleware/sampleapp" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-middleware/serviceregistry" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-middleware/standalone" />
-    <file type="web" url="file://$PROJECT_DIR$/rice-middleware/web" />
+    <type id="jpa" />
+    <type id="struts" />
+    <type id="web" />
   </component>
   <component name="IdProvider" IDEtalkID="977913B88E8EB1B707D18CAD4047509C" />
   <component name="MavenProjectsManager">

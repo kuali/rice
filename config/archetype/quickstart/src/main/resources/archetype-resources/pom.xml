@@ -97,6 +97,13 @@
   </properties>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <!--
       To help manage complex builds, the maven enforcer plugin has many useful rules.
       This is not configured in this sample pom for simplicity sake.

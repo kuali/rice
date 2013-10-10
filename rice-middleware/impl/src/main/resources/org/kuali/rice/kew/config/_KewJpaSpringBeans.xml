@@ -79,8 +79,8 @@
     <value>org.kuali.rice.kew.rule.RuleDelegationBo</value>
     <value>org.kuali.rice.kew.actionitem.ActionItem</value>
     <value>org.kuali.rice.kew.actionitem.OutboxItem</value>
-    <value>org.kuali.rice.kew.actiontaken.ActionTakenValue</value>
     <value>org.kuali.rice.kew.actionrequest.ActionRequestValue</value>
+    <value>org.kuali.rice.kew.actiontaken.ActionTakenValue</value>
   </util:list>
 
   <util:list id="additionalMetadataProviders" />
@@ -113,7 +113,30 @@
 
   <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa" lazy-init="true"/>
 
-  <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl" lazy-init="true"/>
+  <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl"
+        lazy-init="true"/>
+
+  <bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOJpa" lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService" />
+  </bean>
+
+  <bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOJpa" lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService"/>
+  </bean>
+
+  <bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOJpa" lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService"/>
+    <property name="dataSource" ref="kewDataSource"/>
+  </bean>
+
+  <bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOJpa" lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService"/>
+  </bean>
+
+  <bean id="enSearchableAttributeDAO" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpa"
+              lazy-init="true">
+    <property name="dataObjectService" ref="dataObjectService"/>
+  </bean>
 
 </beans>
 

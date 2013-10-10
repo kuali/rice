@@ -39,7 +39,8 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
 import org.kuali.rice.kew.xml.export.RuleTemplateXmlExporter;
-
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
 
 public class RuleTemplateServiceImpl implements RuleTemplateService {
 
@@ -53,33 +54,17 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 
     private RuleTemplateDAO ruleTemplateDAO;
 
-    private RuleTemplateAttributeDAO ruleTemplateAttributeDAO;
-
-    private RuleTemplateOptionDAO ruleTemplateOptionDAO;
-
     private RuleDAO ruleDAO;
 
     private RuleDelegationDAO ruleDelegationDAO;
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#delete(java.lang.Long)
-     */
-//    public void deleteRuleTemplateAttribute(Long ruleTemplateAttributeId, List ruleTemplateAttributes) {
-//
-//        RuleTemplateAttribute ruleTemplateAttributeRemove = findByRuleTemplateAttributeId(ruleTemplateAttributeId);
-//
-//        for (int i = ruleTemplateAttributeRemove.getDisplayOrder().intValue() + 1; i <= ruleTemplateAttributes.size(); i++) {
-//            RuleTemplateAttribute ruleTemplateAttributeUpdate = (RuleTemplateAttribute) ruleTemplateAttributes.get(i - 1);
-//            ruleTemplateAttributeUpdate.setDisplayOrder(new Integer(i - 1));
-//            getRuleTemplateAttributeDAO().save(ruleTemplateAttributeUpdate);
-//        }
-//        getRuleTemplateAttributeDAO().delete(ruleTemplateAttributeId);
-//    }
+    private DataObjectService dataObjectService;
+
 
     public void deleteRuleTemplateOption(String ruleTemplateOptionId) {
-        getRuleTemplateOptionDAO().delete(ruleTemplateOptionId);
+        RuleTemplateOptionBo ruleTemplateOptionBo = getDataObjectService().find(
+                RuleTemplateOptionBo.class,ruleTemplateOptionId);
+        getDataObjectService().delete(ruleTemplateOptionBo);
     }
 
     public RuleTemplateBo findByRuleTemplateName(String ruleTemplateName) {
@@ -92,7 +77,7 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
      * @see org.kuali.rice.kew.rule.RuleTemplateAttributeService#findByRuleTemplateAttributeId(java.lang.Long)
      */
     public RuleTemplateAttributeBo findByRuleTemplateAttributeId(String ruleTemplateAttributeId) {
-        return getRuleTemplateAttributeDAO().findByRuleTemplateAttributeId(ruleTemplateAttributeId);
+        return getDataObjectService().find(RuleTemplateAttributeBo.class,ruleTemplateAttributeId);
     }
 
     public List<RuleTemplateBo> findAll() {
@@ -103,37 +88,18 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         return ruleTemplateDAO.findByRuleTemplate(ruleTemplate);
     }
 
-    public void save(RuleTemplateBo ruleTemplate) {
+    public RuleTemplateBo save(RuleTemplateBo ruleTemplate) {
         LOG.debug("save RuleTemplateServiceImpl");
         validate(ruleTemplate);
         fixAssociations(ruleTemplate);
-//        if (ruleTemplate.getId() != null) {
-//            RuleTemplate previousRuleTemplate = findByRuleTemplateId(ruleTemplate.getId());
-//            if (previousRuleTemplate != null) {
-//                for (Iterator iter = previousRuleTemplate.getRuleTemplateAttributes().iterator(); iter.hasNext();) {
-//                    RuleTemplateAttribute previousAttribute = (RuleTemplateAttribute) iter.next();
-//                    boolean found = false;
-//
-//                    for (Iterator iter2 = ruleTemplate.getRuleTemplateAttributes().iterator(); iter2.hasNext();) {
-//                        RuleTemplateAttribute attribute = (RuleTemplateAttribute) iter2.next();
-//                        if (previousAttribute.getRuleAttribute().getName().equals(attribute.getRuleAttribute().getName())) {
-//                            found = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!found) {
-//                        getRuleTemplateAttributeDAO().delete(previousAttribute.getId());
-//                    }
-//                }
-//            }
-//        }
 
-        getRuleTemplateDAO().save(ruleTemplate);
+
         LOG.debug("end save RuleTemplateServiceImpl");
+        return getRuleTemplateDAO().save(ruleTemplate);
     }
 
     public void save(RuleTemplateAttributeBo ruleTemplateAttribute) {
-        ruleTemplateAttributeDAO.save(ruleTemplateAttribute);
+        getDataObjectService().save(ruleTemplateAttribute);
     }
 
     /**
@@ -227,21 +193,6 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
         this.ruleTemplateDAO = ruleTemplateDAO;
     }
 
-    /**
-     * @return Returns the ruleTemplateAttributeDAO.
-     */
-    public RuleTemplateAttributeDAO getRuleTemplateAttributeDAO() {
-        return ruleTemplateAttributeDAO;
-    }
-
-    /**
-     * @param ruleTemplateAttributeDAO
-     *            The ruleTemplateAttributeDAO to set.
-     */
-    public void setRuleTemplateAttributeDAO(RuleTemplateAttributeDAO ruleTemplateAttributeDAO) {
-        this.ruleTemplateAttributeDAO = ruleTemplateAttributeDAO;
-    }
-
     public RuleDAO getRuleDAO() {
         return ruleDAO;
     }
@@ -256,21 +207,6 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 
     public void setRuleDelegationDAO(RuleDelegationDAO ruleDelegationDAO) {
         this.ruleDelegationDAO = ruleDelegationDAO;
-    }
-
-    /**
-     * @return Returns the ruleTemplateOptionDAO.
-     */
-    public RuleTemplateOptionDAO getRuleTemplateOptionDAO() {
-        return ruleTemplateOptionDAO;
-    }
-
-    /**
-     * @param ruleTemplateOptionDAO
-     *            The ruleTemplateOptionDAO to set.
-     */
-    public void setRuleTemplateOptionDAO(RuleTemplateOptionDAO ruleTemplateOptionDAO) {
-        this.ruleTemplateOptionDAO = ruleTemplateOptionDAO;
     }
 
     public void loadXml(InputStream inputStream, String principalId) {
@@ -297,6 +233,16 @@ public class RuleTemplateServiceImpl implements RuleTemplateService {
 
     public String getNextRuleTemplateId() {
         return getRuleTemplateDAO().getNextRuleTemplateId();
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

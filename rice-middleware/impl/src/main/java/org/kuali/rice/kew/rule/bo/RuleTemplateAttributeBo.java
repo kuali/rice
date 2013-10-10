@@ -28,7 +28,9 @@ import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -57,11 +59,10 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id
+    @PortableSequenceGenerator(name="KREW_RTE_TMPL_S")
     @GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@Column(name="RULE_TMPL_ATTR_ID")
 	private String id;
-    @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
-	private String ruleTemplateId;
     @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private String ruleAttributeId;
     @Column(name="REQ_IND")
@@ -75,8 +76,8 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     @Column(name="DFLT_VAL")
 	private String defaultValue;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_TMPL_ID")
+    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name="RULE_TMPL_ID", nullable = false)
 	private RuleTemplateBo ruleTemplate;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ATTR_ID")
@@ -257,11 +258,10 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     }
 
     public String getRuleTemplateId() {
-    	return ruleTemplateId;
+    	return getRuleTemplate() != null ? getRuleTemplate().getId() : null;
     }
 
     public void setRuleTemplateId(String ruleTemplateId) {
-    	this.ruleTemplateId = ruleTemplateId;
     }
 
 }

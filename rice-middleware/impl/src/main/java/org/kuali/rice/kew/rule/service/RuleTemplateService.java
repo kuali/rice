@@ -36,7 +36,7 @@ import org.springframework.cache.annotation.CacheEvict;
  */
 public interface RuleTemplateService extends XmlLoader, XmlExporter {
     @CacheEvict(value={RuleTemplate.Cache.NAME}, allEntries = true)
-    public void save(RuleTemplateBo ruleTemplate);
+    public RuleTemplateBo save(RuleTemplateBo ruleTemplate);
     @CacheEvict(value={RuleTemplate.Cache.NAME}, allEntries = true)
     public void save(RuleTemplateAttributeBo ruleTemplateAttribute);
     @CacheEvict(value={RuleTemplate.Cache.NAME, Rule.Cache.NAME, RuleDelegation.Cache.NAME}, allEntries = true)

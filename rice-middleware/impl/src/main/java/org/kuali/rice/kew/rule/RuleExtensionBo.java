@@ -181,8 +181,7 @@ public class RuleExtensionBo implements RuleExtensionContract, Serializable {
                + ", ruleTemplateAttributeId=" + ruleTemplateAttributeId
                + ", ruleBaseValuesId=" + ruleBaseValuesId
                + ", ruleBaseValues=" + ruleBaseValues
-               + ", ruleTemplateAttribute=" + ruleTemplateAttribute
-               + ", extensionValues=" + extensionValues
+               + ", ruleTemplateAttribute=" + ruleTemplateAttributeId
                + ", versionNumber=" + versionNumber
                + "]";
     }

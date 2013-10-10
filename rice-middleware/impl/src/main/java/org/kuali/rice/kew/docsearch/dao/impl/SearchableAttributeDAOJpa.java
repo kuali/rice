@@ -24,11 +24,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * JPA implementation of SearchableAttributeDAO
@@ -36,25 +40,29 @@ import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
+public class SearchableAttributeDAOJpa implements SearchableAttributeDAO {
 
-	@PersistenceContext(unitName = "kew-unit")
+	@PersistenceContext(unitName = "kew")
 	private EntityManager entityManager;
+    private DataObjectService dataObjectService;
 
 	/**
 	 * This overridden method queries the SearchableAttributeDateTimeValue persistence class
 	 *
-	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeDateTimeValuesByKey(java.lang.Long,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeDateTimeValuesByKey(
+     * java.lang.String,java.lang.String)
 	 */
 	public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(
 			String documentId, String key) {
 
 		List<Timestamp> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeDateTimeValue.FindByKey");
-        query.setParameter("documentId", documentId);
-        query.setParameter("searchableAttributeKey", key);
-        List<SearchableAttributeDateTimeValue> results = query.getResultList();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("documentId",documentId),
+                               equal("searchableAttributeKey",key));
+
+
+        List<SearchableAttributeDateTimeValue> results = getDataObjectService().findMatching(
+                            SearchableAttributeDateTimeValue.class,builder.build()).getResults();
         if (!results.isEmpty()) {
         	lRet = new ArrayList<Timestamp>();
             for (SearchableAttributeDateTimeValue attribute: results) {
@@ -67,16 +75,17 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	/**
 	 * This overridden method queries the SearchableAttributeFloatValue persistence class
 	 *
-	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeFloatValuesByKey(java.lang.Long,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeFloatValuesByKey(
+     * java.lang.String,java.lang.String)
 	 */
 	public List<BigDecimal> getSearchableAttributeFloatValuesByKey(
 			String documentId, String key) {
 		List<BigDecimal> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeFloatValue.FindByKey");
-        query.setParameter("documentId", documentId);
-        query.setParameter("searchableAttributeKey", key);
-        List<SearchableAttributeFloatValue> results = query.getResultList();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("documentId",documentId),
+                equal("searchableAttributeKey",key));
+        List<SearchableAttributeFloatValue> results = getDataObjectService().findMatching(
+                SearchableAttributeFloatValue.class,builder.build()).getResults();
         if (!results.isEmpty()) {
         	lRet = new ArrayList<BigDecimal>();
             for (SearchableAttributeFloatValue attribute: results) {
@@ -89,16 +98,17 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	/**
 	 * This overridden method queries the searchableAttributeKey persistence class
 	 *
-	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeLongValuesByKey(java.lang.Long,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeLongValuesByKey(
+     * java.lang.String,java.lang.String)
 	 */
 	public List<Long> getSearchableAttributeLongValuesByKey(String documentId,
 			String key) {
 		List<Long> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeLongValue.FindByKey");
-        query.setParameter("documentId", documentId);
-        query.setParameter("searchableAttributeKey", key);
-        List<SearchableAttributeLongValue> results = query.getResultList();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("documentId",documentId),
+                equal("searchableAttributeKey",key));
+        List<SearchableAttributeLongValue> results = getDataObjectService().findMatching(
+                SearchableAttributeLongValue.class,builder.build()).getResults();
         if (!results.isEmpty()) {
         	lRet = new ArrayList<Long>();
             for (SearchableAttributeLongValue attribute: results) {
@@ -111,16 +121,17 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
 	/**
 	 * This overridden method queries the SearchableAttributeStringValue persistence class
 	 *
-	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeStringValuesByKey(java.lang.Long,
-	 *      java.lang.String)
+	 * @see org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO#getSearchableAttributeStringValuesByKey(
+     * java.lang.String,java.lang.String)
 	 */
 	public List<String> getSearchableAttributeStringValuesByKey(
 			String documentId, String key) {
 		List<String> lRet = null;
-		Query query = entityManager.createNamedQuery("SearchableAttributeStringValue.FindByKey");
-        query.setParameter("documentId", documentId);
-        query.setParameter("searchableAttributeKey", key);
-        List<SearchableAttributeStringValue> results = query.getResultList();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("documentId",documentId),
+                equal("searchableAttributeKey",key));
+        List<SearchableAttributeStringValue> results = getDataObjectService().findMatching(
+                SearchableAttributeStringValue.class,builder.build()).getResults();
         if (!results.isEmpty()) {
         	lRet = new ArrayList<String>();
             for (SearchableAttributeStringValue attribute: results) {
@@ -137,5 +148,16 @@ public class SearchableAttributeDAOJpaImpl implements SearchableAttributeDAO {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
 
 }

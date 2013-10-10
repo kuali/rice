@@ -15,67 +15,64 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.util.ArrayList;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.springframework.beans.factory.annotation.Required;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 
-public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
+public class RuleDelegationDAOJpa implements RuleDelegationDAO {
 
-	@PersistenceContext(unitName="kew-unit")
+	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
+    private DataObjectService dataObjectService;
 
     public List<RuleDelegationBo> findByDelegateRuleId(String ruleId) {
-        Criteria crit = new Criteria(RuleDelegationBo.class.getName());
-        crit.eq("delegateRuleId", ruleId);
-        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
+                org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("delegateRuleId",ruleId));
+        return getDataObjectService().findMatching(RuleDelegationBo.class,builder.build()).getResults();
     }
 
     public void save(RuleDelegationBo ruleDelegation) {
-    	if(ruleDelegation.getRuleDelegationId()==null){
-    		entityManager.persist(ruleDelegation);
-    	}else{
-    		OrmUtils.merge(entityManager, ruleDelegation);
-    	}
+    	getDataObjectService().save(ruleDelegation);
     }
+
     public List<RuleDelegationBo> findAllCurrentRuleDelegations(){
-        Criteria crit = new Criteria(RuleDelegationBo.class.getName());
-        crit.eq("delegationRuleBaseValues.currentInd", true);
-        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
+                org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("delegationRule.currentInd",true));
+        return getDataObjectService().findMatching(RuleDelegationBo.class,builder.build()).getResults();
     }
 
     public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId){
-        return entityManager.find(RuleDelegationBo.class, ruleDelegationId);
+        return getDataObjectService().find(RuleDelegationBo.class, ruleDelegationId);
 
     }
     public void delete(String ruleDelegationId){
-    	entityManager.remove(findByRuleDelegationId(ruleDelegationId));
+        getDataObjectService().delete(findByRuleDelegationId(ruleDelegationId));
     }
 
-    public EntityManager getEntityManager() {
-        return this.entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     public List<RuleDelegationBo> findByResponsibilityIdWithCurrentRule(String responsibilityId) {
-    	Criteria crit = new Criteria(RuleDelegationBo.class.getName());
-    	crit.eq("responsibilityId", responsibilityId);
-    	crit.eq("delegationRuleBaseValues.currentInd", true);
-    	Collection delegations = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-    	return new ArrayList<RuleDelegationBo>(delegations);
+        if (StringUtils.isBlank(responsibilityId)){
+            return null;
+        }
+
+        org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
+                    org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("delegationRule.currentInd",true),
+                    equal("responsibilityId",responsibilityId));
+        return getDataObjectService().findMatching(RuleDelegationBo.class,builder.build()).getResults();
     }
 
     /**
@@ -103,5 +100,23 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
         // TODO jjhanso - THIS METHOD NEEDS JAVADOCS
         return null;
     }
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 
 }

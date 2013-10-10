@@ -288,17 +288,14 @@
     <property name="ruleTemplateDAO">
       <ref bean="enRuleTemplateDAO"/>
     </property>
-    <property name="ruleTemplateAttributeDAO">
-      <ref bean="enRuleTemplateAttributeDAO"/>
-    </property>
-    <property name="ruleTemplateOptionDAO">
-      <ref bean="enRuleTemplateOptionDAO"/>
-    </property>
     <property name="ruleDAO">
       <ref bean="enRuleDAO"/>
     </property>
     <property name="ruleDelegationDAO">
       <ref bean="enRuleDelegationDAO"/>
+    </property>
+    <property name="dataObjectService">
+      <ref bean="dataObjectService"/>
     </property>
   </bean>
 

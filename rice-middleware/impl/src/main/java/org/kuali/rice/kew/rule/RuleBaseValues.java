@@ -131,7 +131,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 	private List<RuleExtensionBo> ruleExtensions;
 
     @ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@JoinColumn(name="RULE_TMPL_ID", nullable = false)
+	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplateBo ruleTemplate;
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})

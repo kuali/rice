@@ -148,12 +148,12 @@ public class RuleTemplateXmlParser {
 
         // save the rule template first so that the default/template rule that is generated
         // in the process of setting defaults is associated properly with this rule template
-        KEWServiceLocator.getRuleTemplateService().save(ruleTemplate);
+        ruleTemplate = KEWServiceLocator.getRuleTemplateService().save(ruleTemplate);
 
         // update the default options
         updateRuleTemplateDefaultOptions(element, ruleTemplate);
 
-        KEWServiceLocator.getRuleTemplateService().save(ruleTemplate);
+        ruleTemplate = KEWServiceLocator.getRuleTemplateService().save(ruleTemplate);
 
         return ruleTemplate;
     }
@@ -431,7 +431,9 @@ public class RuleTemplateXmlParser {
                 potentialExistingTemplateAttribute.setRequired(ruleTemplateAttribute.getRequired());
             } else {
                 // template attribute does not yet exist on template so add it
+                ruleTemplateAttribute.setRuleTemplate(updatedRuleTemplate);
                 updatedRuleTemplate.getRuleTemplateAttributes().add(ruleTemplateAttribute);
+
             }
         }
     }

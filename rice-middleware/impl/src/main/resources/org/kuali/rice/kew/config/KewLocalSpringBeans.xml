@@ -106,8 +106,8 @@
     <property name="ruleDAO">
       <ref bean="enRuleDAO"/>
     </property>
-    <property name="ruleResponsibilityDAO">
-      <ref bean="enRuleResponsibilityDAO"/>
+    <property name="dataObjectService">
+      <ref bean="dataObjectService"/>
     </property>
   </bean>
 
@@ -224,8 +224,6 @@
     </property>
     <property name="beanNames">
       <list>
-        <idref local="enRuleAttributeService"/>
-        <idref local="enRuleTemplateService"/>
         <idref local="enRuleServiceInternal"/>
         <idref local="enResponsibilityIdService"/>
         <idref local="enRuleDelegationService"/>

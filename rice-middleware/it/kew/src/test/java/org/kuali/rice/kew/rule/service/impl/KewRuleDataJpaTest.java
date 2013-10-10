@@ -21,15 +21,21 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExpressionDef;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +67,161 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         assertTrue("Rule Template Option persisted correctly",
                 ruleBaseValues.getRuleTemplate().getRuleTemplateOptions() != null
              && ruleBaseValues.getRuleTemplate().getRuleTemplateOptions().size() == 1);
+        assertTrue("Rule Template Attribute persisted correctly",
+                ruleBaseValues.getRuleTemplate().getRuleTemplateAttributes() != null &&
+                ruleBaseValues.getRuleTemplate().getRuleTemplateAttributes().size() == 1);
     }
+
+    @Test
+    public void testRuleAttributeServiceFindByRuleAttribute() throws Exception{
+        RuleAttribute ruleAttribute = setupRuleAttribute();
+
+        List<RuleAttribute> ruleAttributeList = KEWServiceLocator.getRuleAttributeService().
+                                    findByRuleAttribute(ruleAttribute);
+
+        assertTrue("Rule attribute find by rule attribute fetched correctly",ruleAttributeList != null
+                && ruleAttributeList.size() == 1);
+    }
+
+    @Test
+    public void testRuleAttributeServiceGetAllRuleAttributes() throws Exception{
+        setupRuleAttribute();
+        setupRuleAttributeSimilar();
+
+        List<RuleAttribute> ruleAttributeList = KEWServiceLocator.getRuleAttributeService().findAll();
+        assertTrue("Rule attribute fetched all correctly",ruleAttributeList != null
+                && ruleAttributeList.size() == 2);
+    }
+
+    @Test
+         public void tesRuleAttributeServiceFindByName() throws Exception{
+        RuleAttribute ruleAttribute = setupRuleAttribute();
+
+        ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(ruleAttribute.getName());
+        assertTrue("RuleAttribute find by name fetched correctly",ruleAttribute != null);
+    }
+
+    @Test
+    public void tesRuleAttributeServiceFindByClassName() throws Exception{
+        RuleAttribute ruleAttribute = setupRuleAttribute();
+        setupRuleAttributeSimilar();
+
+        List<RuleAttribute> ruleAttributeList = KEWServiceLocator.getRuleAttributeService().findByClassName(ruleAttribute.getResourceDescriptor());
+        assertTrue("Rule attribute find by class name fetched correctly",ruleAttributeList != null
+                && ruleAttributeList.size() == 2);
+    }
+
+    @Test
+    public void testRuleTemplateServiceFindByRuleTemplateName() throws Exception{
+        RuleTemplateBo ruleTemplateBo = setupRuleTemplateBo("test");
+        String name = ruleTemplateBo.getName();
+        ruleTemplateBo = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateBo.getName());
+        assertTrue("RuleTemplate fetched based on name", ruleTemplateBo != null
+                    && StringUtils.equals(name,ruleTemplateBo.getName()));
+    }
+
+    @Test
+    public void testRuleTemplateServiceDeleteRuleTemplateOption() throws Exception{
+        RuleTemplateBo ruleTemplateBo = setupRuleTemplateBo("test");
+        String optionId = ruleTemplateBo.getRuleTemplateOptions().get(0).getId();
+        KEWServiceLocator.getRuleTemplateService().deleteRuleTemplateOption(optionId);
+        RuleTemplateOptionBo ruleTemplateOptionBo = KRADServiceLocator.getDataObjectService().
+                        find(RuleTemplateOptionBo.class, optionId);
+        assertTrue("Rule Template Option is null",ruleTemplateOptionBo == null);
+    }
+
+    @Test
+    public void testRuleDelegationServiceFindAllCurrentRuleDelegations() throws Exception{
+        RuleBaseValues ruleBaseValues = setupRuleBaseValues();
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        ruleDelegationBo.setDelegationRule(ruleBaseValues);
+        KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
+        List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().
+                    findAllCurrentRuleDelegations();
+        assertTrue("Rule delegation bo found",ruleDelegationBos != null);
+    }
+
+    @Test
+    public void testRuleDelegationServiceFindByDelegateRuleId() throws Exception{
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().
+                        findByDelegateRuleId(ruleDelegationBo.getDelegateRuleId());
+        assertTrue("Rule Delegation Bo fetched by rule id",ruleDelegationBos != null && ruleDelegationBos.size() == 1);
+    }
+
+    @Test
+    public void testRuleTemplateServiceFindAll() throws Exception{
+        setupRuleTemplateBo("test");
+        setupRuleTemplateBo("otherTest");
+
+        List<RuleTemplateBo> ruleTemplateBos = KEWServiceLocator.getRuleTemplateService().findAll();
+        assertTrue("Rule Template Bo fetched all", ruleTemplateBos != null && ruleTemplateBos.size() == 2);
+    }
+
+    @Test
+    public void testRuleDelegationServiceFindByResponsibilityIdWithCurrentRule() throws Exception{
+        RuleBaseValues ruleBaseValues = setupRuleBaseValues();
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        ruleDelegationBo.setResponsibilityId(ruleBaseValues.getId());
+        ruleDelegationBo.setDelegateRuleId(ruleBaseValues.getId());
+        ruleDelegationBo = KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
+
+        List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(
+                    ruleDelegationBo.getResponsibilityId());
+        assertTrue("Rule Delegation Bo fetched ", ruleDelegationBos != null && ruleDelegationBos.size() == 1);
+    }
+
+    private RuleDelegationBo setupRuleDelegationBo(){
+        RuleDelegationBo ruleDelegationBo = new RuleDelegationBo();
+        ruleDelegationBo.setDelegationTypeCode("P");
+        ruleDelegationBo.setGroupReviewerName("Testing");
+        ruleDelegationBo.setPersonReviewer("blah");
+
+        return KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
+    }
+
+    private RuleTemplateBo setupRuleTemplateBo(String name){
+        RuleTemplateBo ruleTemplate = new RuleTemplateBo();
+        ruleTemplate.setName(name);
+        ruleTemplate.setReturnUrl("testing");
+        ruleTemplate.setDescription("description");
+
+        RuleTemplateOptionBo ruleTemplateOptionBo = new RuleTemplateOptionBo();
+        ruleTemplateOptionBo.setCode("P");
+        ruleTemplateOptionBo.setValue("VAL");
+        ruleTemplateOptionBo.setRuleTemplate(ruleTemplate);
+        ruleTemplate.getRuleTemplateOptions().add(ruleTemplateOptionBo);
+
+        return KRADServiceLocator.getDataObjectService().save(ruleTemplate);
+    }
+
+
+
+    private RuleAttribute setupRuleAttribute(){
+        RuleAttribute ruleAttribute = new RuleAttribute();
+        ruleAttribute.setApplicationId("TST");
+        ruleAttribute.setDescription("Testing");
+        ruleAttribute.setLabel("New Label");
+        ruleAttribute.setResourceDescriptor("ResourceDescriptor");
+        ruleAttribute.setType("newType");
+        ruleAttribute.setName("Attr");
+
+        return KRADServiceLocator.getDataObjectService().save(ruleAttribute);
+    }
+
+    private RuleAttribute setupRuleAttributeSimilar(){
+        RuleAttribute ruleAttribute = new RuleAttribute();
+        ruleAttribute.setApplicationId("TST2");
+        ruleAttribute.setDescription("Testingfdsa");
+        ruleAttribute.setLabel("New Labefdsal");
+        ruleAttribute.setResourceDescriptor("ResourceDescriptor");
+        ruleAttribute.setType("newType");
+        ruleAttribute.setName("Attr2");
+
+        return KRADServiceLocator.getDataObjectService().save(ruleAttribute);
+    }
+
+
 
 
     private RuleBaseValues setupRuleBaseValues() {
@@ -98,6 +258,15 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         ruleTemplateOptionBo.setValue("VAL");
         ruleTemplateOptionBo.setRuleTemplate(ruleTemplate);
         ruleTemplate.getRuleTemplateOptions().add(ruleTemplateOptionBo);
+
+        RuleTemplateAttributeBo ruleTemplateAttributeBo = new RuleTemplateAttributeBo();
+        ruleTemplateAttributeBo.setActive(true);
+        ruleTemplateAttributeBo.setDefaultValue("testAttr");
+        ruleTemplateAttributeBo.setDisplayOrder(1);
+        ruleTemplateAttributeBo.setRequired(true);
+        ruleTemplateAttributeBo.setRuleTemplate(ruleTemplate);
+
+        ruleTemplate.getRuleTemplateAttributes().add(ruleTemplateAttributeBo);
 
 
         RuleExpressionDef ruleExpressionDef = new RuleExpressionDef();

@@ -30,8 +30,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -49,13 +47,6 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_ATTR_T")
-//@Sequence(name="KREW_RTE_TMPL_S", property="id")
-@NamedQueries({
-  @NamedQuery(name="RuleAttribute.FindById",  query="select ra from RuleAttribute ra where ra.id = :ruleAttributeId"),
-  @NamedQuery(name="RuleAttribute.FindByName",  query="select ra from RuleAttribute ra where ra.name = :name"),
-  @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.resourceDescriptor = :className"),
-  @NamedQuery(name="RuleAttribute.GetAllRuleAttributes",  query="select ra from RuleAttribute ra")
-})
 public class RuleAttribute extends PersistableBusinessObjectBase implements ExtensionDefinitionContract {
 
 	private static final long serialVersionUID = 1027673603158346349L;

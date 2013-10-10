@@ -23,6 +23,7 @@ import org.kuali.rice.kew.api.rule.RuleTemplateContract;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,6 +73,7 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     };
     
     @Id
+    @PortableSequenceGenerator(name="KREW_RTE_TMPL_S")
     @GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@Column(name="RULE_TMPL_ID")
 	private String id;
@@ -85,7 +87,7 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_RULE_TMPL_ID")
 	private RuleTemplateBo delegationTemplate;
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateAttributeBo> ruleTemplateAttributes;
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},

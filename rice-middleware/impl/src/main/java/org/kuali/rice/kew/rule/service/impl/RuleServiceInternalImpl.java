@@ -70,8 +70,10 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.cache.Cache;
 
 import java.io.InputStream;
@@ -98,6 +100,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     private RuleDAO ruleDAO;
     private RuleResponsibilityDAO ruleResponsibilityDAO;
+    private DataObjectService dataObjectService;
 
     public RuleResponsibilityDAO getRuleResponsibilityDAO() {
         return ruleResponsibilityDAO;
@@ -893,11 +896,11 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     }
 
     public void deleteRuleResponsibilityById(String ruleResponsibilityId) {
-        getRuleResponsibilityDAO().delete(ruleResponsibilityId);
+        getDataObjectService().delete(ruleResponsibilityId);
     }
 
     public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId) {
-        return getRuleResponsibilityDAO().findByRuleResponsibilityId(ruleResponsibilityId);
+        return getDataObjectService().find(RuleResponsibilityBo.class,ruleResponsibilityId);
     }
 
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
@@ -1226,5 +1229,15 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     protected String getRuleByTemplateAndDocTypeCacheKey(String ruleTemplateName, String docTypeName) {
         return "'templateName=' + " + ruleTemplateName +" '|' + 'documentTypeName=' + " + docTypeName;
     }
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
 
 }

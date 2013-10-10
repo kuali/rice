@@ -21,7 +21,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 
 public interface RuleTemplateDAO {
 
-    public void save(RuleTemplateBo ruleTemplate);
+    public RuleTemplateBo save(RuleTemplateBo ruleTemplate);
     public List<RuleTemplateBo> findByRuleTemplate(RuleTemplateBo ruleTemplate);
     public List<RuleTemplateBo> findAll();
     public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId);

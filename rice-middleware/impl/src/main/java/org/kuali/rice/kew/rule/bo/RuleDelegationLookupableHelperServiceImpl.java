@@ -62,6 +62,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -277,8 +278,15 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             throw new ValidationException("errors in search criteria");
         }
 
+
+        Iterator<RuleDelegationBo> rules = Collections.<RuleDelegationBo>emptyList().iterator();
         // TODO: replace this with new API find method ??
-        Iterator<RuleDelegationBo> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
+        List<RuleDelegationBo> ruleDelegationBos = getRuleDelegationService().search(parentRuleBaseValueId,
+                parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId,
+                workflowId, delegationParam, isActive, attributes, userDirectiveParam);
+        if(ruleDelegationBos != null){
+            rules = ruleDelegationBos.iterator();
+        }
         List<RuleDelegationBo> displayList = new ArrayList<RuleDelegationBo>();
 
         while (rules.hasNext()) {

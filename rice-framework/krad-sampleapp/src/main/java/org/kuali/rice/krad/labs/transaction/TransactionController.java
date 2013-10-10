@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * Dummy test controller for testing
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller

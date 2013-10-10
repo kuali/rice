@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-
-    Copyright 2005-2013 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
+  ~ Copyright 2006-2013 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -29,10 +27,10 @@
     <property name="title" value="Student Transaction Overview"/>
     <property name="headerText" value="Transaction Overview"/>
     <property name="formClass" value="org.kuali.rice.krad.labs.transaction.TransactionForm"/>
-    <property name="entryPageId" value="RollUpTransactions"/>
+    <property name="entryPageId" value="RollUpTransactions1"/>
     <property name="items">
       <list merge="true">
-        <bean parent="Uif-Page" p:id="RollUpTransactions" p:title="View Transactions">
+        <bean parent="Uif-Page" p:id="RollUpTransactions1" p:title="View Transactions">
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:label="Type to refresh" p:propertyName="testField"/>
@@ -40,7 +38,7 @@
                 <property name="refreshWhenChangedPropertyNames" value="testField"/>
                 <property name="items">
                   <list>
-                    <ref bean="rollupList"/>
+                    <ref bean="rollupList1"/>
                   </list>
                 </property>
               </bean>
@@ -52,7 +50,7 @@
     </property>
   </bean>
 
-  <bean id="rollupList" parent="Uif-TableCollectionSection" p:headerText="Roll-Up"
+  <bean id="rollupList1" parent="Uif-TableCollectionSection" p:headerText="Roll-Up"
         p:layoutManager.numberOfColumns="2" p:propertyName="rollupTransactions"
         p:collectionObjectClass="org.kuali.rice.krad.labs.transaction.TransactionModel">
     <property name="layoutManager.sequencePropertyName" value="id"/>
@@ -90,14 +88,14 @@
         <property name="items">
           <list>
             <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges"/>
-            <ref bean="rollupTransactionList"/>
+            <ref bean="rollupTransactionList1"/>
           </list>
         </property>
       </bean>
     </property>
   </bean>
 
-  <bean id="rollupTransactionList" parent="Uif-TableSubCollection-WithinSection" p:layoutManager.numberOfColumns="2">
+  <bean id="rollupTransactionList1" parent="Uif-TableSubCollection-WithinSection" p:layoutManager.numberOfColumns="2">
     <property name="headerText" value="Transactions"/>
     <property name="collectionObjectClass" value="org.kuali.rice.krad.labs.transaction.TransactionModel"/>
     <property name="propertyName" value="subTransactions"/>
@@ -120,14 +118,14 @@
           <property name="items">
             <list>
               <bean parent="Uif-LinkField" p:href="javascript:void(0)"
-                    p:onClickScript="showLightboxComponent('transactionDetailLightbox@{#lineSuffix}');"
+                    p:onClickScript="showLightboxComponent('transactionDetailLightbox1@{#lineSuffix}');"
                     p:linkText="Transaction Detail"/>
 
-              <bean id="transactionDetailLightbox" parent="Uif-VerticalBoxSection">
+              <bean id="transactionDetailLightbox1" parent="Uif-VerticalBoxSection">
                 <property name="retrieveViaAjax" value="true"/>
                 <property name="items">
                   <list>
-                    <ref bean="transactionDetail"/>
+                    <ref bean="transactionDetail1"/>
                   </list>
                 </property>
               </bean>
@@ -157,15 +155,15 @@
     </property>
   </bean>
 
-  <bean id="transactionDetail" parent="Uif-VerticalBoxSection" p:headerText="Transaction Details">
+  <bean id="transactionDetail1" parent="Uif-VerticalBoxSection" p:headerText="Transaction Details">
     <property name="items">
       <list>
-        <ref bean="transactionDetailFields"/>
+        <ref bean="transactionDetailFields1"/>
       </list>
     </property>
   </bean>
 
-  <bean id="transactionDetailFields" parent="Uif-HorizontalBoxGroup">
+  <bean id="transactionDetailFields1" parent="Uif-HorizontalBoxGroup">
     <property name="items">
       <list>
         <bean parent="Uif-GridSection" p:style="width: 40%;">

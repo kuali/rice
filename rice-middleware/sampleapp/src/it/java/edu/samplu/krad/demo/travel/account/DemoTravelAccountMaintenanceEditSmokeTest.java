@@ -77,7 +77,7 @@ public class DemoTravelAccountMaintenanceEditSmokeTest extends SmokeTestBase {
 
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Account Maintenance (Edit)");
+        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
     }
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {

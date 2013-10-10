@@ -78,11 +78,11 @@ public class DemoTravelAccountInquirySmokeTest extends SmokeTestBase {
 
         waitAndClickButtonByText(COLLAPSE_ALL);
         Thread.sleep(2000);
-        assertIsNotVisible(By.linkText("a14"), " after clicking " + COLLAPSE_ALL);
+        assertIsNotVisible(By.linkText("a"), " after clicking " + COLLAPSE_ALL);
 
         waitAndClickButtonByText(EXPAND_ALL);
         Thread.sleep(2000);
-        assertIsVisible(By.linkText("a14"), " after clicking " + EXPAND_ALL);
+        assertIsVisible(By.linkText("a"), " after clicking " + EXPAND_ALL);
     }
 
     protected void testInquiryLightBox() throws Exception {

@@ -62,7 +62,7 @@ public class DemoLibraryLayoutManagersStackedLayoutSmokeTest extends SmokeTestBa
     
     protected void testLayoutManagersStackedCollectionWithServersidePaging() throws Exception {
         selectByName("exampleShown","Stacked Collection with server-side paging");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='pagination']/ul/li[4]/a");
+        assertElementPresentByXpath("//ul[@class='pagination']");
     }
     
     protected void testLayoutManagersStackedCollectionAjaxDisclosures() throws Exception {

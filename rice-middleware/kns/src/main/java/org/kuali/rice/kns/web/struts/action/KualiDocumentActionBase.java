@@ -612,7 +612,8 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // save in workflow
-        getDocumentService().saveDocument(document);
+        document = getDocumentService().saveDocument(document);
+        ((KualiDocumentFormBase) form).setDocument(document);
 
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
         kualiDocumentFormBase.setAnnotation("");
@@ -812,7 +813,8 @@ public class KualiDocumentActionBase extends KualiAction {
             return forward;
         }
 
-        getDocumentService().routeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        document = getDocumentService().routeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
         kualiDocumentFormBase.setAnnotation("");
 
@@ -834,14 +836,14 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
 
-        // KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
+        // KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added
         boolean hasPendingAdhocForCompletion = this.hasPendingAdhocForCompletion(kualiDocumentFormBase);
         if(hasPendingAdhocForCompletion){
             GlobalVariables.getMessageMap().putError(KRADConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME, RiceKeyConstants.ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED);
-            
+
             return mapping.findForward(RiceConstants.MAPPING_BASIC);
         }
-        
+
         kualiDocumentFormBase.setDerivedValuesOnForm(request);
         ActionForward preRulesForward = promptBeforeValidation(mapping, form, request, response);
         if (preRulesForward != null) {
@@ -855,7 +857,8 @@ public class KualiDocumentActionBase extends KualiAction {
             return forward;
         }
 
-        getDocumentService().blanketApproveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        document = getDocumentService().blanketApproveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -888,7 +891,8 @@ public class KualiDocumentActionBase extends KualiAction {
             return forward;
         }
 
-        getDocumentService().approveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        document = getDocumentService().approveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -916,7 +920,9 @@ public class KualiDocumentActionBase extends KualiAction {
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), resp.reason);
+        Document document = kualiDocumentFormBase.getDocument();
+        document = getDocumentService().disapproveDocument(document, resp.reason);
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
         kualiDocumentFormBase.setAnnotation("");
 
@@ -955,7 +961,9 @@ public class KualiDocumentActionBase extends KualiAction {
         // KULRICE-4447 Call cancelDocument() only if the document exists
         boolean docExists = getDocumentService().documentExists(kualiDocumentFormBase.getDocId());
         if (docExists) {
-            getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
+        	Document document = kualiDocumentFormBase.getDocument();
+            document = getDocumentService().cancelDocument(document, kualiDocumentFormBase.getAnnotation());
+            kualiDocumentFormBase.setDocument(document);
         }
 
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -985,7 +993,9 @@ public class KualiDocumentActionBase extends KualiAction {
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().recallDocument(kualiDocumentFormBase.getDocument(), resp.reason, cancel);
+        Document document = kualiDocumentFormBase.getDocument();
+        document = getDocumentService().recallDocument(document, resp.reason, cancel);
+        kualiDocumentFormBase.setDocument(document);
 
         // just return to doc view
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -1043,7 +1053,8 @@ public class KualiDocumentActionBase extends KualiAction {
                         return forward;
                     }
 
-                    getDocumentService().saveDocument(docForm.getDocument());
+                    document = getDocumentService().saveDocument(document);
+                    docForm.setDocument(document);
                 }
                 // else go to close logic below
             }
@@ -1098,7 +1109,9 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward fyi(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().clearDocumentFyi(kualiDocumentFormBase.getDocument(), combineAdHocRecipients(kualiDocumentFormBase));
+        Document document = kualiDocumentFormBase.getDocument();
+        document = getDocumentService().clearDocumentFyi(document, combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_FYIED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -1117,7 +1130,9 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward acknowledge(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost(kualiDocumentFormBase, request);
-        getDocumentService().acknowledgeDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        Document document = kualiDocumentFormBase.getDocument();
+        document = getDocumentService().acknowledgeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_ACKNOWLEDGED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -1418,7 +1433,7 @@ public class KualiDocumentActionBase extends KualiAction {
         DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
         org.kuali.rice.krad.datadictionary.DocumentEntry entry = dataDictionary.getDocumentEntry(document.getClass().getName());
 
-        if (entry.getDisplayTopicFieldInNotes()) {
+        if ( entry != null && entry.getDisplayTopicFieldInNotes()) {
             String topicText = kualiDocumentFormBase.getNewNote().getNoteTopicText();
             if (StringUtils.isBlank(topicText)) {
                 GlobalVariables.getMessageMap().putError(
@@ -1462,7 +1477,7 @@ public class KualiDocumentActionBase extends KualiAction {
             if (!documentHeader.getWorkflowDocument().isInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
                     && !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode()))
                     ) {
-                getNoteService().save(tmpNote);
+                tmpNote = getNoteService().save(tmpNote);
             }
             // adding the attachment after refresh gets called, since the attachment record doesn't get persisted
             // until the note does (and therefore refresh doesn't have any attachment to autoload based on the id, nor does it
@@ -1474,7 +1489,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 if (!documentHeader.getWorkflowDocument().isInitiated() && StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
                         && !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode()))
                         ) {
-                    getNoteService().save(tmpNote);
+                    tmpNote = getNoteService().save(tmpNote);
                 }
             }
 
@@ -2106,7 +2121,9 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
                 StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
-                    getDocumentService().validateAndPersistDocument(documentForm.getDocument(), new RouteDocumentEvent(documentForm.getDocument()));
+            	Document document = documentForm.getDocument();
+                document = getDocumentService().validateAndPersistDocument(document, new RouteDocumentEvent(document));
+                documentForm.setDocument(document);
             }
 
             WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
@@ -2207,7 +2224,8 @@ public class KualiDocumentActionBase extends KualiAction {
 
         Document document = kualiDocumentFormBase.getDocument();
 
-        getDocumentService().completeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        document = getDocumentService().completeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        kualiDocumentFormBase.setDocument(document);
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
         kualiDocumentFormBase.setAnnotation("");
 
@@ -2215,23 +2233,23 @@ public class KualiDocumentActionBase extends KualiAction {
     }
 
     /**
-     * KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added 
-     * 
+     * KULRICE-7864: blanket approve should not be allowed when adhoc route for completion request is newly added
+     *
      * determine whether any adhoc recipient in the given document has been just added for completion action
      */
     protected boolean hasPendingAdhocForCompletion(KualiDocumentFormBase kualiDocumentFormBase){
         List<AdHocRouteRecipient> adHocRecipients = this.combineAdHocRecipients(kualiDocumentFormBase);
-        
+
         for(AdHocRouteRecipient receipients : adHocRecipients){
             String actionRequestedCode = receipients.getActionRequested();
-            
+
             if(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestedCode)){
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
 }
 

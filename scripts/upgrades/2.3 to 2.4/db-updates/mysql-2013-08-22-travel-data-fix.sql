@@ -13,27 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-                  trv_sub_acct
-DROP TABLE TRVL_AUTH_DOC_T  
-;
-CREATE TABLE TRVL_AUTH_DOC_T  ( 
-	FDOC_NBR               	varchar(14),
-	VER_NBR                	decimal(8,0) DEFAULT 1 NOT NULL,
-	OBJ_ID                 	varchar(36) UNIQUE NOT NULL,
-	TRVL_ID                	varchar(19),
-	TRIP_BGN_DT            	datetime,
-	TRIP_END_DT            	datetime,
-	TRIP_DESC              	varchar(255),
-	TRIP_TYP_CD            	varchar(3),
-	TRAVELER_DTL_ID        	decimal(19,0),
-	EXP_LMT                	decimal(19,2) DEFAULT 0.00,
-	DELINQUENT_TR_EXCEPTION	char(1) DEFAULT 'N',
-	CELL_PH_NUM            	varchar(20),
-	RGN_FAMIL              	varchar(255),
-	CTZN_CNTRY_CD          	varchar(2),
-	PRIMARY KEY(FDOC_NBR)
-)
-;
 
 CREATE
     TABLE TRVL_TRAVELER_DTL_T

@@ -414,6 +414,11 @@ public class View extends ContainerBase {
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
+        
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        for (String template : getViewTemplates()) {
+            viewLifecycle.importFreeMarkerTemplate(template);
+        }
     }
 
     /**

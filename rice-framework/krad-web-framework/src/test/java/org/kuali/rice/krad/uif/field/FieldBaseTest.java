@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.concurrent.Callable;
 
 import org.junit.Test;
@@ -29,6 +24,9 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * test various FieldBase methods
@@ -82,7 +80,7 @@ public class FieldBaseTest {
                 fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
             }};
             
-        ViewLifecycle.encapsulateLifecycle(mockView, finalizeField);
+        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, finalizeField);
         assertTrue(fieldBase.getFieldLabel().getRequiredMessage().isRender());
 
         // required and readonly -  do not render
@@ -93,7 +91,7 @@ public class FieldBaseTest {
                 return null;
             }});
 
-        ViewLifecycle.encapsulateLifecycle(mockView, finalizeField);
+        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, finalizeField);
         assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
     }
 }

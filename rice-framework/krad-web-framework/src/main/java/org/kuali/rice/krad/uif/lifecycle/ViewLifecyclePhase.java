@@ -80,13 +80,13 @@ public interface ViewLifecyclePhase extends Runnable {
      * 
      * @return A list of child lifecycle phases to process before processing this phase.
      */
-    List<ViewLifecyclePhase> getPredecessors();
+    List<? extends ViewLifecyclePhase> getPredecessors();
     
     /**
      * Get a list of child lifecycle phases to process after processing this phase.
      * 
      * @return A list of child lifecycle phases to process after processing this phase.
      */
-    List<ViewLifecyclePhase> getSuccessors();
+    List<? extends ViewLifecyclePhase> getSuccessors();
     
 }

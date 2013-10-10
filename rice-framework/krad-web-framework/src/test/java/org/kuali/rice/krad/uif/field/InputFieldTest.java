@@ -78,7 +78,7 @@ public class InputFieldTest {
                 return testObj;
             }});
         
-        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
             @Override
             public void run() {
                 testObj.<InputField> copy().performFinalize(model, testObj);

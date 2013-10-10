@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -32,12 +32,16 @@ import java.util.concurrent.Callable;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -114,14 +118,19 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testMessageNoReflection() throws Throwable {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
         View view = mock(View.class);
-        ViewLifecycle.encapsulateLifecycle(view, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, new Object(), request, response, new Runnable() {
             @Override
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();
                 msg.setMessageText("foobar");
+                msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
-                ViewLifecycle.getActiveLifecycle().performComponentRender(msg);
+                RenderComponentPhase renderPhase = new RenderComponentPhase(
+                        msg, null, null, null, Collections.<RenderComponentPhase> emptyList());
+                renderPhase.run();
                 
                 assertTrue(msg.isSelfRendered());
                 assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +

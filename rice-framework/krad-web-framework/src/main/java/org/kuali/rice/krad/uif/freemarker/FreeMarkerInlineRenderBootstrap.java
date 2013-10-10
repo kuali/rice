@@ -16,15 +16,30 @@
 package org.kuali.rice.krad.uif.freemarker;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import freemarker.core.InlineTemplateElement;
+import freemarker.ext.jsp.TaglibFactory;
+import freemarker.ext.servlet.ServletContextHashModel;
 import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateException;
 
 /**
@@ -32,12 +47,37 @@ import freemarker.template.TemplateException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreeMarkerInlineRenderBootstrap implements InitializingBean, ApplicationContextAware {
+public class FreeMarkerInlineRenderBootstrap implements InitializingBean, ApplicationContextAware, ServletContextAware {
     
     /**
      * The freemarker configuration.
      */
     private static Configuration freeMarkerConfig;
+
+    /**
+     * The application context.
+     */
+    private static ApplicationContext applicationContext;
+    
+    /**
+     * The servlet context.
+     */
+    private static ServletContext servletContext;
+
+    /**
+     * The tablib factory for use in the component rendering phase.
+     */
+    private static TaglibFactory taglibFactory;
+
+    /**
+     * The object wrapper for use in the component rendering phase.
+     */
+    private static ObjectWrapper objectWrapper;
+
+    /**
+     * Servlet context hash model for use in the component rendering phase.
+     */
+    private static ServletContextHashModel servletContextHashModel;
     
     /**
      * Get the FreeMarker configuration initialized for the current KRAD application. 
@@ -54,6 +94,110 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean, Applic
     }
 
     /**
+     * Get the servlet context initialized for the current KRAD application. 
+     * 
+     * @return The servlet context initialized for the current KRAD application.
+     */
+    public static ServletContext getServletContext() {
+        if (servletContext == null) {
+            throw new IllegalStateException("Servlet context is not available, "
+                    + "use krad-base-servlet.xml or define FreeMarkerInlineRenderBootstrap in servlet.xml");
+        }
+        
+        return servletContext;
+    }
+
+    /**
+     * Get the tablib factory for use in the component rendering phase.
+     * 
+     * @return The tablib factory for use in the component rendering phase.
+     */
+    public static TaglibFactory getTaglibFactory() {
+        return taglibFactory;
+    }
+
+    /**
+     * Get the object wrapper for use in the component rendering phase.
+     * 
+     * @return The object wrapper for use in the component rendering phase.
+     */
+    public static ObjectWrapper getObjectWrapper() {
+        return objectWrapper;
+    }
+
+    /**
+     * Get the servlet context hash model for use in the component rendering phase.
+     * 
+     * @return The servlet context hash model for use in the component rendering phase.
+     */
+    public static ServletContextHashModel getServletContextHashModel() {
+        return servletContextHashModel;
+    }
+
+    /**
+     * Needed for JSP access in FreeMarker.
+     * 
+     * <p>Derived from Spring FreeMarkerView.</p>
+     */
+    private static class ServletAdapter extends GenericServlet {
+
+        private static final long serialVersionUID = 8509364718276109450L;
+
+        @Override
+        public void service(ServletRequest servletRequest, ServletResponse servletResponse) {}
+        
+    }
+
+    /**
+     * Internal implementation of the {@link ServletConfig} interface,
+     * to be passed to the servlet adapter.
+     * 
+     * <p>Derived from Spring FreeMarkerView.</p>
+     */
+    private static class DelegatingServletConfig implements ServletConfig {
+
+        public String getServletName() {
+            return applicationContext.getDisplayName();
+        }
+
+        public ServletContext getServletContext() {
+            return servletContext;
+        }
+
+        public String getInitParameter(String paramName) {
+            return null;
+        }
+
+        public Enumeration<String> getInitParameterNames() {
+            return Collections.enumeration(new HashSet<String>());
+        }
+    }
+
+    /**
+     * Initialize FreeMarker elements after servlet context and FreeMarker configuration have both
+     * been populated.
+     */
+    private static void finishConfig() {
+        if (freeMarkerConfig != null && servletContext != null) {
+            taglibFactory = new TaglibFactory(servletContext);
+            
+            objectWrapper = freeMarkerConfig.getObjectWrapper();
+            if (objectWrapper == null) {
+                objectWrapper = ObjectWrapper.DEFAULT_WRAPPER;
+            }
+
+            GenericServlet servlet = new ServletAdapter();
+            try {
+                servlet.init(new DelegatingServletConfig());
+            } catch (ServletException ex) {
+                throw new BeanInitializationException("Initialization of GenericServlet adapter failed", ex);
+            }
+            
+            servletContextHashModel = new ServletContextHashModel(servlet, ObjectWrapper.DEFAULT_WRAPPER);
+        }
+    }
+
+    /**
      * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
      */
     @Override
@@ -66,6 +210,16 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean, Applic
         } catch (TemplateException e) {
             throw new IllegalStateException("Error loading freemarker configuration", e);
         }
+        finishConfig();
+    }
+
+    /**
+     * @see org.springframework.web.context.ServletContextAware#setServletContext(javax.servlet.ServletContext)
+     */
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        FreeMarkerInlineRenderBootstrap.servletContext = servletContext;
+        finishConfig();
     }
 
     /**

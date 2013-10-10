@@ -42,6 +42,7 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
     private final Logger LOG = LoggerFactory.getLogger(FinalizeComponentPhase.class);
 
     private final Component parent;
+    private RenderComponentPhase renderPhase;
 
     /**
      * Create a new lifecycle phase processing task for finalizing a component.
@@ -77,6 +78,12 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
      */
     public FinalizeComponentPhase(Component component, Object model, Component parent) {
         this(component, model, parent, null);
+
+        // TODO: enable/disable by config
+        ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
+        this.renderPhase = new RenderComponentPhase(
+                component, model, this, null, Collections.unmodifiableList(topList));
+        topList.add(this.renderPhase);
     }
 
     /**
@@ -168,11 +175,35 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
         Component component = getComponent();
         Object model = getModel();
 
+        List<Component> nestedComponents = component.getComponentsForLifecycle();
+        List<RenderComponentPhase> renderPhases = null;
+        List<RenderComponentPhase> unmodifiableRenderPhases = null;
+        
+        if (ViewLifecycle.isRenderInLifecycle()) {
+            renderPhases = new ArrayList<RenderComponentPhase>(nestedComponents.size());
+            unmodifiableRenderPhases = Collections.unmodifiableList(renderPhases);
+        }
+        
         // initialize nested components
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
+        for (Component nestedComponent : nestedComponents) {
             if (nestedComponent != null) {
-                successors.add(new FinalizeComponentPhase(nestedComponent, model, component, this));
+                FinalizeComponentPhase nestedFinalizePhase = new FinalizeComponentPhase(
+                        nestedComponent, model, component, this);
+                
+                if (ViewLifecycle.isRenderInLifecycle()) {
+                    RenderComponentPhase nestedRenderPhase = new RenderComponentPhase(
+                            nestedComponent, model, nestedFinalizePhase, this.renderPhase,
+                            unmodifiableRenderPhases);
+                    renderPhases.add(nestedRenderPhase);
+                    nestedFinalizePhase.renderPhase = nestedRenderPhase;
+                }
+                
+                successors.add(nestedFinalizePhase);
             }
+        }
+
+        if (successors.isEmpty() && renderPhase != null) {
+            successors.add(renderPhase);
         }
     }
 

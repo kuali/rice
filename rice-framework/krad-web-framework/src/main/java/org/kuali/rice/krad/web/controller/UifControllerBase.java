@@ -255,7 +255,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -280,14 +281,16 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
-    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm) {
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
+            HttpServletRequest request, HttpServletResponse response) {
 
         final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -325,7 +328,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -366,7 +370,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(uifForm.getPostedView(), new Runnable(){
+        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -507,7 +512,7 @@ public abstract class UifControllerBase {
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
         View view = form.getPostedView();
         
-        ViewLifecycle.encapsulateLifecycle(view, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(view, form, request, response, new Runnable(){
 
             @Override
             public void run() {
@@ -1240,7 +1245,7 @@ public abstract class UifControllerBase {
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
 
         DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
-        pagingHelper.processPagingRequest(tableId, form, dataTablesInputs);
+        pagingHelper.processPagingRequest(tableId, form, request, response, dataTablesInputs);
 
         Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
         additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);

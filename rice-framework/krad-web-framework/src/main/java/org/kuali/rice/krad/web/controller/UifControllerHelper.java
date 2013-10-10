@@ -142,7 +142,7 @@ public class UifControllerHelper {
         // handle view building if not a redirect
         if (!form.isRequestRedirected()) {
             if (!form.isJsonRequest() && !form.isOriginalComponentRequest()) {
-                prepareViewForRendering(request, form);
+                prepareViewForRendering(request, response, form);
             }
 
             // export the component to the request model if an update id has been set
@@ -221,7 +221,8 @@ public class UifControllerHelper {
      * @param request - request object
      * @param form - form instance containing the data and view instance
      */
-    public static void prepareViewForRendering(HttpServletRequest request, final UifFormBase form) {
+    public static void prepareViewForRendering(
+            HttpServletRequest request, HttpServletResponse response, final UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
         if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
@@ -249,7 +250,7 @@ public class UifControllerHelper {
 
             // run lifecycle and update in view
             form.setPostedView(postedView = ViewLifecycle
-                    .performComponentLifecycle(postedView, form, comp, refreshComponentId).getView());
+                    .performComponentLifecycle(postedView, form, request, response, comp, refreshComponentId).getView());
 
             // TODO: this should be in ViewHelperServiceImpl#performComponentLifecycle where other
             // adjustments are made, and it should use constants
@@ -295,7 +296,7 @@ public class UifControllerHelper {
                 parameterMap.putAll(form.getViewRequestParameters());
 
                 // build view which will prepare for rendering
-                form.setView(ViewLifecycle.buildView(view, form, parameterMap));
+                form.setView(ViewLifecycle.buildView(view, form, request, response, parameterMap));
             } else {
                 LOG.warn( "View in form was null: " + form);
             }
@@ -331,4 +332,5 @@ public class UifControllerHelper {
     protected static ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }
+
 }

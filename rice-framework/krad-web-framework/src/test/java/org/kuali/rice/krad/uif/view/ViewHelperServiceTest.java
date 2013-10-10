@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.apache.ojb.otm.Kit;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,8 +32,8 @@ import org.kuali.rice.krad.sampleapp_2_4_M2.labs.KradLabsForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
@@ -52,6 +51,7 @@ import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.login.DummyLoginForm;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Unit tests for proving correct operation of the ViewHelperService.
@@ -83,10 +83,11 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     @Test
     public void testSanity() throws Throwable {
         MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
         DummyLoginForm loginForm = new DummyLoginForm();
         request.setParameter(UifParameters.VIEW_ID, "DummyLoginView");
         new UifServletRequestDataBinder(loginForm).bind(request);
-        UifControllerHelper.prepareViewForRendering(request, loginForm);
+        UifControllerHelper.prepareViewForRendering(request, response, loginForm);
         View dummyLogin = loginForm.getView();
         assertEquals(UifConstants.ViewStatus.FINAL, dummyLogin.getViewStatus());
         assertEquals("LoginPage", dummyLogin.getCurrentPage().getId());
@@ -107,10 +108,15 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testTransactionView() throws Throwable {
-        ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        View transactionView = viewService.getViewById("TransactionView");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
         TransactionForm tform = new TransactionForm();
-        ViewLifecycle.buildView(transactionView, tform, Collections.<String, String> emptyMap());
+        request.setParameter(UifParameters.VIEW_ID, "TransactionView");
+        new UifServletRequestDataBinder(tform).bind(request);
+        UifControllerHelper.prepareViewForRendering(request, response, tform);
+        View transactionView = tform.getView();
+        assertEquals(UifConstants.ViewStatus.FINAL, transactionView.getViewStatus());
+        ViewCleaner.cleanView(transactionView);
     }
     
     @Test
@@ -124,7 +130,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View transactionView = viewService.getViewById("TransactionView");
         final UifFormBase tform = new UifFormBase();
-        ViewLifecycle.encapsulateLifecycle(transactionView, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(transactionView, tform, null, null, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -141,7 +147,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
                 tform.setViewRequestParameters(view.getViewRequestParameters());
                 
                 ProcessLogger.trace("set-request");
-                viewLifecycle.performInitialization(tform);
+                viewLifecycle.performInitialization();
                 
                 ProcessLogger.trace("perform-init");
                 view.index();
@@ -155,18 +161,21 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testPerformanceMediumAll() throws Throwable {
-        ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        View performanceView = viewService.getViewById("Lab-PerformanceMedium");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
         KradLabsForm pform = new KradLabsForm();
-        performanceView = ViewLifecycle.buildView(performanceView, pform, Collections.<String, String> emptyMap());
-        
+        request.setParameter(UifParameters.VIEW_ID, "Lab-PerformanceMedium");
+        new UifServletRequestDataBinder(pform).bind(request);
+        UifControllerHelper.prepareViewForRendering(request, response, pform);
+        View performanceView = pform.getView();
+        assertEquals(UifConstants.ViewStatus.FINAL, performanceView.getViewStatus());
         ViewCleaner.cleanView(performanceView);
         pform.setPostedView(performanceView);
         pform.setView(null);
 
         String tableId = "u108";
         
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");
         request.setParameter("tableId", tableId);
         request.setParameter("ajaxReturnType", "update-none");
@@ -240,7 +249,7 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs =
                 new DataTablesPagingHelper.DataTablesInputs(request);
         DataTablesPagingHelper pagingHelper = new DataTablesPagingHelper();
-        pagingHelper.processPagingRequest(tableId, pform, dataTablesInputs);
+        pagingHelper.processPagingRequest(tableId, pform, request, response, dataTablesInputs);
     }
 
 

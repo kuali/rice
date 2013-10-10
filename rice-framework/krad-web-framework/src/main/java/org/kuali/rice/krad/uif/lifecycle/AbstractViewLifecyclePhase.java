@@ -36,9 +36,9 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
 
     private final Component component;
     private final Object model;
-    private final List<ViewLifecyclePhase> predecessors;
+    private final List<? extends ViewLifecyclePhase> predecessors;
     private final List<ViewLifecyclePhase> successors;
-    private final List<ViewLifecyclePhase> unmodifiableSuccessors;
+    private final List<? extends ViewLifecyclePhase> unmodifiableSuccessors;
 
     private boolean processed;
 
@@ -48,7 +48,8 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * @param component The component to initialize.
      * @param model The model to initialize the component from.
      */
-    protected AbstractViewLifecyclePhase(Component component, Object model, List<ViewLifecyclePhase> predecessors) {
+    protected AbstractViewLifecyclePhase(Component component, Object model,
+            List<? extends ViewLifecyclePhase> predecessors) {
         this.component = component;
 
         if (component.getViewStatus().equals(getEndViewStatus())) {
@@ -124,7 +125,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getPredecessors()
      */
     @Override
-    public final List<ViewLifecyclePhase> getPredecessors() {
+    public final List<? extends ViewLifecyclePhase> getPredecessors() {
         return predecessors;
     }
 
@@ -132,7 +133,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getSuccessors()
      */
     @Override
-    public final List<ViewLifecyclePhase> getSuccessors() {
+    public final List<? extends ViewLifecyclePhase> getSuccessors() {
         return unmodifiableSuccessors;
     }
 
@@ -185,10 +186,12 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             }
 
             performLifecyclePhase();
-            initializeSuccessors(successors);
 
             component.setViewStatus(getEndViewStatus());
             processed = true;
+            
+            initializeSuccessors(successors);
+
         } finally {
             viewLifecycle.setActivePhase(null);
 

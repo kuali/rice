@@ -28,6 +28,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Test cases for {@link ViewTheme}
@@ -42,6 +44,9 @@ public class ViewThemeTest extends KRADTestCase {
      */
     @Test
     public void testManualThemeConfiguration() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
         View view = KRADServiceLocatorWeb.getViewService().getViewById("TestViewTheme1");
 
         ViewTheme theme = view.getTheme();
@@ -55,7 +60,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(true).when(theme).inDevMode();
         view.setTheme(theme);
 
-        ViewLifecycle.buildView(view, new UifFormBase(), new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), request, response, new HashMap<String, String>());
 
         assertEquals(2, theme.getCssFiles().size());
         assertEquals(2, theme.getScriptFiles().size());
@@ -70,7 +75,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(false).when(theme).inDevMode();
         view.setTheme(theme);
 
-        ViewLifecycle.buildView(view, new UifFormBase(), new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), request, response, new HashMap<String, String>());
 
         assertEquals(1, theme.getCssFiles().size());
         assertEquals(1, theme.getScriptFiles().size());

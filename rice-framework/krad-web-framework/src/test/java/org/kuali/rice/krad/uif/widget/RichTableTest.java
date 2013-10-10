@@ -344,7 +344,7 @@ public class RichTableTest {
                 return null;
             }});
         
-        ViewLifecycle.encapsulateLifecycle(mockView, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, new Runnable(){
             @Override
             public void run() {
                 RichTable mutableRichTable = richTable.<RichTable> copy();

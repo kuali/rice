@@ -22,7 +22,6 @@ import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,10 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -51,6 +54,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -64,7 +68,6 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
-import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -88,13 +91,23 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import freemarker.cache.TemplateCache;
 import freemarker.core.Environment;
 import freemarker.core.ParseException;
+import freemarker.ext.jsp.TaglibFactory;
+import freemarker.ext.servlet.AllHttpScopesHashModel;
+import freemarker.ext.servlet.FreemarkerServlet;
+import freemarker.ext.servlet.HttpRequestHashModel;
+import freemarker.ext.servlet.HttpRequestParametersHashModel;
+import freemarker.ext.servlet.HttpSessionHashModel;
+import freemarker.ext.servlet.ServletContextHashModel;
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.template.TemplateModel;
 
 /**
  * Lifecycle object created during the view processing to hold event registrations.
@@ -122,6 +135,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     private static Boolean strict;
+    private static Boolean renderInLifecycle;
 
     /**
      * Registration of an event.
@@ -235,6 +249,26 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
+     * Determine whether or not to enable rendering within the lifecycle.
+     * 
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.render&quot;.
+     * </p>
+     * 
+     * @return True if rendering will be performed within the lifecycle, false if all rendering
+     *         should be deferred for Spring view processing.
+     */
+    public static boolean isRenderInLifecycle() {
+        if (renderInLifecycle == null) {
+            renderInLifecycle = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_RENDER_IN_LIFECYCLE, false);
+        }
+
+        return renderInLifecycle;
+    }
+
+    /**
      * Report an illegal state in the view lifecycle.
      * 
      * <p>
@@ -274,6 +308,21 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * The original view associated with this context.
      */
     private final View originalView;
+
+    /**
+     * The model involved in the current view lifecycle.
+     */
+    private final Object model;
+    
+    /**
+     * The servlet request handling the view lifecycle.
+     */
+    private final HttpServletRequest request;
+
+    /**
+     * The servlet response handling the view lifecycle.
+     */
+    private final HttpServletResponse response;
 
     /**
      * A mutable copy of the view private to this execution context.
@@ -322,6 +371,9 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      */
     private ViewLifecycle() {
         this.originalView = null;
+        this.model = null;
+        this.request = null;
+        this.response = null;
         this.helper = null;
         this.eventRegistrations = null;
         this.mutableIdentities = null;
@@ -334,34 +386,17 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * 
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
-    private ViewLifecycle(View view, boolean copy) {
+    private ViewLifecycle(View view, Object model,
+            HttpServletRequest request, HttpServletResponse response, boolean copy) {
         this.originalView = view;
+        this.model = model;
+        this.request = request;
+        this.response = response;
         this.helper = view.getViewHelperService();
         this.eventRegistrations = new ArrayList<EventRegistration>();
         this.mutableIdentities = new HashSet<Long>();
         this.copy = copy;
         this.pendingPhases = new LinkedList<ViewLifecyclePhase>();
-    }
-
-    private void importFreeMarkerTemplate(Component component) {
-        String templateName = component.getTemplateName();
-
-        if (templateName == null || !importedFreeMarkerTemplates.add(templateName)) {
-            // No template for component, or already imported in this lifecycle.
-            return;
-        }
-
-        try {
-            Environment env = getFreeMarkerEnvironment();
-            String templateNameString = TemplateCache.getFullTemplatePath(env, "", component.getTemplate());
-            env.include(env.getTemplateForInclusion(templateNameString, null, true));
-        } catch (ParseException e) {
-            throw new IllegalStateException("Error parsing imported template " + templateName, e);
-        } catch (TemplateException e) {
-            throw new IllegalStateException("Error importing template " + templateName, e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error importing template " + templateName, e);
-        }
     }
 
     /**
@@ -371,14 +406,44 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @return The FreeMarker environment for processing the rendering phase, initializing the
      *         environment if needed.
      */
-    private Environment getFreeMarkerEnvironment() {
+    Environment getFreeMarkerEnvironment() {
         if (freeMarkerEnvironment == null) {
             try {
+                Map<String, Object> modelAttrs = new HashMap<String, Object>();
+                modelAttrs.put(UifConstants.DEFAULT_MODEL_NAME, getModel());
+                modelAttrs.put(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
+                
+                request.setAttribute(UifConstants.DEFAULT_MODEL_NAME, getModel());
+                request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
+                modelAttrs.put(UifParameters.REQUEST, request);
+
                 StringWriter out = new StringWriter();
-                Template template = new Template("", new StringReader(""),
-                        FreeMarkerInlineRenderBootstrap.getFreeMarkerConfig());
-                Environment env = template
-                        .createProcessingEnvironment(Collections.emptyMap(), out);
+                Configuration config = FreeMarkerInlineRenderBootstrap.getFreeMarkerConfig();
+                Template template = new Template("", new StringReader(""), config);
+                
+                ServletContext servletContext = FreeMarkerInlineRenderBootstrap.getServletContext();
+                ObjectWrapper objectWrapper = FreeMarkerInlineRenderBootstrap.getObjectWrapper();
+                ServletContextHashModel servletContextHashModel = FreeMarkerInlineRenderBootstrap.getServletContextHashModel();
+                TaglibFactory taglibFactory = FreeMarkerInlineRenderBootstrap.getTaglibFactory();
+                
+                AllHttpScopesHashModel global =
+                        new AllHttpScopesHashModel(objectWrapper, servletContext, request);
+                global.put(FreemarkerServlet.KEY_JSP_TAGLIBS, taglibFactory);
+                global.put(FreemarkerServlet.KEY_APPLICATION, servletContextHashModel);
+                global.put(FreemarkerServlet.KEY_SESSION,
+                        new HttpSessionHashModel(request.getSession(), objectWrapper));
+                global.put(FreemarkerServlet.KEY_REQUEST,
+                        new HttpRequestHashModel(request, response, objectWrapper));
+                global.put(FreemarkerServlet.KEY_REQUEST_PARAMETERS,
+                        new HttpRequestParametersHashModel(request));
+                global.put(AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE,
+                        new RequestContext(request, response, servletContext, modelAttrs));
+
+                Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService()
+                        .getAllProperties();
+                global.put(UifParameters.CONFIG_PROPERTIES, properties);
+                
+                Environment env = template.createProcessingEnvironment(global, out);
                 env.importLib("/krad/WEB-INF/ftl/lib/krad.ftl", "krad");
                 env.importLib("/krad/WEB-INF/ftl/lib/spring.ftl", "spring");
                 freeMarkerEnvironment = env;
@@ -392,6 +457,20 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         return freeMarkerEnvironment;
+    }
+
+    /**
+     * Clear the output buffer used during rendering, in preparation for rendering another component using the same environment.
+     */
+    void clearRenderingBuffer() {
+        freeMarkerWriter.getBuffer().setLength(0);
+    }
+
+    /**
+     * Get all output rendered in the FreeMarker environment. 
+     */
+    String getRenderedOutput() {
+        return freeMarkerWriter.toString();
     }
 
     /**
@@ -442,22 +521,26 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object)
+     * Import a FreeMarker template for rendering into the current environment.
+     * 
+     * @param template The path to the FreeMarker template.
      */
-    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
-            Object line) {
-        // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
-                DataField.class);
-        for (DataField dataField : dataFields) {
-            String bindingPath = "";
-            if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
-                bindingPath = dataField.getBindingInfo().getBindByNamePrefix() + ".";
-            }
-            bindingPath += dataField.getBindingInfo().getBindingName();
+    public void importFreeMarkerTemplate(String template) {
+        if (template == null || !importedFreeMarkerTemplates.add(template)) {
+            // No template for component, or already imported in this lifecycle.
+            return;
+        }
 
-            populateDefaultValueForField(view, line, dataField, bindingPath);
+        try {
+            Environment env = getFreeMarkerEnvironment();
+            String templateNameString = TemplateCache.getFullTemplatePath(env, "", template);
+            env.include(env.getTemplateForInclusion(templateNameString, null, true));
+        } catch (ParseException e) {
+            throw new IllegalStateException("Error parsing imported template " + template, e);
+        } catch (TemplateException e) {
+            throw new IllegalStateException("Error importing template " + template, e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Error importing template " + template, e);
         }
     }
 
@@ -492,8 +575,9 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * 
      * <p>
      * After the lifecycle has completed, this view becomes the resulting view.
+     * </p>
      * 
-     * @see ViewLifecycleResult#getRefreshComponent()
+     * @return The view active within this context.
      */
     public View getView() {
         if (this.view == null) {
@@ -501,6 +585,19 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         return this.view;
+    }
+
+    /**
+     * Get the model related to the view active within this context.
+     * 
+     * @return The model related to the view active within this context.
+     */
+    public Object getModel() {
+        if (this.model == null) {
+            throw new IllegalStateException("Model is not available");
+        }
+
+        return this.model;
     }
 
     /**
@@ -553,9 +650,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @param model Top level object containing the data (could be the form or a top level business
      *        object, dto)
      */
-    public void performApplyModel(Object model) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-
+    public void performApplyModel() {
         ProcessLogger.trace("apply-model:" + view.getId());
 
         // apply default values if they have not been applied yet
@@ -568,7 +663,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
         // set view context for conditional expressions
-        setViewContext(view, model);
+        setViewContext();
 
         ProcessLogger.trace("apply-comp-model:" + view.getId());
 
@@ -594,7 +689,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
-    public void performFinalize(Object model) {
+    public void performFinalize() {
         // get script for generating growl messages
         String growlScript = buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
@@ -624,7 +719,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @param view View instance that should be initialized
      * @param model object instance containing the view data
      */
-    public void performInitialization(Object model) {
+    public void performInitialization() {
         helper.performCustomViewInitialization(model);
 
         view.assignComponentIds(view);
@@ -862,32 +957,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Perform rendering on the given component.
-     * 
-     * @param view view instance the component belongs to
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     * @param parent parent component for the component being finalized
-     */
-    public void performComponentRender(Component component) {
-        Environment env = getFreeMarkerEnvironment();
-        importFreeMarkerTemplate(component);
-        freeMarkerWriter.getBuffer().setLength(0);
-
-        try {
-            FreeMarkerInlineRenderUtils.renderTemplate(env, component,
-                    null, false, false, Collections.<String, TemplateModel> emptyMap());
-        } catch (TemplateException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
-        }
-
-        component.setSelfRendered(true);
-        component.setRenderedHtmlOutput(freeMarkerWriter.toString());
-    }
-
-    /**
      * Determine the identity of a lifecycle element.
      * 
      * @param element The lifecycle element.
@@ -933,7 +1002,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
 
         try {
-            ViewLifecycle copyLifecycle = new ViewLifecycle(view, true);
+            ViewLifecycle copyLifecycle = new ViewLifecycle(view, null, null, null, true);
             TL_VIEW_LIFECYCLE.set(copyLifecycle);
 
             return view.copy();
@@ -953,14 +1022,15 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @param lifecycleProcess The lifecycle process to encapsulate.
      * @return
      */
-    public static ViewLifecycleResult encapsulateLifecycle(View view, Runnable lifecycleProcess) {
+    public static ViewLifecycleResult encapsulateLifecycle(View view, Object model,
+            HttpServletRequest request, HttpServletResponse response, Runnable lifecycleProcess) {
         ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
         if (viewLifecycle != null) {
             throw new IllegalStateException("Another view context already active on this thread");
         }
 
         try {
-            TL_VIEW_LIFECYCLE.set(viewLifecycle = new ViewLifecycle(view, false));
+            TL_VIEW_LIFECYCLE.set(viewLifecycle = new ViewLifecycle(view, model, request, response, false));
             viewLifecycle.view = view;
 
             lifecycleProcess.run();
@@ -1069,12 +1139,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * 
      * @return A copy of the view, built for rendering.
      */
-    public static View buildView(View view, final Object model, final Map<String, String> parameters) {
-        View builtView = ViewLifecycle.encapsulateLifecycle(view, new Runnable() {
+    public static View buildView(View view, Object model,
+            HttpServletRequest request, HttpServletResponse response,
+            final Map<String, String> parameters) {
+        View builtView = ViewLifecycle
+                .encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
                 View view = viewLifecycle.getView();
+                Object model = viewLifecycle.getModel();
 
                 // populate view from request parameters
                 viewLifecycle.populateViewFromRequestParameters(parameters);
@@ -1088,7 +1162,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing initialize phase for view: " + view.getId());
                 }
-                viewLifecycle.performInitialization(model);
+                viewLifecycle.performInitialization();
 
                 // do indexing                               
                 if (LOG.isDebugEnabled()) {
@@ -1106,7 +1180,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing apply model phase for view: " + view.getId());
                 }
-                viewLifecycle.performApplyModel(model);
+                viewLifecycle.performApplyModel();
 
                 // do indexing
                 if (LOG.isInfoEnabled()) {
@@ -1118,7 +1192,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing finalize phase for view: " + view.getId());
                 }
-                viewLifecycle.performFinalize(model);
+                viewLifecycle.performFinalize();
 
                 // do indexing
                 if (LOG.isInfoEnabled()) {
@@ -1145,7 +1219,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         return builtView;
     }
 
-/**
+    /**
      * Performs the complete component lifecycle on the component passed in for use during a refresh process.
      *
      * <p>
@@ -1173,15 +1247,17 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
-    public static ViewLifecycleResult performComponentLifecycle(
-            View view, final Object model, final Component component, final String origId) {
-        return encapsulateLifecycle(view, new Runnable() {
+    public static ViewLifecycleResult performComponentLifecycle(View view, Object model,
+            HttpServletRequest request, HttpServletResponse response, final Component component,
+            final String origId) {
+        return encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = getActiveLifecycle();
                 View view = viewLifecycle.getView();
+                Object model = viewLifecycle.getModel();
+                
                 Component newComponent = component.copy();
-
                 Component origComponent = view.getViewIndex().getComponentById(origId);
 
                 view.assignComponentIds(newComponent);
@@ -1371,6 +1447,26 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         viewLifecycle.mutableIdentities.add(getIdentity(element));
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object)
+     */
+    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
+            Object line) {
+        // retrieve all data fields for the collection line
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
+                DataField.class);
+        for (DataField dataField : dataFields) {
+            String bindingPath = "";
+            if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
+                bindingPath = dataField.getBindingInfo().getBindByNamePrefix() + ".";
+            }
+            bindingPath += dataField.getBindingInfo().getBindingName();
+
+            populateDefaultValueForField(view, line, dataField, bindingPath);
+        }
     }
 
     /**
@@ -1722,12 +1818,9 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
     /**
      * Sets up the view context which will be available to other components through their context
-     * for conditional logic evaluation
-     * 
-     * @param view view instance to set context for
-     * @param model object containing the view data
+     * for conditional logic evaluation.
      */
-    protected void setViewContext(View view, Object model) {
+    protected void setViewContext() {
         view.pushAllToContext(view.getPreModelContext());
 
         // evaluate view expressions for further context

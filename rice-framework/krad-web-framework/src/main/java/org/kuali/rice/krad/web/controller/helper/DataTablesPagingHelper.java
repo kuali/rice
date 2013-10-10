@@ -25,6 +25,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -50,7 +51,9 @@ public class DataTablesPagingHelper {
 
     private TableLayoutManager tableLayoutManager;
 
-    public void processPagingRequest(String tableId, UifFormBase form, DataTablesInputs dataTablesInputs) {
+    public void processPagingRequest(String tableId, UifFormBase form,
+            HttpServletRequest request, HttpServletResponse response,
+            DataTablesInputs dataTablesInputs) {
         // Set property to trigger special JSON rendering logic in uifRender.ftl
         form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
         
@@ -91,7 +94,8 @@ public class DataTablesPagingHelper {
 
                 // run lifecycle on the table component and update in view
                 ViewLifecycleResult result = ViewLifecycle
-                        .performComponentLifecycle(view, form, newCollectionGroup, oldCollectionGroup.getId());
+                        .performComponentLifecycle(view, form, request, response,
+                                newCollectionGroup, oldCollectionGroup.getId());
                 newCollectionGroup = result.getRefreshComponent();
                 form.setPostedView(result.getView());
                 

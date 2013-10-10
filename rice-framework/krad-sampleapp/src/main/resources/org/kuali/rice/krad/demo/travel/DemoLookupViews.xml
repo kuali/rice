@@ -73,29 +73,29 @@
             <bean parent="Uif-Message" p:colSpan="3"
                   p:messageText="Note that range operators use alphabetic/lexicographic ordering for string fields, so 'a14' &lt; 'a2'" p:style="font-weight: bold;" />
             <bean parent="Uif-Link" p:linkText="'a1*': account number starts with 'a1'"
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=a1*&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=a1*&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'!a1': account number is NOT 'a1' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=!a1&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=!a1&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1?': account number is 'a1' followed by another character "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=a1?&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=a1?&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1|a6': account number is 'a1' or 'a6' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=a1|a6&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=a1|a6&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'fr* &amp;&amp; *k': fiscal officer starts with 'fr' AND ends with 'k'"
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['fiscalOfficer.principalName']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['fiscalOfficer.principalName']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1..a3': account number is in the range 'a1' to 'a3' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=a1..a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=a1..a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&gt;a3': account number greater than 'a3' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=&gt;a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=&gt;a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&gt;=a3': account number is greater than or equal to 'a3' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=&gt;=a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=&gt;=a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&amp;lt;a3': account number is less than 'a3' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=&lt;a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=&lt;a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&amp;lt;=a3': account number is less than or equal to 'a3' "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['number']=&lt;=a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['number']=&lt;=a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'NULL': account name is null "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['name']=NULL&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['name']=NULL&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'!NULL': account name is not null "
-                  p:href="/krad-dev/kr-krad/lookup?lookupCriteria['name']=!NULL&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+                  p:href="lookup?lookupCriteria['name']=!NULL&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
           </list>
         </property>
       </bean>

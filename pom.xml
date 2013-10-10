@@ -373,6 +373,7 @@
                 <!-- Directory excludes -->
                 <exclude>db/impex/**</exclude>
                 <exclude>config/ide/**</exclude>
+                <exclude>**/.idea/**</exclude>
                 <exclude>rice-middleware/it/**</exclude>
                 <exclude>rice-framework/krad-it/**</exclude>
                 <exclude>src/site/docbook/**</exclude>
@@ -438,6 +439,7 @@
                 <exclude>**/*.developer</exclude>
                 <exclude>**/authorized_keys</exclude>
                 <exclude>**/*.txt</exclude>
+                <exclude>**/*.iml</exclude>
               </excludes>
             </configuration>
           </plugin>

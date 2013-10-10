@@ -18,6 +18,7 @@ package org.kuali.rice.krad.util;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.util.ReflectionUtils;
@@ -164,7 +165,8 @@ class LegacyDetector {
         }
         Boolean isLegacyLoaded = legacyLoadedCache.get(dataObjectClass);
         if (isLegacyLoaded == null) {
-            if ( dataObjectClass.getPackage().getName().startsWith( "org.apache.ojb." ) ) {
+            if ( dataObjectClass.getPackage() != null
+                    && StringUtils.startsWith( dataObjectClass.getPackage().getName(), "org.apache.ojb." ) ) {
                 isLegacyLoaded = Boolean.TRUE;
             } else {
                 try {

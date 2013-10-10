@@ -20,29 +20,19 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -53,7 +43,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
 /**
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -61,7 +50,6 @@ import java.util.Calendar;
 @Entity
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_DOC_HDR_EXT_DT_T")
-//@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
 	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByDocumentId", query="select s from "
         + "SearchableAttributeDateTimeValue as s where s.documentId = :documentId"),
@@ -83,10 +71,6 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
     private static final String ATTRIBUTE_XML_REPRESENTATION = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE;
 
-    @Id
-    @GeneratedValue(generator="KREW_SRCH_ATTR_S")
-	@Column(name="DOC_HDR_EXT_DT_ID")
-	private String searchableAttributeValueId;
 	@Column(name="VAL")
 	private Timestamp searchableAttributeValue;
 
@@ -98,9 +82,6 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
         this.ojbConcreteClass = this.getClass().getName();
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#setupAttributeValue(java.lang.String)
-     */
     public void setupAttributeValue(String value) {
         this.setSearchableAttributeValue(convertStringToTimestamp(value));
     }
@@ -124,9 +105,7 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
         }
     }
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#setupAttributeValue(java.sql.ResultSet, java.lang.String)
-	 */
+    @Override
 	public void setupAttributeValue(ResultSet resultSet, String columnName) throws SQLException {
 		Calendar c = Calendar.getInstance();
 		c.clear(Calendar.HOUR);
@@ -136,9 +115,7 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
 		this.setSearchableAttributeValue(resultSet.getTimestamp(columnName, c));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue()
-	 */
+    @Override
     public String getSearchableAttributeDisplayValue() {
         return formatAttributeValue(null);
     }
@@ -155,52 +132,38 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
         return RiceConstants.getDefaultDateFormat();
     }
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeDataType()
-	 */
+    @Override
 	public String getAttributeDataType() {
 		return ATTRIBUTE_XML_REPRESENTATION;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeTableName()
-	 */
+    @Override
 	public String getAttributeTableName() {
 		return ATTRIBUTE_DATABASE_TABLE_NAME;
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsWildcardsByDefault()
-	 */
+    @Override
 	public boolean allowsWildcards() {
 		return DEFAULT_WILDCARD_ALLOWANCE_POLICY;
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsCaseInsensitivity()
-	 */
+    @Override
 	public boolean allowsCaseInsensitivity() {
 		return ALLOWS_CASE_INSENSITIVE_SEARCH;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsRangeSearches()
-	 */
+    @Override
 	public boolean allowsRangeSearches() {
 		return ALLOWS_RANGE_SEARCH;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
-	 */
+    @Override
     public boolean isPassesDefaultValidation(String valueEntered) {
     	return new SqlBuilder().isValidDate(valueEntered);
         //return (DocSearchUtils.getEntryFormattedDate(valueEntered) != null);
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
-     */
+    @Override
     public Boolean isRangeValid(String lowerValue, String upperValue) {
         if (allowsRangeSearches()) {
             Timestamp lowerTime = convertStringToTimestamp(lowerValue);
@@ -213,6 +176,7 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
         return null;
     }
 
+    @Override
     public Timestamp getSearchableAttributeValue() {
         return searchableAttributeValue;
     }
@@ -220,19 +184,6 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
     public void setSearchableAttributeValue(Timestamp searchableAttributeValue) {
         this.searchableAttributeValue = searchableAttributeValue;
     }
-
-    public String getSearchableAttributeValueId() {
-        return searchableAttributeValueId;
-    }
-
-    public void setSearchableAttributeValueId(String searchableAttributeValueId) {
-        this.searchableAttributeValueId = searchableAttributeValueId;
-    }
-
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
 
     @Override
     public DocumentAttributeDateTime toDocumentAttribute() {
@@ -242,5 +193,6 @@ public class SearchableAttributeDateTimeValue extends SearchableAttributeBase im
         }
         return DocumentAttributeFactory.createDateTimeAttribute(getSearchableAttributeKey(), dateTime);
     }
+
 }
 

@@ -18,29 +18,19 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -59,7 +49,6 @@ import java.util.regex.Pattern;
 @Entity
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_DOC_HDR_EXT_FLT_T")
-//@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
 	@NamedQuery(name="SearchableAttributeFloatValue.FindByDocumentId", query="select s from "
             + "SearchableAttributeFloatValue as s where s.documentId = :documentId"),
@@ -82,10 +71,6 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
     private static final String ATTRIBUTE_XML_REPRESENTATION = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
     private static final String DEFAULT_FORMAT_PATTERN = "";
 
-    @Id
-    @GeneratedValue(generator="KREW_SRCH_ATTR_S")
-	@Column(name="DOC_HDR_EXT_FLT_ID")
-	private String searchableAttributeValueId;
     @Column(name="VAL")
 	private BigDecimal searchableAttributeValue;
 
@@ -97,9 +82,7 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
         this.ojbConcreteClass = this.getClass().getName();
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#setupAttributeValue(java.lang.String)
-     */
+    @Override
     public void setupAttributeValue(String value) {
         this.setSearchableAttributeValue(convertStringToBigDecimal(value));
     }
@@ -112,16 +95,12 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
         }
     }
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#setupAttributeValue(java.sql.ResultSet, java.lang.String)
-	 */
+    @Override
 	public void setupAttributeValue(ResultSet resultSet, String columnName) throws SQLException {
 		this.setSearchableAttributeValue(resultSet.getBigDecimal(columnName));
 	}
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getSearchableAttributeDisplayValue(java.util.Map)
-     */
+    @Override
     public String getSearchableAttributeDisplayValue() {
 	    NumberFormat format = DecimalFormat.getInstance();
 	    ((DecimalFormat)format).toPattern();
@@ -129,44 +108,32 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
 	    return format.format(getSearchableAttributeValue().doubleValue());
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeDataType()
-	 */
+    @Override
 	public String getAttributeDataType() {
 		return ATTRIBUTE_XML_REPRESENTATION;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#getAttributeTableName()
-	 */
+    @Override
 	public String getAttributeTableName() {
 		return ATTRIBUTE_DATABASE_TABLE_NAME;
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsWildcardsByDefault()
-	 */
+    @Override
 	public boolean allowsWildcards() {
 		return DEFAULT_WILDCARD_ALLOWANCE_POLICY;
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsCaseInsensitivity()
-	 */
+    @Override
 	public boolean allowsCaseInsensitivity() {
 		return ALLOWS_CASE_INSENSITIVE_SEARCH;
 	}
 
-    /* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#allowsRangeSearches()
-	 */
+    @Override
 	public boolean allowsRangeSearches() {
 		return ALLOWS_RANGE_SEARCH;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isPassesDefaultValidation()
-	 */
+    @Override
     public boolean isPassesDefaultValidation(String valueEntered) {
 
     	boolean bRet = true;
@@ -216,9 +183,7 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
 
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
-     */
+    @Override
     public Boolean isRangeValid(String lowerValue, String upperValue) {
         if (allowsRangeSearches()) {
             BigDecimal lower = null;
@@ -237,6 +202,7 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
         return null;
     }
 
+    @Override
     public BigDecimal getSearchableAttributeValue() {
         return searchableAttributeValue;
     }
@@ -248,6 +214,7 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
     /**
      * @deprecated USE method setSearchableAttributeValue(BigDecimal) instead
      */
+    @Deprecated
     public void setSearchableAttributeValue(Float floatValueToTranslate) {
         this.searchableAttributeValue = null;
         if (floatValueToTranslate != null) {
@@ -255,24 +222,10 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
         }
     }
 
-    public String getSearchableAttributeValueId() {
-        return searchableAttributeValueId;
-    }
-
-    public void setSearchableAttributeValueId(String searchableAttributeValueId) {
-        this.searchableAttributeValueId = searchableAttributeValueId;
-    }
-
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
-
     @Override
     public DocumentAttributeDecimal toDocumentAttribute() {
         return DocumentAttributeFactory.createDecimalAttribute(getSearchableAttributeKey(), getSearchableAttributeValue());
     }
-
 
 }
 

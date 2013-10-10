@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,11 +28,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
-import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
@@ -43,8 +42,10 @@ import java.io.Serializable;
         query = "SELECT sa FROM SearchableAttributeBase sa WHERE sa.documentId = :documentId")
 })
 public abstract class SearchableAttributeBase implements SearchableAttributeValue {
+
     @Id
-    @GeneratedValue(generator="KREW_SRCH_ATTR_S")
+    @GeneratedValue(generator = "KREW_SRCH_ATTR_S")
+    @PortableSequenceGenerator(name = "KREW_SRCH_ATTR_S")
     @Column(name="DOC_HDR_EXT_ID")
     private String searchableAttributeValueId;
 
@@ -60,44 +61,54 @@ public abstract class SearchableAttributeBase implements SearchableAttributeValu
     @Transient
     protected String ojbConcreteClass; // attribute needed for OJB polymorphism - do not alter!
 
+    @Override
     public String getDocumentId() {
         return documentId;
     }
 
+    @Override
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
 
+    @Override
     public String getSearchableAttributeValueId() {
         return searchableAttributeValueId;
     }
 
+    @Override
     public void setSearchableAttributeValueId(String searchableAttributeValueId) {
         this.searchableAttributeValueId = searchableAttributeValueId;
     }
 
+    @Override
     public String getSearchableAttributeKey() {
         return searchableAttributeKey;
     }
 
+    @Override
     public void setSearchableAttributeKey(String searchableAttributeKey) {
         this.searchableAttributeKey = searchableAttributeKey;
     }
 
-
+    @Override
     public String getOjbConcreteClass() {
         return ojbConcreteClass;
     }
 
+    @Override
     public void setOjbConcreteClass(String ojbConcreteClass) {
         this.ojbConcreteClass = ojbConcreteClass;
     }
 
+    @Override
     public DocumentRouteHeaderValue getRouteHeader() {
         return routeHeader;
     }
 
+    @Override
     public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
         this.routeHeader = routeHeader;
     }
+
 }

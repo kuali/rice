@@ -28,15 +28,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
+import javax.persistence.PostRemove;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
@@ -654,7 +653,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @PostLoad
     protected void postLoad() {
         super.postLoad();
-        documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);
+        documentHeader = KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderById(documentNumber);
         refreshPessimisticLocks();
     }
 
@@ -666,8 +665,20 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected void prePersist() {
         super.prePersist();
         // KRAD/JPA - have to change the handle to object to that just saved
-        documentHeader = KradDataServiceLocator.getDataObjectService().save(documentHeader);
+        documentHeader = KRADServiceLocatorWeb.getDocumentHeaderService().saveDocumentHeader(documentHeader);
+    }
 
+    /**
+     * This overridden method is used to delete the {@link DocumentHeader} object due to the system not being able to
+     * manage the {@link DocumentHeader} object via mapping files
+     *
+     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postRemove()
+     */
+    @Override
+    @PostRemove
+    protected void postRemove() {
+        super.postRemove();
+        KRADServiceLocatorWeb.getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
     }
 
     /**
@@ -783,7 +794,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Deprecated
     public void refreshReferenceObject(String referenceObjectName) {
         if ( StringUtils.equals( referenceObjectName, "documentHeader" ) ) {
-            documentHeader = KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(documentNumber);
+            documentHeader = KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderById(documentNumber);
         } else {
             super.refreshReferenceObject(referenceObjectName);
         }

@@ -482,38 +482,38 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(kradLegacyDataAdapter);
     }
 
-    @Test
-    public void testGetByDocumentHeaderId() throws Exception {
-        lda.getByDocumentHeaderId("1234");
-        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
+//    @Test
+//    public void testGetByDocumentHeaderId() throws Exception {
+//        lda.getByDocumentHeaderId("1234");
+//        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
+//        verifyZeroInteractions(knsLegacyDataAdapter);
+//    }
 
-    /**
-     * Even when in legacy mode, the document header is still retrieved via JPA
-     */
-    @Test
-    public void testGetByDocumentHeaderId_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.getByDocumentHeaderId("1234");
-                return null;
-            }
-        });
-//        verify(knsLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-//        verifyZeroInteractions(kradLegacyDataAdapter);
-        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
+//    /**
+//     * Even when in legacy mode, the document header is still retrieved via JPA
+//     */
+//    @Test
+//    public void testGetByDocumentHeaderId_Legacy() throws Exception {
+//        enableLegacy();
+//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                lda.getByDocumentHeaderId("1234");
+//                return null;
+//            }
+//        });
+////        verify(knsLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
+////        verifyZeroInteractions(kradLegacyDataAdapter);
+//        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
+//        verifyZeroInteractions(knsLegacyDataAdapter);
+//    }
 
-    @Test
-    public void testGetDocumentHeaderBaseClass() throws Exception {
-        lda.getDocumentHeaderBaseClass();
-        verify(kradLegacyDataAdapter).getDocumentHeaderBaseClass();
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
+//    @Test
+//    public void testGetDocumentHeaderBaseClass() throws Exception {
+//        lda.getDocumentHeaderBaseClass();
+//        verify(kradLegacyDataAdapter).getDocumentHeaderBaseClass();
+//        verifyZeroInteractions(knsLegacyDataAdapter);
+//    }
 
 //    @Test
 //    public void testGetDocumentHeaderBaseClass_Legacy() throws Exception {

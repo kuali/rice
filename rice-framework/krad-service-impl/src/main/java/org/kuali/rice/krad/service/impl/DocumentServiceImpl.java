@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -55,6 +63,7 @@ import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
+import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -66,14 +75,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -95,6 +96,7 @@ public class DocumentServiceImpl implements DocumentService {
     private DocumentDictionaryService documentDictionaryService;
     private PersonService personService;
     private ConfigurationService kualiConfigurationService;
+    private DocumentHeaderService documentHeaderService;
 
     /**
      * @see org.kuali.rice.krad.service.DocumentService#saveDocument(org.kuali.rice.krad.document.Document)
@@ -487,7 +489,7 @@ public class DocumentServiceImpl implements DocumentService {
             // look for workflowDocumentHeader, since that supposedly won't break the transaction
             if (getWorkflowDocumentService().workflowDocumentExists(documentHeaderId)) {
                 // look for docHeaderId, since that fails without breaking the transaction
-                return getLegacyDataAdapter().getByDocumentHeaderId(documentHeaderId) != null;
+                return documentHeaderService.getDocumentHeaderById(documentHeaderId) != null;
             }
 
             return false;
@@ -1128,5 +1130,13 @@ public class DocumentServiceImpl implements DocumentService {
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
+
+	public DocumentHeaderService getDocumentHeaderService() {
+		return documentHeaderService;
+	}
+
+	public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
+		this.documentHeaderService = documentHeaderService;
+	}
 
 }

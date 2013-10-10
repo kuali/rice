@@ -43,7 +43,6 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
@@ -382,17 +381,6 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     public Attachment getAttachmentByNoteId(Long noteId) {
         // noteIdentifier is the PK of Attachment, so just look up by PK
         return dataObjectService.find(Attachment.class, noteId);
-    }
-
-    @Override
-    public DocumentHeader getByDocumentHeaderId(String id) {
-        return dataObjectService.find(DocumentHeader.class, id);
-    }
-
-    @Override
-    @Deprecated
-    public Class getDocumentHeaderBaseClass() {
-        return DocumentHeader.class;
     }
 
     @Override

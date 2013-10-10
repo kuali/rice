@@ -58,6 +58,7 @@ public class KRADServiceLocatorWeb {
     public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
     public static final String KUALI_RULE_SERVICE = "kualiRuleService";
     public static final String DOCUMENT_SERVICE = "documentService";
+    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
     public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
     public static final String LOOKUP_SERVICE = "lookupService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
@@ -90,6 +91,10 @@ public class KRADServiceLocatorWeb {
 
     public static WorkflowDocumentService getWorkflowDocumentService() {
         return getService(WORKFLOW_DOCUMENT_SERVICE);
+    }
+
+    public static DocumentHeaderService getDocumentHeaderService() {
+        return getService(DOCUMENT_HEADER_SERVICE);
     }
 
     public static final KualiExceptionIncidentService getKualiExceptionIncidentService() {

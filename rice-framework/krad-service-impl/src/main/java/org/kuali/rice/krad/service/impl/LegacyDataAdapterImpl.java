@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
@@ -27,11 +31,6 @@ import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.LegacyUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * LegacyDataAdapter implementation.
@@ -160,22 +159,6 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public Attachment getAttachmentByNoteId(Long noteId) {
         return selectAdapter(Attachment.class).getAttachmentByNoteId(noteId);
-    }
-
-    /*
-     * The documentHeader is always persisted and retrieved using JPA. Client apps referencing the docHeader
-     * in their OJB repository mapping should remove the reference so OJB does not attempt to save it.
-     */
-    @Override
-    public DocumentHeader getByDocumentHeaderId(String id) {
-        return getKradLegacyDataAdapter().getByDocumentHeaderId(id);
-    }
-
-    @Override
-    @Deprecated
-    @SuppressWarnings("rawtypes")
-    public Class getDocumentHeaderBaseClass() {
-        return selectAdapter(DocumentHeader.class).getDocumentHeaderBaseClass();
     }
 
     @Override

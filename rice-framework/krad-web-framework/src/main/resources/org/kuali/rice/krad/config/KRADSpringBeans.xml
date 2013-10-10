@@ -145,7 +145,12 @@
   <bean id="xmlObjectSerializerIgnoreMissingFieldsService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerIgnoreMissingFieldsServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
+  <bean id="documentHeaderService" class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl">
+  	<property name="dataObjectService" ref="dataObjectService" />
+  </bean>
+
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
+  	<property name="documentHeaderService" ref="documentHeaderService" />
     <property name="legacyDataAdapter">
       <ref bean="legacyDataAdapter"/>
     </property>

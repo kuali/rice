@@ -367,7 +367,6 @@
         p:persistenceService-ref="persistenceService"
         p:lookupDao-ref="lookupDao"
         p:lookupCriteriaGenerator-ref="lookupCriteriaGenerator"
-        p:documentHeaderDaoOjb-ref="documentHeaderDaoOjb"
         p:maintenanceDocumentDaoOjb-ref="maintenanceDocumentDaoOjb"
         p:persistenceStructureService-ref="persistenceStructureService"
         p:kualiModuleService-ref="kualiModuleService"
@@ -450,8 +449,6 @@
     <property name="documentDaoOjb" ref="documentDaoOjb"/>
   </bean>
 
-  <bean id="documentHeaderDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.DocumentHeaderDaoOjb"/>
-
   <bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb">
     <!-- Constructor injection only please to help enforce completeness of instances -->
     <constructor-arg ref="persistenceStructureService"/>
@@ -483,10 +480,6 @@
     <!-- Constructor injection only please to help enforce completeness of instances -->
     <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb"/>
   </bean>
-
-  <bean id="documentHeaderService"
-        class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl"
-        p:legacyDataAdapter-ref="legacyDataAdapter"/>
 
   <bean id="sequenceAccessorDao" parent="platformAwareDaoJdbc"
         class="org.kuali.rice.krad.dao.jdbc.SequenceAccessorDaoJdbc"/>

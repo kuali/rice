@@ -30,7 +30,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -1044,31 +1043,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void setAttachmentCollectionName(String attachmentCollectionName) {
         this.attachmentCollectionName = attachmentCollectionName;
-    }
-
-    /**
-     * This overridden method is used to delete the {@link DocumentHeader} object due to the system not being able to
-     * manage the {@link DocumentHeader} object via mapping files
-     *
-     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postRemove()
-     */
-    @Override
-    protected void postRemove() {
-        super.postRemove();
-        KRADServiceLocatorWeb.getLegacyDataAdapter().delete(getDocumentHeader());
-    }
-
-    /**
-     * This overridden method is used to retrieve the {@link DocumentHeader} object due to the system not being able to
-     * manage the {@link DocumentHeader} object via mapping files
-     *
-     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postLoad()
-     */
-    @Override
-    @PostLoad
-    protected void postLoad() {
-        super.postLoad();
-        setDocumentHeader(KRADServiceLocatorWeb.getLegacyDataAdapter().getByDocumentHeaderId(getDocumentNumber()));
     }
 
     /**

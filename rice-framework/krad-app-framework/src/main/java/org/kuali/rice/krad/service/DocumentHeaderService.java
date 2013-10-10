@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,25 +18,11 @@ package org.kuali.rice.krad.service;
 import org.kuali.rice.krad.bo.DocumentHeader;
 
 /**
- * This is an interface to allow for Rice client applications to override the
- * DocumentHeader class being used. Originally written to facilitate the Kuali
- * Financial System custom document header which included a 'total amount'
- * field.
+ * Provides basic functions for interacting with the DocumentHeader object in the Rice application framework.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-@Deprecated
 public interface DocumentHeaderService {
-
-    /**
-     * This method returns the class to use to instantiate document header objects
-     *
-     * @return the class to be used for new document header objects
-     * @deprecated Custom document header classes no longer supported as of Rice 2.4.
-     */
-    @Deprecated
-    public Class<? extends DocumentHeader> getDocumentHeaderBaseClass();
 
     /**
      * This method retrieves a document header using the given documentHeaderId
@@ -48,11 +34,13 @@ public interface DocumentHeaderService {
 
 
     /**
-     * This method saves a document header object
+     * This method saves a document header object and returns the copy after the save.
+     * Any code using the document header must use the instance returned from this method
+     * for any future operations.
      *
      * @param documentHeader - the document header object to save
      */
-    public void saveDocumentHeader(DocumentHeader documentHeader);
+    public DocumentHeader saveDocumentHeader(DocumentHeader documentHeader);
 
     /**
      * This method deletes a document header object

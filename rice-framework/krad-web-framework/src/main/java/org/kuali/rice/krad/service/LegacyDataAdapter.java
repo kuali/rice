@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.krad.service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Adapter that supports "legacy" KNS/KRAD persistence, metadata, and object utility frameworks via runtime
@@ -246,20 +245,6 @@ public interface LegacyDataAdapter {
      * @return associated Attachement
      */
     Attachment getAttachmentByNoteId(Long noteId);
-
-    // DocumentHeaderDao
-
-    /**
-     * @return the class to be used when creating new instances of DocumentHeader objects
-     */
-    @Deprecated
-    Class getDocumentHeaderBaseClass();
-
-    /**
-     * @param id
-     * @return documentHeader realted to the give document header id
-     */
-    DocumentHeader getByDocumentHeaderId(String id);
 
     // MaintenanceDocumentDao
 

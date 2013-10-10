@@ -33,7 +33,6 @@ import org.kuali.rice.kew.api.WorkflowDocument;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@SuppressWarnings("deprecation")
 @Entity
 @Table(name="KRNS_DOC_HDR_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_DOC_HDR_TC0",columnNames="OBJ_ID")

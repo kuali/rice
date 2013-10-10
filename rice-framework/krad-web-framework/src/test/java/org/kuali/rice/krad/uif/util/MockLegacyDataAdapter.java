@@ -25,7 +25,6 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder.Builder;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
@@ -35,8 +34,8 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 
 /**
- * Mock implementation of {@link LegacyDataAdapter} for supporting UIF unit tests. 
- * 
+ * Mock implementation of {@link LegacyDataAdapter} for supporting UIF unit tests.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockLegacyDataAdapter implements LegacyDataAdapter {
@@ -216,21 +215,21 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
         return null;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDocumentHeaderBaseClass()
-     */
-    @Override
-    public Class getDocumentHeaderBaseClass() {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getByDocumentHeaderId(java.lang.String)
-     */
-    @Override
-    public DocumentHeader getByDocumentHeaderId(String id) {
-        return null;
-    }
+//    /**
+//     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDocumentHeaderBaseClass()
+//     */
+//    @Override
+//    public Class getDocumentHeaderBaseClass() {
+//        return null;
+//    }
+//
+//    /**
+//     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getByDocumentHeaderId(java.lang.String)
+//     */
+//    @Override
+//    public DocumentHeader getByDocumentHeaderId(String id) {
+//        return null;
+//    }
 
     /**
      * @see org.kuali.rice.krad.service.LegacyDataAdapter#getLockingDocumentNumber(java.lang.String, java.lang.String)

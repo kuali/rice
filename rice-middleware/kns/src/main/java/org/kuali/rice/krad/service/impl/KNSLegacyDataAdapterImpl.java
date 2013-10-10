@@ -15,6 +15,23 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.eclipse.persistence.indirection.ValueHolder;
@@ -30,12 +47,10 @@ import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanCo
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.dao.DocumentDao;
-import org.kuali.rice.krad.dao.DocumentHeaderDao;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -71,23 +86,6 @@ import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
 *
  */
@@ -106,7 +104,6 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
     private DateTimeService dateTimeService;
     private DatabasePlatform databasePlatform;
 
-    private DocumentHeaderDao documentHeaderDaoOjb;
     private DocumentDao documentDao;
     private MaintenanceDocumentDao maintenanceDocumentDaoOjb;
 
@@ -402,16 +399,16 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
         return businessObjectService.findBySinglePrimaryKey(Attachment.class, noteId);
     }
 
-    @Override
-    public DocumentHeader getByDocumentHeaderId(String id) {
-        return this.documentHeaderDaoOjb.getByDocumentHeaderId(id);
-    }
-
-    @Override
-    @Deprecated
-    public Class getDocumentHeaderBaseClass() {
-        return this.documentHeaderDaoOjb.getDocumentHeaderBaseClass();
-    }
+//    @Override
+//    public DocumentHeader getByDocumentHeaderId(String id) {
+//        return this.documentHeaderDaoOjb.getByDocumentHeaderId(id);
+//    }
+//
+//    @Override
+//    @Deprecated
+//    public Class getDocumentHeaderBaseClass() {
+//        return this.documentHeaderDaoOjb.getDocumentHeaderBaseClass();
+//    }
 
     @Override
     public void deleteLocks(String documentNumber) {
@@ -912,7 +909,8 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
         return relationship;
     }
 
-    public boolean isPersistable(Class<?> dataObjectClass) {
+    @Override
+	public boolean isPersistable(Class<?> dataObjectClass) {
         return persistenceStructureService.isPersistable(dataObjectClass);
     }
 
@@ -972,15 +970,18 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
         ObjectUtils.setObjectProperty(bo,propertyName,propertyType,propertyValue);
     }
 
-    public Class materializeClassForProxiedObject(Object object){
+    @Override
+	public Class materializeClassForProxiedObject(Object object){
         return ObjectUtils.materializeClassForProxiedObject(object);
     }
 
-    public Object getNestedValue(Object bo, String fieldName){
+    @Override
+	public Object getNestedValue(Object bo, String fieldName){
         return ObjectUtils.getNestedValue(bo,fieldName);
     }
 
-    public Object createNewObjectFromClass(Class clazz){
+    @Override
+	public Object createNewObjectFromClass(Class clazz){
         return ObjectUtils.createNewObjectFromClass(clazz);
     }
 
@@ -1039,11 +1040,6 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
     @Required
     public void setDatabasePlatform(DatabasePlatform databasePlatform) {
         this.databasePlatform = databasePlatform;
-    }
-
-    @Required
-    public void setDocumentHeaderDaoOjb(DocumentHeaderDao documentHeaderDaoOjb) {
-        this.documentHeaderDaoOjb = documentHeaderDaoOjb;
     }
 
     @Required

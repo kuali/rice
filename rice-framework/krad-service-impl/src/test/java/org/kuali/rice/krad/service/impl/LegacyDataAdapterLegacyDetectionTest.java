@@ -15,6 +15,30 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.xml.namespace.QName;
+
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Assert;
@@ -39,9 +63,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.Attachment;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.dao.DocumentHeaderDao;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
 import org.kuali.rice.krad.data.CompoundKey;
@@ -66,17 +88,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.core.io.Resource;
 
-import javax.xml.namespace.QName;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
-import static org.mockito.Mockito.*;
-
 /**
  * Tests that the LegacyDataAdapter is correctly calling either the DataObjectService or appropriate legacy service
  */
@@ -96,7 +107,6 @@ public class LegacyDataAdapterLegacyDetectionTest {
     @Mock private DatabasePlatform databasePlatform;
     @Mock private PersistenceStructureService persistenceStructureService;
 
-    @Mock private DocumentHeaderDao documentHeaderDaoOjb;
     @Mock private MaintenanceDocumentDao maintenanceDocumentDaoOjb;
     @Mock private DataObjectWrapper wrap;
 
@@ -474,49 +484,49 @@ public class LegacyDataAdapterLegacyDetectionTest {
         });
     }
 
-    @Test
-    public void testGetByDocumentHeaderId() {
-        String id = "";
-        lda.getByDocumentHeaderId(id);
-        verify(dataObjectService).find(DocumentHeader.class, id);
-        verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
-    }
-    @Test
-    public void testLegacyGetByDocumentHeaderId() throws Exception {
-        enableLegacyFramework();
-        final String id = "";
-        LegacyUtils.doInLegacyContext(new Callable() {
-            @Override
-			public Object call() throws Exception {
-                lda.getByDocumentHeaderId(id);
-//                verify(documentHeaderDaoOjb).getByDocumentHeaderId(id);
-//                verify(dataObjectService, never()).find(any(Class.class), any());
-                verify(dataObjectService).find(DocumentHeader.class, id);
-                verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
-                return null;
-            }
-        });
-
-    }
-
-    @Test
-    public void testGetDocumentHeaderBaseClass() {
-        lda.getDocumentHeaderBaseClass();
-        verify(documentHeaderDaoOjb, never()).getDocumentHeaderBaseClass();
-    }
-
-    @Test
-    public void testLegacyGetDocumentHeaderBaseClass() throws Exception {
-        enableLegacyFramework();
-        LegacyUtils.doInLegacyContext(new Callable() {
-            @Override
-			public Object call() throws Exception {
-                lda.getDocumentHeaderBaseClass();
-                verify(documentHeaderDaoOjb).getDocumentHeaderBaseClass();
-                return null;
-            }
-        });
-    }
+//    @Test
+//    public void testGetByDocumentHeaderId() {
+//        String id = "";
+//        lda.getByDocumentHeaderId(id);
+//        verify(dataObjectService).find(DocumentHeader.class, id);
+//        verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
+//    }
+//    @Test
+//    public void testLegacyGetByDocumentHeaderId() throws Exception {
+//        enableLegacyFramework();
+//        final String id = "";
+//        LegacyUtils.doInLegacyContext(new Callable() {
+//            @Override
+//			public Object call() throws Exception {
+//                lda.getByDocumentHeaderId(id);
+////                verify(documentHeaderDaoOjb).getByDocumentHeaderId(id);
+////                verify(dataObjectService, never()).find(any(Class.class), any());
+//                verify(dataObjectService).find(DocumentHeader.class, id);
+//                verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
+//                return null;
+//            }
+//        });
+//
+//    }
+//
+//    @Test
+//    public void testGetDocumentHeaderBaseClass() {
+//        lda.getDocumentHeaderBaseClass();
+//        verify(documentHeaderDaoOjb, never()).getDocumentHeaderBaseClass();
+//    }
+//
+//    @Test
+//    public void testLegacyGetDocumentHeaderBaseClass() throws Exception {
+//        enableLegacyFramework();
+//        LegacyUtils.doInLegacyContext(new Callable() {
+//            @Override
+//			public Object call() throws Exception {
+//                lda.getDocumentHeaderBaseClass();
+//                verify(documentHeaderDaoOjb).getDocumentHeaderBaseClass();
+//                return null;
+//            }
+//        });
+//    }
 
     @Test
     public void testDeleteLocks() {

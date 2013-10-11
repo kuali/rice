@@ -616,10 +616,9 @@ function createDatePicker(controlId, options) {
  * @param renderImage -
  *          boolean that indicates whether the expanded or collapsed image should be rendered
  * @param ajaxRetrieval -
-  *          boolean that indicates whether the disclosure group should be retrieved when open
+ *          boolean that indicates whether the disclosure group should be retrieved when open
  */
-function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed,
-                          renderImage, ajaxRetrieval) {
+function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage, ajaxRetrieval) {
     jQuery(document).ready(function () {
         var groupToggleLinkId = groupId + kradVariables.ID_SUFFIX.DISCLOSURE_TOGGLE;
 
@@ -725,6 +724,14 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         }
 
         options = jQuery.extend(options, additionalOptions);
+
+        var hideActionColumnOption = {
+            "fnDrawCallback": function (oSettings) {
+                hideEmptyActionColumn(tableId, ".uif-collection-column-action");
+            }
+        }
+
+        options = jQuery.extend(options, hideActionColumnOption);
 
         var exportOptions = {
             "sDownloadSource": additionalOptions.sDownloadSource,
@@ -901,6 +908,76 @@ function openDetails(oTable, row, actionComponent, animate) {
 
         kradRequest.send();
     }
+}
+
+/**
+ * Toggles column based on visibility indicator
+ *
+ * Handles headers and footers based on column class while using
+ * the footers index placement as the footer column cells do not
+ * include the css column class.
+ *
+ * @param tableId id of the html table element
+ * @param columnId css class specific to the table column cells
+ * @param bVisibility true to show elements, false to hide elements
+ */
+function toggleColumnVisibility(tableId, columnId, bVisibility) {
+    var oTable = getDataTableHandle(tableId);
+    var columnIndex = jQuery(oTable).find('thead th' + columnId).index();
+    var header = jQuery(oTable).find('thead th' + columnId);
+    var columns = jQuery(oTable).find('tbody td' + columnId);
+    var footer = jQuery(oTable).find('tfoot th').eq(columnIndex);
+    if (bVisibility) {
+        header.show();
+        columns.show();
+        footer.show();
+    } else {
+        // hide header, fields, footer
+        header.hide();
+        columns.hide();
+        footer.hide();
+    }
+}
+
+/**
+ * Identifies if there are visible elements in data column.
+ *
+ * Currently determines visibility for action columns and uses
+ * links, inputs, buttons or images as test. Should be expanded
+ * later to include divs/spans with text.
+ *
+ * @param tableId
+ * @param columnId
+ * @returns {boolean}
+ */
+function hasVisibleElementsInColumn(tableId, columnId) {
+    var oTable = getDataTableHandle(tableId);
+    var columns = jQuery(oTable).find('tbody td' + columnId);
+    var isColumnsEmpty = true;
+
+    jQuery.each(columns, function (index, value) {
+        var column = jQuery(value);
+        var visibleColumns = column.find(":has(a:visible,img:visible,input:visible,button:visible)");
+        if (visibleColumns.size() > 0) {
+            isColumnsEmpty = false;
+        }
+    });
+
+    return !isColumnsEmpty;
+
+}
+
+/**
+ * Checks for visible elements in the action column and toggle its
+ * display accordingly.
+ *
+ *
+ * @param tableId
+ * @param columnId
+ */
+function hideEmptyActionColumn(tableId, columnId) {
+    var bVisibility = hasVisibleElementsInColumn(tableId, columnId);
+    toggleColumnVisibility(tableId, columnId, bVisibility);
 }
 
 /**

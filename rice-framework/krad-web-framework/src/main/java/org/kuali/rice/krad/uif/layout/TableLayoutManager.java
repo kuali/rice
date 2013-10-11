@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.layout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,14 +59,14 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 /**
  * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
  * Table
- * 
+ *
  * <p>
  * Based on the fields defined, the {@code TableLayoutManager} will dynamically create instances of
  * the fields for each collection row. In addition, the manager can create standard fields like the
  * action and sequence fields for each row. The manager supports options inherited from the
  * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width settings.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "tableCollectionLayout-bean", parent = "Uif-TableCollectionLayout")
@@ -151,12 +152,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * The following actions are performed:
-     * 
+     *
      * <ul>
      * <li>Sets sequence field prototype if auto sequence is true</li>
      * <li>Initializes the prototypes</li>
      * </ul>
-     * 
+     *
      * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
@@ -184,10 +185,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * performApplyModel override. Takes expressions that may be set in the columnCalculation
      * objects and populates them correctly into those component's propertyExpressions.
-     * 
+     *
      * @param view view instance to which the layout manager belongs
      * @param model Top level object containing the data (could be the form or a top level business
-     *        object, dto)
+     * object, dto)
      * @param container
      */
     @Override
@@ -202,7 +203,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Sets up the final column count for rendering based on whether the sequence and action fields
      * have been generated, sets up column calculations, and richTable rowGrouping options
-     * 
+     *
      * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
@@ -254,7 +255,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                     + ", bSetGroupingClassOnTR: true"
                     + ", sGroupingClass: 'uif-groupRow'"
                     + (this.getGroupingPrefix() != null ? ", sGroupLabelPrefix: '" + this.getGroupingPrefix() + "'" :
-                            "")
+                    "")
                     + "}");
         }
 
@@ -270,7 +271,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Sets up the grouping MessageField to be used in the first column of the table layout for
      * grouping collection content into groups based on values of the line's fields
-     * 
+     *
      * @param collectionGroup collection group for this layout
      * @param view the view
      */
@@ -301,8 +302,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, groupingMessageField, collectionGroup,
-                    null, UifConstants.ViewPhases.INITIALIZE);
+            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, groupingMessageField, collectionGroup, null,
+                    UifConstants.ViewPhases.INITIALIZE);
 
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
@@ -313,7 +314,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setup the column calculations functionality and components
-     * 
+     *
      * @param view the view
      * @param model the model
      * @param container the parent container
@@ -429,7 +430,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //add the label to the column footer directly
         if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(leftLabelColumnIndex) == null) {
             View view = ViewLifecycle.getActiveLifecycle().getView();
-            
+
             Group labelGroup = ComponentFactory.getVerticalBoxGroup();
             view.assignComponentIds(labelGroup);
             List<Component> groupItems = new ArrayList<Component>();
@@ -472,15 +473,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Setup the totalField with the columnCalculationInfo(cInfo) passed in. Param show represents
      * the tableLayoutManager's setting for the type of total being processed.
-     * 
+     *
      * @param totalField the field to setup
      * @param cInfo ColumnCalculation info to use to setup the field
      * @param show show the field (if renderOnlyLeftTotalLabels is true, otherwise uses value in
-     *        cInfo)
+     * cInfo)
      * @param leftLabel the leftLabel, not used if renderOnlyLeftTotalLabels is false
      * @param type type used to set the dataAttribute role - used by the js for selection
      * @param leftLabelColumnIndex index of the leftLabelColumn (0 or 1 if grouping enabled - hidden
-     *        column)
+     * column)
      * @return the field with cInfo and tableLayoutManager settings applied as appropriate
      */
     protected Field setupTotalField(Field totalField, ColumnCalculationInfo cInfo, boolean show, Label leftLabel,
@@ -513,16 +514,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * copied for the line sequence field. Likewise a copy of the actionFieldPrototype is made and
      * the given actions are set as the items for the action field. Finally the generated items are
      * assembled together into the allRowFields list with the given lineFields.
-     * 
+     *
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.util.List,
      *      java.util.List, java.lang.String, java.util.List, java.lang.String, java.lang.Object,
      *      int)
      */
     public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
-            Object currentLine, int lineIndex) {
-        
+            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions,
+            String idSuffix, Object currentLine, int lineIndex) {
+
         ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
         View view = viewLifecycle.getView();
 
@@ -532,7 +533,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             lineField.pushAllToContext(view.getContext());
-            lineField.pushObjectToContext(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
+            lineField.pushObjectToContext(UifConstants.ContextVariableNames.THEME_IMAGES,
+                    view.getTheme().getImageDirectory());
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, lineField);
 
             expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
@@ -678,8 +680,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             } else {
                 sequenceField = ComponentFactory.getMessageField();
-                viewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup,
-                        null, UifConstants.ViewPhases.INITIALIZE);
+                viewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup, null,
+                        UifConstants.ViewPhases.INITIALIZE);
 
                 Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
                 sequenceMessage.setViewStatus(UifConstants.ViewStatus.CREATED);
@@ -749,12 +751,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             //special handling for grouping field - this field MUST be first
             Map<String, String> lineFieldDataAttributes = lineField.getDataAttributes();
-            if (hasGrouping
-                    && (lineField instanceof MessageField)
-                    &&
-                    lineFieldDataAttributes != null
-                    && UifConstants.RoleTypes.ROW_GROUPING.equals(lineFieldDataAttributes
-                            .get(UifConstants.DataAttributes.ROLE))) {
+            if (hasGrouping && (lineField instanceof MessageField) &&
+                    lineFieldDataAttributes != null && UifConstants.RoleTypes.ROW_GROUPING.equals(
+                    lineFieldDataAttributes.get(UifConstants.DataAttributes.ROLE))) {
                 int groupFieldIndex = allRowFields.size() - extraColumns;
                 allRowFields.add(groupFieldIndex, lineField);
                 groupingColumnIndex = 0;
@@ -822,7 +821,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Adds the action field in a row
-     * 
+     *
      * @param idSuffix
      * @param currentLine
      * @param lineIndex
@@ -836,6 +835,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
+        if (lineActionsField.getCellCssClasses() != null) {
+            lineActionsField.getCellCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
+        } else {
+            lineActionsField.setCellCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
+        }
 
         setCellAttributes(lineActionsField);
 
@@ -844,18 +848,18 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Create the {@code Label} instances that will be used to render the table header
-     * 
+     *
      * <p>
      * For each column, a copy of headerLabelPrototype is made that determines the label
      * configuration. The actual label text comes from the field for which the header applies to.
      * The first column is always the sequence (if enabled) and the last column contains the
      * actions. Both the sequence and action header fields will span all rows for the header.
      * </p>
-     * 
+     *
      * <p>
      * The headerLabels list will contain the final list of header fields built
      * </p>
-     * 
+     *
      * @param collectionGroup CollectionGroup container the table applies to
      * @param lineFields fields for the data columns from which the headers are pulled
      */
@@ -942,7 +946,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Adds the action header
-     * 
+     *
      * @param rowCount
      * @param idSuffix suffix for the header id, also column will be added
      * @param cellPosition
@@ -950,6 +954,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     protected void addActionHeader(int rowCount, String idSuffix, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
         getActionFieldPrototype().setRowSpan(rowCount);
+        if (getActionFieldPrototype().getCellCssClasses() != null) {
+            getActionFieldPrototype().getCellCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
+        } else {
+            getActionFieldPrototype().setCellCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
+        }
+
         addHeaderField(getActionFieldPrototype(), idSuffix, cellPosition);
     }
 
@@ -957,7 +967,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Creates a new instance of the header field prototype and then sets the label to the short (if
      * useShortLabels is set to true) or long label of the given component. After created the header
      * field is added to the list making up the table header
-     * 
+     *
      * @param field field instance the header field is being created for
      * @param idSuffix suffix for the header id, also column will be added
      * @param column column number for the header, used for setting the id
@@ -1001,7 +1011,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Calculates how many rows will be needed per collection line to display the list of fields.
      * Assumption is made that the total number of cells the fields take up is evenly divisible by
      * the configured number of columns
-     * 
+     *
      * @param items list of items that make up one collection line
      * @return number of rows
      */
@@ -1086,7 +1096,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Indicates whether the short label for the collection field should be used as the table header
      * or the regular label
-     * 
+     *
      * @return true if short label should be used, false if long label should be used
      */
     @BeanTagAttribute(name = "useShortLabels")
@@ -1096,7 +1106,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the use short label indicator
-     * 
+     *
      * @param useShortLabels
      */
     public void setUseShortLabels(boolean useShortLabels) {
@@ -1106,7 +1116,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Indicates whether the header should be repeated before each collection row. If false the
      * header is only rendered at the beginning of the table
-     * 
+     *
      * @return true if header should be repeated, false if it should only be rendered once
      */
     @BeanTagAttribute(name = "repeatHeader")
@@ -1116,7 +1126,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the repeat header indicator
-     * 
+     *
      * @param repeatHeader
      */
     public void setRepeatHeader(boolean repeatHeader) {
@@ -1126,7 +1136,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * {@code Label} instance to use as a prototype for creating the tables header fields. For each
      * header field the prototype will be copied and adjusted as necessary
-     * 
+     *
      * @return Label instance to serve as prototype
      */
     @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1136,7 +1146,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the header field prototype
-     * 
+     *
      * @param headerLabelPrototype
      */
     public void setHeaderLabelPrototype(Label headerLabelPrototype) {
@@ -1145,7 +1155,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * List of {@code Label} instances that should be rendered to make up the tables header
-     * 
+     *
      * @return List of label field instances
      */
     public List<Label> getHeaderLabels() {
@@ -1154,7 +1164,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Indicates whether the sequence field should be rendered for the collection
-     * 
+     *
      * @return true if sequence field should be rendered, false if not
      */
     @BeanTagAttribute(name = "renderSequenceField")
@@ -1164,7 +1174,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the render sequence field indicator
-     * 
+     *
      * @param renderSequenceField
      */
     public void setRenderSequenceField(boolean renderSequenceField) {
@@ -1174,7 +1184,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Attribute name to use as sequence value. For each collection line the value of this field on
      * the line will be retrieved and used as the sequence value
-     * 
+     *
      * @return sequence property name
      */
     @BeanTagAttribute(name = "sequencePropertyName")
@@ -1188,7 +1198,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the sequence property name
-     * 
+     *
      * @param sequencePropertyName
      */
     public void setSequencePropertyName(String sequencePropertyName) {
@@ -1199,12 +1209,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Indicates whether the sequence field should be generated with the current line number
-     * 
+     *
      * <p>
      * If set to true the sequence field prototype will be changed to a message field (if not
      * already a message field) and the text will be set to the current line number
      * </p>
-     * 
+     *
      * @return true if the sequence field should be generated from the line number, false if not
      */
     @BeanTagAttribute(name = "generateAutoSequence")
@@ -1214,7 +1224,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the generate auto sequence field
-     * 
+     *
      * @param generateAutoSequence
      */
     public void setGenerateAutoSequence(boolean generateAutoSequence) {
@@ -1224,7 +1234,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * {@code Field} instance to serve as a prototype for the sequence field. For each collection
      * line this instance is copied and adjusted as necessary
-     * 
+     *
      * @return Attribute field instance
      */
     @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1234,7 +1244,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the sequence field prototype
-     * 
+     *
      * @param sequenceFieldPrototype
      */
     public void setSequenceFieldPrototype(Field sequenceFieldPrototype) {
@@ -1248,7 +1258,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * (org.kuali.rice.krad.uif.container.CollectionGroup.getActions()). The FieldGroup prototype is
      * useful for setting styling of the actions column and for the layout of the action fields.
      * Note also the label associated with the prototype is used for the action column header
-     * 
+     *
      * @return GroupField instance
      */
     @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1258,7 +1268,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the action field prototype
-     * 
+     *
      * @param actionFieldPrototype
      */
     public void setActionFieldPrototype(FieldGroup actionFieldPrototype) {
@@ -1275,7 +1285,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the sub-collection field group prototype
-     * 
+     *
      * @param subCollectionFieldGroupPrototype
      */
     public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
@@ -1286,7 +1296,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Field instance that serves as a prototype for creating the select field on each line when
      * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is
      * true
-     * 
+     *
      * <p>
      * This prototype can be used to set the control used for the select field (generally will be a
      * checkbox control) in addition to styling and other setting. The binding path will be formed
@@ -1295,7 +1305,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * not set the framework will use
      * {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
      * </p>
-     * 
+     *
      * @return select field prototype instance
      */
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1305,7 +1315,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the prototype instance for select fields
-     * 
+     *
      * @param selectFieldPrototype
      */
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
@@ -1315,7 +1325,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Indicates whether the add line should be rendered in a separate group, or as part of the
      * table (first line)
-     * 
+     *
      * <p>
      * When separate add line is enabled, the fields for the add line will be placed in the
      * {@link #getAddLineGroup()}. This group can be used to configure the add line presentation. In
@@ -1323,7 +1333,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()} and the add line
      * actions will be placed into the group's footer.
      * </p>
-     * 
+     *
      * @return true if add line should be separated, false if it should be placed into the table
      */
     @BeanTagAttribute(name = "separateAddLine")
@@ -1333,7 +1343,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the separate add line indicator
-     * 
+     *
      * @param separateAddLine
      */
     public void setSeparateAddLine(boolean separateAddLine) {
@@ -1342,7 +1352,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * When {@link #isSeparateAddLine()} is true, this group will be used to render the add line
-     * 
+     *
      * <p>
      * This group can be used to configure how the add line will be rendered. For example the layout
      * manager configured on the group will be used to rendered the add line fields. If the header
@@ -1351,7 +1361,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()} will be added
      * to the group footer items.
      * </p>
-     * 
+     *
      * @return Group instance for the collection add line
      */
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1361,7 +1371,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the add line Group
-     * 
+     *
      * @param addLineGroup
      */
     public void setAddLineGroup(Group addLineGroup) {
@@ -1370,7 +1380,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * List of {@link Field} instances that make up all the table's rows of data
-     * 
+     *
      * @return table body fields
      */
     public List<Field> getAllRowFields() {
@@ -1379,7 +1389,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * List of {@link Field} instances that make us the table's first row of data
-     * 
+     *
      * @return list of field instances
      */
     public List<Field> getFirstRowFields() {
@@ -1388,14 +1398,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * The Pager widget for this TableLayoutManager which defines settings for paging
-     * 
+     *
      * <p>
      * The settings in this widget are only used by TableLayoutManagers which DO NOT take advantage
      * of the RichTable option (this has its own paging implementation). To turn off RichTable and
      * use a basic table with server paging set richTable.render="false" and useServerPaging="true"
      * on the CollectionGroup which uses this layout manager.
      * </p>
-     * 
+     *
      * @return the Pager widget
      */
     public Pager getPagerWidget() {
@@ -1404,7 +1414,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the Pager widget
-     * 
+     *
      * @param pagerWidget
      */
     public void setPagerWidget(Pager pagerWidget) {
@@ -1413,7 +1423,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Widget associated with the table to add functionality such as sorting, paging, and export
-     * 
+     *
      * @return RichTable instance
      */
     @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1423,7 +1433,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the rich table widget
-     * 
+     *
      * @param richTable
      */
     public void setRichTable(RichTable richTable) {
@@ -1458,8 +1468,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see 
-     *      org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(java.util.Set<java.lang.String>
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(java.util.Set<java.lang.String>
      *      )
      */
     public void setHiddenColumns(Set<String> hiddenColumns) {
@@ -1481,8 +1490,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see 
-     *      org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(java.util.Set<java.lang.String
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(java.util.Set<java.lang.String
      *      >)
      */
     public void setSortableColumns(Set<String> sortableColumns) {
@@ -1493,7 +1501,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Indicates the index of the action column
-     * 
+     *
      * @return the action column index
      */
     @BeanTagAttribute(name = "actionColumnIndex")
@@ -1503,13 +1511,13 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Indicates the actions column placement
-     * 
+     *
      * <p>
      * Valid values are 'LEFT', 'RIGHT' or any valid number. The default is 'RIGHT' or '-1'. The
      * column placement index takes all displayed columns, including sequence and selection columns,
      * into account.
      * </p>
-     * 
+     *
      * @return the action column placement
      */
     @BeanTagAttribute(name = "actionColumnPlacement")
@@ -1519,7 +1527,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Setter for the action column placement
-     * 
+     *
      * @param actionColumnPlacement action column placement string
      */
     public void setActionColumnPlacement(String actionColumnPlacement) {
@@ -1536,17 +1544,17 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * The row details info group to use when using a TableLayoutManager with the a richTable.
-     * 
+     *
      * <p>
      * This group will be displayed when the user clicks the "Details" link/image on a row. This
      * allows extra/long data to be hidden in table rows and then revealed during interaction with
      * the table without the need to leave the page. Allows for any group content.
      * </p>
-     * 
+     *
      * <p>
      * Does not currently work with javascript required content.
      * </p>
-     * 
+     *
      * @return rowDetailsGroup component
      */
     @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1556,7 +1564,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the row details info group
-     * 
+     *
      * @param rowDetailsGroup row details group
      */
     public void setRowDetailsGroup(Group rowDetailsGroup) {
@@ -1567,7 +1575,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Creates the details group for the line using the information setup through the setter methods
      * of this interface. Line details are currently only supported in TableLayoutManagers which use
      * richTable.
-     * 
+     *
      * @param collectionGroup the CollectionGroup for this TableLayoutManager
      * @param view the current view
      */
@@ -1622,12 +1630,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * A list of all the columns to be calculated
-     * 
+     *
      * <p>
      * The list must contain valid column indexes. The indexes takes all displayed columns into
      * account.
      * </p>
-     * 
+     *
      * @return the total columns list
      */
     public List<String> getColumnsToCalculate() {
@@ -1640,7 +1648,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @return true if showing the total, false otherwise.
      */
     @BeanTagAttribute(name = "showTotal")
@@ -1654,7 +1662,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @param showTotal
      */
     public void setShowTotal(boolean showTotal) {
@@ -1667,7 +1675,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @return true if showing the page total, false otherwise.
      */
     @BeanTagAttribute(name = "showPageTotal")
@@ -1681,7 +1689,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @param showPageTotal
      */
     public void setShowPageTotal(boolean showPageTotal) {
@@ -1694,7 +1702,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @return true if showing the group total, false otherwise.
      */
     @BeanTagAttribute(name = "showGroupTotal")
@@ -1708,7 +1716,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
      * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
      * precedence.</b>
-     * 
+     *
      * @param showGroupTotal
      */
     public void setShowGroupTotal(boolean showGroupTotal) {
@@ -1718,7 +1726,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * The total label to use when renderOnlyLeftTotalLabels is TRUE for total. This label will
      * appear in the left most column.
-     * 
+     *
      * @return the totalLabel
      */
     @BeanTagAttribute(name = "totalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1728,7 +1736,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets the total label to use when renderOnlyLeftTotalLabels is TRUE for total.
-     * 
+     *
      * @param totalLabel
      */
     public void setTotalLabel(Label totalLabel) {
@@ -1738,7 +1746,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * The pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total. This label will
      * appear in the left most column.
-     * 
+     *
      * @return the totalLabel
      */
     @BeanTagAttribute(name = "pageTotalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1748,7 +1756,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets the pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total.
-     * 
+     *
      * @param pageTotalLabel
      */
     public void setPageTotalLabel(Label pageTotalLabel) {
@@ -1758,7 +1766,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * The groupTotal label to use when renderOnlyLeftTotalLabels is TRUE. This label will appear in
      * the left most column.
-     * 
+     *
      * @return the totalLabel
      */
     @BeanTagAttribute(name = "groupTotalLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1768,7 +1776,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets the groupTotal label to use when renderOnlyLeftTotalLabels is TRUE.
-     * 
+     *
      * @param groupTotalLabelPrototype
      */
     public void setGroupTotalLabelPrototype(Label groupTotalLabelPrototype) {
@@ -1779,7 +1787,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Gets the column calculations. This is a list of ColumnCalcuationInfo that when set provides
      * calculations to be performed on the columns they specify. These calculations appear in the
      * table's footer. This feature is only available when using richTable functionality.
-     * 
+     *
      * @return the columnCalculations to use
      */
     @BeanTagAttribute(name = "columnCalculations", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -1789,7 +1797,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets the columnCalculations.
-     * 
+     *
      * @param columnCalculations
      */
     public void setColumnCalculations(List<ColumnCalculationInfo> columnCalculations) {
@@ -1800,7 +1808,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * When true, labels for the totals fields will only appear in the left most column. Showing of
      * the totals is controlled by the settings on the TableLayoutManager itself when this property
      * is true.
-     * 
+     *
      * @return true when rendering totals footer labels in the left-most column, false otherwise
      */
     @BeanTagAttribute(name = "renderOnlyLeftTotalLabels")
@@ -1810,7 +1818,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the renderOnlyLeftTotalLabels flag for rendring total labels in the left-most column
-     * 
+     *
      * @param renderOnlyLeftTotalLabels
      */
     public void setRenderOnlyLeftTotalLabels(boolean renderOnlyLeftTotalLabels) {
@@ -1820,7 +1828,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Gets the footer calculation components to be used by the layout. These are set by the
      * framework and cannot be set directly.
-     * 
+     *
      * @return the list of components for the footer
      */
     public List<Component> getFooterCalculationComponents() {
@@ -1829,7 +1837,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Gets the list of property names to use for grouping.
-     * 
+     *
      * <p>
      * When this property is set, grouping for this collection will be enabled and the lines of the
      * collection will be grouped by the propertyName(s) supplied. Supplying multiple property names
@@ -1838,7 +1846,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * group). The property names supplied must be relative to the line, so #lp SHOULD NOT be used
      * (it is assumed automatically).
      * </p>
-     * 
+     *
      * @return propertyNames to group on
      */
     @BeanTagAttribute(name = "groupingPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -1848,7 +1856,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets the list of property names to use for grouping.
-     * 
+     *
      * @param groupingPropertyNames
      */
     public void setGroupingPropertyNames(List<String> groupingPropertyNames) {
@@ -1861,7 +1869,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * identified by some value). <b>This overrides groupingPropertyNames(if set) because it
      * provides full control of grouping value used by the collection. SpringEL defined here must
      * use #lp if referencing values of the line.</b>
-     * 
+     *
      * @return groupingTitle to be used
      */
     @BeanTagAttribute(name = "groupingTitle")
@@ -1872,7 +1880,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Set the groupingTitle. This will throw an exception if the title does not contain a SpringEL
      * expression.
-     * 
+     *
      * @param groupingTitle
      */
     public void setGroupingTitle(String groupingTitle) {
@@ -1888,7 +1896,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Get the groupingPrefix. The groupingPrefix is used to prefix the generated title (not used
      * when groupingTitle is set directly) when using groupingPropertyNames.
-     * 
+     *
      * @return String
      */
     @BeanTagAttribute(name = "groupingPrefix")
@@ -1898,7 +1906,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the groupingPrefix. This is not used when groupingTitle is set directly.
-     * 
+     *
      * @param groupingPrefix
      */
     public void setGroupingPrefix(String groupingPrefix) {
@@ -1908,7 +1916,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * If true, all details will be opened by default when the table loads. Can only be used on
      * tables that have row details setup.
-     * 
+     *
      * @return true if row details
      */
     public boolean isRowDetailsOpen() {
@@ -1917,7 +1925,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set if row details should be open on table load
-     * 
+     *
      * @param rowDetailsOpen
      */
     public void setRowDetailsOpen(boolean rowDetailsOpen) {
@@ -1927,7 +1935,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * If true, the toggleAllDetailsAction will be shown. This button allows all details to be
      * open/closed simultaneously.
-     * 
+     *
      * @return true if the action button to toggle all row details opened/closed
      */
     public boolean isShowToggleAllDetails() {
@@ -1936,7 +1944,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set if the toggleAllDetailsAction should be shown
-     * 
+     *
      * @param showToggleAllDetails
      */
     public void setShowToggleAllDetails(boolean showToggleAllDetails) {
@@ -1946,7 +1954,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * The toggleAllDetailsAction action component used to toggle all row details open/closed. This
      * property is set by the default configuration and should not be reset in most cases.
-     * 
+     *
      * @return Action component to use for the toggle action button
      */
     public Action getToggleAllDetailsAction() {
@@ -1956,7 +1964,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * Set the toggleAllDetailsAction action component used to toggle all row details open/closed.
      * This property is set by the default configuration and should not be reset in most cases.
-     * 
+     *
      * @param toggleAllDetailsAction
      */
     public void setToggleAllDetailsAction(Action toggleAllDetailsAction) {
@@ -1969,7 +1977,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * by default (this can be set on expandDetailsActionPrototype) and the additional action
      * parameters sent to the server will be those set on the expandDetailsActionPrototype
      * (lineIndex will be sent by default).
-     * 
+     *
      * @return true if ajax row details retrieval will be used
      */
     public boolean isAjaxDetailsRetrieval() {
@@ -1978,7 +1986,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set if row details content should be retrieved fromt he server
-     * 
+     *
      * @param ajaxDetailsRetrieval
      */
     public void setAjaxDetailsRetrieval(boolean ajaxDetailsRetrieval) {
@@ -1990,7 +1998,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * "Uif-ExpandDetailsAction" or "Uif-ExpandDetailsImageAction". Properties can be configured to
      * allow for different methodToCall and actionParameters to be set for ajax row details
      * retrieval.
-     * 
+     *
      * @return the Action details link prototype
      */
     public Action getExpandDetailsActionPrototype() {
@@ -1999,7 +2007,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Gets the grouping column index
-     * 
+     *
      * @return the grouping column index
      */
     public int getGroupingColumnIndex() {
@@ -2008,7 +2016,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the expand details Action prototype link
-     * 
+     *
      * @param expandDetailsActionPrototype
      */
     public void setExpandDetailsActionPrototype(Action expandDetailsActionPrototype) {
@@ -2017,7 +2025,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the header labels
-     * 
+     *
      * @param headerLabels
      */
     protected void setHeaderLabels(List<Label> headerLabels) {
@@ -2026,7 +2034,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the row fields
-     * 
+     *
      * @param allRowFields
      */
     protected void setAllRowFields(List<Field> allRowFields) {
@@ -2035,7 +2043,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the first row fields
-     * 
+     *
      * @param firstRowFields
      */
     protected void setFirstRowFields(List<Field> firstRowFields) {
@@ -2044,7 +2052,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set flag of whether a header is added
-     * 
+     *
      * @param headerAdded
      */
     protected void setHeaderAdded(boolean headerAdded) {
@@ -2053,7 +2061,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Sets action column index
-     * 
+     *
      * @param actionColumnIndex
      */
     protected void setActionColumnIndex(int actionColumnIndex) {
@@ -2062,7 +2070,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set grouping column index
-     * 
+     *
      * @param groupingColumnIndex
      */
     protected void setGroupingColumnIndex(int groupingColumnIndex) {
@@ -2071,7 +2079,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set flag generate group total rows
-     * 
+     *
      * @param generateGroupTotalRows
      */
     protected void setGenerateGroupTotalRows(boolean generateGroupTotalRows) {
@@ -2080,7 +2088,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set columns to calculate
-     * 
+     *
      * @param columnsToCalculate
      */
     protected void setColumnsToCalculate(List<String> columnsToCalculate) {
@@ -2089,7 +2097,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set footer calculation components
-     * 
+     *
      * @param footerCalculationComponents
      */
     protected void setFooterCalculationComponents(List<Component> footerCalculationComponents) {
@@ -2098,14 +2106,14 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * The row css classes for the rows of this layout
-     * 
+     *
      * <p>
      * To set a css class on all rows, use "all" as a key. To set a class for even rows, use "even"
      * as a key, for odd rows, use "odd". Use a one-based index to target a specific row by index.
      * SpringEL can be used as a key and the expression will be evaluated; if evaluated to true, the
      * class(es) specified will be applied.
      * </p>
-     * 
+     *
      * @return a map which represents the css classes of the rows of this layout
      */
     @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
@@ -2115,7 +2123,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
     /**
      * Set the conditionalRowCssClasses
-     * 
+     *
      * @param conditionalRowCssClasses
      */
     public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
@@ -2284,4 +2292,31 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         }
     }
+
+    public class TableColumn {
+        boolean isCalculateColumn;
+        boolean isDataColumn;
+
+        private ColumnCalculationInfo columnCalculations;
+        private Component footerCalculationComponents;
+        Label headerLabel;
+
+    }
+
+    public class TableRow {
+
+        boolean renderActions;
+        private int actionColumnIndex = -1;
+        private String actionColumnPlacement;
+
+        boolean renderSequence;
+
+        List<Field> fields;
+
+        //row details properties
+        private Group detailsGroup;
+        private boolean detailsOpen;
+        private Action expandDetailsActionPrototype;
+    }
+
 }

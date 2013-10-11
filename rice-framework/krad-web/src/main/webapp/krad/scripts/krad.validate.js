@@ -1016,11 +1016,21 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
             }
 
             if (infoTotal == 1) {
-                countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
+
+
+//              Check to see if the info message is coming from a lookup result page. If yes then
+//              do not display the count message at the top.
+                if(countMessage != "" && jQuery("#uLookupResults.uif-infoMessageItem").length > 0)   {
+                    countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
+                }
+                else{
+                    countMessage ="";
+                }
             }
             else {
                 countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, infoTotal);
             }
+
         }
     }
     return countMessage;
@@ -1616,7 +1626,7 @@ function generateSummaryLink(sectionId) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
         //remove newline characters
         sectionTitle = sectionTitle.replace(/\r?\n/g, "");
-        if (sectionTitle) {
+        if (sectionTitle && countMessage != "") {
             summaryMessage = sectionTitle + ": " + countMessage;
         }
         else {

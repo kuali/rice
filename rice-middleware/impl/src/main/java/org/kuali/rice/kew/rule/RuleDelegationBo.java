@@ -56,13 +56,13 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 	private String ruleDelegationId;
     @Column(name="RSP_ID")
 	private String responsibilityId;
-    @Column(name="DLGN_RULE_BASE_VAL_ID")
+    @Column(name="DLGN_RULE_BASE_VAL_ID", insertable = false, updatable = false)
 	private String delegateRuleId;
     @Column(name="DLGN_TYP")
     private String delegationTypeCode = DelegationType.PRIMARY.getCode();
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID",nullable = false)
 	private RuleBaseValues delegationRule;
 //    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 //	@JoinColumn(name="RULE_RSP_ID")

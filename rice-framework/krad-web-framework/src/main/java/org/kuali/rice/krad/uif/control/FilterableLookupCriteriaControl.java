@@ -18,19 +18,18 @@ package org.kuali.rice.krad.uif.control;
 import java.util.Map;
 
 /**
- * Indicates <code>Control</code> types that can be excluded from being part
- * of the criteria in lookups.
+ * Control instance that implements a callback for processing lookup search criteria.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface FilterableLookupCriteriaControl {
 
     /**
-     * Removes any searchCriteria that are not part of the database lookup
+     * Invoked to perform filtering of the search criteria.
      *
      * @param propertyName the propertyName of the current component
      * @param searchCriteria the search criteria to be filtered
-     * @return the filteredSearchCriteria
+     * @return filtered search criteria
      */
     public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria);
 }

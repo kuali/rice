@@ -181,6 +181,28 @@ function isPortalContainer(window) {
 }
 
 /**
+ * Attempts to find an element based on the given selector taking into consideration the portal.
+ *
+ * @param selector jquery selector to find element
+ * @returns jquery object for found element, or null if an element was not found
+ */
+function findElement(selector) {
+    var jqElement;
+
+    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
+        // portal and content on same domain
+        jqElement = top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find(selector);
+    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+        // portal and content on different domain
+        jqElement = parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find(selector);
+    } else {
+        jqElement = top.jq(selector);
+    }
+
+    return jqElement;
+}
+
+/**
  * Sets a configuration parameter that will be accessible with script
  *
  * <p>
@@ -1221,7 +1243,9 @@ function setupLightboxForm() {
  * Closes any open lightbox
  */
 function closeLightbox() {
-    getContext().fancybox.close();
+    if (getContext().fancybox) {
+        getContext().fancybox.close();
+    }
 }
 
 /**
@@ -2498,32 +2522,6 @@ function displayCountdown(targetId, until, overrideOptions) {
 
         target.countdown(options);
     }
-}
-
-/**
- * Enables the return selected button on the multi value lookup when at least one item is selected
- *
- * @param selectControl
- */
-function setMultivalueLookupReturnButton(selectControl) {
-    refreshDatatableCellRedraw(selectControl);
-
-    var oTable = getDataTableHandle(getParentRichTableId(selectControl));
-
-    var checked = false;
-    jQuery.each(getDataTablesColumnData(0, oTable), function (index, value) {
-        if (jQuery(':input:checked', value).length) {
-            checked = true;
-        }
-    });
-
-    if (checked) {
-        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeAttr('disabled');
-        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeClass('disabled');
-    } else {
-        jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).attr('disabled', 'disabled');
-    }
-
 }
 
 /**

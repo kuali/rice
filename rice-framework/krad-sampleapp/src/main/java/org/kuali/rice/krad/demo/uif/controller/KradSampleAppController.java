@@ -47,10 +47,10 @@ public class KradSampleAppController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         //TODO tbd
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=changeTheme")

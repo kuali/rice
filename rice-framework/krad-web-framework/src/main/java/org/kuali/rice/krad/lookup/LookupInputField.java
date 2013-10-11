@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -41,7 +42,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import java.util.Map;
 
 /**
- * Custom <code>InputField</code> for search fields within a lookup view
+ * Custom {@link InputField} for criteria fields within a lookup view that adds criteria specific options.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -49,19 +50,12 @@ import java.util.Map;
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
-    public static final String CHECKBOX_CONVERTED_RADIO_CONTROL = "Uif-CheckboxConvertedRadioControl";
-
     private boolean disableWildcardsAndOperators;
     private boolean addControlSelectAllOption;
-    private boolean triggerOnChange;
     private boolean ranged;
 
     public LookupInputField() {
         super();
-
-        disableWildcardsAndOperators = false;
-        addControlSelectAllOption = false;
-        setTriggerOnChange(false);
     }
 
     /**
@@ -71,8 +65,7 @@ public class LookupInputField extends InputField {
      * <li>Add all option if enabled and control is multi-value</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -92,6 +85,7 @@ public class LookupInputField extends InputField {
                 Message message = ComponentFactory.getMessage();
 
                 ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(message);
+
                 message.setMessageText(allOptionText);
                 message.setGenerateSpan(false);
 
@@ -102,16 +96,15 @@ public class LookupInputField extends InputField {
 
     /**
      * Override of InputField copy to setup properties necessary to make the field usable for inputting
-     * search criteria
+     * search criteria.
      *
-     * @param attributeDefinition AttributeDefinition instance the property values should be copied from
-     * @see DataField#copyFromAttributeDefinition(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.datadictionary.AttributeDefinition)
+     * <p>Note super is not being called because we don't want to add restirctions that can cause problems
+     * with the use of wildcard</p>
+     *
+     * {@inheritDoc}
      */
     @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
-        // TODO: why am I not calling super? why am I duplicating code from super?
-
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());
@@ -135,8 +128,6 @@ public class LookupInputField extends InputField {
             setOptionsFinder(attributeDefinition.getOptionsFinder());
         }
 
-        // TODO: what about formatter?
-
         // use control from dictionary if not specified and convert for searching
         if (getControl() == null) {
             Control control = convertControlToLookupControl(attributeDefinition);
@@ -154,17 +145,11 @@ public class LookupInputField extends InputField {
                 setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);
             }
         }
-
-        /*
-           * TODO delyea: FieldUtils.createAndPopulateFieldsForLookup used to allow for a set of property names to be passed in via the URL
-           * parameters of the lookup url to set fields as 'read only'
-           */
-
     }
 
     /**
      * If control definition is defined on the given attribute definition, converts to an appropriate control for
-     * searching (if necessary) and returns a copy for setting on the field
+     * searching (if necessary) and returns a copy for setting on the field.
      *
      * @param attributeDefinition attribute definition instance to retrieve control from
      * @return Control instance or null if not found
@@ -178,7 +163,8 @@ public class LookupInputField extends InputField {
 
         // convert checkbox to radio with yes/no/both options
         if (CheckboxControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
-            newControl = getCheckboxConvertedRadioControl();
+            newControl = (RadioGroupControl) ComponentFactory.getNewComponentInstance(
+                    ComponentFactory.CHECKBOX_CONVERTED_RADIO_CONTROL);
         }
         // text areas get converted to simple text inputs
         else if (TextAreaControl.class.isAssignableFrom(attributeDefinition.getControlField().getClass())) {
@@ -191,7 +177,25 @@ public class LookupInputField extends InputField {
     }
 
     /**
-     * @return the treatWildcardsAndOperatorsAsLiteral
+     * Invoked before search is carried out to perform any necessary filtering of the criteria.
+     *
+     * @param searchCriteria the search criteria to be filtered
+     * @return map of filtered search criteria
+     */
+    public Map<String, String> filterSearchCriteria(Map<String, String> searchCriteria) {
+        if (getControl() instanceof FilterableLookupCriteriaControl) {
+            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(),
+                    searchCriteria);
+        } else {
+            return searchCriteria;
+        }
+    }
+
+    /**
+     * Indicates whether wildcard and other search operators should be disabled (treated as literals) for
+     * the input field.
+     *
+     * @return boolean true if wildcards and search operators should be disabled, false if enabled
      */
     @BeanTagAttribute(name = "disableWildcardsAndOperators")
     public boolean isDisableWildcardsAndOperators() {
@@ -199,7 +203,7 @@ public class LookupInputField extends InputField {
     }
 
     /**
-     * @param disableWildcardsAndOperators the treatWildcardsAndOperatorsAsLiteral to set
+     * @see LookupInputField#isDisableWildcardsAndOperators()
      */
     public void setDisableWildcardsAndOperators(boolean disableWildcardsAndOperators) {
         this.disableWildcardsAndOperators = disableWildcardsAndOperators;
@@ -207,7 +211,7 @@ public class LookupInputField extends InputField {
 
     /**
      * Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
-     * field, note this is only supported for {@link org.kuali.rice.krad.uif.control.MultiValueControl} instance
+     * field, note this is only supported for {@link org.kuali.rice.krad.uif.control.MultiValueControl} instance.
      *
      * @return boolean true if all option should be added, false if not
      */
@@ -217,63 +221,35 @@ public class LookupInputField extends InputField {
     }
 
     /**
-     * Setter for the add all option indicator
-     *
-     * @param addControlSelectAllOption
+     * @see LookupInputField#isAddControlSelectAllOption()
      */
     public void setAddControlSelectAllOption(boolean addControlSelectAllOption) {
         this.addControlSelectAllOption = addControlSelectAllOption;
     }
 
     /**
-     * Indicates that the search must execute on changing of a value in the lookup input field
+     * Indicates a field group should be created containing a from and to input field for date search
+     * ranges.
      *
-     * @return boolean
-     */
-    public boolean isTriggerOnChange() {
-        return triggerOnChange;
-    }
-
-    /**
-     * Setter for the trigger search on change flag
+     * <p>
+     * When this is set to true, the input field will be replaced by a field group that is created by
+     * copying the prototype {@link org.kuali.rice.krad.lookup.LookupView#getRangeFieldGroupPrototype()}. Within the
+     * field group, an lookup input field will be created for the from field, and this input will be used
+     * as the to date field. Between the two fields a message will be rendered that can be specified using
+     * {@link LookupView#getRangedToMessage()}
+     * </p>
      *
-     * @param triggerOnChange
-     */
-    public void setTriggerOnChange(boolean triggerOnChange) {
-        this.triggerOnChange = triggerOnChange;
-    }
-
-    /**
-     * Indicates that a field must be rendered as a from and to value
-     *
-     * @return
+     * @return boolean true if ranged field group should be created, false if not
      */
     public boolean isRanged() {
         return ranged;
     }
 
     /**
-     * Setter for ranged flag to indicate this is a range field
-     *
-     * @param ranged
+     * @see LookupInputField#isRanged()
      */
     public void setRanged(boolean ranged) {
         this.ranged = ranged;
-    }
-
-    /**
-     * Remove any search criteria that are not part of the database lookup
-     *
-     * @param searchCriteria the search criteria to be filtered
-     * @return the filteredSearchCriteria
-     */
-    public Map<String, String> filterSearchCriteria(Map<String, String> searchCriteria) {
-        if (getControl() instanceof FilterableLookupCriteriaControl) {
-            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(),
-                    searchCriteria);
-        } else {
-            return searchCriteria;
-        }
     }
 
     /**
@@ -287,17 +263,6 @@ public class LookupInputField extends InputField {
 
         lookupInputFieldCopy.setDisableWildcardsAndOperators(this.disableWildcardsAndOperators);
         lookupInputFieldCopy.setAddControlSelectAllOption(this.addControlSelectAllOption);
-        lookupInputFieldCopy.setTriggerOnChange(this.triggerOnChange);
         lookupInputFieldCopy.setRanged(this.ranged);
-    }
-
-    /**
-     * Retrieves a new radio group control instance for converted lookup criteria checkboxes from Spring
-     * (initialized by the bean definition with the given id)
-     *
-     * @return RadioGroupControl
-     */
-    private static RadioGroupControl getCheckboxConvertedRadioControl() {
-        return (RadioGroupControl) ComponentFactory.getNewComponentInstance(CHECKBOX_CONVERTED_RADIO_CONTROL);
     }
 }

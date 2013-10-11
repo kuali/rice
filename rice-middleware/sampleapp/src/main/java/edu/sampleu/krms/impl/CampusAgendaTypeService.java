@@ -34,7 +34,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
+import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
@@ -73,7 +73,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
 
         String campusBoClassName = CampusBo.class.getName();
 
-        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
+        String baseLookupUrl = LookupUtils.getBaseLookupUrl();
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, campusBoClassName);

@@ -50,7 +50,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Go Forward - Test Back Button State" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/lookup?dataObjectClassName=org.kuali.rice.krad.sampleapp_2_4_M2.demo.travel.dataobject.TravelAccount&amp;showMaintenanceLinks=true"/>
+                    p:href="@{#ConfigProperties['krad.url']}/lookup?dataObjectClassName=org.kuali.rice.krad.sampleapp_2_4_M2.demo.travel.dataobject.TravelAccount&amp;renderMaintenanceLinks=true"/>
             </list>
           </property>
       </bean>

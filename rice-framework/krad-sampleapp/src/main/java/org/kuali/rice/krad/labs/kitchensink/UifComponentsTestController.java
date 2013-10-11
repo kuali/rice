@@ -53,7 +53,7 @@ public class UifComponentsTestController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
         form.setState("state1");
@@ -79,7 +79,7 @@ public class UifComponentsTestController extends UifControllerBase {
 
         GlobalVariables.getMessageMap().addGrowlMessage("Welcome!", "kitchenSink.welcome");
 
-        return super.start(uiTestForm, result, request, response);
+        return super.start(uiTestForm, request, response);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")

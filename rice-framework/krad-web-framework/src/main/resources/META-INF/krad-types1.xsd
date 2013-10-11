@@ -3412,7 +3412,7 @@
         <xsd:choice maxOccurs="unbounded" minOccurs="0">
           <xsd:element maxOccurs="1" minOccurs="0" name="applicationHeader" type="org.kuali.rice.krad.uif.element.Header">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Header for the application containing the view
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Header for the application containing the view
 
  
  When deploying outside a portal, the application header and footer property can be configured to
@@ -3423,13 +3423,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stateObjectBindingPath" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
  determine what field in the model state information is stored in for this view.  Used during View validation.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalComponentsToRefresh" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
 
  
  This will be a comma separated list of componentIds that need to be refreshed when a refresh
@@ -3439,22 +3439,22 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewHelperService" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Creates the ViewHelperService associated with the View]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Creates the ViewHelperService associated with the View]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshBlockUI" type="org.kuali.rice.krad.uif.widget.BlockUI">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="breadcrumbOptions" type="org.kuali.rice.krad.uif.util.BreadcrumbOptions">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="multipleValuesSelect" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether multiple values select should be enabled for the lookup
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether multiple values select should be enabled for the lookup
 
  
  When set to true, the select field is enabled for the lookup results group that allows the user
@@ -3464,12 +3464,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="help" type="org.kuali.rice.krad.uif.widget.Help">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="selfRendered" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
  the renderOutput property)
 
  
@@ -3481,7 +3481,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="page" type="org.kuali.rice.krad.uif.container.PageGroup">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[For single paged views (#isSinglePageView(), gives the page
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[For single paged views (#isSinglePageView(), gives the page
  Group the view should render. The actual items for the page
  is taken from the group's items list (#getItems(), and set onto
  the give page group. This is for convenience of configuration.]]></xsd:documentation>
@@ -3489,24 +3489,24 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="topGroup" type="org.kuali.rice.krad.uif.container.Group">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resetDataOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
  component is refreshed]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="template" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
 
  
  The path should be relative to the web root. An attribute will be available to the component to use under the
@@ -3521,12 +3521,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="returnTarget" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="expressionVariables">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map that contains expressions to evaluate and make available as variables
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map that contains expressions to evaluate and make available as variables
  for conditional expressions within the view
  
  Each Map entry contains one expression variables, where the map key gives
@@ -3547,25 +3547,25 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="validateServerSide" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform the validate model phase of the view
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform the validate model phase of the view
  lifecycle. This phase will validate the model against configured
  dictionary validations and report errors. Defaults to true]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="header" type="org.kuali.rice.krad.uif.element.Header">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="objectPathToConcreteClassMapping">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Configures the concrete classes that will be used for properties in the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Configures the concrete classes that will be used for properties in the
  form object graph that have an abstract or interface type
 
  
@@ -3596,12 +3596,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onLoadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker" type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
  for finalizing the component configuration
 
  
@@ -3620,13 +3620,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewHelperServiceClass" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class name of the ViewHelperService that handles the various
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class name of the ViewHelperService that handles the various
  phases of the Views lifecycle]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="actionFlags" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map of strings that flag what actions can be taken in the UI
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map of strings that flag what actions can be taken in the UI
  
  These can be used in conditional expressions in the dictionary or by
  other UI logic
@@ -3635,17 +3635,17 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="headerText" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
 
  They will be evaluated
  during the view lifecycle to conditionally set properties on the
@@ -3661,34 +3661,34 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultItemPosition" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="instructionalText" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="validationMessages" type="org.kuali.rice.krad.uif.element.ValidationMessages">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="formPostUrl" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies the URL the view's form should post to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies the URL the view's form should post to
 
  
  Any valid form post URL (full or relative) can be specified. If left
@@ -3699,13 +3699,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onCloseScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="singlePageView" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the View only has a single page
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the View only has a single page
  Group or contains multiple page Group
  instances. In the case of a single page it is assumed the group's items
  list contains the section groups for the page, and the page itself is
@@ -3715,14 +3715,14 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="entryPageId" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies what page should be rendered by default. This is the page that
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies what page should be rendered by default. This is the page that
  will be rendered when the View is first rendered or when the
  current page is not set]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="authorizer" type="org.kuali.rice.krad.uif.view.ViewAuthorizer">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Authorizer that should be used for the View instance
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Authorizer that should be used for the View instance
 
  
  The authorizer class is consulted to determine component (group, field)
@@ -3738,7 +3738,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="title" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The component title
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The component title
 
  
  Depending on the component can be used in various ways. For example with a Container component the title is
@@ -3749,13 +3749,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodAdditionalArguments">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
 
  
  These arguments are passed to the finalize method after the standard model and component
@@ -3772,7 +3772,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
 
  
  All components belong to a Container and are placed using a
@@ -3788,7 +3788,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="namespaceCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Namespace code the view should be associated with
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Namespace code the view should be associated with
 
  
  The namespace code is used within the framework in such places as permission checks and parameter
@@ -3798,7 +3798,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRender" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
  container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
  form property names, and, or, logical comparison operators (non-arithmetic), and the matches
  clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
@@ -3818,14 +3818,14 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptionsJSString" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
  that will export that options as a JavaScript Map for use in js and
  jQuery plugins]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dialogs">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Provide a list of dialog groups associated with this view]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Provide a list of dialog groups associated with this view]]></xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:complexContent>
@@ -3837,28 +3837,28 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="preRenderContent" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="criteriaGroup" type="org.kuali.rice.krad.uif.container.Group">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="toolTip" type="org.kuali.rice.krad.uif.widget.Tooltip">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
  specified trigger event]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="theme" type="org.kuali.rice.krad.uif.view.ViewTheme">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The theme which contains stylesheets for this view]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The theme which contains stylesheets for this view]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resultFields">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:complexContent>
@@ -3870,7 +3870,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dataAttributes">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
 
  The attributes that are complex objects (contain {}) they will be written through script.
  The attritubes that are simple (contain no objects) will be written directly to the html of the
@@ -3887,12 +3887,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="footer" type="org.kuali.rice.krad.uif.container.Group">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="preLoadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that is executed at the beginning of page load (before any other script)
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that is executed at the beginning of page load (before any other script)
 
  
  Many used to set server variables client side
@@ -3901,12 +3901,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="layoutManager" type="org.kuali.rice.krad.uif.layout.LayoutManager">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[View name provides an identifier for a view within a type. That is if a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[View name provides an identifier for a view within a type. That is if a
  set of View instances have the same values for the
  properties that are used to retrieve them by their type, the name can be
  given to further qualify the view that should be retrieved.
@@ -3920,7 +3920,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnly" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component can be edited
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component can be edited
 
  
  When readOnly the controls and widgets of Field components
@@ -3937,41 +3937,41 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseMoveScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewMenuLink" type="org.kuali.rice.krad.uif.element.Link">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Provides configuration for displaying a link to the view from an
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Provides configuration for displaying a link to the view from an
  application menu]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="skipInTabOrder" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
  skipped when keyboard tabbing.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyHeader" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="hideReturnLinks" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderReturnLink" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
  from the server when it first satisfies its progressive render condition.
 
  After the first retrieval, it is hidden/shown in the html by the js when
@@ -3982,24 +3982,24 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onChangeScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyTopGroup" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyPressScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stateMapping" type="org.kuali.rice.krad.datadictionary.state.StateMapping">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Gets the stateMapping.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Gets the stateMapping.
 
  The state mapping object is used to determine the state information for a view,
  it must include an ordered list of states, and where to find the state information for the view.
@@ -4010,7 +4010,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultBindingObjectPath" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[For View types that work primarily with one nested object of
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[For View types that work primarily with one nested object of
  the form (for instance document, or bo) the default binding object path
  can be set for each of the views DataBinding components. If
  the component does not set its own binding object path it will inherit
@@ -4019,7 +4019,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshTimer" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
 
  
  This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
@@ -4029,7 +4029,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="disableSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
  refresh condition)
 
  
@@ -4041,49 +4041,49 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resultSetLimit" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Retrieves the maximum number of records that will be listed
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Retrieves the maximum number of records that will be listed
  as a result of the lookup search]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDblClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewIndex" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Holds field indexes of the View instance for retrieval]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Holds field indexes of the View instance for retrieval]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="breadcrumbItem" type="org.kuali.rice.krad.uif.util.BreadcrumbItem">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewTypeName" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onBlurScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalCssClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="navigationBlockUI" type="org.kuali.rice.krad.uif.widget.BlockUI">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="required" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component is required
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component is required
 
  
  At the general component level required means there is some action the
@@ -4096,7 +4096,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodToCall" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
  configuration (full method name, without parameters or return type)
 
  
@@ -4121,7 +4121,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="renderForm" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether a Form element should be rendered for the View. This is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether a Form element should be rendered for the View. This is
  necessary for pages that need to submit data back to the server. Note
  that even if a page is read-only, a form element is generally needed for
  the navigation. Defaults to true]]></xsd:documentation>
@@ -4129,17 +4129,17 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="postRenderContent" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultSortAscending" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -4151,7 +4151,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Width the component should take up in the container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Width the component should take up in the container
 
  
  All components belong to a Container and are placed using a
@@ -4168,18 +4168,18 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyBreadcrumbs" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="render" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
 
  
  If set to false, the corresponding component template will not be invoked
@@ -4189,12 +4189,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyApplicationFooter" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="methodToCallOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
  process
 
  
@@ -4211,13 +4211,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="validateClientSide" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform on-the-fly validation on the client using js
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform on-the-fly validation on the client using js
  during user data entry. Defaults to true]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="formClass" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class of the Form that should be used with the View
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class of the Form that should be used with the View
  instance. The form is the top level object for all the view's data and is
  used to present and accept data in the user interface. All form classes
  should extend UifFormBase]]></xsd:documentation>
@@ -4225,7 +4225,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="navigation" type="org.kuali.rice.krad.uif.container.Group">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[NavigationGroup instance for the View
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[NavigationGroup instance for the View
  
  Provides configuration necessary to render the navigation. This includes
  navigation items in addition to configuration for the navigation
@@ -4235,7 +4235,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="items">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:complexContent>
@@ -4247,7 +4247,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="presentationController" type="org.kuali.rice.krad.uif.view.ViewPresentationController">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[PresentationController that should be used for the View instance
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[PresentationController that should be used for the View instance
 
  
  The presentation controller is consulted to determine component (group,
@@ -4260,7 +4260,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentModifiers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
  initialize the component
 
  
@@ -4279,12 +4279,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyFooter" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="applicationFooter" type="org.kuali.rice.krad.uif.container.Group">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Footer for the application containing the view
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Footer for the application containing the view
 
  
  When deploying outside a portal, the application header and footer property can be configured to
@@ -4295,17 +4295,17 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="multipleValuesSelectResultSetLimit" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshWhenChangedPropertyNames" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
  a refresh on this component
 
  
@@ -4319,28 +4319,28 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="unifiedHeader" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultSortAttributeNames" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="renderedHtmlOutput" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
  response (can contain static text and HTML)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="showMaintenanceLinks" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderMaintenanceLinks" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="colSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
  container
 
  
@@ -4357,7 +4357,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dataObjectClassName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class name for the object the lookup applies to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class name for the object the lookup applies to
 
  
  The object class name is used to pick up a dictionary entry which will
@@ -4369,22 +4369,22 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="returnByScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="breadcrumbs" type="org.kuali.rice.krad.uif.widget.Breadcrumbs">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="translateCodesOnReadOnlyDisplay" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Returns whether the current view supports displaying KualiCode's name as additional display value]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Returns whether the current view supports displaying KualiCode's name as additional display value]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="id" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
 
  
  The id will be used by renderers to set the HTML element id. This gives a way to find various elements
@@ -4394,7 +4394,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="supportsRequestOverrideOfReadOnlyFields" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the view allows read only fields to be specified on the request URL which will
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the view allows read only fields to be specified on the request URL which will
  override the view setting
 
  
@@ -4404,7 +4404,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="applyDirtyCheck" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the form should be validated for dirtyness
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the form should be validated for dirtyness
 
  
  For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
@@ -4416,7 +4416,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="style" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[CSS style string to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[CSS style string to be applied to the component
 
  
  Any style override or additions can be specified with this attribute.
@@ -4431,12 +4431,12 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="order" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="criteriaFields">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:complexContent>
@@ -4448,7 +4448,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
 
  The component MUST BE a container or field type. conditionalRefresh is
  defined in a limited Spring EL syntax. Only valid form property names,
@@ -4467,7 +4467,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalCssFiles" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Declares additional CSS files that should be included with the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Declares additional CSS files that should be included with the
  View. These files are brought into the HTML page along with
  common CSS files configured for the Rice application. Each entry should
  contain the path to the CSS file, either a relative path, path from web
@@ -4478,19 +4478,19 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="suppressActions" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderResultActions" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resultsGroup" type="org.kuali.rice.krad.uif.container.CollectionGroup">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="growlMessagingEnabled" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[whether to use growls to show messages - info, warning and error
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[whether to use growls to show messages - info, warning and error
 
  Growls use the messages contained in the message map. If enabled, info
  messages in their entirety will be displayed in growls, for warning and
@@ -4505,13 +4505,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOutScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptions">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
 
  
  The Map key is the option name, with the Map value as the option value. See
@@ -4528,7 +4528,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="editModes" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map of edit modes that enabled for the view
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map of edit modes that enabled for the view
  
  These can be used in conditional expressions in the dictionary or by
  other UI logic
@@ -4537,13 +4537,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalScriptFiles" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Declares additional script files that should be included with the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Declares additional script files that should be included with the
  View. These files are brought into the HTML page along with
  common script files configured for the Rice application. Each entry
  contain the path to the CSS file, either a relative path, path from web
@@ -4556,17 +4556,17 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="parentLocation" type="org.kuali.rice.krad.uif.util.ParentLocation">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="stickyApplicationHeader" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="maintenanceUrlMapping" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[String that maps to the maintenance controller for the maintenance document (if any) associated with the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[String that maps to the maintenance controller for the maintenance document (if any) associated with the
  lookup data object class
 
  
@@ -4577,18 +4577,18 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentSecurity" type="org.kuali.rice.krad.uif.component.ComponentSecurity">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="growls" type="org.kuali.rice.krad.uif.widget.Growls">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Growls widget which sets up global settings for the growls used in this
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Growls widget which sets up global settings for the growls used in this
  view and its pages]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderAndRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
  will always be retrieved from the server and shown(as opposed to being
  stored on the client, but hidden, after the first retrieval as is the
  case with the progressiveRenderViaAJAX option).
@@ -4600,7 +4600,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="persistFormToSession" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the form (model) associated with the view should be stored in the user session
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the form (model) associated with the view should be stored in the user session
 
  
  The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
@@ -4632,7 +4632,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="hidden" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
 
  
  How the hidden data is maintained depends on the views persistence mode.
@@ -4650,7 +4650,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="preloadPoolSize" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies the size of the pool that will contain pre-loaded views
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies the size of the pool that will contain pre-loaded views
 
  
  The spring loading of some views can take a few seconds which hurts performance. The framework supports
@@ -4662,13 +4662,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onUnloadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="context">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Context map for the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Context map for the component
 
  
  Any el statements configured for the components properties (e.g.
@@ -4706,7 +4706,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="forceSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
 
  
  By default the framework nulls out any components that do not have a refresh condition or are needed for
@@ -4718,7 +4718,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="valign" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -4731,23 +4731,23 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewMenuGroupName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Provides a grouping string for the view to group its menu link (within a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Provides a grouping string for the view to group its menu link (within a
  portal for instance)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="instructionalMessage" type="org.kuali.rice.krad.uif.element.Message">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
 
  
  Declares style classes for the component. Multiple classes are specified
@@ -4762,7 +4762,7 @@
         </xsd:choice>
         <xsd:attribute name="applicationHeader">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Header for the application containing the view
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Header for the application containing the view
 
  
  When deploying outside a portal, the application header and footer property can be configured to
@@ -4773,28 +4773,28 @@
         </xsd:attribute>
         <xsd:attribute name="stateObjectBindingPath">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The stateObject's binding path, this will be used along with the StateMapping's statePropertyName to
  determine what field in the model state information is stored in for this view.  Used during View validation.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="viewHelperService">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Creates the ViewHelperService associated with the View]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Creates the ViewHelperService associated with the View]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="refreshBlockUI">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="breadcrumbOptions">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="multipleValuesSelect">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether multiple values select should be enabled for the lookup
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether multiple values select should be enabled for the lookup
 
  
  When set to true, the select field is enabled for the lookup results group that allows the user
@@ -4804,12 +4804,12 @@
         </xsd:attribute>
         <xsd:attribute name="help">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="page">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[For single paged views (#isSinglePageView(), gives the page
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[For single paged views (#isSinglePageView(), gives the page
  Group the view should render. The actual items for the page
  is taken from the group's items list (#getItems(), and set onto
  the give page group. This is for convenience of configuration.]]></xsd:documentation>
@@ -4817,17 +4817,17 @@
         </xsd:attribute>
         <xsd:attribute name="topGroup">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="returnTarget">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="expressionVariables">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map that contains expressions to evaluate and make available as variables
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map that contains expressions to evaluate and make available as variables
  for conditional expressions within the view
  
  Each Map entry contains one expression variables, where the map key gives
@@ -4841,19 +4841,19 @@
         </xsd:attribute>
         <xsd:attribute name="validateServerSide">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform the validate model phase of the view
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform the validate model phase of the view
  lifecycle. This phase will validate the model against configured
  dictionary validations and report errors. Defaults to true]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="header">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="objectPathToConcreteClassMapping">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Configures the concrete classes that will be used for properties in the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Configures the concrete classes that will be used for properties in the
  form object graph that have an abstract or interface type
 
  
@@ -4877,13 +4877,13 @@
         </xsd:attribute>
         <xsd:attribute name="viewHelperServiceClass">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class name of the ViewHelperService that handles the various
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class name of the ViewHelperService that handles the various
  phases of the Views lifecycle]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="actionFlags">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map of strings that flag what actions can be taken in the UI
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map of strings that flag what actions can be taken in the UI
  
  These can be used in conditional expressions in the dictionary or by
  other UI logic
@@ -4892,27 +4892,27 @@
         </xsd:attribute>
         <xsd:attribute name="headerText">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="defaultItemPosition">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="instructionalText">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="validationMessages">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="formPostUrl">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies the URL the view's form should post to
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies the URL the view's form should post to
 
  
  Any valid form post URL (full or relative) can be specified. If left
@@ -4923,7 +4923,7 @@
         </xsd:attribute>
         <xsd:attribute name="singlePageView">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the View only has a single page
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the View only has a single page
  Group or contains multiple page Group
  instances. In the case of a single page it is assumed the group's items
  list contains the section groups for the page, and the page itself is
@@ -4933,14 +4933,14 @@
         </xsd:attribute>
         <xsd:attribute name="entryPageId">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies what page should be rendered by default. This is the page that
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies what page should be rendered by default. This is the page that
  will be rendered when the View is first rendered or when the
  current page is not set]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="authorizer">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Authorizer that should be used for the View instance
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Authorizer that should be used for the View instance
 
  
  The authorizer class is consulted to determine component (group, field)
@@ -4956,22 +4956,22 @@
         </xsd:attribute>
         <xsd:attribute name="criteriaGroup">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="theme">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[The theme which contains stylesheets for this view]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[The theme which contains stylesheets for this view]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="footer">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="preLoadScript">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Script that is executed at the beginning of page load (before any other script)
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Script that is executed at the beginning of page load (before any other script)
 
  
  Many used to set server variables client side
@@ -4980,12 +4980,12 @@
         </xsd:attribute>
         <xsd:attribute name="layoutManager">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="viewName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[View name provides an identifier for a view within a type. That is if a
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[View name provides an identifier for a view within a type. That is if a
  set of View instances have the same values for the
  properties that are used to retrieve them by their type, the name can be
  given to further qualify the view that should be retrieved.
@@ -4999,28 +4999,28 @@
         </xsd:attribute>
         <xsd:attribute name="viewMenuLink">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Provides configuration for displaying a link to the view from an
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Provides configuration for displaying a link to the view from an
  application menu]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stickyHeader">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="hideReturnLinks">
+        <xsd:attribute name="renderReturnLink">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stickyTopGroup">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stateMapping">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Gets the stateMapping.
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Gets the stateMapping.
 
  The state mapping object is used to determine the state information for a view,
  it must include an ordered list of states, and where to find the state information for the view.
@@ -5031,7 +5031,7 @@
         </xsd:attribute>
         <xsd:attribute name="defaultBindingObjectPath">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[For View types that work primarily with one nested object of
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[For View types that work primarily with one nested object of
  the form (for instance document, or bo) the default binding object path
  can be set for each of the views DataBinding components. If
  the component does not set its own binding object path it will inherit
@@ -5040,33 +5040,33 @@
         </xsd:attribute>
         <xsd:attribute name="resultSetLimit">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Retrieves the maximum number of records that will be listed
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Retrieves the maximum number of records that will be listed
  as a result of the lookup search]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="viewIndex">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Holds field indexes of the View instance for retrieval]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Holds field indexes of the View instance for retrieval]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="breadcrumbItem">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="viewTypeName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="navigationBlockUI">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="renderForm">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether a Form element should be rendered for the View. This is
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether a Form element should be rendered for the View. This is
  necessary for pages that need to submit data back to the server. Note
  that even if a page is read-only, a form element is generally needed for
  the navigation. Defaults to true]]></xsd:documentation>
@@ -5074,28 +5074,28 @@
         </xsd:attribute>
         <xsd:attribute name="defaultSortAscending">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stickyBreadcrumbs">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stickyApplicationFooter">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="validateClientSide">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform on-the-fly validation on the client using js
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether to perform on-the-fly validation on the client using js
  during user data entry. Defaults to true]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="formClass">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class of the Form that should be used with the View
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class of the Form that should be used with the View
  instance. The form is the top level object for all the view's data and is
  used to present and accept data in the user interface. All form classes
  should extend UifFormBase]]></xsd:documentation>
@@ -5103,7 +5103,7 @@
         </xsd:attribute>
         <xsd:attribute name="navigation">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[NavigationGroup instance for the View
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[NavigationGroup instance for the View
  
  Provides configuration necessary to render the navigation. This includes
  navigation items in addition to configuration for the navigation
@@ -5113,7 +5113,7 @@
         </xsd:attribute>
         <xsd:attribute name="presentationController">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[PresentationController that should be used for the View instance
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[PresentationController that should be used for the View instance
 
  
  The presentation controller is consulted to determine component (group,
@@ -5126,12 +5126,12 @@
         </xsd:attribute>
         <xsd:attribute name="stickyFooter">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="applicationFooter">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Footer for the application containing the view
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Footer for the application containing the view
 
  
  When deploying outside a portal, the application header and footer property can be configured to
@@ -5142,27 +5142,27 @@
         </xsd:attribute>
         <xsd:attribute name="multipleValuesSelectResultSetLimit">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="unifiedHeader">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="defaultSortAttributeNames">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="showMaintenanceLinks">
+        <xsd:attribute name="renderMaintenanceLinks">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="dataObjectClassName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Class name for the object the lookup applies to
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Class name for the object the lookup applies to
 
  
  The object class name is used to pick up a dictionary entry which will
@@ -5174,22 +5174,22 @@
         </xsd:attribute>
         <xsd:attribute name="returnByScript">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="breadcrumbs">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="translateCodesOnReadOnlyDisplay">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Returns whether the current view supports displaying KualiCode's name as additional display value]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Returns whether the current view supports displaying KualiCode's name as additional display value]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="supportsRequestOverrideOfReadOnlyFields">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the view allows read only fields to be specified on the request URL which will
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the view allows read only fields to be specified on the request URL which will
  override the view setting
 
  
@@ -5199,7 +5199,7 @@
         </xsd:attribute>
         <xsd:attribute name="applyDirtyCheck">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the form should be validated for dirtyness
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the form should be validated for dirtyness
 
  
  For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
@@ -5211,7 +5211,7 @@
         </xsd:attribute>
         <xsd:attribute name="additionalCssFiles">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Declares additional CSS files that should be included with the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Declares additional CSS files that should be included with the
  View. These files are brought into the HTML page along with
  common CSS files configured for the Rice application. Each entry should
  contain the path to the CSS file, either a relative path, path from web
@@ -5222,19 +5222,19 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="suppressActions">
+        <xsd:attribute name="renderResultActions">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="resultsGroup">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="growlMessagingEnabled">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[whether to use growls to show messages - info, warning and error
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[whether to use growls to show messages - info, warning and error
 
  Growls use the messages contained in the message map. If enabled, info
  messages in their entirety will be displayed in growls, for warning and
@@ -5249,7 +5249,7 @@
         </xsd:attribute>
         <xsd:attribute name="editModes">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Map of edit modes that enabled for the view
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Map of edit modes that enabled for the view
  
  These can be used in conditional expressions in the dictionary or by
  other UI logic
@@ -5258,7 +5258,7 @@
         </xsd:attribute>
         <xsd:attribute name="additionalScriptFiles">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Declares additional script files that should be included with the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Declares additional script files that should be included with the
  View. These files are brought into the HTML page along with
  common script files configured for the Rice application. Each entry
  contain the path to the CSS file, either a relative path, path from web
@@ -5271,17 +5271,17 @@
         </xsd:attribute>
         <xsd:attribute name="parentLocation">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="stickyApplicationHeader">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="maintenanceUrlMapping">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[String that maps to the maintenance controller for the maintenance document (if any) associated with the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[String that maps to the maintenance controller for the maintenance document (if any) associated with the
  lookup data object class
 
  
@@ -5292,13 +5292,13 @@
         </xsd:attribute>
         <xsd:attribute name="growls">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Growls widget which sets up global settings for the growls used in this
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Growls widget which sets up global settings for the growls used in this
  view and its pages]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="persistFormToSession">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Indicates whether the form (model) associated with the view should be stored in the user session
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Indicates whether the form (model) associated with the view should be stored in the user session
 
  
  The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
@@ -5330,7 +5330,7 @@
         </xsd:attribute>
         <xsd:attribute name="preloadPoolSize">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Specifies the size of the pool that will contain pre-loaded views
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Specifies the size of the pool that will contain pre-loaded views
 
  
  The spring loading of some views can take a few seconds which hurts performance. The framework supports
@@ -5342,13 +5342,13 @@
         </xsd:attribute>
         <xsd:attribute name="viewMenuGroupName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Provides a grouping string for the view to group its menu link (within a
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[Provides a grouping string for the view to group its menu link (within a
  portal for instance)]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="instructionalMessage">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:anyAttribute processContents="skip"/>

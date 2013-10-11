@@ -1608,24 +1608,14 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * Applies the default value configured for the given field (if any) to the line given object
      * property that is determined by the given binding path
      * 
-     * <p>
-     * Checks for a configured default value or default value class for the field. If both are
-     * given, the configured static default value will win. In addition, if the default value
-     * contains an el expression it is evaluated against the initial context
-     * </p>
-     * 
      * @param view view instance the field belongs to
      * @param object object that should be populated
      * @param dataField field to check for configured default value
      * @param bindingPath path to the property on the object that should be populated
      */
     protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
-        // check for configured default value
-        String defaultValue = dataField.getDefaultValue();
-        Object[] defaultValues = dataField.getDefaultValues();
-
         if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
-                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)){
             return;
         }
 
@@ -1636,55 +1626,62 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             return;
         }
 
-        ExpressionEvaluator expressionEvaluator = helper.getExpressionEvaluator();
-        Map<String, String> expressionGraph = dataField.getExpressionGraph();
+        Object defaultValue = getDefaultValueForField(view, object, dataField);
 
-        if (StringUtils.isBlank(defaultValue)) {
-            String defaultValuesExpression = null;
-            // Check for expression, this would exist in a comma seperated list case that uses expressions
-            if (expressionGraph != null && expressionGraph.containsKey(UifConstants.ComponentProperties.DEFAULT_VALUES)) {
-                defaultValuesExpression = expressionGraph.get(UifConstants.ComponentProperties.DEFAULT_VALUES);
-            }
+        ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+    }
 
-            // evaluate and set if defaultValues are backed by an expression
-            if (defaultValuesExpression != null && expressionEvaluator.containsElPlaceholder(
-                    defaultValuesExpression)) {
-                Map<String, Object> context = view.getPreModelContext();
-                context.putAll(dataField.getContext());
-                defaultValuesExpression = expressionEvaluator.replaceBindingPrefixes(view, object,
-                        defaultValuesExpression);
+    /**
+     * Retrieves the default value that is configured for the given data field
+     *
+     * <p>
+     * The field's default value is determined in the following order:
+     *
+     * <ol>
+     *     <li>If default value on field is non-blank</li>
+     *     <li>If expression is found for default value</li>
+     *     <li>If default value finder class is configured for field</li>
+     *     <li>If an expression is found for default values</li>
+     *     <li>If default values on field is not null</li>
+     * </ol>
+     * </p>
+     *
+     * @param view view instance the field belongs to
+     * @param object object that should be populated
+     * @param dataField field to retrieve default value for
+     * @return Object default value for field or null if value was not found
+     */
+    protected Object getDefaultValueForField(View view, Object object, DataField dataField) {
+        Object defaultValue = null;
 
-                defaultValuesExpression = expressionEvaluator.evaluateExpressionTemplate(context,
-                        defaultValuesExpression);
+        if (StringUtils.isNotBlank(dataField.getDefaultValue())) {
+            defaultValue = dataField.getDefaultValue();
+        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
+                UifConstants.ComponentProperties.DEFAULT_VALUE)) {
+            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
+        } else if (dataField.getDefaultValueFinderClass() != null) {
+            ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
 
-                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValuesExpression);
-            } else if (defaultValues != null) {
-                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
-            }
-        } else {
-            if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
-                ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
-                defaultValue = defaultValueFinder.getValue();
-            }
-
-            if (expressionGraph != null && expressionGraph.containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {
-                defaultValue = expressionGraph.get(UifConstants.ComponentProperties.DEFAULT_VALUE);
-            }
-
-            // populate default value if given and path is valid
-            if (StringUtils.isNotBlank(defaultValue)) {
-                expressionEvaluator = helper.getExpressionEvaluator();
-                // evaluate if defaultValue is backed by an expression
-                if (expressionEvaluator.containsElPlaceholder(defaultValue)) {
-                    Map<String, Object> context = view.getPreModelContext();
-                    context.putAll(dataField.getContext());
-                    defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, defaultValue);
-                    defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, defaultValue);
-                }
-
-                ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
-            }
+            defaultValue = defaultValueFinder.getValue();
+        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
+                UifConstants.ComponentProperties.DEFAULT_VALUES)) {
+            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUES);
+        } else if (dataField.getDefaultValues() != null) {
+            defaultValue = dataField.getDefaultValues();
         }
+
+        ExpressionEvaluator expressionEvaluator = getHelper().getExpressionEvaluator();
+
+        if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
+                .containsElPlaceholder((String) defaultValue)) {
+            Map<String, Object> context = view.getPreModelContext();
+            context.putAll(dataField.getContext());
+
+            defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, (String) defaultValue);
+            defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, (String) defaultValue);
+        }
+
+        return defaultValue;
     }
 
     /**

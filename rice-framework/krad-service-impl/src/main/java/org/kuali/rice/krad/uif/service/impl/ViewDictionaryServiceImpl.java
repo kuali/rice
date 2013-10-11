@@ -27,11 +27,11 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 import org.springframework.beans.PropertyValues;
 import org.springframework.util.Assert;
 
@@ -127,7 +127,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#getResultSetLimitForLookup(java.lang.Class,
-     *      org.kuali.rice.krad.web.form.LookupForm)
+     *      org.kuali.rice.krad.lookup.LookupForm)
      *
      *      If the form is null, only the dataObjectClass will be used to find the LookupView and corresponding
      *      results set limit.  Since the viewID is not known, the default view will be used.
@@ -150,7 +150,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                     multipleValueSelectSpecifiedOnURL = true;
                 }
             }
-            lookupView = (LookupView) lookupForm.getView();
+            lookupView = (LookupView) lookupForm.getActiveView();
         } else {
             Map<String, String> indexKey = new HashMap<String, String>();
             indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);

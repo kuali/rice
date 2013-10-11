@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif;
 
 /**
- * General constants used within the User Interface Framework
+ * General constants used within the User Interface Framework.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -65,6 +65,9 @@ public class UifConstants {
     public static final String FIELD_VALIDATION_DEFAULTS_MAP_ID = "Uif-FieldValidationMessages-DataDefaults";
     public static final String REFERER = "Referer";
     public static final String NO_RETURN = "NO_RETURN";
+
+    public static final String EXPORT_FILE_NAME = "export.xml";
+    public static final String KUALI_FORM_ATTR = "KualiForm";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -121,6 +124,10 @@ public class UifConstants {
             this.key = key;
         }
     }
+    public static enum WindowTargets {
+        _blank, _self, _parent, _top
+    }
+
 
     public static class MethodToCallNames {
         public static final String NAVIGATE = "navigate";
@@ -313,6 +320,7 @@ public class UifConstants {
     }
 
     public static class MessageKeys {
+        public static final String LOOKUP_RESULT_MESSAGES = "LookupResultMessages";
         public static final String QUERY_DATA_NOT_FOUND = "query.dataNotFound";
         public static final String OPTION_ALL = "option.all";
     }
@@ -368,6 +376,7 @@ public class UifConstants {
         public static final String FORCE_SHOW = "forceShow";
         public static final String SECTIONS = "sections";
         public static final String ORDER = "order";
+        public static final String RETURN = "return";
         public static final String SERVER_ERRORS = "serverErrors";
         public static final String SERVER_WARNINGS = "serverWarnings";
         public static final String SERVER_INFO = "serverInfo";
@@ -398,6 +407,7 @@ public class UifConstants {
     }
 
     public static final class JsFunctions {
+        public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String REDIRECT = "redirect";

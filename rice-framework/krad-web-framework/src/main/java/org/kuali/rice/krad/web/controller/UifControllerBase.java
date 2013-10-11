@@ -29,6 +29,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -38,7 +39,6 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -63,19 +63,20 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 /**
- * Base controller class for views within the KRAD User Interface Framework
+ * Base controller class for views within the KRAD User Interface Framework.
  *
- * Provides common methods such as:
+ * <p>Provides common methods such as:
  *
  * <ul>
  * <li>Authorization methods such as method to call check</li>
- * <li>Preparing the View instance and setup in the returned
- * <code>ModelAndView</code></li>
+ * <li>Preparing the View instance and setup in the returned ModelAndView</li>
+ * <li>Add/Delete Line Methods</li>
+ * <li>Navigation Methods</li>
  * </ul>
  *
- * All subclass controller methods after processing should call one of the
- * #getUIFModelAndView methods to setup the <code>View</code> and return the
- * <code>ModelAndView</code> instance.
+ * All subclass controller methods after processing should call one of the #getUIFModelAndView methods to
+ * setup the {@link org.kuali.rice.krad.uif.view.View} and return the {@link org.springframework.web.servlet.ModelAndView}
+ * instance.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -183,7 +184,7 @@ public abstract class UifControllerBase {
     @RequestMapping()
     public ModelAndView defaultMapping(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        return start(form, result, request, response);
+        return start(form, request, response);
     }
 
     /**
@@ -191,8 +192,8 @@ public abstract class UifControllerBase {
      * the view for rendering
      */
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
 
         // check view authorization
         // TODO: this needs to be invoked for each request
@@ -444,7 +445,7 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Invoked to navigate back one page in history..
+     * Invoked to navigate back one page in history.
      *
      * @param form - form object that should contain the history object
      */
@@ -607,7 +608,7 @@ public abstract class UifControllerBase {
         if (lookupParameterString != null) {
             Map<String, String> lookupParameterFields = KRADUtils.getMapFromParameterString(lookupParameterString);
             for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
-                String lookupParameterValue = LookupInquiryUtils.retrieveLookupParameterValue(form, request,
+                String lookupParameterValue = LookupUtils.retrieveLookupParameterValue(form, request,
                         lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
 
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
@@ -1112,9 +1113,12 @@ public abstract class UifControllerBase {
         String contentType = getContentType(formatType);
 
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+
         String formKey = request.getParameter(UifParameters.FORM_KEY);
         String tableId = request.getParameter(UifParameters.TABLE_ID);
+
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
+
         View view;
         if (currentForm.getPostedView() != null) {
             view = currentForm.getPostedView();

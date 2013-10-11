@@ -27,7 +27,8 @@ JavascriptKradVariables.prototype = {
     APPLICATION_URL: "applicationUrl",
 
     ATTRIBUTES: {
-        DATA_OPEN: "data-open"
+        DATA_OPEN: "data-open",
+        DATA_RETURN: "data-return"
     },
 
     CACHE_KEY: "cacheKey",

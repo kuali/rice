@@ -52,10 +52,10 @@ public class InitiatedDocumentInfoController extends UifControllerBase {
 
     @Override
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm")UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(@ModelAttribute("KualiForm")UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
 
         InitiatedDocumentInfoForm initiatedDocumentInfoForm = (InitiatedDocumentInfoForm) form;
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 }

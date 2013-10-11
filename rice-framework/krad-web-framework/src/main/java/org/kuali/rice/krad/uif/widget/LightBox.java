@@ -25,8 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used for rendering a lightbox in the UI to display action links in dialog
- * popups
+ * Used for rendering a lightbox in the UI to display action links in dialog popups.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

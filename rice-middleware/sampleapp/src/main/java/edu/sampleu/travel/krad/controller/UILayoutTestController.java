@@ -48,7 +48,7 @@ public class UILayoutTestController extends UifControllerBase {
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
 			HttpServletRequest request, HttpServletResponse response) {
 	    UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
 
@@ -58,7 +58,7 @@ public class UILayoutTestController extends UifControllerBase {
                     "D" + i));
         }
 
-		return super.start(uiTestForm, result, request, response);
+		return super.start(uiTestForm, request, response);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")

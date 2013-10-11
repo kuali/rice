@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.lookup;
+package org.kuali.rice.kns.lookup;
 
 import org.kuali.rice.krad.bo.BusinessObject;
 

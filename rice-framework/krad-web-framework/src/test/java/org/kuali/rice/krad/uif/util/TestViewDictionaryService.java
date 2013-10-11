@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 
 /**
  * Provides basic view dictionary service functionality for unit tests. 

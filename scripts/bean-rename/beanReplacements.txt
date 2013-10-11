@@ -242,3 +242,8 @@ fieldInquiry,inquiry
 fieldDirectInquiry.render,inquiry.enableDirectInquiry
 clientSideJs,actionScript
 labelKey,messageKey
+showMaintenanceLinks,renderMaintenanceLinks
+suppressActions,renderResultActions
+hideReturnLinks,renderReturnLink
+renderSearchButtons,renderCriteriaActions
+readOnlySearchFields,readOnlyLookupFields

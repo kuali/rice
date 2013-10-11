@@ -20,11 +20,7 @@ import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 
 /**
  * Implementation of {@link org.kuali.rice.krad.uif.view.ViewPresentationController} for
- * {@link org.kuali.rice.krad.uif.view.LookupView} instances
- *
- * <p>
- * Adds flag for export of inquiry record
- * </p>
+ * {@link LookupView} instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

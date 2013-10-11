@@ -19,9 +19,11 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Provides configuration for <code>View</code> instances that render an HTML
- * form
+ * Provides configuration for {@link View} instances that render an HTML form.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,11 +41,15 @@ public class FormView extends View {
 
     private String formPostUrl;
 
+    private Map<String, String> additionalHiddenValues;
+
     public FormView() {
         renderForm = true;
         validateServerSide = true;
         validateClientSide = true;
         applyDirtyCheck = true;
+
+        additionalHiddenValues = new HashMap<String, String>();
     }
 
     /**
@@ -137,6 +143,23 @@ public class FormView extends View {
     }
 
     /**
+     * Map of property path and values that will get written out as hidden elements.
+     *
+     * @return map for additional hiddens, key will be used as the name of the elememt, the map value will
+     * be the value of the element
+     */
+    public Map<String, String> getAdditionalHiddenValues() {
+        return additionalHiddenValues;
+    }
+
+    /**
+     * @see FormView#getAdditionalHiddenValues()
+     */
+    public void setAdditionalHiddenValues(Map<String, String> additionalHiddenValues) {
+        this.additionalHiddenValues = additionalHiddenValues;
+    }
+
+    /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
@@ -149,5 +172,9 @@ public class FormView extends View {
         formViewCopy.setValidateServerSide(this.validateServerSide);
         formViewCopy.setValidateClientSide(this.validateClientSide);
         formViewCopy.setFormPostUrl(this.formPostUrl);
+
+        if (this.additionalHiddenValues != null) {
+            formViewCopy.setAdditionalHiddenValues(new HashMap<String, String>(this.additionalHiddenValues));
+        }
     }
 }

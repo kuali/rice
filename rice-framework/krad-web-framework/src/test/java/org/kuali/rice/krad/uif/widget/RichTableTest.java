@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.datadictionary.validation.Employee;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -46,7 +47,7 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
-import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import com.google.common.collect.Lists;

@@ -24,22 +24,22 @@
   
   <ul class="chan">
      <li><portal:portalLink displayTitle="true" title="Book Order Request " url="${ConfigProperties.application.url}/bookOrder.do?methodToCall=docHandler&command=initiate&docTypeName=BookOrderDocumentType" /></li>
-  	 <li><portal:portalLink displayTitle="true" title="Book Type Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BookType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Book Type Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BookType&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Book Type Maintenance (New)"
-                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BookType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BookType&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true"/></li>
     
 	 
-	 <li><portal:portalLink displayTitle="true" title="Book Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Book&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	 <li><portal:portalLink displayTitle="true" title="Book Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Book&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Book Maintenance (New)"
-                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Book&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Book&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
     
-	 <li><portal:portalLink displayTitle="true" title="Address Type Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	 <li><portal:portalLink displayTitle="true" title="Address Type Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
 	<li><portal:portalLink displayTitle="true" title="Address Type Maintenance (New)"
-                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
     
-	 <li><portal:portalLink displayTitle="true" title="Author Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Author&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	 <li><portal:portalLink displayTitle="true" title="Author Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Author&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true" /></li>
 	 <li><portal:portalLink displayTitle="true" title="Author Maintenance (New)"
-                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Author&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.bookstore.bo.Author&returnLocation=${ConfigProperties.application.url}/portal.do&renderReturnLink=true"/></li>
     
   </ul>
 

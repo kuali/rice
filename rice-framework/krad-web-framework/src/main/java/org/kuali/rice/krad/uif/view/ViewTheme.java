@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Holds a configuration of CSS and JS assets that provides the base for one or more views
+ * Holds a configuration of CSS and JS assets that provides the base for one or more views.
  *
  * <p>
  * The list of CSS and JS files that are sourced in for a view come from its theme, along with any

@@ -26,7 +26,6 @@ import java.util.UUID;
 
 /**
  * HistoryManager stores the map of the most recentFlows and a map of flows stored by flowId concatenated with formId.
- * HistoryManager is used in session.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,9 +39,8 @@ public class HistoryManager implements Serializable {
      * Process/update the HistoryFlow stored in session for the flowKey, formKey, and currentUrl passed in.
      *
      * <p>If flowKey is blank or equal to "start", this will begin a new flow, otherwise the flow will continue by
-     * picking
-     * up the last flow that matches the flowKey, but if it also matches to a formKey that already is keyed to that
-     * flowKey, it will "jump" back to that HistoryFlow instead.</p>
+     * picking up the last flow that matches the flowKey, but if it also matches to a formKey that already is
+     * keyed to that flowKey, it will "jump" back to that HistoryFlow instead.</p>
      *
      * @param flowKey the flow key
      * @param formKey the form key

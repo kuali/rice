@@ -55,7 +55,7 @@ public class UITestController extends UifControllerBase {
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
 			HttpServletRequest request, HttpServletResponse response) {
 	    UITestForm uiTestForm = (UITestForm) form;
 		
@@ -118,7 +118,7 @@ public class UITestController extends UifControllerBase {
         uiTestForm.setHidden1("Hidden1");
         uiTestForm.setHidden2("Hidden2");
 
-		return super.start(uiTestForm, result, request, response);
+		return super.start(uiTestForm, request, response);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")

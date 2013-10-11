@@ -37,7 +37,6 @@ import org.kuali.rice.krad.datadictionary.validation.capability.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.capability.PrerequisiteConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.capability.ValidCharactersConstrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint;
-import org.kuali.rice.krad.datadictionary.validation.constraint.LookupConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
@@ -87,9 +86,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     protected CaseConstraint caseConstraint;
     protected List<PrerequisiteConstraint> dependencyConstraints;
     protected List<MustOccurConstraint> mustOccurConstraints;
-    // if the user wants to match against two searches, that search must be defined as well
-    protected LookupConstraint lookupDefinition;
-    protected String lookupContextPath;
 
     //TODO: This may not be required since we now use ComplexAttributeDefinition
     protected String childEntryName;
@@ -712,34 +708,6 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      */
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
         this.mustOccurConstraints = mustOccurConstraints;
-    }
-
-    /**
-     * @return the lookupDefinition
-     */
-    public LookupConstraint getLookupDefinition() {
-        return this.lookupDefinition;
-    }
-
-    /**
-     * @param lookupDefinition the lookupDefinition to set
-     */
-    public void setLookupDefinition(LookupConstraint lookupDefinition) {
-        this.lookupDefinition = lookupDefinition;
-    }
-
-    /**
-     * @return the lookupContextPath
-     */
-    public String getLookupContextPath() {
-        return this.lookupContextPath;
-    }
-
-    /**
-     * @param lookupContextPath the lookupContextPath to set
-     */
-    public void setLookupContextPath(String lookupContextPath) {
-        this.lookupContextPath = lookupContextPath;
     }
 
     /**

@@ -35,14 +35,14 @@ public class UifParameters {
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
     public static final String DATA_TABLES_PAGING_HELPER = "DataTablesPagingHelper";
-	public static final String RENDER_SEARCH_BUTTONS = "renderSearchButtons";
+	public static final String RENDER_CRITERIA_ACTIONS = "renderCriteriaActions";
     public static final String DOCUMENT_CLASS = "documentClass";
     public static final String DOC_NUM = "docNum";
     public static final String DOC_TYPE_NAME = "docTypeName";
+    public static final String FORMAT_TYPE = "formatType";
     public static final String FORM_KEY = "formKey";
     public static final String FORM_MANAGER = "formManager";
-	public static final String RENDER_HEADER = "renderHeader";
-	public static final String HIDE_RETURN_LINK = "hideReturnLink";
+	public static final String RENDER_RETURN_LINK = "renderReturnLink";
     public static final String JUMP_TO_ID = "jumpToId";
     public static final String FOCUS_ID = "focusId";
 	public static final String RENDER_LOOKUP_CRITERIA = "renderlookupCriteria";
@@ -54,6 +54,7 @@ public class UifParameters {
     public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
     public static final String REDIRECTED_LOOKUP = "redirectedLookup";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
+    public static final String RETURN_BY_SCRIPT = "returnByScript";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
@@ -63,9 +64,8 @@ public class UifParameters {
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";
     public static final String SESSION_ID = "sessionId";
-	public static final String SHOW_MAINTENANCE_LINKS = "showMaintenanceLinks";
-	public static final String SUPPRESS_ACTIONS = "suppressActions";
-	public static final String SUPPLEMENTAL_ACTIONS_ENABLED = "supplementalActionsEnabled";
+	public static final String RENDER_MAINTENANCE_LINKS = "renderMaintenanceLinks";
+	public static final String RENDER_RESULT_ACTIONS = "renderResultActions";
     public static final String TABLE_ID = "tableId";
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";

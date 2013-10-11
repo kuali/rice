@@ -37,9 +37,7 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
-import org.kuali.rice.krad.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -368,9 +366,6 @@ public class LookupUtils {
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;
 
-    /**
-     * @see org.kuali.rice.krad.uif.util.LookupInquiryUtils#getBaseLookupUrl()
-     */
     @Deprecated
     public static String getBaseLookupUrl(boolean isMultipleValue) {
         ConfigurationService kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();

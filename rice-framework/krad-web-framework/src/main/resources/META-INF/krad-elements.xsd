@@ -91,21 +91,21 @@ Widget that renders help on a component
   </xsd:element>
   <xsd:element name="lookupView-bean" type="lookupView-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.view.LookupView" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.view.LookupView
+      <xsd:documentation source="org.kuali.rice.krad.lookup.LookupView" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.lookup.LookupView
 
 View type for Maintenance documents
 
- 
+
  Supports doing a search against a data object class or performing a more advanced query. The view
  type is primarily made up of two groups, the search (or criteria) group and the results group. Many
  options are supported on the view to enable/disable certain features, like what actions are available
  on the search results.
- 
 
- 
+
+
  Works in conjunction with LookupableImpl which customizes the view and carries out the
  business functionality
- ]]></xsd:documentation>
+ ]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="kimPersonControl-bean" type="kimPersonControl-bean-type">
@@ -4344,9 +4344,9 @@ CaseConstraint is imposed only when a certain condition is met
   </xsd:element>
   <xsd:element name="lookupCriteriaInputField-bean" type="lookupCriteriaInputField-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.field.LookupInputField
+      <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.lookup.LookupInputField
 
-Custom InputField for search fields within a lookup view]]></xsd:documentation>
+Custom InputField for search fields within a lookup view]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="imageField-bean" type="imageField-bean-type">

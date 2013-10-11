@@ -24,16 +24,13 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kim.impl.role.RoleDao;
-import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.lookup.LookupableImpl;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +54,9 @@ public class GroupLookupableImpl extends LookupableImpl {
      * @return List<GroupBo>
      */
     @Override
-    protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
-        Map<String, String> criteriaMap = new HashMap<String, String>(searchCriteria);
+    protected Collection<?> executeSearch(Map<String, String> adjustedSearchCriteria,
+                List<String> wildcardAsLiteralSearchCriteria, boolean bounded, Integer searchResultsLimit) {
+        Map<String, String> criteriaMap = new HashMap<String, String>(adjustedSearchCriteria);
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
 
         if (!criteriaMap.isEmpty()) {

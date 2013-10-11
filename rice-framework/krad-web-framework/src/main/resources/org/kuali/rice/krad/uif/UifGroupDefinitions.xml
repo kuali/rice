@@ -655,8 +655,8 @@
   </bean>
 
   <bean id="Uif-CollectionQuickFinder" parent="Uif-QuickFinder" p:multipleValuesSelect="true">
-    <property name="lightBoxLookup">
-      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+    <property name="lightBox">
+      <bean parent="Uif-LightBox"/>
     </property>
     <property name="quickfinderAction">
       <bean parent="Uif-CollectionQuickFinderAction"/>

@@ -771,6 +771,20 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Returns the view that is active for a given post request (either the posted view for ajax requests, or the
+     * view instance that will be built).
+     *
+     * @return view instance to use for post operations
+     */
+    public View getActiveView() {
+        if (ajaxRequest || isUpdateNoneRequest()) {
+            return this.postedView;
+        }
+
+        return this.view;
+    }
+
+    /**
      * Instance of the {@code ViewService} that can be used to retrieve
      * {@code View} instances
      *

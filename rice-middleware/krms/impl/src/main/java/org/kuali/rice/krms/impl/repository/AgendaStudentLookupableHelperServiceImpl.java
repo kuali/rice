@@ -23,26 +23,42 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.lookup.LookupForm;
+import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.impl.ui.AgendaEditor;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public class PropositionLookupableHelperServiceImpl extends LookupableImpl {
+public class AgendaStudentLookupableHelperServiceImpl extends LookupableImpl {
 
     @Override
     public boolean allowsMaintenanceNewOrCopyAction() {
+        // The context is unknown on create so we need to let the user in
+        // TODO: maybe restrict it so only user that have rights to some contexts are allowed to create agendas.
         return true;
     }
 
     @Override
     public boolean allowsMaintenanceEditAction(Object dataObject) {
-        return true;
+        boolean allowsEdit = false;
+
+        AgendaBo agenda = (AgendaBo) dataObject;
+        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
+
+        return allowsEdit;
     }
 
     @Override
     public boolean allowsMaintenanceDeleteAction(Object dataObject) {
-        return true;
+        boolean allowsMaintain = false;
+        boolean allowsDelete = false;
+
+        AgendaBo agenda = (AgendaBo) dataObject;
+        allowsMaintain = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
+
+        return allowsDelete && allowsMaintain;
     }
 
     @Override
@@ -63,9 +79,10 @@ public class PropositionLookupableHelperServiceImpl extends LookupableImpl {
             props.put(KRADConstants.RETURN_LOCATION_PARAMETER, lookupForm.getReturnLocation());
         }
 
-        props.put(UifParameters.DATA_OBJECT_CLASS_NAME, PropositionBo.class.getName());
+        props.put(UifParameters.DATA_OBJECT_CLASS_NAME, AgendaEditor.class.getName());
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE.name());
+        props.put(UifParameters.VIEW_NAME, KrmsImplConstants.STUDENT_LOOKUP_VIEW);
 
-        return UrlFactory.parameterizeUrl(org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.PROPOSITION_PATH, props);
+        return UrlFactory.parameterizeUrl(KrmsImplConstants.WebPaths.AGENDA_STUDENT_EDITOR_PATH, props);
     }
 }

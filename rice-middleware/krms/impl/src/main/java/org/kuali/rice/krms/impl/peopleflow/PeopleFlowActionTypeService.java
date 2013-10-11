@@ -39,7 +39,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
-import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
+import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -202,7 +202,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
      */
     private RemotableAttributeField createPeopleFlowIdField() {
 
-        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
+        String baseLookupUrl = LookupUtils.getBaseLookupUrl();
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
@@ -247,7 +247,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
      */
     private RemotableAttributeField createPeopleFlowNameField() {
 
-        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
+        String baseLookupUrl = LookupUtils.getBaseLookupUrl();
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));

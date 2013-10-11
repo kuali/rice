@@ -51,7 +51,7 @@ public class CourseOfferingController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
 
         Course course = new Course();
@@ -100,6 +100,6 @@ public class CourseOfferingController extends UifControllerBase {
 
         ((CourseOfferingForm) form).setCourseSection(section);
 
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 }

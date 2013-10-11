@@ -72,6 +72,12 @@
 
             <#-- indicator for disabling browser caching of the view -->
             <@spring.formHiddenInput id="disableBrowserCache" path="KualiForm.view.disableBrowserCache"/>
+
+            <#if KualiForm.view.additionalHiddenValues??>
+                <#list KualiForm.view.additionalHiddenValues?keys as additionalHiddenName>
+                    <input name="${additionalHiddenName}" type="hidden" value="${KualiForm.view.additionalHiddenValues[additionalHiddenName]}"/>
+                </#list>
+            </#if>
         </#if>
 
         <@krad.template component=view/>

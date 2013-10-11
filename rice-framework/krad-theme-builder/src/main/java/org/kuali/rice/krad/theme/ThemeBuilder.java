@@ -37,16 +37,13 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Class that gets executed from the Spring context to build out view themes
+ * Class that gets executed from the Spring context to build out view themes.
  *
- * <p>
- * A view theme is a collection of assets that provides the base css and js for one or more views (see
+ * <p>A view theme is a collection of assets that provides the base css and js for one or more views (see
  * {@link org.kuali.rice.krad.uif.view.ViewTheme}. The theme builder provides utilities for creating and
- * configuring themes that follow a standard directory convention.
- * </p>
+ * configuring themes that follow a standard directory convention.</p>
  *
- * <p>
- * By default, the theme builder processes any directories under '/themes' as theme directories. Other
+ * <p>By default, the theme builder processes any directories under '/themes' as theme directories. Other
  * theme directories can be added through the property {@link #getAdditionalThemeDirectories()}
  *
  * The basic functions provided by the theme builder are:
@@ -63,8 +60,7 @@ import java.util.Properties;
  * </ul>
  *
  * To just perform the first step (overlay parent assets), the property {@link #isSkipThemeProcessing()} can be set to
- * true. This is useful in development where an update to a parent file just needs pushed to the output directory.
- * </p>
+ * true. This is useful in development where an update to a parent file just needs pushed to the output directory.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.theme.ThemeBuilderOverlays
@@ -94,7 +90,7 @@ public class ThemeBuilder implements Executable {
     private boolean skipThemeProcessing;
 
     /**
-     * Invoked from the spring context to execute the theme builder
+     * Invoked from the spring context to execute the theme builder.
      *
      * <p>
      * Invokes processing of the main theme builder functions, this includes:
@@ -182,7 +178,7 @@ public class ThemeBuilder implements Executable {
     }
 
     /**
-     * Retrieves the directories that should be processed as themes
+     * Retrieves the directories that should be processed as themes.
      *
      * <p>
      * By default all directories in '/themes' are included as theme directories. Additional directories can
@@ -220,7 +216,7 @@ public class ThemeBuilder implements Executable {
     }
 
     /**
-     * Retrieves the directories that should be processed as plugins
+     * Retrieves the directories that should be processed as plugins.
      *
      * <p>
      * By default all directories in '/plugins' are included as plugins. Additional directories can
@@ -255,7 +251,7 @@ public class ThemeBuilder implements Executable {
 
     /**
      * Builds convenience maps (theme name to path map, theme name to properties mapping, and plugin
-     * name to path mapping) for the given theme and plugin directories
+     * name to path mapping) for the given theme and plugin directories.
      *
      * @param themeDirectories list of theme directories to build mappings for
      * @param pluginDirectories list of file directories to build mappings for
@@ -292,7 +288,7 @@ public class ThemeBuilder implements Executable {
     }
 
     /**
-     * Builds a list containing theme names in the order for which they should be processed
+     * Builds a list containing theme names in the order for which they should be processed.
      *
      * <p>
      * For the parent overlays to work correctly, the parent must be processed before the child. There can
@@ -329,7 +325,7 @@ public class ThemeBuilder implements Executable {
     }
 
     /**
-     * Gets all parents (ancestors) for the given theme name
+     * Gets all parents (ancestors) for the given theme name.
      *
      * <p>
      * The parent for a theme is determined by retrieving the theme's properties file, then pulling the

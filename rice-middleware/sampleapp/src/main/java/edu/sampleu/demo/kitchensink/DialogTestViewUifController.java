@@ -47,9 +47,9 @@ public class DialogTestViewUifController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 
     /**

@@ -68,6 +68,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -82,7 +84,7 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 /**
- * Miscellaneous Utility Methods
+ * Miscellaneous Utility Methods.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -212,8 +214,8 @@ public final class KRADUtils {
                 attributeValueObject = Truth.strToBooleanIgnoreCase(attributeValue);
             } else {
                 // try to create one with KRADUtils for other misc data types
-                attributeValueObject = KRADUtils.createObject(propertyType, new Class[]{String.class},
-                        new Object[]{attributeValue});
+                attributeValueObject = KRADUtils.createObject(propertyType, new Class[] {String.class},
+                        new Object[] {attributeValue});
                 // if that didn't work, we'll get a null back
             }
         }
@@ -275,13 +277,6 @@ public final class KRADUtils {
         return KRADConstants.SINGLE_QUOTE +
                 StringUtils.join(list.iterator(), KRADConstants.SINGLE_QUOTE + "," + KRADConstants.SINGLE_QUOTE) +
                 KRADConstants.SINGLE_QUOTE;
-    }
-
-    private static KualiModuleService getKualiModuleService() {
-        if (kualiModuleService == null) {
-            kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();
-        }
-        return kualiModuleService;
     }
 
     /**
@@ -828,6 +823,40 @@ public final class KRADUtils {
     }
 
     /**
+     * Adds the header and content of an attachment to the response.
+     *
+     * @param response HttpServletResponse instance
+     * @param contentType the content type of the attachment
+     * @param inputStream the content of the attachment
+     * @param fileName the file name of the attachment
+     * @param fileSize the size of the attachment
+     */
+    public static void addAttachmentToResponse(HttpServletResponse response,
+            InputStream inputStream, String contentType, String fileName, long fileSize) throws IOException {
+
+        // If there are quotes in the name, we should replace them to avoid issues.
+        // The filename will be wrapped with quotes below when it is set in the header
+        String updateFileName;
+        if (fileName.contains("\"")) {
+            updateFileName = fileName.replaceAll("\"", "");
+        } else {
+            updateFileName = fileName;
+        }
+
+        // set response
+        response.setContentType(contentType);
+        response.setContentLength(org.springframework.util.NumberUtils.convertNumberToTargetClass(fileSize,
+                Integer.class));
+        response.setHeader("Content-disposition", "attachment; filename=\"" + updateFileName + "\"");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+
+        // Copy the input stream to the response
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+    }
+
+    /**
      * Helper method for building a URL that will invoke the given controller and render the given
      * KRAD view
      *
@@ -896,6 +925,36 @@ public final class KRADUtils {
     }
 
     /**
+     * Determines whether two URLs point at the same domain.
+     *
+     * @param firstDomain first URL string to compare
+     * @param secondDomain second URL string to compare
+     * @return true if the domains are different, false otherwise
+     */
+    public static boolean areDifferentDomains(String firstDomain, String secondDomain) {
+        try {
+            URL urlOne = new URL(firstDomain.toLowerCase());
+            URL urlTwo = new URL(secondDomain.toLowerCase());
+
+            if (urlOne.getHost().equals(urlTwo.getHost())) {
+                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain
+                        + " were determined to be equal");
+
+                return false;
+            } else {
+                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain
+                        + " are not equal");
+
+                return true;
+            }
+        } catch (MalformedURLException mue) {
+            LOG.error("Unable to successfully compare domains " + firstDomain + " and " + secondDomain);
+        }
+
+        return true;
+    }
+
+    /**
      * Attempts to generate a unique view title by combining the View's headerText with the title attribute for the
      * dataObjectClass found through the DataObjectMetaDataService.  If the title attribute cannot be found, just the
      * headerText is returned.
@@ -961,6 +1020,33 @@ public final class KRADUtils {
         } else {
             return title;
         }
+    }
+
+    /**
+	 * Helper method for building title text for an element and a map of key/value pairs,
+     *
+     * <p>
+     * Each key of the key value map is assumed to be an attribute for the given element class. The label is then
+     * retrieved for the attribute from the data dictionary and used in the title (instead of the key)
+     * </p>
+	 *
+	 * @param prependText text to prepend to the title
+	 * @param element element class the title is being generated for, used as the parent for getting the key labels
+	 * @param keyValueMap map of key value pairs to add to the title text
+	 * @return title string
+	 */
+    public static String buildAttributeTitleString(String prependText, Class<?> element,
+            Map<String, String> keyValueMap) {
+        StringBuffer titleText = new StringBuffer(prependText);
+
+        for (String key : keyValueMap.keySet()) {
+            String fieldVal = keyValueMap.get(key).toString();
+
+            titleText.append(" " + KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(element, key)
+                    + "=" + fieldVal.toString());
+        }
+
+        return titleText.toString();
     }
 
     /**
@@ -1123,20 +1209,19 @@ public final class KRADUtils {
      */
     static public Class easyGetPropertyType(Object object,
             String propertyName) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        if(LegacyUtils.useLegacyForObject(object)){
+        if (LegacyUtils.useLegacyForObject(object)) {
             return PropertyUtils.getPropertyType(object, propertyName);
         }
         return DataObjectUtils.getPropertyType(object, propertyName);
     }
-
-
 
     /**
      * Sets the property of an object with the given value. Converts using the formatter of the type for the property.
      * Note: propertyType does not need passed, is found by util method.
      */
     public static void setObjectProperty(Object bo, String propertyName,
-            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            Object propertyValue)
+            throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Class propertyType = easyGetPropertyType(bo, propertyName);
         setObjectProperty(bo, propertyName, propertyType, propertyValue);
 
@@ -1155,8 +1240,9 @@ public final class KRADUtils {
      * @throws IllegalAccessException
      */
     public static void setObjectProperty(Object bo, String propertyName, Class propertyType,
-            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectProperty(bo,propertyName,propertyType,propertyValue);
+            Object propertyValue)
+            throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectProperty(bo, propertyName, propertyType, propertyValue);
     }
 
     /**
@@ -1179,7 +1265,7 @@ public final class KRADUtils {
      * @return true if the object (or underlying materialized object) is null, false otherwise
      */
     public static boolean isNull(Object object) {
-        if(object == null){
+        if (object == null) {
             return true;
         }
         return KRADServiceLocatorWeb.getLegacyDataAdapter().isNull(object);
@@ -1232,13 +1318,14 @@ public final class KRADUtils {
      * @return The field value if it exists. If it doesnt, and the name is invalid, and
      */
     public static Object getNestedValue(Object bo, String fieldName) {
-        return KRADServiceLocatorWeb.getLegacyDataAdapter().getNestedValue(bo,fieldName);
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().getNestedValue(bo, fieldName);
     }
 
     /**
      * This method safely creates a object from a class
      * Convenience method to create new object and throw a runtime exception if it cannot
-     * If the class is an {@link org.kuali.rice.krad.bo.ExternalizableBusinessObject}, this method will determine the interface for the EBO and
+     * If the class is an {@link org.kuali.rice.krad.bo.ExternalizableBusinessObject}, this method will determine the
+     * interface for the EBO and
      * query the
      * appropriate module service to create a new instance.
      *
@@ -1252,39 +1339,11 @@ public final class KRADUtils {
         return KRADServiceLocatorWeb.getLegacyDataAdapter().createNewObjectFromClass(clazz);
     }
 
-
-    /**
-     * This method add the header and content of an attachment to the response.
-     *
-     * @param response
-     * @param contentType the content type of the attachment
-     * @param inputStream the content of the attachment
-     * @param fileName the file name of the attachment
-     * @param fileSize the size of the attachment
-     *
-     */
-    public static void addAttachmentToResponse(HttpServletResponse response,
-            InputStream inputStream, String contentType, String fileName, long fileSize) throws IOException {
-
-        // If there are quotes in the name, we should replace them to avoid issues.
-        // The filename will be wrapped with quotes below when it is set in the header
-        String updateFileName;
-        if(fileName.contains("\"")) {
-            updateFileName = fileName.replaceAll("\"", "");
-        } else {
-            updateFileName =  fileName;
+    private static KualiModuleService getKualiModuleService() {
+        if (kualiModuleService == null) {
+            kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();
         }
-
-        // set response
-        response.setContentType(contentType);
-        response.setContentLength(org.springframework.util.NumberUtils.convertNumberToTargetClass(fileSize, Integer.class));
-        response.setHeader("Content-disposition", "attachment; filename=\"" + updateFileName + "\"");
-        response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-
-        // Copy the input stream to the response
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        return kualiModuleService;
     }
 
 }

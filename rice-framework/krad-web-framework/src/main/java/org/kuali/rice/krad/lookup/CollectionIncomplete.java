@@ -24,25 +24,26 @@ import java.util.ListIterator;
 import java.util.RandomAccess;
 
 /**
- * A {@link Collection} that may be truncated
+ * Wraps a {@link List} and if truncated keeps the complete size
  *
- * @param <T> The type that the collection stores internally
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializable {
-
     private static final long serialVersionUID = 8683452581122892189L;
-	private final List<T> list;
+
+    private final List<T> list;
     private Long actualSizeIfTruncated;
 
-
     /**
-     * Collection that may be incomplete/truncated
+     * Collection that may be incomplete/truncated.
      *
-     * @param collection
-     * @param actualSizeIfTruncated the actual collection size before truncation.  Zero if the collection is not truncated.
+     * @param collection collection instance to be wrapped
+     * @param actualSizeIfTruncated the actual collection size before truncation.  Zero if the collection is not
+     * truncated.
      */
     public CollectionIncomplete(Collection<T> collection, Long actualSizeIfTruncated) {
         super();
+
         this.list = new ArrayList<T>(collection);
         this.actualSizeIfTruncated = actualSizeIfTruncated;
     }
@@ -90,7 +91,7 @@ public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializa
     }
 
     /**
-     *  @see java.util.List#containsAll(java.util.Collection)
+     * @see java.util.List#containsAll(java.util.Collection)
      */
     public boolean containsAll(Collection<?> arg0) {
         return list.containsAll(arg0);

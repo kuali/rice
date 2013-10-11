@@ -66,8 +66,8 @@
   <bean id="Uif-LightBox" parent="Uif-LightBox-parentBean"/>
   <bean id="Uif-LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBoxLink.ftl"/>
-    <property name="templateName" value="uif_lightBoxLink"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBox.ftl"/>
+    <property name="templateName" value="uif_lightBox"/>
     <property name="height" value="95%"/>
     <property name="width" value="75%"/>
     <property name="templateOptions">
@@ -84,12 +84,6 @@
         <entry key="type" value="iframe"/>
       </map>
     </property>
-  </bean>
-
-  <bean id="Uif-LightBoxPost" parent="Uif-LightBoxPost-parentBean"/>
-  <bean id="Uif-LightBoxPost-parentBean" parent="Uif-LightBox" abstract="true">
-    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBoxPost.ftl"/>
-    <property name="templateName" value="uif_lightBoxPost"/>
   </bean>
 
   <bean id="Uif-RichTable" parent="Uif-RichTable-parentBean"/>
@@ -144,8 +138,8 @@
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
-    <property name="lightBoxLookup">
-      <bean parent="Uif-LightBoxPost" p:lookupReturnByScript="false"/>
+    <property name="lightBox">
+      <bean parent="Uif-LightBox"/>
     </property>
     <property name="quickfinderAction">
       <bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
@@ -157,8 +151,7 @@
     <property name="render" value="@{!#parent.readOnly}"/>
   </bean>
 
-  <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean"
-        p:lightBoxLookup.lookupReturnByScript="true"/>
+  <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean" p:returnByScript="true"/>
 
   <bean id="Uif-QuickLookupImage" parent="Uif-Image"
         p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"
@@ -246,6 +239,8 @@
       <map>
         <entry key="fadeIn" value="400"/>
         <entry key="fadeOut" value="800"/>
+        <entry key="centerX" value="true"/>
+        <entry key="centerY" value="true"/>
       </map>
     </property>
   </bean>

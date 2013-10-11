@@ -67,12 +67,12 @@ public class XmlIngesterController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, 
             HttpServletRequest request, HttpServletResponse response) {
 
         XmlIngesterForm ingesterForm = (XmlIngesterForm)form;
 
-        return super.start(ingesterForm, result, request, response);
+        return super.start(ingesterForm, request, response);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=upload")

@@ -81,7 +81,7 @@
           <bean parent="GenericTextField" p:propertyName="field90">
             <property name="quickfinder">
               <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                      p:fieldConversions="number:field60"/>
+                      p:fieldConversions="number:field90"/>
             </property>
           </bean>
           <bean parent="GenericTextField" p:propertyName="field87">

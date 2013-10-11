@@ -36,6 +36,7 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -46,13 +47,12 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.LookupInputField;
+import org.kuali.rice.krad.lookup.LookupInputField;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.InquiryView;
-import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 public class UifDefaultingServiceImpl implements UifDefaultingService {
@@ -458,7 +458,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             public LookupView call() throws Exception {
                 LookupView view = ComponentFactory.getLookupView();
                 view.setHeaderText(dataObjectEntry.getObjectLabel() + " Lookup");
-                view.setDataObjectClassName(dataObjectEntry.getDataObjectClass());
+                view.setDataObjectClass(dataObjectEntry.getDataObjectClass());
                 view.setCriteriaFields(new ArrayList<Component>());
                 view.setResultFields(new ArrayList<Component>());
                 view.setDefaultSortAttributeNames(dataObjectEntry.getPrimaryKeys());

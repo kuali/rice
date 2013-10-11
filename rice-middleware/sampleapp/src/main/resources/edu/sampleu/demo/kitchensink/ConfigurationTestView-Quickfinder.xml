@@ -41,7 +41,7 @@
               p:propertyName="field60">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-                  p:fieldConversions="number:field60" p:readOnlySearchFields="number"/>
+                  p:fieldConversions="number:field60" p:readOnlyLookupFields="number"/>
           </property>
         </bean>
         <bean parent="GenericTextField" p:label="Lookup"

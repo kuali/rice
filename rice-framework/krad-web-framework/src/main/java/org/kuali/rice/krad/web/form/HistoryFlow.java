@@ -30,10 +30,13 @@ import java.util.Stack;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HistoryFlow implements Serializable {
-    protected Stack<UrlInfo> flowUrls = new Stack<UrlInfo>();
+    private static final long serialVersionUID = 452587887145986691L;
+
+    protected String flowKey;
     protected String flowReturnPoint;
     protected String flowStartPoint;
-    protected String flowKey;
+
+    protected Stack<UrlInfo> flowUrls = new Stack<UrlInfo>();
 
     protected BreadcrumbItem currentViewItem;
     protected List<BreadcrumbItem> pastItems;

@@ -16,13 +16,16 @@
 package org.kuali.rice.krad.uif;
 
 /**
- * Constants for property paths
+ * Constants for property paths.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifPropertyPaths {
 
+    private UifPropertyPaths() {}
+
     public static final String ACTION_PARAMETERS = "actionParameters";
+    public static final String ACTIVE = "active";
     public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
     public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
     public static final String COL_SPAN = "colSpan";

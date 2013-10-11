@@ -65,7 +65,7 @@ public class CacheAdminController extends UifControllerBase {
 
     @Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
 			HttpServletRequest request, HttpServletResponse response) {
 
         final Tree<String, String> cacheTree = new Tree<String,String>();
@@ -95,7 +95,7 @@ public class CacheAdminController extends UifControllerBase {
         cacheTree.setRootElement(root);
         ((CacheAdminForm) form).setCacheTree(cacheTree);
 
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 
 	@RequestMapping(params = "methodToCall=flush", method = RequestMethod.POST)
@@ -135,7 +135,7 @@ public class CacheAdminController extends UifControllerBase {
         }else{
            GlobalVariables.getMessageMap().putError("flush","error.authorization.general",user.getPrincipalName(),"flush","cachemanager");
         }
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 
     private static void flushSpecificCache(CacheManager cm, String cache) {

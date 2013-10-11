@@ -52,7 +52,7 @@ public class RegistrationController extends UifControllerBase {
      */
     @Override
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
 
         RegistrationForm registrationForm = (RegistrationForm) form;
@@ -132,6 +132,6 @@ public class RegistrationController extends UifControllerBase {
 
         registrationForm.setCourseListing(courseListing);
 
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 }

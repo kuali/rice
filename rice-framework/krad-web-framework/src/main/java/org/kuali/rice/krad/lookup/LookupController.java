@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.controller;
+package org.kuali.rice.krad.lookup;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +32,6 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
-import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -47,7 +42,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.stereotype.Controller;
@@ -59,7 +54,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Controller that handles requests coming from a <code>LookupView</code>
+ * Controller that handles requests for a {@link LookupView}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -77,7 +72,7 @@ public class LookupController extends UifControllerBase {
     }
 
     /**
-     * Invoked to request an lookup view for a data object class
+     * Invoked to render an lookup view for a data object class.
      *
      * <p>
      * Checks if the data object is externalizable and we need to redirect to the appropriate lookup URL, else
@@ -86,8 +81,8 @@ public class LookupController extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=start")
     @Override
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
 
         Lookupable lookupable = lookupForm.getLookupable();
@@ -95,20 +90,20 @@ public class LookupController extends UifControllerBase {
             LOG.error("Lookupable is null.");
             throw new RuntimeException("Lookupable is null.");
         }
-        lookupable.initSuppressAction(lookupForm);
 
         if (request.getParameter(UifParameters.MESSAGE_TO_DISPLAY) != null) {
-            lookupable.generateErrorMessageForResults(lookupForm, request.getParameter(
-                    UifParameters.MESSAGE_TO_DISPLAY));
+            GlobalVariables.getMessageMap().putErrorForSectionId(UifConstants.MessageKeys.LOOKUP_RESULT_MESSAGES,
+                    request.getParameter(UifParameters.MESSAGE_TO_DISPLAY));
         }
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object lookup
         if (!lookupForm.isRedirectedLookup()) {
-            Class lookupObjectClass = null;
+            Class<?> lookupObjectClass;
             try {
                 lookupObjectClass = Class.forName(lookupForm.getDataObjectClassName());
             } catch (ClassNotFoundException e) {
-                throw new RiceRuntimeException("Unable to get class for name: " + lookupForm.getDataObjectClassName());
+                throw new RiceRuntimeException("Unable to get class for name: " + lookupForm.getDataObjectClassName(),
+                        e);
             }
 
             ModuleService responsibleModuleService =
@@ -127,15 +122,34 @@ public class LookupController extends UifControllerBase {
             }
         }
 
-        return super.start(lookupForm, result, request, response);
+        return super.start(lookupForm, request, response);
     }
 
     /**
-     * Just returns as if return with no value was selected
+     * Performs the search action using the given lookup criteria and sets the results onto the lookup form, then
+     * renders the same lookup view.
+     */
+    @RequestMapping(params = "methodToCall=search")
+    public ModelAndView search(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
+        Lookupable lookupable = lookupForm.getLookupable();
+        if (lookupable == null) {
+            LOG.error("Lookupable is null.");
+            throw new RuntimeException("Lookupable is null.");
+        }
+
+        Collection<?> displayList = lookupable.performSearch(lookupForm, lookupForm.getLookupCriteria(), true);
+
+        lookupForm.setLookupResults(displayList);
+
+        return getUIFModelAndView(lookupForm);
+    }
+
+    /**
+     * Cancels the lookup request and returns with no value selected.
      */
     @Override
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=cancel")
-    public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView cancel(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
 
@@ -144,15 +158,12 @@ public class LookupController extends UifControllerBase {
             LOG.error("Lookupable is null.");
             throw new RuntimeException("Lookupable is null.");
         }
-        lookupable.initSuppressAction(lookupForm);
 
         Properties props = new Properties();
         props.put(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.REFRESH);
+
         if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
             props.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
-        }
-        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
-            props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());
         }
 
         // clear current form from session
@@ -162,107 +173,81 @@ public class LookupController extends UifControllerBase {
     }
 
     /**
-     * clearValues - clears the values of all the fields on the jsp.
+     * Resets values in the lookup criteria group to their initial default values.
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=clearValues")
-    public ModelAndView clearValues(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView clearValues(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
 
         Lookupable lookupable = lookupForm.getLookupable();
         if (lookupable == null) {
             LOG.error("Lookupable is null.");
             throw new RuntimeException("Lookupable is null.");
         }
-        lookupable.initSuppressAction(lookupForm);
-        lookupForm.setLookupCriteria(lookupable.performClear(lookupForm, lookupForm.getLookupCriteria()));
+
+        Map<String, String> resetLookupCriteria = lookupable.performClear(lookupForm, lookupForm.getLookupCriteria());
+
+        lookupForm.setLookupCriteria(resetLookupCriteria);
 
         return getUIFModelAndView(lookupForm);
     }
 
     /**
-     * Handles exporting lookup results as xml using a custom xml exporter
+     * Handles exporting lookup results as xml using a custom xml exporter.
      */
     @Override
-    protected String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    protected String retrieveTableData(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
+        LookupForm lookupForm = (LookupForm) form;
 
-        String formatType = getValidatedFormatType(request.getParameter("formatType"));
+        String formatType = getValidatedFormatType(request.getParameter(UifParameters.FORMAT_TYPE));
 
         // locate session form and its data object entry
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-        String formKey = request.getParameter(UifParameters.FORM_KEY);
-        LookupForm currentForm = (LookupForm) uifFormManager.getSessionForm(formKey);
+//        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+//        String formKey = request.getParameter(UifParameters.FORM_KEY);
+//        LookupForm currentForm = (LookupForm) uifFormManager.getSessionForm(formKey);
 
         // if it has a valid custom exporter, use the lookup results and the custom exporter
         DataDictionaryService dictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
         DataDictionary dictionary = dictionaryService.getDataDictionary();
-        String dataObjectClassName = currentForm.getDataObjectClassName();
+
+        String dataObjectClassName = lookupForm.getDataObjectClassName();
         DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClassName);
+
         Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
 
         // checks for custom xml formatting before using standard approach
         if (exporterClass != null && KRADConstants.XML_FORMAT.equals(formatType)) {
             try {
+                List<? extends Object> displayList = (List<? extends Object>) lookupForm.getLookupResults();
+
+                setAttachmentResponseHeader(response, UifConstants.EXPORT_FILE_NAME, KRADConstants.XML_MIME_TYPE);
+
                 Exporter exporter = exporterClass.newInstance();
-                Class<?> dataObjectClass = dataObjectEntry.getDataObjectClass();
-                List<? extends Object> displayList = (List<? extends Object>) currentForm.getLookupResults();
-                setAttachmentResponseHeader(response, "export.xml", KRADConstants.XML_MIME_TYPE);
-                exporter.export(dataObjectClass, displayList, KRADConstants.XML_FORMAT, response.getOutputStream());
+                exporter.export(dataObjectEntry.getDataObjectClass(), displayList, KRADConstants.XML_FORMAT,
+                        response.getOutputStream());
             } catch (Exception e) {
                 LOG.error("Unable to process xml export", e);
+                throw new RuntimeException("Unable to process xml export", e);
             }
 
-        } else {  // otherwise use standard export
+        } else {
+            // otherwise use standard export
             return super.retrieveTableData(form, result, request, response);
         }
 
-        return null; // return null as custom export writes to response output stream
-    }
-
-    /**
-     * search - sets the values of the data entered on the form on the jsp into a map and then searches for the
-     * results.
-     */
-    @RequestMapping(params = "methodToCall=search")
-    public ModelAndView search(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        Lookupable lookupable = lookupForm.getLookupable();
-        if (lookupable == null) {
-            LOG.error("Lookupable is null.");
-            throw new RuntimeException("Lookupable is null.");
-        }
-        lookupable.initSuppressAction(lookupForm);
-        // Need to process date range fields before validating
-        Map<String, String> searchCriteria = LookupUtils.preprocessDateFields(lookupForm.getLookupCriteria());
-        // validate search parameters
-        boolean searchValid = lookupable.validateSearchParameters(lookupForm, searchCriteria);
-
-        if (searchValid) {
-            Collection<?> displayList = lookupable.performSearch(lookupForm, searchCriteria, true);
-
-            if (displayList instanceof CollectionIncomplete<?>) {
-                request.setAttribute("reqSearchResultsActualSize",
-                        ((CollectionIncomplete<?>) displayList).getActualSizeIfTruncated());
-            } else {
-                request.setAttribute("reqSearchResultsActualSize", new Integer(displayList.size()));
-            }
-
-            lookupForm.setLookupResults(displayList);
-        }
-
-        return getUIFModelAndView(lookupForm);
+        // return null as custom export writes to response output stream
+        return null;
     }
 
     /**
      * Invoked from the UI to return the selected lookup results lines, parameters are collected to build a URL to
-     * the caller and then a redirect is performed
+     * the caller and then a redirect is performed.
      *
      * @param lookupForm lookup form instance containing the selected results and lookup configuration
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
-    public String returnSelected(@ModelAttribute("KualiForm") LookupForm lookupForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response, final RedirectAttributes redirectAttributes) {
+    public String returnSelected(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
+            HttpServletRequest request, final RedirectAttributes redirectAttributes) {
         // build string of select line identifiers
         String selectedLineValues = "";
 
@@ -281,10 +266,9 @@ public class LookupController extends UifControllerBase {
 
         String redirectUrl = UrlFactory.parameterizeUrl(lookupForm.getReturnLocation(), parameters);
 
-        boolean lookupCameFromDifferentServer = areDifferentDomains(lookupForm.getReturnLocation(),
+        boolean lookupCameFromDifferentServer = KRADUtils.areDifferentDomains(lookupForm.getReturnLocation(),
                 lookupForm.getRequestUrl());
 
-        //
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && !lookupCameFromDifferentServer) {
             redirectAttributes.addFlashAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         }
@@ -314,17 +298,13 @@ public class LookupController extends UifControllerBase {
             redirectAttributes.addAttribute(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
         }
 
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
+        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getActiveView().getId());
         redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE,
                 UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
         redirectAttributes.addAttribute(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
 
         if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {
             redirectAttributes.addAttribute(UifParameters.QUICKFINDER_ID, lookupForm.getQuickfinderId());
-        }
-
-        if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
-            redirectAttributes.addAttribute(UifParameters.DOC_NUM, lookupForm.getDocNum());
         }
 
         if (StringUtils.isNotBlank(lookupForm.getLookupCollectionName())) {
@@ -341,39 +321,4 @@ public class LookupController extends UifControllerBase {
         return UifConstants.REDIRECT_PREFIX + lookupForm.getReturnLocation();
     }
 
-    /**
-     * Convenience method for determining whether two URLs point at the same domain
-     *
-     * @param firstDomain
-     * @param secondDomain
-     * @return true if the domains are different, false otherwise
-     */
-    private boolean areDifferentDomains(String firstDomain, String secondDomain) {
-        try {
-            URL urlOne = new URL(firstDomain.toLowerCase());
-            URL urlTwo = new URL(secondDomain.toLowerCase());
-            if (urlOne.getHost().equals(urlTwo.getHost())) {
-                LOG.debug("Hosts "
-                        + urlOne.getHost()
-                        + " of domains "
-                        + firstDomain
-                        + " and "
-                        + secondDomain
-                        + " were determined to be equal");
-                return false;
-            } else {
-                LOG.debug("Hosts "
-                        + urlOne.getHost()
-                        + " of domains "
-                        + firstDomain
-                        + " and "
-                        + secondDomain
-                        + " are not equal");
-                return true;
-            }
-        } catch (MalformedURLException mue) {
-            LOG.error("Unable to successfully compare domains " + firstDomain + " and " + secondDomain);
-        }
-        return true;
-    }
 }

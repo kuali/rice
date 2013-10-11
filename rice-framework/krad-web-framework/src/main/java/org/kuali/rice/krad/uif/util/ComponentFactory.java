@@ -42,6 +42,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.lookup.LookupInputField;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -79,12 +80,11 @@ import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
-import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.InquiryView;
-import org.kuali.rice.krad.uif.view.LookupView;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -105,6 +105,7 @@ public class ComponentFactory {
     public static final String HIDDEN_CONTROL = "Uif-HiddenControl";
     public static final String TEXTAREA_CONTROL = "Uif-TextAreaControl";
     public static final String SELECT_CONTROL = "Uif-DropdownControl";
+    public static final String CHECKBOX_CONVERTED_RADIO_CONTROL = "Uif-CheckboxConvertedRadioControl";
     public static final String CHECKBOX_GROUP_CONTROL = "Uif-VerticalCheckboxesControl";
     public static final String CHECKBOX_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalCheckboxesControl";
     public static final String RADIO_GROUP_CONTROL = "Uif-VerticalRadioControl";
@@ -116,6 +117,8 @@ public class ComponentFactory {
 
     public static final String DATA_FIELD = "Uif-DataField";
     public static final String INPUT_FIELD = "Uif-InputField";
+    public static final String LOOKUP_ACTIVE_INPUT_FIELD = "Uif-LookupActiveInputField";
+    public static final String LOOKUP_INPUT_FIELD = "Uif-LookupCriteriaInputField";
     public static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
     public static final String ACTION = "Uif-PrimaryActionButton";
     public static final String ACTION_LINK = "Uif-ActionLink";

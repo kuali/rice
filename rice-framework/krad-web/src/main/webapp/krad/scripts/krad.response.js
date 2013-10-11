@@ -141,10 +141,10 @@ KradResponse.prototype = {
             jQuery("#" + id).parent().show();
         }
 
-        // lightbox specific processing
-        if (jQuery('#renderedInLightBox').val() == 'true') {
-            jQuery("#" + id).css('display', 'none');
-        }
+//        // lightbox specific processing
+//        if (jQuery('#renderedInLightBox').val() == 'true') {
+//            jQuery("#" + id).css('display', 'none');
+//        }
 
         var newComponent = jQuery("#" + id);
 

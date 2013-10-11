@@ -16,28 +16,15 @@
 package org.kuali.rice.kim.impl.identity;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.PredicateUtils;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupQueryResults;
-import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.krad.lookup.LookupableImpl;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * Custom lookupable for the {@link PersonImpl} lookup to call the person service for searching
@@ -53,15 +40,16 @@ public class PersonLookupableImpl extends LookupableImpl {
      * @return List<PersonImpl>
      */
     @Override
-    protected List<?> getSearchResults(LookupForm form, Map<String, String> searchCriteria, boolean unbounded) {
+    protected Collection<?> executeSearch(Map<String, String> adjustedSearchCriteria,
+                List<String> wildcardAsLiteralSearchCriteria, boolean bounded, Integer searchResultsLimit) {
         // lower case principal name
-        if (searchCriteria != null && StringUtils.isNotEmpty(searchCriteria.get(
+        if (adjustedSearchCriteria != null && StringUtils.isNotEmpty(adjustedSearchCriteria.get(
                 KIMPropertyConstants.Person.PRINCIPAL_NAME))) {
-            searchCriteria.put(KIMPropertyConstants.Person.PRINCIPAL_NAME, searchCriteria.get(
+            adjustedSearchCriteria.put(KIMPropertyConstants.Person.PRINCIPAL_NAME, adjustedSearchCriteria.get(
                     KIMPropertyConstants.Person.PRINCIPAL_NAME).toLowerCase());
         }
 
-        return getPersonService().findPeople(searchCriteria, unbounded);
+        return getPersonService().findPeople(adjustedSearchCriteria, !bounded);
     }
 
     public PersonService getPersonService() {

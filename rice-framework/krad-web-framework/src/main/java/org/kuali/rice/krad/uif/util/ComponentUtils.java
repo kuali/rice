@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -42,13 +43,14 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.springframework.core.OrderComparator;
 
 /**
- * ComponentUtils is a utility class providing methods to help create and modify <code>Component</code> instances
+ * ComponentUtils is a utility class providing methods to help create and modify {@link Component} instances.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtils {
-
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ComponentUtils.class);
+
+    private ComponentUtils() {}
 
     public static <T extends Component> T copy(T component) {
         return copy(component, null);
@@ -299,6 +301,40 @@ public class ComponentUtils {
             }
 
             typeComponents.add(componentType.cast(nested));
+        }
+
+        return typeComponents;
+    }
+
+    /**
+     * Gets all components of the give type that are within the items list of the container, or within a nested
+     * container or field group.
+     *
+     * @param container container instance to pull components from
+     * @param componentType type for components to pull
+     * @param <T> type for component to pull
+     * @return List of nested components with the given type
+     */
+    public static <T extends Component> List<T> getNestedContainerComponents(Container container,
+            Class<T> componentType) {
+        List<T> typeComponents = new ArrayList<T>();
+
+        if (container == null) {
+            return typeComponents;
+        }
+
+        for (Component item : container.getItems()) {
+            if (item == null) {
+                continue;
+            }
+
+            if (item instanceof Container) {
+                typeComponents.addAll(getNestedContainerComponents((Container) item, componentType));
+            } else if (item instanceof FieldGroup) {
+                typeComponents.addAll(getNestedContainerComponents(((FieldGroup) item).getGroup(), componentType));
+            } else if (componentType.isAssignableFrom(item.getClass())) {
+                typeComponents.add((T) item);
+            }
         }
 
         return typeComponents;

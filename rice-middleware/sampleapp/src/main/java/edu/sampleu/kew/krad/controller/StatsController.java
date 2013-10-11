@@ -50,7 +50,7 @@ public class StatsController extends UifControllerBase {
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		StatsForm statForm = (StatsForm) form;
@@ -70,7 +70,7 @@ public class StatsController extends UifControllerBase {
 			throw new RuntimeException(e);
 		}
         
-		return super.start(statForm, result, request, response);
+		return super.start(statForm, request, response);
 	}
 	
 	 public StatsService getStatsService() {

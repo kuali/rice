@@ -67,10 +67,7 @@ import static org.junit.Assert.assertTrue;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class LookupServiceTest extends KRADTestCase {
 
-    public LookupServiceTest() {}
-
     // Methods which can be overridden by subclasses to reuse test cases. Here we are just testing the LookupService
-
     protected <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps, boolean unbounded) {
         return KRADServiceLocatorWeb.getLookupService().findCollectionBySearchHelper(clazz, formProps, unbounded);
     }
@@ -94,7 +91,6 @@ public class LookupServiceTest extends KRADTestCase {
         Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, false);
         assertEquals(90, accountManagers.size());
 
-        accountManagers = null;
         accountManagers = findCollectionBySearch(AccountManager.class, formProps);
         assertEquals(90, accountManagers.size());
     }
@@ -120,7 +116,6 @@ public class LookupServiceTest extends KRADTestCase {
         Collection travelAccounts = findCollectionBySearchHelper(Account.class, formProps, false);
         assertEquals(200, travelAccounts.size());
 
-        travelAccounts = null;
         travelAccounts = findCollectionBySearch(Account.class, formProps);
         assertEquals(200, travelAccounts.size());
     }
@@ -137,7 +132,6 @@ public class LookupServiceTest extends KRADTestCase {
         int size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
 
-        accountManagers = null;
         accountManagers = findCollectionBySearchUnbounded(AccountManager.class, formProps);
         size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
@@ -156,7 +150,6 @@ public class LookupServiceTest extends KRADTestCase {
         int size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);
 
-        travelAccounts = null;
         travelAccounts = findCollectionBySearchUnbounded(Account.class, formProps);
         size = travelAccounts.size();
         assertTrue("# of Travel Accounts should be > 200", size > 200);

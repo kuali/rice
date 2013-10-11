@@ -135,7 +135,7 @@
 
   <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
   <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.field.LookupInputField"
+        class="org.kuali.rice.krad.lookup.LookupInputField"
         parent="Uif-InputField">
     <property name="cssClasses">
       <list>

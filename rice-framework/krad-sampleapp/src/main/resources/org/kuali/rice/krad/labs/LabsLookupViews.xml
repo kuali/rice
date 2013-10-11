@@ -30,7 +30,7 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:uppercaseValue="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
@@ -115,10 +115,12 @@
     </property>
 
     <property name="header.rightGroup">
-      <bean parent="Uif-HeaderRightGroup">
+      <bean parent="Uif-HeaderRightGroup" p:layoutManager.orientation="VERTICAL">
         <property name="items">
           <list>
             <bean parent="Uif-Message" p:messageText="Right Group of headerText"/>
+            <bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
+                  p:actionScript="alert('JavaScript triggered action.')"/>
           </list>
         </property>
       </bean>
@@ -132,13 +134,6 @@
           </list>
         </property>
       </bean>
-    </property>
-
-    <property name="page.header.lowerGroup.items">
-      <list merge="true">
-        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
-              p:actionScript="alert('JavaScript triggered action.')"/>
-      </list>
     </property>
   </bean>
 
@@ -158,19 +153,14 @@
       </list>
     </property>
 
-    <property name="header.lowerGroup">
-      <bean parent="Uif-HeaderLowerGroup">
-        <property name="items">
-          <list>
-            <bean parent="Uif-Message" p:messageText="[b]*[/b] Enter the value &quot;a1&quot; into the
-                [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a required. [br/]
-                [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
-                the [b]Date Created[/b] a read only. [br/]
-                [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
-                the [b]Date Created[/b] criteria."/>
-          </list>
-        </property>
-      </bean>
+    <property name="page.instructionalText">
+      <value>[b]*[/b] Enter the value &quot;a1&quot; into the
+        [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a required. [br/]
+        [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
+        the [b]Date Created[/b] a read only. [br/]
+        [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
+        the [b]Date Created[/b] criteria.
+      </value>
     </property>
   </bean>
 
@@ -191,7 +181,7 @@
   <bean id="LabsLookup-NoSearchButtonsView" parent="LabsLookup-DefaultView">
     <property name="viewName" value="LabsLookup-NoSearchButtonsView"/>
     <property name="headerText" value="Lookup Sample without Search Buttons"/>
-    <property name="renderSearchButtons" value="false"/>
+    <property name="renderCriteriaActions" value="false"/>
   </bean>
 
   <bean id="LabsLookup-HideCriteriaView" parent="LabsLookup-DefaultView">

@@ -19,7 +19,7 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.lookup.SelectiveReferenceRefresher;
+import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 
 import java.util.Collection;
 import java.util.List;

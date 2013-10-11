@@ -35,6 +35,7 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 	/**
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getViewTypeName()
 	 */
+    @Override
 	public ViewType getViewTypeName() {
 		return ViewType.LOOKUP;
 	}
@@ -42,6 +43,7 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
     /**
      * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromViewConfiguration(org.springframework.beans.PropertyValues)
      */
+    @Override
     public Map<String, String> getParametersFromViewConfiguration(PropertyValues propertyValues) {
         Map<String, String> parameters = new HashMap<String, String>();
 
@@ -58,6 +60,7 @@ public class LookupViewTypeServiceImpl implements ViewTypeService {
 	/**
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromRequest(java.util.Map)
 	 */
+    @Override
 	public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
 		Map<String, String> parameters = new HashMap<String, String>();
 

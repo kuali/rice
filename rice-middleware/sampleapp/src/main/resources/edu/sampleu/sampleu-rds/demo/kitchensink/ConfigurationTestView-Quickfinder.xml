@@ -32,7 +32,7 @@
       <inputField-bean instructionalText="TravelAccounts lookup (account number should be read only)" label="Lookup"
                        parent="GenericTextField" propertyName="field60">
         <quickFinder-bean dataObjectClassName="edu.sampleu.travel.bo.TravelAccount" fieldConversions="number:field60"
-                          readOnlySearchFields="number"/>
+                          readOnlyLookupFields="number"/>
       </inputField-bean>
       <inputField-bean instructionalText="TravelAccounts lookup (account number should NOT be read only)" label="Lookup"
                        parent="GenericTextField" propertyName="field90">

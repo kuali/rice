@@ -33,13 +33,12 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.lookup.SelectiveReferenceRefresher;
+import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
 import java.util.Collection;
@@ -50,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.Executors;
 
 public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);

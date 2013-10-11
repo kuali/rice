@@ -15,21 +15,27 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -43,21 +49,95 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Provides static utility methods for use within the lookup framework
+ * Provides static utility methods for use within the lookup framework.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupUtils {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupUtils.class);
+    private static final String[] searchList = new String[SearchOperator.QUERY_CHARACTERS.size()];
+
+    static {
+        int index = 0;
+        for (SearchOperator operator : SearchOperator.QUERY_CHARACTERS) {
+            searchList[index++] = operator.op();
+        }
+    }
+
+    private static final String[] replacementList = Collections.nCopies(searchList.length, "").toArray(new String[0]);
+
+    private LookupUtils() {}
+
+    /**
+     * Retrieves the value for the given parameter name to send as a lookup parameter.
+     *
+     * @param form form instance to retrieve values from
+     * @param request request object to retrieve parameters from
+     * @param lookupObjectClass data object class associated with the lookup, used to check whether the
+     * value needs to be encyrpted
+     * @param propertyName name of the property associated with the parameter, used to check whether the
+     * value needs to be encrypted
+     * @param parameterName name of the parameter to retrieve the value for
+     * @return String parameter value or empty string if no value was found
+     */
+    public static String retrieveLookupParameterValue(UifFormBase form, HttpServletRequest request,
+            Class<?> lookupObjectClass, String propertyName, String parameterName) {
+        String parameterValue = "";
+
+        // get literal parameter values first
+        if (StringUtils.startsWith(parameterName, "'") && StringUtils.endsWith(parameterName, "'")) {
+            parameterValue = StringUtils.substringBetween(parameterName, "'");
+        } else if (parameterValue.startsWith(KRADConstants.LOOKUP_PARAMETER_LITERAL_PREFIX
+                + KRADConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER)) {
+            parameterValue = StringUtils.removeStart(parameterValue, KRADConstants.LOOKUP_PARAMETER_LITERAL_PREFIX
+                    + KRADConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER);
+        }
+        // check if parameter is in request
+        else if (request.getParameterMap().containsKey(parameterName)) {
+            parameterValue = request.getParameter(parameterName);
+        }
+        // get parameter value from form object
+        else {
+            parameterValue = ObjectPropertyUtils.getPropertyValue(form, parameterName);
+            // TODO: should go through property editor for display
+        }
+
+        if (parameterValue != null && lookupObjectClass != null
+                && KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
+            try {
+                if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
+                            + EncryptionService.ENCRYPTION_POST_PREFIX;
+                }
+            } catch (GeneralSecurityException e) {
+                LOG.error("Unable to encrypt value for property name: " + propertyName);
+                throw new RuntimeException(e);
+            }
+        }
+
+        return parameterValue;
+    }
+
+    /**
+     * Retrieves the default KRAD base lookup URL, used to build lookup URLs in code
+     *
+     * @return String base lookup URL (everything except query string)
+     */
+    public static String getBaseLookupUrl() {
+        return CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.KRAD_LOOKUP_URL_KEY);
+    }
 
     /**
      * Uses the DataDictionary to determine whether to force uppercase the value, and if it should, then it does the
      * uppercase, and returns the upper-cased value.
      *
-     * @param dataObjectClass Parent DO class that the fieldName is a member of.
-     * @param fieldName Name of the field to be forced to uppercase.
-     * @param fieldValue Value of the field that may be uppercased.
-     * @return The correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned
-     *         unchanged.
+     * @param dataObjectClass parent DO class that the fieldName is a member of
+     * @param fieldName name of the field to be forced to uppercase
+     * @param fieldValue value of the field that may be uppercased
+     * @return the correctly uppercased fieldValue if it should be uppercased, otherwise fieldValue is returned
+     *         unchanged
      */
     public static String forceUppercase(Class<?> dataObjectClass, String fieldName, String fieldValue) {
         // short-circuit to exit if there isnt enough information to do the forceUppercase
@@ -86,6 +166,7 @@ public class LookupUtils {
         } catch (UnknownBusinessClassAttributeException ubae) {
             // do nothing, don't alter the fieldValue
         }
+
         if (forceUpperCase && !fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
             return fieldValue.toUpperCase();
         }
@@ -97,9 +178,9 @@ public class LookupUtils {
      * Uses the DataDictionary to determine whether to force uppercase the values, and if it should, then it does the
      * uppercase, and returns the upper-cased Map of fieldname/fieldValue pairs.
      *
-     * @param dataObjectClass Parent DO class that the fieldName is a member of.
-     * @param fieldValues A Map<String,String> where the key is the fieldName and the value is the fieldValue.
-     * @return The same Map is returned, with the appropriate values uppercased (if any).
+     * @param dataObjectClass parent DO class that the fieldName is a member of
+     * @param fieldValues a Map<String,String> where the key is the fieldName and the value is the fieldValue
+     * @return the same Map is returned, with the appropriate values uppercased (if any)
      */
     public static Map<String, String> forceUppercase(Class<?> dataObjectClass, Map<String, String> fieldValues) {
         if (dataObjectClass == null) {
@@ -111,19 +192,19 @@ public class LookupUtils {
         }
 
         for (String fieldName : fieldValues.keySet()) {
-            fieldValues.put(fieldName, forceUppercase(dataObjectClass, fieldName, (String) fieldValues.get(fieldName)));
+            fieldValues.put(fieldName, forceUppercase(dataObjectClass, fieldName, fieldValues.get(fieldName)));
         }
 
         return fieldValues;
     }
 
     /**
-     * Parses and returns the lookup result set limit, checking first for the limit
-     * for the specific view, then the class being looked up, and then the global application
-     * limit if there isn't a limit specific to this data object class.
+     * Parses and returns the lookup result set limit, checking first for the limit for the specific view,
+     * then the class being looked up, and then the global application limit if there isn't a limit specific
+     * to this data object class.
      *
-     * @param dataObjectClass - class to get limit for
-     * @param lookupForm - LookupForm to use.  May be null if the form is unknown. If lookupForm is null, only the
+     * @param dataObjectClass class to get limit for
+     * @param lookupForm lookupForm to use.  May be null if the form is unknown. If lookupForm is null, only the
      * dataObjectClass will be used to find the search results set limit
      * @return result set limit
      */
@@ -138,8 +219,7 @@ public class LookupUtils {
     }
 
     /**
-     * Retrieves the default application search limit configured through
-     * a system parameter
+     * Retrieves the default application search limit configured through a system parameter
      *
      * @return default result set limit of the application
      */
@@ -156,20 +236,6 @@ public class LookupUtils {
     }
 
     /**
-     * Applies the search results limit to the search criteria for this BO (JPA)
-     *
-     * @param businessObjectClass BO class to search on / get limit for
-     * @param criteria search criteria
-     */
-    public static void applySearchResultsLimit(Class businessObjectClass,
-            org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
-        Integer limit = getSearchResultsLimit(businessObjectClass, null);
-        if (limit != null) {
-            criteria.setSearchLimit(limit);
-        }
-    }
-
-    /**
      * Determines what Timestamp should be used for active queries on effective dated records. Determination made as
      * follows:
      *
@@ -180,11 +246,12 @@ public class LookupUtils {
      * <li>If Timestamp value not given, create Timestamp from given Date setting the time as 1 second before midnight
      * </ul>
      *
-     * @param searchValues - Map containing search key/value pairs
-     * @return Timestamp to be used for active criteria
+     * @param searchValues map containing search key/value pairs
+     * @return timestamp to be used for active criteria
      */
     public static Timestamp getActiveDateTimestampForCriteria(Map searchValues) {
         Date activeDate = CoreApiServiceLocator.getDateTimeService().getCurrentSqlDate();
+
         Timestamp activeTimestamp = null;
         if (searchValues.containsKey(KRADPropertyConstants.ACTIVE_AS_OF_DATE)) {
             String activeAsOfDate = (String) searchValues.get(KRADPropertyConstants.ACTIVE_AS_OF_DATE);
@@ -207,6 +274,7 @@ public class LookupUtils {
         // if timestamp not given set to 1 second before midnight on the given date
         if (activeTimestamp == null) {
             Calendar cal = Calendar.getInstance();
+
             cal.setTime(activeDate);
             cal.set(Calendar.HOUR, cal.getMaximum(Calendar.HOUR));
             cal.set(Calendar.MINUTE, cal.getMaximum(Calendar.MINUTE));
@@ -220,14 +288,15 @@ public class LookupUtils {
 
     /**
      * Changes from/to dates into the range operators the lookupable dao expects ("..",">" etc) this method modifies
-     * the passed in map and returns an updated search criteria map
+     * the passed in map and returns an updated search criteria map.
      *
-     * @param searchCriteria - map of criteria currently set for which the date criteria will be adjusted
+     * @param searchCriteria map of criteria currently set for which the date criteria will be adjusted
      * @return map updated search criteria
      */
     public static Map<String, String> preprocessDateFields(Map<String, String> searchCriteria) {
         Map<String, String> fieldsToUpdate = new HashMap<String, String>();
         Map<String, String> searchCriteriaUpdated = new HashMap<String, String>(searchCriteria);
+
         Set<String> fieldsForLookup = searchCriteria.keySet();
         for (String propName : fieldsForLookup) {
             if (propName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
@@ -235,8 +304,8 @@ public class LookupUtils {
                 String dateFieldName =
                         StringUtils.remove(propName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
                 String to_DateValue = searchCriteria.get(dateFieldName);
-                String newPropValue = to_DateValue;// maybe clean above with
-                // ObjectUtils.clean(propertyValue)
+                String newPropValue = to_DateValue;
+
                 if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isNotEmpty(to_DateValue)) {
                     newPropValue = from_DateValue + SearchOperator.BETWEEN + to_DateValue;
                 } else if (StringUtils.isNotEmpty(from_DateValue) && StringUtils.isEmpty(to_DateValue)) {
@@ -263,7 +332,7 @@ public class LookupUtils {
      *
      * @param boClass business object class of the lookup
      * @param fieldValues map of the lookup criteria values
-     * @return true if externalizable buiness object are contained, false otherwise
+     * @return true if externalizable business object are contained, false otherwise
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
@@ -385,17 +454,135 @@ public class LookupUtils {
                 .getPropertyType(boClass.newInstance(), StringUtils.substringBeforeLast(propertyName, "."));
     }
 
-    // initialize and cache the search and replacment list for query characters statically to save some time
-
-    private static final String[] searchList = new String[SearchOperator.QUERY_CHARACTERS.size()];
-    static {
-        int index = 0;
-        for (SearchOperator operator : SearchOperator.QUERY_CHARACTERS) {
-            searchList[index++] = operator.op();
+    /**
+     * Looks for criteria against nested EBOs and performs a search against that EBO and updates the criteria.
+     *
+     * @param searchCriteria map of criteria currently set
+     * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
+     * limited (if necessary) to the max search result limit configured.
+     * @return Map of adjusted criteria for nested EBOs
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public static Map<String, String> adjustCriteriaForNestedEBOs(Class<?> dataObjectClass,
+            Map<String, String> searchCriteria,
+            boolean unbounded) throws InstantiationException, IllegalAccessException {
+        // remove the EBO criteria
+        Map<String, String> nonEboFieldValues = removeExternalizableBusinessObjectFieldValues(
+                dataObjectClass, searchCriteria);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Non EBO properties removed: " + nonEboFieldValues);
         }
-    }
-    private static final String[] replacementList = Collections.nCopies(searchList.length, "").toArray(new String[0]);
 
+        // get the list of EBO properties attached to this object
+        List<String> eboPropertyNames = getExternalizableBusinessObjectProperties(dataObjectClass, searchCriteria);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("EBO properties: " + eboPropertyNames);
+        }
+
+        // loop over those properties
+        for (String eboPropertyName : eboPropertyNames) {
+            // extract the properties as known to the EBO
+            Map<String, String> eboFieldValues = LookupUtils.getExternalizableBusinessObjectFieldValues(eboPropertyName,
+                    searchCriteria);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("EBO properties for master EBO property: " + eboPropertyName);
+                LOG.debug("properties: " + eboFieldValues);
+            }
+
+            // run search against attached EBO's module service
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
+                    getExternalizableBusinessObjectClass(dataObjectClass, eboPropertyName));
+
+            // KULRICE-4401 made eboResults an empty list and only filled if service is found.
+            List<?> eboResults = Collections.emptyList();
+            if (eboModuleService != null) {
+                eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(
+                        getExternalizableBusinessObjectClass(dataObjectClass, eboPropertyName),
+                        (Map) eboFieldValues, unbounded);
+            } else {
+                LOG.debug("EBO ModuleService is null: " + eboPropertyName);
+            }
+
+            // get the parent property type
+            Class<?> eboParentClass;
+            String eboParentPropertyName;
+            if (DataObjectUtils.isNestedAttribute(eboPropertyName)) {
+                eboParentPropertyName = StringUtils.substringBeforeLast(eboPropertyName, ".");
+                try {
+                    eboParentClass = DataObjectUtils.getPropertyType(dataObjectClass.newInstance(),
+                            eboParentPropertyName);
+                } catch (Exception ex) {
+                    throw new RuntimeException(
+                            "Unable to create an instance of the business object class: " + dataObjectClass
+                                    .getName(), ex);
+                }
+            } else {
+                eboParentClass = dataObjectClass;
+                eboParentPropertyName = null;
+            }
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("determined EBO parent class/property name: " + eboParentClass + "/" + eboParentPropertyName);
+            }
+
+            // look that up in the DD (BOMDS) find the appropriate relationship
+            // CHECK THIS: what if eboPropertyName is a nested attribute - need to strip off the
+            // eboParentPropertyName if not null
+            RelationshipDefinition rd = KRADServiceLocatorWeb.getLegacyDataAdapter().getDictionaryRelationship(
+                    eboParentClass, eboPropertyName);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Obtained RelationshipDefinition for " + eboPropertyName);
+                LOG.debug(rd);
+            }
+
+            // copy the needed properties (primary only) to the field values KULRICE-4446 do
+            // so only if the relationship definition exists
+            // NOTE: this will work only for single-field PK unless the ORM
+            // layer is directly involved
+            // (can't make (field1,field2) in ( (v1,v2),(v3,v4) ) style
+            // queries in the lookup framework
+            if (KRADUtils.isNotNull(rd)) {
+                if (rd.getPrimitiveAttributes().size() > 1) {
+                    throw new RuntimeException(
+                            "EBO Links don't work for relationships with multiple-field primary keys.");
+                }
+                String boProperty = rd.getPrimitiveAttributes().get(0).getSourceName();
+                String eboProperty = rd.getPrimitiveAttributes().get(0).getTargetName();
+                StringBuffer boPropertyValue = new StringBuffer();
+
+                // loop over the results, making a string that the lookup DAO will convert into an
+                // SQL "IN" clause
+                for (Object ebo : eboResults) {
+                    if (boPropertyValue.length() != 0) {
+                        boPropertyValue.append(SearchOperator.OR.op());
+                    }
+                    try {
+                        boPropertyValue.append(PropertyUtils.getProperty(ebo, eboProperty).toString());
+                    } catch (Exception ex) {
+                        LOG.warn("Unable to get value for " + eboProperty + " on " + ebo);
+                    }
+                }
+
+                if (eboParentPropertyName == null) {
+                    // non-nested property containing the EBO
+                    nonEboFieldValues.put(boProperty, boPropertyValue.toString());
+                } else {
+                    // property nested within the main searched-for BO that contains the EBO
+                    nonEboFieldValues.put(eboParentPropertyName + "." + boProperty, boPropertyValue.toString());
+                }
+            }
+        }
+
+        return nonEboFieldValues;
+    }
+
+    /**
+     * Removes query characters (such as wildcards) from the given string value.
+     *
+     * @param criteriaValue string to clean
+     * @return string with query characters removed
+     */
     public static String scrubQueryCharacters(String criteriaValue) {
         return StringUtils.replaceEach(criteriaValue, searchList, replacementList);
     }

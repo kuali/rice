@@ -24,23 +24,27 @@ import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.LookupForm;
 
 import java.util.Map;
 
 /**
  * Implementation of {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} for
- * {@link org.kuali.rice.krad.uif.view.LookupView} instances
+ * {@link LookupView} instances
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
     private static final long serialVersionUID = 3755133641536256283L;
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupViewAuthorizerBase.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            LookupViewAuthorizerBase.class);
 
     /**
      * Override to check the for permissions of type 'Look Up Records' in addition to the open view check
      * done in super
+     *
+     * @param view view instance the open permission should be checked for
+     * @param model object containing the model data associated with the view
+     * @param user user who is requesting the view
      */
     @Override
     public boolean canOpenView(View view, ViewModel model, Person user) {
@@ -55,7 +59,7 @@ public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
                         lookupForm.getDataObjectClassName()));
             } catch (ClassNotFoundException e) {
                 throw new RiceRuntimeException(
-                        "Unable to create class for lookup class name: " + lookupForm.getDataObjectClassName());
+                        "Unable to create class for lookup class name: " + lookupForm.getDataObjectClassName(), e);
             }
 
             if (permissionExistsByTemplate(model, KRADConstants.KNS_NAMESPACE,
@@ -70,18 +74,19 @@ public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
     }
 
     /**
-     * Check if user is allowed to initiate the document
+     * Check if user is allowed to initiate the maintenance document associated with the lookup data
+     * object class.
      *
-     * @param lookupForm - The lookup form of the document
-     * @param user - user we are authorizing the actions for
+     * @param dataObjectClassName data object class name associated with the lookup
+     * @param user user we are authorizing the actions for
      * @return true if user is authorized to initiate the document, false otherwise
      */
-    public boolean canInitiateDocument(LookupForm lookupForm, Person user) {
+    public boolean canInitiateMaintenanceDocument(String dataObjectClassName, Person user) {
         boolean canInitiateDocument = false;
 
         try {
-            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
-            // check if creating documents is allowed
+            Class<?> dataObjectClass = Class.forName(dataObjectClassName);
+
             String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
                     .getMaintenanceDocumentTypeName(dataObjectClass);
             if ((documentTypeName != null) &&
@@ -90,7 +95,7 @@ public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
                 canInitiateDocument = true;
             }
         } catch (ClassNotFoundException e) {
-            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
+            LOG.warn("Unable to load Data Object Class: " + dataObjectClassName, e);
         }
 
         return canInitiateDocument;

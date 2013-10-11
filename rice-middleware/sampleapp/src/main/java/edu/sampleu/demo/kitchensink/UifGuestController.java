@@ -58,11 +58,11 @@ public class UifGuestController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         if (!form.getViewId().equals("UifGuestUserView")) {
             throw new RuntimeException("Guest user not allowed to acces this view : " + form.getViewId());
         }
-        return super.start(form,result,request,response);
+        return super.start(form,request,response);
     }
 }

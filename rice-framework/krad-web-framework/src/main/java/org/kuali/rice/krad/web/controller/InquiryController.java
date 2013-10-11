@@ -79,8 +79,8 @@ public class InquiryController extends UifControllerBase {
      */
     @RequestMapping(params = "methodToCall=start")
     @Override
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
         InquiryForm inquiryForm = (InquiryForm) form;
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object inquiry
@@ -123,7 +123,7 @@ public class InquiryController extends UifControllerBase {
 
         inquiryForm.setDataObject(dataObject);
 
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 
     /**

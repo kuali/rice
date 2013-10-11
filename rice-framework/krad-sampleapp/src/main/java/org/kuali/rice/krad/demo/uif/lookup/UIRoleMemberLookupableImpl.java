@@ -22,7 +22,7 @@ import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.lookup.LookupableImpl;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 
 import java.util.Collection;
 import java.util.List;

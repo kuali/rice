@@ -287,9 +287,9 @@ function handleLightboxOpen(link, options, addAppParms, event) {
  * See <link>http://fancybox.net/api</link> for documentation on plugin options
  * </p>
  *
- * @param componentId -
+ * @param componentId
  *          id for the action component that the fancybox should be linked to
- * @param options -
+ * @param options
  *          map of option settings (option name/value pairs) for the fancybox plugin
  * @param lookupReturnByScript - boolean that indicates whether the lookup should return through script
  *        or via a server post
@@ -305,67 +305,55 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         // Check if this is not called within a lightbox
         var renderedInLightBox = isCalledWithinLightbox();
         if (!renderedInLightBox) {
-            jQuery("#" + componentId).click(function (e) {
-                // Prevent the default submit
-                e.preventDefault();
+            data['jumpToId'] = componentId;
+            data['ajaxRequest'] = 'true';
+            data['actionParameters[renderedInLightBox]'] = 'true';
+            data['actionParameters[flowKey]'] = 'start';
+            data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
 
-                data['jumpToId'] = componentId;
-                data['ajaxRequest'] = 'true';
-                data['actionParameters[renderedInLightBox]'] = 'true';
-                data['actionParameters[flowKey]'] = 'start';
-                data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
+            if (top == self) {
+                data['actionParameters[returnTarget]'] = '_parent';
+            } else {
+                data['actionParameters[returnTarget]'] = 'iframeportlet';
+            }
 
-                // If this is the top frame, the page is not displayed in the iframeprotlet
-                // set the return target
-                if (top == self) {
-                    data['actionParameters[returnTarget]'] = '_parent';
-                } else {
-                    data['actionParameters[returnTarget]'] = 'iframeportlet';
+            var jsonViewState = getSerializedViewState();
+            if (jsonViewState) {
+                jQuery.extend(data, {clientViewState: jsonViewState});
+            }
+
+            // if refreshing the view on return from lookup need to clear dirty fields else
+            // a warning is given
+            if (!lookupReturnByScript) {
+                dirtyFormState.skipDirtyChecks = true;
+            }
+
+            // Do the Ajax submit on the kualiForm form
+            jQuery("#kualiForm").ajaxSubmit({
+                data: data,
+                success: function (data) {
+                    // Perform cleanup when lightbox is closed
+                    // TODO: this stomps on the post form (clear out) so need to another
+                    // way to clear forms when the lightbox performs a post back
+                    // options['beforeClose'] = cleanupClosedLightboxForms;
+
+                    // get the lookup redirect URL from the response
+                    var lookupUrl = jQuery(data).text();
+
+                    // Add the returned URL to the FancyBox href setting
+                    options['href'] = lookupUrl.replace(/&amp;/g, '&');
+
+                    // Open the light box
+                    getContext().fancybox(options);
                 }
-
-                var jsonViewState = getSerializedViewState();
-                if (jsonViewState) {
-                    jQuery.extend(data, {clientViewState: jsonViewState});
-                }
-
-                // if refreshing the view on return from lookup need to clear dirty fields else
-                // a warning is given
-                if (!lookupReturnByScript) {
-                    dirtyFormState.skipDirtyChecks = true;
-                }
-
-                // Do the Ajax submit on the kualiForm form
-                jQuery("#kualiForm").ajaxSubmit({
-                    data: data,
-                    success: function (data) {
-                        // Perform cleanup when lightbox is closed
-                        // TODO: this stomps on the post form (clear out) so need to another
-                        // way to clear forms when the lightbox performs a post back
-                        // options['beforeClose'] = cleanupClosedLightboxForms;
-
-                        // get the lookup redirect URL from the response
-                        var lookupUrl = jQuery(data).text();
-
-                        // Add the returned URL to the FancyBox href setting
-                        options['href'] = lookupUrl.replace(/&amp;/g, '&');
-
-                        // Open the light box
-                        getContext().fancybox(options);
-                    }
-                });
             });
         } else {
             // add parameters for lightbox and do standard submit
-            jQuery("#" + componentId).click(function (e) {
-                // Prevent the default submit
-                e.preventDefault();
+            data['actionParameters[renderedInLightBox]'] = 'true';
+            data['actionParameters[returnTarget]'] = '_self';
+            data['actionParameters[flowKey]'] = jQuery("#flowKey").val();
 
-                data['actionParameters[renderedInLightBox]'] = 'true';
-                data['actionParameters[returnTarget]'] = '_self';
-                data['actionParameters[flowKey]'] = jQuery("#flowKey").val();
-
-                nonAjaxSubmitForm(data['methodToCall'], data);
-            });
+            nonAjaxSubmitForm(data['methodToCall'], data);
         }
     });
 }
@@ -396,63 +384,6 @@ function isCalledWithinLightbox() {
 //    }
 //
 //    return false;
-}
-
-/*
- * Reload page with lookup result URL
- */
-function returnLookupResultReload(href, target) {
-    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
-        // portal and content on same domain
-        top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', href);
-    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
-        // portal and content on different domain
-        parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', href)
-    } else {
-        window.open(href, target);
-    }
-}
-
-/*
- * Function that returns lookup results by script
- */
-function returnLookupResultByScript(fieldName, value) {
-    var returnField;
-    if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
-        // portal and content on same domain
-        returnField = top.jQuery('iframe[id*=easyXDM_]').contents().find('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
-    } else if (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
-        // portal and content on different domain
-        returnField = parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).contents().find('[name="' + escapeName(fieldName) + '"]');
-    } else {
-        returnField = top.jq('[name="' + escapeName(fieldName) + '"]');
-    }
-
-    if (!returnField.length) {
-        return;
-    }
-
-    returnField.val(value);
-    returnField.focus();
-    returnField.blur();
-    returnField.focus();
-
-    // trigger change event
-    returnField.change();
-}
-
-/*
- * Sets form target for the multi-value return and closes the lightbox
- */
-function setupMultiValueReturn() {
-    if ((parent.jQuery('iframe[id*=easyXDM_]').length > 0) || (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0)) {
-        jQuery('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
-    }
-    else {
-        jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
-    }
-
-    closeLightbox();
 }
 
 /**
@@ -1199,7 +1130,7 @@ function createTabs(id, widgetId, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);
 
     // when active tab changes we need to update the client side state
-    tabs.on("tabsactivate", function (event, ui) {
+    tabs.on("activate", function (event, ui) {
         var activeTabId = ui.newPanel.attr('id');
         activeTabId = activeTabId.replace(/_tab$/, "");
 

@@ -22,7 +22,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krad.lookup.LookupForm;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
@@ -61,7 +61,8 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
     }
 
     @Override
-    protected String getActionUrlHref(LookupForm lookupForm, Object dataObject, String methodToCall, List<String> pkNames) {
+    protected String getMaintenanceActionUrl(LookupForm lookupForm, Object dataObject, String methodToCall,
+            List<String> pkNames) {
         Properties props = new Properties();
         props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
 

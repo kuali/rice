@@ -47,11 +47,11 @@ public class ConfigurationTestViewUifController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         String randomYear = RandomStringUtils.randomNumeric(2);
         GlobalVariables.getMessageMap().putInfo("growl.testing.apostrophe", "sampleapp.growl.testmsg", "'" + randomYear);
 
-        return super.start(form, result, request, response);
+        return super.start(form, request, response);
     }
 }

@@ -14836,7 +14836,7 @@
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="lightBoxLookup" type="org.kuali.rice.krad.uif.widget.LightBox">
+          <xsd:element maxOccurs="1" minOccurs="0" name="lightBox" type="org.kuali.rice.krad.uif.widget.LightBox">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[LightBoxLookup widget for the field
 
@@ -15023,7 +15023,7 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="hideReturnLink" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderReturnLink" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the return links for lookup results should be rendered
 
@@ -15150,7 +15150,7 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="showMaintenanceLinks" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderMaintenanceLinks" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the maintenance action links should be rendered for the invoked lookup view
 
@@ -15374,7 +15374,7 @@
               </xsd:complexContent>
             </xsd:complexType>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="renderSearchButtons" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderCriteriaActions" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
@@ -15392,7 +15392,7 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="readOnlySearchFields" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="readOnlyLookupFields" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Comma delimited String of property names on the lookup view that should be read only
 
@@ -15420,7 +15420,7 @@
               </xsd:complexContent>
             </xsd:complexType>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="suppressActions" type="xsd:string">
+          <xsd:element maxOccurs="1" minOccurs="0" name="renderResultActions" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the maintenance actions (or others) are rendered on the invoked lookup view
 
@@ -15689,7 +15689,7 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="lightBoxLookup">
+        <xsd:attribute name="lightBox">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[LightBoxLookup widget for the field
 
@@ -15724,7 +15724,7 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="hideReturnLink">
+        <xsd:attribute name="renderReturnLink">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the return links for lookup results should be rendered
 
@@ -15758,7 +15758,7 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="showMaintenanceLinks">
+        <xsd:attribute name="renderMaintenanceLinks">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the maintenance action links should be rendered for the invoked lookup view
 
@@ -15791,13 +15791,13 @@
               <![CDATA[TODO: not implemented currently]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="renderSearchButtons">
+        <xsd:attribute name="renderCriteriaActions">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en">
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="readOnlySearchFields">
+        <xsd:attribute name="readOnlyLookupFields">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Comma delimited String of property names on the lookup view that should be read only
 
@@ -15808,7 +15808,7 @@
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="suppressActions">
+        <xsd:attribute name="renderResultActions">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.widget.QuickFinder" xml:lang="en"><![CDATA[Indicates whether the maintenance actions (or others) are rendered on the invoked lookup view
 
@@ -30668,7 +30668,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="attributeQuery"
                        type="org.kuali.rice.krad.uif.field.AttributeQuery">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Attribute query instance configured for this field to dynamically pull information back for
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Attribute query instance configured for this field to dynamically pull information back for
  updates other fields or providing messages
 
  
@@ -30683,13 +30683,13 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="validCharactersConstraint"
                        type="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[The ValidCharactersConstraint that applies to this InputField]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalComponentsToRefresh" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
 
  
  This will be a comma separated list of componentIds that need to be refreshed when a refresh
@@ -30699,13 +30699,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnlyDisplayReplacement" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Returns the alternate display value]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="help" type="org.kuali.rice.krad.uif.widget.Help">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Help configuration object for the datafield
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Help configuration object for the datafield
 
  
  External help information can be configured for the datafield. The
@@ -30716,13 +30716,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnlyDisplaySuffix" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Returns the additional display value.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="selfRendered" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
  the renderOutput property)
 
  
@@ -30734,7 +30734,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultValues">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
@@ -30747,7 +30747,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="constraintText" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Text that display a restriction on the value a field can hold
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Text that display a restriction on the value a field can hold
 
  
  For example when the value must be a valid format (phone number, email), certain length, min/max value and
@@ -30758,13 +30758,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="optionsFinderClass" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dictionaryObjectEntry" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Object entry name in the data dictionary the associated attribute is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Object entry name in the data dictionary the associated attribute is
  apart of
 
  
@@ -30784,19 +30784,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="resetDataOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
  component is refreshed]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="template" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
 
  
  The path should be relative to the web root. An attribute will be available to the component to use under the
@@ -30811,7 +30811,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="mustOccurConstraints">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[List of MustOccurConstraint that apply to this InputField]]></xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
@@ -30824,14 +30824,14 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="constraintMessage"
                        type="org.kuali.rice.krad.uif.element.Message">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Message field that displays constraint text
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Message field that displays constraint text
 
  
  This message field can be configured to for adjusting how the constrain text will display. Generally
@@ -30841,7 +30841,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="suggest" type="org.kuali.rice.krad.uif.widget.Suggest">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Suggest box widget for the input field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Suggest box widget for the input field
 
  
  If enabled (by render flag), as the user inputs data into the
@@ -30856,13 +30856,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onLoadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="shortLabel" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Short label for the field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Short label for the field
 
  
  For areas of the user interface that have limited area (such as table
@@ -30873,7 +30873,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker"
                        type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
  for finalizing the component configuration
 
  
@@ -30892,19 +30892,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalHiddenPropertyNames" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Allows specifying hidden property names without having to specify as a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Allows specifying hidden property names without having to specify as a
  field in the group config (that might impact layout)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
 
  They will be evaluated
  during the view lifecycle to conditionally set properties on the
@@ -30921,7 +30921,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="optionsFinder"
                        type="org.kuali.rice.krad.keyvalues.KeyValuesFinder">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Instance of KeyValuesFinder that should be invoked to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Instance of KeyValuesFinder that should be invoked to
  provide a List of values the field can have. Generally used to provide
  the options for a multi-value control or to validate the submitted field
  value]]></xsd:documentation>
@@ -30929,7 +30929,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="instructionalText" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Instructional text that display an explanation of the field usage
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Instructional text that display an explanation of the field usage
 
  
  Text explaining how to use the field, including things like what values should be selected
@@ -30939,33 +30939,33 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="escapeHtmlInPropertyValue" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Returns true if HTML escape allowed for this field]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="validationMessages"
                        type="org.kuali.rice.krad.uif.element.ValidationMessages">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Field that contains the messages (errors) for the input field. The
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Field that contains the messages (errors) for the input field. The
  ValidationMessages holds configuration on associated messages along
  with information on rendering the messages in the user interface]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="quickfinder" type="org.kuali.rice.krad.uif.widget.QuickFinder">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Lookup finder widget for the field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Lookup finder widget for the field
 
  
  The quickfinder widget places a small icon next to the field that allows
@@ -30979,13 +30979,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onCloseScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="title" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The component title
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The component title
 
  
  Depending on the component can be used in various ways. For example with a Container component the title is
@@ -30996,7 +30996,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyNamesForAdditionalDisplay" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[List of property names whose values should be displayed read-only under this field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[List of property names whose values should be displayed read-only under this field
 
  
  In the attribute field template for each information property name given its values is
@@ -31014,7 +31014,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="maxLength" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Maximum number of characters the input field value is allowed to have
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Maximum number of characters the input field value is allowed to have
 
  
  The maximum length determines the maximum allowable length of the value
@@ -31027,7 +31027,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodAdditionalArguments">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
 
  
  These arguments are passed to the finalize method after the standard model and component
@@ -31044,13 +31044,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
 
  
  All components belong to a Container and are placed using a
@@ -31066,19 +31066,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="namespaceCode" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnlyDisplayReplacementPropertyName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Returns the alternate display attribute name to be displayed when the field is readonly.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRender" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST BE a
  container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
  form property names, and, or, logical comparison operators (non-arithmetic), and the matches
  clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
@@ -31098,38 +31098,38 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="labelPlacement" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptionsJSString" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options
  that will export that options as a JavaScript Map for use in js and
  jQuery plugins]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="preRenderContent" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="toolTip" type="org.kuali.rice.krad.uif.widget.Tooltip">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
  specified trigger event]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="labelColSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Label column span for the field]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dataAttributes">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Get the dataAttributes setup for this component - to be written to the html/jQuery data
 
  The attributes that are complex objects (contain {}) they will be written through script.
  The attritubes that are simple (contain no objects) will be written directly to the html of the
@@ -31146,7 +31146,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="inclusiveMax" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The inclusive maximum value for numeric or date field.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The inclusive maximum value for numeric or date field.
 
  
  The inclusiveMax element determines the maximum allowable value for data
@@ -31160,7 +31160,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnly" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component can be edited
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component can be edited
 
  
  When readOnly the controls and widgets of Field components
@@ -31177,13 +31177,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseMoveScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="applyMask" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the value for the field should be masked (or partially masked) on display
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the value for the field should be masked (or partially masked) on display
 
  
  If set to true, the field value will be masked by applying the configured #getMaskFormatter()
@@ -31200,13 +31200,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="skipInTabOrder" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be
  skipped when keyboard tabbing.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved
  from the server when it first satisfies its progressive render condition.
 
  After the first retrieval, it is hidden/shown in the html by the js when
@@ -31217,25 +31217,25 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onChangeScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyPressScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshTimer" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
 
  
  This will invoke the refresh process just like the conditionalRefresh and refreshWhenChangedPropertyNames.
@@ -31245,7 +31245,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="disableSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
  refresh condition)
 
  
@@ -31257,13 +31257,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDblClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="addHiddenWhenReadOnly" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates the field should be read-only but also a hidden should be generated for the field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates the field should be read-only but also a hidden should be generated for the field
 
  
  Useful for when a value is just displayed but is needed by script
@@ -31272,7 +31272,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="inquiry" type="org.kuali.rice.krad.uif.widget.Inquiry">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Inquiry widget for the field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Inquiry widget for the field
 
  
  The inquiry widget will render a link for the field value when read-only
@@ -31285,25 +31285,25 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="helpSummary" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Summary help text for the field]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onBlurScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalCssClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultValue" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Default value for the model property the field points to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Default value for the model property the field points to
 
  
  When a new View instance is requested, the corresponding
@@ -31314,7 +31314,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="required" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component is required
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component is required
 
  
  At the general component level required means there is some action the
@@ -31327,7 +31327,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodToCall" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
  configuration (full method name, without parameters or return type)
 
  
@@ -31352,19 +31352,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="postRenderContent" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Name of the property (relative to the parent object) the component binds
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Name of the property (relative to the parent object) the component binds
  to]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="control" type="org.kuali.rice.krad.uif.control.Control">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Control instance that should be used to input data for the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Control instance that should be used to input data for the
  field
 
  
@@ -31376,7 +31376,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -31388,7 +31388,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Width the component should take up in the container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Width the component should take up in the container
 
  
  All components belong to a Container and are placed using a
@@ -31405,13 +31405,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="readOnlyDisplaySuffixPropertyName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Returns the additional display attribute name to be displayed when the field is readonly]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyEditor" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Performs formatting of the field value for display and then converting the value back to its
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Performs formatting of the field value for display and then converting the value back to its
  expected type from a string
 
  
@@ -31423,19 +31423,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="label" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onClickScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="render" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
 
  
  If set to false, the corresponding component template will not be invoked
@@ -31445,7 +31445,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="methodToCallOnRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh and disclosure
  process
 
  
@@ -31462,7 +31462,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentModifiers">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[ComponentModifier instances that should be invoked to
  initialize the component
 
  
@@ -31481,19 +31481,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="addControlSelectAllOption" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
  field, note this is only supported for org.kuali.rice.krad.uif.control.MultiValueControl instance]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshWhenChangedPropertyNames" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
  a refresh on this component
 
  
@@ -31508,7 +31508,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="simpleConstraint"
                        type="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Simple constraints for the input field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Simple constraints for the input field
 
  
  A simple constraint which store the values for constraints such as required,
@@ -31518,19 +31518,19 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="renderedHtmlOutput" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
  response (can contain static text and HTML)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="tooltipOfComponent" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="colSpan" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
  container
 
  
@@ -31547,13 +31547,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="defaultValueFinderClass" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Gives Class that should be invoked to produce the default value for the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Gives Class that should be invoked to produce the default value for the
  field]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="fieldLabel" type="org.kuali.rice.krad.uif.element.Label">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Label text for the field
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Label text for the field
 
  
  The label is generally used to identify the field in the user interface
@@ -31562,13 +31562,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="disableWildcardsAndOperators" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"/>
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="maskFormatter"
                        type="org.kuali.rice.krad.datadictionary.mask.MaskFormatter">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[MaskFormatter instance that will be used to mask the field value when #isApplyMask() is true
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[MaskFormatter instance that will be used to mask the field value when #isApplyMask() is true
 
  
  Note in cases where the mask is applied due to security (KIM permissions), the mask or partial mask formatter
@@ -31578,7 +31578,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="id" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The unique id (within a given tree) for the component
 
  
  The id will be used by renderers to set the HTML element id. This gives a way to find various elements
@@ -31588,7 +31588,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="style" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[CSS style string to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[CSS style string to be applied to the component
 
  
  Any style override or additions can be specified with this attribute.
@@ -31603,13 +31603,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="order" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="minLength" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Minimum number of characters the input field value needs to be
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Minimum number of characters the input field value needs to be
 
  
  The minimum length determines the minimum required length of the value for
@@ -31621,7 +31621,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
 
  The component MUST BE a container or field type. conditionalRefresh is
  defined in a limited Spring EL syntax. Only valid form property names,
@@ -31640,7 +31640,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="uppercaseValue" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Perform uppercase flag for this field to force input to uppercase.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Perform uppercase flag for this field to force input to uppercase.
 
  
  It this flag is set to true the 'text-transform' style on the field will be set to 'uppercase'
@@ -31650,13 +31650,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOutScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateOptions">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
 
  
  The Map key is the option name, with the Map value as the option value. See
@@ -31673,13 +31673,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dependencyConstraints">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[List of PrerequisiteConstraint that apply to this InputField]]></xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
@@ -31692,7 +31692,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="exclusiveMin" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The exclusive minimum value for numeric or date field.
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The exclusive minimum value for numeric or date field.
 
  
  The exclusiveMin element determines the minimum allowable value for data
@@ -31707,20 +31707,20 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="caseConstraint"
                        type="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[The CaseConstraint that applies to this InputField]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="componentSecurity"
                        type="org.kuali.rice.krad.uif.component.ComponentSecurity">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dataType" type="xsd:anyType">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Gets the DataType of this InputField, note that DataType set to be date
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Gets the DataType of this InputField, note that DataType set to be date
  when this field is using a date picker with a TextControl and has not otherwise been
  explicitly set.]]></xsd:documentation>
             </xsd:annotation>
@@ -31728,19 +31728,19 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="bindingInfo"
                        type="org.kuali.rice.krad.uif.component.BindingInfo">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Returns the BindingInfo instance that is configured for the
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Returns the BindingInfo instance that is configured for the
  component]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="labelStyleClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[Label style classes for the field]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderAndRefresh" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component
  will always be retrieved from the server and shown(as opposed to being
  stored on the client, but hidden, after the first retrieval as is the
  case with the progressiveRenderViaAJAX option).
@@ -31752,7 +31752,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="hidden" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
 
  
  How the hidden data is maintained depends on the views persistence mode.
@@ -31770,7 +31770,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="context">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Context map for the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Context map for the component
 
  
  Any el statements configured for the components properties (e.g.
@@ -31808,20 +31808,20 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onUnloadScript" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="labelRendered" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the contained Label has been rendered
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the contained Label has been rendered
  as part of another field and thus should not be rendered with the
  attribute]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="forceSessionPersistence" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
 
  
  By default the framework nulls out any components that do not have a refresh condition or are needed for
@@ -31833,7 +31833,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="valign" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
 
  
  All components belong to a Container and are placed using a
@@ -31846,13 +31846,13 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
                 <![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="dictionaryAttributeName" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Name of the attribute within the data dictionary the attribute field is
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Name of the attribute within the data dictionary the attribute field is
  associated with
 
  
@@ -31874,7 +31874,7 @@
           <xsd:element maxOccurs="1" minOccurs="0" name="instructionalMessage"
                        type="org.kuali.rice.krad.uif.element.Message">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Message field that displays instructional text
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Message field that displays instructional text
 
  
  This message field can be configured to for adjusting how the instructional text will display. Generally
@@ -31884,7 +31884,7 @@
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="basicList-type">
             <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+              <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
 
  
  Declares style classes for the component. Multiple classes are specified
@@ -31899,7 +31899,7 @@
         </xsd:choice>
         <xsd:attribute name="attributeQuery">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Attribute query instance configured for this field to dynamically pull information back for
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Attribute query instance configured for this field to dynamically pull information back for
  updates other fields or providing messages
 
  
@@ -31913,19 +31913,19 @@
         </xsd:attribute>
         <xsd:attribute name="validCharactersConstraint">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[The ValidCharactersConstraint that applies to this InputField]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="readOnlyDisplayReplacement">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Returns the alternate display value]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="help">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Help configuration object for the datafield
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Help configuration object for the datafield
 
  
  External help information can be configured for the datafield. The
@@ -31936,13 +31936,13 @@
         </xsd:attribute>
         <xsd:attribute name="readOnlyDisplaySuffix">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Returns the additional display value.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="constraintText">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Text that display a restriction on the value a field can hold
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Text that display a restriction on the value a field can hold
 
  
  For example when the value must be a valid format (phone number, email), certain length, min/max value and
@@ -31953,13 +31953,13 @@
         </xsd:attribute>
         <xsd:attribute name="optionsFinderClass">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="dictionaryObjectEntry">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Object entry name in the data dictionary the associated attribute is
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Object entry name in the data dictionary the associated attribute is
  apart of
 
  
@@ -31979,7 +31979,7 @@
         </xsd:attribute>
         <xsd:attribute name="constraintMessage">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Message field that displays constraint text
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Message field that displays constraint text
 
  
  This message field can be configured to for adjusting how the constrain text will display. Generally
@@ -31989,7 +31989,7 @@
         </xsd:attribute>
         <xsd:attribute name="suggest">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Suggest box widget for the input field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Suggest box widget for the input field
 
  
  If enabled (by render flag), as the user inputs data into the
@@ -32004,7 +32004,7 @@
         </xsd:attribute>
         <xsd:attribute name="shortLabel">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Short label for the field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Short label for the field
 
  
  For areas of the user interface that have limited area (such as table
@@ -32014,13 +32014,13 @@
         </xsd:attribute>
         <xsd:attribute name="additionalHiddenPropertyNames">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Allows specifying hidden property names without having to specify as a
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Allows specifying hidden property names without having to specify as a
  field in the group config (that might impact layout)]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="optionsFinder">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Instance of KeyValuesFinder that should be invoked to
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Instance of KeyValuesFinder that should be invoked to
  provide a List of values the field can have. Generally used to provide
  the options for a multi-value control or to validate the submitted field
  value]]></xsd:documentation>
@@ -32028,7 +32028,7 @@
         </xsd:attribute>
         <xsd:attribute name="instructionalText">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Instructional text that display an explanation of the field usage
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Instructional text that display an explanation of the field usage
 
  
  Text explaining how to use the field, including things like what values should be selected
@@ -32038,20 +32038,20 @@
         </xsd:attribute>
         <xsd:attribute name="escapeHtmlInPropertyValue">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Returns true if HTML escape allowed for this field]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="validationMessages">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Field that contains the messages (errors) for the input field. The
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Field that contains the messages (errors) for the input field. The
  ValidationMessages holds configuration on associated messages along
  with information on rendering the messages in the user interface]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="quickfinder">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Lookup finder widget for the field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Lookup finder widget for the field
 
  
  The quickfinder widget places a small icon next to the field that allows
@@ -32065,7 +32065,7 @@
         </xsd:attribute>
         <xsd:attribute name="propertyNamesForAdditionalDisplay">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[List of property names whose values should be displayed read-only under this field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[List of property names whose values should be displayed read-only under this field
 
  
  In the attribute field template for each information property name given its values is
@@ -32083,7 +32083,7 @@
         </xsd:attribute>
         <xsd:attribute name="maxLength">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Maximum number of characters the input field value is allowed to have
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Maximum number of characters the input field value is allowed to have
 
  
  The maximum length determines the maximum allowable length of the value
@@ -32096,25 +32096,25 @@
         </xsd:attribute>
         <xsd:attribute name="readOnlyDisplayReplacementPropertyName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Returns the alternate display attribute name to be displayed when the field is readonly.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="labelPlacement">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="labelColSpan">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Label column span for the field]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="inclusiveMax">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The inclusive maximum value for numeric or date field.
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The inclusive maximum value for numeric or date field.
 
  
  The inclusiveMax element determines the maximum allowable value for data
@@ -32128,7 +32128,7 @@
         </xsd:attribute>
         <xsd:attribute name="applyMask">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the value for the field should be masked (or partially masked) on display
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the value for the field should be masked (or partially masked) on display
 
  
  If set to true, the field value will be masked by applying the configured #getMaskFormatter()
@@ -32145,7 +32145,7 @@
         </xsd:attribute>
         <xsd:attribute name="addHiddenWhenReadOnly">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates the field should be read-only but also a hidden should be generated for the field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates the field should be read-only but also a hidden should be generated for the field
 
  
  Useful for when a value is just displayed but is needed by script
@@ -32154,7 +32154,7 @@
         </xsd:attribute>
         <xsd:attribute name="inquiry">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Inquiry widget for the field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Inquiry widget for the field
 
  
  The inquiry widget will render a link for the field value when read-only
@@ -32167,13 +32167,13 @@
         </xsd:attribute>
         <xsd:attribute name="helpSummary">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Summary help text for the field]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="defaultValue">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Default value for the model property the field points to
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Default value for the model property the field points to
 
  
  When a new View instance is requested, the corresponding
@@ -32184,13 +32184,13 @@
         </xsd:attribute>
         <xsd:attribute name="propertyName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Name of the property (relative to the parent object) the component binds
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Name of the property (relative to the parent object) the component binds
  to]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="control">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Control instance that should be used to input data for the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Control instance that should be used to input data for the
  field
 
  
@@ -32202,13 +32202,13 @@
         </xsd:attribute>
         <xsd:attribute name="readOnlyDisplaySuffixPropertyName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Returns the additional display attribute name to be displayed when the field is readonly]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="propertyEditor">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Performs formatting of the field value for display and then converting the value back to its
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Performs formatting of the field value for display and then converting the value back to its
  expected type from a string
 
  
@@ -32220,19 +32220,19 @@
         </xsd:attribute>
         <xsd:attribute name="label">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="addControlSelectAllOption">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
  field, note this is only supported for org.kuali.rice.krad.uif.control.MultiValueControl instance]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="simpleConstraint">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Simple constraints for the input field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Simple constraints for the input field
 
  
  A simple constraint which store the values for constraints such as required,
@@ -32242,19 +32242,19 @@
         </xsd:attribute>
         <xsd:attribute name="tooltipOfComponent">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[documentation not available]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="defaultValueFinderClass">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Gives Class that should be invoked to produce the default value for the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Gives Class that should be invoked to produce the default value for the
  field]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="fieldLabel">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Label text for the field
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Label text for the field
 
  
  The label is generally used to identify the field in the user interface
@@ -32263,12 +32263,12 @@
         </xsd:attribute>
         <xsd:attribute name="disableWildcardsAndOperators">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"/>
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"/>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="maskFormatter">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[MaskFormatter instance that will be used to mask the field value when #isApplyMask() is true
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[MaskFormatter instance that will be used to mask the field value when #isApplyMask() is true
 
  
  Note in cases where the mask is applied due to security (KIM permissions), the mask or partial mask formatter
@@ -32278,7 +32278,7 @@
         </xsd:attribute>
         <xsd:attribute name="minLength">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Minimum number of characters the input field value needs to be
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Minimum number of characters the input field value needs to be
 
  
  The minimum length determines the minimum required length of the value for
@@ -32290,7 +32290,7 @@
         </xsd:attribute>
         <xsd:attribute name="uppercaseValue">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Perform uppercase flag for this field to force input to uppercase.
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Perform uppercase flag for this field to force input to uppercase.
 
  
  It this flag is set to true the 'text-transform' style on the field will be set to 'uppercase'
@@ -32300,7 +32300,7 @@
         </xsd:attribute>
         <xsd:attribute name="exclusiveMin">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[The exclusive minimum value for numeric or date field.
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[The exclusive minimum value for numeric or date field.
 
  
  The exclusiveMin element determines the minimum allowable value for data
@@ -32314,39 +32314,39 @@
         </xsd:attribute>
         <xsd:attribute name="caseConstraint">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[The CaseConstraint that applies to this InputField]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="dataType">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Gets the DataType of this InputField, note that DataType set to be date
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Gets the DataType of this InputField, note that DataType set to be date
  when this field is using a date picker with a TextControl and has not otherwise been
  explicitly set.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="bindingInfo">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Returns the BindingInfo instance that is configured for the
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Returns the BindingInfo instance that is configured for the
  component]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="labelStyleClasses">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en">
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en">
               <![CDATA[Label style classes for the field]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="labelRendered">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the contained Label has been rendered
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Indicates whether the contained Label has been rendered
  as part of another field and thus should not be rendered with the
  attribute]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="dictionaryAttributeName">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Name of the attribute within the data dictionary the attribute field is
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Name of the attribute within the data dictionary the attribute field is
  associated with
 
  
@@ -32367,7 +32367,7 @@
         </xsd:attribute>
         <xsd:attribute name="instructionalMessage">
           <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.field.LookupInputField" xml:lang="en"><![CDATA[Message field that displays instructional text
+            <xsd:documentation source="org.kuali.rice.krad.lookup.LookupInputField" xml:lang="en"><![CDATA[Message field that displays instructional text
 
  
  This message field can be configured to for adjusting how the instructional text will display. Generally

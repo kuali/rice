@@ -107,7 +107,7 @@ public class ActionListController extends UifControllerBase{
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setRequeryActionList(true);
 
-        return start(form,result,request,response);
+        return start(form,request,response);
     }
 
     /**
@@ -268,14 +268,13 @@ public class ActionListController extends UifControllerBase{
     * </p>
     *
     * @param form - ActionListForm form
-    * @param result - Spring form binding result
     * @param request - http request
     * @param response - http response
     * @return ModelAndView - uses standard KRAD getUIFModelAndView()
     */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         ActionListForm actionListForm = (ActionListForm)form;
         request.setAttribute("preferences", actionListForm.getPreferences());
@@ -718,7 +717,7 @@ public class ActionListController extends UifControllerBase{
                 cleanForm = new org.kuali.rice.kew.actionlist.web.ActionListForm();
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -787,7 +786,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setDelegator(null);
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -817,7 +816,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setFilter(filter);
         LOG.debug("end clearFilter ActionListController");
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -872,10 +871,10 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setFilter(alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             actionListForm.setRequeryActionList(true);
-            return start(actionListForm,result,request,response);
+            return start(actionListForm,request,response);
         }
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -903,7 +902,7 @@ public class ActionListController extends UifControllerBase{
 
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,result,request,response);
+        return start((UifFormBase)actionListForm,request,response);
     }
 
     /**
@@ -936,7 +935,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setViewOutbox("true");
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -980,7 +979,7 @@ public class ActionListController extends UifControllerBase{
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setFilter(new ActionListFilter(actionListForm.getOldFilter()));
 
-        return start(actionListForm,result,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**

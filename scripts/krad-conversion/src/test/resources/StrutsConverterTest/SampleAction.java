@@ -53,8 +53,10 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
 
                 entry.setUnitPrice(book.getPrice());
                 Double totalPrice = 0.0d;
+
                 if (book.getPrice() != null && entry.getQuantity() != null) {
                     totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
+
                     if (entry.getDiscount() != null && entry.getDiscount().doubleValue() > 0) {
                         totalPrice = totalPrice - (totalPrice * entry.getDiscount().doubleValue() / 100);
                     }
@@ -86,14 +88,17 @@ public class SampleAction extends KualiTransactionalDocumentActionBase {
         super.doProcessingAfterPost(actionForm, request);
         BookOrderForm form = (BookOrderForm) actionForm;
         BookOrderDocument document = form.getBookOrderDocument();
+
         for (BookOrder entry : document.getBookOrders()) {
             if (entry.getBookId() != null) {
                 Book book = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Book.class,
                         entry.getBookId());
                 entry.setUnitPrice(book.getPrice());
                 Double totalPrice = 0.0d;
+
                 if (book.getPrice() != null && entry.getQuantity() != null) {
                     totalPrice = book.getPrice().doubleValue() * entry.getQuantity().intValue();
+
                     if (entry.getDiscount() != null && entry.getDiscount().doubleValue() > 0) {
                         totalPrice = totalPrice - (totalPrice * entry.getDiscount().doubleValue() / 100);
                     }

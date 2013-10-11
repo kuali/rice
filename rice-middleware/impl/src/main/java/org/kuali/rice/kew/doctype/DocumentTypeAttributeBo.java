@@ -15,25 +15,22 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 
 
 /**
@@ -44,29 +41,34 @@ import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
  *
  */
 @Entity
-//@Sequence(name="KREW_DOC_TYP_ATTR_S", property="id")
 @Table(name="KREW_DOC_TYP_ATTR_T")
 public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, Comparable, Serializable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
 
 	@Id
-    @PortableSequenceGenerator(name="KREW_DOC_TYP_ATTR_S")
-	@GeneratedValue(generator="KREW_DOC_TYP_ATTR_S")
-	@Column(name="DOC_TYP_ATTRIB_ID")
+    @PortableSequenceGenerator(name = "KREW_DOC_TYP_ATTR_S")
+	@GeneratedValue(generator = "KREW_DOC_TYP_ATTR_S")
+	@Column(name = "DOC_TYP_ATTRIB_ID")
 	private String id;
-    @Column(name="RULE_ATTR_ID",insertable=false, updatable=false)
+
+    @Column(name="RULE_ATTR_ID", insertable = false, updatable = false)
 	private String ruleAttributeId;
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_ATTR_ID")
+
+    @ManyToOne
+	@JoinColumn(name = "RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
-    @Column(name="DOC_TYP_ID",insertable=false, updatable=false)
+
+    @Column(name = "DOC_TYP_ID", insertable = false, updatable = false)
 	private String documentTypeId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinColumn(name="DOC_TYP_ID")
+
+    @ManyToOne
+	@JoinColumn(name = "DOC_TYP_ID")
 	private DocumentType documentType;
-    @Column(name="ORD_INDX")
+
+    @Column(name = "ORD_INDX")
 	private int orderIndex;
+
     @Transient
     private Integer lockVerNbr;
 
@@ -97,6 +99,9 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	 */
 	@Override
     public String getDocumentTypeId() {
+        if (documentTypeId == null && getDocumentType() != null) {
+            documentTypeId = getDocumentType().getDocumentTypeId();
+        }
 		return documentTypeId;
 	}
 
@@ -117,6 +122,9 @@ public class DocumentTypeAttributeBo implements DocumentTypeAttributeContract, C
 	 * @return Returns the ruleAttributeId.
 	 */
 	public String getRuleAttributeId() {
+        if (ruleAttributeId == null && getRuleAttribute() != null) {
+            ruleAttributeId = getRuleAttribute().getId();
+        }
 		return ruleAttributeId;
 	}
 

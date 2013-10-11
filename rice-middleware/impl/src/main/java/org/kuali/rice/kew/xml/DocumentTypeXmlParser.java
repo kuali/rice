@@ -1711,6 +1711,8 @@ public class DocumentTypeXmlParser {
                     validateUniqueName(categoryName);
 
                     ApplicationDocumentStatusCategory category = new ApplicationDocumentStatusCategory();
+                    category.setDocumentType(documentType);
+                    category.setDocumentTypeId(documentType.getDocumentTypeId());
                     category.setCategoryName(categoryName);
 
                     // iterate through children
@@ -1721,7 +1723,7 @@ public class DocumentTypeXmlParser {
                         if (Node.ELEMENT_NODE == categoryChild.getNodeType()) {
                             ApplicationDocumentStatus status =
                                     parseApplicationDocumentStatusHelper(documentType, categoryChild);
-                            status.setCategoryName(category.getCategoryName());
+                            status.setCategory(category);
 
                             parsedStatuses.add(status);
                         }
@@ -1748,6 +1750,8 @@ public class DocumentTypeXmlParser {
             validateUniqueName(statusName);
 
             ApplicationDocumentStatus status = new ApplicationDocumentStatus();
+            status.setDocumentType(documentType);
+            status.getApplicationDocumentStatusId().setDocumentTypeId(documentType.getDocumentTypeId());
             status.setStatusName(statusName);
             // order the statuses according to the order we encounter them
             status.setSequenceNumber(newStatusSequence.nextValue());

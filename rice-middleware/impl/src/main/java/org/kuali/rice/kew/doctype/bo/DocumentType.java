@@ -54,10 +54,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -206,7 +204,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     private List<ApplicationDocumentStatus> validApplicationStatuses;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "DOC_TYP_ID", referencedColumnName = "DOC_TYP_ID")
+    @JoinColumn(name = "DOC_TYP_ID")
     private List<ApplicationDocumentStatusCategory> applicationStatusCategories;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "documentType")

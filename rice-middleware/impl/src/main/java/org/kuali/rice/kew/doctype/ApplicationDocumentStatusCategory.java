@@ -20,14 +20,10 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>Model bean representing a grouping of valid application document statuses for a document type
@@ -50,6 +46,11 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
 
 	@EmbeddedId
 	private ApplicationDocumentStatusCategoryId applicationDocumentStatusCategoryId;
+
+    @MapsId("documentTypeId")
+    @ManyToOne
+    @JoinColumn(name = "DOC_TYP_ID")
+    private DocumentType documentType;
 
     /**
      * Gets the composite identifier, a {@link org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategoryId}
@@ -101,5 +102,13 @@ public class ApplicationDocumentStatusCategory extends PersistableBusinessObject
 	public void setCategoryName(String statusName) {
 		this.getApplicationDocumentStatusCategoryId().setCategoryName(statusName);
 	}
+
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
 
 }

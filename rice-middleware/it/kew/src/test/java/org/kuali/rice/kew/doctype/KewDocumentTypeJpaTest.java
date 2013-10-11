@@ -19,21 +19,14 @@ package org.kuali.rice.kew.doctype;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
-import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
-import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 
-import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -58,12 +51,14 @@ public class KewDocumentTypeJpaTest extends KRADTestCase {
         assertTrue("DocumentTypePolicy persisted correctly", dtp != null && StringUtils.isNotBlank(
                 dtp.getDocumentType().getDocumentTypeId()));
 
-        ApplicationDocumentStatus appDocStatus = setApplicationDocumentStatus(dt.getDocumentTypeId());
+        ApplicationDocumentStatusCategory appDocStatusCategory = setupApplicationDocumentStatusCategory(
+                dt.getDocumentTypeId());
+        assertTrue("ApplicationDocumentStatusCategory persisted correctly", appDocStatusCategory != null);
+
+        ApplicationDocumentStatus appDocStatus = setApplicationDocumentStatus(dt.getDocumentTypeId(), appDocStatusCategory);
         assertTrue("Application Document Status persisted correctly", appDocStatus != null &&
                 StringUtils.isNotBlank(appDocStatus.getDocumentTypeId()));
-        ApplicationDocumentStatusCategory appDocStatusCategory = setupApplicationDocumentStatusCategory(
-                            dt.getDocumentTypeId());
-        assertTrue("ApplicationDocumentStatusCategory persisted correctly", appDocStatusCategory != null);
+
 
         DocumentTypeAttributeBo documentTypeAttributeBo = setupDocumentTypeAttributeBo(dt);
         assertTrue("DocumentTypeAttributeBo persisted correctly", documentTypeAttributeBo != null &&
@@ -231,10 +226,10 @@ public class KewDocumentTypeJpaTest extends KRADTestCase {
         return KRADServiceLocator.getDataObjectService().save(dtp);
     }
 
-    private ApplicationDocumentStatus setApplicationDocumentStatus(String documentTypeId){
+    private ApplicationDocumentStatus setApplicationDocumentStatus(String documentTypeId, ApplicationDocumentStatusCategory category){
         ApplicationDocumentStatus applicationDocumentStatus = new ApplicationDocumentStatus();
         applicationDocumentStatus.setDocumentTypeId(documentTypeId);
-        applicationDocumentStatus.setCategoryName("SomeCategory");
+        applicationDocumentStatus.setCategory(category);
         applicationDocumentStatus.setSequenceNumber(1);
         applicationDocumentStatus.setStatusName("someStatus");
 

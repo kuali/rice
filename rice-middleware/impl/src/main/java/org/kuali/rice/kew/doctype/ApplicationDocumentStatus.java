@@ -15,14 +15,18 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 
 /**
  * Model bean representing the valid application document statuses for a document type
@@ -53,7 +57,21 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
     @Column(name = "SEQ_NO")
     private Integer sequenceNumber;
 
-    @Column(name="CAT_NM")
+    @ManyToOne
+    @JoinColumn(name = "CAT_NM", referencedColumnName = "CAT_NM")
+    @PrimaryKeyJoinColumn(name = "DOC_TYP_ID", referencedColumnName = "DOC_TYP_ID")
+    private ApplicationDocumentStatusCategory category;
+
+    @MapsId("documentTypeId")
+    @ManyToOne
+    @JoinColumn(name = "DOC_TYP_ID")
+    private DocumentType documentType;
+
+    /**
+     * Just here to keep OJB happy for now.
+     */
+    @Deprecated
+    @Transient
     private String categoryName;
 
     public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
@@ -92,11 +110,26 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
     }
 
     public String getCategoryName() {
-        return categoryName;
+        if (getCategory() == null) {
+            return null;
+        }
+        return getCategory().getCategoryName();
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public ApplicationDocumentStatusCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ApplicationDocumentStatusCategory category) {
+        this.category = category;
     }
 
 }

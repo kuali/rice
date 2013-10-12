@@ -15,8 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.Failable;
 import edu.samplu.common.NavTemplateMethodSTBase;
+import org.kuali.rice.testtools.selenium.Failable;
 import org.openqa.selenium.By;
 
 /**
@@ -28,8 +28,6 @@ public abstract class AdminTmplMthdSTNavBase extends NavTemplateMethodSTBase {
 //    public static final String CREATE_NEW_LOCATOR = "//a[contains(@href,'command=initiate')]"; // not with IE8
 //    public static final String CREATE_NEW_LOCATOR = "//a[@title='Create a new record']"; // not with IE8
     public static final String ADMIN_LOCATOR = "Administration";
-    public static final String LABEL_KUALI_KUALI_SYSTEMS = "KUALI - Kuali Systems";
-    public static final String LABEL_KUALI_DEFAULT = "KUALI : Default";
     public static final String SPAN_CLASS_PAGEBANNER = "//span[@class='pagebanner']";
 
     @Override

@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup.conditionalresults;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

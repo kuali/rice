@@ -15,9 +15,10 @@
  */
 package edu.samplu.krad.configview;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,7 +31,7 @@ public abstract class Help2AbstractSmokeTestBase extends WebDriverLegacyITBase {
     public static final String BOOKMARK_URL = "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
    
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link Help2AbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link Help2AbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */

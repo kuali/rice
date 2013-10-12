@@ -15,9 +15,9 @@
  */
 package edu.samplu;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.junit.Test;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;

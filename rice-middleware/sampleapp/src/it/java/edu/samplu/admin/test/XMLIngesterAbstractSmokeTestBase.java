@@ -15,9 +15,9 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.Failable;
+import org.kuali.rice.testtools.selenium.Failable;
 import edu.samplu.common.FreemarkerSTBase;
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
 import edu.samplu.common.PropertiesUtils;
 import org.openqa.selenium.By;
 
@@ -103,7 +103,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
     /**
      * Navigate to the page under test and call {@link #testIngestion}
      *
-     * @param failable {@link edu.samplu.common.Failable}
+     * @param failable {@link org.kuali.rice.testtools.selenium.Failable}
      * @throws Exception
      */
     protected void testIngestionNav(Failable failable) throws Exception {

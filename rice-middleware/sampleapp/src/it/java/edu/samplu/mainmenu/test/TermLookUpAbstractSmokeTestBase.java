@@ -15,8 +15,8 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

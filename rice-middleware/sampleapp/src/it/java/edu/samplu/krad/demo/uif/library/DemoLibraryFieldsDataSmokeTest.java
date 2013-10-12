@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import edu.samplu.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.selenium.JiraAwareFailureUtil;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

@@ -15,8 +15,8 @@
  */
 package edu.samplu;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
 /**
@@ -38,7 +38,7 @@ public class LoginLogoutSmokeTest extends SmokeTestBase {
     }
 
     /**
-     * Navigate to the page under test click logout.  {@link LoginLogoutSmokeTest#waitAndClickLogout(edu.samplu.common.Failable)}
+     * Navigate to the page under test click logout.  {@link LoginLogoutSmokeTest#waitAndClickLogout(org.kuali.rice.testtools.selenium.Failable)}
      *
      * @throws {@link Exception}
      */

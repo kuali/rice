@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
@@ -32,7 +32,7 @@ public abstract class ValidCharsConstraintAbstractSmokeTestBase extends WebDrive
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4";
 
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ValidCharsConstraintAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ValidCharsConstraintAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    

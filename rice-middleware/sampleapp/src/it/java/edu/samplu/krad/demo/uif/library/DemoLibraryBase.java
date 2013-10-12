@@ -15,8 +15,8 @@
  */
 package edu.samplu.krad.demo.uif.library;
 
-import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

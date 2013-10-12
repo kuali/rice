@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
@@ -35,7 +35,7 @@ public abstract class UifTooltipAbstractSmokeTestBase extends WebDriverLegacyITB
     private static final String NAME_FIELD_2 = "field2";
     
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link UifTooltipAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link UifTooltipAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    

@@ -15,13 +15,11 @@
  */
 package edu.samplu;
 
-import static org.junit.Assert.*;
-
-import edu.samplu.common.SmokeTestBase;
-import org.junit.Assert;
+import com.thoughtworks.selenium.SeleneseTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
 
 public class LoginLogoutMultipleSmokeTest extends SmokeTestBase {
 
@@ -32,7 +30,7 @@ public class LoginLogoutMultipleSmokeTest extends SmokeTestBase {
 
     @Override
     public void fail(String message) {
-        Assert.fail(message);
+        SeleneseTestBase.fail(message);
     }
 
     @Override
@@ -63,15 +61,15 @@ public class LoginLogoutMultipleSmokeTest extends SmokeTestBase {
     }
 
     public void testMultipleLoginLogout() throws Exception {
-        assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
-        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        SeleneseTestBase.assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
+        SeleneseTestBase.assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndTypeByName("backdoorId", "employee");
         waitAndClickByXpath("//input[@value='Login']");
         waitForPageToLoad();
         assertElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH);
-        assertEquals("  Impersonating User: employee",getTextByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        SeleneseTestBase.assertEquals("  Impersonating User: employee",getTextByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
-        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        SeleneseTestBase.assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
         passed();
     }

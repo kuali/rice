@@ -15,9 +15,9 @@
  */
 package edu.samplu.travel.test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
@@ -44,7 +44,7 @@ public abstract class FiscalOfficerInfoMaintenanceAbstractSmokeTestBase extends 
     }
 
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.
      * Bookmark Tests should override and return {@link edu.samplu.travel.krad.test.CollectionTotallingAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return

@@ -1434,6 +1434,7 @@
   <modules>
     <module>db</module>
     <module>development-tools</module>
+    <module>rice-tools-test</module>
     <module>rice-middleware</module>
     <module>rice-framework</module>
     <module>config</module>

@@ -16,8 +16,8 @@
 
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

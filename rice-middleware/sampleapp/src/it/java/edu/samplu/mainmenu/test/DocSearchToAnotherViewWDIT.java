@@ -2,13 +2,11 @@ package edu.samplu.mainmenu.test;
 
 import junit.framework.Assert;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import org.junit.Test;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver.Window;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertTrue;

@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup.multivalue;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Ignore;
 import org.junit.Test;
 

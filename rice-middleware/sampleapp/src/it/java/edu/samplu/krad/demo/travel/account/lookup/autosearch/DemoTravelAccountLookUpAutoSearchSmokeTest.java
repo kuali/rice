@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.demo.travel.account.lookup.autosearch;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
 /**

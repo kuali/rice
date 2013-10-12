@@ -16,9 +16,9 @@
 
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverITBase;
-import edu.samplu.common.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;

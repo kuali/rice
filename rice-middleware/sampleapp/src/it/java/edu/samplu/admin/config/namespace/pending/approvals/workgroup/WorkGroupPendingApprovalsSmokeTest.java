@@ -17,7 +17,7 @@ package edu.samplu.admin.config.namespace.pending.approvals.workgroup;
 
 import edu.samplu.admin.config.namespace.pending.PendingBase;
 
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
 import org.junit.Test;
 
 /**

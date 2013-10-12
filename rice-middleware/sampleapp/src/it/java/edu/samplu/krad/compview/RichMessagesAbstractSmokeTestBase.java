@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
@@ -32,7 +32,7 @@ public abstract class RichMessagesAbstractSmokeTestBase extends WebDriverLegacyI
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=RichMessagesView&methodToCall=start";
             
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link RichMessagesAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link RichMessagesAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    

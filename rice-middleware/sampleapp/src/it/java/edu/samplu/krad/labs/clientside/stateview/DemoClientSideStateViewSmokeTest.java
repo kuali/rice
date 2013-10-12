@@ -17,7 +17,7 @@ package edu.samplu.krad.labs.clientside.stateview;
 
 import org.junit.Test;
 import org.junit.Assert;
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -53,7 +53,7 @@ public class DemoClientSideStateViewSmokeTest extends SmokeTestBase {
     /**
      * This overridden method ...
      * 
-     * @see edu.samplu.common.SmokeTestBase#navigate()
+     * @see org.kuali.rice.testtools.selenium.SmokeTestBase#navigate()
      */
     @Override
     protected void navigate() throws Exception {

@@ -15,9 +15,9 @@
  */
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
@@ -37,7 +37,7 @@ public abstract class UIFComponentValidationRegexPatternAbstractSmokeTestBase ex
     }
 
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return BOOKMARK_URL
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return BOOKMARK_URL
      * {@inheritDoc}
      * @return
      */

@@ -16,7 +16,7 @@
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
+import org.kuali.rice.testtools.selenium.Failable;
 import org.junit.Test;
 
 /**

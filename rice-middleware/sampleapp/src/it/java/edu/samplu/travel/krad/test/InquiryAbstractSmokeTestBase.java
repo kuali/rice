@@ -15,9 +15,9 @@
  */
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import org.junit.Assert;
 import org.openqa.selenium.Alert;
@@ -61,7 +61,7 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
     public static final String FANCYBOX_IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    

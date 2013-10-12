@@ -15,7 +15,7 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.Failable;
+import org.kuali.rice.testtools.selenium.Failable;
 import edu.samplu.common.NavTemplateMethodSTBase;
 import org.openqa.selenium.By;
 

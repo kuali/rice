@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.library.collections;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 

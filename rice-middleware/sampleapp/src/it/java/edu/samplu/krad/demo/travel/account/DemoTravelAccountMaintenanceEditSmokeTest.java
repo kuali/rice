@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.demo.travel.account;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;

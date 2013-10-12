@@ -15,8 +15,8 @@
  */
 package edu.samplu.travel.krad.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

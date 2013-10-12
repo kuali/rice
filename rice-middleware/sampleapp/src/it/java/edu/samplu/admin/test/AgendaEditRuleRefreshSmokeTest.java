@@ -16,10 +16,10 @@
 
 package edu.samplu.admin.test;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
 
 /**
  * test that repeated ajax refreshes work

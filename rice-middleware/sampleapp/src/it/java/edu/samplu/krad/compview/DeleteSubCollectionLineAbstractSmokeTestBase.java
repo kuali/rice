@@ -15,9 +15,9 @@
  */
 package edu.samplu.krad.compview;
 
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import static org.junit.Assert.assertNotSame;
 
@@ -39,7 +39,7 @@ public abstract class DeleteSubCollectionLineAbstractSmokeTestBase extends WebDr
     public static final String FIELD_ELEMENT_NAME = "list4[0].subList[0].field1";
     
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link DeleteSubCollectionLineAbstractSmokeTestBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link DeleteSubCollectionLineAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    

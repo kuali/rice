@@ -93,6 +93,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-middleware/serviceregistry/rice-serviceregistry.iml" filepath="$PROJECT_DIR$/rice-middleware/serviceregistry/rice-serviceregistry.iml" group="rice-middleware and modules" />
       <module fileurl="file://$PROJECT_DIR$/db/sql/rice-sql.iml" filepath="$PROJECT_DIR$/db/sql/rice-sql.iml" group="rice-db and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-middleware/standalone/rice-standalone.iml" filepath="$PROJECT_DIR$/rice-middleware/standalone/rice-standalone.iml" group="rice-middleware and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-tools-test/rice-tools-test.iml" filepath="$PROJECT_DIR$/rice-tools-test/rice-tools-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-middleware/web/rice-web.iml" filepath="$PROJECT_DIR$/rice-middleware/web/rice-web.iml" group="rice-middleware and modules" />
     </modules>
   </component>

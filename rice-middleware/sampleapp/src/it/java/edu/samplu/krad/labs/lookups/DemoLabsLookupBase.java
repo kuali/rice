@@ -15,7 +15,7 @@
  */
 package edu.samplu.krad.labs.lookups;
 
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -1,7 +1,7 @@
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
+import org.kuali.rice.testtools.selenium.Failable;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

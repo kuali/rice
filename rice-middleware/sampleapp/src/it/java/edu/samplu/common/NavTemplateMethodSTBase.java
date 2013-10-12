@@ -15,6 +15,7 @@
  */
 package edu.samplu.common;
 
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.openqa.selenium.By;
 
 /**

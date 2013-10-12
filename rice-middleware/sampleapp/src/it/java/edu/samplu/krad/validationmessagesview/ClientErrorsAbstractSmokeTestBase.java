@@ -16,9 +16,9 @@
 package edu.samplu.krad.validationmessagesview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
@@ -38,7 +38,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
     }
 
     /**
-     * Nav tests start at {@link edu.samplu.common.ITUtil#PORTAL}.
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.
      * Bookmark Tests should override and return {@link edu.samplu.krad.validationmessagesview.ClientErrorsAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return

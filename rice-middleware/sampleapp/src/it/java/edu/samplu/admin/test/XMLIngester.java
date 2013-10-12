@@ -15,7 +15,7 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
+import org.kuali.rice.testtools.selenium.ITUtil;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;

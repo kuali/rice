@@ -15,8 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
 /**

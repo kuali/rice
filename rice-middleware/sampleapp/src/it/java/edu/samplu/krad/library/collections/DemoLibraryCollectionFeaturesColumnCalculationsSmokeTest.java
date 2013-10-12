@@ -15,10 +15,9 @@
  */
 package edu.samplu.krad.library.collections;
 
-import edu.samplu.common.JiraAwareFailureUtil;
-import edu.samplu.common.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.apache.commons.lang.StringUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 

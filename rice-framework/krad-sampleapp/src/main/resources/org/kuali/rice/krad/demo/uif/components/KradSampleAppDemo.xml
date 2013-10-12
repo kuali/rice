@@ -509,6 +509,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Accordion-View"/>
         <bean parent="Uif-Link" p:linkText="QuickFinder"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-QuickFinder-View"/>
+        <bean parent="Uif-Link" p:linkText="Inquiry"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Inquiry-View"/>
       </list>
     </property>
   </bean>
@@ -598,6 +600,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View"/>
         <bean parent="Uif-Link" p:linkText="Conditional Refresh"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View"/>
+        <bean parent="Uif-Link" p:linkText="AJAX Field Query"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AjaxFieldQuery-View"/>
       </list>
     </property>
   </bean>

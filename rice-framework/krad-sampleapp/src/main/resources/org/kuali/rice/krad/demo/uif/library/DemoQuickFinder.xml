@@ -31,114 +31,15 @@
         <ref bean="Demo-QuickFinder-Example1"/>
         <ref bean="Demo-QuickFinder-Example2"/>
         <ref bean="Demo-QuickFinder-Example3"/>
-        <ref bean="Demo-QuickFinder-Example4"/>
-        <ref bean="Demo-QuickFinder-Example5"/>
-        <ref bean="Demo-QuickFinder-Example6"/>
-        <ref bean="Demo-QuickFinder-Example7"/>
-        <ref bean="Demo-QuickFinder-Example8"/>
-        <!--<ref bean="Demo-QuickFinder-Example9"/>-->
       </list>
     </property>
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-QuickFinder-Example1" parent="Uif-VerticalBoxSection" p:headerText="Inquiry">
+  <bean id="Demo-QuickFinder-Example1" parent="Uif-VerticalBoxSection" p:headerText="Lookup">
     <property name="items">
       <list>
         <!-- ex:Demo-QuickFinder-Example1 start-->
-        <bean parent="GenericTextField" p:readOnly="true" p:propertyName="inputField1" p:defaultValue="a2">
-          <property name="instructionalText" value="Click the link to perform an inquiry on this TravelAccount number" />
-          <property name="inquiry">
-            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:inquiryParameters="inputField1:number"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example1 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example2" parent="Uif-VerticalBoxSection" p:headerText="Direct Inquiry">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example2 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField2" p:defaultValue="a1">
-          <property name="instructionalText" value="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')" />
-          <property name="inquiry">
-            <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:inquiryParameters="inputField2:number"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example2 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example3" parent="Uif-VerticalBoxSection" p:headerText="Ajax Field Query">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example3 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField3" p:defaultValue="a1">
-          <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out)" />
-          <property name="propertyNamesForAdditionalDisplay" value="inputField4,inputField5" />
-          <property name="attributeQuery">
-            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:queryFieldMapping="inputField3:number" p:returnFieldMapping="name:inputField4,subAccountName:inputField5" />
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example3 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example4" parent="Uif-VerticalBoxSection" p:headerText="Ajax Field Query Custom Method">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example4 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField6" p:defaultValue="a2">
-          <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out) " />
-          <property name="propertyNamesForAdditionalDisplay" value="inputField7,inputField8" />
-          <property name="attributeQuery">
-            <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
-                  p:queryMethodArgumentFieldList="number"
-                  p:returnFieldMapping="name:inputField7,subAccountName:inputField8"
-                  p:queryFieldMapping="inputField6:number"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example4 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example5" parent="Uif-VerticalBoxSection" p:headerText="Ajax Field Query Custom Method and Service">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example5 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField9" p:defaultValue="a3">
-          <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out) " />
-          <property name="propertyNamesForAdditionalDisplay" value="inputField10,inputField11"/>
-          <property name="attributeQuery">
-            <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByNumber"
-                  p:queryMethodArgumentFieldList="number"
-                  p:returnFieldMapping="name:inputField10,subAccountName:inputField11"
-                  p:queryFieldMapping="inputField9:number">
-              <property name="queryMethodInvokerConfig.targetObject">
-                <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
-                  <property name="serviceName" value="testAttributeQueryService"/>
-                </bean>
-              </property>
-            </bean>
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example5 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example6" parent="Uif-VerticalBoxSection" p:headerText="Lookup">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example6 start-->
         <bean parent="GenericTextField" p:propertyName="inputField12">
           <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
           <property name="quickfinder">
@@ -146,15 +47,15 @@
                   p:fieldConversions="number:inputField12"/>
           </property>
         </bean>
-        <!-- ex:Demo-QuickFinder-Example6 end-->
+        <!-- ex:Demo-QuickFinder-Example1 end-->
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-QuickFinder-Example7" parent="Uif-VerticalBoxSection" p:headerText="Lookup (Return by script)">
+  <bean id="Demo-QuickFinder-Example2" parent="Uif-VerticalBoxSection" p:headerText="Lookup (Return by script)">
     <property name="items">
       <list>
-        <!-- ex:Demo-QuickFinder-Example7 start-->
+        <!-- ex:Demo-QuickFinder-Example2 start-->
         <bean parent="GenericTextField" p:propertyName="inputField13">
           <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
           <property name="quickfinder">
@@ -162,15 +63,15 @@
                   p:fieldConversions="number:inputField13"/>
           </property>
         </bean>
-        <!-- ex:Demo-QuickFinder-Example7 end-->
+        <!-- ex:Demo-QuickFinder-Example2 end-->
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-QuickFinder-Example8" parent="Uif-VerticalBoxSection" p:headerText="Lookup (Overridden link)">
+  <bean id="Demo-QuickFinder-Example3" parent="Uif-VerticalBoxSection" p:headerText="Lookup (Overridden link)">
     <property name="items">
       <list>
-        <!-- ex:Demo-QuickFinder-Example8 start-->
+        <!-- ex:Demo-QuickFinder-Example3 start-->
         <bean parent="GenericTextField" p:propertyName="inputField14">
           <property name="instructionalText" value="Overriden link to display different text - Search Now" />
           <property name="quickfinder">
@@ -178,23 +79,7 @@
                   p:fieldConversions="number:inputField14"/>
           </property>
         </bean>
-        <!-- ex:Demo-QuickFinder-Example8 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-QuickFinder-Example9" parent="Uif-VerticalBoxSection" p:headerText=" Suggest">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-QuickFinder-Example9 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField15">
-          <property name="instructionalText" value="For example, type ea or ca to see a suggestion" />
-          <property name="suggest">
-            <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
-                  p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-          </property>
-        </bean>
-        <!-- ex:Demo-QuickFinder-Example9 end-->
+        <!-- ex:Demo-QuickFinder-Example3 end-->
       </list>
     </property>
   </bean>

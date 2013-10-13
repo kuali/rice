@@ -15,6 +15,7 @@
  */
 package edu.samplu.krad.demo.lookupviews.lookup.conditionalresults;
 
+import org.junit.Assert;
 import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
 
@@ -71,7 +72,7 @@ public class DemoLookUpConditionalResultsSmokeTest extends SmokeTestBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertEquals(1, getCssCount("div#uLookupResults thead th"));
+        Assert.assertEquals(1, getCssCount("div#uLookupResults thead th"));
         assertElementPresent("div#uLookupResults thead th:nth-child(1)");
         assertTextPresent(TRAVEL_ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
                 "Travel Account Name column not present");
@@ -80,7 +81,7 @@ public class DemoLookUpConditionalResultsSmokeTest extends SmokeTestBase {
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        assertEquals(3, getCssCount("div#uLookupResults thead th"));
+        Assert.assertEquals(3, getCssCount("div#uLookupResults thead th"));
         assertElementPresent("div#uLookupResults thead th:nth-child(1)");
         assertTextPresent(TRAVEL_ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
                 "Travel Account Name column not present");

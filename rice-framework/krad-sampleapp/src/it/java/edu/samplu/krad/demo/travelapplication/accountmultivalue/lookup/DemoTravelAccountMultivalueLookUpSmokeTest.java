@@ -15,8 +15,9 @@
  */
 package edu.samplu.krad.demo.travelapplication.accountmultivalue.lookup;
 
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -46,20 +47,20 @@ public class DemoTravelAccountMultivalueLookUpSmokeTest extends SmokeTestBase {
 
     private void testSearchSelect() throws InterruptedException {
         waitAndClickByValue("CAT");
-        waitAndClickButtonByText(SEARCH);
+        waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         waitAndClickByName("selectedCollectionLines['lookupResults']");
         assertTextPresent("a14");
         assertTextPresent("a6");
         assertTextPresent("a9");
-        assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
+        assertButtonEnabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
         waitAndClickByName("selectedCollectionLines['lookupResults']");
-        assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
+        assertButtonDisabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
 
         assertMultiValueSelectAllThisPage();
         assertMultiValueDeselectAllThisPage();
 
         waitAndClickByName("selectedCollectionLines['lookupResults']");
-        waitAndClickButtonByText(SEARCH);
+        waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         checkForIncidentReport();
     }
 

@@ -15,113 +15,26 @@
  */
 package edu.samplu.krad.compview;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
+import org.kuali.rice.testtools.selenium.breadcrumb.BreadcrumbAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BreadcrumbSmokeTest extends SmokeTestBase {
+public class BreadcrumbSmokeTest extends BreadcrumbAftBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page1";
 
-    /**
-     * //div[@class='uif-breadcrumbSiblingContent']//div[@class='uif-inputField']//ul[@class='uif-optionList']
-     */
-    public static final String SECOND_BREADCRUMB_NAV_XPATH = "//div[@class='uif-breadcrumbSiblingContent']//div[@class='uif-inputField']//ul[@class='uif-optionList']";
-
-    /**
-     * (//a[@class='uif-breadcrumbSiblingLink'])[2]
-     * Not final as it needs to be overwritten for the Demo Breadcrumbs smoke test
-     */
-    public static final String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
-
-    String[][] selectAsserts = {{"UifCompView", "Uif Components"}};
-
-    int[] breadcrumbOrderIndexes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1};
-
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
-    }
-
-    protected String getTriangleXpath() {
-        return SECOND_DOWN_TRIANGLE_XPATH;
     }
 
     protected void navigate() throws Exception {
         waitAndClickKRAD();
         waitAndClickByXpath(KITCHEN_SINK_XPATH);
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
-    }
-
-    protected void testBreadcrumb(int pageNumber) throws Exception {
-        // <ul id="u13_control" class="uif-optionList" data-control_for="u13" tabindex="0"><li class="uif-optionList-item uif-optionList-selectedItem"><a href="http://env1.rice.kuali.org/kr-krad/uicomponents?methodToCall=start&pageId=UifCompView-Page1&viewId=UifCompView" data-key="UifCompView-Page1">
-        //         Input Fields and Controls
-        // </a></li>
-        // <li class="uif-optionList-item"><a href="http://env1.rice.kuali.org/kr-krad/uicomponents?methodToCall=start&pageId=UifCompView-Page2&viewId=UifCompView" data-key="UifCompView-Page2">
-        //         Other Fields
-        // </a></li>
-        // etc.
-        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
-        // The second ▼
-        waitAndClickByXpath(getTriangleXpath());
-        Thread.sleep(100);
-        SeleneseTestBase.assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
-        waitAndClickByXpath(getTriangleXpath());
-        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
-        waitAndClickByXpath(getTriangleXpath());
-
-        // The Second selection of the second ▼
-        // you can't just click by link text as the same clickable text is on the left navigation.
-        waitAndClickByXpath(SECOND_BREADCRUMB_NAV_XPATH +"/li[" + pageNumber + "]/a");
-        waitForElementPresentById("TopLink" + pageNumber, "Breadcrumb number " + pageNumber + " failure"); // bottom jump to top link
-        driver.getCurrentUrl().contains("pageId=UifCompView-Page" + pageNumber);
-    }
-
-    protected void testBreadcrumbs() throws Exception {
-        for (int i = 0, s = breadcrumbOrderIndexes.length; i < s; i++) {
-            testBreadcrumb(breadcrumbOrderIndexes[i]);
-        }
-    }
-
-    protected void testBreadcrumbsShuffled() throws Exception {
-        int[] copiedBreadcrumbOrderIndex = Arrays.copyOf(breadcrumbOrderIndexes, breadcrumbOrderIndexes.length);
-
-        Collections.shuffle(Arrays.asList(copiedBreadcrumbOrderIndex));
-        for (int i = 0, s = copiedBreadcrumbOrderIndex.length; i < s; i++) {
-            testBreadcrumb(copiedBreadcrumbOrderIndex[i]);
-        }
-    }
-
-    @Test
-    public void testBreadcrumbBookmark() throws Exception {
-        testBreadcrumbs();
-        passed();
-    }
-
-    @Test
-    public void testBreadcrumbShuffledBookmark() throws Exception {
-        testBreadcrumbsShuffled();
-        passed();
-    }
-
-    @Test
-    public void testBreadcrumbNav() throws Exception {
-        testBreadcrumbs();
-        passed();
-    }
-
-    @Test
-    public void testBreadcrumbShuffledNav() throws Exception {
-        testBreadcrumbsShuffled();
-        passed();
     }
 }

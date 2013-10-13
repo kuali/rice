@@ -15,17 +15,22 @@
  */
 package edu.samplu.krad.labs.kitchensink.compview;
 
-import edu.samplu.krad.compview.BreadcrumbSmokeTest;
+import org.kuali.rice.testtools.selenium.breadcrumb.BreadcrumbAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoBreadcrumbSmokeTest extends BreadcrumbSmokeTest {
+public class DemoBreadcrumbSmokeTest extends BreadcrumbAftBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
 
     public static final String DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])";
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
 
     @Override
     protected void navigate() throws Exception {

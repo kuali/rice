@@ -1618,7 +1618,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected String multiValueResultCount() throws InterruptedException {
         List<WebElement> resultLi = waitAndGetElementsByAttributeValue("class", "uif-infoMessageItem");
-        String resultsCount = resultLi.get(1).getText(); // second uif-infoMessageItem contains count
+        String resultsCount = resultLi.get(0).getText();
         resultsCount = resultsCount.substring(0, resultsCount.indexOf((" ")));
         return resultsCount;
     }

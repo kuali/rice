@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.common;
+package org.kuali.rice.testtools.common;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -51,6 +52,28 @@ public class PropertiesUtils {
 
         if(inputStream != null) {
             props.load(inputStream);
+        }
+
+        return props;
+    }
+
+    /**
+     * @param fileLocation null means use resourceLocation
+     * @param resourceLocation
+     * @return
+     * @throws IOException
+     */
+    public Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
+        Properties props = null;
+        InputStream in = null;
+        if(fileLocation != null) {
+            in = new FileInputStream(fileLocation);
+        } else {
+            in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+        }
+        if(in != null) {
+            props = PropertiesUtils.loadProperties(in);
+            in.close();
         }
 
         return props;

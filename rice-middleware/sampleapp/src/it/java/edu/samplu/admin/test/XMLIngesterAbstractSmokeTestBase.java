@@ -15,10 +15,10 @@
  */
 package edu.samplu.admin.test;
 
+import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.selenium.Failable;
 import edu.samplu.common.FreemarkerSTBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
-import edu.samplu.common.PropertiesUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;

@@ -17,6 +17,7 @@ package edu.samplu.common;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.testtools.common.PropertiesUtils;
 
 import java.io.File;
 import java.util.Properties;

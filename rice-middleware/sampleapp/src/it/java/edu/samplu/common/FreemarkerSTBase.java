@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import java.io.File;

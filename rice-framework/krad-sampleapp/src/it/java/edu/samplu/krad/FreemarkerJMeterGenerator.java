@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.samplu.common;
+package edu.samplu.krad;
+
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.template.Configuration;
+import org.apache.commons.io.FileUtils;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,12 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.StringTokenizer;
-
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-import org.apache.commons.io.FileUtils;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  * The JMeter.ftl must use "@{" for JMeter variables these are converted to "${" after the templating.  Required to avoid

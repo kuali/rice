@@ -225,7 +225,6 @@
 
   <bean id="kradTestJpaPersistenceProvider"
         class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
-        p:providerRegistry-ref="kd-providerRegistry"
         p:dataObjectService-ref="kd-dataObjectService"
         p:sharedEntityManager-ref="kradTestSharedEntityManager"/>
 

@@ -159,6 +159,8 @@
     <jetty.version>8.1.7.v20120910</jetty.version>
     <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
     <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
+    <plugin.build-helper.version>1.8</plugin.build-helper.version>
+    <plugin.gmaven.version>1.5</plugin.gmaven.version>
     <joda-time.version>2.0</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10</jotm.version>
@@ -923,7 +925,7 @@
         <plugin>
           <groupId>org.codehaus.gmaven</groupId>
           <artifactId>gmaven-plugin</artifactId>
-          <version>1.4</version>
+          <version>${plugin.gmaven.version}</version>
           <configuration>
             <providerSelection>1.8</providerSelection>
           </configuration>
@@ -931,7 +933,7 @@
             <dependency>
               <groupId>org.codehaus.gmaven.runtime</groupId>
               <artifactId>gmaven-runtime-1.8</artifactId>
-              <version>1.4</version>
+              <version>${plugin.gmaven.version}</version>
               <exclusions>
                 <exclusion>
                   <groupId>org.codehaus.groovy</groupId>
@@ -1194,7 +1196,7 @@
                   <pluginExecutionFilter>
                     <groupId>org.codehaus.gmaven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
-                    <versionRange>[1.4,)</versionRange>
+                    <versionRange>[${plugin.gmaven.version},)</versionRange>
                     <goals>
                       <goal>generateStubs</goal>
                       <goal>compile</goal>

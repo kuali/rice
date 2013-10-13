@@ -135,24 +135,12 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     }
 
     @Override
-    public boolean isProxied(Object dataObject) {
-        PersistenceProvider persistenceProvider = persistenceProviderForObject(dataObject);
-        return persistenceProvider.isProxied(dataObject);
-    }
-
-    @Override
-    public Object resolveProxy(Object dataObject) {
-        PersistenceProvider persistenceProvider = persistenceProviderForObject(dataObject);
-        return persistenceProvider.resolveProxy(dataObject);
-    }
-
-    @Override
     public void flush(Class<?> type){
         PersistenceProvider persistenceProvider = persistenceProviderForType(type);
         if (persistenceProvider == null) {
             throw new RuntimeException("No PersistenceProvider handles type: " + type);
         }
-        persistenceProvider.flush();
+        persistenceProvider.flush(type);
     }
 
     @Required

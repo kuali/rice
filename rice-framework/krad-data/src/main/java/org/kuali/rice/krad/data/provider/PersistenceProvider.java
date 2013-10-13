@@ -126,25 +126,15 @@ public interface PersistenceProvider extends Provider {
     boolean handles(Class<?> type);
 
     /**
-     * Determine if given object is a proxy object.
+     * Flush any outstanding changes within the current context for the provider pertaining to the given data object
+     * Class type.
      *
-     * @param  dataObject the data object to be checked
+     * <p>If an implementation of this interface does not support or require the concept of "flushing", this method can
+     * be ignored.</p>
      *
-     * @return true if a proxy, false otherwise
+     * @param type the type of the data object for which to perform the flush. This shoul be used to identify the
+     * context in which to perform the flush.
      */
-    boolean isProxied(Object dataObject);
-
-    /**
-     * Resolve data object from its proxy
-     * @param dataObject
-     * @return unproxied object
-     */
-    Object resolveProxy(Object dataObject);
-
-    /**
-     * Flush the entity manager
-     */
-    void flush();
-
+    void flush(Class<?> type);
 
 }

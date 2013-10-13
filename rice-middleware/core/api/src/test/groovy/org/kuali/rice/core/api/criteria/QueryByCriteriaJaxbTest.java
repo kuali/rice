@@ -66,6 +66,7 @@ public class QueryByCriteriaJaxbTest {
         predicateSamplesMap.put(LessThanPredicate.class, PredicateFactory.lessThan("foo", 10));
         predicateSamplesMap.put(LessThanOrEqualPredicate.class, PredicateFactory.lessThanOrEqual("foo", 10));
         predicateSamplesMap.put(LikePredicate.class, PredicateFactory.like("foo", "val"));
+        predicateSamplesMap.put(LikeIgnoreCasePredicate.class, PredicateFactory.likeIgnoreCase("foo", "val"));
         predicateSamplesMap.put(NotEqualPredicate.class, PredicateFactory.notEqual("foo", "val"));
         predicateSamplesMap.put(NotEqualIgnoreCasePredicate.class, PredicateFactory.notEqualIgnoreCase("foo", "val"));
         predicateSamplesMap.put(NotInPredicate.class, PredicateFactory.notIn("foo", "val"));

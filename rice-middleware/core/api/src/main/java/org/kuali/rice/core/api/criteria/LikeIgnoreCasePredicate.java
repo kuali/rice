@@ -38,7 +38,7 @@ import java.util.Collection;
 @XmlRootElement(name = LikeIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = LikeIgnoreCasePredicate.Constants.TYPE_NAME, propOrder = {
-        CriteriaSupportUtils.PropertyConstants.VALUES,
+        CriteriaSupportUtils.PropertyConstants.VALUE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class LikeIgnoreCasePredicate extends AbstractPredicate implements SingleValuedPredicate {

@@ -59,16 +59,6 @@ public class TestPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
-    public boolean isProxied(Object dataObject) {
-        return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Object resolveProxy(Object dataObject) {
-        return true;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void flush(){
+    public void flush(Class<?> type){
     }
 }

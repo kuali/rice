@@ -98,6 +98,7 @@
         <module name="rice-serviceregistry" />
         <module name="rice-sql" />
         <module name="rice-standalone" />
+        <module name="rice-tools-test" />
         <module name="rice-web" />
       </profile>
     </annotationProcessing>
@@ -172,6 +173,7 @@
       <module name="rice-serviceregistry" target="1.6" />
       <module name="rice-sql" target="1.6" />
       <module name="rice-standalone" target="1.6" />
+      <module name="rice-tools-test" target="1.6" />
       <module name="rice-web" target="1.6" />
     </bytecodeTargetLevel>
   </component>

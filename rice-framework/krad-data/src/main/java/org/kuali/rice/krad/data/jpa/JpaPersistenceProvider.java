@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceUtil;
-import javax.persistence.metamodel.ManagedType;
-
+import com.google.common.collect.Sets;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -32,13 +26,15 @@ import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Sets;
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.metamodel.ManagedType;
+import java.util.Set;
 
 /**
  * JPA PersistenceProvider impl
@@ -47,7 +43,6 @@ import com.google.common.collect.Sets;
 public class JpaPersistenceProvider implements PersistenceProvider, InitializingBean {
 
     private EntityManager sharedEntityManager;
-    private ProviderRegistry providerRegistry;
     private DataObjectService dataObjectService;
     private ReferenceLinker referenceLinker;
 
@@ -64,11 +59,6 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
 
     public void setSharedEntityManager(EntityManager sharedEntityManager) {
         this.sharedEntityManager = sharedEntityManager;
-    }
-
-    @Required
-    public void setProviderRegistry(ProviderRegistry providerRegistry) {
-        this.providerRegistry = providerRegistry;
     }
 
     @Required
@@ -145,19 +135,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     }
 
     @Override
-    public boolean isProxied(Object dataObject) {
-        PersistenceUtil persistenceUtil = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil();
-        return persistenceUtil.isLoaded(dataObject);
-    }
-
-    @Override
-    public Object resolveProxy(Object dataObject) {
-        dataObject.equals(null);
-        return dataObject;
-    }
-
-    @Override
-    public void flush(){
+    public void flush(Class<?> type){
         sharedEntityManager.flush();
     }
 

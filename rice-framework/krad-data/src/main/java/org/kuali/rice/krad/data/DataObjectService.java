@@ -121,24 +121,16 @@ public interface DataObjectService {
 	<T> T save(T dataObject, PersistenceOption... options);
 
     /**
-     * Returns whether or not the given data object is wrapped in proxies provided by the underlying persistence
-     * implementation.
+     * Flushes any outstanding work to the backend data store.
      *
-     * @param dataObject the data object instance for which to check proxies
+     * <p>Depending on the backend persistence implementation for the given type, this method may or may not do
+     * anything.</p>
      *
-     * @return true if the data object is proxied, false otherwise
+     * @param type the type of the data object for which to perform the flush. This is primarily used to identify the
+     * context in which to perform the flush.
      */
-    boolean isProxied(Object dataObject);
+    void flush(Class<?> type);
 
-    /**
-     * Return the actual data object instance from it's enclosing proxy. If the given data object is not proxied, the
-     * original is returned.
-     *
-     * @param proxiedDataObject the proxied data object instance to resolve
-     *
-     * @return the unproxied object, or the original proxiedDataObject if the given object was not proxied
-     */
-    Object resolveProxy(Object proxiedDataObject);
 
     /**
      * Returns the MetadataRepository which provides access to all data object metadata known to the system.
@@ -167,10 +159,5 @@ public interface DataObjectService {
      * @return whether the DataObjectService supports the given type
      */
     <T> boolean supports(Class<T> type);
-
-    /**
-     * Flush the entity manager to reset state of objects that are queued up to be persisted
-     */
-    void flush(Class<?> type);
 
 }

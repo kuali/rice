@@ -207,15 +207,14 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public boolean isProxied(Object object) {
-        if(LegacyUtils.isKradDataManaged(object.getClass())){
-            return dataObjectService.isProxied(object);
-        }
+        // KRAD data adapter does nothing
         return false;
     }
 
     @Override
     public Object resolveProxy(Object o) {
-        return dataObjectService.resolveProxy(o);
+        // KRAD data adapter does nothing
+        return o;
     }
 
     // Lookup methods

@@ -72,7 +72,6 @@
 	<bean
 		id="jpaPersistenceProvider"
 		class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
-		p:providerRegistry-ref="providerRegistry"
 		p:dataObjectService-ref="dataObjectService"
 		p:sharedEntityManager-ref="sharedEntityManager" />
 	

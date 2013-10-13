@@ -213,10 +213,6 @@ public final class DataObjectUtils {
                 throw new RuntimeException("The accessor method requested for this property cannot be found.", e);
             }
 
-            if(KradDataServiceLocator.getDataObjectService().isProxied(bo)){
-                currentObject = KradDataServiceLocator.getDataObjectService().resolveProxy(bo);
-            }
-
             // if a node or the leaf is null, then we're done, there's no need to
             // continue accessing null things
             if (currentObject == null) {

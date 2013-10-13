@@ -138,9 +138,9 @@
     <profile>
       <id>sauceconnect</id>
       <properties>
-        <saucelabs.connect.skip>true</saucelabs.connect.skip>
+        <saucelabs.connect.skip>false</saucelabs.connect.skip>
         <saucelabs.connect.includes>
-          **/SmokeTest.java
+          **/*SmokeTest.java
         </saucelabs.connect.includes>
       </properties>
     </profile>
@@ -148,9 +148,9 @@
     <profile>
       <id>stests</id>
       <properties>
-        <stests.skip>true</stests.skip>
+        <stests.skip>false</stests.skip>
         <stests.includes>
-          **/SmokeTest.java
+          **/*SmokeTest.java
         </stests.includes>
       </properties>
     </profile>

@@ -35,8 +35,6 @@
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
-    <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
-    <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
     <saucelabs.connect.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</saucelabs.connect.excludes>
     <saucelabs.connect.includes>**/*IT.java,**/*Gen.java</saucelabs.connect.includes>
     <stests.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</stests.excludes>
@@ -180,25 +178,6 @@
       </properties>
     </profile>
 
-    <profile>
-      <id>jmeter</id>
-      <activation><activeByDefault>false</activeByDefault></activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.lazerycode.jmeter</groupId>
-            <artifactId>jmeter-maven-plugin</artifactId>
-            <configuration>
-              <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
-              <testFilesExcluded>
-                <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
-              </testFilesExcluded>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
- 
   </profiles>
 
   <dependencies>

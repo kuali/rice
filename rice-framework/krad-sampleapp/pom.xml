@@ -34,6 +34,8 @@
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
+    <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->
+    <jmeter.excludeJmeterTestFile>**/KRAD.jmx</jmeter.excludeJmeterTestFile>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
     <webapp.working.dir>${project.build.directory}/${project.artifactId}-${project.version}</webapp.working.dir>
@@ -159,6 +161,25 @@
         <web.launch.context.path>/krad-sampleapp-standalone</web.launch.context.path>
         <bootstrap.spring.file>classpath:KradSampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
+    </profile>
+
+    <profile>
+      <id>jmeter</id>
+      <activation><activeByDefault>false</activeByDefault></activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.lazerycode.jmeter</groupId>
+            <artifactId>jmeter-maven-plugin</artifactId>
+            <configuration>
+              <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
+              <testFilesExcluded>
+                <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+              </testFilesExcluded>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
   </profiles>

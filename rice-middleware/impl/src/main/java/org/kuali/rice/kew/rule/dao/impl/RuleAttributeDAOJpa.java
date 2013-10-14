@@ -66,7 +66,7 @@ public class RuleAttributeDAOJpa implements RuleAttributeDAO {
             predicates.add(likeIgnoreCase("resourceDescriptor",ruleAttribute.getResourceDescriptor()));
         }
         if (ruleAttribute.getType() != null) {
-            predicates.add(likeIgnoreCase("RULE_ATTR_TYP_CD",ruleAttribute.getType()));
+            predicates.add(likeIgnoreCase("type",ruleAttribute.getType()));
         }
         Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
         builder.setPredicates(preds);

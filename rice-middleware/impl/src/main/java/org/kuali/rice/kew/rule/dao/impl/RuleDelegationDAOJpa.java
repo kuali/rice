@@ -39,7 +39,7 @@ public class RuleDelegationDAOJpa implements RuleDelegationDAO {
     public List<RuleDelegationBo> findByDelegateRuleId(String ruleId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
-        builder.setPredicates(equal("delegateRuleId",ruleId));
+        builder.setPredicates(equal("ruleDelegationId",ruleId));
         return getDataObjectService().findMatching(RuleDelegationBo.class,builder.build()).getResults();
     }
 

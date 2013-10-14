@@ -133,7 +133,7 @@ public class KewRuleDataJpaTest extends KRADTestCase{
     @Test
     public void testRuleDelegationServiceFindAllCurrentRuleDelegations() throws Exception{
         RuleBaseValues ruleBaseValues = setupRuleBaseValues();
-        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo(ruleBaseValues);
         ruleDelegationBo.setDelegationRule(ruleBaseValues);
         KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
         List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().
@@ -143,9 +143,10 @@ public class KewRuleDataJpaTest extends KRADTestCase{
 
     @Test
     public void testRuleDelegationServiceFindByDelegateRuleId() throws Exception{
-        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        RuleBaseValues ruleBaseValues = setupRuleBaseValues();
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo(ruleBaseValues);
         List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().
-                        findByDelegateRuleId(ruleDelegationBo.getDelegateRuleId());
+                        findByDelegateRuleId(ruleDelegationBo.getRuleDelegationId());
         assertTrue("Rule Delegation Bo fetched by rule id",ruleDelegationBos != null && ruleDelegationBos.size() == 1);
     }
 
@@ -161,7 +162,7 @@ public class KewRuleDataJpaTest extends KRADTestCase{
     @Test
     public void testRuleDelegationServiceFindByResponsibilityIdWithCurrentRule() throws Exception{
         RuleBaseValues ruleBaseValues = setupRuleBaseValues();
-        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo();
+        RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo(ruleBaseValues);
         ruleDelegationBo.setResponsibilityId(ruleBaseValues.getId());
         ruleDelegationBo.setDelegateRuleId(ruleBaseValues.getId());
         ruleDelegationBo = KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
@@ -171,11 +172,13 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         assertTrue("Rule Delegation Bo fetched ", ruleDelegationBos != null && ruleDelegationBos.size() == 1);
     }
 
-    private RuleDelegationBo setupRuleDelegationBo(){
+    private RuleDelegationBo setupRuleDelegationBo(RuleBaseValues ruleBaseValues){
         RuleDelegationBo ruleDelegationBo = new RuleDelegationBo();
         ruleDelegationBo.setDelegationTypeCode("P");
         ruleDelegationBo.setGroupReviewerName("Testing");
         ruleDelegationBo.setPersonReviewer("blah");
+        ruleDelegationBo.setDelegationRuleBaseValues(ruleBaseValues);
+        ruleDelegationBo.setResponsibilityId("1234");
 
         return KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);
     }
@@ -232,17 +235,10 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         rbv.setDocTypeName("TestDocumentType");
         rbv.setForceAction(Boolean.FALSE);
 
-        RuleExtensionBo ext = new RuleExtensionBo();
-        RuleExtensionValue val = new RuleExtensionValue();
-        val.setKey("emptyvalue");
-        val.setValue("testing");
-        val.setExtension(ext);
-        ext.getExtensionValues().add(val);
-        ext.setRuleBaseValues(rbv);
-        rbv.getRuleExtensions().add(ext);
+
 
         RuleResponsibilityBo ruleResponsibilityBo = new RuleResponsibilityBo();
-
+        ruleResponsibilityBo.setResponsibilityId("1234");
         ruleResponsibilityBo.setRuleBaseValues(rbv);
         ruleResponsibilityBo.setRuleResponsibilityName("user2");
         ruleResponsibilityBo.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
@@ -266,6 +262,9 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         ruleTemplateAttributeBo.setRequired(true);
         ruleTemplateAttributeBo.setRuleTemplate(ruleTemplate);
 
+        RuleAttribute ruleAttribute = setupRuleAttribute();
+        ruleTemplateAttributeBo.setRuleAttribute(ruleAttribute);
+
         ruleTemplate.getRuleTemplateAttributes().add(ruleTemplateAttributeBo);
 
 
@@ -274,6 +273,16 @@ public class KewRuleDataJpaTest extends KRADTestCase{
         ruleExpressionDef.setType("TST");
 
         rbv.setRuleExpressionDef(ruleExpressionDef);
+
+        RuleExtensionBo ext = new RuleExtensionBo();
+        RuleExtensionValue val = new RuleExtensionValue();
+        val.setKey("emptyvalue");
+        val.setValue("testing");
+        val.setExtension(ext);
+        ext.getExtensionValues().add(val);
+        ext.setRuleBaseValues(rbv);
+        ext.setRuleTemplateAttribute(ruleTemplateAttributeBo);
+        rbv.getRuleExtensions().add(ext);
 
         return KRADServiceLocator.getDataObjectService().save(rbv);
     }

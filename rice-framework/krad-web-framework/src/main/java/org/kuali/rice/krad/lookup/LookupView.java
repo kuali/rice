@@ -365,6 +365,9 @@ public class LookupView extends FormView {
         // Copy some properties from the "to date" field to the field group
         rangeFieldGroup.setFieldLabel(ComponentUtils.copy(toDate.getFieldLabel()));
         rangeFieldGroup.setPropertyExpressions(toDate.getPropertyExpressions());
+        rangeFieldGroup.setProgressiveRender(toDate.getProgressiveRender());
+        rangeFieldGroup.setProgressiveRenderViaAJAX(toDate.isProgressiveRenderViaAJAX());
+        rangeFieldGroup.setConditionalRefresh(toDate.getConditionalRefresh());
         rangeFieldGroup.setRefreshWhenChangedPropertyNames(toDate.getRefreshWhenChangedPropertyNames());
         rangeFieldGroup.setForceSessionPersistence(true);
 

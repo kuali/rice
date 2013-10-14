@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif;
 
 import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.KeyMessage;
@@ -571,10 +573,14 @@ public class RichMessageTest extends KRADTestCase {
      *
      * @param component
      */
-    private void performSimulatedLifecycle(Component component) {
-        component.performInitialization(model);
-        component.performApplyModel(model, view);
-        component.performFinalize(model, view);
+    private void performSimulatedLifecycle(final Component component) {
+        ViewLifecycle.encapsulateLifecycle(view, component, null, null, new Runnable(){
+            @Override
+            public void run() {
+                component.performInitialization(model);
+                component.performApplyModel(model, view);
+                component.performFinalize(model, view);
+            }});
     }
 
     /**

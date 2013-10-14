@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -24,12 +27,9 @@ import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A placeholder in the configuration for a <code>Container</code> list of items that will be invoked to
@@ -95,13 +95,11 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * Invokes the configured fetching method to retrieve a list of remotable fields, then invoked the
      * {@code ComponentFactory} to translate the fields, and finally sets up the binding for the attribute fields
      *
-     * @param view view instance the container belongs to, sent to the fetching method
-     * @param model object containing the view data, sent to the fetching method
      * @param parent container instance that holder is configured for, sent to the fetching method
      * @return list of attribute fields that should be placed into container, if no remotable
      *         fields were returned from the fetching method the list will be empty
      */
-    public List<InputField> fetchAndTranslateRemoteFields(View view, Object model, Container parent) {
+    public List<InputField> fetchAndTranslateRemoteFields(Container parent) {
         if (StringUtils.isBlank(fetchingMethodToCall) && (fetchingMethodInvoker == null)) {
             throw new RuntimeException("");
         }
@@ -118,12 +116,12 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
 
         // if target class or object not set, use view helper service
         if ((fetchingMethodInvoker.getTargetClass() == null) && (fetchingMethodInvoker.getTargetObject() == null)) {
-            fetchingMethodInvoker.setTargetObject(view.getViewHelperService());
+            fetchingMethodInvoker.setTargetObject(ViewLifecycle.getHelper());
         }
 
         Object[] arguments = new Object[3];
-        arguments[0] = view;
-        arguments[1] = model;
+        arguments[0] = ViewLifecycle.getView();
+        arguments[1] = ViewLifecycle.getModel();
         arguments[2] = parent;
         fetchingMethodInvoker.setArguments(arguments);
 
@@ -157,10 +155,8 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
 
         for (InputField field : attributeFields) {
             BindingInfo fieldBindingInfo = CloneUtils.deepClone(bindingInfo);
-            fieldBindingInfo.setDefaults(view, field.getPropertyName());
+            fieldBindingInfo.setDefaults(ViewLifecycle.getView(), field.getPropertyName());
             field.setBindingInfo(fieldBindingInfo);
-
-            view.assignComponentIds(field);
         }
 
         return attributeFields;

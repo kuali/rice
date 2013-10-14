@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -28,7 +29,9 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.widget.Help;
@@ -80,7 +83,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public void performInitialization(Object model) {
 		super.performInitialization(model);
 
@@ -89,11 +93,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
-            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(instructionalMessage);
         }
 
 		if (layoutManager != null) {
-			layoutManager.performInitialization(model, this);
+			layoutManager.performInitialization(model);
 		}
 	}
 
@@ -101,7 +104,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public void performApplyModel(Object model, Component parent) {
 		super.performApplyModel(model, parent);
 
@@ -127,7 +131,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
 	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	public void performFinalize(Object model, Component parent) {
 		super.performFinalize(model, parent);
 
@@ -142,6 +147,22 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+        super.initializePendingTasks(phase, pendingTasks);
+        
+        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
+            pendingTasks.add(LifecycleTaskFactory.getTask(InitializeContainerFromHelperTask.class, phase));
+        }
+        
+        if (layoutManager != null) {
+            layoutManager.initializePendingTasks(phase, pendingTasks);
+        }
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
 	 */
 	@Override

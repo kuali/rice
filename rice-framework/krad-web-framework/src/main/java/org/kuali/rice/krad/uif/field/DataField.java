@@ -19,6 +19,7 @@ import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,7 +41,10 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -133,7 +137,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         super.performInitialization(model);
 
         if (bindingInfo != null) {
-            bindingInfo.setDefaults(ViewLifecycle.getActiveLifecycle().getView(), getPropertyName());
+            bindingInfo.setDefaults(ViewLifecycle.getView(), getPropertyName());
         }
     }
 
@@ -210,12 +214,24 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
         } else {
             // Additional and Alternate display value
-            setAlternateAndAdditionalDisplayValue(ViewLifecycle.getActiveLifecycle().getView(), model);
+            setAlternateAndAdditionalDisplayValue(ViewLifecycle.getView(), model);
         }
 
         if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
+            pendingTasks.offer(LifecycleTaskFactory.getTask(InitializeDataFieldFromDictionaryTask.class, phase));
+        }
+        
+        super.initializePendingTasks(phase, pendingTasks);
     }
 
     /**
@@ -229,8 +245,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     protected void buildAutomaticInquiry(Object model, boolean enableDirectInquiry) {
         Inquiry autoInquiry = ComponentFactory.getInquiry();
 
-        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoInquiry, this,
-                null, UifConstants.ViewPhases.INITIALIZE);
+        ViewLifecycle.spawnSubLifecyle(model, autoInquiry, this);
 
         // if render flag is true, that means the inquiry was able to find a relationship
         if (autoInquiry.isRender()) {
@@ -412,7 +427,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param attributeDefinition AttributeDefinition instance the property values should be
      * copied from
      */
-    public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
+    public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());

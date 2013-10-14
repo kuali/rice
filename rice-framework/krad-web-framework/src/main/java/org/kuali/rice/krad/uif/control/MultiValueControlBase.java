@@ -66,16 +66,13 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
 
-            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle(); 
-            View view = viewLifecycle.getView();
             for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
-                view.assignComponentIds(message);
                 message.setMessageText(option.getValue());
                 message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
 
-                viewLifecycle.spawnSubLifecyle(model, message, this, null, UifConstants.ViewPhases.INITIALIZE);
+                ViewLifecycle.spawnSubLifecyle(model, message, this);
                 richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
             }
         }
@@ -91,7 +88,8 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
 
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
+        View view = ViewLifecycle.getView();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
 
         if (options != null && !options.isEmpty()) {
             for (KeyValue option : options) {
@@ -100,7 +98,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                     UrlInfo url = ((UifKeyValueLocation) option).getLocation();
 
-                    View view = ViewLifecycle.getActiveLifecycle().getView();
                     ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
                     expressionEvaluator.evaluateExpressionsOnConfigurable(view, url, view.getContext());
                 }

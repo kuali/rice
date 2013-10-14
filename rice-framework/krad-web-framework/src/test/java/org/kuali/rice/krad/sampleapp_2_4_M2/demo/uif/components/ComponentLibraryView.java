@@ -47,7 +47,6 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
-import org.kuali.rice.krad.uif.view.View;
 import org.springframework.util.StringUtils;
 
 /**
@@ -145,14 +144,11 @@ public class ComponentLibraryView extends FormView {
 
         tabGroup.addStyleClass("demo-componentDetailsTabs");
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-        
         //Add tabGroup to detailsGroup
         List<Component> detailsItems = new ArrayList<Component>();
         detailsItems.addAll(detailsGroup.getItems());
         detailsItems.add(tabGroup);
         detailsGroup.setItems(detailsItems);
-        view.assignComponentIds(detailsGroup);
 
         //exhibit setup
         List<String> sourceCode = new ArrayList<String>();
@@ -167,16 +163,14 @@ public class ComponentLibraryView extends FormView {
         if (this.getExampleSize() != null &&
                 (this.getExampleSize().equals(ExampleSize.LARGE) || this.getExampleSize().equals(ExampleSize.XLARGE))) {
             exhibit.getTabGroup().addStyleClass("demo-noTabs");
-            Group headerRightGroup = view.getPage().getHeader().getRightGroup();
+            Group headerRightGroup = ViewLifecycle.getView().getPage().getHeader().getRightGroup();
             for (Component item : headerRightGroup.getItems()) {
                 if (item instanceof InputField && ((InputField) item).getControl() instanceof MultiValueControl && item
                         .getId().equals(this.getLargeExampleFieldId())) {
                     //List<ConcreteKeyValue> keyValues = new ArrayList<ConcreteKeyValue>();
                     List<KeyValue> values = new ArrayList<KeyValue>();
-                    int i = 0;
                     for (Group demoGroup : demoGroups) {
                         values.add(new ConcreteKeyValue(demoGroup.getId(), demoGroup.getHeader().getHeaderText()));
-                        i++;
                     }
 
                     //values.addAll(keyValues);

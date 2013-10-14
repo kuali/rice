@@ -23,7 +23,6 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
@@ -33,26 +32,6 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Serializable {
-
-	/**
-	 * The unique id (within a given tree) for the layout manager instance
-	 *
-	 * <p>
-	 * The id is used to identify a <code>LayoutManager</code> instance within
-	 * the tree and can be used by renderers
-	 * </p>
-	 *
-	 * @return String id
-	 */
-	public String getId();
-
-	/**
-	 * Sets the unique id (within a given tree) for the layout manager
-	 *
-	 * @param id
-	 *            - string to set as the layout manager id
-	 */
-	public void setId(String id);
 
 	/**
 	 * The path to the JSP file that should be called to invoke the layout
@@ -102,53 +81,6 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
      * @param templateName
      */
     public void setTemplateName(String templateName);
-
-	/**
-	 * Should be called to initialize the layout manager
-     *
-	 * <p>
-	 * This is where layout managers can set defaults and setup other necessary
-	 * state. The initialize method should only be called once per layout
-	 * manager lifecycle and is invoked within the initialize phase of the view
-	 * lifecylce.
-	 * </p>
-	 *
-	 * @param view
-	 *            - View instance the layout manager is a part of
-     * @param model - the object instance containing the view data
-	 * @param container
-	 *            - Container the layout manager applies to
-	 * @see ViewHelperService#performInitialization
-	 */
-	public void performInitialization(Object model, Container container);
-
-	/**
-	 * Called after the initialize phase to perform conditional logic based on
-	 * the model data
-	 *
-	 * @param view
-	 *            - view instance to which the layout manager belongs
-	 * @param model
-	 *            - Top level object containing the data (could be the form or a
-	 *            top level business object, dto)
-	 * @param container
-	 *            - Container the layout manager applies to
-	 */
-	public void performApplyModel(Object model, Container container);
-
-	/**
-	 * The last phase before the view is rendered. Here final preparations can
-	 * be made based on the updated view state
-	 *
-	 *
-	 * @param view
-	 *            - view instance that should be finalized for rendering
-	 * @param model
-	 *            - top level object containing the data
-	 * @param container
-	 *            - Container the layout manager applies to
-	 */
-	public void performFinalize(Object model, Container container);
 
 	/**
 	 * Determines what <code>Container</code> classes are supported by the

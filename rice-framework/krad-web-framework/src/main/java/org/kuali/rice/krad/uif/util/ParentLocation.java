@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -165,7 +164,6 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
         if (parentView.getBreadcrumbItem() != null
                 && parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
                 && viewBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
-            currentView.assignComponentIds(parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
             viewBreadcrumbItem.setSiblingBreadcrumbComponent(
                     parentView.getBreadcrumbItem().getSiblingBreadcrumbComponent());
         }
@@ -344,8 +342,6 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
         if (thePage.getBreadcrumbItem() != null
                 && thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent() != null
                 && pageBreadcrumbItem.getSiblingBreadcrumbComponent() == null) {
-            view.assignComponentIds(thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent());
-
             pageBreadcrumbItem.setSiblingBreadcrumbComponent(
                     thePage.getBreadcrumbItem().getSiblingBreadcrumbComponent());
         }

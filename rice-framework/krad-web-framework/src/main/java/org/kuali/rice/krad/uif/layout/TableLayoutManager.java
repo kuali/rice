@@ -162,8 +162,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(Object model, Container container) {
-        CollectionGroup collectionGroup = (CollectionGroup) container;
+    public void performInitialization(Object model) {
+        CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getComponent();
 
         this.setupDetails(collectionGroup);
         this.setupGrouping(model, collectionGroup);
@@ -172,13 +172,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             setSeparateAddLine(true);
         }
 
-        super.performInitialization(model, container);
+        super.performInitialization(model);
 
         getRowCssClasses().clear();
 
         if (generateAutoSequence && !(getSequenceFieldPrototype() instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
-            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(sequenceFieldPrototype);
         }
     }
 
@@ -192,8 +191,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param container
      */
     @Override
-    public void performApplyModel(Object model, Container container) {
-        super.performApplyModel(model, container);
+    public void performApplyModel(Object model, Component component) {
+        super.performApplyModel(model, component);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
@@ -208,12 +207,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
-        super.performFinalize(model, container);
+    public void performFinalize(Object model, Component component) {
+        super.performFinalize(model, component);
 
         UifFormBase formBase = (UifFormBase) model;
 
-        CollectionGroup collectionGroup = (CollectionGroup) container;
+        CollectionGroup collectionGroup = (CollectionGroup) component;
 
         int totalColumns = getNumberOfDataColumns();
         if (renderSequenceField) {
@@ -232,7 +231,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
-            String highlightScript = "jQuery(\"#" + container.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
+            String highlightScript = "jQuery(\"#" + component.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
             String onReadyScript = collectionGroup.getOnDocumentReadyScript();
             if (StringUtils.isNotBlank(onReadyScript)) {
                 highlightScript = onReadyScript + highlightScript;
@@ -243,7 +242,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //setup the column calculations functionality and components
         if (columnCalculations != null && richTable != null &&
                 this.getAllRowFields() != null && !this.getAllRowFields().isEmpty()) {
-            setupColumnCalculations(model, container, totalColumns);
+            setupColumnCalculations(model, collectionGroup, totalColumns);
         }
 
         //set the js properties for rowGrouping on richTables
@@ -260,8 +259,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         // Calculate the number of pages for the pager widget if we are using server paging
-        if ((this.getRichTable() == null || !this.getRichTable().isRender()) && ((CollectionGroup) container)
-                .isUseServerPaging() && this.getPagerWidget() != null) {
+        if ((this.getRichTable() == null || !this.getRichTable().isRender()) &&
+                collectionGroup.isUseServerPaging() && this.getPagerWidget() != null) {
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
@@ -302,8 +301,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, groupingMessageField, collectionGroup, null,
-                    UifConstants.ViewPhases.INITIALIZE);
+            ViewLifecycle.spawnSubLifecyle(model, groupingMessageField, collectionGroup);
 
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
@@ -359,14 +357,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
-                Field pageTotalDataField = setupTotalField(cInfo.getPageTotalField(), cInfo, this.isShowPageTotal(),
+                Field pageTotalDataField = cInfo.getPageTotalField().copy();
+                setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(),
                         this.getPageTotalLabel(), "pageTotal", leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
             }
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
-                Field totalDataField = setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
+                Field totalDataField = cInfo.getTotalField().copy();
+                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
                         this.getTotalLabel(), "total", leftLabelColumnIndex);
 
                 if (!cInfo.isRecalculateTotalClientSide()) {
@@ -379,7 +379,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //setup total field and add it to footer's group for this column
             //do not generate group total rows if group totals are not being shown
             if (cInfo.isShowGroupTotal()) {
-                Field groupTotalDataField = setupTotalField(cInfo.getGroupTotalFieldPrototype(), cInfo,
+                Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype();
+                setupTotalField(groupTotalDataField, cInfo,
                         this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(), "groupTotal",
                         leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
@@ -396,16 +397,12 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             calculationFieldGroup.setItems(calculationFieldGroupItems);
 
-            View view = ViewLifecycle.getActiveLifecycle().getView();
-            view.assignComponentIds(calculationFieldGroup);
-
             //Determine if there is already a fieldGroup present for this column's footer
             //if so create a new group and add the new calculation fields to the already existing ones
             //otherwise just add it
             Component component = footerCalculationComponents.get(cInfo.getColumnNumber());
             if (component != null && component instanceof FieldGroup) {
                 Group verticalComboCalcGroup = ComponentFactory.getVerticalBoxGroup();
-                view.assignComponentIds(verticalComboCalcGroup);
 
                 List<Component> comboGroupItems = new ArrayList<Component>();
                 comboGroupItems.add(component);
@@ -429,28 +426,30 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //special processing for the left labels - when there are no total fields in this column
         //add the label to the column footer directly
         if (this.renderOnlyLeftTotalLabels && footerCalculationComponents.get(leftLabelColumnIndex) == null) {
-            View view = ViewLifecycle.getActiveLifecycle().getView();
 
-            Group labelGroup = ComponentFactory.getVerticalBoxGroup();
-            view.assignComponentIds(labelGroup);
             List<Component> groupItems = new ArrayList<Component>();
+            Group labelGroup = ComponentFactory.getVerticalBoxGroup();
+            groupItems.add(labelGroup);
 
             if (this.isShowGroupTotal()) {
                 //display none - this label is copied by the javascript
-                groupTotalLabelPrototype.setStyle("display: none;");
-                groupTotalLabelPrototype.addDataAttribute(UifConstants.DataAttributes.ROLE, "groupTotalLabel");
-                view.assignComponentIds(groupTotalLabelPrototype);
-                groupItems.add(groupTotalLabelPrototype);
+                Label groupTotalLabel = groupTotalLabelPrototype.copy();
+                groupTotalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
+                groupTotalLabel.setStyle("display: none;");
+                groupTotalLabel.addDataAttribute(UifConstants.DataAttributes.ROLE, "groupTotalLabel");
+                groupItems.add(groupTotalLabel);
             }
 
             if (this.isShowPageTotal()) {
-                view.assignComponentIds(pageTotalLabel);
+                Label pageTotalLabel = this.pageTotalLabel.copy();
+                pageTotalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
                 pageTotalLabel.addDataAttribute(UifConstants.DataAttributes.ROLE, "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 
             if (this.isShowTotal()) {
-                view.assignComponentIds(totalLabel);
+                Label totalLabel = this.totalLabel.copy();
+                totalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
                 groupItems.add(totalLabel);
             }
 
@@ -463,9 +462,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         //column calculations
         for (Component component : footerCalculationComponents) {
             if (component != null) {
-                component.performInitialization(model);
-                component.performApplyModel(model, container);
-                component.performFinalize(model, container);
+                ViewLifecycle.spawnSubLifecyle(model, component, container);
             }
         }
     }
@@ -524,12 +521,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions,
             String idSuffix, Object currentLine, int lineIndex) {
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        View view = viewLifecycle.getView();
+        View view = ViewLifecycle.getView();
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
-        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             lineField.pushAllToContext(view.getContext());
@@ -680,11 +676,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
                 }
             } else {
                 sequenceField = ComponentFactory.getMessageField();
-                viewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup, null,
-                        UifConstants.ViewPhases.INITIALIZE);
+                ViewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup);
 
                 Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
-                sequenceMessage.setViewStatus(UifConstants.ViewStatus.CREATED);
                 ((MessageField) sequenceField).setMessage(sequenceMessage);
 
                 // adjusting add line label to match sequence prototype cells attributes
@@ -1619,7 +1613,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
-        ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(detailsFieldGroup);
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

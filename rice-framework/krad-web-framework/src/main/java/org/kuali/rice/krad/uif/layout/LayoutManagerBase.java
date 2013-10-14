@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -29,6 +30,8 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -124,38 +127,38 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * @see LifecycleElement#performInitialization(Object)
      */
     @Override
-    public void performInitialization(Object model, Container container) {
+    public void performInitialization(Object model) {
         checkMutable(false);
+        
         // set id of layout manager from container
         if (StringUtils.isBlank(id)) {
+            Container container = (Container) ViewLifecycle.getPhase().getComponent();
             id = container.getId() + "_layout";
         }
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * @see LifecycleElement#performApplyModel(Object, Component)
      */
     @Override
-    public void performApplyModel(Object model, Container container) {
+    public void performApplyModel(Object model, Component component) {
         checkMutable(false);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * @see LifecycleElement#performFinalize(Object, Component)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
+    public void performFinalize(Object model, Component component) {
         checkMutable(false);
+
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
 
         if (this.libraryCssClasses != null && view.isUseLibraryCssClasses()) {
             finalCssClasses.addAll(libraryCssClasses);
@@ -170,6 +173,13 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         }
 
         cssClasses = finalCssClasses;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.util.LifecycleElement#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
     }
 
     /**

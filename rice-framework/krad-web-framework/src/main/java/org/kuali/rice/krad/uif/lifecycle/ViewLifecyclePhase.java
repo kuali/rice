@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 
 /**
  * Represents a phase in the view lifecycle. 
@@ -38,7 +39,7 @@ public interface ViewLifecyclePhase extends Runnable {
      * Get the model to use in processing this phase.
      */
     Object getModel();
-
+    
     /**
      * Determine if this lifecycle phase has completed processing.
      * 
@@ -62,6 +63,14 @@ public interface ViewLifecyclePhase extends Runnable {
     String getViewPhase();
 
     /**
+     * Get the event to notify on completion.
+     * 
+     * @return The lifecycle event to notify on completion.
+     * @see ViewLifecycle.LifecycleEvent
+     */
+    LifecycleEvent getEventToNotify();
+
+    /**
      * Get the expected view status prior to phase execution.
      * 
      * @return The expected view status prior to phase execution.
@@ -74,6 +83,27 @@ public interface ViewLifecyclePhase extends Runnable {
      * @return The expected view status after phase execution.
      */
     String getEndViewStatus();
+    
+    /**
+     * Add a lifecycle task to this phase's task queue.
+     * 
+     * @param The task to add.
+     */
+    void addTask(ViewLifecycleTask task);
+    
+    /**
+     * Get the task currently active on this lifecycle phase.
+     * 
+     * @return The task currently active on this lifecycle phase.
+     */
+    ViewLifecycleTask getActiveTask();
+    
+    /**
+     * Get a list of the pending tasks for this phase.
+     * 
+     * @return A list of the pending tasks for this phase.  These tasks have not yet been processed.
+     */
+    List<? extends ViewLifecycleTask> getPendingTasks();
 
     /**
      * Get a list of child lifecycle phases to process before processing this phase.

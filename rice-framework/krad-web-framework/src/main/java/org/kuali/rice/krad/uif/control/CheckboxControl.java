@@ -20,13 +20,11 @@ import java.util.List;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Represents a HTML Checkbox control. Typically used for boolean attributes (where the
@@ -58,15 +56,12 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     public void performApplyModel(Object model, Component parent) {
         super.performApplyModel(model, parent);
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle(); 
-        View view = viewLifecycle.getView();
         if (richLabelMessage == null) {
             Message message = ComponentFactory.getMessage();
-            view.assignComponentIds(message);
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
-            viewLifecycle.spawnSubLifecyle(model, message, this, null, UifConstants.ViewPhases.INITIALIZE);
+            ViewLifecycle.spawnSubLifecyle(model, message, this);
             this.setRichLabelMessage(message);
         }
     }

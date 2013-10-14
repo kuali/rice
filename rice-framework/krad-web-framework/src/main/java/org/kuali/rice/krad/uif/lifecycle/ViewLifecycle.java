@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -34,7 +31,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,8 +49,6 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -67,8 +61,7 @@ import org.kuali.rice.krad.uif.container.LightTable;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderBootstrap;
-import org.kuali.rice.krad.uif.modifier.ComponentModifier;
+import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.CloneUtils;
@@ -91,23 +84,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.springframework.web.servlet.support.RequestContext;
-import org.springframework.web.servlet.view.AbstractTemplateView;
-
-import freemarker.cache.TemplateCache;
-import freemarker.core.Environment;
-import freemarker.core.ParseException;
-import freemarker.ext.jsp.TaglibFactory;
-import freemarker.ext.servlet.AllHttpScopesHashModel;
-import freemarker.ext.servlet.FreemarkerServlet;
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.ext.servlet.HttpRequestParametersHashModel;
-import freemarker.ext.servlet.HttpSessionHashModel;
-import freemarker.ext.servlet.ServletContextHashModel;
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 /**
  * Lifecycle object created during the view processing to hold event registrations.
@@ -315,14 +291,9 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private final Object model;
     
     /**
-     * The servlet request handling the view lifecycle.
+     * The rendering context.
      */
-    private final HttpServletRequest request;
-
-    /**
-     * The servlet response handling the view lifecycle.
-     */
-    private final HttpServletResponse response;
+    private final LifecycleRenderingContext renderingContext;
 
     /**
      * A mutable copy of the view private to this execution context.
@@ -338,21 +309,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * Flag indicating if the purpose of this lifecycle context is to encapsulate a view copy.
      */
     private final boolean copy;
-
-    /**
-     * The FreeMarker environment to use for rendering.
-     */
-    private Environment freeMarkerEnvironment;
-
-    /**
-     * Set of imported FreeMarker templates.
-     */
-    private Set<String> importedFreeMarkerTemplates;
-
-    /**
-     * The FreeMarker writer, for capturing rendered output.
-     */
-    private StringWriter freeMarkerWriter;
 
     /**
      * The phase currently active on this lifecycle.
@@ -372,8 +328,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private ViewLifecycle() {
         this.originalView = null;
         this.model = null;
-        this.request = null;
-        this.response = null;
+        this.renderingContext = null;
         this.helper = null;
         this.eventRegistrations = null;
         this.mutableIdentities = null;
@@ -390,87 +345,13 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             HttpServletRequest request, HttpServletResponse response, boolean copy) {
         this.originalView = view;
         this.model = model;
-        this.request = request;
-        this.response = response;
+        this.renderingContext = model != null && request != null && response != null && 
+                isRenderInLifecycle() ? new LifecycleRenderingContext(model, request, response) : null;
         this.helper = view.getViewHelperService();
         this.eventRegistrations = new ArrayList<EventRegistration>();
         this.mutableIdentities = new HashSet<Long>();
         this.copy = copy;
         this.pendingPhases = new LinkedList<ViewLifecyclePhase>();
-    }
-
-    /**
-     * Get the FreeMarker environment for processing the rendering phase, initializing the
-     * environment if needed.
-     * 
-     * @return The FreeMarker environment for processing the rendering phase, initializing the
-     *         environment if needed.
-     */
-    Environment getFreeMarkerEnvironment() {
-        if (freeMarkerEnvironment == null) {
-            try {
-                Map<String, Object> modelAttrs = new HashMap<String, Object>();
-                modelAttrs.put(UifConstants.DEFAULT_MODEL_NAME, getModel());
-                modelAttrs.put(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
-                
-                request.setAttribute(UifConstants.DEFAULT_MODEL_NAME, getModel());
-                request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
-                modelAttrs.put(UifParameters.REQUEST, request);
-
-                StringWriter out = new StringWriter();
-                Configuration config = FreeMarkerInlineRenderBootstrap.getFreeMarkerConfig();
-                Template template = new Template("", new StringReader(""), config);
-                
-                ServletContext servletContext = FreeMarkerInlineRenderBootstrap.getServletContext();
-                ObjectWrapper objectWrapper = FreeMarkerInlineRenderBootstrap.getObjectWrapper();
-                ServletContextHashModel servletContextHashModel = FreeMarkerInlineRenderBootstrap.getServletContextHashModel();
-                TaglibFactory taglibFactory = FreeMarkerInlineRenderBootstrap.getTaglibFactory();
-                
-                AllHttpScopesHashModel global =
-                        new AllHttpScopesHashModel(objectWrapper, servletContext, request);
-                global.put(FreemarkerServlet.KEY_JSP_TAGLIBS, taglibFactory);
-                global.put(FreemarkerServlet.KEY_APPLICATION, servletContextHashModel);
-                global.put(FreemarkerServlet.KEY_SESSION,
-                        new HttpSessionHashModel(request.getSession(), objectWrapper));
-                global.put(FreemarkerServlet.KEY_REQUEST,
-                        new HttpRequestHashModel(request, response, objectWrapper));
-                global.put(FreemarkerServlet.KEY_REQUEST_PARAMETERS,
-                        new HttpRequestParametersHashModel(request));
-                global.put(AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE,
-                        new RequestContext(request, response, servletContext, modelAttrs));
-
-                Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService()
-                        .getAllProperties();
-                global.put(UifParameters.CONFIG_PROPERTIES, properties);
-                
-                Environment env = template.createProcessingEnvironment(global, out);
-                env.importLib("/krad/WEB-INF/ftl/lib/krad.ftl", "krad");
-                env.importLib("/krad/WEB-INF/ftl/lib/spring.ftl", "spring");
-                freeMarkerEnvironment = env;
-                freeMarkerWriter = out;
-                importedFreeMarkerTemplates = new HashSet<String>();
-            } catch (IOException e) {
-                throw new IllegalStateException("Failed to initialize FreeMarker for rendering", e);
-            } catch (TemplateException e) {
-                throw new IllegalStateException("Failed to initialize FreeMarker for rendering", e);
-            }
-        }
-
-        return freeMarkerEnvironment;
-    }
-
-    /**
-     * Clear the output buffer used during rendering, in preparation for rendering another component using the same environment.
-     */
-    void clearRenderingBuffer() {
-        freeMarkerWriter.getBuffer().setLength(0);
-    }
-
-    /**
-     * Get all output rendered in the FreeMarker environment. 
-     */
-    String getRenderedOutput() {
-        return freeMarkerWriter.toString();
     }
 
     /**
@@ -493,15 +374,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Get the active phase on this lifecycle.
-     * 
-     * @return The active phase on this lifecycle, or null if no phase is currently active.
-     */
-    public ViewLifecyclePhase getActivePhase() {
-        return activePhase;
-    }
-
-    /**
      * Push a pending phase, to be executed directly after the completion of the active phase.
      * 
      * @param pendingPhase The pending phase.
@@ -521,83 +393,28 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Import a FreeMarker template for rendering into the current environment.
-     * 
-     * @param template The path to the FreeMarker template.
-     */
-    public void importFreeMarkerTemplate(String template) {
-        if (template == null || !importedFreeMarkerTemplates.add(template)) {
-            // No template for component, or already imported in this lifecycle.
-            return;
-        }
-
-        try {
-            Environment env = getFreeMarkerEnvironment();
-            String templateNameString = TemplateCache.getFullTemplatePath(env, "", template);
-            env.include(env.getTemplateForInclusion(templateNameString, null, true));
-        } catch (ParseException e) {
-            throw new IllegalStateException("Error parsing imported template " + template, e);
-        } catch (TemplateException e) {
-            throw new IllegalStateException("Error importing template " + template, e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error importing template " + template, e);
-        }
-    }
-
-    /**
-     * Get the helper active on this context.
-     * 
-     * @return the helper
-     */
-    public ViewHelperService getHelper() {
-        if (this.helper == null) {
-            throw new IllegalStateException("Context view helper is not available");
-        }
-
-        return this.helper;
-    }
-
-    /**
      * Get the original, immutable, view instance.
      * 
      * @return The original, immutable, view instance that the lifecycle context view is based on.
      */
     public View getOriginalView() {
-        if (this.view == null) {
+        if (originalView == null) {
             throw new IllegalStateException("Context original view is not available");
         }
 
-        return this.originalView;
+        return originalView;
     }
 
     /**
-     * Get the view active within this context.
-     * 
-     * <p>
-     * After the lifecycle has completed, this view becomes the resulting view.
-     * </p>
-     * 
-     * @return The view active within this context.
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult#getProcessedView()
      */
-    public View getView() {
-        if (this.view == null) {
+    @Override
+    public View getProcessedView() {
+        if (originalView == null) {
             throw new IllegalStateException("Context view is not available");
         }
 
-        return this.view;
-    }
-
-    /**
-     * Get the model related to the view active within this context.
-     * 
-     * @return The model related to the view active within this context.
-     */
-    public Object getModel() {
-        if (this.model == null) {
-            throw new IllegalStateException("Model is not available");
-        }
-
-        return this.model;
+        return view;
     }
 
     /**
@@ -608,7 +425,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     public Component getRefreshComponent() {
         return this.refreshComponent;
     }
-
+    
     /**
      * Invoked when an event occurs to invoke registered listeners.
      * 
@@ -667,7 +484,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         ProcessLogger.trace("apply-comp-model:" + view.getId());
 
-        offerPendingPhase(new ApplyModelComponentPhase(view, model));
+        offerPendingPhase(LifecyclePhaseFactory.applyModel(view, model));
         performPendingPhases();
 
         ProcessLogger.trace("apply-model-end:" + view.getId());
@@ -694,7 +511,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         String growlScript = buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        offerPendingPhase(new FinalizeComponentPhase(view, model));
+        offerPendingPhase(LifecyclePhaseFactory.finalize(view, model));
         performPendingPhases();
 
         String clientStateScript = buildClientSideStateScript(model);
@@ -722,13 +539,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     public void performInitialization() {
         helper.performCustomViewInitialization(model);
 
-        view.assignComponentIds(view);
-
-        // increment the id sequence so components added later to the static view components
-        // will not conflict with components on the page when navigation happens
-        view.setIdSequence(100000);
-
-        offerPendingPhase(new InitializeComponentPhase(view, model));
+        offerPendingPhase(LifecyclePhaseFactory.initialize(view, model));
         performPendingPhases();
 
         // initialize the expression evaluator impl
@@ -766,7 +577,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @see org.kuali.rice.krad.uif.component.RequestParameter
      */
     public void populateViewFromRequestParameters(Map<String, String> parameters) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = getView();
 
         // build Map of property replacers by property name so that we can remove them
         // if the property was set by a request parameter
@@ -889,6 +700,18 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
+     * Runs the lifecycle process for the given component from the initialize phase through the
+     * phase prior to the currently active phase.
+     * 
+     * @param model object providing the view data
+     * @param component component to run the lifecycle phases for
+     * @param parent parent component for the component being processed
+     */
+    public static void spawnSubLifecyle(Object model, Component component, Component parent) {
+        spawnSubLifecyle(model, component, parent, null, null, true);
+    }
+
+    /**
      * Runs the lifecycle process for the given component starting at the given start phase and
      * ending with the given end phase
      * 
@@ -901,22 +724,17 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @param parent parent component for the component being processed
      * @param startPhase lifecycle phase to start with, or null to indicate the first phase
      * @param endPhase lifecycle phase to end with, or null to indicate the last phase
+     * @param asynchronous True to spawn the component lifecycle in the next available worker, false
+     *        to spawn immediately in the same thread.
      */
-    public void spawnSubLifecyle(Object model, Component component, Component parent,
-            String startPhase, String endPhase) {
+    public static void spawnSubLifecyle(Object model, Component component, Component parent,
+            String startPhase, String endPhase, boolean asynchronous) {
         if (component == null) {
             return;
         }
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        View view = viewLifecycle.getView();
-
         if (LOG.isDebugEnabled()) {
             LOG.debug("Spawning sub-lifecycle for component: " + component.getId());
-        }
-
-        if (StringUtils.isBlank(component.getId())) {
-            view.assignComponentIds(component);
         }
 
         if (StringUtils.isBlank(startPhase)) {
@@ -927,7 +745,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         if (StringUtils.isBlank(endPhase)) {
-            endPhase = UifConstants.ViewPhases.FINALIZE;
+            ViewLifecyclePhase activePhase = ViewLifecycle.getPhase();
+            
+            if (activePhase != null && UifConstants.ViewPhases.APPLY_MODEL.equals(activePhase.getViewPhase())) {
+                endPhase = UifConstants.ViewPhases.INITIALIZE;
+            } else if (activePhase != null && UifConstants.ViewPhases.FINALIZE.equals(activePhase.getViewPhase())) {
+                endPhase = UifConstants.ViewPhases.APPLY_MODEL;
+            } else {
+                endPhase = UifConstants.ViewPhases.FINALIZE;
+            }
+
         } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL.equals(
                 endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
             throw new RuntimeException("Invalid end phase given: " + endPhase);
@@ -935,25 +762,59 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         // Push sub-lifecycle phases in reverse order.  These will be processed immediately after
         // the active phase ends, starting with the last phase pushed.
+        ViewLifecycle active = getActiveLifecycle();
 
-        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
-            pushPendingPhase(new FinalizeComponentPhase(component, model, parent));
+        if (asynchronous) {
+            // Queue sub-lifecycle to be performed by the next available worker
+            if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+                active.pushPendingPhase(LifecyclePhaseFactory.finalize(component, model, parent));
+            }
+
+            if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
+                return;
+            }
+
+            if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
+                    UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+                active.pushPendingPhase(LifecyclePhaseFactory.applyModel(component, model, parent));
+            }
+
+            if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+                return;
+            }
+
+            active.pushPendingPhase(LifecyclePhaseFactory.initialize(component, model));
+        } else {
+            ViewLifecyclePhase pushPhase = active.activePhase;
+            
+            try {
+                // Perform sub-lifecycle immediately in the same thread
+                if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
+                    active.activePhase = LifecyclePhaseFactory.initialize(component, model);
+                    active.activePhase.run();
+                }
+
+                if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
+                    return;
+                }
+
+                if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
+                        UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+                    active.activePhase = LifecyclePhaseFactory.applyModel(component, model, parent);
+                    active.activePhase.run();
+                }
+
+                if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+                    return;
+                }
+
+                active.activePhase = LifecyclePhaseFactory.finalize(component, model, parent);
+                active.activePhase.run();
+
+            } finally {
+                active.activePhase = pushPhase;
+            }
         }
-
-        if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
-            return;
-        }
-
-        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
-                UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
-            pushPendingPhase(new ApplyModelComponentPhase(component, model, parent));
-        }
-
-        if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-            return;
-        }
-
-        pushPendingPhase(new InitializeComponentPhase(component, model));
     }
 
     /**
@@ -1039,6 +900,74 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         } finally {
             TL_VIEW_LIFECYCLE.remove();
         }
+    }
+
+    /**
+     * Get the helper active on this context.
+     * 
+     * @return the helper
+     */
+    public static ViewHelperService getHelper() {
+        ViewLifecycle active = getActiveLifecycle();
+        
+        if (active.helper == null) {
+            throw new IllegalStateException("Context view helper is not available");
+        }
+
+        return active.helper;
+    }
+
+    /**
+     * Get the view active within this context.
+     * 
+     * <p>
+     * After the lifecycle has completed, this view becomes the resulting view.
+     * </p>
+     * 
+     * @return The view active within this context.
+     */
+    public static View getView() {
+        ViewLifecycle active = getActiveLifecycle();
+        
+        if (active.view == null) {
+            throw new IllegalStateException("Context view is not available");
+        }
+
+        return active.view;
+    }
+
+    /**
+     * Get the model related to the view active within this context.
+     * 
+     * @return The model related to the view active within this context.
+     */
+    public static Object getModel() {
+        ViewLifecycle active = getActiveLifecycle();
+        
+        if (active.model == null) {
+            throw new IllegalStateException("Model is not available");
+        }
+
+        return active.model;
+    }
+
+    /**
+     * Get the current phase of the active lifecycle.
+     * 
+     * @return The current phase of the active lifecycle, or null if no phase is currently active.
+     */
+    public static ViewLifecyclePhase getPhase() {
+        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
+        return viewLifecycle == null ? null : viewLifecycle.activePhase;
+    }
+    
+    /**
+     * Get the rendering context for this lifecycle.
+     * 
+     * @return The rendering context for this lifecycle.
+     */
+    public static LifecycleRenderingContext getRenderingContext() {
+        return getActiveLifecycle().renderingContext;
     }
 
     /**
@@ -1147,8 +1076,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                Object model = viewLifecycle.getModel();
+                View view = ViewLifecycle.getView();
+                Object model = ViewLifecycle.getModel();
 
                 // populate view from request parameters
                 viewLifecycle.populateViewFromRequestParameters(parameters);
@@ -1169,12 +1098,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     LOG.debug("processing indexing for view: " + view.getId());
                 }
                 view.index();
-
-                // update status on view
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
-                }
-                view.setViewStatus(ViewStatus.INITIALIZED);
 
                 // Apply Model Phase
                 if (LOG.isInfoEnabled()) {
@@ -1200,13 +1123,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 }
                 view.index();
 
-                // update status on view
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Updating view status to FINAL for view: " + view.getId());
-                }
-                view.setViewStatus(ViewStatus.FINAL);
             }
-        }).getView();
+        }).getProcessedView();
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
@@ -1254,13 +1172,14 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                Object model = viewLifecycle.getModel();
+                View view = ViewLifecycle.getView();
+                Object model = ViewLifecycle.getModel();
                 
                 Component newComponent = component.copy();
                 Component origComponent = view.getViewIndex().getComponentById(origId);
 
-                view.assignComponentIds(newComponent);
+                // TODO: REMOVE
+                // view.assignComponentIds(newComponent);
 
                 Map<String, Object> origContext = origComponent.getContext();
 
@@ -1319,7 +1238,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     }
                 }
 
-                viewLifecycle.offerPendingPhase(new InitializeComponentPhase(newComponent, model));
+                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.initialize(newComponent, model));
                 viewLifecycle.performPendingPhases();
 
                 // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
@@ -1377,7 +1296,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
                 }
 
-                viewLifecycle.offerPendingPhase(new ApplyModelComponentPhase(newComponent, model, parent));
+                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
                 viewLifecycle.performPendingPhases();
 
                 // adjust nestedLevel property on some specific collection cases
@@ -1387,7 +1306,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                     ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
                 }
 
-                viewLifecycle.offerPendingPhase(new FinalizeComponentPhase(newComponent, model, parent));
+                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
                 viewLifecycle.performPendingPhases();
 
                 // make sure id, binding, and label settings stay the same as initial
@@ -1767,53 +1686,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Runs any configured <code>ComponentModifiers</code> for the given component that match the
-     * given run phase and who run condition evaluation succeeds
-     * 
-     * <p>
-     * If called during the initialize phase, the performInitialization method will be invoked on
-     * the <code>ComponentModifier</code> before running
-     * </p>
-     * 
-     * @param view view instance for context
-     * @param component component instance whose modifiers should be run
-     * @param model model object for context
-     * @param runPhase current phase to match on
-     */
-    protected void runComponentModifiers(Component component, Object model, String runPhase) {
-        List<ComponentModifier> componentModifiers = component.getComponentModifiers();
-        if (componentModifiers == null) {
-            return;
-        }
-
-        for (ComponentModifier modifier : component.getComponentModifiers()) {
-            // if run phase is initialize, invoke initialize method on modifier first
-            if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {
-                modifier.performInitialization(model, component);
-            }
-
-            // check run phase matches
-            if (StringUtils.equals(modifier.getRunPhase(), runPhase)) {
-                // check condition (if set) evaluates to true
-                boolean runModifier = true;
-                if (StringUtils.isNotBlank(modifier.getRunCondition())) {
-                    Map<String, Object> context = new HashMap<String, Object>();
-                    context.put(UifConstants.ContextVariableNames.COMPONENT, component);
-                    context.put(UifConstants.ContextVariableNames.VIEW, ViewLifecycle.getActiveLifecycle().getView());
-
-                    String conditionEvaluation = helper.getExpressionEvaluator()
-                            .evaluateExpressionTemplate(context, modifier.getRunCondition());
-                    runModifier = Boolean.parseBoolean(conditionEvaluation);
-                }
-
-                if (runModifier) {
-                    modifier.performModification(model, component);
-                }
-            }
-        }
-    }
-
-    /**
      * Sets up the view context which will be available to other components through their context
      * for conditional logic evaluation.
      */
@@ -1833,45 +1705,21 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * Execute all pending lifecycle phases.
      */
     protected void performPendingPhases() {
-        Queue<FinalizeComponentPhase> finalizeComponentsToNotify = new LinkedList<FinalizeComponentPhase>();
         Queue<ViewLifecyclePhase> initialPhases = new LinkedList<ViewLifecyclePhase>(pendingPhases);
 
         while (!pendingPhases.isEmpty()) {
             ViewLifecyclePhase phase = pendingPhases.poll();
-
-            if (phase instanceof FinalizeComponentPhase) {
-                boolean registered = false;
-
-                for (EventRegistration registration : eventRegistrations) {
-                    registered = registered || registration.getEventComponent() == phase.getComponent();
-                }
-
-                if (registered) {
-                    finalizeComponentsToNotify.offer((FinalizeComponentPhase) phase);
-                }
-            }
-
+            
             phase.run();
 
             pendingPhases.addAll(phase.getSuccessors());
-        }
-
-        Iterator<FinalizeComponentPhase> finalizePhaseIterator = finalizeComponentsToNotify.iterator();
-        while (finalizePhaseIterator.hasNext()) {
-            FinalizeComponentPhase finalizePhase = finalizePhaseIterator.next();
-
-            assert finalizePhase.isComplete();
-
-            // trigger lifecycle complete event for component
-            invokeEventListeners(ViewLifecycle.LifecycleEvent.LIFECYCLE_COMPLETE, view,
-                    finalizePhase.getModel(), finalizePhase.getComponent());
         }
 
         Iterator<ViewLifecyclePhase> initialPhaseIterator = initialPhases.iterator();
         while (initialPhaseIterator.hasNext()) {
             ViewLifecyclePhase top = initialPhaseIterator.next();
 
-            assert top.isComplete();
+            assert top.isComplete() : top;
             view.getViewIndex().indexComponent(top.getComponent());
         }
     }

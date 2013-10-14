@@ -149,7 +149,6 @@ public class ComponentLibraryView extends FormView {
         detailsItems.addAll(detailsGroup.getItems());
         detailsItems.add(tabGroup);
         detailsGroup.setItems(detailsItems);
-        ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(detailsGroup);
 
         //exhibit setup
         List<String> sourceCode = new ArrayList<String>();
@@ -164,16 +163,14 @@ public class ComponentLibraryView extends FormView {
         if (this.getExampleSize() != null &&
                 (this.getExampleSize().equals(ExampleSize.LARGE) || this.getExampleSize().equals(ExampleSize.XLARGE))) {
             exhibit.getTabGroup().addStyleClass("demo-noTabs");
-            Group headerRightGroup = ViewLifecycle.getActiveLifecycle().getView().getPage().getHeader().getRightGroup();
+            Group headerRightGroup = ViewLifecycle.getView().getPage().getHeader().getRightGroup();
             for (Component item : headerRightGroup.getItems()) {
                 if (item instanceof InputField && ((InputField) item).getControl() instanceof MultiValueControl && item
                         .getId().equals(this.getLargeExampleFieldId())) {
                     //List<ConcreteKeyValue> keyValues = new ArrayList<ConcreteKeyValue>();
                     List<KeyValue> values = new ArrayList<KeyValue>();
-                    int i = 0;
                     for (Group demoGroup : demoGroups) {
                         values.add(new ConcreteKeyValue(demoGroup.getId(), demoGroup.getHeader().getHeaderText()));
-                        i++;
                     }
 
                     //values.addAll(keyValues);

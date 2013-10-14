@@ -315,7 +315,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // check for remote fields holder
-        List<Field> lineFields = processAnyRemoteFieldsHolder(view, model, collectionGroup, lineItems);
+        List<Field> lineFields = processAnyRemoteFieldsHolder(collectionGroup, lineItems);
 
         // adjust binding path and id to match collection line path
         ComponentUtils.bindAndIdFieldList(lineFields, bindingPath, lineSuffix);
@@ -483,7 +483,7 @@ public class CollectionGroupBuilder implements Serializable {
      * @param group collection group instance to check for any remotable fields holder
      * @param items list of items to process
      */
-    protected List<Field> processAnyRemoteFieldsHolder(View view, Object model, CollectionGroup group,
+    protected List<Field> processAnyRemoteFieldsHolder(CollectionGroup group,
             List<? extends Component> items) {
         List<Field> processedItems = new ArrayList<Field>();
 
@@ -491,8 +491,7 @@ public class CollectionGroupBuilder implements Serializable {
         // translated fields are placed into the processed items list at the position of the holder
         for (Component item : items) {
             if (item instanceof RemoteFieldsHolder) {
-                List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(view,
-                        model, group);
+                List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(group);
                 processedItems.addAll(translatedFields);
             } else {
                 processedItems.add((Field) item);

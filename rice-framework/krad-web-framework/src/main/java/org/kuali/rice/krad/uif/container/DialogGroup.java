@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -24,13 +28,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Special type of <code>Group</code> that presents a the content for a modal dialog
@@ -110,23 +108,18 @@ public class DialogGroup extends Group {
         List<Component> newItems = new ArrayList<Component>();
         List<? extends Component> items = getItems();
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-        
         // do not add the custom properties if they are already present
         if (!(items.contains(prompt))) {
-            view.assignComponentIds(prompt);
             newItems.add(prompt);
         }
 
         if (!(items.contains(explanation))) {
-            view.assignComponentIds(explanation);
             newItems.add(explanation);
         }
 
         newItems.addAll(getItems());
 
         if (!(items.contains(responseInputField))) {
-            view.assignComponentIds(responseInputField);
             newItems.add(responseInputField);
         }
 

@@ -30,7 +30,6 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
@@ -127,7 +126,6 @@ public class UifDictionaryIndex implements Runnable {
                         LOG.debug("Updating view status to CREATED for view: " + view.getId());
                     }
 
-                    view.setViewStatus(ViewStatus.CREATED);
                     return view;
                 }});
 

@@ -31,7 +31,7 @@ public interface ViewLifecycleResult {
      * @return A copy of the original view passed in at the start of the lifecycle process, but with
      *         lifecycle processing applied.
      */
-    View getView();
+    View getProcessedView();
     
     /**
      * Get the component initialized by a refresh lifecycle.

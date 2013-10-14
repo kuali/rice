@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Widget that renders text syntax highlighted
@@ -46,6 +47,16 @@ public class SyntaxHighlighter extends WidgetBase {
         super();
         allowCopy = true;
         showCopyConfirmation = false;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     */
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> rv = super.getComponentsForLifecycle();
+        rv.add(header);
+        return rv;
     }
 
     @BeanTagAttribute(name="header")

@@ -67,8 +67,10 @@ public class CssGridLayoutManager extends LayoutManagerBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
-        super.performFinalize(model, container);
+    public void performFinalize(Object model, Component component) {
+        super.performFinalize(model, component);
+        
+        Container container = (Container) component;
 
         int rowSpaceLeft = NUMBER_OF_COLUMNS;
         int rowIndex = 0;

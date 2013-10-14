@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.Person;
@@ -25,10 +30,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
@@ -39,14 +44,8 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * View type for lookups.
@@ -256,7 +255,7 @@ public class LookupView extends FormView {
                     ComponentFactory.LOOKUP_INPUT_FIELD);
 
             activeLookupField.setPropertyName(UifPropertyPaths.ACTIVE);
-            activeLookupField.copyFromAttributeDefinition(this, attributeDefinition);
+            activeLookupField.copyFromAttributeDefinition(attributeDefinition);
         }
 
         getCriteriaFields().add(activeLookupField);
@@ -281,9 +280,8 @@ public class LookupView extends FormView {
             }
         }
 
-        // since we don't have these as prototypes need to assign ids here
-        assignComponentIds(getCriteriaGroup());
-        assignComponentIds(getResultsGroup());
+        // TODO: Confirm unneeded and remove since we don't have these as prototypes need to assign ids here
+        //        ComponentUtils.assignIds(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
 
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
@@ -299,6 +297,7 @@ public class LookupView extends FormView {
      * </p>
      */
     protected void convertLookupCriteriaFields(Group lookupGroup) {
+        @SuppressWarnings("unchecked")
         List<Component> criteriaGroupItems = (List<Component>) lookupGroup.getItems();
 
         // holds the index and range field group for replacement into the items

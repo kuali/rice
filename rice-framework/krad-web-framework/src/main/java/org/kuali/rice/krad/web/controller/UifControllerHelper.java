@@ -249,8 +249,8 @@ public class UifControllerHelper {
                     ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 
             // run lifecycle and update in view
-            form.setPostedView(postedView = ViewLifecycle
-                    .performComponentLifecycle(postedView, form, request, response, comp, refreshComponentId).getView());
+            form.setPostedView(postedView = ViewLifecycle.performComponentLifecycle(
+                    postedView, form, request, response, comp, refreshComponentId).getProcessedView());
 
             // TODO: this should be in ViewHelperServiceImpl#performComponentLifecycle where other
             // adjustments are made, and it should use constants

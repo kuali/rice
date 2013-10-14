@@ -162,20 +162,16 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     public void performInitialization(Object model) {
         super.performInitialization(model);
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-
         if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
                 constraintMessage
                         == null)) {
             constraintMessage = ComponentFactory.getConstraintMessage();
-            view.assignComponentIds(constraintMessage);
         }
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage
                         == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
-            view.assignComponentIds(instructionalMessage);
         }
 
     }
@@ -321,7 +317,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         setupFieldQuery();
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
 
         // special requiredness indicator handling, if this was previously not required reset its required
         // message to be ** for indicating required in the next state
@@ -364,8 +360,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     protected void buildAutomaticQuickfinder(Object model) {
         QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
 
-        ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, autoQuickfinder, this,
-                null, UifConstants.ViewPhases.INITIALIZE);
+        ViewLifecycle.spawnSubLifecyle(model, autoQuickfinder, this);
 
         // if render flag is true, that means the quickfinder was able to find a relationship
         if (autoQuickfinder.isRender()) {
@@ -518,8 +513,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * copied from
      */
     @Override
-    public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
-        super.copyFromAttributeDefinition(view, attributeDefinition);
+    public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
+        super.copyFromAttributeDefinition(attributeDefinition);
 
         // max length
         if (getMaxLength() == null) {
@@ -571,8 +566,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // control
         if ((getControl() == null) && (attributeDefinition.getControlField() != null)) {
             Control control = ComponentUtils.copy(attributeDefinition.getControlField());
-            view.assignComponentIds(control);
-
             setControl(control);
         }
 
@@ -582,8 +575,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
             if (constraintMessage == null) {
                 constraintMessage = ComponentFactory.getConstraintMessage();
-                view.assignComponentIds(constraintMessage);
             }
+            
             getConstraintMessage().setMessageText(attributeDefinition.getConstraintText());
         }
 

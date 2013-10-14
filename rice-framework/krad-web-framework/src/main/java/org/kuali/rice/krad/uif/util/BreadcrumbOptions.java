@@ -60,7 +60,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
      * @param model the model
      */
     public void setupBreadcrumbs(Object model) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         if (model != null && model instanceof UifFormBase) {
             UifFormBase form = (UifFormBase) model;
@@ -96,13 +96,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
                     && form.getHistoryFlow() != null
                     && form.getHistoryFlow().getPastItems() != null) {
                 List<BreadcrumbItem> pastItems = form.getHistoryFlow().getPastItems();
-
-                ComponentUtils.clearIds(pastItems);
-
-                for (BreadcrumbItem item : pastItems) {
-                    view.assignComponentIds(item);
-                }
-
+                ComponentUtils.clearAndAssignIds(pastItems);
                 view.setPathBasedBreadcrumbs(pastItems);
             }
         }
@@ -115,7 +109,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
      * @param model the model
      */
     public void finalizeBreadcrumbs(Object model, Container parent, BreadcrumbItem breadcrumbItem) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         //set breadcrumbItem label same as the header, if not set
         if (StringUtils.isBlank(breadcrumbItem.getLabel()) && view.getHeader() != null && !StringUtils.isBlank(

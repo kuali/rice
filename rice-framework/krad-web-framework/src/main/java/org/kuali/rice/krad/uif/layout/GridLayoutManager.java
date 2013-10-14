@@ -79,18 +79,20 @@ public class GridLayoutManager extends LayoutManagerBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
-        super.performFinalize(model, container);
+    public void performFinalize(Object model, Component component) {
+        super.performFinalize(model, component);
+        
+        Container container = (Container) component;
 
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();
         }
 
-        for (Component component : container.getItems()) {
+        for (Component item : container.getItems()) {
             if (!(this instanceof TableLayoutManager)) {
-                component.addCellCssClass("uif-gridLayoutCell");
+                item.addCellCssClass("uif-gridLayoutCell");
             }
-            setCellAttributes(component);
+            setCellAttributes(item);
         }
     }
 

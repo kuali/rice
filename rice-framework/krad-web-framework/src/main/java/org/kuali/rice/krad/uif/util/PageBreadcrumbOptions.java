@@ -47,7 +47,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      */
     @Override
     public void setupBreadcrumbs(Object model) {
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         BreadcrumbOptions viewBreadcrumbOptions = view.getBreadcrumbOptions();
 
         //inherit prePageBreadcrumbs, preViewBreadcrumbs, and overrides from the view if not set
@@ -55,40 +55,24 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
             this.setHomewardPathBreadcrumbs(viewBreadcrumbOptions.getHomewardPathBreadcrumbs());
-
-            for (BreadcrumbItem item : this.getHomewardPathBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
         }
 
         if (this.getPrePageBreadcrumbs() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getPrePageBreadcrumbs() != null) {
             this.setPrePageBreadcrumbs(viewBreadcrumbOptions.getPrePageBreadcrumbs());
-
-            for (BreadcrumbItem item : this.getPrePageBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
         }
 
         if (this.getPreViewBreadcrumbs() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getPreViewBreadcrumbs() != null) {
             this.setPreViewBreadcrumbs(viewBreadcrumbOptions.getPreViewBreadcrumbs());
-
-            for (BreadcrumbItem item : this.getPreViewBreadcrumbs()) {
-                view.assignComponentIds(item);
-            }
         }
 
         if (this.getBreadcrumbOverrides() == null
                 && viewBreadcrumbOptions != null
                 && viewBreadcrumbOptions.getBreadcrumbOverrides() != null) {
             this.setBreadcrumbOverrides(viewBreadcrumbOptions.getBreadcrumbOverrides());
-
-            for (BreadcrumbItem item : this.getBreadcrumbOverrides()) {
-                view.assignComponentIds(item);
-            }
         }
     }
 
@@ -145,7 +129,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
         }
 
         if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(ViewLifecycle.getActiveLifecycle().getView().getId());
+            breadcrumbItem.getUrl().setViewId(ViewLifecycle.getView().getId());
         }
 
         if (breadcrumbItem.getUrl().getPageId() == null) {

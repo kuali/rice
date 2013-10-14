@@ -180,22 +180,8 @@ public class MessageStructureUtils {
      */
     private static Message concatenateStringMessageContent(Message currentMessageComponent, String messagePiece,
             View view) {
-        //messagePiece = messagePiece.indexOf(" ");
-/*        if (messagePiece.startsWith(" ")){
-            messagePiece.replaceFirst(" ", "&nbsp;");
-        }
-
-        if (messagePiece.endsWith(" ")){
-
-        }*/
-
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
-
-            if (view != null) {
-                view.assignComponentIds(currentMessageComponent);
-            }
-
             currentMessageComponent.setMessageText(messagePiece);
             currentMessageComponent.setGenerateSpan(false);
         } else {
@@ -285,7 +271,6 @@ public class MessageStructureUtils {
                 KRADConstants.MessageParsing.COMPONENT_BY_ID + "="));
 
         if (component != null) {
-            view.assignComponentIds(component);
             component.addStyleClass(KRADConstants.MessageParsing.INLINE_COMP_CLASS);
 
             if (parts.length > 1) {
@@ -329,10 +314,6 @@ public class MessageStructureUtils {
             Component component = componentList.get(cIndex);
 
             if (component != null) {
-                if (component.getId() == null) {
-                    view.assignComponentIds(component);
-                }
-
                 if (parts.length > 1) {
                     component = processAdditionalProperties(component, parts);
                 }

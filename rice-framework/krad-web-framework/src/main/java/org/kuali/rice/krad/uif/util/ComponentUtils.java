@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -34,7 +35,6 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -333,7 +333,7 @@ public class ComponentUtils {
             } else if (item instanceof FieldGroup) {
                 typeComponents.addAll(getNestedContainerComponents(((FieldGroup) item).getGroup(), componentType));
             } else if (componentType.isAssignableFrom(item.getClass())) {
-                typeComponents.add((T) item);
+                typeComponents.add(componentType.cast(item));
             }
         }
 
@@ -489,40 +489,91 @@ public class ComponentUtils {
         }
     }
 
+//    /**
+//     * Replace all IDs from a component and its children with new generated ID values.
+//     * 
+//     * <p>If there are features that depend on a static id of this
+//     * component, this call may cause errors.</p>
+//     *
+//     * @param component A list of component to clear all IDs from.
+//     */
+//    public static void assignIds(List<? extends Component> components) {
+//        if (components == null || components.isEmpty()) {
+//            return;
+//        }
+//        
+//        Queue<Component> toClear = new LinkedList<Component>();
+//        toClear.addAll(components);
+//        while (!toClear.isEmpty()) {
+//            Component component = toClear.poll();
+//
+//            if (StringUtils.isEmpty(component.getId())) {
+//                component.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
+//            }
+//
+//            if (component instanceof Container) {
+//                LayoutManager layoutManager = ((Container) component).getLayoutManager();
+//                
+//                if (layoutManager != null && StringUtils.isEmpty(layoutManager.getId())) {
+//                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
+//                }
+//            }
+//
+//            for (Component nested : component.getComponentsForLifecycle()) {
+//                if (nested != null) {
+//                    toClear.add(nested);
+//                }
+//            }
+//            
+//            for (Component nested : component.getComponentPrototypes()) {
+//                if (nested != null) {
+//                    toClear.add(nested);
+//                }
+//            }
+//        }
+//    }
+
     /**
-     * Clear all ids from a component and its children.  If there are features that depend on a static id of this
-     * component, this call may cause errors.
+     * Replace all IDs from a component and its children with new generated ID values.
+     * 
+     * <p>If there are features that depend on a static id of this
+     * component, this call may cause errors.</p>
      *
-     * @param component the component to clear all ids from
+     * @param component A list of component to clear all IDs from.
      */
-    public static void clearIds(Component component) {
-        component.setId(null);
-
-        if (Container.class.isAssignableFrom(component.getClass())) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-            layoutManager.setId(null);
+    public static void clearAndAssignIds(List<? extends Component> components) {
+        if (components == null || components.isEmpty()) {
+            return;
         }
+        
+        Queue<Component> toClear = new LinkedList<Component>();
+        toClear.addAll(components);
+        while (!toClear.isEmpty()) {
+            Component component = toClear.poll();
+            
+            component.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
 
-        for (Component nested : component.getComponentsForLifecycle()) {
-            if (nested != null) {
-                clearIds(nested);
-            }
-        }
-
-        List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
-        if (propertyReplacerComponents != null) {
-            for (Component nested : propertyReplacerComponents) {
-                if (nested != null) {
-                    clearIds(nested);
+            if (component instanceof Container) {
+                LayoutManager layoutManager = ((Container) component).getLayoutManager();
+                
+                if (layoutManager != null) {
+                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
                 }
             }
-        }
-    }
 
-    public static void clearIds(List<? extends Component> components) {
-        for (Component component : components) {
-            if (component != null) {
-                clearIds(component);
+            for (Component nested : component.getComponentsForLifecycle()) {
+                if (nested != null) {
+                    toClear.add(nested);
+                }
+            }
+
+            List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
+            if (propertyReplacerComponents != null) {
+                for (Component nested : propertyReplacerComponents) {
+                    if (nested != null) {
+                        toClear.add(nested);
+                    }
+                }
             }
         }
     }

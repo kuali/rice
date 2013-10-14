@@ -70,7 +70,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
+    public void performFinalize(Object model, Component container) {
         super.performFinalize(model, container);
 
         if (StringUtils.isBlank(itemStyle)) {
@@ -91,7 +91,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
         // classes to identify this layout in jQuery and to clear the float correctly in all browsers
         this.addStyleClass("clearfix");
 
-        for (Component c : container.getItems()) {
+        for (Component c : ((Container) container).getItems()) {
             if (c != null) {
                 if (orientation.equals(Orientation.HORIZONTAL)) {
                     c.addStyleClass("uif-boxLayoutHorizontalItem");

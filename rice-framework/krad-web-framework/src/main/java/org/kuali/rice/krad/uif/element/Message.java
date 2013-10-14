@@ -83,14 +83,12 @@ public class Message extends ContentElementBase {
                 messageText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN) &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
 
-            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-            
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
-                    this.getInlineComponents(), viewLifecycle.getView(), parseComponents);
+                    this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
 
             if (messageComponentStructure != null) {
                 for (Component component : messageComponentStructure) {
-                    viewLifecycle.spawnSubLifecyle(model, component, this, null, UifConstants.ViewPhases.INITIALIZE);
+                    ViewLifecycle.spawnSubLifecyle(model, component, this);
                 }
             }
         }

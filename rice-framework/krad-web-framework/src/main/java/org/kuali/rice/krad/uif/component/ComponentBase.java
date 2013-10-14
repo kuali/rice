@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -30,9 +33,12 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
@@ -174,6 +180,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String preRenderContent;
     private String postRenderContent;
+    
+    private transient Reference<ViewLifecyclePhase> lastPhase;
 
     public ComponentBase() {
         super();
@@ -274,13 +282,53 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * Get the last lifecycle phase that worked with this component, if it hasn't been collected
+     * yet.
+     * 
+     * <p>
+     * This is primarily used for reporting lifecycle status, to help troubleshoot duplicate
+     * components, and should not be held using a hard reference.
+     * </p>
+     * 
+     * @see Component#getLastPhase()
+     */
+    @Override
+    public ViewLifecyclePhase getLastPhase() {
+        return this.lastPhase == null ? null : this.lastPhase.get();
+    }
+    
+    /**
      * Setter for the view status
      *
      * @param viewStatus
      */
-    public void setViewStatus(String viewStatus) {
+    @Override
+    public void setViewStatus(String status) {
         checkMutable(true);
-        this.viewStatus = viewStatus;
+        this.lastPhase = null;
+        this.viewStatus = status;
+    }
+
+    /**
+     * Setter for the view status
+     *
+     * @param viewStatus
+     */
+    @Override
+    public void setViewStatus(ViewLifecyclePhase phase) {
+        checkMutable(true);
+        this.lastPhase = new WeakReference<ViewLifecyclePhase>(phase);
+        this.viewStatus = phase.getEndViewStatus();
+    }
+
+    /**
+     * Setter for the view status
+     *
+     * @param viewStatus
+     */
+    @Override
+    public void clearLastPhase() {
+        this.lastPhase = null;
     }
 
     /**
@@ -350,7 +398,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void performApplyModel(Object model, Component parent) {
         checkMutable(false);
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
@@ -382,9 +430,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void performFinalize(Object model, Component parent) {
         checkMutable(false);
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        View view = viewLifecycle.getView();
-        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
+        View view = ViewLifecycle.getView();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
 
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
@@ -504,6 +551,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         cssClasses = finalCssClasses;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.util.LifecycleElement#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+        // TODO: migrate tasks
     }
 
     /**
@@ -2222,7 +2277,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setId(this.id);
         componentCopy.setBaseId(this.baseId);
 
-        componentCopy.setViewStatus(this.viewStatus);
+        // Copy initialized status, but reset to created for others.
+        // This allows prototypes to bypass repeating the initialized phase.
+        if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
+            componentCopy.viewStatus = UifConstants.ViewStatus.INITIALIZED;
+        } else {
+            componentCopy.viewStatus = UifConstants.ViewStatus.CREATED;
+        }
+        componentCopy.lastPhase = null;
         
         List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
         if (copyAdditionalComponentsToRefresh != null) {

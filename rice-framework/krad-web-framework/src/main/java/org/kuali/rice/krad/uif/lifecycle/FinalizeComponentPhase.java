@@ -18,19 +18,16 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.MethodInvoker;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -38,11 +35,19 @@ import org.springframework.util.MethodInvoker;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
-    
-    private final Logger LOG = LoggerFactory.getLogger(FinalizeComponentPhase.class);
 
-    private final Component parent;
+    private Component parent;
     private RenderComponentPhase renderPhase;
+
+    /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#recycle()
+     */
+    @Override
+    protected void recycle() {
+        super.recycle();
+        parent = null;
+        renderPhase = null;
+    }
 
     /**
      * Create a new lifecycle phase processing task for finalizing a component.
@@ -51,37 +56,16 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
      * @param model Top level object containing the data
      * @param parentPhase The finalize phase processed on the parent component.
      */
-    private FinalizeComponentPhase(Component component, Object model, Component parent,
+    protected void prepare(Component component, Object model, Component parent,
             FinalizeComponentPhase parentPhase) {
-        super(component, model, parentPhase == null ?
+        super.prepare(component, model, parentPhase == null ?
                 Collections.<ViewLifecyclePhase> emptyList() :
                 Collections.<ViewLifecyclePhase> singletonList(parentPhase));
         this.parent = parent;
-    }
-
-    /**
-     * Create a new lifecycle phase processing task for finalizing a component.
-     * 
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     */
-    public FinalizeComponentPhase(Component component, Object model) {
-        this(component, model, null);
-    }
-
-    /**
-     * Create a new lifecycle phase processing task for finalizing a component.
-     * 
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     * @param parent parent component for the component being finalized
-     */
-    public FinalizeComponentPhase(Component component, Object model, Component parent) {
-        this(component, model, parent, null);
 
         // TODO: enable/disable by config
         ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
-        this.renderPhase = new RenderComponentPhase(
+        this.renderPhase = LifecyclePhaseFactory.render(
                 component, model, this, null, Collections.unmodifiableList(topList));
         topList.add(this.renderPhase);
     }
@@ -111,58 +95,52 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
     }
 
     /**
-     * Update state of the component and perform final preparation for rendering.
-     * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#performLifecyclePhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
      */
     @Override
-    protected void performLifecyclePhase() {
-        Component component = getComponent();
-        Object model = getModel();
+    public LifecycleEvent getEventToNotify() {
+        return LifecycleEvent.LIFECYCLE_COMPLETE;
+    }
 
-        if (component == null) {
-            return;
-        }
+    /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#notifyCompleted()
+     */
+    @Override
+    protected void notifyCompleted() {
+        super.notifyCompleted();
+        assert renderPhase == null || renderPhase.isComplete();
+        renderPhase = null;
+    }
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        View view = viewLifecycle.getView();
-        ViewHelperService helper = viewLifecycle.getHelper();
+    /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#isComplete()
+     */
+    @Override
+    public boolean isComplete() {
+        return super.isComplete() &&
+                (renderPhase == null || renderPhase.isComplete());
+    }
 
-        // implement readonly request overrides
-        ViewModel viewModel = (ViewModel) model;
-        if ((component instanceof DataBinding) && view.isSupportsRequestOverrideOfReadOnlyFields() && !viewModel
-                .getReadOnlyFieldsList().isEmpty()) {
-            String propertyName = ((DataBinding) component).getPropertyName();
-            if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
-                component.setReadOnly(true);
-            }
-        }
+    /**
+     * @return the parent
+     */
+    public Component getParent() {
+        return this.parent;
+    }
 
-        // invoke configured method finalizers
-        invokeMethodFinalizer(view, component, model);
-
-        // invoke component to update its state
-        component.performFinalize(model, parent);
-
-        // invoke service override hook
-        helper.performCustomFinalize(component, model, parent);
-
-        // invoke component modifiers setup to run in the finalize phase
-        viewLifecycle.runComponentModifiers(component, model, UifConstants.ViewPhases.FINALIZE);
-
-        // add the components template to the views list of components
-        if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate())) {
-            view.addViewTemplate(component.getTemplate());
-        }
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if (layoutManager != null) {
-                view.addViewTemplate(layoutManager.getTemplate());
-            }
-        }
-
+    /**
+     * Update state of the component and perform final preparation for rendering.
+     * 
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializePendingTasks(java.util.Queue)
+     */
+    @Override
+    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
+        tasks.add(LifecycleTaskFactory.getTask(SetReadOnlyOnDataBindingTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
     }
 
     /**
@@ -171,110 +149,37 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
      * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
      */
     @Override
-    protected void initializeSuccessors(List<ViewLifecyclePhase> successors) {
+    protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
         Component component = getComponent();
         Object model = getModel();
 
         List<Component> nestedComponents = component.getComponentsForLifecycle();
         List<RenderComponentPhase> renderPhases = null;
-        List<RenderComponentPhase> unmodifiableRenderPhases = null;
-        
+
         if (ViewLifecycle.isRenderInLifecycle()) {
             renderPhases = new ArrayList<RenderComponentPhase>(nestedComponents.size());
-            unmodifiableRenderPhases = Collections.unmodifiableList(renderPhases);
         }
-        
+
         // initialize nested components
         for (Component nestedComponent : nestedComponents) {
             if (nestedComponent != null) {
-                FinalizeComponentPhase nestedFinalizePhase = new FinalizeComponentPhase(
+                FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
                         nestedComponent, model, component, this);
-                
+
                 if (ViewLifecycle.isRenderInLifecycle()) {
-                    RenderComponentPhase nestedRenderPhase = new RenderComponentPhase(
+                    RenderComponentPhase nestedRenderPhase = LifecyclePhaseFactory.render(
                             nestedComponent, model, nestedFinalizePhase, this.renderPhase,
-                            unmodifiableRenderPhases);
+                            renderPhases);
                     renderPhases.add(nestedRenderPhase);
                     nestedFinalizePhase.renderPhase = nestedRenderPhase;
                 }
-                
+
                 successors.add(nestedFinalizePhase);
             }
         }
 
         if (successors.isEmpty() && renderPhase != null) {
             successors.add(renderPhase);
-        }
-    }
-
-    /**
-     * Invokes the finalize method for the component (if configured) and sets the render output for
-     * the component to the returned method string (if method is not a void type)
-     * 
-     * @param view view instance that contains the component
-     * @param component component to run finalize method for
-     * @param model top level object containing the data
-     */
-    protected void invokeMethodFinalizer(View view, Component component, Object model) {
-        String finalizeMethodToCall = component.getFinalizeMethodToCall();
-        MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
-
-        if (StringUtils.isBlank(finalizeMethodToCall) && (finalizeMethodInvoker == null)) {
-            return;
-        }
-
-        if (finalizeMethodInvoker == null) {
-            finalizeMethodInvoker = new MethodInvoker();
-        }
-
-        // if method not set on invoker, use finalizeMethodToCall, note staticMethod could be set(don't know since
-        // there is not a getter), if so it will override the target method in prepare
-        if (StringUtils.isBlank(finalizeMethodInvoker.getTargetMethod())) {
-            finalizeMethodInvoker.setTargetMethod(finalizeMethodToCall);
-        }
-
-        // if target class or object not set, use view helper service
-        if ((finalizeMethodInvoker.getTargetClass() == null) && (finalizeMethodInvoker.getTargetObject() == null)) {
-            finalizeMethodInvoker.setTargetObject(view.getViewHelperService());
-        }
-
-        // setup arguments for method
-        List<Object> additionalArguments = component.getFinalizeMethodAdditionalArguments();
-        if (additionalArguments == null) {
-            additionalArguments = new ArrayList<Object>();
-        }
-
-        Object[] arguments = new Object[2 + additionalArguments.size()];
-        arguments[0] = component;
-        arguments[1] = model;
-
-        int argumentIndex = 1;
-        for (Object argument : additionalArguments) {
-            argumentIndex++;
-            arguments[argumentIndex] = argument;
-        }
-        finalizeMethodInvoker.setArguments(arguments);
-
-        // invoke finalize method
-        try {
-            LOG.debug("Invoking finalize method: "
-                    + finalizeMethodInvoker.getTargetMethod()
-                    + " for component: "
-                    + component.getId());
-            finalizeMethodInvoker.prepare();
-
-            Class<?> methodReturnType = finalizeMethodInvoker.getPreparedMethod().getReturnType();
-            if (StringUtils.equals("void", methodReturnType.getName())) {
-                finalizeMethodInvoker.invoke();
-            } else {
-                String renderOutput = (String) finalizeMethodInvoker.invoke();
-
-                component.setSelfRendered(true);
-                component.setRenderedHtmlOutput(renderOutput);
-            }
-        } catch (Exception e) {
-            LOG.error("Error invoking finalize method for component: " + component.getId(), e);
-            throw new RuntimeException("Error invoking finalize method for component: " + component.getId(), e);
         }
     }
 

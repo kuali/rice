@@ -71,8 +71,6 @@ public class Help extends WidgetBase {
                     || ((helpDefinition != null) && StringUtils.isNotBlank(helpDefinition.getParameterName()))
                     && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())) {
                 helpAction = ComponentFactory.getHelpAction();
-
-                ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(helpAction);
                 helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
             }
         }
@@ -130,7 +128,7 @@ public class Help extends WidgetBase {
     protected void buildExternalHelp(Component parent) {
         if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {
             if (StringUtils.isBlank(helpDefinition.getParameterNamespace())) {
-                helpDefinition.setParameterNamespace(ViewLifecycle.getActiveLifecycle().getView().getNamespaceCode());
+                helpDefinition.setParameterNamespace(ViewLifecycle.getView().getNamespaceCode());
             }
 
             if (StringUtils.isNotBlank(helpDefinition.getParameterNamespace())

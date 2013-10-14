@@ -29,7 +29,6 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -100,8 +99,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(Object model, Container container) {
-        super.performInitialization(model, container);
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         stackedGroups = new ArrayList<Group>();
     }
@@ -117,8 +116,8 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performApplyModel(Object model, Container container) {
-        super.performApplyModel(model, container);
+    public void performApplyModel(Object model, Component component) {
+        super.performApplyModel(model, component);
 
         if (wrapperGroup != null) {
             wrapperGroup.setItems(stackedGroups);
@@ -132,7 +131,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *      org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(Object model, Container container) {
+    public void performFinalize(Object model, Component container) {
         super.performFinalize(model, container);
 
         // Calculate the number of pages for the pager widget if we are using server paging
@@ -256,7 +255,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      */
     protected String buildLineHeaderText(Object line, Group lineGroup) {
         // check for expression on summary title
-        if (ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
+        if (ViewLifecycle.getHelper().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
             lineGroup.getPropertyExpressions().put(UifPropertyPaths.HEADER_TEXT, summaryTitle);
             return null;
         }

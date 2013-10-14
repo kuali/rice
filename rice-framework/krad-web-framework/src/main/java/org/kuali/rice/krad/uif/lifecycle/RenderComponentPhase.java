@@ -15,20 +15,15 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
-
-import freemarker.core.Environment;
-import freemarker.core.Macro;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateModel;
+import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -39,6 +34,7 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
 
     private RenderComponentPhase parent;
     private List<RenderComponentPhase> siblings;
+    private List<ViewLifecyclePhase> predecessors;
     
     /**
      * Assert that all siblings have the same parent object.
@@ -57,18 +53,29 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     }
     
     /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#recycle()
+     */
+    @Override
+    protected void recycle() {
+        super.recycle();
+        parent = null;
+        siblings = null;
+        predecessors = null;
+    }
+
+    /**
      * Create a new lifecycle phase processing task for finalizing a component.
      * 
      * @param component the component instance that should be updated
      * @param model top level object containing the data
      */
-    public RenderComponentPhase(Component component, Object model, FinalizeComponentPhase finalizer,
+    protected void prepare(Component component, Object model, FinalizeComponentPhase finalizer,
             RenderComponentPhase parent, List<RenderComponentPhase> siblings) {
-        super(component, model, finalizer == null
+        super.prepare(component, model, finalizer == null
                 ? Collections.<ViewLifecyclePhase> emptyList()
                 : Collections.<ViewLifecyclePhase> singletonList(finalizer));
         this.parent = parent;
-        this.siblings = Collections.unmodifiableList(siblings);
+        this.siblings = siblings;
         assert testSameParent();
     }
 
@@ -97,59 +104,38 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     }
 
     /**
-     * Perform rendering on the given component.
-     * 
-     * @param view view instance the component belongs to
-     * @param component the component instance that should be updated
-     * @param model top level object containing the data
-     * @param parent parent component for the component being finalized
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
      */
     @Override
-    protected void performLifecyclePhase() {
+    public LifecycleEvent getEventToNotify() {
+        return null;
+    }
+    
+    /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#getPredecessors()
+     */
+    @Override
+    public List<? extends ViewLifecyclePhase> getPredecessors() {
+        if (predecessors == null) {
+            return super.getPredecessors();
+        } else {
+            return predecessors;
+        }
+    }
+
+    /**
+     * Perform rendering on the given component.
+     * 
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializePendingTasks(java.util.Queue)
+     */
+    @Override
+    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
         Component component = getComponent();
         if (component == null || !component.isRender() || component.getTemplate() == null) {
             return;
         }
-
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        Environment env = viewLifecycle.getFreeMarkerEnvironment();
-        viewLifecycle.importFreeMarkerTemplate(component.getTemplate());
         
-        if (component instanceof Group) {
-            LayoutManager layoutManager = ((Group) component).getLayoutManager();
-            
-            if (layoutManager != null) {
-                viewLifecycle.importFreeMarkerTemplate(layoutManager.getTemplate());
-            }
-        }
-        
-        viewLifecycle.clearRenderingBuffer();
-
-        try {
-            
-            // Check for a single-arg macro, with the parameter name "component"
-            // defer for parent rendering if not found
-            Macro fmMacro = (Macro) env.getMainNamespace().get(component.getTemplateName());
-            
-            if (fmMacro == null) {
-                return;
-            }
-            
-            String[] args = fmMacro.getArgumentNames();
-            if (args == null || args.length != 1 || !component.getComponentTypeName().equals(args[0])) {
-                return;
-            }
-
-            FreeMarkerInlineRenderUtils.renderTemplate(env, component,
-                    null, false, false, Collections.<String, TemplateModel> emptyMap());
-        } catch (TemplateException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
-        }
-
-        component.setSelfRendered(true);
-        component.setRenderedHtmlOutput(viewLifecycle.getRenderedOutput());
+        tasks.add(LifecycleTaskFactory.getTask(RenderComponentTask.class,this));
     }
 
     /**
@@ -158,16 +144,22 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
      * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
      */
     @Override
-    protected void initializeSuccessors(List<ViewLifecyclePhase> successors) {
+    protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
         if (parent == null) {
             return;
         }
-        
+
+        siblings.remove(this);
         for (RenderComponentPhase sibling : siblings) {
             if (!sibling.isProcessed()) {
                 return;
             }
         }
+        assert siblings.isEmpty() : siblings;
+
+        List<ViewLifecyclePhase> parentPredecessors = new ArrayList<ViewLifecyclePhase>(parent.getPredecessors());
+        parentPredecessors.add(this);
+        parent.predecessors = Collections.unmodifiableList(parentPredecessors);
         
         successors.add(parent);
     }

@@ -24,13 +24,11 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -95,16 +93,11 @@ public class Header extends ContentElementBase {
                 KRADConstants.MessageParsing.LEFT_TOKEN) && headerText.contains(
                 KRADConstants.MessageParsing.RIGHT_TOKEN)) {
             Message message = ComponentFactory.getMessage();
-            
-            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-            View view = viewLifecycle.getView();
-            view.assignComponentIds(message);
-
             message.setMessageText(headerText);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
-
-            viewLifecycle.spawnSubLifecyle(model, message, this, null, UifConstants.ViewPhases.INITIALIZE);
+            
+            ViewLifecycle.spawnSubLifecyle(model, message, this);
 
             this.setRichHeaderMessage(message);
         }

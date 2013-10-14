@@ -34,6 +34,8 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -43,6 +45,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -196,7 +199,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         super.performInitialization(model);
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -296,14 +299,14 @@ public class CollectionGroup extends Group implements DataBinding {
             }
         }
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         // adds the script to the add line buttons to keep collection on the same page
         if (this.renderAddBlankLineButton) {
             if (this.addBlankLineAction == null) {
                 this.addBlankLineAction = (Action) ComponentFactory.getNewComponentInstance(
                         ComponentFactory.ADD_BLANK_LINE_ACTION);
-                view.assignComponentIds(this.addBlankLineAction);
+                ViewLifecycle.spawnSubLifecyle(model, this.addBlankLineAction, this);
             }
 
             if (addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
@@ -315,7 +318,7 @@ public class CollectionGroup extends Group implements DataBinding {
             if (this.addViaLightBoxAction == null) {
                 this.addViaLightBoxAction = (Action) ComponentFactory.getNewComponentInstance(
                         ComponentFactory.ADD_VIA_LIGHTBOX_ACTION);
-                view.assignComponentIds(this.addViaLightBoxAction);
+                ViewLifecycle.spawnSubLifecyle(model, this.addViaLightBoxAction, this);
             }
 
             if (this.addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
@@ -335,6 +338,16 @@ public class CollectionGroup extends Group implements DataBinding {
         // TODO: is this necessary to call again?
         // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
         pushCollectionGroupToReference();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+        super.initializePendingTasks(phase, pendingTasks);
+
+        // TODO (moved from ViewHelperServiceImpl): Add task to initialize from dictionary
     }
 
     /**

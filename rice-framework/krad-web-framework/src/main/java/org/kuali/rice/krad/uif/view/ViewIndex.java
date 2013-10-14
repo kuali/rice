@@ -51,7 +51,6 @@ public class ViewIndex implements Serializable {
 
     protected Map<String, PropertyEditor> fieldPropertyEditors;
     protected Map<String, PropertyEditor> secureFieldPropertyEditors;
-    protected Map<String, Integer> idSequenceSnapshot;
     protected Map<String, Map<String, String>> componentExpressionGraphs;
 
     protected Map<String, Map<String, Object>> postContext;
@@ -68,7 +67,6 @@ public class ViewIndex implements Serializable {
         idsToHoldInitialState = new HashSet<String>();
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
-        idSequenceSnapshot = new HashMap<String, Integer>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
         postContext = new HashMap<String, Map<String, Object>>();
     }
@@ -395,27 +393,6 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Map of components ids to starting id sequences used for the component refresh process
-     *
-     * @return Map<String, Integer> key is component id and value is id sequence value
-     */
-    public Map<String, Integer> getIdSequenceSnapshot() {
-        return idSequenceSnapshot;
-    }
-
-    /**
-     * Adds a sequence value to the id snapshot map for the given component id
-     *
-     * @param componentId id for the component the id sequence value is associated it
-     * @param sequenceVal current sequence value to insert into the snapshot
-     */
-    public void addSequenceValueToSnapshot(String componentId, int sequenceVal) {
-        if (!idSequenceSnapshot.containsKey(componentId)){
-            idSequenceSnapshot.put(componentId, sequenceVal);
-        }
-    }
-
-    /**
      * Map of components with their associated expression graphs that will be used during
      * the component refresh process
      *
@@ -541,10 +518,6 @@ public class ViewIndex implements Serializable {
         if (this.secureFieldPropertyEditors != null) {
             viewIndexCopy.secureFieldPropertyEditors = new HashMap<String, PropertyEditor>(
                     this.secureFieldPropertyEditors);
-        }
-
-        if (this.idSequenceSnapshot != null) {
-            viewIndexCopy.idSequenceSnapshot = new HashMap<String, Integer>(this.idSequenceSnapshot);
         }
 
         if (this.componentExpressionGraphs != null) {

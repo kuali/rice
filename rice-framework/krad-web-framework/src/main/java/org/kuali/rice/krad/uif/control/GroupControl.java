@@ -15,21 +15,19 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents a group control, which is a special control to handle
@@ -73,15 +71,10 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
             return;
         }
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
-        boolean quickfinderCreated = false;
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
-            view.assignComponentIds(quickFinder);
-
             field.setQuickfinder(quickFinder);
-
-            quickfinderCreated = true;
+            ViewLifecycle.spawnSubLifecyle(model, quickFinder, field);
         }
 
         if (field.getQuickfinder() != null) {
@@ -107,14 +100,6 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
                 }
             }
         }
-
-        // if we created the quickfinder here it will have missed the initialize and apply model phase (it
-        // will be attached to the field for finalize)
-        if (quickfinderCreated) {
-            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, quickFinder, field,
-                    null, UifConstants.ViewPhases.INITIALIZE);
-        }
-
     }
 
     /**

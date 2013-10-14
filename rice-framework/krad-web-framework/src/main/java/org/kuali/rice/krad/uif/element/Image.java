@@ -24,9 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Content element that renders a HTML <code>&lt;IMG&gt;</code> tag
@@ -73,17 +71,14 @@ public class Image extends ContentElementBase {
     public void performInitialization(Object model) {
         super.performInitialization(model);
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
         if ((StringUtils.isNotBlank(captionHeaderText) || (getPropertyExpression("captionHeaderText") != null)) && (
                 captionHeader == null)) {
             captionHeader = ComponentFactory.getImageCaptionHeader();
-            view.assignComponentIds(captionHeader);
         }
 
         if ((StringUtils.isNotBlank(cutlineText) || (getPropertyExpression("cutlineText") != null)) && (cutlineMessage
                 == null)) {
             cutlineMessage = ComponentFactory.getImageCutlineMessage();
-            view.assignComponentIds(cutlineMessage);
         }
     }
 

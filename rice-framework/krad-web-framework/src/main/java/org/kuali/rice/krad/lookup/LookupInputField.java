@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -31,15 +33,11 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-
-import java.util.Map;
 
 /**
  * Custom {@link InputField} for criteria fields within a lookup view that adds criteria specific options.
@@ -83,9 +81,6 @@ public class LookupInputField extends InputField {
 
             if (multiValueControl.getRichOptions() != null) {
                 Message message = ComponentFactory.getMessage();
-
-                ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(message);
-
                 message.setMessageText(allOptionText);
                 message.setGenerateSpan(false);
 
@@ -104,7 +99,7 @@ public class LookupInputField extends InputField {
      * {@inheritDoc}
      */
     @Override
-    public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
+    public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());
@@ -131,8 +126,6 @@ public class LookupInputField extends InputField {
         // use control from dictionary if not specified and convert for searching
         if (getControl() == null) {
             Control control = convertControlToLookupControl(attributeDefinition);
-            view.assignComponentIds(control);
-
             setControl(control);
         }
 

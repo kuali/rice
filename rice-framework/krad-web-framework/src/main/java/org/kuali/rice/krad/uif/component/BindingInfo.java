@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.io.Serializable;
 
 /**
  * Provides binding configuration for an DataBinding component (attribute or

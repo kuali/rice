@@ -56,7 +56,6 @@ public class ComponentExhibit extends ContentElementBase {
         tabItems.addAll(tabGroup.getItems());
         tabItems.addAll(demoGroups);
         tabGroup.setItems(tabItems);
-        ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(tabGroup);
 
         //source code viewer setup
         if(demoSourceCode != null && !demoSourceCode.isEmpty()){

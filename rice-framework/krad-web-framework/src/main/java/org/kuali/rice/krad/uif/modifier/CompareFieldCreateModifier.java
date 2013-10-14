@@ -87,9 +87,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         super.performInitialization(model, component);
 
         if (headerFieldPrototype != null) {
-            ViewLifecycle.getActiveLifecycle()
-                .spawnSubLifecyle(model, headerFieldPrototype, component,
-                        null, UifConstants.ViewPhases.INITIALIZE);
+            ViewLifecycle.spawnSubLifecyle(model, headerFieldPrototype, component,
+                    null, UifConstants.ViewPhases.INITIALIZE, true);
         }
     }
 
@@ -133,7 +132,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         // evaluate expressions on comparables
         Map<String, Object> context = new HashMap<String, Object>();
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         
         Map<String, Object> viewContext = view.getContext();
         if (viewContext != null) {
@@ -153,8 +152,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (isGenerateCompareHeaders()) {
             // add space field for label column
             SpaceField spaceField = ComponentFactory.getSpaceField();
-            view.assignComponentIds(spaceField);
-
             comparisonItems.add(spaceField);
 
             for (ComparableInfo comparable : groupComparables) {

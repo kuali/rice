@@ -165,14 +165,10 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
             return;
         }
 
-        boolean quickfinderCreated = false;
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
-            ViewLifecycle.getActiveLifecycle().getView().assignComponentIds(quickFinder);
-
             field.setQuickfinder(quickFinder);
-
-            quickfinderCreated = true;
+            ViewLifecycle.spawnSubLifecyle(model, quickFinder, field);
         }
 
         if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {
@@ -192,13 +188,6 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
 
             quickFinder.getFieldConversions().put(KimConstants.AttributeConstants.PRINCIPAL_NAME,
                     field.getPropertyName());
-        }
-
-        // if we created the quickfinder here it will have missed the initialize and apply model phase (it
-        // will be attached to the field for finalize)
-        if (quickfinderCreated) {
-            ViewLifecycle.getActiveLifecycle().spawnSubLifecyle(model, quickFinder, field,
-                    null, UifConstants.ViewPhases.INITIALIZE);
         }
     }
 

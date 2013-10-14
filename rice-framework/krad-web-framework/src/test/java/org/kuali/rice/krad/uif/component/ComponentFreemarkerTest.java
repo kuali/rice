@@ -34,6 +34,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePhaseFactory;
 import org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -126,9 +127,10 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();
                 msg.setMessageText("foobar");
+                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
-
-                RenderComponentPhase renderPhase = new RenderComponentPhase(
+                
+                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(
                         msg, null, null, null, Collections.<RenderComponentPhase> emptyList());
                 renderPhase.run();
                 

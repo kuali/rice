@@ -40,14 +40,12 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.ViewHeader;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -101,8 +99,6 @@ public class View extends ContainerBase {
     private String namespaceCode;
     private String viewName;
     private ViewTheme theme;
-
-    private int idSequence;
 
     private String stateObjectBindingPath;
     private StateMapping stateMapping;
@@ -208,7 +204,6 @@ public class View extends ContainerBase {
         persistFormToSession = true;
         sessionPolicy = new ViewSessionPolicy();
 
-        idSequence = 0;
         this.viewIndex = new ViewIndex();
 
         additionalScriptFiles = Collections.emptyList();
@@ -241,7 +236,7 @@ public class View extends ContainerBase {
     public void performInitialization(Object model) {
         super.performInitialization(model);
         
-        assert this == ViewLifecycle.getActiveLifecycle().getView();
+        assert this == ViewLifecycle.getView();
 
         // populate items on page for single paged view
         if (singlePageView) {
@@ -251,7 +246,8 @@ public class View extends ContainerBase {
                     page.setItems(new ArrayList<Group>());
                 }
 
-                assignComponentIds(page);
+                // TODO: REMOVE
+                // assignComponentIds(page);
 
                 // add the items configured on the view to the page items, and set as the
                 // new page items
@@ -277,15 +273,11 @@ public class View extends ContainerBase {
 
         if (sessionPolicy.isEnableTimeoutWarning()) {
             Group warningDialog = ComponentFactory.getSessionTimeoutWarningDialog();
-
             warningDialog.setId(ComponentFactory.SESSION_TIMEOUT_WARNING_DIALOG);
-            assignComponentIds(warningDialog);
             getDialogs().add(warningDialog);
 
             Group timeoutDialog = ComponentFactory.getSessionTimeoutDialog();
-
             timeoutDialog.setId(ComponentFactory.SESSION_TIMEOUT_DIALOG);
-            assignComponentIds(timeoutDialog);
             getDialogs().add(timeoutDialog);
         }
 
@@ -304,9 +296,9 @@ public class View extends ContainerBase {
     public void performApplyModel(Object model, Component parent) {
         super.performApplyModel(model, parent);
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         if (theme != null) {
-            ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator()
+            ViewLifecycle.getHelper().getExpressionEvaluator()
                 .evaluateExpressionsOnConfigurable(view, theme, getContext());
 
             theme.configureThemeDefaults();
@@ -327,11 +319,12 @@ public class View extends ContainerBase {
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
      *      Object, org.kuali.rice.krad.uif.component.Component)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
         
-        assert this == ViewLifecycle.getActiveLifecycle().getView();
+        assert this == ViewLifecycle.getView();
 
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
@@ -414,113 +407,6 @@ public class View extends ContainerBase {
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
-        
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        for (String template : getViewTemplates()) {
-            viewLifecycle.importFreeMarkerTemplate(template);
-        }
-    }
-
-    /**
-     * Assigns an id (if not configured) to a component and all its child components
-     *
-     * @param component component instance to assign id to
-     */
-    public void assignComponentIds(Component component) {
-        if (component == null) {
-            return;
-        }
-
-        int origIdSequence = -1;
-
-        // Get the old sequence if the baseId exists in the sequence snapshot
-        if (component.getBaseId() != null && viewIndex != null && viewIndex.getIdSequenceSnapshot() != null &&
-                viewIndex.getIdSequenceSnapshot().containsKey(component.getBaseId())){
-            origIdSequence = idSequence;
-            idSequence = viewIndex.getIdSequenceSnapshot().get(component.getBaseId());
-        }
-
-        assignComponentId(component);
-
-        // TODO: Tail recursion
-        // assign id to nested components
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            assignComponentIds(nestedComponent);
-        }
-        
-        for (Component nestedComponent : component.getComponentPrototypes()) {
-            assignComponentIds(nestedComponent);
-        }
-
-        if (origIdSequence != -1){
-            idSequence = origIdSequence;
-        }
-    }
-
-    /**
-     * Special handling of assigning ids for the view component to assure each page and all its children gets an
-     * id and the page ids are always the same
-     *
-     * <p>
-     * First the pages are assigned ids sequentially so they always get the same ids regardless of what page is
-     * being displayed. Also, since the view doesn't include pages that are not being displayed (or are not the current
-     * page) in its tree (components for lifecycle) we need to loop through them explicity and assign ids
-     * </p>
-     *
-     * @param view view instance containing the pages
-     */
-    protected void assignPageIds(View view) {
-        checkMutable(false);
-        // single page view
-        if (view.isSinglePageView() && view.getPage() != null) {
-            assignComponentId(view.getPage());
-
-            return;
-        }
-
-        // mult-page view
-        if (view.getItems() != null) {
-            // get each page and set the id, assigning to just the pages first so they will have the
-            // first sequential ids
-            for (Component item : view.getItems()) {
-                if (item instanceof PageGroup) {
-                    assignComponentId(item);
-                }
-            }
-
-            // now assign ids for all page child components
-            for (Component item : view.getItems()) {
-                if (item instanceof PageGroup) {
-                    assignComponentIds(item);
-                }
-            }
-        }
-    }
-
-    /**
-     * Assigns an id to the given component
-     *
-     * @param component component to assign id to
-     */
-    protected void assignComponentId(Component component) {
-        checkMutable(false);
-        Integer currentSequenceVal = idSequence;
-
-        // assign ID if necessary
-        if (StringUtils.isBlank(component.getId())) {
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-        }
-
-        // capture current sequence value for component refreshes
-        getViewIndex().addSequenceValueToSnapshot(component.getId(), currentSequenceVal);
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + getNextId());
-            }
-        }
     }
 
     /**
@@ -891,36 +777,6 @@ public class View extends ContainerBase {
     public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
         checkMutable(true);
         this.stickyApplicationFooter = stickyApplicationFooter;
-    }
-
-    /**
-     * Current sequence value for id assignment
-     *
-     * @return id sequence
-     */
-    public int getIdSequence() {
-        return idSequence;
-    }
-
-    /**
-     * Setter for the current id sequence value
-     *
-     * @param idSequence
-     */
-    public void setIdSequence(int idSequence) {
-        checkMutable(true);
-        this.idSequence = idSequence;
-    }
-
-    /**
-     * Returns the next unique id available for components within the view instance
-     *
-     * @return next id available
-     */
-    public String getNextId() {
-        checkMutable(false);
-        idSequence += 1;
-        return Integer.toString(idSequence);
     }
 
     /**
@@ -2225,7 +2081,6 @@ public class View extends ContainerBase {
             viewCopy.setTheme((ViewTheme) this.theme.copy());
         }
 
-        viewCopy.setIdSequence(this.idSequence);
         viewCopy.setStateObjectBindingPath(this.stateObjectBindingPath);
 
         if (this.stateMapping != null) {

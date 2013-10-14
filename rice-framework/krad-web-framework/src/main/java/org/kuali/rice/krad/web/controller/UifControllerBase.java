@@ -260,12 +260,11 @@ public abstract class UifControllerBase {
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                view.getViewHelperService().processCollectionAddLine(view, uifForm, selectedCollectionPath);
+                ViewLifecycle.getHelper().processCollectionAddLine(
+                        ViewLifecycle.getView(), uifForm, selectedCollectionPath);
             }});
         
-        uifForm.setPostedView(lifecycleResult.getView());
+        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -294,12 +293,11 @@ public abstract class UifControllerBase {
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                view.getViewHelperService().processCollectionAddBlankLine(view, uifForm, selectedCollectionPath);
+                ViewLifecycle.getHelper().processCollectionAddBlankLine(ViewLifecycle.getView(), uifForm,
+                        selectedCollectionPath);
             }});
         
-        uifForm.setPostedView(lifecycleResult.getView());
+        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -333,13 +331,11 @@ public abstract class UifControllerBase {
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                view.getViewHelperService().processCollectionSaveLine(
-                        view, uifForm, selectedCollectionPath, selectedLineIndex);
+                ViewLifecycle.getHelper().processCollectionSaveLine(
+                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
             }});
         
-        uifForm.setPostedView(lifecycleResult.getView());
+        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -375,13 +371,11 @@ public abstract class UifControllerBase {
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
-                view.getViewHelperService().processCollectionDeleteLine(
-                        view, uifForm, selectedCollectionPath, selectedLineIndex);
+                ViewLifecycle.getHelper().processCollectionDeleteLine(
+                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
             }});
         
-        uifForm.setPostedView(lifecycleResult.getView());
+        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
 
         return getUIFModelAndView(uifForm);
@@ -517,8 +511,7 @@ public abstract class UifControllerBase {
 
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                View view = viewLifecycle.getView();
+                View view = ViewLifecycle.getView();
                 
                 String flashMapSelectedLineValues = "";
                 if (RequestContextUtils.getInputFlashMap(request) != null) {
@@ -552,7 +545,7 @@ public abstract class UifControllerBase {
                     }
 
                     // invoked view helper to populate the collection from lookup results
-                    viewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
+                    ViewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
                             lookupCollectionName, selectedLineValues);
                 }
 

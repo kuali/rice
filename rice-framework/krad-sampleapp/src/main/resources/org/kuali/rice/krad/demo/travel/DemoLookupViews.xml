@@ -145,14 +145,71 @@
               p:hidden="@{#dp.lookupCriteria['number'] == 'a3'}"/>
       </list>
     </property>
-
     <property name="page.instructionalText">
       <value>
-                [b]*[/b] Enter the value &quot;a1&quot; into the [b]Travel Account Number[/b] criteria field to make the [b]Date Created[/b] criteria a required. [br/]
+                [b]*[/b] Enter the value &quot;a1&quot; into the [b]Travel Account Number[/b] criteria field to make
+                the [b]Date Created[/b] criteria required. [br/]
                 [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
-                the [b]Date Created[/b] a read only. [br/]
+                the [b]Date Created[/b] read only. [br/]
                 [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
                 the [b]Date Created[/b] criteria.
+      </value>
+    </property>
+  </bean>
+
+  <bean id="LookupSampleViewConditionalResults" parent="Uif-LookupView">
+    <property name="viewName" value="LookupSampleViewConditionalResults"/>
+    <property name="headerText" value="Lookup Sample with Conditional Results"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField" p:propertyName="name" p:render="@{#dp.lookupCriteria['number'] != 'a1'}"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate" p:render="@{#dp.lookupCriteria['number'] != 'a1'}"/>
+      </list>
+    </property>
+    <property name="page.instructionalText">
+      <value>
+                [b]*[/b] Enter the value &quot;a1&quot; into the [b]Travel Account Number[/b] criteria field to make
+                all result fields but [b]Travel Account Number[/b] disappear. [br/]
+                [b]*[/b] Enter the value &quot;a2&quot; show all result fields.
+      </value>
+    </property>
+  </bean>
+
+  <bean id="LookupSampleViewConditionalResultsBasedOnCriteria" parent="Uif-LookupView">
+    <property name="viewName" value="LookupSampleViewConditionalResultsBasedOnCriteria"/>
+    <property name="headerText" value="Lookup Sample with Conditional Results Based on Criteria"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.uif.form.UIRoleMember"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.demo.uif.lookup.UIRoleMemberLookupableImpl"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeCode"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="principalName" p:label="Principal Name"
+              p:render="@{#dp.lookupCriteria['typeCode'] == 'P'}"/>
+        <bean parent="Uif-DataField" p:propertyName="name" p:label="Group Name"
+              p:render="@{#dp.lookupCriteria['typeCode'] == 'G'}"/>
+        <bean parent="Uif-DataField" p:propertyName="name" p:label="Role Name"
+              p:render="@{#dp.lookupCriteria['typeCode'] == 'R'}"/>
+        <bean parent="Uif-DataField" p:propertyName="description" p:label="Description"
+              p:render="@{#dp.lookupCriteria['typeCode'] == 'G' || #dp.lookupCriteria['typeCode'] == 'R'}"/>
+      </list>
+    </property>
+    <property name="page.instructionalText">
+      <value>
+                [b]*[/b] Change the lookup value of [b]Member Type Code[/b] to change the type of search results
+                returned and what columns are displayed.
       </value>
     </property>
   </bean>

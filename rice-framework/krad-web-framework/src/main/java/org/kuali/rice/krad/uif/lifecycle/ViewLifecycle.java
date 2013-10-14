@@ -1526,13 +1526,13 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     /**
      * Applies the default value configured for the given field (if any) to the line given object
      * property that is determined by the given binding path
-     * 
+     *
      * @param view view instance the field belongs to
      * @param object object that should be populated
      * @param dataField field to check for configured default value
      * @param bindingPath path to the property on the object that should be populated
      */
-    protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
+    public void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
         if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
                 || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)){
             return;

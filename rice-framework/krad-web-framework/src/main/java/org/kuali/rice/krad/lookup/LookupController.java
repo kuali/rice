@@ -274,7 +274,7 @@ public class LookupController extends UifControllerBase {
         }
 
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && lookupCameFromDifferentServer) {
-            HashMap<String, String> parms = (HashMap<String, String>) lookupForm.getInitialRequestParameters();
+            Map<String, String[]> parms = lookupForm.getInitialRequestParameters();
             parms.remove(UifParameters.RETURN_FORM_KEY);
 
             //add an error message to display to the user

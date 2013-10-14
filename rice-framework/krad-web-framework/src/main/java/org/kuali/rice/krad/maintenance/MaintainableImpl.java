@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -44,10 +46,16 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
@@ -521,6 +529,127 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      */
     protected String getDocumentNumber() {
         return this.documentNumber;
+    }
+
+    /**
+     * For the copy action, clears out primary key values and replaces any new fields that the current user is
+     * unauthorized for with default values in the old record.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void performCustomFinalize(Component component, Object model, Component parent) {
+        if (!(model instanceof MaintenanceDocumentForm)) {
+            return;
+        }
+
+        MaintenanceDocumentForm form = (MaintenanceDocumentForm) model;
+
+        if (form.getDocument().isFieldsClearedOnCopy()) {
+            return;
+        }
+
+        if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(form.getMaintenanceAction())) {
+            View view = ViewLifecycle.getActiveLifecycle().getView();
+
+            if (component instanceof DataField) {
+                DataField field = (DataField) component;
+
+                clearUnauthorizedField(view, form, field);
+            } else if (component instanceof CollectionGroup) {
+                CollectionGroup group = (CollectionGroup) component;
+
+                clearUnauthorizedLine(view, form, group);
+            }
+        }
+    }
+
+    /**
+     * For the copy action, runs the custom processing after the copy and sets the indicator that fields have been
+     * copied as true.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void performCustomViewFinalize(Object model) {
+        if (!(model instanceof MaintenanceDocumentForm)) {
+            return;
+        }
+
+        MaintenanceDocumentForm form = (MaintenanceDocumentForm) model;
+
+        if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(form.getMaintenanceAction())) {
+            processAfterCopy(form.getDocument(), form.getInitialRequestParameters());
+
+            form.getDocument().setFieldsClearedOnCopy(true);
+        }
+    }
+
+    /**
+     * Determines if the current field is restricted and replaces its value with a default value if so.
+     *
+     * @param view view instance that contains the fields being checked
+     * @param model model instance that contains the fields being checked
+     * @param field field being checked for restrictions
+     */
+    private void clearUnauthorizedField(View view, ViewModel model, DataField field) {
+        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        String bindingPath = field.getBindingInfo().getBindingPath();
+
+        if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+            // The field is restricted if it is hidden or read only
+            boolean isRestricted = field.isHidden() || field.isReadOnly() || field.isApplyMask();
+
+            // If just the field (not its containing line) is restricted, clear it out and apply default values
+            if (isRestricted && !isLineRestricted(field)) {
+                if (ObjectPropertyUtils.isWritableProperty(model, bindingPath)) {
+                    ObjectPropertyUtils.setPropertyValue(model, bindingPath, null);
+                }
+
+                viewLifecycle.populateDefaultValueForField(view, model, field, bindingPath);
+            }
+        }
+    }
+
+    /**
+     * Returns whether a line that contains a field is restricted; that is, if the field is part of a group and that
+     * group has some unauthorized binding information.
+     *
+     * @param field field being checked for restrictions
+     *
+     * @return true if the field is in a line with restrictions, false otherwise
+     */
+    private boolean isLineRestricted(DataField field) {
+        CollectionGroup group = (CollectionGroup) MapUtils.getObject(field.getContext(),
+                UifConstants.ContextVariableNames.COLLECTION_GROUP);
+
+        return group != null && CollectionUtils.isNotEmpty(group.getUnauthorizedLineBindingInfos());
+    }
+
+    /**
+     * Determines if the current group contains restricted lines and clears them if so.
+     *
+     * @param view view instance that contains the group being checked
+     * @param model model instance that contains the group being checked
+     * @param group group being checked for restrictions
+     */
+    private void clearUnauthorizedLine(View view, ViewModel model, CollectionGroup group) {
+        String bindingPath = group.getBindingInfo().getBindingPath();
+
+        if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+            // A line is restricted if it is hidden or read only
+            if (group.getUnauthorizedLineBindingInfos() != null) {
+                Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+
+                // If any lines are restricted, clear them out
+                for (BindingInfo bindingInfo : group.getUnauthorizedLineBindingInfos()) {
+                    String lineBindingPath = bindingInfo.getBindingPath();
+                    Object line = ObjectPropertyUtils.getPropertyValue(model, lineBindingPath);
+
+                    collection.remove(line);
+                }
+            }
+        }
     }
 
     @Deprecated // KNS Service

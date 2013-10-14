@@ -32,6 +32,7 @@ import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -336,7 +337,8 @@ public class CollectionGroupBuilder implements Serializable {
             }
         }
 
-        boolean readOnlyLine = collectionGroup.isReadOnly();
+        boolean canViewLine = !collectionGroup.isHidden();
+        boolean canEditLine = !collectionGroup.isReadOnly();
 
         // update contexts before add line fields are added to the index below
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
@@ -354,22 +356,26 @@ public class CollectionGroupBuilder implements Serializable {
         if (lineIndex == -1) {
             // do nothing
         } else {
-            // for existing lines, check view line auth
-            boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,
-                    collectionGroup, currentLine);
+            // check view line authorization if collection is hidden
+            if (canViewLine) {
+                canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
+                        currentLine);
+            }
 
-            // if line is not viewable, just return without calling the layout manager to add the line
+            // Add binding info for any hidden lines and return without creating the line
             if (!canViewLine) {
+                addUnauthorizedBindingInfo(view, model, collectionGroup, bindingPath);
+
                 return;
             }
 
             // check edit line authorization if collection is not read only
-            if (!collectionGroup.isReadOnly()) {
-                readOnlyLine = !checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
+            if (canEditLine) {
+                canEditLine = checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
                         currentLine);
 
                 // Add script to fields to activate save button on any change
-                if (!readOnlyLine && !((UifFormBase) model).isAddedCollectionItem(currentLine) &&
+                if (canEditLine && !((UifFormBase) model).isAddedCollectionItem(currentLine) &&
                         collectionGroup.isRenderSaveLineActions()) {
                     for (Field f : lineFields) {
                         if (f instanceof InputField && f.isRender()) {
@@ -383,14 +389,20 @@ public class CollectionGroupBuilder implements Serializable {
                 }
             }
 
+            // Add binding info for any read only lines
+            if (!canEditLine) {
+                addUnauthorizedBindingInfo(view, model, collectionGroup, bindingPath);
+            }
+
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,
-                    readOnlyLine);
-            ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE, readOnlyLine);
+                    !canEditLine);
+            ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE,
+                    !canEditLine);
         }
 
         // check authorization for line fields
         applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,
-                readOnlyLine, lineFields, actions);
+                !canEditLine, lineFields, actions);
 
         if (bindToForm) {
             ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
@@ -499,6 +511,17 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         return processedItems;
+    }
+
+    protected void addUnauthorizedBindingInfo(View view, Object model, CollectionGroup collectionGroup,
+            String bindingPath) {
+        if (collectionGroup.getUnauthorizedLineBindingInfos() == null) {
+            collectionGroup.setUnauthorizedLineBindingInfos(new ArrayList<BindingInfo>());
+        }
+
+        BindingInfo bindingInfo = new BindingInfo();
+        bindingInfo.setDefaults(view, bindingPath);
+        collectionGroup.getUnauthorizedLineBindingInfos().add(bindingInfo);
     }
 
     /**

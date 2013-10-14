@@ -136,14 +136,14 @@ public abstract class UifControllerBase {
 
         //get initial request params
         if (requestForm.getInitialRequestParameters() == null) {
-            Map<String, String> requestParams = new HashMap<String, String>();
+            Map<String, String[]> requestParams = new HashMap<String, String[]>();
             Enumeration<String> names = request.getParameterNames();
 
             while (names != null && names.hasMoreElements()) {
                 String name = KRADUtils.stripXSSPatterns(names.nextElement());
-                String value = KRADUtils.stripXSSPatterns(request.getParameter(name));
+                String[] values = KRADUtils.stripXSSPatterns(request.getParameterValues(name));
 
-                requestParams.put(name, value);
+                requestParams.put(name, values);
             }
 
             requestParams.remove(UifConstants.UrlParams.LOGIN_USER);

@@ -644,7 +644,23 @@ public final class KRADUtils {
     }
 
     /**
-     * Strips out common patterns used in cross side scripting
+     * Strips out common patterns used in cross side scripting.
+     *
+     * @param values string array to strip patterns from
+     * @return cleaned string array
+     */
+    public static String[] stripXSSPatterns(String[] values) {
+        ArrayList<String> strippedValues = new ArrayList<String>();
+
+        for (String value : values) {
+            strippedValues.add(stripXSSPatterns(value));
+        }
+
+        return strippedValues.toArray(new String[]{});
+    }
+
+    /**
+     * Strips out common patterns used in cross side scripting.
      *
      * @param value string to strip patterns from
      * @return cleaned string

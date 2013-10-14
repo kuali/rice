@@ -90,7 +90,7 @@ public class UifFormBase implements ViewModel {
 
     @SessionTransient
     private String requestUrl;
-    private Map<String, String> initialRequestParameters;
+    private Map<String, String[]> initialRequestParameters;
 
     protected String state;
     protected boolean defaultsApplied;
@@ -404,7 +404,7 @@ public class UifFormBase implements ViewModel {
      *
      * @return the requestParameters
      */
-    public Map<String, String> getInitialRequestParameters() {
+    public Map<String, String[]> getInitialRequestParameters() {
         return initialRequestParameters;
     }
 
@@ -413,7 +413,7 @@ public class UifFormBase implements ViewModel {
      *
      * @param requestParameters
      */
-    public void setInitialRequestParameters(Map<String, String> requestParameters) {
+    public void setInitialRequestParameters(Map<String, String[]> requestParameters) {
         this.initialRequestParameters = requestParameters;
     }
 

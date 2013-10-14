@@ -134,6 +134,8 @@ public class CollectionGroup extends Group implements DataBinding {
     private CollectionFilter activeCollectionFilter;
     private List<CollectionFilter> filters;
 
+    private List<BindingInfo> unauthorizedLineBindingInfos;
+
     private List<CollectionGroup> subCollections;
     private String subCollectionSuffix;
 
@@ -843,6 +845,20 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
+     */
+    public List<BindingInfo> getUnauthorizedLineBindingInfos() {
+        return this.unauthorizedLineBindingInfos;
+    }
+
+    /**
+     * @see CollectionGroup#getUnauthorizedLineBindingInfos()
+     */
+    public void setUnauthorizedLineBindingInfos(List<BindingInfo> unauthorizedLineBindingInfos) {
+        this.unauthorizedLineBindingInfos = unauthorizedLineBindingInfos;
+    }
+
+    /**
      * List of <code>CollectionGroup</code> instances that are sub-collections
      * of the collection represented by this collection group
      *
@@ -1402,6 +1418,16 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setRenderLineActions(this.renderLineActions);
         collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
         collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
+
+        if (this.unauthorizedLineBindingInfos != null && !this.unauthorizedLineBindingInfos.isEmpty()) {
+            List<BindingInfo> unauthorizedLineBindingInfosCopy = new ArrayList<BindingInfo>();
+
+            for (BindingInfo bindingInfo : this.unauthorizedLineBindingInfos) {
+                unauthorizedLineBindingInfosCopy.add((BindingInfo) bindingInfo.copy());
+            }
+
+            collectionGroupCopy.setUnauthorizedLineBindingInfos(unauthorizedLineBindingInfosCopy);
+        }
 
         if (subCollections != null && !subCollections.isEmpty()) {
             List<CollectionGroup> subCollectionsCopy = ComponentUtils.copy(subCollections);

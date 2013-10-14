@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
@@ -140,12 +139,27 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
             document.getOldMaintainableObject().setDataObject(oldDataObject);
             document.getNewMaintainableObject().setDataObject(newDataObject);
 
-            // process further object preparations for copy action
-            if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
-                processMaintenanceObjectForCopy(document, newDataObject, requestParameters);
-            } else {
-                checkMaintenanceActionAuthorization(document, oldDataObject, maintenanceAction, requestParameters);
+            if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction) && !document.isFieldsClearedOnCopy()) {
+                Maintainable maintainable = document.getNewMaintainableObject();
+
+                // Since this will be a new object, we also need to blank out the object ID and version number fields
+                // (if they exist).  If the object uses a different locking key or unique ID field, the blanking of
+                // these will need to be done in the Maintainable.processAfterCopy() method.
+                if ( maintainable.getDataObject() instanceof DataObjectBase ) {
+                    ((DataObjectBase) maintainable.getDataObject()).setObjectId(null);
+                    ((DataObjectBase) maintainable.getDataObject()).setVersionNumber(null);
+                } else if ( maintainable.getDataObject() instanceof PersistableBusinessObject ) {
+                    // Legacy KNS Support - since they don't use DataObjectBase
+                    ((PersistableBusinessObject) maintainable.getDataObject()).setObjectId(null);
+                    ((PersistableBusinessObject) maintainable.getDataObject()).setVersionNumber(null);
+                }
+
+                if (!getDocumentDictionaryService().getPreserveLockingKeysOnCopy(maintainable.getDataObjectClass())) {
+                    clearPrimaryKeyFields(newDataObject, maintainable.getDataObjectClass());
+                }
             }
+
+            checkMaintenanceActionAuthorization(document, oldDataObject, maintenanceAction, requestParameters);
         }
 
         // if new with existing we need to populate with passed in parameters
@@ -254,46 +268,6 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     }
 
     /**
-     * For the copy action clears out primary key values, objectId and versionNumber
-     * copied from the old record and
-     * does authorization checks on the remaining fields. Also invokes the
-     * custom processing method on the <code>Maintainble</code>
-     *
-     * @param document - document instance for the maintenance object
-     * @param maintenanceObject - the object instance being maintained
-     * @param requestParameters - map of parameters from the request
-     */
-    protected void processMaintenanceObjectForCopy(MaintenanceDocument document, Object maintenanceObject,
-            Map<String, String[]> requestParameters) {
-    	if (!document.isFieldsClearedOnCopy()) {
-            Maintainable maintainable = document.getNewMaintainableObject();
-
-            // Since this will be a new object, we also need to blank out the object ID and version number fields (if they exist)
-            // If the object uses a different locking key or unique ID field, the blanking of these will
-            // need to be done in the Maintainable.processAfterCopy() method called below.
-            if ( maintainable.getDataObject() instanceof DataObjectBase ) {
-            	((DataObjectBase) maintainable.getDataObject()).setObjectId(null);
-            	((DataObjectBase) maintainable.getDataObject()).setVersionNumber(null);
-            } else if ( maintainable.getDataObject() instanceof PersistableBusinessObject ) {
-            	// Legacy KNS Support - since they don't use DataObjectBase
-            	((PersistableBusinessObject) maintainable.getDataObject()).setObjectId(null);
-            	((PersistableBusinessObject) maintainable.getDataObject()).setVersionNumber(null);
-            }
-
-            if (!getDocumentDictionaryService().getPreserveLockingKeysOnCopy(maintainable.getDataObjectClass())) {
-                clearPrimaryKeyFields(maintenanceObject, maintainable.getDataObjectClass());
-            }
-
-            clearUnauthorizedNewFields(document);
-
-            maintainable.processAfterCopy(document, requestParameters);
-
-            // mark so that this clearing does not happen again
-            document.setFieldsClearedOnCopy(true);
-        }
-    }
-
-    /**
      * Clears the value of the primary key fields on the maintenance object
      *
      * @param maintenanceObject - document to clear the pk fields on
@@ -304,25 +278,6 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
         for (String keyFieldName : keyFieldNames) {
             ObjectPropertyUtils.setPropertyValue(maintenanceObject, keyFieldName, null);
         }
-    }
-
-    /**
-     * Used as part of the Copy functionality, to clear any field values that
-     * the user making the copy does not have permissions to modify. This will
-     * prevent authorization errors on a copy.
-     *
-     * @param document - document to be adjusted
-     */
-    protected void clearUnauthorizedNewFields(MaintenanceDocument document) {
-        // get a reference to the current user
-        Person user = GlobalVariables.getUserSession().getPerson();
-
-        // get a new instance of MaintenanceDocumentAuthorizations for context
-        // TODO: rework for KRAD
-//        MaintenanceDocumentRestrictions maintenanceDocumentRestrictions =
-//                getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
-//
-//        clearBusinessObjectOfRestrictedValues(maintenanceDocumentRestrictions);
     }
 
     /**

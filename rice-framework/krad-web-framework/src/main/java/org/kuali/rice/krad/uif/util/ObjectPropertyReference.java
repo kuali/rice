@@ -271,9 +271,8 @@ public class ObjectPropertyReference {
      */
     @SuppressWarnings("unchecked")
     private static void setList(List<?> list, String name, Object value) {
-        int length = list.size();
         int i = Integer.parseInt(name);
-        while (i >= length) {
+        while (i >= list.size()) {
             list.add(null);
         }
         ((List<Object>) list).set(i, value);

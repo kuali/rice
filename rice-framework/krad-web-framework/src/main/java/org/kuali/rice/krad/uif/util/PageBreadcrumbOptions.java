@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -104,7 +105,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
                 && ((UifFormBase) model).getInitialRequestParameters() != null) {
             //add the current request parameters if controllerMapping, viewId, and requestParams are null
             //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
+            Map<String, String[]> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
 
             //remove ajax properties because breadcrumb should always be a full view request
             requestParameters.remove("ajaxReturnType");
@@ -113,7 +114,7 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
             //remove pageId because this should be set by the BreadcrumbItem setting
             requestParameters.remove("pageId");
 
-            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
+            breadcrumbItem.getUrl().setRequestParameters(KRADUtils.translateRequestParameterMap(requestParameters));
         }
 
         //form key handling

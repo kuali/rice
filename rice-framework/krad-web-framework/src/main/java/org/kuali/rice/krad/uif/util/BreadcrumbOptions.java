@@ -130,7 +130,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
                 && ((UifFormBase) model).getInitialRequestParameters() != null) {
             //add the current request parameters if controllerMapping, viewId, and requestParams are null
             //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
+            Map<String, String[]> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
 
             //remove ajax properties because breadcrumb should always be a full view request
             requestParameters.remove("ajaxReturnType");
@@ -139,7 +139,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
             //remove pageId so we can use special handling
             requestParameters.remove("pageId");
 
-            breadcrumbItem.getUrl().setRequestParameters(requestParameters);
+            breadcrumbItem.getUrl().setRequestParameters(KRADUtils.translateRequestParameterMap(requestParameters));
         }
 
         //form key handling

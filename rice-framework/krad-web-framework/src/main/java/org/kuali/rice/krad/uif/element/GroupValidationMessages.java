@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -32,11 +37,6 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ValidationMessages for logic and options specific to groups
@@ -190,7 +190,7 @@ public class GroupValidationMessages extends ValidationMessages {
 
         if (items != null) {
             for (Component component : items) {
-                String id = component.getId().replace("@id@", "");
+                String id = StringUtils.replace( component.getId(), "@id@", "");
                 if (component instanceof Container || component instanceof FieldGroup) {
                     if (component instanceof FieldGroup) {
                         if (!skipSections &&
@@ -209,7 +209,7 @@ public class GroupValidationMessages extends ValidationMessages {
                         }
                     }
 
-                    id = component.getId().replace("@id@", "");
+                    id = StringUtils.replace( component.getId(), "@id@", "");
                     //If any kind of header text is showing consider this group a section
                     if (!skipSections
                             && ((Container) component).getHeader() != null

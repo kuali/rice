@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
@@ -39,11 +44,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Service implementation for the MaintenanceDocument structure. This is the
@@ -70,7 +70,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#setupNewMaintenanceDocument(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public MaintenanceDocument setupNewMaintenanceDocument(String objectClassName, String documentTypeName,
             String maintenanceAction) {
         if (StringUtils.isEmpty(objectClassName) && StringUtils.isEmpty(documentTypeName)) {
@@ -253,7 +254,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     }
 
     /**
-     * For the copy action clears out primary key values for the old record and
+     * For the copy action clears out primary key values, objectId and versionNumber
+     * copied from the old record and
      * does authorization checks on the remaining fields. Also invokes the
      * custom processing method on the <code>Maintainble</code>
      *
@@ -263,8 +265,21 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      */
     protected void processMaintenanceObjectForCopy(MaintenanceDocument document, Object maintenanceObject,
             Map<String, String[]> requestParameters) {
-        if (!document.isFieldsClearedOnCopy()) {
+    	if (!document.isFieldsClearedOnCopy()) {
             Maintainable maintainable = document.getNewMaintainableObject();
+
+            // Since this will be a new object, we also need to blank out the object ID and version number fields (if they exist)
+            // If the object uses a different locking key or unique ID field, the blanking of these will
+            // need to be done in the Maintainable.processAfterCopy() method called below.
+            if ( maintainable.getDataObject() instanceof DataObjectBase ) {
+            	((DataObjectBase) maintainable.getDataObject()).setObjectId(null);
+            	((DataObjectBase) maintainable.getDataObject()).setVersionNumber(null);
+            } else if ( maintainable.getDataObject() instanceof PersistableBusinessObject ) {
+            	// Legacy KNS Support - since they don't use DataObjectBase
+            	((PersistableBusinessObject) maintainable.getDataObject()).setObjectId(null);
+            	((PersistableBusinessObject) maintainable.getDataObject()).setVersionNumber(null);
+            }
+
             if (!getDocumentDictionaryService().getPreserveLockingKeysOnCopy(maintainable.getDataObjectClass())) {
                 clearPrimaryKeyFields(maintenanceObject, maintainable.getDataObjectClass());
             }
@@ -373,7 +388,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     /**
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
-    public String getLockingDocumentId(MaintenanceDocument document) {
+    @Override
+	public String getLockingDocumentId(MaintenanceDocument document) {
         return getLockingDocumentId(document.getNewMaintainableObject(), document.getDocumentNumber());
     }
 
@@ -381,7 +397,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.krad.maintenance.Maintainable,
      *      java.lang.String)
      */
-    public String getLockingDocumentId(Maintainable maintainable, final String documentNumber) {
+    @Override
+	public String getLockingDocumentId(Maintainable maintainable, final String documentNumber) {
         final List<MaintenanceLock> maintenanceLocks = maintainable.generateMaintenanceLocks();
         String lockingDocId = null;
         for (MaintenanceLock maintenanceLock : maintenanceLocks) {
@@ -397,14 +414,16 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     /**
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#deleteLocks(String)
      */
-    public void deleteLocks(String documentNumber) {
+    @Override
+	public void deleteLocks(String documentNumber) {
         legacyDataAdapter.deleteLocks(documentNumber);
     }
 
     /**
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#storeLocks(java.util.List)
      */
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
+    @Override
+	public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
         legacyDataAdapter.storeLocks(maintenanceLocks);
     }
 

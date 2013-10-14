@@ -66,18 +66,12 @@ public final class UserSessionUtils {
      * @param userSession the user session from which to retrieve the workflow document
      * @return the map of workflow document IDs to workflow documents
      */
+    @SuppressWarnings("unchecked")
     private static Map<String, WorkflowDocument> getWorkflowDocumentMap(UserSession userSession) {
-        synchronized (userSession) {
-            @SuppressWarnings("unchecked") ConcurrentMap<String, WorkflowDocument> workflowDocMap =
-                    (ConcurrentMap<String, WorkflowDocument>) userSession
-                            .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+        userSession.addObjectIfAbsent(
+                KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, new ConcurrentHashMap<String, WorkflowDocument>());
 
-            if (workflowDocMap == null) {
-                workflowDocMap = new ConcurrentHashMap<String, WorkflowDocument>();
-                userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
-            }
-
-            return workflowDocMap;
-        }
+        return (ConcurrentMap<String, WorkflowDocument>) userSession.retrieveObject(
+                KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
     }
 }

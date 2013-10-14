@@ -17,7 +17,6 @@ package org.kuali.rice.krad;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.SessionTicket;
@@ -25,9 +24,9 @@ import org.kuali.rice.krad.util.SessionTicket;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -41,7 +40,7 @@ public class UserSession implements Serializable {
     private Person person;
     private Person backdoorUser;
     private AtomicInteger nextObjectKey;
-    private Map<String, Object> objectMap;
+    private ConcurrentHashMap<String, Object> objectMap;
     private String kualiSessionId;
 
     /**
@@ -69,7 +68,7 @@ public class UserSession implements Serializable {
     public UserSession(String principalName) {
         initPerson(principalName);
         this.nextObjectKey = new AtomicInteger(0);
-        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+        this.objectMap = new ConcurrentHashMap<String, Object>();
     }
 
     /**
@@ -202,6 +201,19 @@ public class UserSession implements Serializable {
      */
     public void addObject(String key, Object object) {
         objectMap.put(key, object);
+    }
+
+    /**
+     * Either allows adding an arbitrary object to the session based on a key (if there is not currently an object
+     * associated with that key) or returns the object already associated with that key.
+     *
+     * @see ConcurrentHashMap#putIfAbsent(Object, Object)
+     *
+     * @param key the mapping key
+     * @param object the object to store
+     */
+    public void addObjectIfAbsent(String key, Object object) {
+        objectMap.putIfAbsent(key, object);
     }
 
     /**
@@ -346,6 +358,6 @@ public class UserSession implements Serializable {
      * clear the objectMap
      */
     public void clearObjectMap() {
-        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+        this.objectMap = new ConcurrentHashMap<String, Object>();
     }
 }

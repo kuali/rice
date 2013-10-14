@@ -142,7 +142,7 @@
               p:refreshWhenChangedPropertyNames="lookupCriteria[number]"
               p:required="@{#dp.lookupCriteria['number'] == 'a1'}"
               p:readOnly="@{#dp.lookupCriteria['number'] == 'a2'}"
-              p:render="@{#dp.lookupCriteria['number'] != 'a3'}"/>
+              p:hidden="@{#dp.lookupCriteria['number'] == 'a3'}"/>
       </list>
     </property>
 

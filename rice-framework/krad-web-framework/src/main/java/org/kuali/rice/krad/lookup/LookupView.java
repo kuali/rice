@@ -42,7 +42,6 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -349,58 +348,48 @@ public class LookupView extends FormView {
      *
      * <p>
      * The field group is created by copying {@link LookupView#rangeFieldGroupPrototype}. This can be
-     * used to configure how the field group will appear. In additon, the two lookup fields are separated
+     * used to configure how the field group will appear. In addition, the two lookup fields are separated
      * with a message that can be configured with {@link LookupView#rangedToMessage}
      * </p>
      *
-     * @param criteriaField lookup input field that field group should be build for
+     * @param toDate lookup input field that field group should be build for
+     *
      * @return field group that contains a from and to lookup input field for searching a date range
+     *
      * @see LookupView#rangeFieldGroupPrototype
      * @see LookupView#rangedToMessage
      */
-    protected FieldGroup createDateRangeFieldGroup(LookupInputField criteriaField) {
-        FieldGroup rangeFieldGroup = ComponentUtils.copy(rangeFieldGroupPrototype, criteriaField.getId());
+    protected FieldGroup createDateRangeFieldGroup(LookupInputField toDate) {
+        FieldGroup rangeFieldGroup = ComponentUtils.copy(getRangeFieldGroupPrototype(), toDate.getId());
 
-        rangeFieldGroup.setLabel(criteriaField.getLabel());
+        // Copy some properties from the "to date" field to the field group
+        rangeFieldGroup.setFieldLabel(ComponentUtils.copy(toDate.getFieldLabel()));
+        rangeFieldGroup.setPropertyExpressions(toDate.getPropertyExpressions());
+        rangeFieldGroup.setRefreshWhenChangedPropertyNames(toDate.getRefreshWhenChangedPropertyNames());
+        rangeFieldGroup.setForceSessionPersistence(true);
 
-        ExpressionEvaluator expressionEvaluator =
-                getViewHelperService().getExpressionEvaluator();
-        expressionEvaluator.evaluatePropertyExpression(this, criteriaField.getContext(), criteriaField,
-                UifPropertyPaths.REQUIRED, true);
+        // Reset some fields for the "to date" field
+        toDate.getFieldLabel().setRender(false);
+        toDate.setRefreshWhenChangedPropertyNames(null);
+        toDate.setForceSessionPersistence(true);
 
-        rangeFieldGroup.setRequired(criteriaField.getRequired());
-
-        // TODO: is this needed?
-        // ((LookupInputField) criteriaField).getFieldLabel().setRequiredMessage(new Message());
-
-        // evaluate and set the render property
-        expressionEvaluator.evaluatePropertyExpression(this, criteriaField.getContext(), criteriaField,
-                UifPropertyPaths.RENDER, true);
-
-        rangeFieldGroup.setRender(criteriaField.isRender());
-
-        List<Component> fieldGroupItems = new ArrayList<Component>();
-
-        // Create a new from date field
-        LookupInputField fromDate = (LookupInputField) ComponentUtils.copy(criteriaField,
+        // Create a "from date" field from the "to date" field
+        LookupInputField fromDate = ComponentUtils.copy(toDate,
                 KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
         fromDate.getBindingInfo().setBindingName(
                 KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
         fromDate.setPropertyName(
                 KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
-
-        // Set the criteria fields labels
-        fromDate.setLabel("");
-        fromDate.getFieldLabel().setRenderColon(false);
-
-        criteriaField.getFieldLabel().setRender(false);
+        fromDate.setOrder(0);
 
         // add the criteria fields to the field group
+        List<Component> fieldGroupItems = new ArrayList<Component>();
         fieldGroupItems.add(fromDate);
         fieldGroupItems.add(rangedToMessage);
-        fieldGroupItems.add(criteriaField);
-
+        fieldGroupItems.add(toDate);
         rangeFieldGroup.setItems(fieldGroupItems);
+
+        getViewIndex().getInitialComponentStates().put(rangeFieldGroup.getBaseId(), rangeFieldGroup);
 
         return rangeFieldGroup;
     }

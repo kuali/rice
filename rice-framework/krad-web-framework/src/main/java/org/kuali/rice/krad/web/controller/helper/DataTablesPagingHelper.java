@@ -19,6 +19,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -97,7 +98,7 @@ public class DataTablesPagingHelper {
                         .performComponentLifecycle(view, form, request, response,
                                 newCollectionGroup, oldCollectionGroup.getId());
                 newCollectionGroup = result.getRefreshComponent();
-                form.setPostedView(result.getView());
+                form.setPostedView(result.getProcessedView());
                 
             }
 
@@ -211,8 +212,8 @@ public class DataTablesPagingHelper {
      * @param collectionGroup the CollectionGroup that is being rendered
      * @param view the view
      */
-    protected void applyTableJsonSort(List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
-            List<ColumnSort> newColumnSorts, CollectionGroup collectionGroup, View view) {
+    protected void applyTableJsonSort(final List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
+            final List<ColumnSort> newColumnSorts, final CollectionGroup collectionGroup, final View view) {
 
         boolean isCollectionEmpty = CollectionUtils.isEmpty(modelCollection);
         boolean isSortingSpecified = !CollectionUtils.isEmpty(newColumnSorts);
@@ -224,7 +225,13 @@ public class DataTablesPagingHelper {
                 sortIndices[i] = i;
             }
 
-            Arrays.sort(sortIndices, new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view));
+            MultiColumnComparator comparator = ViewLifecycle
+                    .encapsulateInitialization(new Callable<MultiColumnComparator>(){
+                @Override
+                public MultiColumnComparator call() throws Exception {
+                    return new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view);
+                }});
+            Arrays.sort(sortIndices, comparator);
 
             // apply the sort to the modelCollection
             Object[] sorted = new Object[sortIndices.length];

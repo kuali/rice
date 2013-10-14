@@ -22,27 +22,24 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifGeneratedTestViewHelperServiceImpl extends ViewHelperServiceImpl {
 
+    private static final long serialVersionUID = 1594814355163875742L;
+
     @Override
     public void performCustomInitialization(Component component) {
         super.performCustomInitialization(component);
         List<Component> fields = new ArrayList<Component>();
         if(component instanceof PageGroup && component.getId().equals("UifGeneratedFields-Page1")){
-            View view = ViewLifecycle.getActiveLifecycle().getView();
             for(int i=0; i < 400; i++){
                 InputField field = ComponentFactory.getInputField();
-                view.assignComponentIds(field);
                 Control control = ComponentFactory.getTextControl();
-                view.assignComponentIds(control);
                 field.setControl(control);
                 field.setPropertyName("field1");
                 field.setLabel("Field");

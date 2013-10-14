@@ -63,11 +63,12 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
                 Collections.<ViewLifecyclePhase> singletonList(parentPhase));
         this.parent = parent;
 
-        // TODO: enable/disable by config
-        ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
-        this.renderPhase = LifecyclePhaseFactory.render(
-                component, model, this, null, Collections.unmodifiableList(topList));
-        topList.add(this.renderPhase);
+        if (ViewLifecycle.isRenderInLifecycle()) {
+            ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
+            this.renderPhase = LifecyclePhaseFactory.render(
+                    component, model, this, null, Collections.unmodifiableList(topList));
+            topList.add(this.renderPhase);
+        }
     }
 
     /**

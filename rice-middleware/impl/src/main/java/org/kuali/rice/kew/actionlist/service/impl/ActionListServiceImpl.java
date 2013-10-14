@@ -143,7 +143,6 @@ public class ActionListServiceImpl implements ActionListService {
 
     @Override
     public Collection<ActionItem> getActionList(String principalId, ActionListFilter filter) {
-        boolean filterOn = false;
         List<String> filteredByItems = new ArrayList<String>();
 
         List<Predicate> crit = handleActionItemCriteria(principalId, filter, filteredByItems);
@@ -157,13 +156,13 @@ public class ActionListServiceImpl implements ActionListService {
             LOG.debug("found " + results.getResults().size() + " action items for user " + principalId);
         }
 
-        if ( !filteredByItems.isEmpty() ) {
-            filterOn = true;
+        if (filter != null) {
+            boolean filterOn = !filteredByItems.isEmpty();
+            filter.setFilterOn(filterOn);
+            filter.setFilterLegend(StringUtils.join(filteredByItems, ", "));
         }
-        filter.setFilterLegend(StringUtils.join(filteredByItems, ", "));
-        filter.setFilterOn(filterOn);
 
-        return results.getResults();
+        return createActionListForUser(results.getResults());
     }
 
     protected List<Predicate> handleActionItemCriteria( String principalId, ActionListFilter filter, List<String> filteredByItems ) {
@@ -439,6 +438,26 @@ public class ActionListServiceImpl implements ActionListService {
         crit.add( equal("principalId", actionListUserPrincipalId) );
         crit.add( or( notEqual("delegationType", DelegationType.SECONDARY.getCode()), isNull("delegationType") ) );
     }
+
+    /**
+     * Creates an Action List from the given collection of Action Items.  The Action List should
+     * contain only one action item per document.  The action item chosen should be the most "critical"
+     * or "important" one on the document.
+     *
+     * @return the Action List as a Collection of ActionItems
+     */
+    private Collection<ActionItem> createActionListForUser(Collection<ActionItem> actionItems) {
+        Map<String, ActionItem> actionItemMap = new HashMap<String, ActionItem>();
+        ActionListPriorityComparator comparator = new ActionListPriorityComparator();
+        for (ActionItem potentialActionItem: actionItems) {
+            ActionItem existingActionItem = actionItemMap.get(potentialActionItem.getDocumentId());
+            if (existingActionItem == null || comparator.compare(potentialActionItem, existingActionItem) > 0) {
+                actionItemMap.put(potentialActionItem.getDocumentId(), potentialActionItem);
+            }
+        }
+        return actionItemMap.values();
+    }
+
 
     /**
      * {@inheritDoc}

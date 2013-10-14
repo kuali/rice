@@ -174,7 +174,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-tools-test" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
@@ -224,6 +223,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.saucelabs:saucerest:1.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.googlecode.json-simple:json-simple:1.1" level="project" />
     <orderEntry type="module" module-name="rice-impex-master" />
+    <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-core-api" />

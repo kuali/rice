@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.kuali.rice.testtools.selenium;
 
 import com.thoughtworks.selenium.SeleneseTestBase;

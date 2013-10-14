@@ -33,6 +33,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
@@ -52,8 +53,7 @@ import static org.junit.Assert.*;
 /**
  * Tests to confirm JPA mapping for the Kew module Document data objects
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
-public class KewDocumentDataJpaTest extends KRADTestCase {
+public class KewDocumentDataJpaTest extends KEWTestCase {
     public static final String TEST_DOC_ID = "1234";
     public static final String SEARCHABLE_ATTR_ID = "1000";
     public static final String SEARCHABLE_ATTR_KEY = "testAttribute";

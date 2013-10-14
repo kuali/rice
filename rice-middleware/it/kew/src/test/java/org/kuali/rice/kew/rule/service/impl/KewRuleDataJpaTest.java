@@ -31,6 +31,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
@@ -42,8 +43,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests to confirm JPA mapping for the Kew module Rule objects
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
-public class KewRuleDataJpaTest extends KRADTestCase{
+public class KewRuleDataJpaTest extends KEWTestCase{
     @Test
     public void testRuleBaseValuesPersistAndFetch() throws Exception{
         RuleBaseValues ruleBaseValues = setupRuleBaseValues();

@@ -173,6 +173,10 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         public PeopleFlowMember build() {
+            if (this.memberType.equals(MemberType.GROUP) || this.memberType.equals(MemberType.PRINCIPAL)) {
+                this.actionRequestPolicy = null;
+            }
+
             return new PeopleFlowMember(this);
         }
 
@@ -221,6 +225,11 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         public void setActionRequestPolicy(ActionRequestPolicy actionRequestPolicy) {
+            if (actionRequestPolicy != null
+                    && (this.memberType.equals(MemberType.GROUP) || this.memberType.equals(MemberType.PRINCIPAL))) {
+                throw new IllegalArgumentException("cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL");
+            }
+
             this.actionRequestPolicy = actionRequestPolicy;
         }
 

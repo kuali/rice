@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="lookup" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
+  <info>
+    <title>Lookup Help</title>
+  </info>
+
+    <para><emphasis role="bold">Specifying Search Criteria</emphasis></para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>Search fields are not case sensitive for searches.</para>
+        </listitem>
+        <listitem>
+          <para>Dates should be specified as mm/dd/yyyy.</para>
+        </listitem>
+        <listitem>
+          <para>Some fields have a magnifying glass button for a sub lookup on that field.</para>
+        </listitem>
+        <listitem>
+          <para>Wildcard searches are allowed on fields. The wildcard symbols are *, %, ?, and _.
+            <itemizedlist>
+              <listitem>
+                <para>* or % allow you to match any string of any length (including zero length)</para>
+              </listitem>
+              <listitem>
+                <para>? or _ allow you to match on a single character</para>
+              </listitem>
+            </itemizedlist>
+            The wildcard character feature may be disabled in the lookup view definition.</para>
+        </listitem>
+        <listitem>
+          <para>Range operators allowed on numberics and dates are &gt;, &lt;, &gt;=, &gt;-, or .</para>
+          <para>All operators except .. should be before data value. Operator .. should separate date values</para>
+        </listitem>
+        <listitem>
+          <para>All financial documents have question button in the header for viewing help information.</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para><emphasis role="bold">Result Table</emphasis></para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>Each result field has a link on header for sorting. Click once to sort ascending, click again for descending.</para>
+        </listitem>
+        <listitem>
+          <para>Some row fields have links to inquiry. The inquiry will be presented in a new window.</para>
+        </listitem>
+        <listitem>
+          <para>Click the return value link to select a row and return the key value to the previous page.</para>
+        </listitem>
+        <listitem>
+          <para>Click the cancel button if you wish to return without returning a value</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  <para><emphasis role="bold">Maintenance Links</emphasis></para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>The 'create new' link on the upper right corner
+            of the lookup screen wil return a maintenance document for creating a new record for this lookup type</para>
+        </listitem>
+        <listitem>
+          <para>For users able to modify table values from the lookup screens, each result row action column displays edit and copy links.</para>
+          <itemizedlist>
+            <listitem>
+              <para>The 'edit' link will go to a maintenance document for editing the current record.</para>
+            </listitem>
+            <listitem>
+              <para>The 'copy' link will go to a new maintenance document but will copy over attributes from current record.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+    </para>
+  <para><emphasis role="bold">Export Functionality</emphasis></para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>At the end of each result set, there are links for exporting the data to a different format.</para>
+          <itemizedlist>
+            <listitem>
+              <para>Click the 'csv' button to export the data as a comma delimited file.</para>
+            </listitem>
+            <listitem>
+              <para>Click the 'xml' button to export the data in xml format.</para>
+            </listitem>
+            <listitem>
+              <para>Click the 'xls' button to export the data as a spreadsheet.</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+      </itemizedlist>
+    </para>
+</chapter>

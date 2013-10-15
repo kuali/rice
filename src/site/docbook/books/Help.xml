@@ -41,4 +41,5 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../help/responsibility.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../help/role.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../help/state.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../help/lookup.xml"/>
 </book>

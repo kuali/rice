@@ -18,12 +18,12 @@
 
 INSERT INTO KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
 VALUES ('KR-KRAD', 'Lookup', 'DEFAULT_HELP_URL','69A9BABE4A0FBD56E0404F8189D82B0D', 1, 'HELP',
-        'http://site.kuali.org/rice/latest/reference/html/Help.html', 'Default External Help Url', 'A', 'KUALI')
+        'http://site.kuali.org/rice/latest/reference/html/help.html#lookup', 'Default External Help Url', 'A', 'KUALI')
 /
 -- fixes config parameter for kitchen sink help test
 INSERT INTO KRCR_CMPNT_T (NMSPC_CD, CMPNT_CD, OBJ_ID, VER_NBR, NM, ACTV_IND)
 VALUES ('KR-SAP', 'TestComponent', '69A9BABE4A0FBD56E0404F8189D82B0A', 1, 'Test Component','Y')
 /
-update KRCR_PARM_T set CMPNT_CD='TestComponent',  VAL='http://site.kuali.org/rice/latest/reference/html/index.html'
+update KRCR_PARM_T set CMPNT_CD='TestComponent',  VAL='http://site.kuali.org/rice/latest/reference/html/help.html#document_type'
 where NMSPC_CD='KR-SAP' AND PARM_NM='TEST_PARAM'
 /

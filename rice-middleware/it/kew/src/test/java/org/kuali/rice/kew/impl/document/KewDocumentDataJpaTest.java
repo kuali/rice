@@ -466,10 +466,10 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     private Note setupNote(){
         Note note = new Note();
-        note.setDocumentId(TEST_DOC_ID);
         note.setNoteText(NOTE_TXT);
         note.setNoteAuthorWorkflowId("1");
         note.setNoteCreateDate(new Timestamp(System.currentTimeMillis()));
+        note.setDocumentId(TEST_DOC_ID);
 
         return KradDataServiceLocator.getDataObjectService().save(note);
     }
@@ -497,7 +497,7 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
         Branch branch = new Branch();
         branch.setName("PRIMARY");
 
-        return KRADServiceLocator.getDataObjectService().save(branch);
+        return KRADServiceLocator.getDataObjectService().save(branch, PersistenceOption.FLUSH);
     }
 
     private void setupInitialRouteNodeInstancesJoinTable(String routeNodeInstanceId) {
@@ -550,7 +550,7 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
         routeHeader.setDateModified(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");
 
-        return KRADServiceLocator.getDataObjectService().save(routeHeader);
+        return KRADServiceLocator.getDataObjectService().save(routeHeader, PersistenceOption.FLUSH);
     }
 
     private DocumentRouteHeaderValue setupDocumentRouteHeaderValueWithRouteHeaderAssigned() {

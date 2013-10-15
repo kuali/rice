@@ -75,7 +75,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
         for (String id : principalIds) {
             List<ActionTakenValue> actionsTakenByUser =
-                findByDocumentIdPrincipalId(actionRequest.getDocumentId(), id);
+                new ArrayList<ActionTakenValue>(findByDocumentIdPrincipalId(actionRequest.getDocumentId(), id));
             if (simulatedActionsTaken != null) {
                 for (ActionTakenValue simulatedAction : simulatedActionsTaken) {
                     if (id.equals(simulatedAction.getPrincipalId())) {

@@ -22,33 +22,45 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import java.util.Collection;
 import java.util.Set;
 
-
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentRouteHeaderDAO {
 
-  //public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
-  /**
-   * "Locks" the route header at the datasource level.
-   */
-  public void lockRouteHeader(String documentId);
-  public DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache);
-  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds);
-  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache);
-  public String getNextDocumentId();
-  public Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds);
-  public void clearRouteHeaderSearchValues(String documentId);
-  public Collection<SearchableAttributeValue> findSearchableAttributeValues(String documentId);
-  public String getApplicationIdByDocumentId(String documentId);
-  public DocumentRouteHeaderValueContent getContent(String documentId);
-  public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
-  public String getDocumentStatus(String documentId);
-  public void save(SearchableAttributeValue searchableAttribute);
-  public String getAppDocId(String documentId);
-  public String getAppDocStatus(String documentId);
+    /**
+     * "Locks" the route header at the datasource level.
+     */
+    void lockRouteHeader(String documentId);
 
-  public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
+    DocumentRouteHeaderValue findRouteHeader(String documentId, boolean clearCache);
+
+    Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds);
+
+    Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds, boolean clearCache);
+
+    String getNextDocumentId();
+
+    Collection<String> findPendingByResponsibilityIds(Set<String> responsibilityIds);
+
+    void clearRouteHeaderSearchValues(String documentId);
+
+    Collection<SearchableAttributeValue> findSearchableAttributeValues(String documentId);
+
+    String getApplicationIdByDocumentId(String documentId);
+
+    DocumentRouteHeaderValueContent getContent(String documentId);
+
+    boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey,
+            String searchableAttributeValue);
+
+    String getDocumentStatus(String documentId);
+
+    void save(SearchableAttributeValue searchableAttribute);
+
+    String getAppDocId(String documentId);
+
+    String getAppDocStatus(String documentId);
+
+    Collection findByDocTypeAndAppId(String documentTypeName, String appId);
 
 }

@@ -239,6 +239,10 @@ public class ActionTakenValue implements Serializable {
     }
 
     public String getDelegatorRoleId() {
+        // this could (perhaps) happen when running a simulation
+        if (actionTakenId == null) {
+            return null;
+        }
         ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().getActionRequestForRole(actionTakenId);
         if (actionRequest != null) {
             return actionRequest.getRoleName();

@@ -1240,15 +1240,8 @@ public class
         return documentBo;
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.bo.BusinessObject#refresh()
-     */
     @Override
     public void refresh() {
-        // TODO kellerj - THIS METHOD NEEDS JAVADOCS
-
     }
 
 }

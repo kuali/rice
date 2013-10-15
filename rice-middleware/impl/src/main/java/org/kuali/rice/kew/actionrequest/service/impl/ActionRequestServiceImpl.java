@@ -232,7 +232,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     @Override
     public ActionRequestValue activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext) {
         activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
-        actionRequest = saveActionRequest(actionRequest);
+        actionRequest = saveActionRequest(actionRequest, activationContext.isSimulation());
         activateRequestInternal(actionRequest, activationContext);
         return actionRequest;
     }
@@ -514,10 +514,13 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         actionRequest.setStatus(ActionRequestStatus.DONE.getCode());
         actionRequest.setActionTaken(actionTaken);
-        if (actionTaken != null) {
-            actionTaken.getActionRequests().add(actionRequest);
-        }
+
         if (!activationContext.isSimulation()) {
+            if (actionTaken != null) {
+                // only add it if it's not null and we aren't in a simulation context, if we are in simulation mode, we
+                // don't want to modify any action requests, lest they get saved by a JPA flush later!
+                actionTaken.getActionRequests().add(actionRequest);
+            }
             actionRequest = getDataObjectService().save(actionRequest);
             deleteActionItems(actionRequest);
         }
@@ -808,14 +811,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     @Override
     public ActionRequestValue saveActionRequest(ActionRequestValue actionRequest) {
+        return saveActionRequest(actionRequest, false);
+    }
+
+    protected ActionRequestValue saveActionRequest(ActionRequestValue actionRequest, boolean simulation) {
         if (actionRequest.isGroupRequest()) {
-             Group group = actionRequest.getGroup();
-             if (group == null)  {
-                 throw new RiceRuntimeException("Attempted to save an action request with a non-existent group.");
-             }
-             if (!group.isActive() && actionRequest.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
-        		throw new RiceRuntimeException("Attempted to save an action request with an inactive group.");
-        	}
+            Group group = actionRequest.getGroup();
+            if (group == null)  {
+                throw new RiceRuntimeException("Attempted to save an action request with a non-existent group.");
+            }
+            if (!group.isActive() && actionRequest.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
+                throw new RiceRuntimeException("Attempted to save an action request with an inactive group.");
+            }
         }
         if (actionRequest.getActionRequestId() == null) {
             loadDefaultValues(actionRequest);
@@ -823,7 +830,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if ( actionRequest.getAnnotation() != null && actionRequest.getAnnotation().length() > 2000 ) {
             actionRequest.setAnnotation( StringUtils.abbreviate(actionRequest.getAnnotation(), 2000) );
         }
-        return getDataObjectService().save(actionRequest);
+        if (simulation) {
+            return actionRequest;
+        } else {
+            return getDataObjectService().save(actionRequest);
+        }
     }
 
     private void loadDefaultValues(ActionRequestValue actionRequest) {

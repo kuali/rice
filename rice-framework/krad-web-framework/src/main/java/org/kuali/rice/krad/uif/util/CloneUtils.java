@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -24,8 +23,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -137,6 +136,9 @@ public class CloneUtils {
         }
         else if (original instanceof Enum) {
             return original;
+        }
+        else if (original instanceof Timestamp) {
+            return new Timestamp(((Timestamp)original).getTime());
         }
 
         // To our understanding, this is a mutable object, so clone it

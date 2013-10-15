@@ -146,7 +146,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 					}
 				}
 				context.setDocument(nodePostProcess(context));
-                flushDatabaseWork();
+                flushDatabaseWork(context);
 			} catch (Exception e) {
 				success = false;
 				// TODO throw a new 'RoutingException' which holds the
@@ -245,7 +245,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
 		nodeInstance = saveNode(context, nodeInstance);
         // always be sure that we are changes are flushed with the database after every node instance processing
-        flushDatabaseWork();
+        flushDatabaseWork(context);
 		return new ProcessContext(nodeInstance.isComplete(), nodeInstance.getNextNodeInstances());
 	}
 
@@ -363,8 +363,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
     /**
      * Flush using DocumentRouteHeaderValue to identify the context in which to flush database changes.
      */
-    protected void flushDatabaseWork() {
-        KradDataServiceLocator.getDataObjectService().flush(DocumentRouteHeaderValue.class);
+    protected void flushDatabaseWork(RouteContext context) {
+        if (!context.isSimulation()) {
+            KradDataServiceLocator.getDataObjectService().flush(DocumentRouteHeaderValue.class);
+        }
     }
 
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {

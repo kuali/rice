@@ -309,14 +309,11 @@ public class RuleDAOJpa implements RuleDAO {
                         ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
         addResponsibilityCriteria(cq,workgroupIds, workflowId, actionRequestCodes,
                         (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
-        Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
-        org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
-                org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
-        builder.setPredicates(preds);
-        QueryResults<RuleBaseValues> results = getDataObjectService().
-                findMatching(RuleBaseValues.class, builder.build());
+        javax.persistence.criteria.Predicate[] preds = predicates.toArray(new javax.persistence.criteria.Predicate[predicates.size()]);
+        cq.where(preds);
+        TypedQuery<RuleBaseValues> q = getEntityManager().createQuery(cq);
 
-        return results.getResults();
+        return q.getResultList();
     }
 
     private Subquery<RuleResponsibilityBo> addResponsibilityCriteria(CriteriaQuery<RuleBaseValues> query, Collection<String> kimGroupIds,
@@ -360,7 +357,7 @@ public class RuleDAOJpa implements RuleDAO {
                                 value(new ArrayList<String>(workgroupIds)));
                 workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                             KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
-                Predicate[] preds = workgroupPreds.toArray(new Predicate[workgroupPreds.size()]);
+                javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
                 ruleRespNamePredicates.add(cb.or((javax.persistence.criteria.Predicate[]) preds));
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {

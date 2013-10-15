@@ -37,7 +37,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 
-    //    private BusinessObjectService businessObjectService;
     private DataObjectService dataObjectService;
 
     /**

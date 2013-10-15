@@ -24,8 +24,11 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.exception.DocumentSimulatedRouteException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.EngineState;
@@ -36,6 +39,7 @@ import org.kuali.rice.kew.engine.StandardWorkflowEngine;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
+import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RequestsNode;
@@ -43,16 +47,16 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -340,10 +344,10 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         	throw new IllegalArgumentException("Workflow simulation engine could not locate document with id "+documentId);
         }
         for (ActionRequestValue actionRequest : document.getActionRequests()) {
-        	actionRequest = (ActionRequestValue) deepCopy(actionRequest);
+        	actionRequest = deepCopy(actionRequest);
         	document.getSimulatedActionRequests().add(actionRequest);
         	for (ActionItem actionItem : actionRequest.getActionItems()) {
-        		actionRequest.getSimulatedActionItems().add((ActionItem) deepCopy(actionItem));
+        		actionRequest.getSimulatedActionItems().add(deepCopy(actionItem));
         	}
         }
         context.setDocument(document);
@@ -353,45 +357,73 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 
     private DocumentRouteHeaderValue getDocumentForSimulation(String documentId) {
         DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
-        return (DocumentRouteHeaderValue)deepCopy(document);
-    }
-
-    private Serializable deepCopy(Serializable src) {
-        Serializable obj = null;
-        if (src != null) {
-            ObjectOutputStream oos = null;
-            ObjectInputStream ois = null;
-            try {
-                ByteArrayOutputStream serializer = new ByteArrayOutputStream();
-                oos = new ObjectOutputStream(serializer);
-                oos.writeObject(src);
-
-                ByteArrayInputStream deserializer = new ByteArrayInputStream(serializer.toByteArray());
-                ois = new ObjectInputStream(deserializer);
-                obj = (Serializable) ois.readObject();
-            }
-            catch (IOException e) {
-                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-            }
-            catch (ClassNotFoundException e) {
-                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-            }
-            finally {
-                try {
-                    if (oos != null) {
-                        oos.close();
-                    }
-                    if (ois != null) {
-                        ois.close();
-                    }
-                }
-                catch (IOException e) {
-                    // ignoring this IOException, since the streams are going to be abandoned now anyway
-                }
-            }
+        // document has lazy references to route node instances and others, this causes problems for the deep copy, so
+        // let's make sure that those get instantiated by walking the graph and touching those relationships
+        touchRouteNodeInstances(document.getInitialRouteNodeInstances());
+        for (DocumentStatusTransition transition : document.getAppDocStatusHistory()) {
+            transition.getVersionNumber();
         }
-        return obj;
+        for (Note note : document.getNotes()) {
+            // currently, attachments are eager fetched on notes, so let's just make sure the note gets loaded
+            note.getLockVerNbr();
+        }
+        DocumentRouteHeaderValue copy = deepCopy(document);
+        return copy;
     }
+
+    private void touchRouteNodeInstances(List<RouteNodeInstance> routeNodeInstances) {
+        routeNodeInstances.size(); // forces instantiation of indirect references in EclipseLink...blech
+        for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
+            routeNodeInstance.getLockVerNbr();
+            routeNodeInstance.getState().size();
+            for (NodeState nodeState : routeNodeInstance.getState()) {
+                nodeState.getLockVerNbr();
+            }
+            touchRouteNodeInstances(routeNodeInstance.getNextNodeInstances());
+        }
+    }
+
+    private <T extends Serializable> T deepCopy(T src) {
+        // TODO - fix this up! we really don't want to be depending on deepclone here
+        return CloneUtils.deepClone(src);
+    }
+
+//    private <T extends Serializable> T deepCopy(T src) {
+//        T obj = null;
+//        if (src != null) {
+//            ObjectOutputStream oos = null;
+//            ObjectInputStream ois = null;
+//            try {
+//                ByteArrayOutputStream serializer = new ByteArrayOutputStream();
+//                oos = new ObjectOutputStream(serializer);
+//                oos.writeObject(src);
+//
+//                ByteArrayInputStream deserializer = new ByteArrayInputStream(serializer.toByteArray());
+//                ois = new ObjectInputStream(deserializer);
+//                obj = (T)ois.readObject();
+//            }
+//            catch (IOException e) {
+//                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
+//            }
+//            catch (ClassNotFoundException e) {
+//                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
+//            }
+//            finally {
+//                try {
+//                    if (oos != null) {
+//                        oos.close();
+//                    }
+//                    if (ois != null) {
+//                        ois.close();
+//                    }
+//                }
+//                catch (IOException e) {
+//                    // ignoring this IOException, since the streams are going to be abandoned now anyway
+//                }
+//            }
+//        }
+//        return obj;
+//    }
 
     private void routeDocumentIfNecessary(DocumentRouteHeaderValue document, SimulationCriteria criteria, RouteContext routeContext) throws InvalidActionTakenException {
     	if (criteria.getRoutingUser() != null) {
@@ -503,18 +535,16 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     	ActionRequestService actionRequestService = KEWServiceLocator.getActionRequestService();
         // TODO delyea - deep copy below
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-        for (Iterator iter = actionRequestService.findPendingByDoc(document.getDocumentId()).iterator(); iter.hasNext();) {
-            ActionRequestValue arv = (ActionRequestValue) deepCopy( (ActionRequestValue) iter.next() );
+        for (ActionRequestValue actionRequest : actionRequestService.findPendingByDoc(document.getDocumentId())) {
+            ActionRequestValue arv = deepCopy(actionRequest);
             for (ActionItem actionItem : arv.getActionItems()) {
-        		arv.getSimulatedActionItems().add((ActionItem) deepCopy(actionItem));
+        		arv.getSimulatedActionItems().add(deepCopy(actionItem));
         	}
-            actionRequests.add(arv);//(ActionRequestValue)deepCopy(arv));
+            actionRequests.add(arv);
         }
-//        actionRequests.addAll(actionRequestService.findPendingByDoc(document.getDocumentId()));
         LOG.debug("Simulate Deactivating all pending action requests");
         // deactivate any requests for the user that routed the document.
-        for (Iterator<ActionRequestValue> iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+        for (ActionRequestValue actionRequest : actionRequests) {
             // requests generated to the user who is routing the document should be deactivated
             if ( (user.getPrincipalId().equals(actionRequest.getPrincipalId())) && (actionRequest.isActive()) ) {
             	actionRequestService.deactivateRequest(actionTaken, actionRequest, routeContext.getActivationContext());
@@ -525,11 +555,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
             }
         }
 
-//        String oldStatus = document.getDocRouteStatus();
         document.markDocumentEnroute();
-//        String newStatus = document.getDocRouteStatus();
-//        notifyStatusChange(newStatus, oldStatus);
-//        getRouteHeaderService().saveRouteHeader(document);
     }
 
     private ActionTakenValue createDummyActionTaken(DocumentRouteHeaderValue routeHeader, Person userToPerformAction, String actionToPerform, Recipient delegator) {
@@ -553,8 +579,6 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 				throw new IllegalArgumentException("Invalid Recipient type received: " + delegator.getClass().getName());
 			}
 		}
-
-		//val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(Boolean.TRUE);
 		return val;
     }
@@ -576,16 +600,13 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
      */
     @Override
     protected RouteNodeInstance saveNode(RouteContext context, RouteNodeInstance nodeInstance) {
-		// we shold be in simulation mode here
-
+		// we should be in simulation mode here
     	if (nodeInstance.getRouteNodeInstanceId() == null) {
     		nodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
     	}
-    	
     	// if we are in simulation mode, lets go ahead and assign some id
     	// values to our beans
-    	for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
-    		RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iterator.next();
+    	for (RouteNodeInstance routeNodeInstance : nodeInstance.getNextNodeInstances()) {
     		if (routeNodeInstance.getRouteNodeInstanceId() == null) {
     			routeNodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
     		}

@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.kew.routeheader.service;
 
+import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.docsearch.SearchableAttributeBase;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 
 
 /**
@@ -39,43 +38,54 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
  */
 public interface RouteHeaderService {
 
-    public DocumentRouteHeaderValue getRouteHeader(String documentId);
-    public DocumentRouteHeaderValue getRouteHeader(String documentId, boolean clearCache);
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds);
-    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds, boolean clearCache);
-    public Map<String,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
-    public void lockRouteHeader(String documentId);
-    public DocumentRouteHeaderValue saveRouteHeader(DocumentRouteHeaderValue routeHeader);
-    public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
-    public String getNextDocumentId();
-    public void validateRouteHeader(DocumentRouteHeaderValue routeHeader);
-    public Collection findPendingByResponsibilityIds(Set responsibilityIds);
-    public Collection findByDocTypeAndAppId(String documentTypeName, String appId);
+    DocumentRouteHeaderValue getRouteHeader(String documentId);
+
+    DocumentRouteHeaderValue getRouteHeader(String documentId, boolean clearCache);
+
+    Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds);
+
+    Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<String> documentIds, boolean clearCache);
+
+    Map<String,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
+
+    void lockRouteHeader(String documentId);
+
+    DocumentRouteHeaderValue saveRouteHeader(DocumentRouteHeaderValue routeHeader);
+
+    void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
+
+    String getNextDocumentId();
+
+    void validateRouteHeader(DocumentRouteHeaderValue routeHeader);
+
+    Collection findPendingByResponsibilityIds(Set responsibilityIds);
+
+    Collection findByDocTypeAndAppId(String documentTypeName, String appId);
     
     /**
      * Removes all SearchableAttributeValues associated with the RouteHeader.
      * @param routeHeader
      */
-    public void clearRouteHeaderSearchValues(String documentId);
+    void clearRouteHeaderSearchValues(String documentId);
 
     /**
      * Updates the searchable attribute values for the document with the given id to the given values.
      * This method will clear existing search attribute values and replace with the ones given.
      */
-    public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes);
+    void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes);
     
     /**
      * Returns the application id of the {@link DocumentType} for the Document with the given ID.
      */
-    public String getApplicationIdByDocumentId(String documentId);
+    String getApplicationIdByDocumentId(String documentId);
 
-    public DocumentRouteHeaderValueContent getContent(String documentId);
+    DocumentRouteHeaderValueContent getContent(String documentId);
 
-    public boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
+    boolean hasSearchableAttributeValue(String documentId, String searchableAttributeKey, String searchableAttributeValue);
 
-    public String getDocumentStatus(String documentId);
+    String getDocumentStatus(String documentId);
 
-    public String getAppDocId(String documentId);
+    String getAppDocId(String documentId);
 
     /**
      *
@@ -84,7 +94,7 @@ public interface RouteHeaderService {
      * @param documentId
      * @return String
      */
-    public String getAppDocStatus(String documentId);
+    String getAppDocStatus(String documentId);
     
     /**
      *
@@ -94,7 +104,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<String> getSearchableAttributeStringValuesByKey(String documentId, String key);
+    List<String> getSearchableAttributeStringValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -103,7 +113,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<Timestamp> getSearchableAttributeDateTimeValuesByKey(String documentId, String key);
+    List<Timestamp> getSearchableAttributeDateTimeValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -112,7 +122,7 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<BigDecimal> getSearchableAttributeFloatValuesByKey(String documentId, String key);
+    List<BigDecimal> getSearchableAttributeFloatValuesByKey(String documentId, String key);
     /**
      *
      * This method is a more direct way to get the searchable attribute values
@@ -121,6 +131,6 @@ public interface RouteHeaderService {
      * @param key
      * @return
      */
-    public List<Long> getSearchableAttributeLongValuesByKey(String documentId, String key);
+    List<Long> getSearchableAttributeLongValuesByKey(String documentId, String key);
 
 }

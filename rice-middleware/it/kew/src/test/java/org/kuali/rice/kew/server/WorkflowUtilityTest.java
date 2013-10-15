@@ -82,7 +82,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class WorkflowUtilityTest extends KEWTestCase {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowUtilityTest.class);
 
@@ -334,7 +334,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("should be in route log", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("natjohns"), true));
     }
 
-    public abstract interface ReportCriteriaGenerator { public abstract RoutingReportCriteria buildCriteria(WorkflowDocument workflowDoc) throws Exception; public boolean isCriteriaRouteHeaderBased();}
+    public interface ReportCriteriaGenerator {
+        RoutingReportCriteria buildCriteria(WorkflowDocument workflowDoc) throws Exception;
+        boolean isCriteriaRouteHeaderBased();
+    }
 
     private class ReportCriteriaGeneratorUsingXML implements ReportCriteriaGenerator {
         @Override

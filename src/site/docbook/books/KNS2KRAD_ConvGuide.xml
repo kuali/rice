@@ -1846,7 +1846,10 @@
                 role="keyword">LookupableHelperService</emphasis>. Instead the <emphasis
                 role="keyword">resultsGroup.lineActions</emphasis> property list is extended or
               overridden. Look in <emphasis role="keyword">UifLookupDefinition.xml</emphasis> to see
-              how the edit, copy and delete actions are defined. <inlinemediaobject>
+              how the edit, copy and delete actions are defined. All types of
+              <emphasis role="keyword">Components</emphasis> (not just <emphasis role="keyword">Actions</emphasis>)
+              may be defined to appear as results group line actions.
+              <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1896,6 +1899,17 @@
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="LRF9">
+            <para>All types of <emphasis role="keyword">Components</emphasis>
+              (not just <emphasis role="keyword">Actions</emphasis>) may be defined to appear in the collection
+              add line actions, via the <emphasis role="keyword">resultsGroup.addLineActions</emphasis> property list
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
           </listitem>
         </itemizedlist>
       </para>

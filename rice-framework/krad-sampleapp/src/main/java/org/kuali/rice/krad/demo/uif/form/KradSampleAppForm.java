@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -22,16 +27,12 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Basic form for the KRAD sample application
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KradSampleAppForm extends UifFormBase {
+public class KradSampleAppForm extends UifFormBase implements Serializable {
     private static final long serialVersionUID = -7525378097732916418L;
     private String themeName;
     private String exampleShown;
@@ -233,10 +234,10 @@ public class KradSampleAppForm extends UifFormBase {
         groupedCollection1.add(new UITestObject("C", "102", "200", "300"));
         groupedCollection1.add(new UITestObject("C", "103", "200", "300"));
 
-        
+
 
         groupedCollection2.addAll(groupedCollection1);
-        
+
         groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
         groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
         groupedCollection2.add(new UITestObject("D", "102", "200", "300"));

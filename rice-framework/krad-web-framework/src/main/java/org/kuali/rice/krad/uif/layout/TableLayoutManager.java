@@ -301,6 +301,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
+            ViewLifecycle.spawnSubLifecyle(model, groupingMessageField, collectionGroup);
+
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
             theItems.addAll(collectionGroup.getItems());

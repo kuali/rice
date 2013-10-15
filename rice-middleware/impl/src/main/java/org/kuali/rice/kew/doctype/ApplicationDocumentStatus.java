@@ -86,7 +86,7 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
 	}
 
 	public String getDocumentTypeId() {
-		return this.getApplicationDocumentStatusId().getDocumentTypeId();
+		return this.getDocumentType() != null ? getDocumentType().getDocumentTypeId() : "";
 	}
 
 	public void setDocumentTypeId(String documentTypeId) {

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 
@@ -36,12 +37,21 @@ public class HelperCustomFinalizeTask extends AbstractViewLifecycleTask {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#getPhase()
+     */
+    @Override
+    public FinalizeComponentPhase getPhase() {
+        return (FinalizeComponentPhase) super.getPhase();
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {
         // invoke service override hook
-        ViewLifecycle.getHelper().performCustomApplyModel(getPhase().getComponent(), getPhase().getModel());
+        ViewLifecycle.getHelper().performCustomFinalize(getPhase().getComponent(), getPhase().getModel(),
+                getPhase().getParent());
     }
 
 }

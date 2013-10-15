@@ -45,7 +45,7 @@ public class BranchState extends State {
     private static final long serialVersionUID = -7642477013444817952L;
 
     @ManyToOne
-	@JoinColumn(name="RTE_BRCH_ID")
+	@JoinColumn(name="RTE_BRCH_ID", nullable = false)
 	private Branch branch;
 
     @Version

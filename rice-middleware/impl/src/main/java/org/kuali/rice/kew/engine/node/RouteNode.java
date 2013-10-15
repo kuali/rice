@@ -245,7 +245,7 @@ public class RouteNode implements Serializable, RouteNodeContract {
     }
 
     public String getDocumentTypeId() {
-        return documentTypeId;
+        return getDocumentType() != null ? getDocumentType().getDocumentTypeId() : documentTypeId;
     }
 
     public void setDocumentTypeId(String documentTypeId) {

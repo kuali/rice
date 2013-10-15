@@ -19,6 +19,7 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
+import org.kuali.rice.krad.util.LegacyUtils;
 
 /**
  * RelationshipsMapBuilder
@@ -43,7 +44,11 @@ public class RelationshipsMapBuilder {
         ExportMap relationshipsMap = new ExportMap("relationships");
 
         for ( RelationshipDefinition relationship : entry.getRelationships() ) {
-            relationshipsMap.set(buildRelationshipMap(relationship));
+            //if in legacy context do not use any of the metadata injected stuff
+            //this prevents a problem with duplicate entries that exists
+            if(!(relationship.hasEmbeddedDataObjectMetadata() && LegacyUtils.isInLegacyContext())){
+                relationshipsMap.set(buildRelationshipMap(relationship));
+            }
         }
 
         return relationshipsMap;

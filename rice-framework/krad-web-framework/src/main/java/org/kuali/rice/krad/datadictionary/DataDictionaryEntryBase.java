@@ -58,6 +58,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
     protected Map<String, AttributeDefinition> attributeMap;
     protected Map<String, ComplexAttributeDefinition> complexAttributeMap;
     protected Map<String, CollectionDefinition> collectionMap;
+
     protected Map<String, RelationshipDefinition> relationshipMap;
 
     protected StateMapping stateMapping;
@@ -173,7 +174,7 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         if (StringUtils.isBlank(relationshipName)) {
             throw new IllegalArgumentException("invalid (blank) relationshipName");
         }
-        return relationshipMap.get(relationshipName);
+        return getRelationshipMap().get(relationshipName);
     }
 
     /**
@@ -236,8 +237,9 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
             }
             if ( StringUtils.isNotBlank(rel.getName()) ) {
                 RelationshipDefinition relationshipDefinition = getRelationshipDefinition(rel.getName());
-                // no relationship defined for attribute - proceed
-                if ( relationshipDefinition == null ) {
+                // no relationship defined for attribute - proceed and the given relationship parent is not
+                //included in a previous relationship so as not to add duplicates
+                if ( relationshipDefinition == null ){//&& !relationshipParentExists(rel.getName())) {
                     relationshipDefinition = new RelationshipDefinition();
                     relationshipDefinition.setObjectAttributeName(rel.getName());
                     relationshipDefinition.setSourceClass(getEntryClass());
@@ -704,5 +706,18 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
 
     public void setDataObjectMetadata(DataObjectMetadata dataObjectMetadata) {
         this.dataObjectMetadata = dataObjectMetadata;
+    }
+
+    public Map<String, RelationshipDefinition> getRelationshipMap() {
+        if(relationshipMap.isEmpty() && !getRelationships().isEmpty()){
+            for(RelationshipDefinition rel : getRelationships()){
+                relationshipMap.put(rel.getObjectAttributeName(),rel);
+            }
+        }
+        return relationshipMap;
+    }
+
+    public void setRelationshipMap(Map<String, RelationshipDefinition> relationshipMap) {
+        this.relationshipMap = relationshipMap;
     }
 }

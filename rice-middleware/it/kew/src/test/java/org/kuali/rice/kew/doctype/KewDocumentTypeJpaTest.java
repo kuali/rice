@@ -22,10 +22,13 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krms.impl.repository.RuleAttributeBo;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;
@@ -52,10 +55,10 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
                 dtp.getDocumentType().getDocumentTypeId()));
 
         ApplicationDocumentStatusCategory appDocStatusCategory = setupApplicationDocumentStatusCategory(
-                dt.getDocumentTypeId());
+                dt);
         assertTrue("ApplicationDocumentStatusCategory persisted correctly", appDocStatusCategory != null);
 
-        ApplicationDocumentStatus appDocStatus = setApplicationDocumentStatus(dt.getDocumentTypeId(), appDocStatusCategory);
+        ApplicationDocumentStatus appDocStatus = setApplicationDocumentStatus(dt, appDocStatusCategory);
         assertTrue("Application Document Status persisted correctly", appDocStatus != null &&
                 StringUtils.isNotBlank(appDocStatus.getDocumentTypeId()));
 
@@ -98,15 +101,15 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeVersionAndSave() throws Exception{
-        setupDocumentType();
+        DocumentType parent = setupDocumentType();
         DocumentType documentType = setupDocumentTypeNoPersist();
-
+        documentType.setDocTypeParentId(parent.getDocumentTypeId());
         KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
 
         documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentType.getName());
 
         assertTrue("DocumentType has been versioned and resaved", documentType != null
-                && documentType.getVersion() == 1);
+                && documentType.getVersion() == 0);
     }
 
     @Test
@@ -115,7 +118,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
         List rootDocumentType = KEWServiceLocator.getDocumentTypeService().findAllCurrentRootDocuments();
 
-        assertTrue("Found all root documents", rootDocumentType != null && rootDocumentType.size() == 1);
+        assertTrue("Found all root documents", rootDocumentType != null && rootDocumentType.size() == 3);
     }
 
     @Test
@@ -123,7 +126,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         setupDocumentType();
 
         List currentDocTypes = KEWServiceLocator.getDocumentTypeService().findAllCurrent();
-        assertTrue("Found all current documents", currentDocTypes != null && currentDocTypes.size() == 1);
+        assertTrue("Found all current documents", currentDocTypes != null && currentDocTypes.size() == 7);
     }
 
     @Test
@@ -157,7 +160,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         DocumentType childDocType = setupDocumentTypeNoPersist();
         childDocType.setDocTypeParentId(parentDocType.getDocumentTypeId());
         childDocType.setName("CoolNewDocType");
-        KRADServiceLocator.getDataObjectService().save(childDocType);
+        childDocType = KRADServiceLocator.getDataObjectService().save(childDocType, PersistenceOption.FLUSH);
         assertTrue("Child doc type now has a parent doc type",childDocType != null &&
                 StringUtils.isNotBlank(childDocType.getDocTypeParentId()));
 
@@ -189,7 +192,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         documentType.setPostProcessorName("PostProcessMe");
         documentType.setDocTypeParentId(null);
 
-        return KRADServiceLocator.getDataObjectService().save(documentType);
+        return KRADServiceLocator.getDataObjectService().save(documentType, PersistenceOption.FLUSH);
     }
 
     private DocumentType setupDocumentTypeNoPersist(){
@@ -226,9 +229,9 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         return KRADServiceLocator.getDataObjectService().save(dtp);
     }
 
-    private ApplicationDocumentStatus setApplicationDocumentStatus(String documentTypeId, ApplicationDocumentStatusCategory category){
+    private ApplicationDocumentStatus setApplicationDocumentStatus(DocumentType documentType, ApplicationDocumentStatusCategory category){
         ApplicationDocumentStatus applicationDocumentStatus = new ApplicationDocumentStatus();
-        applicationDocumentStatus.setDocumentTypeId(documentTypeId);
+        applicationDocumentStatus.setDocumentType(documentType);
         applicationDocumentStatus.setCategory(category);
         applicationDocumentStatus.setSequenceNumber(1);
         applicationDocumentStatus.setStatusName("someStatus");
@@ -236,10 +239,10 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatus);
     }
 
-    private ApplicationDocumentStatusCategory setupApplicationDocumentStatusCategory(String documentTypeId){
+    private ApplicationDocumentStatusCategory setupApplicationDocumentStatusCategory(DocumentType documentType){
         ApplicationDocumentStatusCategory applicationDocumentStatusCategory = new ApplicationDocumentStatusCategory();
         applicationDocumentStatusCategory.setCategoryName("TestCategory");
-        applicationDocumentStatusCategory.setDocumentTypeId(documentTypeId);
+        applicationDocumentStatusCategory.setDocumentType(documentType);
 
         return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatusCategory);
     }
@@ -249,7 +252,10 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         documentTypeAttributeBo.setDocumentType(documentType);
         documentTypeAttributeBo.setOrderIndex(1);
         documentTypeAttributeBo.setLockVerNbr(1);
-        documentTypeAttributeBo.setRuleAttributeId("1234");
+        RuleAttribute ruleAttribute = setupRuleAttribute();
+        documentTypeAttributeBo.setRuleAttribute(ruleAttribute);
+
+
 
         return KRADServiceLocator.getDataObjectService().save(documentTypeAttributeBo);
     }
@@ -280,6 +286,18 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         routeHeader.setInitiatorWorkflowId("someone");
 
         return KRADServiceLocator.getDataObjectService().save(routeHeader);
+    }
+
+    private RuleAttribute setupRuleAttribute(){
+        RuleAttribute ruleAttribute = new RuleAttribute();
+        ruleAttribute.setApplicationId("TST");
+        ruleAttribute.setDescription("Testing");
+        ruleAttribute.setLabel("New Label");
+        ruleAttribute.setResourceDescriptor("ResourceDescriptor");
+        ruleAttribute.setType("newType");
+        ruleAttribute.setName("Attr");
+
+        return KRADServiceLocator.getDataObjectService().save(ruleAttribute, PersistenceOption.FLUSH);
     }
 
 }

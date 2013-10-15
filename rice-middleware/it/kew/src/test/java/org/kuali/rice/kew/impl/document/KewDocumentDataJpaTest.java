@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
@@ -35,6 +36,7 @@ import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
@@ -195,11 +197,17 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteHeaderInitJoinTable() throws Exception{
-        setupDocumentRouteHeaderValueWithRouteHeaderAssigned();
-        RouteNodeInstance rni = setupRouteNodeInstance();
+        DocumentRouteHeaderValue dv = setupDocumentRouteHeaderValueWithRouteHeaderAssigned();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance rni = setupRouteNodeInstance(rn);
         setupInitialRouteNodeInstancesJoinTable(rni.getRouteNodeInstanceId());
-        DocumentRouteHeaderValue dv = KradDataServiceLocator.getDataObjectService().find(DocumentRouteHeaderValue.class,
+        dv = KradDataServiceLocator.getDataObjectService().find(DocumentRouteHeaderValue.class,
                 TEST_DOC_ID);
+
+        dv.getInitialRouteNodeInstances().add(rni);
+
+
         assertTrue("DocumentRouteHeaderValue fetched correctly with joined instance",dv!= null
                 && dv.getInitialRouteNodeInstances() != null && dv.getInitialRouteNodeInstances().get(0)!= null
                 && StringUtils.equals(dv.getInitialRouteNodeInstances().get(0).getRouteNodeInstanceId(),
@@ -216,10 +224,15 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testNodeStates() throws Exception{
-        RouteNodeInstance savedVal = setupRouteNodeInstance();
-        assertTrue("DocumentRouteHeaderValue saved and persisted", savedVal != null && StringUtils.isNotEmpty(
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance savedVal = setupRouteNodeInstance(rn);
+        NodeState ns = setupNodeState(savedVal);
+        savedVal.getState().add(ns);
+        KRADServiceLocator.getDataObjectService().save(savedVal);
+        assertTrue("RouteNodeInstance saved and persisted", savedVal != null && StringUtils.isNotEmpty(
                 savedVal.getRouteNodeInstanceId()));
-        setupNodeState(savedVal);
+
         savedVal = KRADServiceLocator.getDataObjectService().find(RouteNodeInstance.class,
                 savedVal.getRouteNodeInstanceId());
         assertTrue("NodeStates fetched correctly", savedVal.getState() != null && savedVal.getState().size() == 1);
@@ -227,7 +240,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeInstance() throws Exception{
-        RouteNodeInstance savedVal = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance savedVal = setupRouteNodeInstance(rn);
         assertTrue("DocumentRouteHeaderValue saved and persisted", savedVal != null && StringUtils.isNotEmpty(
                 savedVal.getRouteNodeInstanceId()));
 
@@ -260,6 +275,8 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
     public void testAttachment() throws Exception {
         Note note = setupNote();
         Attachment attachment = setupAttachment(note);
+        note.getAttachments().add(attachment);
+
         assertTrue("Attachment persisted correctly", attachment != null &&
                         StringUtils.isNotBlank(attachment.getAttachmentId()));
         note = KEWServiceLocator.getNoteService().getNoteByNoteId(note.getNoteId());
@@ -281,8 +298,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceDeleteByRouteNodeInstance() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
         assertTrue("Route node instance persisted with route node",
@@ -297,8 +315,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceGetActiveNodeInstances() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
         assertTrue("Route node instance persisted with route node",
@@ -310,8 +329,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceGetCurrentRouteNodeNames() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
         assertTrue("Route node instance persisted with route node",
@@ -324,8 +344,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceGetActiveRouteNodeNames() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
         assertTrue("Route node instance persisted with route node",
@@ -337,8 +358,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceGetTerminalNodeInstances() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setActive(false);
         routeNodeInstance.setComplete(true);
         routeNodeInstance.setRouteNode(rn);
@@ -357,8 +379,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceGetInitialNodeInstances() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
 
@@ -375,8 +398,9 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceFindNodeState() throws Exception{
-        RouteNode rn = setupRouteNode();
-        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
+        RouteNodeInstance routeNodeInstance = setupRouteNodeInstance(rn);
         routeNodeInstance.setRouteNode(rn);
         routeNodeInstance = KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
         NodeState nodeState = setupNodeState(routeNodeInstance);
@@ -390,7 +414,8 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceFindRouteNodeByName() throws Exception{
-        RouteNode rn = setupRouteNode();
+        DocumentType documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
         String routeNodeId = rn.getRouteNodeId();
         rn = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(
                                         rn.getDocumentTypeId(),rn.getRouteNodeName());
@@ -400,7 +425,13 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     @Test
     public void testRouteNodeServiceSaveRouteNodeInstance() throws Exception {
-        RouteNode rn = setupRouteNode();
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName("gooddoctype");
+        if(documentType != null){
+            KRADServiceLocator.getDataObjectService().delete(documentType);
+        }
+
+        documentType = setupDocumentType();
+        RouteNode rn = setupRouteNode(documentType);
         assertNotNull(rn.getRouteNodeId());
         RouteNodeInstance rni = new RouteNodeInstance();
         rni.setDocumentId(TEST_DOC_ID);
@@ -429,7 +460,7 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
         nodeState.setValue("VAL");
         nodeState.setNodeInstance(routeNodeInstance);
 
-        return KRADServiceLocator.getDataObjectService().save(nodeState);
+        return KRADServiceLocator.getDataObjectService().save(nodeState, PersistenceOption.FLUSH);
 
     }
 
@@ -449,13 +480,14 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
         attachment.setMimeType("test");
         attachment.setFileName("test.txt");
         attachment.setNote(note);
-        return KRADServiceLocator.getDataObjectService().save(attachment);
+        return KRADServiceLocator.getDataObjectService().save(attachment, PersistenceOption.FLUSH);
     }
 
     private Branch setupRouteBranchState(Branch branch){
         BranchState bs = new BranchState();
         bs.setKey("KEY");
         bs.setValue("VAL");
+        bs.setBranch(branch);
 
         branch.getBranchState().add(bs);
         return KradDataServiceLocator.getDataObjectService().save(branch);
@@ -550,23 +582,48 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
 
     }
 
-    private RouteNodeInstance setupRouteNodeInstance(){
+    private RouteNodeInstance setupRouteNodeInstance(RouteNode routeNode){
         RouteNodeInstance routeNodeInstance = new RouteNodeInstance();
         routeNodeInstance.setActive(true);
         routeNodeInstance.setComplete(true);
         routeNodeInstance.setDocumentId(TEST_DOC_ID);
         routeNodeInstance.setInitial(true);
-        return KRADServiceLocator.getDataObjectService().save(routeNodeInstance);
+        routeNodeInstance.setRouteNode(routeNode);
+        return KRADServiceLocator.getDataObjectService().save(routeNodeInstance, PersistenceOption.FLUSH);
     }
 
-    private RouteNode setupRouteNode(){
+    private RouteNode setupRouteNode(DocumentType documentType){
         RouteNode routeNode = new RouteNode();
-        routeNode.setDocumentTypeId("2843");
+        routeNode.setDocumentType(documentType);
         routeNode.setRouteNodeName("PreRoute");
         routeNode.setRouteMethodName("org.kuali.rice.kew.engine.node.InitialNode");
         routeNode.setRouteMethodCode("C");
         routeNode.setActivationType("P");
 
-        return KRADServiceLocator.getDataObjectService().save(routeNode);
+        return KRADServiceLocator.getDataObjectService().save(routeNode, PersistenceOption.FLUSH);
+    }
+
+
+    private DocumentType setupDocumentType(){
+        DocumentType documentType = new DocumentType();
+        documentType.setActionsUrl("/test");
+        documentType.setActive(true);
+        documentType.setActualApplicationId("tst");
+        documentType.setActualNotificationFromAddress("blah@iu.edu");
+        documentType.setApplyRetroactively(true);
+        documentType.setAuthorizer("TestAuthorizer");
+        documentType.setBlanketApprovePolicy("GoodPolicy");
+        documentType.setBlanketApproveWorkgroupId("TestGroup");
+        documentType.setCurrentInd(true);
+        documentType.setDescription("testing descr");
+        documentType.setCustomEmailStylesheet("blah@iu.edu");
+        documentType.setDocumentId("1234");
+        documentType.setLabel("doc type stuff");
+        documentType.setName("gooddoctype");
+        documentType.setReturnUrl("returnUrl");
+        documentType.setPostProcessorName("PostProcessMe");
+        documentType.setDocTypeParentId(null);
+
+        return KRADServiceLocator.getDataObjectService().save(documentType);
     }
 }

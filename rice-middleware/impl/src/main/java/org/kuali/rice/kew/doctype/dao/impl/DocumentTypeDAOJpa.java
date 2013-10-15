@@ -183,7 +183,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 			Iterator childrenDocTypesIter = childrenDocTypes.iterator();
 			while (childrenDocTypesIter.hasNext()) {
 				DocumentType child = (DocumentType) childrenDocTypesIter.next();
-				addParentIdOrCriteria(child.getDocumentTypeId(), parentPredicates);
+				addParentIdOrCriteria(child.getParentId(), parentPredicates);
 				assembleChildrenCriteria(child.getChildrenDocTypes(), parentPredicates);
 			}
 		}

@@ -32,6 +32,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
@@ -85,10 +86,15 @@ public class KewRuleDataJpaTest extends KEWTestCase{
 
     @Test
     public void testRuleAttributeServiceGetAllRuleAttributes() throws Exception{
+        List<RuleAttribute> ruleAttributeList = KEWServiceLocator.getRuleAttributeService().findAll();
+        for(RuleAttribute ruleAttribute : ruleAttributeList){
+            KRADServiceLocator.getDataObjectService().delete(ruleAttribute);
+        }
+
         setupRuleAttribute();
         setupRuleAttributeSimilar();
 
-        List<RuleAttribute> ruleAttributeList = KEWServiceLocator.getRuleAttributeService().findAll();
+        ruleAttributeList = KEWServiceLocator.getRuleAttributeService().findAll();
         assertTrue("Rule attribute fetched all correctly",ruleAttributeList != null
                 && ruleAttributeList.size() == 2);
     }
@@ -152,10 +158,15 @@ public class KewRuleDataJpaTest extends KEWTestCase{
 
     @Test
     public void testRuleTemplateServiceFindAll() throws Exception{
+        List<RuleTemplateBo> ruleTemplateBos = KEWServiceLocator.getRuleTemplateService().findAll();
+        for(RuleTemplateBo ruleTemplateBo : ruleTemplateBos){
+            KRADServiceLocator.getDataObjectService().delete(ruleTemplateBo);
+        }
+
         setupRuleTemplateBo("test");
         setupRuleTemplateBo("otherTest");
 
-        List<RuleTemplateBo> ruleTemplateBos = KEWServiceLocator.getRuleTemplateService().findAll();
+        ruleTemplateBos = KEWServiceLocator.getRuleTemplateService().findAll();
         assertTrue("Rule Template Bo fetched all", ruleTemplateBos != null && ruleTemplateBos.size() == 2);
     }
 
@@ -195,7 +206,7 @@ public class KewRuleDataJpaTest extends KEWTestCase{
         ruleTemplateOptionBo.setRuleTemplate(ruleTemplate);
         ruleTemplate.getRuleTemplateOptions().add(ruleTemplateOptionBo);
 
-        return KRADServiceLocator.getDataObjectService().save(ruleTemplate);
+        return KRADServiceLocator.getDataObjectService().save(ruleTemplate, PersistenceOption.FLUSH);
     }
 
 
@@ -209,7 +220,7 @@ public class KewRuleDataJpaTest extends KEWTestCase{
         ruleAttribute.setType("newType");
         ruleAttribute.setName("Attr");
 
-        return KRADServiceLocator.getDataObjectService().save(ruleAttribute);
+        return KRADServiceLocator.getDataObjectService().save(ruleAttribute, PersistenceOption.FLUSH);
     }
 
     private RuleAttribute setupRuleAttributeSimilar(){
@@ -221,7 +232,7 @@ public class KewRuleDataJpaTest extends KEWTestCase{
         ruleAttribute.setType("newType");
         ruleAttribute.setName("Attr2");
 
-        return KRADServiceLocator.getDataObjectService().save(ruleAttribute);
+        return KRADServiceLocator.getDataObjectService().save(ruleAttribute, PersistenceOption.FLUSH);
     }
 
 

@@ -319,6 +319,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
             DataField dataField = ComponentFactory.getDataField();
             dataField.setPropertyName(attr.getName());
+            dataField.setLabel(attr.getLabel());
             items.add(dataField);
         }
     }

@@ -43,7 +43,7 @@ public class NoteServiceImpl implements NoteService {
 		return getNoteDAO().getNotesByDocumentId(documentId);
 	}
 
-	public void saveNote(Note note) {
+	public Note saveNote(Note note) {
 		try {
 			if (! note.getAttachments().isEmpty()){
 				for (Iterator iter = note.getAttachments().iterator(); iter.hasNext();) {
@@ -53,7 +53,7 @@ public class NoteServiceImpl implements NoteService {
 					}
 				}
 			}
-			getDataObjectService().save(note);
+			return getDataObjectService().save(note);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

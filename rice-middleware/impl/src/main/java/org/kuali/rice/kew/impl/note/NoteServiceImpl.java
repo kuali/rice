@@ -81,7 +81,7 @@ public class NoteServiceImpl implements NoteService {
 		if (noteBo.getNoteCreateDate() == null) {
 			noteBo.setNoteCreateDate(new Timestamp(System.currentTimeMillis()));
 		}
-		getDataObjectService().save(noteBo);
+		noteBo = getDataObjectService().save(noteBo);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 

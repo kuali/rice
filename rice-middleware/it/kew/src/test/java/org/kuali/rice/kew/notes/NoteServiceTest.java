@@ -47,8 +47,9 @@ public class NoteServiceTest extends KEWTestCase {
 		note.getAttachments().add(attachment);
 		
 		NoteService noteService = KEWServiceLocator.getNoteService();
-		noteService.saveNote(note);
-		assertNotNull("Note should have a id", note.getNoteId());
+		note = noteService.saveNote(note);
+        attachment = note.getAttachments().get(0);
+   		assertNotNull("Note should have a id", note.getNoteId());
 		assertNotNull("Note should have a version number", note.getLockVerNbr());
 		
 		assertNotNull("Attachment should have a id", attachment.getAttachmentId());

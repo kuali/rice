@@ -33,7 +33,7 @@ public interface NoteService {
 
     public Note getNoteByNoteId(String noteId);
     public List<Note> getNotesByDocumentId(String documentId);
-    public void saveNote(Note note);
+    public Note saveNote(Note note);
     public void deleteNote(Note note);
     public void deleteAttachment(Attachment attachment);
     public File findAttachmentFile(Attachment attachment);

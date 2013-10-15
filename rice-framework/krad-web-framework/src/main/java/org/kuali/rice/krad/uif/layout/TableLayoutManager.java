@@ -358,16 +358,16 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = cInfo.getPageTotalField().copy();
-                setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(),
-                        this.getPageTotalLabel(), "pageTotal", leftLabelColumnIndex);
+                setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), this.getPageTotalLabel(),
+                        "pageTotal", leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
             }
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = cInfo.getTotalField().copy();
-                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(),
-                        this.getTotalLabel(), "total", leftLabelColumnIndex);
+                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(), this.getTotalLabel(), "total",
+                        leftLabelColumnIndex);
 
                 if (!cInfo.isRecalculateTotalClientSide()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
@@ -380,9 +380,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //do not generate group total rows if group totals are not being shown
             if (cInfo.isShowGroupTotal()) {
                 Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype();
-                setupTotalField(groupTotalDataField, cInfo,
-                        this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(), "groupTotal",
-                        leftLabelColumnIndex);
+                setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(),
+                        "groupTotal", leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
 
@@ -2284,32 +2283,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
 
         }
-    }
-
-    public class TableColumn {
-        boolean isCalculateColumn;
-        boolean isDataColumn;
-
-        private ColumnCalculationInfo columnCalculations;
-        private Component footerCalculationComponents;
-        Label headerLabel;
-
-    }
-
-    public class TableRow {
-
-        boolean renderActions;
-        private int actionColumnIndex = -1;
-        private String actionColumnPlacement;
-
-        boolean renderSequence;
-
-        List<Field> fields;
-
-        //row details properties
-        private Group detailsGroup;
-        private boolean detailsOpen;
-        private Action expandDetailsActionPrototype;
     }
 
 }

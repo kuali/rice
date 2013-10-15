@@ -40,8 +40,8 @@ public class KewTypeOptionsFinder extends UifKeyValuesFinderBase {
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> kewTypes = new ArrayList<KeyValue>();
 
-        Collection<KewTypeBo> kewTypeBos = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatchingOrderBy(KewTypeBo.class,
-                Collections.<String, Object>emptyMap(), "namespace", true);
+        Collection<KewTypeBo> kewTypeBos = KRADServiceLocatorWeb.getLegacyDataAdapter().findMatchingOrderBy(
+                KewTypeBo.class, Collections.<String, Object>emptyMap(), "namespace", true);
         for (KewTypeBo typeBo : kewTypeBos) {
             if (typeBo.isActive()) {
                 kewTypes.add(new ConcreteKeyValue(typeBo.getId(), typeBo.getNamespace() + " - " + typeBo.getName()));

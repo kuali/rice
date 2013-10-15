@@ -19,11 +19,11 @@ package org.kuali.rice.kew.impl.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
@@ -31,60 +31,63 @@ import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.impl.type.KewTypeAttributeBo;
 import org.kuali.rice.kew.impl.type.KewTypeBo;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 
-    private BusinessObjectService businessObjectService;
+    //    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
 
-	/**
-	 * This overridden method creates a KewType if it does not already exist in the repository.
-	 * 
-	 * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#createKewType(org.kuali.rice.kew.api.repository.type.KewTypeDefinition)
-	 */
-	@Override
-	public KewTypeDefinition createKewType(KewTypeDefinition kewType) {
-		if (kewType == null){
-	        throw new RiceIllegalArgumentException("kewType is null");
-		}
-		final String nameKey = kewType.getName();
-		final String namespaceKey = kewType.getNamespace();
-		final KewTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
-		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
+    /**
+     * This overridden method creates a KewType if it does not already exist in the repository.
+     *
+     * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#createKewType(org.kuali.rice.kew.api.repository.type.KewTypeDefinition)
+     */
+    @Override
+    public KewTypeDefinition createKewType(KewTypeDefinition kewType) {
+        if (kewType == null){
+            throw new RiceIllegalArgumentException("kewType is null");
+        }
+        final String nameKey = kewType.getName();
+        final String namespaceKey = kewType.getNamespace();
+        final KewTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
             throw new RiceIllegalStateException("The KEW Type to create already exists: " + kewType);
-		}
-		
-		KewTypeBo bo = (KewTypeBo)businessObjectService.save(KewTypeBo.from(kewType));
-		
-		return KewTypeBo.to(bo);
-	}
+        }
 
-	/**
-	 * This overridden method updates an existing KewType
-	 * 
-	 * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#updateKewType(org.kuali.rice.kew.api.repository.type.KewTypeDefinition)
-	 */
-	@Override
-	public void updateKewType(KewTypeDefinition kewType) {
+        KewTypeBo bo = dataObjectService.save(KewTypeBo.from(kewType));
+
+        return KewTypeBo.to(bo);
+    }
+
+    /**
+     * This overridden method updates an existing KewType
+     *
+     * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#updateKewType(org.kuali.rice.kew.api.repository.type.KewTypeDefinition)
+     */
+    @Override
+    public void updateKewType(KewTypeDefinition kewType) {
         if (kewType == null) {
             throw new RiceIllegalArgumentException("kewType is null");
         }
-		final String idKey = kewType.getId();
-		final KewTypeBo existing = businessObjectService.findBySinglePrimaryKey(KewTypeBo.class, idKey);
+        final String idKey = kewType.getId();
+        final KewTypeBo existing = dataObjectService.find(KewTypeBo.class, idKey);
         if (existing == null) {
             throw new RiceIllegalStateException("The KEW type does not exist: " + kewType);
         }
         final KewTypeDefinition toUpdate;
         if (!existing.getId().equals(kewType.getId())){
-        	final KewTypeDefinition.Builder builder = KewTypeDefinition.Builder.create(kewType);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
+            final KewTypeDefinition.Builder builder = KewTypeDefinition.Builder.create(kewType);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
         } else {
-        	toUpdate = kewType;
+            toUpdate = kewType;
         }
-        
-        businessObjectService.save(KewTypeBo.from(toUpdate));
-	}
+
+        dataObjectService.save(KewTypeBo.from(toUpdate));
+    }
 
     @Override
     public KewTypeDefinition getTypeById(final String id) {
@@ -92,7 +95,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
             throw new RiceIllegalArgumentException("id is blank");
         }
 
-        KewTypeBo kewTypeBo = businessObjectService.findBySinglePrimaryKey(KewTypeBo.class, id);
+        KewTypeBo kewTypeBo = dataObjectService.find(KewTypeBo.class, id);
 
         return KewTypeBo.to(kewTypeBo);
     }
@@ -106,12 +109,18 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
             throw new RiceIllegalArgumentException("namespace is blank");
         }
 
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", name);
-        map.put("namespace", namespace);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("name", name), equal("namespace", namespace));
+        List<KewTypeBo> myTypes = dataObjectService.findMatching(KewTypeBo.class, criteria.build()).getResults();
+        if (myTypes.isEmpty()) {
+            return null;
+        } else if (myTypes.size() == 1) {
+            return KewTypeBo.to(myTypes.get(0));
+        } else {
+            throw new RiceIllegalStateException("More than one type found for the given name and namespace - (name=" +
+                    name + ", namespace=" + namespace + ").");
+        }
 
-        KewTypeBo myType = businessObjectService.findByPrimaryKey(KewTypeBo.class, Collections.unmodifiableMap(map));
-        return KewTypeBo.to(myType);
     }
 
     @Override
@@ -119,31 +128,33 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
         if (StringUtils.isBlank(namespace)) {
             throw new RiceIllegalArgumentException("namespace is blank");
         }
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("namespace", namespace);
-        map.put("active", Boolean.TRUE);
 
-        Collection<KewTypeBo> kewTypeBos = businessObjectService.findMatching(KewTypeBo.class, Collections.unmodifiableMap(map));
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("namespace", namespace), equal("active", Boolean.TRUE));
+        Collection<KewTypeBo> kewTypeBos = dataObjectService.findMatching(KewTypeBo.class,
+                criteria.build()).getResults();
 
         return convertListOfBosToImmutables(kewTypeBos);
     }
 
     @Override
     public List<KewTypeDefinition> findAllTypes() {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("active", Boolean.TRUE);
 
-        Collection<KewTypeBo> kewTypeBos = businessObjectService.findMatching(KewTypeBo.class, Collections.unmodifiableMap(map));
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("active", Boolean.TRUE));
+        Collection<KewTypeBo> kewTypeBos = dataObjectService.findMatching(KewTypeBo.class,
+                criteria.build()).getResults();
+
         return convertListOfBosToImmutables(kewTypeBos);
     }
 
     /**
-     * Sets the businessObjectService attribute value.
+     * Sets the dataObjectService attribute value.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param dataObjectService The dataObjectService to set.
      */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**
@@ -161,36 +172,31 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
         return Collections.unmodifiableList(kewTypes);
     }
 
-	/**
+    /**
      * This overridden method creates a KewTypeAttribute if it does not already exist in the repository.
-	 * 
-	 * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#createKewTypeAttribute(org.kuali.rice.kew.api.repository.type.KewTypeAttribute)
-	 */
-	@Override
-	public void createKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
+     *
+     * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#createKewTypeAttribute(org.kuali.rice.kew.api.repository.type.KewTypeAttribute)
+     */
+    @Override
+    public void createKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
         if (kewTypeAttribute == null){
             throw new RiceIllegalArgumentException("kewTypeAttribute is null");
         }
-        
-        final String typeIdKey = kewTypeAttribute.getTypeId();
-        final String attrDefIdKey = kewTypeAttribute.getAttributeDefinitionId();
-        
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("typeId", typeIdKey);
-        map.put("attributeDefinitionId", attrDefIdKey);
 
-        KewTypeAttributeBo existing = businessObjectService.findByPrimaryKey(KewTypeAttributeBo.class, Collections.unmodifiableMap(map));
+        KewTypeAttributeBo existing = dataObjectService.find(KewTypeAttributeBo.class, kewTypeAttribute);
 
-        if (existing != null && existing.getTypeId().equals(typeIdKey) && existing.getAttributeDefinitionId().equals(attrDefIdKey)){
+        if (null != existing && kewTypeAttribute.getTypeId().equals(existing.getTypeId()) &&
+                kewTypeAttribute.getAttributeDefinitionId().equals(existing.getAttributeDefinitionId())) {
+
             throw new RiceIllegalStateException("The KEW Type Attribute to create already exists: " + kewTypeAttribute);
         }
-        
-        KewTypeAttributeBo bo = (KewTypeAttributeBo)businessObjectService.save(KewTypeAttributeBo.from(kewTypeAttribute));
+
+        KewTypeAttributeBo bo = (KewTypeAttributeBo)dataObjectService.save(KewTypeAttributeBo.from(kewTypeAttribute));
     }
 
     /**
      * This overridden method updates an existing KewTypeAttribute
-     * 
+     *
      * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#updateKewTypeAttribute(org.kuali.rice.kew.api.repository.type.KewTypeAttribute)
      */
     @Override
@@ -198,8 +204,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
         if (kewTypeAttribute == null) {
             throw new RiceIllegalArgumentException("kewTypeAttribute is null");
         }
-        final String idKey = kewTypeAttribute.getId();
-        final KewTypeAttributeBo existing = businessObjectService.findBySinglePrimaryKey(KewTypeAttributeBo.class, idKey);
+        final KewTypeAttributeBo existing = dataObjectService.find(KewTypeAttributeBo.class, kewTypeAttribute.getId());
         if (existing == null) {
             throw new RiceIllegalStateException("The KEW type Attribute does not exist: " + kewTypeAttribute);
         }
@@ -211,7 +216,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
         } else {
             toUpdate = kewTypeAttribute;
         }
-        
-        businessObjectService.save(KewTypeAttributeBo.from(toUpdate));
+
+        dataObjectService.save(KewTypeAttributeBo.from(toUpdate));
     }
 }

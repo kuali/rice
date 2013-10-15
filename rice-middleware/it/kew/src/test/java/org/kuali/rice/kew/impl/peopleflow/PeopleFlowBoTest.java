@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
@@ -25,12 +26,10 @@ import org.kuali.rice.kew.impl.type.KewTypeBo;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 import static org.junit.Assert.*;
 
@@ -39,12 +38,14 @@ import static org.junit.Assert.*;
  */
 public class PeopleFlowBoTest extends KEWTestCase {
 
-    private BusinessObjectService boService;
+//    private BusinessObjectService boService;
+
+    private DataObjectService dataObjectService;
     private ResponsibilityIdService responsibilityIdService;
 
     @org.junit.Before
     public void setupBoService() {
-        boService = KNSServiceLocator.getBusinessObjectService();
+        dataObjectService = KradDataServiceLocator.getDataObjectService();
         responsibilityIdService = KEWServiceLocator.getResponsibilityIdService();
     }
 
@@ -52,10 +53,10 @@ public class PeopleFlowBoTest extends KEWTestCase {
     public void testKewTypeBoBasicPersist() {
         KewTypeBoBuilder builder = new KewTypeBoBuilder("testType", "testNamespace");
 
-        boService.save(builder.build());
+        dataObjectService.save(builder.build());
 //        try {
             // same info again should be a no go
-            boService.save(builder.build());
+            dataObjectService.save(builder.build());
 //            fail("this should violate unique constraints");
 //        } catch (Exception e) {
             // good
@@ -74,7 +75,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
             attributeDefn.setLabel("label" + i);
             attributeDefn.setNamespace(kewTypeBo.getNamespace());
 
-            boService.save(attributeDefn);
+            dataObjectService.save(attributeDefn);
 
             KewTypeAttributeBo typeAttribute = new KewTypeAttributeBo();
             typeAttribute.setSequenceNumber(i);
@@ -82,7 +83,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
             kewTypeBo.getAttributes().add(typeAttribute);
         }
 
-        boService.save(kewTypeBo);
+        dataObjectService.save(kewTypeBo);
     }
 
     @Test
@@ -108,11 +109,10 @@ public class PeopleFlowBoTest extends KEWTestCase {
     public void testPeopleFlowBoPersist() {
         testKewTypeBoFullPersist();
 
-        Map<String,String> keysMap = new HashMap<String, String>();
-        keysMap.put("name", "testType");
-        keysMap.put("namespace", "testNamespace");
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("name", "testType"), equal("namespace", "testNamespace"));
 
-        KewTypeBo kewTypeBo = boService.findByPrimaryKey(KewTypeBo.class, keysMap);
+        KewTypeBo kewTypeBo = dataObjectService.find(KewTypeBo.class, criteria.build());
 
         // minimal peopleflow
         PeopleFlowBo peopleFlowBo = new PeopleFlowBo();
@@ -121,7 +121,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.setNamespaceCode("testNamespace");
         peopleFlowBo.setTypeId(kewTypeBo.getId());
         
-        boService.save(peopleFlowBo);
+        dataObjectService.save(peopleFlowBo);
 
         // fill out peopleflow
         KewTypeAttributeBo attribute = kewTypeBo.getAttributes().get(0);
@@ -156,10 +156,10 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowDelegate2.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
         peopleFlowMember.getDelegates().add(peopleFlowDelegate2);
 
-        boService.save(peopleFlowBo);
+        dataObjectService.save(peopleFlowBo);
 
         assertNotNull(peopleFlowBo.getId());
-        peopleFlowBo = boService.findBySinglePrimaryKey(PeopleFlowBo.class, peopleFlowBo.getId());
+        peopleFlowBo = dataObjectService.find(PeopleFlowBo.class, peopleFlowBo.getId());
 
         assertNotNull(peopleFlowBo);
         assertNotNull(peopleFlowBo.getId());

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
@@ -26,16 +27,17 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.impl.KewImplConstants;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public class PeopleFlowServiceImpl implements PeopleFlowService {
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
     private KewTypeRepositoryService kewTypeRepositoryService;
     private ResponsibilityIdService responsibilityIdService;
 
@@ -63,6 +65,7 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 
     @Override
     public PeopleFlowDefinition createPeopleFlow(PeopleFlowDefinition peopleFlow) {
+
         validateForCreate(peopleFlow);
         KewTypeDefinition kewTypeDefinition = loadKewTypeDefinition(peopleFlow);
         PeopleFlowBo peopleFlowBo = PeopleFlowBo.from(peopleFlow, kewTypeDefinition);
@@ -145,7 +148,8 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         if (StringUtils.isBlank(peopleFlowId)) {
             throw new RiceIllegalArgumentException("peopleFlowId was a null or blank value");
         }
-        return businessObjectService.findBySinglePrimaryKey(PeopleFlowBo.class, peopleFlowId);
+
+        return dataObjectService.find(PeopleFlowBo.class, peopleFlowId);
     }
 
     protected PeopleFlowBo getPeopleFlowBoByName(String namespaceCode, String name) {
@@ -155,10 +159,13 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         if (StringUtils.isBlank(name)) {
             throw new RiceIllegalArgumentException("name was a null or blank value");
         }
-        Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KewImplConstants.PropertyConstants.NAMESPACE_CODE, namespaceCode);
-        criteria.put(KewImplConstants.PropertyConstants.NAME, name);
-		Collection<PeopleFlowBo> peopleFlows = businessObjectService.findMatching(PeopleFlowBo.class, criteria);
+
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(KewImplConstants.PropertyConstants.NAMESPACE_CODE, namespaceCode),
+                equal(KewImplConstants.PropertyConstants.NAME, name));
+        Collection<PeopleFlowBo> peopleFlows = dataObjectService.findMatching(PeopleFlowBo.class,
+                criteria.build()).getResults();
+
         if (CollectionUtils.isEmpty(peopleFlows)) {
             return null;
         } else if (peopleFlows.size() > 1) {
@@ -172,7 +179,8 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 			return null;
 		}
         assignResponsibilityIds(peopleFlowBo);
-        return businessObjectService.save(peopleFlowBo);
+
+        return dataObjectService.save(peopleFlowBo, PersistenceOption.FLUSH);
     }
 
     protected void assignResponsibilityIds(PeopleFlowBo peopleFlowBo) {
@@ -192,12 +200,12 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         }
     }
 
-    public BusinessObjectService getBusinessObjectService() {
-        return businessObjectService;
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     public KewTypeRepositoryService getKewTypeRepositoryService() {

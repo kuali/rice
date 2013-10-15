@@ -56,10 +56,13 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
 
     @Override
     public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<String> documentIds){
-        Query query = getEntityManager().
-                createNamedQuery("DocumentRouteHeaderValue.GetDocumentHeaders");
+        if (documentIds.isEmpty()) {
+            return new ArrayList<DocumentRouteHeaderValue>();
+        }
+        TypedQuery<DocumentRouteHeaderValue> query = getEntityManager().
+                createNamedQuery("DocumentRouteHeaderValue.GetDocumentHeaders", DocumentRouteHeaderValue.class);
         query.setParameter("documentIds",documentIds);
-        return (List<DocumentRouteHeaderValue>)query.getResultList();
+        return query.getResultList();
     }
 
     @Override

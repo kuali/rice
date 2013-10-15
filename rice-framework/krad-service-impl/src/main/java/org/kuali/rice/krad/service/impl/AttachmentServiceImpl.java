@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
-import org.kuali.rice.krad.bo.Attachment;
-import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.service.AttachmentService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -39,46 +24,48 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.krad.bo.Attachment;
+import org.kuali.rice.krad.bo.Note;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.AttachmentService;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Attachment service implementation
  */
 @Transactional
 public class AttachmentServiceImpl implements AttachmentService {
 	private static final int MAX_DIR_LEVELS = 6;
-    private static Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(AttachmentServiceImpl.class);
 
-    private ConfigurationService kualiConfigurationService;
-    private LegacyDataAdapter lda;
-
-    @Required
-    public void setLegacyDataAdapter(LegacyDataAdapter lpd) {
-        this.lda = lda;
-    }
-
-    public LegacyDataAdapter getLegacyDataAdapter(){
-        if(lda == null){
-            return KRADServiceLocatorWeb.getLegacyDataAdapter();
-        }
-        return lda;
-    }
+    protected ConfigurationService kualiConfigurationService;
+    protected DataObjectService dataObjectService;
 
     /**
      * Retrieves an Attachment by note identifier.
-     * 
+     *
      * @see org.kuali.rice.krad.service.AttachmentService#getAttachmentByNoteId(java.lang.Long)
      */
-    public Attachment getAttachmentByNoteId(Long noteId) {
+    @Override
+	public Attachment getAttachmentByNoteId(Long noteId) {
         if(noteId == null){
             return null;
         }
-		return getLegacyDataAdapter().getAttachmentByNoteId(noteId);
+        return dataObjectService.find(Attachment.class, noteId);
 	}
 
     /**
      * @see org.kuali.rice.krad.service.AttachmentService#createAttachment(GloballyUnique,
      * String, String, int, java.io.InputStream, String)
      */
-    public Attachment createAttachment(GloballyUnique parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
+    @Override
+	public Attachment createAttachment(GloballyUnique parent, String uploadedFileName, String mimeType, int fileSize, InputStream fileContents, String attachmentTypeCode) throws IOException {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("starting to create attachment for document: " + parent.getObjectId());
         }
@@ -110,8 +97,10 @@ public class AttachmentServiceImpl implements AttachmentService {
         attachment.setAttachmentFileSize(new Long(fileSize));
         attachment.setAttachmentMimeTypeCode(mimeType);
         attachment.setAttachmentTypeCode(attachmentTypeCode);
-        
-        LOG.debug("finished creating attachment for document: " + parent.getObjectId());
+
+        if ( LOG.isDebugEnabled() ) {
+        	LOG.debug("finished creating attachment for document: " + parent.getObjectId());
+        }
         return attachment;
     }
 
@@ -132,8 +121,9 @@ public class AttachmentServiceImpl implements AttachmentService {
             streamOut.close();
         }
     }
-    
-    public void moveAttachmentWherePending(Note note) {
+
+    @Override
+	public void moveAttachmentWherePending(Note note) {
     	if (note == null) {
     		throw new IllegalArgumentException("Note must be non-null");
     	}
@@ -146,16 +136,16 @@ public class AttachmentServiceImpl implements AttachmentService {
     			moveAttachmentFromPending(attachment, note.getRemoteObjectIdentifier());
     		}
     		catch (IOException e) {
-    			throw new RuntimeException("Problem moving pending attachment to final directory");    
+    			throw new RuntimeException("Problem moving pending attachment to final directory");
     		}
     	}
     }
-    
+
     private void moveAttachmentFromPending(Attachment attachment, String objectId) throws IOException {
         //This method would probably be more efficient if attachments had a pending flag
         String fullPendingFileName = getPendingDirectory() + File.separator + attachment.getAttachmentIdentifier();
         File pendingFile = new File(fullPendingFileName);
-        
+
         if(pendingFile.exists()) {
             BufferedInputStream bufferedStream = null;
             FileInputStream oldFileStream = null;
@@ -171,13 +161,14 @@ public class AttachmentServiceImpl implements AttachmentService {
                 oldFileStream.close();
                 //this has to come after the close
                 pendingFile.delete();
-                
+
             }
         }
-        
+
     }
 
-    public void deleteAttachmentContents(Attachment attachment) {
+    @Override
+	public void deleteAttachmentContents(Attachment attachment) {
     	if (attachment.getNote() == null) throw new RuntimeException("Attachment.note must be set in order to delete the attachment");
         String fullPathUniqueFileName = getDocumentDirectory(attachment.getNote().getRemoteObjectIdentifier()) + File.separator + attachment.getAttachmentIdentifier();
         File attachmentFile = new File(fullPathUniqueFileName);
@@ -204,17 +195,18 @@ public class AttachmentServiceImpl implements AttachmentService {
      *
      * @see org.kuali.rice.krad.service.AttachmentService#retrieveAttachmentContents(org.kuali.rice.krad.bo.Attachment)
      */
-    public InputStream retrieveAttachmentContents(Attachment attachment) throws IOException {
+    @Override
+	public InputStream retrieveAttachmentContents(Attachment attachment) throws IOException {
         //refresh to get Note object in case it's not there
         if(attachment.getNoteIdentifier()!=null) {
             attachment.refreshNonUpdateableReferences();
         }
-        
+
         String parentDirectory = "";
         if(attachment.getNote()!=null && attachment.getNote().getRemoteObjectIdentifier() != null) {
             parentDirectory = attachment.getNote().getRemoteObjectIdentifier();
         }
-         
+
         return new BufferedInputStream(new FileInputStream(getDocumentDirectory(parentDirectory) + File.separator + attachment.getAttachmentIdentifier()));
     }
 
@@ -223,20 +215,20 @@ public class AttachmentServiceImpl implements AttachmentService {
         if(StringUtils.isEmpty(objectId)) {
             location = kualiConfigurationService.getPropertyValueAsString(
                     KRADConstants.ATTACHMENTS_PENDING_DIRECTORY_KEY);
-        } else {    
-        	/* 
+        } else {
+        	/*
         	 * We need to create a hierarchical directory structure to store
         	 * attachment directories, as most file systems max out at 16k
         	 * or 32k entries.  If we use 6 levels of hierarchy, it allows
         	 * hundreds of billions of attachment directories.
         	 */
-            char[] chars = objectId.toUpperCase().replace(" ", "").toCharArray();            
+            char[] chars = objectId.toUpperCase().replace(" ", "").toCharArray();
             int count = chars.length < MAX_DIR_LEVELS ? chars.length : MAX_DIR_LEVELS;
 
-            StringBuffer prefix = new StringBuffer();            
+            StringBuffer prefix = new StringBuffer();
             for ( int i = 0; i < count; i++ )
                 prefix.append(File.separator + chars[i]);
-            
+
             location = kualiConfigurationService.getPropertyValueAsString(KRADConstants.ATTACHMENTS_DIRECTORY_KEY) + prefix + File.separator + objectId;
         }
         return  location;
@@ -245,7 +237,8 @@ public class AttachmentServiceImpl implements AttachmentService {
     /**
      * @see org.kuali.rice.krad.service.AttachmentService#deletePendingAttachmentsModifiedBefore(long)
      */
-    public void deletePendingAttachmentsModifiedBefore(long modificationTime) {
+    @Override
+	public void deletePendingAttachmentsModifiedBefore(long modificationTime) {
         String pendingAttachmentDirName = getPendingDirectory();
         if (StringUtils.isBlank(pendingAttachmentDirName)) {
             throw new RuntimeException("Blank pending attachment directory name");
@@ -257,7 +250,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         if (!pendingAttachmentDir.isDirectory()) {
             throw new RuntimeException("Pending attachment directory is not a directory! " + pendingAttachmentDir.getAbsolutePath());
         }
-        
+
         File[] files = pendingAttachmentDir.listFiles();
         for (File file : files) {
             if (!file.getName().equals("placeholder.txt")) {
@@ -266,11 +259,11 @@ public class AttachmentServiceImpl implements AttachmentService {
                 }
             }
         }
-        
+
     }
 
     /**
-     * Gets the configService attribute. 
+     * Gets the configService attribute.
      * @return Returns the configService.
      */
     public ConfigurationService getKualiConfigurationService() {
@@ -281,7 +274,14 @@ public class AttachmentServiceImpl implements AttachmentService {
      * Sets the configService attribute value.
      * @param configService The configService to set.
      */
+    @Required
     public void setKualiConfigurationService(ConfigurationService configService) {
         this.kualiConfigurationService = configService;
     }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+		this.dataObjectService = dataObjectService;
+	}
+
 }

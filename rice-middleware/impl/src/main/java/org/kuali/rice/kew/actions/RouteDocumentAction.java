@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
-import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 
 /**
@@ -74,16 +74,19 @@ public class RouteDocumentAction extends ActionTakenEvent {
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
     	return validateActionRules();
     }
-    
+
     /**
      * Record the routing action. To route a document, it must be in the proper state. Previous requests and actions have no bearing on the outcome of this action, unless the
      * @throws org.kuali.rice.kew.api.exception.InvalidActionTakenException
      */
+    @Override
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
-        LOG.debug("Routing document : " + annotation);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("Routing document : " + annotation);
+        }
 
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules();

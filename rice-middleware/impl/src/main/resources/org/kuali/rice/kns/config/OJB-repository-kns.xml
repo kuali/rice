@@ -37,6 +37,9 @@
   -->
 
   <!--  MAINTENANCE/REFERENCE TABLE DOCUMENT MAPPING -->
+  
+  <!-- 
+  
   <class-descriptor class="org.kuali.rice.krad.maintenance.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">
     <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
@@ -60,6 +63,19 @@
     </collection-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.krad.maintenance.MaintenanceLock" table="KRNS_MAINT_LOCK_T">
+    <field-descriptor name="lockId" column="MAINT_LOCK_ID" jdbc-type="VARCHAR" primarykey="true"
+                      indexed="true" autoincrement="true" sequence-name="KRNS_MAINT_LOCK_S"/>
+    <field-descriptor name="lockingRepresentation" column="MAINT_LOCK_REP_TXT" jdbc-type="VARCHAR" indexed="true"/>
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" indexed="true"/>
+  </class-descriptor>
+  
+   -->
+
+	<!-- These objects are referenced by the KNS maintenance document class used below.  
+	They must be present so that they can be persisted/loaded as part of that object graph. -->
   <class-descriptor class="org.kuali.rice.krad.bo.DocumentAttachment" table="KRNS_MAINT_DOC_ATT_T">
     <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="attachmentContent" column="ATT_CNTNT" jdbc-type="LONGVARBINARY"/>
@@ -82,15 +98,9 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.krad.maintenance.MaintenanceLock" table="KRNS_MAINT_LOCK_T">
-    <field-descriptor name="lockId" column="MAINT_LOCK_ID" jdbc-type="VARCHAR" primarykey="true"
-                      indexed="true" autoincrement="true" sequence-name="KRNS_MAINT_LOCK_S"/>
-    <field-descriptor name="lockingRepresentation" column="MAINT_LOCK_REP_TXT" jdbc-type="VARCHAR" indexed="true"/>
-    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-    <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" indexed="true"/>
-  </class-descriptor>
   <!--  DOCUMENT CORE MAPPINGS -->
+  
+  <!-- 
   <class-descriptor class="org.kuali.rice.krad.bo.DocumentHeader" table="KRNS_DOC_HDR_T">
     <field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" indexed="true"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
@@ -198,6 +208,8 @@
     <field-descriptor name="description" column="MSG_DESC" jdbc-type="VARCHAR"/>
     <field-descriptor name="text" column="TXT" jdbc-type="VARCHAR"/>
   </class-descriptor>
+  
+   -->
   <!-- old KNS tables, not used in KRAD -->
 
   <class-descriptor class="org.kuali.rice.kns.document.MaintenanceDocumentBase" table="KRNS_MAINT_DOC_T">

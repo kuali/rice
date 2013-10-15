@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.krad.bo;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,18 +32,24 @@ import org.kuali.rice.kew.api.util.CodeTranslator;
 
 
 /**
- * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application Ad Hoc Route
- * Recipient Business Object
+ * Ad Hoc Route Recipient Business Object
+ *
+ * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("deprecation")
 @MappedSuperclass
-public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
+public class AdHocRouteRecipient implements Serializable, BusinessObject {
     private static final long serialVersionUID = -6499610180752232494L;
 
-    private static Map<String, String> actionRequestCds;
+    private static Map<String, String> actionRequestCds = null;
     public static final Integer PERSON_TYPE = new Integer(0);
     public static final Integer WORKGROUP_TYPE = new Integer(1);
+
+    @Id
+    @Column(name="DOC_HDR_ID",length=14)
+    protected String documentNumber;
 
     @Id
 	@Column(name="RECIP_TYP_CD",length=1)
@@ -47,23 +57,23 @@ public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
 
     @Id
 	@Column(name="ACTN_RQST_CD",length=30)
-	protected String actionRequested;
+	protected String actionRequested = KewApiConstants.ACTION_REQUEST_APPROVE_REQ;
 
     @Id
 	@Column(name="ACTN_RQST_RECIP_ID",length=70)
 	protected String id; // can be networkId or group id
 
+    // This is just here so we don't need to change the data model
+    @Column(name="OBJ_ID", length=36, nullable = false)
+    @Deprecated
+    private String objectId;
+
+    @Transient
+    @Deprecated
+    private Integer versionNumber;
+
     @Transient
     protected String name;
-
-    @Column(name="DOC_HDR_ID",length=14)
-	protected String documentNumber;
-
-    public AdHocRouteRecipient() {
-        // set some defaults that can be overridden
-        this.actionRequested = KewApiConstants.ACTION_REQUEST_APPROVE_REQ;
-        this.versionNumber = 1L;
-    }
 
     public String getActionRequested() {
         return actionRequested;
@@ -108,11 +118,36 @@ public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
     public String getActionRequestedValue() {
         String actionRequestedValue = null;
         if (StringUtils.isNotBlank(getActionRequested())) {
-            actionRequestCds.clear();
-            actionRequestCds.putAll(CodeTranslator.arLabels);
+            if ( actionRequestCds == null ) {
+                Map<String,String> temp = new HashMap<String, String>();
+                temp.putAll(CodeTranslator.arLabels);
+                actionRequestCds = temp;
+            }
             actionRequestedValue = (String) actionRequestCds.get(getActionRequested());
         }
 
         return actionRequestedValue;
+    }
+
+    @PrePersist
+    @Deprecated
+    public void prePersist() {
+        objectId = UUID.randomUUID().toString();
+    }
+
+    @Override
+    @Deprecated
+    public void refresh() {
+        // Do nothing - just here since we needed to implement BusinessObject
+    }
+
+    @Deprecated
+    public Integer getVersionNumber() {
+        return this.versionNumber;
+    }
+
+    @Deprecated
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
     }
 }

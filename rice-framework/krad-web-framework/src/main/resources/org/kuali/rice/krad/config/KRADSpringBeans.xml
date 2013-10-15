@@ -151,24 +151,14 @@
 
   <bean id="documentService" class="org.kuali.rice.krad.service.impl.DocumentServiceImpl">
   	<property name="documentHeaderService" ref="documentHeaderService" />
-    <property name="legacyDataAdapter">
-      <ref bean="legacyDataAdapter"/>
-    </property>
-    <property name="dateTimeService">
-      <ref bean="dateTimeService"/>
-    </property>
-    <property name="workflowDocumentService">
-      <ref bean="workflowDocumentService"/>
-    </property>
-    <property name="noteService">
-      <ref bean="noteService"/>
-    </property>
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
-    <property name="kualiConfigurationService">
-      <ref bean="kualiConfigurationService"/>
-    </property>
+  	<property name="documentAdHocService" ref="documentAdHocService" />
+  	<property name="documentDictionaryService" ref="documentDictionaryService" />
+    <property name="legacyDataAdapter" ref="legacyDataAdapter"/>
+    <property name="dateTimeService" ref="dateTimeService"/>
+    <property name="workflowDocumentService" ref="workflowDocumentService"/>
+    <property name="noteService" ref="noteService"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
   </bean>
 
   <bean id="kualiRuleService" class="org.kuali.rice.krad.service.impl.KualiRuleServiceImpl">
@@ -195,30 +185,23 @@
     </property>
   </bean>
 
-  <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"/>
+  <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"
+        p:dataObjectService-ref="dataObjectService" />
 
   <bean id="maintenanceDocumentService" class="org.kuali.rice.krad.service.impl.MaintenanceDocumentServiceImpl"
-        p:legacyDataAdapter-ref="legacyDataAdapter">
-    <property name="documentDictionaryService">
-      <ref bean="documentDictionaryService"/>
-    </property>
-    <property name="documentService">
-      <ref bean="documentService"/>
-    </property>
-  </bean>
+        p:legacyDataAdapter-ref="legacyDataAdapter"
+        p:dataObjectService-ref="dataObjectService"
+        p:dataObjectAuthorizationService-ref="dataObjectAuthorizationService"
+        p:documentDictionaryService-ref="documentDictionaryService"
+        p:documentService-ref="documentService" />
 
   <bean id="noteService" class="org.kuali.rice.krad.service.impl.NoteServiceImpl"
-        p:legacyDataAdapter-ref="legacyDataAdapter">
-    <property name="attachmentService" ref="attachmentService"/>
-  </bean>
+        p:dataObjectService-ref="dataObjectService"
+        p:attachmentService-ref="attachmentService" />
 
   <bean id="attachmentService" class="org.kuali.rice.krad.service.impl.AttachmentServiceImpl"
-        p:legacyDataAdapter-ref="legacyDataAdapter">
-    <property name="kualiConfigurationService">
-      <ref bean="kualiConfigurationService"/>
-    </property>
-  </bean>
-
+        p:dataObjectService-ref="dataObjectService"
+        p:kualiConfigurationService-ref="kualiConfigurationService" />
 
   <bean id="dictionaryValidationDefinitionConstraintResolver"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver"/>
@@ -355,7 +338,8 @@
   </bean>
 
   <bean id="pessimisticLockService" class="org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl"
-        p:legacyDataAdapter-ref="legacyDataAdapter"/>
+        p:dataObjectService-ref="dataObjectService"
+        p:dataDictionaryService-ref="dataDictionaryService" />
 
 
   <!-- Since these beans are not a singletons, Spring does not inject their static
@@ -369,7 +353,8 @@
     </constructor-arg>
   </bean>
 
-  <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"/>
+  <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"
+  		p:dataObjectService-ref="dataObjectService" />
 
   <bean id="inactivationBlockingDetectionService"
         class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl"

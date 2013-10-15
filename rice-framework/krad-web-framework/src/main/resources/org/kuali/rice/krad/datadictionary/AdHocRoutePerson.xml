@@ -24,7 +24,6 @@
       <list>
         <ref bean="AdHocRoutePerson-actionRequested"/>
         <ref bean="AdHocRoutePerson-id"/>
-        <ref bean="AdHocRoutePerson-versionNumber"/>
       </list>
     </property>
     <property name="objectLabel" value="Ad Hoc Route Person"/>
@@ -71,9 +70,5 @@
     <property name="validationPattern" >
       <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
     </property>
-  </bean>
-  <bean id="AdHocRoutePerson-versionNumber" parent="AdHocRoutePerson-versionNumber-parentBean"/>
-
-  <bean id="AdHocRoutePerson-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
   </bean>
 </beans>

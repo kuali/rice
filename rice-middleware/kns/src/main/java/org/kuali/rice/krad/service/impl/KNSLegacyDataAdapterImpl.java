@@ -45,7 +45,6 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -63,7 +62,6 @@ import org.kuali.rice.krad.datadictionary.SupportAttributeDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
@@ -392,41 +390,6 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
             }
         }
         return returnVal;
-    }
-
-    @Override
-    public Attachment getAttachmentByNoteId(Long noteId) {
-        return businessObjectService.findBySinglePrimaryKey(Attachment.class, noteId);
-    }
-
-//    @Override
-//    public DocumentHeader getByDocumentHeaderId(String id) {
-//        return this.documentHeaderDaoOjb.getByDocumentHeaderId(id);
-//    }
-//
-//    @Override
-//    @Deprecated
-//    public Class getDocumentHeaderBaseClass() {
-//        return this.documentHeaderDaoOjb.getDocumentHeaderBaseClass();
-//    }
-
-    @Override
-    public void deleteLocks(String documentNumber) {
-        businessObjectService.deleteMatching(MaintenanceLock.class, Collections.singletonMap("documentNumber",
-                    documentNumber));
-    }
-
-    @Override
-    public String getLockingDocumentNumber(String lockingRepresentation, String documentNumber) {
-            return maintenanceDocumentDaoOjb.getLockingDocumentNumber(lockingRepresentation, documentNumber);
-    }
-
-    @Override
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        if (maintenanceLocks.isEmpty()) {
-            return;
-        }
-        businessObjectService.save(maintenanceLocks);
     }
 
     @Override

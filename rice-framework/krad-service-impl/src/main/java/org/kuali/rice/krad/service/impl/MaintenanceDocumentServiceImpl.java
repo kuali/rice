@@ -16,31 +16,36 @@
 package org.kuali.rice.krad.service.impl;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateFactory;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -52,18 +57,13 @@ import org.springframework.beans.factory.annotation.Required;
  */
 @TransactionalNoValidationExceptionRollback
 public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentService {
-    protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(MaintenanceDocumentServiceImpl.class);
 
-    private LegacyDataAdapter legacyDataAdapter;
-    private DataObjectAuthorizationService dataObjectAuthorizationService;
-    private DocumentService documentService;
-    private DataObjectMetaDataService dataObjectMetaDataService;
-    private DocumentDictionaryService documentDictionaryService;
-
-    @Required
-    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
-        this.legacyDataAdapter = legacyDataAdapter;
-    }
+    protected LegacyDataAdapter legacyDataAdapter;
+    protected DataObjectService dataObjectService;
+    protected DataObjectAuthorizationService dataObjectAuthorizationService;
+    protected DocumentService documentService;
+    protected DocumentDictionaryService documentDictionaryService;
 
     /**
      * @see org.kuali.rice.krad.service.MaintenanceDocumentService#setupNewMaintenanceDocument(java.lang.String,
@@ -357,13 +357,46 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
         final List<MaintenanceLock> maintenanceLocks = maintainable.generateMaintenanceLocks();
         String lockingDocId = null;
         for (MaintenanceLock maintenanceLock : maintenanceLocks) {
-            lockingDocId = legacyDataAdapter.getLockingDocumentNumber(maintenanceLock.getLockingRepresentation(),
+            lockingDocId = getLockingDocumentNumber(maintenanceLock.getLockingRepresentation(),
                     documentNumber);
             if (StringUtils.isNotBlank(lockingDocId)) {
                 break;
             }
         }
+
         return lockingDocId;
+    }
+
+    protected String getLockingDocumentNumber(String lockingRepresentation, String documentNumber) {
+        String lockingDocNumber = "";
+
+        // build the query criteria
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(PredicateFactory.equal("lockingRepresentation", lockingRepresentation));
+
+        // if a docHeaderId is specified, then it will be excluded from the
+        // locking representation test.
+        if (StringUtils.isNotBlank(documentNumber)) {
+            predicates.add(PredicateFactory.notEqual(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber));
+        }
+
+        QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
+        qbc.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
+
+        // attempt to retrieve a document based off this criteria
+        List<MaintenanceLock> results = KradDataServiceLocator.getDataObjectService().findMatching(MaintenanceLock.class, qbc.build())
+                .getResults();
+        if (results.size() > 1) {
+            throw new IllegalStateException(
+                    "Expected single result querying for MaintenanceLock. LockRep: " + lockingRepresentation);
+        }
+
+        // if a document was found, then there's already one out there pending,
+        // and we consider it 'locked' and we return the docnumber.
+        if (!results.isEmpty()) {
+            lockingDocNumber = results.get(0).getDocumentNumber();
+        }
+        return lockingDocNumber;
     }
 
     /**
@@ -371,7 +404,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      */
     @Override
 	public void deleteLocks(String documentNumber) {
-        legacyDataAdapter.deleteLocks(documentNumber);
+        dataObjectService.deleteMatching(MaintenanceLock.class, QueryByCriteria.Builder.forAttribute(
+                "documentNumber", documentNumber).build());
     }
 
     /**
@@ -379,16 +413,19 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
      */
     @Override
 	public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        legacyDataAdapter.storeLocks(maintenanceLocks);
+        if (maintenanceLocks == null) {
+            return;
+        }
+        for (MaintenanceLock maintenanceLock : maintenanceLocks) {
+            dataObjectService.save(maintenanceLock);
+        }
     }
 
     protected DataObjectAuthorizationService getDataObjectAuthorizationService() {
-        if (dataObjectAuthorizationService == null) {
-            this.dataObjectAuthorizationService = KRADServiceLocatorWeb.getDataObjectAuthorizationService();
-        }
         return dataObjectAuthorizationService;
     }
 
+    @Required
     public void setDataObjectAuthorizationService(DataObjectAuthorizationService dataObjectAuthorizationService) {
         this.dataObjectAuthorizationService = dataObjectAuthorizationService;
     }
@@ -397,18 +434,28 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
         return this.documentService;
     }
 
+    @Required
     public void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
     }
 
     public DocumentDictionaryService getDocumentDictionaryService() {
-        if (documentDictionaryService == null) {
-            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
-        }
         return documentDictionaryService;
     }
 
+    @Required
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
     }
+
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+		this.dataObjectService = dataObjectService;
+	}
+
+	@Required
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
+
 }

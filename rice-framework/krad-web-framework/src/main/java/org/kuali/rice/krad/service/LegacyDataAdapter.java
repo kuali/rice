@@ -21,14 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 
 /**
@@ -236,44 +234,6 @@ public interface LegacyDataAdapter {
 
     // DAO interfaces are hoisted for krad or krad/kns shared services which still need to be preserved.
     // they will internally call LegacyDataAdapter
-
-    // AttachmentDao
-
-    /**
-     * Retrieve attachment by a given note id
-     * @param noteId the note id
-     * @return associated Attachement
-     */
-    Attachment getAttachmentByNoteId(Long noteId);
-
-    // MaintenanceDocumentDao
-
-    /**
-     *
-     * This method looks for a document that is locking the given lockingRepresentation. If one is found, then it
-     * retrieves the documentNumber, and returns it.
-     *
-     * @param lockingRepresentation - locking representation to check for
-     * @param documentNumber - document number to ignore, optional argument
-     * @return returns an empty string if no locking document is found, otherwise returns the documentNumber of the locking document
-     *
-     */
-    String getLockingDocumentNumber(String lockingRepresentation, String documentNumber);
-
-    /**
-     * This method deletes the locks for the given document number.  It is called when the document is final,
-     * thus it can be unlocked, or when the locks need to be regenerated (thus they get cleared first).
-     *
-     * @param documentNumber - document number whose locks should be deleted
-     */
-    void deleteLocks(String documentNumber);
-
-    /**
-     * This method stores the given list of maintenance locks.  Typically these will all be for the same document.
-     *
-     * @param maintenanceLocks - the list of maintenance locks to be stored
-     */
-    void storeLocks(List<MaintenanceLock> maintenanceLocks);
 
     // PersistenceStructureService
 

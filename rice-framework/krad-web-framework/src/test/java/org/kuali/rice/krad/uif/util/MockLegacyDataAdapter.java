@@ -22,14 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.uif.RemotableQuickFinder.Builder;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 
@@ -207,51 +205,6 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
         return false;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getAttachmentByNoteId(java.lang.Long)
-     */
-    @Override
-    public Attachment getAttachmentByNoteId(Long noteId) {
-        return null;
-    }
-
-//    /**
-//     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDocumentHeaderBaseClass()
-//     */
-//    @Override
-//    public Class getDocumentHeaderBaseClass() {
-//        return null;
-//    }
-//
-//    /**
-//     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getByDocumentHeaderId(java.lang.String)
-//     */
-//    @Override
-//    public DocumentHeader getByDocumentHeaderId(String id) {
-//        return null;
-//    }
-
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getLockingDocumentNumber(java.lang.String, java.lang.String)
-     */
-    @Override
-    public String getLockingDocumentNumber(String lockingRepresentation, String documentNumber) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#deleteLocks(java.lang.String)
-     */
-    @Override
-    public void deleteLocks(String documentNumber) {
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#storeLocks(java.util.List)
-     */
-    @Override
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-    }
 
     /**
      * @see org.kuali.rice.krad.service.LegacyDataAdapter#listPrimaryKeyFieldNames(java.lang.Class)

@@ -24,7 +24,6 @@
       <list>
         <ref bean="AdHocRouteWorkgroup-actionRequested"/>
         <ref bean="AdHocRouteWorkgroup-id"/>
-        <ref bean="AdHocRouteWorkgroup-versionNumber"/>
         <ref bean="AdHocRouteWorkgroup-groupName"/>
         <ref bean="AdHocRouteWorkgroup-namespaceCode"/>
       </list>
@@ -74,11 +73,7 @@
       <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
     </property>
   </bean>
-  <bean id="AdHocRouteWorkgroup-versionNumber" parent="AdHocRouteWorkgroup-versionNumber-parentBean"/>
-
-  <bean id="AdHocRouteWorkgroup-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
-  </bean>
-
+  
   <bean id="AdHocRouteWorkgroup-groupName" parent="AdHocRouteWorkgroup-groupName-parentBean"/>
   <bean id="AdHocRouteWorkgroup-groupName-parentBean" parent="AttributeDefinition" abstract="true" p:name="recipientName" p:forceUppercase="true" p:label="Name" p:shortLabel="Name" p:maxLength="80" p:required="false">
     <property name="control">

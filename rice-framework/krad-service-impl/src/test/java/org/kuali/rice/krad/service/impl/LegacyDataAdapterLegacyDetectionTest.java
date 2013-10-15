@@ -18,7 +18,6 @@ package org.kuali.rice.krad.service.impl;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -31,11 +30,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.xml.namespace.QName;
 
@@ -62,7 +58,6 @@ import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
@@ -73,7 +68,6 @@ import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.messages.Message;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -81,7 +75,6 @@ import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.LegacyUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -463,140 +456,6 @@ public class LegacyDataAdapterLegacyDetectionTest {
         verify(lookupDao).findObjectByMap(Message.class, fields);
         verify(dataObjectService, never()).findMatching(any(Class.class), any(QueryByCriteria.class));
     }
-
-    @Test
-    public void testGetAttachmentByNoteId() {
-        lda.getAttachmentByNoteId(1l);
-        verify(dataObjectService).find(Attachment.class, 1l);
-        verify(businessObjectService, never()).findBySinglePrimaryKey(eq(Attachment.class),anyLong());
-    }
-    @Test
-    public void testLegacyGetAttachmentByNoteId() throws Exception {
-        enableLegacyFramework();
-        LegacyUtils.doInLegacyContext(new Callable() {
-            @Override
-			public Object call() throws Exception {
-                lda.getAttachmentByNoteId(1l);
-                verify(businessObjectService).findBySinglePrimaryKey(eq(Attachment.class),anyLong());
-                verify(dataObjectService, never()).find(any(Class.class), any());
-                return null;
-            }
-        });
-    }
-
-//    @Test
-//    public void testGetByDocumentHeaderId() {
-//        String id = "";
-//        lda.getByDocumentHeaderId(id);
-//        verify(dataObjectService).find(DocumentHeader.class, id);
-//        verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
-//    }
-//    @Test
-//    public void testLegacyGetByDocumentHeaderId() throws Exception {
-//        enableLegacyFramework();
-//        final String id = "";
-//        LegacyUtils.doInLegacyContext(new Callable() {
-//            @Override
-//			public Object call() throws Exception {
-//                lda.getByDocumentHeaderId(id);
-////                verify(documentHeaderDaoOjb).getByDocumentHeaderId(id);
-////                verify(dataObjectService, never()).find(any(Class.class), any());
-//                verify(dataObjectService).find(DocumentHeader.class, id);
-//                verify(documentHeaderDaoOjb, never()).getByDocumentHeaderId(id);
-//                return null;
-//            }
-//        });
-//
-//    }
-//
-//    @Test
-//    public void testGetDocumentHeaderBaseClass() {
-//        lda.getDocumentHeaderBaseClass();
-//        verify(documentHeaderDaoOjb, never()).getDocumentHeaderBaseClass();
-//    }
-//
-//    @Test
-//    public void testLegacyGetDocumentHeaderBaseClass() throws Exception {
-//        enableLegacyFramework();
-//        LegacyUtils.doInLegacyContext(new Callable() {
-//            @Override
-//			public Object call() throws Exception {
-//                lda.getDocumentHeaderBaseClass();
-//                verify(documentHeaderDaoOjb).getDocumentHeaderBaseClass();
-//                return null;
-//            }
-//        });
-//    }
-
-    @Test
-    public void testDeleteLocks() {
-        String docid = "";
-        QueryResults mockResults = mock(QueryResults.class);
-        when(mockResults.getResults()).thenReturn(Arrays.asList(new MaintenanceLock[]{new MaintenanceLock(), new MaintenanceLock()}));
-        when(dataObjectService.findMatching(eq(MaintenanceLock.class), any(QueryByCriteria.class))).thenReturn(mockResults);
-
-        lda.deleteLocks(docid);
-
-        verify(dataObjectService).deleteMatching(eq(MaintenanceLock.class), any(QueryByCriteria.class));
-        verify(businessObjectService, never()).deleteMatching(eq(MaintenanceLock.class), anyMap());
-    }
-    @Test
-    public void testLegacyDeleteLocks() throws Exception {
-        enableLegacyFramework();
-        final String docid = "";
-        LegacyUtils.doInLegacyContext(new Callable() {
-            @Override
-			public Object call() throws Exception {
-                lda.deleteLocks(docid);
-                verify(businessObjectService).deleteMatching(eq(MaintenanceLock.class), anyMap());
-                verify(dataObjectService, never()).findMatching(eq(MaintenanceLock.class), any(QueryByCriteria.class));
-                return null;
-            }
-        });
-    }
-
-    @Test
-    public void testGetLockingDocumentNumber() {
-        String rep = "rep";
-        String docNum = "docNum";
-        lda.getLockingDocumentNumber(rep, docNum);
-        verify(dataObjectService).findMatching(eq(MaintenanceLock.class), any(QueryByCriteria.class));
-        verify(maintenanceDocumentDaoOjb, never()).getLockingDocumentNumber(anyString(), anyString());
-    }
-    @Test
-    public void testLegacyGetLockingDocumentNumber() throws Exception {
-        enableLegacyFramework();
-        final String rep = "rep";
-        final String docNum = "docNum";
-        LegacyUtils.doInLegacyContext(new Callable() {
-            @Override
-			public Object call() throws Exception {
-                lda.getLockingDocumentNumber(rep, docNum);
-                verify(maintenanceDocumentDaoOjb).getLockingDocumentNumber(rep, docNum);
-                verify(dataObjectService, never()).findMatching(any(Class.class), any(QueryByCriteria.class));
-                return null;
-            }
-        });
-
-    }
-
-    @Test
-    public void testStoreLocks() {
-        List<MaintenanceLock> locks = Arrays.asList(new MaintenanceLock[]{new MaintenanceLock(), new MaintenanceLock()});
-        lda.storeLocks(locks);
-        verify(dataObjectService).save(locks.get(0));
-        verify(dataObjectService).save(locks.get(1));
-        verify(businessObjectService, never()).save(any(List.class));
-    }
-    @Test
-    public void testLegacyStoreLocks() {
-        enableLegacyFramework();
-        List<MaintenanceLock> locks = Arrays.asList(new MaintenanceLock[]{new MaintenanceLock(), new MaintenanceLock()});
-        lda.storeLocks(locks);
-        verify(businessObjectService).save(any(List.class));
-        verify(dataObjectService, never()).save(any(MaintenanceLock.class));
-    }
-
 
     @Test
     public void testListPrimaryKeyFieldNames() {

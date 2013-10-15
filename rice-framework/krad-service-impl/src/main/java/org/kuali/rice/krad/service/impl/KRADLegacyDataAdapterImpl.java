@@ -32,8 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.criteria.OrderByField;
 import org.kuali.rice.core.api.criteria.OrderDirection;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.mo.common.Versioned;
@@ -41,7 +39,6 @@ import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -65,7 +62,6 @@ import org.kuali.rice.krad.datadictionary.SupportAttributeDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -376,60 +372,11 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         return returnVal;
     }
 
-    @Override
-    public Attachment getAttachmentByNoteId(Long noteId) {
-        // noteIdentifier is the PK of Attachment, so just look up by PK
-        return dataObjectService.find(Attachment.class, noteId);
-    }
-
-    @Override
-    public void deleteLocks(String documentNumber) {
-        dataObjectService.deleteMatching(MaintenanceLock.class, QueryByCriteria.Builder.forAttribute(
-                    "documentNumber", documentNumber).build());
-    }
-
-    @Override
-    public String getLockingDocumentNumber(String lockingRepresentation, String documentNumber) {
-        String lockingDocNumber = "";
-
-        // build the query criteria
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        predicates.add(PredicateFactory.equal("lockingRepresentation", lockingRepresentation));
-
-        // if a docHeaderId is specified, then it will be excluded from the
-        // locking representation test.
-        if (StringUtils.isNotBlank(documentNumber)) {
-            predicates.add(PredicateFactory.notEqual(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber));
-        }
-
-        QueryByCriteria.Builder qbc = QueryByCriteria.Builder.create();
-        qbc.setPredicates(PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()])));
-
-        // attempt to retrieve a document based off this criteria
-        List<MaintenanceLock> results = dataObjectService.findMatching(MaintenanceLock.class, qbc.build())
-                .getResults();
-        if (results.size() > 1) {
-            throw new IllegalStateException(
-                    "Expected single result querying for MaintenanceLock. LockRep: " + lockingRepresentation);
-        }
-
-        // if a document was found, then there's already one out there pending,
-        // and we consider it 'locked' and we return the docnumber.
-        if (!results.isEmpty()) {
-            lockingDocNumber = results.get(0).getDocumentNumber();
-        }
-        return lockingDocNumber;
-    }
-
-    @Override
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        if (maintenanceLocks.isEmpty()) {
-            return;
-        }
-        for (MaintenanceLock maintenanceLock : maintenanceLocks) {
-            dataObjectService.save(maintenanceLock);
-        }
-    }
+//    @Override
+//    public Attachment getAttachmentByNoteId(Long noteId) {
+//        // noteIdentifier is the PK of Attachment, so just look up by PK
+//        return dataObjectService.find(Attachment.class, noteId);
+//    }
 
     @Override
     public List<String> listPrimaryKeyFieldNames(Class<?> type) {

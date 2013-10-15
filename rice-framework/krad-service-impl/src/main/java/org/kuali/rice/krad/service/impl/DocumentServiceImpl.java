@@ -19,9 +19,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
@@ -62,6 +60,7 @@ import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DocumentAdHocService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.DocumentService;
@@ -74,6 +73,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 
@@ -86,17 +86,18 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 @TransactionalNoValidationExceptionRollback
 public class DocumentServiceImpl implements DocumentService {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
 
-    private DateTimeService dateTimeService;
-    private NoteService noteService;
-    private WorkflowDocumentService workflowDocumentService;
-    private LegacyDataAdapter legacyDataAdapter;
-    private DataDictionaryService dataDictionaryService;
-    private DocumentDictionaryService documentDictionaryService;
-    private PersonService personService;
-    private ConfigurationService kualiConfigurationService;
-    private DocumentHeaderService documentHeaderService;
+    protected DateTimeService dateTimeService;
+    protected NoteService noteService;
+    protected WorkflowDocumentService workflowDocumentService;
+    protected LegacyDataAdapter legacyDataAdapter;
+    protected DataDictionaryService dataDictionaryService;
+    protected DocumentDictionaryService documentDictionaryService;
+    protected PersonService personService;
+    protected ConfigurationService kualiConfigurationService;
+    protected DocumentHeaderService documentHeaderService;
+    protected DocumentAdHocService documentAdHocService;
 
     /**
      * @see org.kuali.rice.krad.service.DocumentService#saveDocument(org.kuali.rice.krad.document.Document)
@@ -455,14 +456,7 @@ public class DocumentServiceImpl implements DocumentService {
         adHocRoutingRecipients.addAll(document.getAdHocRoutePersons());
         adHocRoutingRecipients.addAll(document.getAdHocRouteWorkgroups());
 
-        for (AdHocRouteRecipient recipient : adHocRoutingRecipients) {
-            recipient.setdocumentNumber(document.getDocumentNumber());
-        }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put("documentNumber", document.getDocumentNumber());
-        getLegacyDataAdapter().deleteMatching(AdHocRouteRecipient.class, criteria);
-
-        getLegacyDataAdapter().save(adHocRoutingRecipients);
+        documentAdHocService.replaceAdHocsForDocument( document.getDocumentNumber(), adHocRoutingRecipients );
         return validateAndPersistDocument(document, event);
     }
 
@@ -1043,20 +1037,17 @@ public class DocumentServiceImpl implements DocumentService {
                         adHocRecipients);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
                 document.getDocumentHeader().getWorkflowDocument());
-        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+
         removeAdHocPersonsAndWorkgroups(document);
     }
 
     private void removeAdHocPersonsAndWorkgroups(Document document) {
-        List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
-        List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
-        getLegacyDataAdapter().delete(document.getAdHocRoutePersons());
-        getLegacyDataAdapter().delete(document.getAdHocRouteWorkgroups());
-        document.setAdHocRoutePersons(adHocRoutePersons);
-        document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
+    	documentAdHocService.replaceAdHocsForDocument(document.getDocumentNumber(), null);
+        document.setAdHocRoutePersons(new ArrayList<AdHocRoutePerson>());
+        document.setAdHocRouteWorkgroups(new ArrayList<AdHocRouteWorkgroup>());
     }
 
+	@Required
     public void setDateTimeService(DateTimeService dateTimeService) {
         this.dateTimeService = dateTimeService;
     }
@@ -1068,6 +1059,7 @@ public class DocumentServiceImpl implements DocumentService {
         return this.dateTimeService;
     }
 
+	@Required
     public void setNoteService(NoteService noteService) {
         this.noteService = noteService;
     }
@@ -1098,6 +1090,7 @@ public class DocumentServiceImpl implements DocumentService {
         return this.workflowDocumentService;
     }
 
+	@Required
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
     }
@@ -1116,6 +1109,7 @@ public class DocumentServiceImpl implements DocumentService {
         return documentDictionaryService;
     }
 
+	@Required
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
     }
@@ -1127,6 +1121,7 @@ public class DocumentServiceImpl implements DocumentService {
         return personService;
     }
 
+	@Required
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
     }
@@ -1135,8 +1130,14 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentHeaderService;
 	}
 
+	@Required
 	public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
 		this.documentHeaderService = documentHeaderService;
+	}
+
+	@Required
+	public void setDocumentAdHocService(DocumentAdHocService documentAdHocService) {
+		this.documentAdHocService = documentAdHocService;
 	}
 
 }

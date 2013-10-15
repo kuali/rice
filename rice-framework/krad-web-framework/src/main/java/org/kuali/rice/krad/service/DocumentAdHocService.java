@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.service;
 
+import java.util.List;
+
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
+import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.document.Document;
 
@@ -34,4 +37,11 @@ public interface DocumentAdHocService {
 	 */
 	void addAdHocs(Document doc);
 
+	/**
+	 * This method replaces the current ad-hoc recipients for a given document with the provided list.
+	 *
+	 * @param documentNumber Document Number to which to attach the route log recipients.  All existing stored ad-hoc recipients will be deleted.
+	 * @param adHocRoutingRecipients New list of ad-hoc recipients (Persons and Workgroups) which will be attached to the document.
+	 */
+	void replaceAdHocsForDocument( String documentNumber, List<AdHocRouteRecipient> adHocRoutingRecipients );
 }

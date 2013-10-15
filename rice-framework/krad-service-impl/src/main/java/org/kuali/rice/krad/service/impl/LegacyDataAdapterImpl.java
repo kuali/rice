@@ -21,13 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
-import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.LegacyUtils;
@@ -154,26 +152,6 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps) {
         return selectAdapter(boClass).allPrimaryKeyValuesPresentAndNotWildcard(boClass, formProps);
-    }
-
-    @Override
-    public Attachment getAttachmentByNoteId(Long noteId) {
-        return selectAdapter(Attachment.class).getAttachmentByNoteId(noteId);
-    }
-
-    @Override
-    public void deleteLocks(String documentNumber) {
-        selectAdapter(MaintenanceLock.class).deleteLocks(documentNumber);
-    }
-
-    @Override
-    public String getLockingDocumentNumber(String lockingRepresentation, String documentNumber) {
-        return selectAdapter(MaintenanceLock.class).getLockingDocumentNumber(lockingRepresentation, documentNumber);
-    }
-
-    @Override
-    public void storeLocks(List<MaintenanceLock> maintenanceLocks) {
-        selectAdapter(MaintenanceLock.class).storeLocks(maintenanceLocks);
     }
 
     @Override

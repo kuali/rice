@@ -88,7 +88,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                         // workflow state change, without reloading the form.
                         if (!document.getDocumentHeader().getWorkflowDocument().isSaved()) {
                             document = documentService.updateDocument(document);
+//                            document = KradDataServiceLocator.getDataObjectService().save(document, PersistenceOption.FLUSH);
                         }
+
                     }
                     if (LOG.isInfoEnabled()) {
                         LOG.info(new StringBuilder("finished handling route status change from ").append(
@@ -411,12 +413,11 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     protected boolean establishLegacyDataContextIfNeccesary(String documentId) {
         String documentTypeName = KewApiServiceLocator.getWorkflowDocumentService().getDocumentTypeName(documentId);
-        DocumentEntry documentEntry =
-                KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntry(documentTypeName);
-        // entry class will be the document class in case of trans doc and the data object class in case of maintenance
-        Class<?> entryClass = documentEntry.getEntryClass();
-        if (!LegacyUtils.isKradDataManaged(entryClass) || LegacyUtils.isKnsDocumentEntry(documentEntry)) {
+        DocumentEntry documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntry(documentTypeName);
+
+        if (LegacyUtils.isKnsDocumentEntry(documentEntry)) {
             LegacyUtils.beginLegacyContext();
+
             return true;
         }
         return false;

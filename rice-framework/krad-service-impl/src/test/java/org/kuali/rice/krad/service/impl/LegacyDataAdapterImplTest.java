@@ -27,7 +27,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 
 import javax.xml.namespace.QName;
 
@@ -47,11 +46,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentBase;
-import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.LegacyUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -460,137 +457,6 @@ public class LegacyDataAdapterImplTest {
         verify(knsLegacyDataAdapter).allPrimaryKeyValuesPresentAndNotWildcard(eq(Legacy.class), anyMapOf(String.class, String.class));
         verifyZeroInteractions(kradLegacyDataAdapter);
     }
-
-    @Test
-    public void testGetAttachmentByNoteId() throws Exception {
-        lda.getAttachmentByNoteId(1234L);
-        verify(kradLegacyDataAdapter).getAttachmentByNoteId(eq(1234L));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
-
-    @Test
-    public void testGetAttachmentByNoteId_Legacy() throws Exception {
-        enableLegacy();
-        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-            @Override
-            public Object call() throws Exception {
-                lda.getAttachmentByNoteId(1234L);
-                return null;
-            }
-        });
-        verify(knsLegacyDataAdapter).getAttachmentByNoteId(eq(1234L));
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
-
-//    @Test
-//    public void testGetByDocumentHeaderId() throws Exception {
-//        lda.getByDocumentHeaderId("1234");
-//        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-//        verifyZeroInteractions(knsLegacyDataAdapter);
-//    }
-
-//    /**
-//     * Even when in legacy mode, the document header is still retrieved via JPA
-//     */
-//    @Test
-//    public void testGetByDocumentHeaderId_Legacy() throws Exception {
-//        enableLegacy();
-//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                lda.getByDocumentHeaderId("1234");
-//                return null;
-//            }
-//        });
-////        verify(knsLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-////        verifyZeroInteractions(kradLegacyDataAdapter);
-//        verify(kradLegacyDataAdapter).getByDocumentHeaderId(eq("1234"));
-//        verifyZeroInteractions(knsLegacyDataAdapter);
-//    }
-
-//    @Test
-//    public void testGetDocumentHeaderBaseClass() throws Exception {
-//        lda.getDocumentHeaderBaseClass();
-//        verify(kradLegacyDataAdapter).getDocumentHeaderBaseClass();
-//        verifyZeroInteractions(knsLegacyDataAdapter);
-//    }
-
-//    @Test
-//    public void testGetDocumentHeaderBaseClass_Legacy() throws Exception {
-//        enableLegacy();
-//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                lda.getDocumentHeaderBaseClass();
-//                return null;
-//            }
-//        });
-//        verify(knsLegacyDataAdapter).getDocumentHeaderBaseClass();
-//        verifyZeroInteractions(kradLegacyDataAdapter);
-//    }
-
-    @Test
-    public void testDeleteLocks() throws Exception {
-        lda.deleteLocks("1234");
-        verify(kradLegacyDataAdapter).deleteLocks("1234");
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
-
-//    @Test
-//    public void testDeleteLocks_Legacy() throws Exception {
-//        enableLegacy();
-//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                lda.deleteLocks("1234");
-//                return null;
-//            }
-//        });
-//        verify(knsLegacyDataAdapter).deleteLocks("1234");
-//        verifyZeroInteractions(kradLegacyDataAdapter);
-//    }
-
-    @Test
-    public void testGetLockingDocumentNumber() throws Exception {
-        lda.getLockingDocumentNumber("blah1", "blah2");
-        verify(kradLegacyDataAdapter).getLockingDocumentNumber(eq("blah1"), eq("blah2"));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
-
-//    @Test
-//    public void testGetLockingDocumentNumber_Legacy() throws Exception {
-//        enableLegacy();
-//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                lda.getLockingDocumentNumber("blah1", "blah2");
-//                return null;
-//            }
-//        });
-//        verify(knsLegacyDataAdapter).getLockingDocumentNumber(eq("blah1"), eq("blah2"));
-//        verifyZeroInteractions(kradLegacyDataAdapter);
-//    }
-
-    @Test
-    public void testStoreLocks() throws Exception {
-        lda.storeLocks(new ArrayList<MaintenanceLock>());
-        verify(kradLegacyDataAdapter).storeLocks(anyListOf(MaintenanceLock.class));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
-
-//    @Test
-//    public void testStoreLocks_Legacy() throws Exception {
-//        enableLegacy();
-//        LegacyUtils.doInLegacyContext(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                lda.storeLocks(new ArrayList<MaintenanceLock>());
-//                return null;
-//            }
-//        });
-//        verify(knsLegacyDataAdapter).storeLocks(anyListOf(MaintenanceLock.class));
-//        verifyZeroInteractions(kradLegacyDataAdapter);
-//    }
 
     @Test
     public void testListPrimaryKeyFieldNames() throws Exception {

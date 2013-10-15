@@ -15,20 +15,26 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
-import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -36,18 +42,11 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -57,7 +56,9 @@ import java.util.Set;
  */
 @Transactional
 public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentServiceImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowDocumentServiceImpl.class);
+
+    protected DataObjectService dataObjectService;
 
     @Override
     public boolean workflowDocumentExists(String documentId) {
@@ -75,9 +76,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     @Override
     public WorkflowDocument createWorkflowDocument(String documentTypeName, Person person) {
         String watchName = "createWorkflowDocument";
-        StopWatch watch = new StopWatch();
-        watch.start();
+        StopWatch watch = null;
         if (LOG.isDebugEnabled()) {
+        	watch = new StopWatch();
+            watch.start();
             LOG.debug(watchName + ": started");
         }
         if (StringUtils.isBlank(documentTypeName)) {
@@ -96,9 +98,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(person.getPrincipalId(), documentTypeName);
-        watch.stop();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(watchName + ": " + watch.toString());	
+        if ( watch != null ) {
+            watch.stop();
+            LOG.debug(watchName + ": " + watch.toString());
         }
 
         return document;
@@ -119,7 +121,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("retrieving document(" + documentId + "," + user.getPrincipalName() + ")");
         }
-        
+
         try {
             return WorkflowDocumentFactory.loadDocument(user.getPrincipalId(), documentId);
         } catch (IllegalArgumentException e) {
@@ -159,7 +161,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public void superUserCancel(WorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-        LOG.info("super user cancel document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
+    	if ( LOG.isInfoEnabled() ) {
+    		LOG.info("super user cancel document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
+    	}
         workflowDocument.superUserCancel(annotation);
     }
 
@@ -213,7 +217,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     public void sendWorkflowNotification(WorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
     	sendWorkflowNotification(workflowDocument, annotation, adHocRecipients, null);
     }
-    
+
     @Override
     public void sendWorkflowNotification(WorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
@@ -274,8 +278,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         WorkflowDocument freshCopyWorkflowDoc = loadWorkflowDocument(workflowDocument.getDocumentId(), GlobalVariables.getUserSession().getPerson());
         return getCurrentRouteNodeNames(freshCopyWorkflowDoc);
     }
-    
-    
+
+
 
     @Override
     public String getCurrentRouteNodeNames(WorkflowDocument workflowDocument) {
@@ -294,7 +298,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     private void handleAdHocRouteRequests(WorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
     	handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, null);
     }
-    
+
     /**
      * Convenience method for generating ad hoc requests for a given document
      *
@@ -320,10 +324,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             }
             // for now just pick a node and go with it...
             currentNode = currentNodes.iterator().next();
-            
+
             List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
             List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
-            
+
             for (AdHocRouteRecipient recipient : adHocRecipients) {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
                 	String newAnnotation = annotation;
@@ -337,7 +341,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 		}
                 	}
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
-                        // TODO make the 1 a constant
                     	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient.getId());
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
@@ -357,8 +360,13 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                     }
                 }
             }
-            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(adHocRoutePersons);
-            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(adHocRouteWorkgroups);
+
+            for ( AdHocRoutePerson personRecipient : adHocRoutePersons ) {
+            	dataObjectService.delete(personRecipient);
+            }
+            for ( AdHocRouteWorkgroup groupRecipient : adHocRouteWorkgroups ) {
+            	dataObjectService.delete(groupRecipient);
+            }
         }
     }
 
@@ -387,14 +395,19 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     /**
      * Completes workflow document
-     * 
+     *
      * @see WorkflowDocumentService#complete(org.kuali.rice.kew.api.WorkflowDocument, String, java.util.List)
      */
-    public void complete(WorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    @Override
+	public void complete(WorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("routing flexDoc(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ }));
         workflowDocument.complete(annotation);
     }
+
+	public void setDataObjectService(DataObjectService dataObjectService) {
+		this.dataObjectService = dataObjectService;
+	}
 }

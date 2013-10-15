@@ -15,29 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.kim.api.KimConstants.PermissionNames;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.identity.PersonService;
-import org.kuali.rice.kim.api.permission.PermissionService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.authorization.AuthorizationConstants;
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.PessimisticLock;
-import org.kuali.rice.krad.exception.AuthorizationException;
-import org.kuali.rice.krad.exception.PessimisticLockingException;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
-import org.kuali.rice.krad.service.PessimisticLockService;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,6 +23,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.OptimisticLockException;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.kim.api.KimConstants.PermissionNames;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.PersonService;
+import org.kuali.rice.kim.api.permission.PermissionService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.authorization.PessimisticLock;
+import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.exception.PessimisticLockingException;
+import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.PessimisticLockService;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service implementation for pessimistic locking
@@ -56,22 +56,21 @@ import java.util.Set;
 public class PessimisticLockServiceImpl implements PessimisticLockService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockServiceImpl.class);
 
-    private PersonService personService;
-    private LegacyDataAdapter legacyDataAdapter;
-    private DataDictionaryService dataDictionaryService;
-    private PermissionService permissionService;
+    protected DataObjectService dataObjectService;
+    protected DataDictionaryService dataDictionaryService;
+    protected PermissionService permissionService;
+    protected PersonService personService;
 
-    /**
+	/**
      * @see org.kuali.rice.krad.service.PessimisticLockService#delete(java.lang.String)
      */
-    public void delete(String id) {
+    @Override
+	public void delete(String id) {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("An invalid blank id was passed to delete a Pessimistic Lock.");
         }
-        Map<String,Object> primaryKeys = new HashMap<String,Object>();
-        primaryKeys.put(KRADPropertyConstants.ID, Long.valueOf(id));
-        PessimisticLock lock = (PessimisticLock) getLegacyDataAdapter().findByPrimaryKey(PessimisticLock.class, primaryKeys);
-        if (KRADUtils.isNull(lock)) {
+        PessimisticLock lock = (PessimisticLock) dataObjectService.find(PessimisticLock.class, Long.valueOf(id));
+        if ( lock == null ) {
             throw new IllegalArgumentException("Pessimistic Lock with id " + id + " cannot be found in the database.");
         }
         Person user = GlobalVariables.getUserSession().getPerson();
@@ -85,34 +84,38 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Deleting lock: " + lock);
     	}
-        getLegacyDataAdapter().delete(lock);
+        dataObjectService.delete(lock);
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(String)
      */
-    public PessimisticLock generateNewLock(String documentNumber) {
+    @Override
+	public PessimisticLock generateNewLock(String documentNumber) {
         return generateNewLock(documentNumber, GlobalVariables.getUserSession().getPerson());
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String)
      */
-    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor) {
+    @Override
+	public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor) {
         return generateNewLock(documentNumber, lockDescriptor, GlobalVariables.getUserSession().getPerson());
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
-    public PessimisticLock generateNewLock(String documentNumber, Person user) {
+    @Override
+	public PessimisticLock generateNewLock(String documentNumber, Person user) {
         return generateNewLock(documentNumber, PessimisticLock.DEFAULT_LOCK_DESCRIPTOR, user);
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#generateNewLock(java.lang.String, java.lang.String, org.kuali.rice.kim.api.identity.Person)
      */
-    public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
+    @Override
+	public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
         PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user, GlobalVariables.getUserSession());
         lock = save(lock);
         if ( LOG.isDebugEnabled() ) {
@@ -124,25 +127,28 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#getPessimisticLocksForDocument(java.lang.String)
      */
-    public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber) {
-        Map fieldValues = new HashMap();
-        fieldValues.put(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber);
-        return (List<PessimisticLock>) getLegacyDataAdapter().findMatching(PessimisticLock.class, fieldValues);
+    @Override
+	public List<PessimisticLock> getPessimisticLocksForDocument(String documentNumber) {
+        return new ArrayList<PessimisticLock>( dataObjectService.findMatching(PessimisticLock.class,
+        		QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber)
+        		.build()).getResults() );
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#getPessimisticLocksForSession(java.lang.String)
      */
-    public List<PessimisticLock> getPessimisticLocksForSession(String sessionId) {
-        Map fieldValues = new HashMap();
-        fieldValues.put(KRADPropertyConstants.SESSION_ID, sessionId);
-        return (List<PessimisticLock>) getLegacyDataAdapter().findMatching(PessimisticLock.class, fieldValues);
+    @Override
+	public List<PessimisticLock> getPessimisticLocksForSession(String sessionId) {
+        return new ArrayList<PessimisticLock>( dataObjectService.findMatching(PessimisticLock.class,
+        		QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.SESSION_ID, sessionId)
+        		.build()).getResults() );
     }
 
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#isPessimisticLockAdminUser(org.kuali.rice.kim.api.identity.Person)
      */
-    public boolean isPessimisticLockAdminUser(Person user) {
+    @Override
+	public boolean isPessimisticLockAdminUser(Person user) {
     	return getPermissionService().isAuthorized( user.getPrincipalId(), KRADConstants.KNS_NAMESPACE, PermissionNames.ADMIN_PESSIMISTIC_LOCKING,
                 Collections.<String, String>emptyMap() );
     }
@@ -150,7 +156,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.api.identity.Person)
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user) {
+    @Override
+	public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if (lock.isOwnedByUser(user)) {
@@ -170,7 +177,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#releaseAllLocksForUser(java.util.List, org.kuali.rice.kim.api.identity.Person, java.lang.String)
      */
-    public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor) {
+    @Override
+	public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
             PessimisticLock lock = (PessimisticLock) iterator.next();
             if ( (lock.isOwnedByUser(user)) && (lockDescriptor.equals(lock.getLockDescriptor())) ) {
@@ -190,19 +198,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.krad.service.PessimisticLockService#save(org.kuali.rice.krad.document.authorization.PessimisticLock)
      */
-    public PessimisticLock save(PessimisticLock lock) {
+    @Override
+	public PessimisticLock save(PessimisticLock lock) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Saving lock: " + lock);
     	}
-        return (PessimisticLock)getLegacyDataAdapter().save(lock);
-    }
-
-    public LegacyDataAdapter getLegacyDataAdapter() {
-        return this.legacyDataAdapter;
-    }
-
-    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
-        this.legacyDataAdapter = legacyDataAdapter;
+        return dataObjectService.save(lock);
     }
 
     /**
@@ -210,7 +211,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @param user
      * @return Set of actions are permitted the given user on the given document
      */
-    public Set getDocumentActions(Document document, Person user, Set<String> documentActions){
+    @Override
+	public Set getDocumentActions(Document document, Person user, Set<String> documentActions){
     	if(documentActions.contains(KRADConstants.KUALI_ACTION_CAN_CANCEL) && !hasPreRouteEditAuthorization(document, user) ){
     		documentActions.remove(KRADConstants.KUALI_ACTION_CAN_CANCEL);
     	}
@@ -241,8 +243,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     	if (document.getPessimisticLocks().isEmpty()) {
     		return true;
     	}
-    	for (Iterator iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
-    		PessimisticLock lock = (PessimisticLock) iterator.next();
+    	for (Iterator<PessimisticLock> iterator = document.getPessimisticLocks().iterator(); iterator.hasNext();) {
+    		PessimisticLock lock = iterator.next();
     		if (lock.isOwnedByUser(user)) {
     			return true;
             }
@@ -262,7 +264,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @param document - the document to create the lock against and add the lock to
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#establishWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
      */
-    public void establishWorkflowPessimisticLocking(Document document) {
+    @Override
+	public void establishWorkflowPessimisticLocking(Document document) {
         PessimisticLock lock = createNewPessimisticLock(document, new HashMap(), getWorkflowPessimisticLockOwnerUser());
         document.addPessimisticLock(lock);
     }
@@ -273,7 +276,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @param document - document to release locks from
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#releaseWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
      */
-    public void releaseWorkflowPessimisticLocking(Document document) {
+    @Override
+	public void releaseWorkflowPessimisticLocking(Document document) {
         releaseAllLocksForUser(document.getPessimisticLocks(), getWorkflowPessimisticLockOwnerUser());
         document.refreshPessimisticLocks();
     }
@@ -305,7 +309,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#establishLocks(org.kuali.rice.krad.document.Document,
      *      java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
-    public Map establishLocks(Document document, Map editMode, Person user) {
+    @Override
+	public Map establishLocks(Document document, Map editMode, Person user) {
         Map editModeMap = new HashMap();
         // givenUserLockDescriptors is a list of lock descriptors currently held on the document by the given user
         List<String> givenUserLockDescriptors = new ArrayList<String>();
@@ -457,7 +462,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     protected boolean isEntryEditMode(Map.Entry entry) {
     	// check for FULL_ENTRY edit mode set to default true value
     	if (AuthorizationConstants.EditMode.FULL_ENTRY.equals(entry.getKey())) {
-    		String fullEntryEditModeValue = (String)entry.getValue();           
+    		String fullEntryEditModeValue = (String)entry.getValue();
     		return ( StringUtils.equalsIgnoreCase(KRADConstants.KUALI_DEFAULT_TRUE_VALUE, fullEntryEditModeValue) );
     	}
     	return false;
@@ -504,10 +509,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
 	public DataDictionaryService getDataDictionaryService() {
-        if ( dataDictionaryService == null ) {
-        	dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        }
 		return dataDictionaryService;
+	}
+
+	@Required
+	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+		this.dataDictionaryService = dataDictionaryService;
 	}
 
 	public PermissionService getPermissionService() {
@@ -518,6 +525,9 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 	}
 
 
-
+	@Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+		this.dataObjectService = dataObjectService;
+	}
 }
 

@@ -15,17 +15,19 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.util.cache.CopiedObject;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.AttachmentService;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.NoteService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,14 +40,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class NoteServiceImpl implements NoteService {
 
-    protected LegacyDataAdapter lda;
     protected AttachmentService attachmentService;
-//    protected DataObjectService dataObjectService;
-
-    @Required
-    public void setLegacyDataAdapter(LegacyDataAdapter lda) {
-        this.lda = lda;
-    }
+    protected DataObjectService dataObjectService;
 
     @Override
 	public void saveNoteList(List<Note> notes) {
@@ -75,12 +71,12 @@ public class NoteServiceImpl implements NoteService {
             Attachment attachment = note.getAttachment();
             note.setAttachment(null);
             // store without attachment
-            note = lda.save(note);
+            note = dataObjectService.save(note);
             attachment.setNoteIdentifier(note.getNoteIdentifier());
             // put attachment back
             note.setAttachment(attachment);
         }
-        note = lda.save(note);
+        note = dataObjectService.save(note);
         // move attachment from pending directory
         if (note.getAttachment() != null) {
         	attachmentService.moveAttachmentWherePending(note);
@@ -91,13 +87,16 @@ public class NoteServiceImpl implements NoteService {
     /**
      * @see org.kuali.rice.krad.service.NoteService#getByRemoteObjectId(java.lang.String)
      */
-    @SuppressWarnings("deprecation")
 	@Override
 	public List<Note> getByRemoteObjectId(String remoteObjectId) {
     	if (StringUtils.isBlank(remoteObjectId)) {
     		throw new IllegalArgumentException("The remoteObjectId must not be null or blank.");
     	}
-    	return new ArrayList<Note>( lda.findMatchingOrderBy(Note.class, Collections.singletonMap("remoteObjectIdentifier", remoteObjectId), "notePostedTimestamp", true) );
+        QueryResults<Note> result = dataObjectService.findMatching(Note.class,
+                QueryByCriteria.Builder.forAttribute("remoteObjectIdentifier", remoteObjectId)
+                .setOrderByFields(OrderByField.Builder.create("notePostedTimestamp", OrderDirection.ASCENDING).build()
+                		).build());
+        return result.getResults();
     }
 
     /**
@@ -108,7 +107,7 @@ public class NoteServiceImpl implements NoteService {
     	if (noteId == null) {
     		throw new IllegalArgumentException("The noteId must not be null.");
     	}
-    	return lda.findBySinglePrimaryKey(Note.class, noteId);
+    	return dataObjectService.find(Note.class, noteId);
 	}
 
     /**
@@ -118,9 +117,9 @@ public class NoteServiceImpl implements NoteService {
 	public void deleteNote(Note note) {
     	validateNoteNotNull(note);
     	if ( note.getAttachment() != null ) { // Not sure about this - might blow up when no attachment
-    		lda.delete(note.getAttachment());
+    		dataObjectService.delete(note.getAttachment());
     	}
-        lda.delete(note);
+        dataObjectService.delete(note);
     }
 
     /**
@@ -144,6 +143,7 @@ public class NoteServiceImpl implements NoteService {
         return tmpNote;
     }
 
+    @Required
     public void setAttachmentService(AttachmentService attachmentService) {
     	this.attachmentService = attachmentService;
     }
@@ -157,5 +157,10 @@ public class NoteServiceImpl implements NoteService {
     		throw new IllegalArgumentException("Note must not be null.");
     	}
     }
+
+    @Required
+	public void setDataObjectService(DataObjectService dataObjectService) {
+		this.dataObjectService = dataObjectService;
+	}
 
 }

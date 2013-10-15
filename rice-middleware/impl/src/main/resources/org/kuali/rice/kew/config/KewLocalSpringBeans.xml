@@ -77,7 +77,7 @@
         p:serviceName="businessObjectService"/>
 
   <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
-    <property name="businessObjectService" ref="rice.kew.import.businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <!--  ResponsibilityIdService -->
@@ -87,7 +87,7 @@
   </bean>
 
   <bean id="rice.kew.peopleFlowService" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowServiceImpl">
-    <property name="businessObjectService" ref="rice.kew.import.businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
     <property name="kewTypeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
     <property name="responsibilityIdService" ref="enResponsibilityIdService"/>
   </bean>

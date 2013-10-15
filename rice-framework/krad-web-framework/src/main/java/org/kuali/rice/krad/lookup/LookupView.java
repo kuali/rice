@@ -49,17 +49,13 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * View type for lookups.
  *
- * <p>
- * Supports doing a search against a data object class or performing a more advanced query. The view
+ * <p>Supports doing a search against a data object class or performing a more advanced query. The view
  * type is primarily made up of two groups, the search (or criteria) group and the results group. Many
  * options are supported on the view to enable/disable certain features, like what actions are available
- * on the search results.
- * </p>
+ * on the search results.</p>
  *
- * <p>
- * Works in conjunction with {@link org.kuali.rice.krad.lookup.Lookupable} which customizes the view and
- * carries out the business functionality
- * </p>
+ * <p>Works in conjunction with {@link org.kuali.rice.krad.lookup.Lookupable} which customizes the view and
+ * carries out the business functionality</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -290,10 +286,8 @@ public class LookupView extends FormView {
     /**
      * Performs conversions of the lookup criteria fields within the given group's items.
      *
-     * <p>
-     * Max lengths are removed on text controls so wildcards can be added. Ranged date fields are
-     * converted to field groups with the from/to date fields
-     * </p>
+     * <p>Max lengths are removed on text controls so wildcards can be added. Ranged date fields are
+     * converted to field groups with the from/to date fields</p>
      */
     protected void convertLookupCriteriaFields(Group lookupGroup) {
         @SuppressWarnings("unchecked")
@@ -346,11 +340,9 @@ public class LookupView extends FormView {
      * Creates a {@link FieldGroup} instance to replace the given lookup input field as a
      * date criteria range.
      *
-     * <p>
-     * The field group is created by copying {@link LookupView#rangeFieldGroupPrototype}. This can be
+     * <p>The field group is created by copying {@link LookupView#rangeFieldGroupPrototype}. This can be
      * used to configure how the field group will appear. In addition, the two lookup fields are separated
-     * with a message that can be configured with {@link LookupView#rangedToMessage}
-     * </p>
+     * with a message that can be configured with {@link LookupView#rangedToMessage}</p>
      *
      * @param toDate lookup input field that field group should be build for
      *
@@ -413,11 +405,9 @@ public class LookupView extends FormView {
     /**
      * Class for the data object the lookup applies to.
      *
-     * <p>
-     * The object class name is used to pick up a dictionary entry which will feed the attribute field
+     * <p>The object class name is used to pick up a dictionary entry which will feed the attribute field
      * definitions and other configuration. In addition it is to configure the
-     * {@link org.kuali.rice.krad.lookup.Lookupable} which will carry out the search action
-     * </p>
+     * {@link org.kuali.rice.krad.lookup.Lookupable} which will carry out the search action</p>
      *
      * @return lookup data object class
      */
@@ -449,11 +439,9 @@ public class LookupView extends FormView {
     /**
      * Indicates whether a return value link should be rendered for each result row.
      *
-     * <p>
-     * When the lookup is called from a view (using a {@link org.kuali.rice.krad.uif.widget.QuickFinder} the return
+     * <p>When the lookup is called from a view (using a {@link org.kuali.rice.krad.uif.widget.QuickFinder} the return
      * link can be returned to allow the user to return a value(s) for a selected row. Note, if this is not manually
-     * set the framework will determine when the lookup is called from a quickfinder and turn this flag on
-     * </p>
+     * set the framework will determine when the lookup is called from a quickfinder and turn this flag on</p>
      *
      * @return boolean true if the return link should be rendered for each result row, false if not
      */
@@ -473,9 +461,7 @@ public class LookupView extends FormView {
      * Indicates whether the actions column for the search results collection group should be rendered (default
      * is true).
      *
-     * <p>
-     * Note this is a convenience property for setting the render property on the result collection group
-     * </p>
+     * <p>Note this is a convenience property for setting the render property on the result collection group</p>
      *
      * @return boolean true if the result actions column should be rendered, false if not
      */
@@ -494,13 +480,11 @@ public class LookupView extends FormView {
     /**
      * Indicates whether links for maintenance actions (new, edit, copy, delete) should be rendered.
      *
-     * <p>
-     * When this property is not manually set it will be enabled by the framework when a lookup is not invoked
+     * <p>When this property is not manually set it will be enabled by the framework when a lookup is not invoked
      * from a quickfinder (for example a standard link from a menu). Regardless if the flag is manually enabled
      * or enabled by the framework, an additional authorization check will be performed to determine if the user
      * has initiate permission for the maintenance document associated with the lookup data object class. If not,
-     * this flag will be disabled
-     * </p>
+     * this flag will be disabled</p>
      *
      * @return boolean true if maintenance links should be rendered, false if not
      */
@@ -519,11 +503,9 @@ public class LookupView extends FormView {
     /**
      * Indicates whether multiple values select should be enabled for the lookup.
      *
-     * <p>
-     * When set to true, the select field is enabled for the lookup results group that allows the user
+     * <p>When set to true, the select field is enabled for the lookup results group that allows the user
      * to select one or more rows for returning. The framework will also set the {@link #isRenderReturnLink()}
-     * and {@link #isRenderMaintenanceLinks()} properties to false (unless manually overridden)
-     * </p>
+     * and {@link #isRenderMaintenanceLinks()} properties to false (unless manually overridden)</p>
      *
      * @return true if multiple values select should be enabled, false otherwise
      */
@@ -542,11 +524,9 @@ public class LookupView extends FormView {
     /**
      * List of fields that will be rendered for the lookup criteria.
      *
-     * <p>
-     * This is a convenience property for setting the items in {@link #getCriteriaGroup()}, which is the
+     * <p>This is a convenience property for setting the items in {@link #getCriteriaGroup()}, which is the
      * group the criteria for the lookup is rendered in. This property can be bypassed and the items set
-     * directly in the criteria group (for more flexibility)
-     * </p>
+     * directly in the criteria group (for more flexibility)</p>
      *
      * @return List of components to render as the lookup criteria
      */
@@ -565,8 +545,7 @@ public class LookupView extends FormView {
     /**
      * Component {@link Group} instance to render as search criteria.
      *
-     * <p>
-     * Fields that make up the criteria for the lookup will be rendered in this group. This can be used in a few
+     * <p>Fields that make up the criteria for the lookup will be rendered in this group. This can be used in a few
      * different ways:
      *
      * <ul>
@@ -575,12 +554,9 @@ public class LookupView extends FormView {
      * {@link #getCriteriaFields()}</li>
      * <li>Configure the criteria group entirely (ignoring criteria fields). This would allow you to do things
      * like have multiple groups for the criteria.</li>
-     * </ul>
-     * </p>
+     * </ul></p>
      *
-     * <p>
-     * Note the footer for the criteria group can contain actions (such as search, clear, custom actions)
-     * </p>
+     * <p>Note the footer for the criteria group can contain actions (such as search, clear, custom actions)</p>
      *
      * @return group instance that will hold the search criteria fields
      */
@@ -600,11 +576,9 @@ public class LookupView extends FormView {
      * List of fields that will be rendered for the result collection group, each field will be a column
      * (assuming table layout is used).
      *
-     * <p>
-     * This is a convenience property for setting the items in {@link #getResultsGroup()}, which is the
+     * <p>This is a convenience property for setting the items in {@link #getResultsGroup()}, which is the
      * collection group the results for the lookup is rendered in. This property can be bypassed and the items set
-     * directly in the results group (for more flexibility)
-     * </p>
+     * directly in the results group (for more flexibility)</p>
      *
      * @return List of components to render in the results group
      */
@@ -623,8 +597,7 @@ public class LookupView extends FormView {
     /**
      * Component {@link CollectionGroup} instance to render for the lookup results.
      *
-     * <p>
-     * After a search is performed, the resulting data objects will be rendered in this collection group. This
+     * <p>After a search is performed, the resulting data objects will be rendered in this collection group. This
      * collection group can be used in two ways:
      *
      * <ul>
@@ -632,13 +605,10 @@ public class LookupView extends FormView {
      * in the base lookup view. Then the actual fields that are rendered in the collection group can be
      * configured using {@link #getResultFields()}</li>
      * <li>Configure the results group entirely (ignoring result fields)</li>
-     * </ul>
-     * </p>
+     * </ul></p>
      *
-     * <p>
-     * Note actions that are presented for the results can be configured using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineActions()} property
-     * </p>
+     * <p>Note actions that are presented for the results can be configured using the
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineActions()} property</p>
      *
      * @return collection group instance to render for the lookup results
      */
@@ -731,10 +701,8 @@ public class LookupView extends FormView {
      * String that maps to the maintenance controller for the maintenance document (if any) associated with the
      * lookup data object class.
      *
-     * <p>
-     * Mapping will be used to build the maintenance action links (such as edit, copy, and new). If not given, the
-     * default maintenance mapping will be used
-     * </p>
+     * <p>Mapping will be used to build the maintenance action links (such as edit, copy, and new). If not given, the
+     * default maintenance mapping will be used</p>
      *
      * @return mapping string
      */
@@ -770,10 +738,8 @@ public class LookupView extends FormView {
     /**
      * Indicates whether the lookup criteria group should be rendered, default to true.
      *
-     * <p>
-     * Hiding the criteria group can be useful in cases where the criteria is passed in through the request and
-     * also the search is executed on the initial request
-     * </p>
+     * <p>Hiding the criteria group can be useful in cases where the criteria is passed in through the request and
+     * also the search is executed on the initial request</p>
      *
      * @return boolean true if criteria group should be rendered, false if not
      */

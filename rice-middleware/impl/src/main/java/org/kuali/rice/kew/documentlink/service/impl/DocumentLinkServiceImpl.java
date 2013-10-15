@@ -30,74 +30,44 @@ import org.kuali.rice.kew.documentlink.service.DocumentLinkService;
 public class DocumentLinkServiceImpl implements DocumentLinkService {
 
 	private DocumentLinkDAO docLinkDao;
-	/**
-	 * @return the docLinkDao
-	 */
-	public DocumentLinkDAO getDocumentLinkDAO() {
-		return this.docLinkDao;
-	}
 
-	/**
-	 * @param docLinkDao the docLinkDao to set
-	 */
-	public void setDocumentLinkDAO(DocumentLinkDAO docLinkDao) {
-		this.docLinkDao = docLinkDao;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#deleteDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
-	public void deleteDocumentLink(DocumentLink link) {
+    @Override
+    public void deleteDocumentLink(DocumentLink link) {
 		getDocumentLinkDAO().deleteDocumentLink(link);
 	}
 
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#saveDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
-	public void saveDocumentLink(DocumentLink link) {
-		getDocumentLinkDAO().saveDocumentLink(link);
-
+    @Override
+	public DocumentLink saveDocumentLink(DocumentLink link) {
+		return getDocumentLinkDAO().saveDocumentLink(link);
 	}
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#getLinkedDocumentByDocId(java.lang.Long)
-	 */
+
+    @Override
 	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
 		return getDocumentLinkDAO().getLinkedDocumentsByDocId(docId);
 	}
-	
+
+    @Override
 	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
 		return getDocumentLinkDAO().getOutgoingLinkedDocumentsByDocId(docId);
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#deleteDocumentLinksByDocId(java.lang.Long)
-	 */
-	public void deleteDocumentLinksByDocId(String docId) {
-		getDocumentLinkDAO().deleteDocumentLinksByDocId(docId);
-		
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.service.DocumentLinkService#getLinkedDocument(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
-	public DocumentLink getLinkedDocument(DocumentLink link) {
-		return getDocumentLinkDAO().getLinkedDocument(link);
-	}
-	
-	public DocumentLink getDocumentLink(Long documentLinkId) {
+    @Override
+	public DocumentLink getDocumentLink(String documentLinkId) {
 		return getDocumentLinkDAO().getDocumentLink(documentLinkId);
 	}
 
+    /**
+     * @return the docLinkDao
+     */
+    public DocumentLinkDAO getDocumentLinkDAO() {
+        return this.docLinkDao;
+    }
+
+    /**
+     * @param docLinkDao the docLinkDao to set
+     */
+    public void setDocumentLinkDAO(DocumentLinkDAO docLinkDao) {
+        this.docLinkDao = docLinkDao;
+    }
 
 }

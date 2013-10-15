@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kew.documentlink.service;
 
-import java.util.List;
-
 import org.kuali.rice.kew.documentlink.DocumentLink;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -27,18 +27,14 @@ import org.kuali.rice.kew.documentlink.DocumentLink;
  */
 public interface DocumentLinkService {
 
-    public List<DocumentLink> getLinkedDocumentsByDocId(String docId);
+    List<DocumentLink> getLinkedDocumentsByDocId(String docId);
     
-    public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
-    
-    public DocumentLink getLinkedDocument(DocumentLink link);
-    
-    public void saveDocumentLink(DocumentLink link);
+    List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
 
-    public void deleteDocumentLink(DocumentLink link); 
-    
-    public void deleteDocumentLinksByDocId(String docId); 
-    
-    public DocumentLink getDocumentLink(Long documentLinkId);
+    DocumentLink saveDocumentLink(DocumentLink link);
+
+    void deleteDocumentLink(DocumentLink link);
+
+    DocumentLink getDocumentLink(String documentLinkId);
 
 }

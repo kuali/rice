@@ -20,30 +20,29 @@ import java.util.List;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
+ * Data Access Object for {@link DocumentLink}.
  *
+ * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
 public interface DocumentLinkDAO {
-	
-	//get all docs linked to orgn doc
-    public List<DocumentLink> getLinkedDocumentsByDocId(String docId);
-    
-    public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
-    
-    //get a link between 2 docs
-    public DocumentLink getLinkedDocument(DocumentLink link);
-    
-    //save a link for 2 docs
-    public void saveDocumentLink(DocumentLink link);
 
-    //delete a link between 2 docs
-    public void deleteDocumentLink(DocumentLink link); 
-    
-    //delete all links to orgn doc
-    public void deleteDocumentLinksByDocId(String docId);
-    
-    public DocumentLink getDocumentLink(Long documentLinkId);
+    /**
+     * Get all docs linked to origin doc.
+     */
+    List<DocumentLink> getLinkedDocumentsByDocId(String docId);
+
+    List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId);
+
+    /**
+     * save a link for 2 docs
+     */
+    DocumentLink saveDocumentLink(DocumentLink link);
+
+    /**
+     * Delete a link between 2 docs.
+     */
+    void deleteDocumentLink(DocumentLink link);
+
+    DocumentLink getDocumentLink(String documentLinkId);
 
 }

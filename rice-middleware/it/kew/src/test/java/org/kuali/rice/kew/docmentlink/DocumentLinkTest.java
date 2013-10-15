@@ -31,12 +31,11 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ * Integration test for {@link DocumentLink}.
  * 
- * @author Kuali Rice Team (kuali-rice@googlegroups.com)
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DocumentLinkTest extends KEWTestCase {
 
 	private static final Logger LOG = Logger.getLogger(DocumentLinkTest.class);

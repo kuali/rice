@@ -55,13 +55,15 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 	@GeneratedValue(generator="KREW_DOC_LNK_S")
 	@Column(name="DOC_LNK_ID")
 	private String docLinkId;
+
     @Column(name="ORGN_DOC_ID")
 	private String orgnDocId;
+
     @Column(name="DEST_DOC_ID")
 	private String destDocId;
     
 	/**
-	 * @return the docLinkId             ee
+	 * @return the docLinkId
 	 */
 	public String getDocLinkId() {
 		return this.docLinkId;

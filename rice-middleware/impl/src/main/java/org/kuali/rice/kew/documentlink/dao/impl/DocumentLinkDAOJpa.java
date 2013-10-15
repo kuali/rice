@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.documentlink.dao.impl;
 
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -27,106 +23,91 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ * A JPA-based implementation of the {@link DocumentLinkDAO}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class DocumentLinkDAOJpa
-        implements DocumentLinkDAO {
+public class DocumentLinkDAOJpa implements DocumentLinkDAO {
 
 	
     @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
     private DataObjectService dataObjectService;
-    
-	/**
-	 * double delete all links from orgn doc
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#deleteDocumentLinksByDocId
-	 */
-	public void deleteDocumentLinksByDocId(String docId) {
-		List<DocumentLink> links = getLinkedDocumentsByDocId(docId);
-		for(DocumentLink link: links){
-			deleteDocumentLink(link);
-		}
-	}
 
-	/**
-	 * double delete a link
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#deleteDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
+    @Override
 	public void deleteDocumentLink(DocumentLink link) {
-		deleteSingleLinkFromOrgnDoc(link);
-		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink((DocumentLink) SerializationUtils.deepCopy(link)));
+        getDataObjectService().delete(link);
+        // see if a reverse link exists or not
+        DocumentLink reverseLink = getLinkedDocument(link.getDestDocId(), link.getOrgnDocId());
+        if (reverseLink != null) {
+            getDataObjectService().delete(reverseLink);
+        }
 	}
 
-	/**
-	 * get a link from orgn doc
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#getLinkedDocument(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
-	public DocumentLink getLinkedDocument(DocumentLink link) {
-        Query query = getEntityManager().createNamedQuery("DocumentLink.GetLinkedDocument");
-        query.setParameter("orgnDocId", link.getOrgnDocId());
-        query.setParameter("destDocId",link.getDestDocId());
-		try {
-			return (DocumentLink) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * get all links from orgn doc
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#getLinkedDocumentsByDocId(java.lang.String)
-	 */
+    @Override
 	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
-        Query query = getEntityManager().createNamedQuery("DocumentLink.GetLinkedDocumentsByDocId");
+        TypedQuery<DocumentLink> query =
+                getEntityManager().createNamedQuery("DocumentLink.GetLinkedDocumentsByDocId", DocumentLink.class);
         query.setParameter("orgnDocId",docId);
-        return (List<DocumentLink>)query.getResultList();
+        return query.getResultList();
 	
 	}
-	
+
+    @Override
 	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
-        Query query = getEntityManager().createNamedQuery("DocumentLink.GetOutgoingLinkedDocumentsByDocId");
+        TypedQuery<DocumentLink> query =
+                getEntityManager().createNamedQuery("DocumentLink.GetOutgoingLinkedDocumentsByDocId", DocumentLink.class);
         query.setParameter("destDocId",docId);
-        return (List<DocumentLink>)query.getResultList();
+        return query.getResultList();
 	}
 
-	/**
-	 * add double link
-	 * 
-	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#saveDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
-	 */
-	public void saveDocumentLink(DocumentLink link) {
-		DocumentLink linkedDocument = getLinkedDocument(link);
-		if(linkedDocument == null) {
-			getDataObjectService().save(link);
-		} else {
-			link.setDocLinkId(linkedDocument.getDocLinkId());
-		}
-//		//if we want a 2-way linked pair
-		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink((DocumentLink)SerializationUtils.deepCopy(link));
-		if(getLinkedDocument(rLink) == null) {
-			getDataObjectService().save(rLink);
-		}
+    @Override
+	public DocumentLink saveDocumentLink(DocumentLink link) {
+        link = saveIfNotExists(link);
+        // create the 2-way linked pair
+        saveIfNotExists(createReverseLink(link));
+        getDataObjectService().flush(DocumentLink.class);
+        return link;
+	}
 
-	}
-	
-	private void deleteSingleLinkFromOrgnDoc(DocumentLink link){
-		DocumentLink cur = getLinkedDocument(link);
-		getDataObjectService().delete(cur);
-	}
+    protected DocumentLink saveIfNotExists(DocumentLink link) {
+        // if an existing link already exists for this, we pretty much just ignore the request to save since it's
+        // already there
+        DocumentLink existingLink = getLinkedDocument(link.getOrgnDocId(), link.getDestDocId());
+        if (existingLink == null) {
+            link = getDataObjectService().save(link);
+        } else {
+            link = existingLink;
+        }
+        return link;
+    }
+
+    protected DocumentLink getLinkedDocument(String orgnDocId, String destDocId) {
+        TypedQuery<DocumentLink> query =
+                getEntityManager().createNamedQuery("DocumentLink.GetLinkedDocument", DocumentLink.class);
+        query.setParameter("orgnDocId", orgnDocId);
+        query.setParameter("destDocId", destDocId);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+
+    private DocumentLink createReverseLink(DocumentLink link) {
+        DocumentLink reverseLink = new DocumentLink();
+        reverseLink.setOrgnDocId(link.getDestDocId());
+        reverseLink.setDestDocId(link.getOrgnDocId());
+        return reverseLink;
+    }
 
 	@Override
-	public DocumentLink getDocumentLink(Long documentLinkId) {
+	public DocumentLink getDocumentLink(String documentLinkId) {
 		return getDataObjectService().find(DocumentLink.class,documentLinkId);
 	}
 

@@ -499,7 +499,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			throw new RiceIllegalArgumentException("the given documentLink already has an id, cannot add a document link with an existing id");
 		}
 		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = org.kuali.rice.kew.documentlink.DocumentLink.from(documentLink);
-		KEWServiceLocator.getDocumentLinkService().saveDocumentLink(documentLinkBo);
+		documentLinkBo = KEWServiceLocator.getDocumentLinkService().saveDocumentLink(documentLinkBo);
 		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);
 	}
 
@@ -508,7 +508,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		if (StringUtils.isBlank(documentLinkId)) {
 			throw new RiceIllegalArgumentException("documentLinkId was null or blank");
 		}
-		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(Long.valueOf(documentLinkId));
+		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(documentLinkId);
 		if (documentLinkBo == null) {
 			throw new RiceIllegalStateException("Failed to locate document link with the given documentLinkId: " + documentLinkId);
 		}
@@ -564,7 +564,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		if (StringUtils.isBlank(documentLinkId)) {
 			throw new RiceIllegalArgumentException("documentLinkId was null or blank");
 		}
-		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(Long.valueOf(documentLinkId));
+		org.kuali.rice.kew.documentlink.DocumentLink documentLinkBo = KEWServiceLocator.getDocumentLinkService().getDocumentLink(documentLinkId);
 		return org.kuali.rice.kew.documentlink.DocumentLink.to(documentLinkBo);
     }
 	

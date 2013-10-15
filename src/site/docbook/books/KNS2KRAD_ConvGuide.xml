@@ -25,14 +25,14 @@
   </info>
   <section>
     <title>Introduction</title>
-    <para>This technical documentation assists with the conversion of existing Kuali Rice
-      application to utilize the new KRAD framework. It does so by identifying the changes between
-      the KNS and KRAD implementations of Kuali Rice application features. Overview and detailed
-      documentation of features of the KRAD frame work can be found in the <link xlink:show="new"
-        xlink:href="KRAD_Guide.html">KRAD Guide</link> and are omitted in this document.</para>
-    <para>The KNS2KRAD Conversion Script is a tool provided by Kuali Rice to automatize as much as
-      reasonably possible. Throughout this document the following items are used to indicate if the
-      utility supports the conversion: </para>
+    <para>This technical documentation outlines what is needed for conversion of existing Kuali Rice
+      applications using KNS to move to the new KRAD development framework. Here we identify the
+      changes between the KNS and KRAD application features. Detailed documentation of KRAD features
+      and how to use them are not included in this document, but can be found in the <link
+        xlink:show="new" xlink:href="KRAD_Guide.html">KRAD Guide</link>.</para>
+    <para>The KNS2KRAD Conversion Script is a tool provided by the Kuali Rice team to automate as
+      much as is reasonably possible. Throughout this document the following items are used to
+      indicate if the item is converted via the script or must be done manually. </para>
     <para><inlinemediaobject>
         <imageobject>
           <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
@@ -42,20 +42,98 @@
         <imageobject>
           <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
         </imageobject>
-      </inlinemediaobject> Feature needs to be converted manually.</para>
+      </inlinemediaobject> Feature conversion is not easily automated and needs to be converted
+      manually.</para>
+    <section>
+      <title>Process Overview</title>
+      <para>There are four main steps involved in converting from KNS to KRAD: <orderedlist>
+          <listitem>
+            <para>Convert data dictionary into krad compliant format.<itemizedlist>
+                <listitem>
+                  <para>Convert validation patterns to constraint.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert control definitions into UIF controls.</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para>Convert KNS definitions into KRAD UIF components.<itemizedlist>
+                <listitem>
+                  <para>Convert inquiry and lookup definitions into view.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert section definition into UIF groups</para>
+                </listitem>
+                <listitem>
+                  <para>Convert field definitions into UIF input fields</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para>Convert Struts to Spring MVC.<itemizedlist>
+                <listitem>
+                  <para>Convert Struts and their actions into UIF controllers.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert action paths into request mapping annotations in the
+                    controller.</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para>Convert JSP and tags into UIF components  <itemizedlist>
+                <listitem>
+                  <para>Convert jsp tags into UIF components.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert jstl calls into spring el conditionals.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert document into view.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert kul:tabs into UIF disclosure.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert html tables into grid layouts.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert attributes/control tags into UIF input fields.</para>
+                </listitem>
+                <listitem>
+                  <para>Convert image submit tags into action buttons</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+        </orderedlist></para>
+    </section>
+    <section>
+      <title>How to Run the Conversion Script</title>
+      <para>The automated KRAD conversion script is called KRADConversion.groovy and will process
+        lookup, inquiry, and MaintenanceDocumentEntries into KRAD-compliant XML files. To run the
+        script, complete the following steps:<orderedlist>
+          <listitem>
+            <para>Step 1</para>
+          </listitem>
+          <listitem>
+            <para>Step 2</para>
+          </listitem>
+          <listitem>
+            <para>...</para>
+          </listitem>
+        </orderedlist></para>
+    </section>
   </section>
   <section>
-    <title>Data Dictionary</title>
+    <title>Data Dictionary Conversion</title>
     <para>The Data Dictionary is a repository of metadata primarily describing data objects and
-      their properties. Attribute Definitions provide the metadata about the attributes (i.e.
-      fields) of a data object. The KNS2KRAD Conversion Script will automate part of the conversion
-      for your data dictionary files. Some data dictionary attributes require no conversion, they
-      are virtually identical between KNS and KRAD. These items will be passed through by the
-      conversion script. Some items will be converted from KNS to KRAD by the script. Others will
-      require manual conversion. </para>
-    <para>The subsections below identify the Business Object bean properties, Validation Patterns,
-      and Control Definitions which are converted by the script and those which require manual
-      conversion.</para>
+      their properties with attribute Definitions that provide the metadata about the attributes
+      (i.e. fields) of a data object. The conversion script will automate part of the conversion for
+      your data dictionary files, but some data dictionary attributes require no conversion since
+      they are virtually identical between KNS and KRAD.  The following sections  identify the
+      Business Object bean properties, Validation Patterns, and Control Definitions which are
+      converted by the script and those which require manual conversion.</para>
     <section>
       <title>BusinessObjectEntry bean replaced by DataObjectEntry bean</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
@@ -109,7 +187,7 @@
           </listitem>
           <listitem>
             <para>The data object class is specified via the <emphasis role="keyword"
-                >dataObjectClass</emphasis> property and is no longer specified via the <emphasis
+                >dataObjectClass</emphasis> property is no longer specified via the <emphasis
                 role="keyword">businessObjectClass</emphasis> property. A <emphasis role="keyword"
                 >businessObject</emphasis> is no longer required and any object can be used. [KNS
               line: 3, KRAD line: 3] <inlinemediaobject>
@@ -123,7 +201,7 @@
     </section>
     <section>
       <title>Attribute Definitions</title>
-      <para>Attribute Definitions define the meta-data of an object. Many of the Attribute
+      <para>Attribute Definitions define the meta-data of an object and many of the Attribute
         Definition properties remain the same between KNS and KRAD. The major differences are in how
         validation constraints and controls are defined. The examples below demonstrate the
         differences for defining various validation and controls.</para>
@@ -225,11 +303,12 @@
     </section>
     <section>
       <title>Validation Patterns</title>
-      <para>The KNS validation patterns are supported in KRAD. The naming convention has changed for
-        constraints and patterns, but the functionality is the same. KRAD also has several other
-        validations available. See the KRAD Guide for more detail. The example below demonstrate the
-        differences in defining validation constraints using a single validation pattern. Several
-        such patterns are available</para>
+      <para>The KNS validation patterns are supported in KRAD, but the naming convention has changed
+        for constraints and patterns even though the functionality is the same. KRAD also has
+        several other validations available which are described in more detail in the  <link
+          xlink:show="new" xlink:href="KRAD_Guide.html">KRAD Guide</link>. The example below
+        demonstrates the differences in defining validation constraints using a single validation
+        pattern and several such patterns are available.</para>
       <para>
         <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validationPattern">
@@ -402,7 +481,7 @@
       </para>
       <para><emphasis role="bold">Other Constraints</emphasis></para>
       <para>In addition to the <emphasis role="keyword">validCharactersConstraint</emphasis>, KRAD
-        has several other constraints available, including: <itemizedlist>
+        has several other constraints available: <itemizedlist>
           <listitem>
             <para><emphasis role="keyword">AllowCharacterConstraint</emphasis></para>
           </listitem>
@@ -442,9 +521,10 @@
           <listitem>
             <para><emphasis role="keyword">WhenConstraint</emphasis></para>
           </listitem>
-        </itemizedlist> See the KRAD User Guide for more detail. </para>
+        </itemizedlist> See the  <link xlink:show="new" xlink:href="KRAD_Guide.html">KRAD
+          Guide</link> for more detail. </para>
       <para><emphasis role="bold">Additional Constraint Patterns</emphasis></para>
-      <para>KRAD has additional constraint patterns too <itemizedlist>
+      <para>KRAD has additional constraint patterns too such as:<itemizedlist>
           <listitem>
             <para><emphasis role="keyword"
               >ConfigurationBasedRegexPatternConstraint</emphasis></para>
@@ -458,24 +538,25 @@
           <listitem>
             <para><emphasis role="keyword">ValidDataPatternConstraint</emphasis></para>
           </listitem>
-        </itemizedlist> See the KRAD User Guide for more detail. </para>
+        </itemizedlist> See the <link xlink:show="new" xlink:href="KRAD_Guide.html">KRAD
+          Guide</link> for more detail. </para>
     </section>
     <section>
       <title>Controls</title>
-      <para>Control components are defined to determine which HTML Element(s) are rendered to
+      <para>Control components are defined to determine which HTML element(s) are rendered to
         represent the input field. Here is an example of a Text control within an Attribute
         Definition.</para>
-      <para> KNS Control example:
+      <para>
+        <emphasis role="bold">KNS Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition" p:size="10"/>
 &lt;/property>
-            </programlisting>
-      </para>
-      <para> KRAD Control example:
+            </programlisting></para>
+      <para>
+        <emphasis role="bold">KRAD Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextControl" p:size="10"/>
-&lt;/property></programlisting>
-      </para>
+&lt;/property></programlisting></para>
       <para>
         <itemizedlist>
           <listitem>
@@ -512,17 +593,18 @@
       </para>
       <section>
         <title>Button Control</title>
-        <para>KNS Button control example:
+        <para><emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115343-0700" comment="Add short summary of what button control does."?>KNS<?oxy_comment_end?>
+            Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="ButtonControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD Button control example:
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-PrimaryActionButton" id="Submit" p:methodToCall="save"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -551,24 +633,26 @@
                   <listitem>
                     <para><emphasis role="keyword">Uif-ActionLink</emphasis></para>
                   </listitem>
-                </itemizedlist> See the KRAD User Guide for more detail</para>
+                </itemizedlist> See the <link xlink:show="new" xlink:href="KRAD_Guide.html">KRAD
+                  Guide</link>. for more detail</para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
       <section>
         <title>Checkbox Control</title>
-        <para>KNS Checkbox control example:
-          <programlisting linenumbering="numbered">&lt;property name="control">
+        <para><emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115319-0700" comment="Add short summary of what checkbox control does."?>KNS<?oxy_comment_end?>
+            Checkbox Control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD Checkbox control example:
-          <programlisting linenumbering="numbered">&lt;property name="controlField">
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Checkbox Control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-CheckboxControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -583,22 +667,26 @@
               <para>Also available in KRAD are the Checkbox Group Controls: <emphasis role="keyword"
                   >Uif-VerticalCheckboxesControl</emphasis> and <emphasis role="keyword"
                   >Uif-HorizontalCheckboxesControl</emphasis>. The CheckboxesGroup control is a
-                multi-value control that presents each option as a checkbox. See the KRAD User Guide
-                for more detail.</para>
+                multi-value control that presents each option as a checkbox. See the <link
+                  xlink:show="new" xlink:href="KRAD_Guide.html">KRAD Guide</link>. for more
+                detail.</para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
       <section>
         <title>Currency Control</title>
-        <para> KNS Currency control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115221-0700" comment="Add short summary of what currency control does."?>KNS<?oxy_comment_end?>
+            Currency control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
 &lt;/property>
             </programlisting>
         </para>
-        <para> KRAD Currency Text control example:
-          <programlisting linenumbering="numbered">&lt;property name="controlField">
+        <para><emphasis role="bold">KRAD Currency Text control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-CurrencyTextControl" p:maxLength="26" p:size="10" />
 &lt;/property></programlisting>
         </para>
@@ -625,17 +713,19 @@
       </section>
       <section>
         <title>File Control</title>
-        <para> KNS File control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115400-0700" comment="Add short summary of what file control does."?>KNS<?oxy_comment_end?>
+            File Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD File control example:
-          <programlisting linenumbering="numbered">&lt;property name="controlField">
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD File Control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-FileControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -651,17 +741,19 @@
       </section>
       <section>
         <title>Hidden Control</title>
-        <para> KNS Hidden control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115500-0700" comment="Add short summary of what hidden control does."?>KNS<?oxy_comment_end?>
+            Hidden control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD Hidden control example:
-          <programlisting linenumbering="numbered">&lt;property name="controlField">
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Hidden control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-HiddenControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -677,17 +769,19 @@
       </section>
       <section>
         <title>Kuali User Control</title>
-        <para> KNS Kuali User control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115630-0700" comment="Add short summary of what Kuali User Control does. What&apos;s the difference between user control and Kim Person control?"?>KNS<?oxy_comment_end?>
+            Kuali User control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD Kim Person control example:
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Kim Person control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-KimPersonControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -703,13 +797,17 @@
       </section>
       <section>
         <title>Link Control</title>
-        <para> KNS Link control example:
-          <programlisting linenumbering="numbered">&lt;property name="control">
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115702-0700" comment="Add short summary of what link control does."?>KNS<?oxy_comment_end?>
+            Link control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" p:target="_blank" p:hrefText="click here" />
 &lt;/property></programlisting>
         </para>
-        <para> KRAD Link control example:
-          <programlisting linenumbering="numbered">&lt;property name="controlField">
+        <para>
+          <emphasis role="bold">KRAD Link control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-LinkField" p:fieldLabel.cssClasses="globalLinks" p:target="_blank" p:linkText="click here" href="@{#propertyName}"/>
           &lt;/property></programlisting>
         </para>
@@ -752,17 +850,18 @@
       </section>
       <section>
         <title>TextArea Control</title>
-        <para> KNS TextArea control example:
-          <programlisting linenumbering="numbered">&lt;property name="control">
+        <para><emphasis role="bold">
+            <?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115732-0700" comment="Add short summary of what text area control does."?>KNS<?oxy_comment_end?>
+            TextArea control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD TextArea control example:
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD TextArea control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextAreaControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -778,17 +877,19 @@
       </section>
       <section>
         <title>Text Control</title>
-        <para> KNS Text control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115757-0700" comment="Add short summary of what text control does."?>KNS<?oxy_comment_end?>
+            Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
 &lt;/property>
-            </programlisting>
-        </para>
-        <para> KRAD Text control example:
+            </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
   &lt;bean parent="Uif-TextControl"/>
-&lt;/property></programlisting>
-        </para>
+&lt;/property></programlisting></para>
         <para>
           <itemizedlist>
             <listitem>
@@ -801,7 +902,7 @@
             </listitem>
             <listitem>
               <para>Note: There are several other text controls to choose from with different
-                default styling. Including: <itemizedlist>
+                default styling: <itemizedlist>
                   <listitem>
                     <para><emphasis role="keyword">Uif-SmallTextControl</emphasis> – Similar to
                       Uif-TextControl but sets the size to 10 and applies an additional style class
@@ -816,20 +917,24 @@
                       Uif-TextControl but sets the size to 100 and applies an additional style class
                       of 'uif-largeTextControl'.</para>
                   </listitem>
-                </itemizedlist> See the KRAD User Guide for more detail.</para>
+                </itemizedlist> See the <link xlink:show="new" xlink:href="KRAD_Guide.html">KRAD
+                  Guide</link> for more detail.</para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
       <section>
         <title>Radio Control Group</title>
-        <para> KNS Radio Group control example:
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135210-0700" comment="Add short summary of what radio control does."?>KNS<?oxy_comment_end?>
+            Radio Group control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
-&lt;/property> </programlisting>
-        </para>
-        <para> KRAD Radio Group control example:
-          <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
+&lt;/property> </programlisting></para>
+        <para>
+          <emphasis role="bold">KRAD Radio Group control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="selectedOpt" p:label="Radio 1">
   &lt;property name="control">
     &lt;bean parent="Uif-VerticalRadioControl"/>
   &lt;/property&gt;
@@ -874,9 +979,11 @@
       </section>
       <section>
         <title>Select Control</title>
-        <para/>
-        <para> KNS Select control example:
-          <programlisting linenumbering="numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135250-0700" comment="Add short summary of what select control does."?>KNS<?oxy_comment_end?>
+            Select control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
 &lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
   &lt;property name="name" value="bookId"/>
   &lt;property name="label" value="Book Id"/>
@@ -892,7 +999,8 @@
   &lt;/property>
 &lt;/bean></programlisting>
         </para>
-        <para> KRAD Select control example:
+        <para>
+          <emphasis role="bold">KRAD Select control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
 &lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
   &lt;property name="name" value="bookId"/>
@@ -953,8 +1061,11 @@
       </section>
       <section>
         <title>Date Control</title>
-        <para> KNS Date control example:
-          <programlisting linenumbering="numbered">&lt;property name="control">
+        <para>
+          <emphasis role="bold"
+            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135315-0700" comment="Add short summary of what date control does."?>KNS<?oxy_comment_end?>
+            Date control example:
+          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property>
             </programlisting>
@@ -994,8 +1105,8 @@
     </section>
   </section>
   <section>
-    <title>Inquiry</title>
-    <para/>
+    <title>Inquiry Conversion</title>
+    <para>&lt;add introduction here></para>
     <section>
       <title>InquiryDefinition in KNS Data Dictionary to InquiryView in KRAD</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
@@ -1452,7 +1563,7 @@
       <para>
         <itemizedlist>
           <listitem>
-            <para>Inquiry Header Links</para>
+            <para><emphasis role="bold">Inquiry Header Links</emphasis></para>
             <para>It is now possible to add links in the header of the Inquiry page.  This was supposed to be possible
               in the KNS but never worked.  Thus, any links desired in the header of the Inquiry will have to be added
               manually.
@@ -1469,7 +1580,7 @@
 &lt;/property></programlisting></para>
           </listitem>
           <listitem>
-            <para>Section Permission Checks</para>
+            <para><emphasis role="bold">Section Permission Checks</emphasis></para>
             <para>The viewability of sections in Inquiries are controlled by a KIM permission only when a
               <emphasis role="keyword">componentSecurity</emphasis> is configured in the section of the Uif-InquiryView and
               the appropriate KIM permission exists.  The conversion requires that any sections listed in an override of
@@ -1492,7 +1603,7 @@
             </para>
           </listitem>
           <listitem>
-            <para>Field Permission Checks</para>
+            <para><emphasis role="bold">Field Permission Checks</emphasis></para>
             <para>The viewability of fields in Inquiries are controlled by a KIM permission only when either
               <itemizedlist>
                 <listitem>
@@ -1524,13 +1635,13 @@
     </section>
   </section>
   <section>
-    <title>Lookup</title>
-    <para/>
+    <title>Lookup Conversion</title>
+    <para>&lt;add overview here></para>
     <section>
       <title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
-      <para><emphasis role="italic">Note that the code example is very inclusive to show the
+      <note><para>The code example is very inclusive to show the
           configurations that have changed. As a result the lookups themselves have conflicting
-          settings (i.e. why have custom search buttons when hiding them).</emphasis></para>
+          settings (i.e. why have custom search buttons when hiding them).</para></note>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
       <para>
         <programlisting linenumbering="numbered">&lt;bean id="EntityType-lookupDefinition" parent="LookupDefinition">
@@ -2343,6 +2454,7 @@
       <para>
         <itemizedlist>
           <listitem>
+            <para><emphasis role="bold">Custom Forms</emphasis></para>
             <para>In KNS custom forms are specified in the struts-config.xml file.
               <programlisting>&lt;form-bean name="TravelAuthorizationForm" 
            type="org.kuali.rice.kns.demo.travel.authorization.TravelAuthorizationForm"/></programlisting>
@@ -2359,7 +2471,8 @@
   </section>
 
   <section>
-    <title>Maintenance Documents</title>
+    <title>Maintenance Conversion</title>
+    <para>&lt;add overview here></para>
     <section>
       <title>Specifying a javascript function to call on tab out from a field</title>
       <para>
@@ -2435,37 +2548,22 @@
     </section>
     <section>
       <title>Additional display value</title>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>
-              In KNS <emphasis role="bold"> LookupDefinition.translateCode</emphasis>
-              <emphasis role="bold"> FieldUtils.setAdditionalDisplayPropertyForCodes
-              </emphasis> gave the ability to indicate that any property which is the
-              code on a relationship for a BO class that implements <emphasis role="bold">
-              KualiCode</emphasis> should display itself as a combination of Code + Name
-              in read-only mode.
-
-              In KRAD this is done using  <emphasis role="bold">
-              View.translateCodesOnReadOnlyDisplay</emphasis> and <emphasis role="bold">
-              DataField.setAlternateAndAdditionalDisplayValue</emphasis>
-              <emphasis role="bold">translateCodesOnReadOnlyDisplay</emphasis>  is a
-              boolean that indicates whether code properties should automatically be
-              translated to their name property for read only display.
-              <emphasis role="bold">setAlternateAndAdditionalDisplayValue</emphasis>
-              get the relationship configured in the datadictionary file and set the name
-              additional display value which will be displayed along with the code
-            </para>
-          </listitem>
-        </itemizedlist>
-      </para>
+      <para>In KNS <emphasis role="bold"> LookupDefinition.translateCode</emphasis>
+        <emphasis role="bold"> FieldUtils.setAdditionalDisplayPropertyForCodes </emphasis> gave the
+        ability to indicate that any property which is the code on a relationship for a BO class
+        that implements <emphasis role="bold"> KualiCode</emphasis> should display itself as a
+        combination of Code + Name in read-only mode. In KRAD this is done using <emphasis
+          role="bold"> View.translateCodesOnReadOnlyDisplay</emphasis> and <emphasis role="bold">
+          DataField.setAlternateAndAdditionalDisplayValue</emphasis>
+        <emphasis role="bold">translateCodesOnReadOnlyDisplay</emphasis> is a boolean that indicates
+        whether code properties should automatically be translated to their name property for read
+        only display. <emphasis role="bold">setAlternateAndAdditionalDisplayValue</emphasis> get the
+        relationship configured in the datadictionary file and set the name additional display value
+        which will be displayed along with the code </para>
     </section>
     <section>
       <title>Specifying a maintainable class</title>
       <para>
-        <itemizedlist>
-          <listitem>
-            <para>
               The maintainable class for a given document is specified in the same way in KRAD as
               was done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
               MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
@@ -2473,89 +2571,71 @@
               <programlisting linenumbering = "numbered">
                 &lt;property name="maintainableClass" value="org.kuali.rice.krad.maintenance.SampleMaintainableImpl" /&gt;
               </programlisting>
-            </para>
-          </listitem>
-        </itemizedlist>
       </para>
     </section>
     <section>
       <title>Overriding default values</title>
       <para>
-        <itemizedlist>
-          <listitem>
-            <para>
               In KNS <emphasis role="bold">Maintainable.setGenerateDefaultValues</emphasis> was used to set the default
               values for fields. However in KRAD this functionality is provided by <emphasis role="bold">
               ViewHelperServiceImpl.applyDefaultValues</emphasis>. This is called during the finalize
               phase of the view cycle before the view is rendered.
-            </para>
-          </listitem>
-        </itemizedlist>
       </para>
     </section>
     <section>
       <title>Customization Hooks</title>
-      <para>
-        <itemizedlist>
+      <para>Customization hooks have been provided for the various actions that can be performed on
+        a maintenance document. It involves overriding the specific methods related to that action
+        (new,copy etc). KNS used to provide the following methods: <itemizedlist>
           <listitem>
-            <para>
-              Customization hooks have been provided for the various actions that can be performed on a maintenance
-              document. It involves overriding the specific methods related to that action (new,copy etc). KNS used to
-              provide the following methods:
-              <itemizedlist>
-                <listitem>
-                  <para>MaintenanceDocument.getNewMaintainableObject</para>
-                 </listitem>
-                  <listitem>
-                 <para> Maintainable.setupNewFromExisting</para>
-                  </listitem>
-                  <listitem>
-                  <para>Maintainable.processBeforeAddLine</para>
-                  </listitem>
-                  <listitem>
-                  <para>Maintainable.processAfterPost</para>
-                </listitem>
-              </itemizedlist>
-              Similar functionality can be obtained in KRAD using the following methods:
-              <itemizedlist>
-                <listitem>
-                <para>MaintenanceDocumentController.setupMaintenance</para>
-                </listitem>
-                <listitem>
-                <para>Maintainable.setupNewFromExisting</para>
-                </listitem>
-                <listitem>
-                <para>Maintainable.retrieveObjectForEditOrCopy</para>
-                </listitem>
-                <listitem>
-                <para>Maintainable.processAfterPost</para>
-                </listitem>
-                <listitem>
-                <para>ViewHelperServiceImpl.processBeforeAddLine</para>
-                </listitem>
-                <listitem>
-                <para>ViewHelperServiceImpl.processAfterAddLine</para>
-                </listitem>
-              </itemizedlist>
-              </para>
+            <para>MaintenanceDocument.getNewMaintainableObject</para>
+          </listitem>
+          <listitem>
+            <para> Maintainable.setupNewFromExisting</para>
+          </listitem>
+          <listitem>
+            <para>Maintainable.processBeforeAddLine</para>
+          </listitem>
+          <listitem>
+            <para>Maintainable.processAfterPost</para>
+          </listitem>
+        </itemizedlist> Similar functionality can be obtained in KRAD using the following methods: <itemizedlist>
+          <listitem>
+            <para>MaintenanceDocumentController.setupMaintenance</para>
+          </listitem>
+          <listitem>
+            <para>Maintainable.setupNewFromExisting</para>
+          </listitem>
+          <listitem>
+            <para>Maintainable.retrieveObjectForEditOrCopy</para>
+          </listitem>
+          <listitem>
+            <para>Maintainable.processAfterPost</para>
+          </listitem>
+          <listitem>
+            <para>ViewHelperServiceImpl.processBeforeAddLine</para>
+          </listitem>
+          <listitem>
+            <para>ViewHelperServiceImpl.processAfterAddLine</para>
           </listitem>
         </itemizedlist>
       </para>
     </section>
     <section>
       <title>Preparing the BO as part of document setup </title>
-        <para>
-         In KNS the business object was set up as part document setup  using the Maintainable.prepareBusinessObject.
-          <programlisting linenumbering="numbered">
+        <para> In KNS the business object was set up as part document setup using the
+        Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
+        MaintenanceDocumentService.setupMaintenanceObject.</para>
+      <para><emphasis role="bold">KNS BO
+          Preparation:</emphasis><programlisting linenumbering="numbered">
             public void prepareBusinessObject(BusinessObject businessObject);
-          </programlisting>
-
-          In KRAD this has been replaced by  using MaintenanceDocumentService.setupMaintenanceObject
-          <programlisting linenumbering="numbered">
+          </programlisting><emphasis
+          role="bold">KRAD BO Preparation:
+        </emphasis><programlisting linenumbering="numbered">
             public void setupMaintenanceObject(MaintenanceDocument document, String maintenanceAction,
             Map&lt;String, String[]&gt; requestParameters);
           </programlisting>
-        </para>
+      </para>
     </section>
     <section>
       <title>Refreshing references </title>
@@ -2570,9 +2650,8 @@
     </section>
     <section  xml:id="MEH">
       <title>Permission Checks</title>
-      <para>
-              Permission checks for maintenance documents in KRAD can be setup the same way
-              as specified in the Other Lookup Features.</para>
+      <para>Permission checks for maintenance documents in KRAD can be setup the same way as
+        specified in the Other Lookup Features. Examples below.</para>
         <itemizedlist>
           <listitem>
             <para>
@@ -2608,13 +2687,11 @@
     <section>
       <title>Document Error Handling</title>
       <para>
-        <itemizedlist>
-          <listitem>
-            <para> Document errors with custom paths, typically specified in a subclass of <emphasis
+              Document errors with custom paths, typically specified in a subclass of <emphasis
                 role="bold">MaintenanceDocumentRuleBase</emphasis>, will not appear on the document
               unless they are converted to the new KRAD format. For example, if you were throwing an
-              additional error against text entered for notes, in the KNS you would write a
-              validation like
+              additional error against text entered for notes, in KNS you would write a
+              validation like:</para>
               <programlisting linenumbering="numbered">public boolean isValid(Note note) {
   boolean isValid = true;
   if (!StringUtils.isAllUpperCase(note.getNoteText())) {
@@ -2622,10 +2699,10 @@
     GlobalVariables.getMessageMap().putError("newNote.noteText", "error.note.not.uppercase");
   }
   return isValid;
-}</programlisting>but
+}</programlisting><para>but
               in KRAD, the beginning of the property path has changed to <emphasis role="bold"
                 >newCollectionLines['document.notes']</emphasis> so the code would have to be
-              modified to
+              modified to</para>
               <programlisting linenumbering="numbered">public boolean isValid(Note note) {
   boolean isValid = true;
   if (!StringUtils.isAllUpperCase(note.getNoteText())) {
@@ -2634,81 +2711,11 @@
   }
   return isValid;
 }</programlisting>
-              Validation of all of these customizations is left to the implementer. </para>
-          </listitem>
-        </itemizedlist>
-      </para>
+              <para>Validation of all of these customizations is left to the implementer. </para>
     </section>
   </section>
   <section>
-    <title>Transactional Documents</title>
-    <para/>
-  </section>
-  <section>
-    <title>Conversion Tools</title>
-    <para/>
-    <section>
-      <title>Introduction</title>
-      <para/>
-    </section>
-    <section>
-      <title>Lookup</title>
-      <para/>
-    </section>
-    <section>
-      <title>Inquiry</title>
-      <para/>
-    </section>
-    <section>
-      <title>Maintenance</title>
-      <para/>
-    </section>
-    <section>
-      <title>Transactional</title>
-      <para/>
-    </section>
-  </section>
-  <section>
-    <title>KNS to KRAD Conversion Script</title>
-    <para>KNS to KRAD conversion is setup into four steps: <orderedlist>
-        <listitem>
-          <para>Convert data dictionary into krad compliant format <simplelist>
-              <member>Convert validation patterns to constraint</member>
-              <member>Convert control definitions into uif controls</member>
-            </simplelist>
-          </para>
-        </listitem>
-        <listitem>
-          <para>Convert KNS definitions into KRAD UIF components <simplelist>
-              <member>Convert inquiry and lookup definitions into view</member>
-              <member>Convert section definition into uif groups</member>
-              <member>Convert field definitions into uif input fields</member>
-            </simplelist></para>
-        </listitem>
-        <listitem>
-          <para>Convert struts to spring mvc <simplelist>
-              <member>Convert struts and their actions into uif controllers</member>
-              <member>Convert action paths into request mapping annotations in the
-                controller</member>
-            </simplelist></para>
-        </listitem>
-        <listitem>
-          <para>Convert jsp and tags into uif components <simplelist>
-              <member>Convert jsp tags into UIF components</member>
-              <member>Convert jstl calls into spring el conditionals</member>
-              <member>Convert document into view</member>
-              <member>Convert kul:tabs into UIF disclosure</member>
-              <member>Convert html tables into grid layouts</member>
-              <member>Convert attributes/control tags into UIF input fields</member>
-              <member>Convert image submit tags into action buttons</member>
-            </simplelist></para>
-        </listitem>
-      </orderedlist> The existing script for KRAD conversion is included in KRADConversion.groovy.
-      The script will process lookup, inquiry, and MaintenanceDocumentEntries into KRAD-compliant
-      XML files. </para>
-  </section>
-  <section>
-    <title>OJB to JPA Conversion</title>
-    <para>coming soon...</para>
+    <title>Transactional Conversion</title>
+    <para>&lt;introduction here></para>
   </section>
 </article>

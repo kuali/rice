@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
@@ -46,6 +47,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.sql.Timestamp;
@@ -135,16 +137,16 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			}
 
 			context.setEngineState(new EngineState());
-			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);
 			try {
 				while (!nodeInstancesToProcess.isEmpty()) {
-					context.setNodeInstance((RouteNodeInstance) nodeInstancesToProcess.remove(0));
-					processContext = processNodeInstance(context, helper);
+					context.setNodeInstance(nodeInstancesToProcess.remove(0));
+                    ProcessContext processContext = processNodeInstance(context, helper);
 					if (processContext.isComplete() && !processContext.getNextNodeInstances().isEmpty()) {
 						nodeInstancesToProcess.addAll(processContext.getNextNodeInstances());
 					}
 				}
 				context.setDocument(nodePostProcess(context));
+                flushDatabaseWork();
 			} catch (Exception e) {
 				success = false;
 				// TODO throw a new 'RoutingException' which holds the
@@ -168,6 +170,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
 	protected ProcessContext processNodeInstance(RouteContext context, RouteHelper helper) throws Exception {
 		RouteNodeInstance nodeInstance = context.getNodeInstance();
+        // first, let's make sure this node instance is "managed" in our persistence context
+        nodeInstance = saveNode(context, nodeInstance);
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Processing node instance: " + nodeInstance.getRouteNode().getRouteNodeName());
 		}
@@ -177,17 +181,25 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		TransitionEngine transitionEngine = TransitionEngineFactory.createTransitionEngine(nodeInstance);
 		ProcessResult processResult = transitionEngine.isComplete(context);
-		nodeInstance.setInitial(false);
 
-		// if this nodeInstance already has next node instance we don't need to
-		// go to the TE
+        // we've executed the node at least once now, if the initial flag has not already been cleared, do so now
+        if (nodeInstance.isInitial()) {
+            nodeInstance.setInitial(false);
+        }
+
+        // if the node is complete, let's transition
 		if (processResult.isComplete()) {
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Routing node has completed: " + nodeInstance.getRouteNode().getRouteNodeName());
 			}
 
+            // route node instance id could be null if a flush didn't happen properly, let's verify
+            if (nodeInstance.getRouteNodeInstanceId() == null) {
+                throw new IllegalStateException("Encountered a node instance in the engine with no id: " + nodeInstance);
+            }
 			context.getEngineState().getCompleteNodeInstances().add(nodeInstance.getRouteNodeInstanceId());
-			List nextNodeCandidates = invokeTransition(context, context.getNodeInstance(), processResult, transitionEngine);
+			List<RouteNodeInstance> nextNodeCandidates =
+                    invokeTransition(context, nodeInstance, processResult, transitionEngine);
 
 			// iterate over the next node candidates sending them through the
 			// transition engine's transitionTo method
@@ -195,49 +207,29 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			// engines result back in the 'actual' next node
 			// list which we put in the next node before doing work.
 			List<RouteNodeInstance> nodesToActivate = new ArrayList<RouteNodeInstance>();
-			if (!nextNodeCandidates.isEmpty()) {
-				// KULRICE-4274: Hierarchy Routing Node issues
-				// No longer change nextNodeInstances in place, instead we create a local and assign our local list below
-				// the loop so the post processor doesn't save a RouteNodeInstance in an intermediate state
-				ArrayList<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
-
-				for (Iterator nextIt = nextNodeCandidates.iterator(); nextIt.hasNext();) {
-					RouteNodeInstance nextNodeInstance = (RouteNodeInstance) nextIt.next();
+            if (!nextNodeCandidates.isEmpty()) {
+                for (RouteNodeInstance nextNodeInstance : nextNodeCandidates) {
 					transitionEngine = TransitionEngineFactory.createTransitionEngine(nextNodeInstance);
 					RouteNodeInstance currentNextNodeInstance = nextNodeInstance;
 					nextNodeInstance = transitionEngine.transitionTo(nextNodeInstance, context);
 					// if the next node has changed, we need to remove our
 					// current node as a next node of the original node
 					if (!currentNextNodeInstance.equals(nextNodeInstance)) {
+                        nodeInstance.getNextNodeInstances().remove(currentNextNodeInstance);
 						currentNextNodeInstance.getPreviousNodeInstances().remove(nodeInstance);
 					}
-					// before adding next node instance, be sure that it's not
-					// already linked via previous node instances
-					// this is to prevent the engine from setting up references
-					// on nodes that already reference each other.
-					// the primary case being when we are walking over an
-					// already constructed graph of nodes returned from a
-					// dynamic node - probably a more sensible approach would be
-					// to check for the existence of the link and moving on
-					// if it's been established.
-					nextNodeInstance.getPreviousNodeInstances().remove(nodeInstance);
-					nextNodeInstances.add(nextNodeInstance);
-					handleBackwardCompatibility(context, nextNodeInstance);
+                    RouteNodeInstance savedNextNodeInstance = saveNode(context, nextNodeInstance);
+                    if (savedNextNodeInstance != nextNodeInstance) {
+                        nodeInstance.getNextNodeInstances().remove(nextNodeInstance);
+                    }
+                    if (!nodeInstance.getNextNodeInstances().contains(savedNextNodeInstance)) {
+                        nodeInstance.addNextNodeInstance(savedNextNodeInstance);
+                    }
+					handleBackwardCompatibility(context, savedNextNodeInstance);
 					// call the post processor
-					notifyNodeChange(context, nextNodeInstance);
-					nodesToActivate.add(nextNodeInstance);
- 					// TODO update document content on context?
+					notifyNodeChange(context, savedNextNodeInstance);
+					nodesToActivate.add(savedNextNodeInstance);
  				}
- 				// assign our local list here so the post processor doesn't save a RouteNodeInstance in an intermediate state
-                // also, we clear out the next node instances here because it's legal for a transition engine (like the
-                // DynamicTransitionEngine) to return a RouteNodeInstance which already has nextNodeInstances that have
-                // been setup in advance. In these cases, depending on the type that those next node instances are, they
-                // might also get replaced during a "transitionTo" on the transaction, so we need to make sure we link
-                // our node instance to the proper version of it's next node instances
-                nodeInstance.clearNextNodeInstances();
-				for (RouteNodeInstance nextNodeInstance : nextNodeInstances) {
-					nodeInstance.addNextNodeInstance(nextNodeInstance);
-				}
  			}
  
  			// deactive the current active node
@@ -252,6 +244,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         }
 
 		nodeInstance = saveNode(context, nodeInstance);
+        // always be sure that we are changes are flushed with the database after every node instance processing
+        flushDatabaseWork();
 		return new ProcessContext(nodeInstance.isComplete(), nodeInstance.getNextNodeInstances());
 	}
 
@@ -289,22 +283,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	 *     transition engine of the process node and return the resulting node instances.
 	 * </pre>
 	 */
-	/*
-	 * private List invokeTransition(RouteContext context, RouteNodeInstance
-	 * nodeInstance, ProcessResult processResult, TransitionEngine
-	 * transitionEngine) throws Exception { List nextNodeInstances =
-	 * nodeInstance.getNextNodeInstances(); if (nextNodeInstances.isEmpty()) {
-	 * Transition result = transitionEngine.transitionFrom(context,
-	 * processResult); nextNodeInstances = result.getNextNodeInstances(); if
-	 * (nextNodeInstances.isEmpty() && nodeInstance.isInProcess()) {
-	 * transitionEngine =
-	 * TransitionEngineFactory.createTransitionEngine(nodeInstance.getProcess());
-	 * nextNodeInstances = invokeTransition(context, nodeInstance.getProcess(),
-	 * processResult, transitionEngine); } } return nextNodeInstances; }
-	 */
-
-	private List invokeTransition(RouteContext context, RouteNodeInstance nodeInstance, ProcessResult processResult, TransitionEngine transitionEngine) throws Exception {
-		List nextNodeInstances = nodeInstance.getNextNodeInstances();
+	private List<RouteNodeInstance> invokeTransition(RouteContext context, RouteNodeInstance nodeInstance, ProcessResult processResult, TransitionEngine transitionEngine) throws Exception {
+		List<RouteNodeInstance> nextNodeInstances = nodeInstance.getNextNodeInstances();
 		if (nextNodeInstances.isEmpty()) {
 			Transition result = transitionEngine.transitionFrom(context, processResult);
 			nextNodeInstances = result.getNextNodeInstances();
@@ -314,25 +294,11 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				nextNodeInstances = invokeTransition(context, nodeInstance.getProcess(), processResult, transitionEngine);
 			}
 		}
-		return nextNodeInstances;
+        // if this nodeInstance already has next node instance we can just return them
+        return nextNodeInstances;
 	}
 
-	/*
-	 * private List invokeTransition(RouteContext context, RouteNodeInstance
-	 * process, ProcessResult processResult) throws Exception {
-	 * RouteNodeInstance nodeInstance = (context.getRouteNodeInstance() ; List
-	 * nextNodeInstances = nodeInstance.getNextNodeInstances(); if
-	 * (nextNodeInstances.isEmpty()) { TransitionEngine transitionEngine =
-	 * TransitionEngineFactory.createTransitionEngine(nodeInstance); Transition
-	 * result = transitionEngine.transitionFrom(context, processResult);
-	 * nextNodeInstances = result.getNextNodeInstances(); if
-	 * (nextNodeInstances.isEmpty() && nodeInstance.isInProcess()) {
-	 * transitionEngine =
-	 * TransitionEngineFactory.createTransitionEngine(nodeInstance.getProcess());
-	 * nextNodeInstances = invokeTransition(context, nodeInstance.getProcess(),
-	 * processResult, transitionEngine); } } return nextNodeInstances; }
-	 *
-	 */private void notifyNodeChange(RouteContext context, RouteNodeInstance nextNodeInstance) throws Exception {
+    private void notifyNodeChange(RouteContext context, RouteNodeInstance nextNodeInstance) throws Exception {
 		if (!context.isSimulation()) {
 			RouteNodeInstance nodeInstance = context.getNodeInstance();
 			// if application document status transition has been defined, update the status
@@ -349,12 +315,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
 	private void handleBackwardCompatibility(RouteContext context, RouteNodeInstance nextNodeInstance) {
-		context.getDocument().setDocRouteLevel(new Integer(context.getDocument().getDocRouteLevel().intValue() + 1)); // preserve
-																														// route
-																														// level
-																														// concept
-																														// if
-																														// possible
+        // for backward compatibility, preserve the concept of a route level number even though it has no meaning for
+        // documents that have non-sequential route paths
+		context.getDocument().setDocRouteLevel(new Integer(context.getDocument().getDocRouteLevel().intValue() + 1));
 		saveDocument(context);
 	}
 
@@ -397,8 +360,13 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         return nodeInstance;
 	}
 
-	// TODO extract this into some sort of component which handles transitioning
-	// document state
+    /**
+     * Flush using DocumentRouteHeaderValue to identify the context in which to flush database changes.
+     */
+    protected void flushDatabaseWork() {
+        KradDataServiceLocator.getDataObjectService().flush(DocumentRouteHeaderValue.class);
+    }
+
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {
 		DocumentRouteHeaderValue document = context.getDocument();
         Collection<RouteNodeInstance> activeNodes = RouteNodeUtils.getActiveNodeInstances(document);
@@ -727,7 +695,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         if (process.getInitialRouteNode() != null) {
             RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
             nodeInstance.setActive(true);
-            Branch branch = helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+            helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
             nodeInstance = saveNode(context, nodeInstance);
             document.getInitialRouteNodeInstances().add(nodeInstance);
         }
@@ -735,7 +703,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
 	    String maxNodesConstant = getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
-	    int maxNodes = (org.apache.commons.lang.StringUtils.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
+	    int maxNodes = StringUtils.isEmpty(maxNodesConstant) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}
 

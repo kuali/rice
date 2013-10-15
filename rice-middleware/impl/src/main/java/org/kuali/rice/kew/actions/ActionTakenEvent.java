@@ -425,7 +425,7 @@ public abstract class ActionTakenEvent {
                 if (!systemPrincipalIds.contains(action.getPrincipalId()))
                 {
                     ActionRequestValue request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
-                    KEWServiceLocator.getActionRequestService().activateRequest(request);
+                    request = KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getPrincipalId());
                 }
             }

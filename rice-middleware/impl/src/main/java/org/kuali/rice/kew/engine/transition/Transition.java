@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,20 +27,20 @@ import java.util.List;
  */
 public class Transition {
 
-	private List nextNodeInstances = new ArrayList();
+	private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
 	
 	public Transition() {
 	}
 	
-	public Transition(List nextNodeInstances) throws Exception {
+	public Transition(List<RouteNodeInstance> nextNodeInstances) throws Exception {
         this.nextNodeInstances = nextNodeInstances;
 	}
 
-	public List getNextNodeInstances() {
+	public List<RouteNodeInstance> getNextNodeInstances() {
 		return nextNodeInstances;
 	}
 
-	protected void setNextNodeInstances(List nextNodeInstances) {
+	protected void setNextNodeInstances(List<RouteNodeInstance> nextNodeInstances) {
 		this.nextNodeInstances = nextNodeInstances;
 	}
 	

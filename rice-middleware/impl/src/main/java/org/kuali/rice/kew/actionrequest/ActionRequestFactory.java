@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -39,7 +40,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -199,12 +199,11 @@ public class ActionRequestFactory {
      * @return a list of generated notification requests
      */
     private List<ActionRequestValue> generateNotifications(ActionRequestValue parentRequest,
-            List requests, PrincipalContract principal, Recipient delegator, String notificationRequestCode,
+            List<ActionRequestValue> requests, PrincipalContract principal, Recipient delegator, String notificationRequestCode,
             String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
-        for (Iterator iter = requests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+        for (ActionRequestValue actionRequest : requests) {
             if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator))) {
                 // skip user requests to system users
                 if ((notifyExclusionWorkgroup != null) &&
@@ -213,12 +212,14 @@ public class ActionRequestFactory {
                 }
                 ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, principal, notificationRequestCode, actionTakenCode);
                 if (parentRequest == null) {
+                    // we'll only add the request to the returned list if it's a root request since we always save from
+                    // the root request and cascade down
                     notificationRequests.add(notificationRequest);
-                    generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
                 } else {
                     notificationRequest.setParentActionRequest(parentRequest);
                     parentRequest.getChildrenRequests().add(notificationRequest);
                 }
+                generateNotifications(notificationRequest, actionRequest.getChildrenRequests(), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
             }
         }
         return notificationRequests;

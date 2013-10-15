@@ -74,11 +74,11 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public void save(NodeState nodeState) {
-        dataObjectService.save(nodeState, PersistenceOption.FLUSH);
+        dataObjectService.save(nodeState);
     }
     
     public Branch save(Branch branch) {
-        return dataObjectService.save(branch, PersistenceOption.FLUSH);
+        return dataObjectService.save(branch);
     }
 
     public RouteNode findRouteNodeById(String nodeId) {

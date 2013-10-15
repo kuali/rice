@@ -76,10 +76,8 @@ public abstract class TransitionEngine {
      */
     protected List<RouteNodeInstance> resolveNextNodeInstances(RouteNodeInstance nodeInstance, List<RouteNode> nextRouteNodes) {
         List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
-        for (RouteNode nextRouteNode : nextRouteNodes)
-        {
-            RouteNode nextNode = (RouteNode) nextRouteNode;
-            RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(nodeInstance.getDocumentId(), nextNode);
+        for (RouteNode nextRouteNode : nextRouteNodes) {
+            RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(nodeInstance.getDocumentId(), nextRouteNode);
             nextNodeInstance.setBranch(nodeInstance.getBranch());
             nextNodeInstance.setProcess(nodeInstance.getProcess());
             nextNodeInstances.add(nextNodeInstance);

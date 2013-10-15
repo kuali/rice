@@ -15,23 +15,12 @@
  */
 package org.kuali.rice.kew.actions;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import mocks.MockEmailNotificationService;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
@@ -40,9 +29,14 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @BaselineMode(Mode.CLEAR_DB)
 public class BlanketApproveTest extends KEWTestCase {
@@ -302,7 +296,6 @@ public class BlanketApproveTest extends KEWTestCase {
     }
     
     @Test public void testBlanketApproveToJoin() throws Exception {
-        
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), ParallelSetup.DOCUMENT_TYPE_NAME);
         document.blanketApprove("", ParallelSetup.JOIN_NODE);
         assertTrue("Document should still be enroute.", document.isEnroute());
@@ -318,6 +311,7 @@ public class BlanketApproveTest extends KEWTestCase {
         document.blanketApprove("", ParallelSetup.ACKNOWLEDGE_1_NODE);
         
         activeNodes = getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
+
         assertEquals("Wrong number of active nodes.", 0, activeNodes.size());
         Collection terminalNodes = getRouteNodeService().getTerminalNodeInstances(document.getDocumentId());
         assertEquals("Wrong number of terminal nodes.", 1, terminalNodes.size());

@@ -1174,19 +1174,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         	copiedRequests.add(actionRequest);
         }
 
+        List<ActionRequestValue> savedRequests = new ArrayList<ActionRequestValue>();
         ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
         for (ActionRequestValue request : copiedRequests) {
             if (activateFirst.booleanValue() && !request.isActive()) {
-                KEWServiceLocator.getActionRequestService().activateRequest(request, activationContext);
+                request = KEWServiceLocator.getActionRequestService().activateRequest(request, activationContext);
             }
             if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
-                KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
+                request = KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             } else if (request.isGroupRequest() && KimApiServiceLocator.getGroupService().isMemberOfGroup(principalId, request.getGroup().getId())) {
-                KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
+                request = KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
+            savedRequests.add(request);
         }
         boolean allDeactivated = true;
-        for (ActionRequestValue actionRequest: copiedRequests) {
+        for (ActionRequestValue actionRequest: savedRequests) {
             allDeactivated = allDeactivated && actionRequest.isDeactivated();
         }
         return allDeactivated;

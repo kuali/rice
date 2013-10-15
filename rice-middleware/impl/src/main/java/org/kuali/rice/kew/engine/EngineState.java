@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 
 
 /**
@@ -35,13 +36,13 @@ public class EngineState implements Serializable {
     
     private RouteNodeInstance transitioningFrom;
     private RouteNodeInstance transitioningTo;
-    private List completeNodeInstances = new ArrayList();
-    private List generatedRequests = new ArrayList();
+    private List<String> completeNodeInstances = new ArrayList<String>();
+    private List<ActionRequestValue> generatedRequests = new ArrayList<ActionRequestValue>();
     
-    public List getCompleteNodeInstances() {
+    public List<String> getCompleteNodeInstances() {
         return completeNodeInstances;
     }
-    public void setCompleteNodeInstances(List completeNodeInstances) {
+    public void setCompleteNodeInstances(List<String> completeNodeInstances) {
         this.completeNodeInstances = completeNodeInstances;
     }
     public RouteNodeInstance getTransitioningFrom() {
@@ -56,10 +57,10 @@ public class EngineState implements Serializable {
     public void setTransitioningTo(RouteNodeInstance transitioningTo) {
         this.transitioningTo = transitioningTo;
     }
-    public List getGeneratedRequests() {
+    public List<ActionRequestValue> getGeneratedRequests() {
         return generatedRequests;
     }
-    public void setGeneratedRequests(List generatedRequests) {
+    public void setGeneratedRequests(List<ActionRequestValue> generatedRequests) {
         this.generatedRequests = generatedRequests;
     }
     

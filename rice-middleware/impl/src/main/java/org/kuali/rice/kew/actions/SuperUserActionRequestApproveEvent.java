@@ -118,7 +118,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         LOG.debug("Deactivate this action request");
 
         ActionRequestValue request = getActionRequest();
-        getActionRequestService().deactivateRequest(actionTaken, request);
+        request = getActionRequestService().deactivateRequest(actionTaken, request);
         if (docType.getSuperUserApproveNotificationPolicy().getPolicyValue() && request.isApproveOrCompleteRequest()) {
         	KEWServiceLocator.getActionRequestService().activateRequest(
         	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getPrincipal(), this.getActionTakenCode(), getPrincipal(), null));

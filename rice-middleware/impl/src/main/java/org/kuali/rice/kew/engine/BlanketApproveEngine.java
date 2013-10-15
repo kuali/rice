@@ -240,8 +240,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.isApproveOrCompleteRequest()) {
-                getActionRequestService().deactivateRequest(actionTaken, request);
-                requestsToNotify.add(request);
+                requestsToNotify.add(getActionRequestService().deactivateRequest(actionTaken, request));
             }
         }
         if (notifyContext != null && !requestsToNotify.isEmpty()) {

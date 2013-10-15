@@ -22,10 +22,15 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegateContract;
-import org.kuali.rice.kim.api.group.GroupContract;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.role.RoleContract;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.framework.group.GroupEbo;
+import org.kuali.rice.kim.framework.role.RoleEbo;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +42,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="KREW_PPL_FLW_DLGT_T")
-public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateContract {
+public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateContract, BusinessObject {
 
     @Id
     @Column(name="PPL_FLW_DLGT_ID")
@@ -73,10 +78,10 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
     private Person person;
 
     @Transient
-    private GroupContract group;
+    private GroupEbo group;
 
     @Transient
-    private RoleContract role;
+    private RoleEbo role;
 
     public static PeopleFlowDelegate to(PeopleFlowDelegateBo delegateBo) {
         if (delegateBo == null) {
@@ -173,14 +178,6 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
         this.person = person;
     }
 
-    public void setGroup(GroupContract group) {
-        this.group = group;
-    }
-
-    public void setRole(RoleContract role) {
-        this.role = role;
-    }
-
     public Person getPerson() {
         if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
             if ((this.person == null) || !person.getPrincipalId().equals(memberId) || !person.getPrincipalName().equals(memberName)) {
@@ -213,28 +210,30 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
         return newPerson;
     }
 
-    public GroupContract getGroup() {
+    public GroupEbo getGroup() {
         if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
-              KimApiServiceLocator.getGroupService().getGroup(this.memberId);
-            if (this.group != null) {
-                this.memberId = this.group.getId();
-                this.memberName = this.group.getNamespaceCode() + " : " + group.getName();
-            }
-        }
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
+            group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, group, "group");
+             if (group != null) {
+                memberId = group.getId();
+                memberName = group.getNamespaceCode() + " : " + group.getName();
 
-        return this.group;
+             }
+        }
+        return group;
     }
 
-    public RoleContract getRole() {
+
+    public RoleEbo getRole() {
         if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
-            KimApiServiceLocator.getRoleService().getRole(this.memberId);
-            if (this.role != null) {
-                this.memberId = this.role.getId();
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
+            role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
+            if (role != null) {
+                memberId = role.getId();
                 memberName = role.getNamespaceCode() + " : " + role.getName();
             }
-        }
-
-        return this.role;
+         }
+         return role;
     }
 
     public void setMemberName(String memberName) throws InstantiationException, IllegalAccessException {
@@ -283,5 +282,10 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
 
     public void setDelegationType(DelegationType delegationType) {
         this.delegationTypeCode = delegationType.getCode();
+    }
+
+    @Override
+    public void refresh() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

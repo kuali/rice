@@ -57,19 +57,24 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         ApplicationDocumentStatusCategory appDocStatusCategory = setupApplicationDocumentStatusCategory(
                 dt);
         assertTrue("ApplicationDocumentStatusCategory persisted correctly", appDocStatusCategory != null);
+        dt.getApplicationStatusCategories().add(appDocStatusCategory);
 
         ApplicationDocumentStatus appDocStatus = setApplicationDocumentStatus(dt, appDocStatusCategory);
         assertTrue("Application Document Status persisted correctly", appDocStatus != null &&
                 StringUtils.isNotBlank(appDocStatus.getDocumentTypeId()));
+        dt.getValidApplicationStatuses().add(appDocStatus);
 
 
         DocumentTypeAttributeBo documentTypeAttributeBo = setupDocumentTypeAttributeBo(dt);
         assertTrue("DocumentTypeAttributeBo persisted correctly", documentTypeAttributeBo != null &&
                         StringUtils.isNotBlank(documentTypeAttributeBo.getId()));
 
+
         ProcessDefinitionBo processDefinitionBo = setupProcessDefinitionBo(dt);
         assertTrue("ProcessDefinitionBo persisted correctly", processDefinitionBo != null &&
                         StringUtils.isNotBlank(processDefinitionBo.getProcessId()));
+
+        KRADServiceLocator.getDataObjectService().save(dt, PersistenceOption.FLUSH);
 
         dt = KRADServiceLocator.getDataObjectService().find(DocumentType.class,dt.getDocumentTypeId());
         assertTrue("Document Type fetched correctly", dt != null && StringUtils.isNotBlank(dt.getDocumentTypeId()));
@@ -235,6 +240,8 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         applicationDocumentStatus.setCategory(category);
         applicationDocumentStatus.setSequenceNumber(1);
         applicationDocumentStatus.setStatusName("someStatus");
+
+        documentType.getApplicationStatusCategories().add(category);
 
         return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatus);
     }

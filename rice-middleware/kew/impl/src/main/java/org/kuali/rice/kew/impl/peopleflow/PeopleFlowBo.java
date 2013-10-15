@@ -32,6 +32,7 @@ import org.kuali.rice.krad.util.BeanPropertyComparator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -66,7 +67,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     @Column(name="NMSPC_CD")
     private String namespaceCode;
 
-    @Column(name="TYP_ID")
+    @Column(name="TYP_ID", insertable = false, updatable = false)
     private String typeId;
 
     @Column(name="DESC_TXT")
@@ -78,6 +79,10 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     @Version
     @Column(name="VER_NBR")
     private Long versionNumber;
+
+    @ManyToOne
+    @JoinColumn(name="TYP_ID")
+    private KewTypeBo typeBo;
 
     @OneToMany
     @JoinColumn(name="PPL_FLW_ID", referencedColumnName="PPL_FLW_ID")
@@ -355,5 +360,13 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
 
     public void setAttributeValues(Map<String, String> attributeValues) {
         this.attributeValues = attributeValues;
+    }
+
+    public KewTypeBo getTypeBo() {
+        return typeBo;
+    }
+
+    public void setTypeBo(KewTypeBo typeBo) {
+        this.typeBo = typeBo;
     }
 }

@@ -22,10 +22,17 @@ import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.framework.group.GroupEbo;
+import org.kuali.rice.kim.framework.role.RoleEbo;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +46,7 @@ import java.util.List;
 
 @Entity
 @Table(name="KREW_PPL_FLW_MBR_T")
-public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContract {
+public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContract,BusinessObject {
 
     @Id
     @Column(name="PPL_FLW_MBR_ID")
@@ -75,10 +82,10 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     private Person person;
 
     @Transient
-    private GroupContract group;
+    private GroupEbo group;
 
     @Transient
-    private RoleContract role;
+    private RoleEbo role;
 
     List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
 
@@ -157,13 +164,6 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         this.person = person;
     }
 
-    public void setGroup(GroupContract group) {
-        this.group = group;
-    }
-
-    public void setRole(RoleContract role) {
-        this.role = role;
-    }
 
     public List<PeopleFlowDelegateBo> getDelegates() {
         return delegates;
@@ -208,34 +208,30 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         return newPerson;
     }
 
-    public GroupContract getGroup() {
-        if (MemberType.GROUP.getCode().equals(this.memberTypeCode)) {
-            // TODO - How to convert this over with jpa
-//            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
-//            this.group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, this.group, "group");
-            this.group = KimApiServiceLocator.getGroupService().getGroup(this.memberId);
-            if (this.group != null) {
-                this.memberId = this.group.getId();
-                this.memberName = this.group.getNamespaceCode() + " : " + this.group.getName();
+    public GroupEbo getGroup() {
+        if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
+            group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, group, "group");
+            if (group != null) {
+                memberId = group.getId();
+                memberName = group.getNamespaceCode() + " : " + group.getName();
+
             }
         }
-
         return group;
     }
 
-    public RoleContract getRole() {
+
+    public RoleEbo getRole() {
         if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
-            // TODO - How to convert this over with jpa
-//            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
-//            this.role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, this.role, "role");
-              this.role = KimApiServiceLocator.getRoleService().getRole(this.memberId);
-            if (this.role != null) {
-                this.memberId = this.role.getId();
-                this.memberName = this.role.getNamespaceCode() + " : " + this.role.getName();
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
+            role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
+            if (role != null) {
+                memberId = role.getId();
+                memberName = role.getNamespaceCode() + " : " + role.getName();
             }
         }
-
-        return this.role;
+        return role;
     }
 
     public void setMemberName(String memberName) throws InstantiationException, IllegalAccessException {
@@ -303,5 +299,11 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
             memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate));
         }
         return memberBo;
+    }
+
+
+    @Override
+    public void refresh() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

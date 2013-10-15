@@ -203,11 +203,32 @@ class LegacyDetector {
             return true;
         }
         // if it's only loaded in legacy, then we can indicate to use the legacy framework
-        if (isLegacyDataFrameworkEnabled() && isOjbLoadedClass(dataObjectClass) && !isKradDataManaged(dataObjectClass)) {
+        //ADDED hack to handle classes like PersonImpl that are not in OJB but are Legacy and should
+        //goto that adapter
+        if (isLegacyDataFrameworkEnabled() &&
+                (isOjbLoadedClass(dataObjectClass)  || (isTransientBoOnClasspath(dataObjectClass))) &&
+                        !isKradDataManaged(dataObjectClass)) {
             return true;
         }
         // default to non-legacy when in a non-legacy context
         return false;
+    }
+
+    /**
+     * Confirm if TransientBO on classpath and this is one
+     * @param dataObjectClass
+     * @return
+     */
+    private boolean isTransientBoOnClasspath(Class dataObjectClass){
+        Class<?> tbob = null;
+        Object dataObject = null;
+        try {
+            dataObject = dataObjectClass.newInstance();
+            tbob = Class.forName("org.kuali.rice.krad.bo.TransientBusinessObjectBase");
+        } catch (Exception e) {
+            return false;
+        }
+        return tbob.isInstance(dataObject);
     }
 
     /**

@@ -326,7 +326,7 @@ public class ComponentUtilsTest {
             }});
     }
 
-    private boolean ComponentCopyPropertiesMatch(ComponentBase originalComponent, ComponentBase copiedComponent) {
+    private boolean ComponentCopyPropertiesMatch(Component originalComponent, Component copiedComponent) {
         boolean result = true;
 
         List<String> missingComponentsToRefresh = originalComponent.getAdditionalComponentsToRefresh();
@@ -387,7 +387,11 @@ public class ComponentUtilsTest {
         if (!originalComponent.getFinalizeMethodToCall().equals(copiedComponent.getFinalizeMethodToCall())) {
             result = false;
         }
-        if (!originalComponent.getMethodToCallOnRefresh().equals(copiedComponent.getMethodToCallOnRefresh())) {
+        if (originalComponent instanceof ComponentBase &&  copiedComponent instanceof ComponentBase){
+            if (! (((ComponentBase)originalComponent).getMethodToCallOnRefresh().equals(((ComponentBase)copiedComponent).getMethodToCallOnRefresh()))) {
+                result = false;
+            }
+        } else {
             result = false;
         }
         if (!originalComponent.getOnBlurScript().equals(copiedComponent.getOnBlurScript())) {

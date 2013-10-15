@@ -118,7 +118,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     private Message addLineLabel;
     private List<? extends Component> addLineItems;
-    private List<Action> addLineActions;
+    private List<? extends Component> addLineActions;
 
     private boolean renderLineActions;
     private List<? extends Component> lineActions;
@@ -675,23 +675,25 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * Action fields that should be rendered for the add line. This is generally
-     * the add action (button) but can be configured to contain additional
-     * actions
+     * Component fields that should be rendered for the add line.
+     *
+     * <p>This is generally the add action (button) but can be configured to contain additional
+     * components
+     * </p>
      *
      * @return add line action fields
      */
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<Action> getAddLineActions() {
+    public List<? extends Component> getAddLineActions() {
         return this.addLineActions;
     }
 
     /**
-     * Setter for the add line action fields
+     * Setter for the add line action components fields
      *
      * @param addLineActions
      */
-    public void setAddLineActions(List<Action> addLineActions) {
+    public void setAddLineActions(List<? extends Component> addLineActions) {
         this.addLineActions = addLineActions;
     }
 
@@ -1359,7 +1361,7 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         if (addLineActions != null && !addLineActions.isEmpty()) {
-            List<Action> addLineActionsCopy = ComponentUtils.copy(addLineActions);
+            List<? extends Component> addLineActionsCopy = ComponentUtils.copy(addLineActions);
             collectionGroupCopy.setAddLineActions(addLineActionsCopy);
         }
 

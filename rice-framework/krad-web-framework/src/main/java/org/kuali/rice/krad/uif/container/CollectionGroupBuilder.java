@@ -272,10 +272,10 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-        List<Action> actions = getAddLineActions(view, model, collectionGroup);
+        List<? extends Component> actionComponents = getAddLineActionComponents(view, model, collectionGroup);
 
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
-        buildLine(view, model, collectionGroup, addLineBindingPath, actions, addLineBindsToForm, addLine, -1);
+        buildLine(view, model, collectionGroup, addLineBindingPath, actionComponents, addLineBindsToForm, addLine, -1);
     }
 
     /**
@@ -838,7 +838,7 @@ public class CollectionGroupBuilder implements Serializable {
     }
 
     /**
-     * Creates new {@code Action} instances for the add line
+     * Creates new {@code Component} instances for the add line
      *
      * <p>
      * Adds context to the action fields for the add line so that the collection
@@ -849,14 +849,14 @@ public class CollectionGroupBuilder implements Serializable {
      * @param model top level object containing the data
      * @param collectionGroup collection group component for the collection
      */
-    protected List<Action> getAddLineActions(View view, Object model, CollectionGroup collectionGroup) {
+    protected List<? extends Component> getAddLineActionComponents(View view, Object model, CollectionGroup collectionGroup) {
         String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<Action> lineActions = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(), lineSuffix);
-
-        for (Action action : lineActions) {
+        List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(), lineSuffix);
+        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(lineActionComponents, Action.class);
+        for (Action action : actions) {
             action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
@@ -896,9 +896,9 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActions, addLine, -1, lineSuffix);
+        ComponentUtils.updateContextsForLine(lineActionComponents, addLine, -1, lineSuffix);
 
-        return lineActions;
+        return lineActionComponents;
     }
 
     /**

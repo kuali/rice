@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -40,6 +39,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.springframework.core.OrderComparator;
 
 /**
@@ -489,50 +489,6 @@ public class ComponentUtils {
         }
     }
 
-//    /**
-//     * Replace all IDs from a component and its children with new generated ID values.
-//     * 
-//     * <p>If there are features that depend on a static id of this
-//     * component, this call may cause errors.</p>
-//     *
-//     * @param component A list of component to clear all IDs from.
-//     */
-//    public static void assignIds(List<? extends Component> components) {
-//        if (components == null || components.isEmpty()) {
-//            return;
-//        }
-//        
-//        Queue<Component> toClear = new LinkedList<Component>();
-//        toClear.addAll(components);
-//        while (!toClear.isEmpty()) {
-//            Component component = toClear.poll();
-//
-//            if (StringUtils.isEmpty(component.getId())) {
-//                component.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
-//            }
-//
-//            if (component instanceof Container) {
-//                LayoutManager layoutManager = ((Container) component).getLayoutManager();
-//                
-//                if (layoutManager != null && StringUtils.isEmpty(layoutManager.getId())) {
-//                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
-//                }
-//            }
-//
-//            for (Component nested : component.getComponentsForLifecycle()) {
-//                if (nested != null) {
-//                    toClear.add(nested);
-//                }
-//            }
-//            
-//            for (Component nested : component.getComponentPrototypes()) {
-//                if (nested != null) {
-//                    toClear.add(nested);
-//                }
-//            }
-//        }
-//    }
-
     /**
      * Replace all IDs from a component and its children with new generated ID values.
      * 
@@ -546,18 +502,37 @@ public class ComponentUtils {
             return;
         }
         
+        final int prime = 6971;
+        int hash = 1;
         Queue<Component> toClear = new LinkedList<Component>();
         toClear.addAll(components);
         while (!toClear.isEmpty()) {
             Component component = toClear.poll();
+
+            hash = prime * hash + component.getClass().getName().hashCode();
+            String id = component.getId();
+            hash *= prime;
+            if (id != null) {
+                hash += id.hashCode();
+            }
             
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
+            do {
+                hash *= 4507;
+                id = Integer.toString(hash, 36);
+            } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
+
+            component.setId(UifConstants.COMPONENT_ID_PREFIX + id);
 
             if (component instanceof Container) {
                 LayoutManager layoutManager = ((Container) component).getLayoutManager();
                 
                 if (layoutManager != null) {
-                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
+                    do {
+                        hash *= 4507;
+                        id = Integer.toString(hash, 36);
+                    } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
+
+                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + id);
                 }
             }
 

@@ -1279,4 +1279,17 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      */
     public void setPostRenderContent(String postRenderContent);
 
+    /**
+     * Get a trace back to the code that copied this component, if applicable.
+     * 
+     * <p>
+     * This Throwable is not an error, or other exception condition, but can be set as the cause of
+     * another error to help with troubleshooting.
+     * </p>
+     * 
+     * @return A trace back to the code that copied this component, if applicable. Null if the
+     *         component was not copied.
+     */
+    Throwable getCopyTrace();
+
 }

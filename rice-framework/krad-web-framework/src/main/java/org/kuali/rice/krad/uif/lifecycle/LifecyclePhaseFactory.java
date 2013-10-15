@@ -53,7 +53,7 @@ public final class LifecyclePhaseFactory {
         if (initializePhase == null) {
             initializePhase = new InitializeComponentPhase();
         }
-        initializePhase.prepare(component, model, Collections.<ViewLifecyclePhase> emptyList());
+        initializePhase.prepare(component, model, 0, Collections.<ViewLifecyclePhase> emptyList());
         return initializePhase;
     }
 
@@ -65,13 +65,13 @@ public final class LifecyclePhaseFactory {
      * @param parentPhase The initialize phase for the component's parent.
      */
     public static InitializeComponentPhase initialize(Component component, Object model,
-            InitializeComponentPhase parentPhase) {
+            int index, InitializeComponentPhase parentPhase) {
         InitializeComponentPhase initializePhase = (InitializeComponentPhase) getRecycler(
                 InitializeComponentPhase.class).getInstance();
         if (initializePhase == null) {
             initializePhase = new InitializeComponentPhase();
         }
-        initializePhase.prepare(component, model, Collections.<ViewLifecyclePhase> singletonList(parentPhase));
+        initializePhase.prepare(component, model, index, Collections.<ViewLifecyclePhase> singletonList(parentPhase));
         return initializePhase;
     }
 
@@ -93,7 +93,7 @@ public final class LifecyclePhaseFactory {
      * @param parent The parent component.
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, Component parent) {
-        return applyModel(component, model, parent, new HashSet<String>(), null);
+        return applyModel(component, model, 0, parent, new HashSet<String>(), null);
     }
 
     /**
@@ -103,14 +103,14 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The parent component.
      */
-    public static ApplyModelComponentPhase applyModel(Component component, Object model, Component parent,
-            Set<String> visitedIds, ApplyModelComponentPhase parentPhase) {
+    public static ApplyModelComponentPhase applyModel(Component component, Object model, int index,
+            Component parent, Set<String> visitedIds, ApplyModelComponentPhase parentPhase) {
         ApplyModelComponentPhase applyModelPhase = (ApplyModelComponentPhase) getRecycler(
                 ApplyModelComponentPhase.class).getInstance();
         if (applyModelPhase == null) {
             applyModelPhase = new ApplyModelComponentPhase();
         }
-        applyModelPhase.prepare(component, model, parent, visitedIds, parentPhase);
+        applyModelPhase.prepare(component, model, index, parent, visitedIds, parentPhase);
         return applyModelPhase;
     }
 
@@ -132,7 +132,7 @@ public final class LifecyclePhaseFactory {
      * @param parent parent component for the component being finalized
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, Component parent) {
-        return finalize(component, model, parent, null);
+        return finalize(component, model, 0, parent, null);
     }
 
     /**
@@ -142,15 +142,15 @@ public final class LifecyclePhaseFactory {
      * @param model top level object containing the data
      * @param parent parent component for the component being finalized
      */
-    public static FinalizeComponentPhase finalize(Component component, Object model, Component parent,
-            FinalizeComponentPhase parentPhase) {
+    public static FinalizeComponentPhase finalize(Component component, Object model,
+            int index, Component parent, FinalizeComponentPhase parentPhase) {
         FinalizeComponentPhase finalizePhase = (FinalizeComponentPhase) getRecycler(
                 FinalizeComponentPhase.class).getInstance();
         if (finalizePhase == null) {
             finalizePhase = new FinalizeComponentPhase();
         }
 
-        finalizePhase.prepare(component, model, parent, parentPhase);
+        finalizePhase.prepare(component, model, index, parent, parentPhase);
         return finalizePhase;
     }
 
@@ -162,14 +162,15 @@ public final class LifecyclePhaseFactory {
      * @param parent parent component for the component being finalized
      */
     public static RenderComponentPhase render(Component component, Object model,
-            FinalizeComponentPhase finalizer, RenderComponentPhase parent, List<RenderComponentPhase> siblings) {
+            int index, FinalizeComponentPhase finalizer, RenderComponentPhase parent,
+            List<RenderComponentPhase> siblings) {
         RenderComponentPhase renderPhase = (RenderComponentPhase) getRecycler(
                 RenderComponentPhase.class).getInstance();
         if (renderPhase == null) {
             renderPhase = new RenderComponentPhase();
         }
 
-        renderPhase.prepare(component, model, finalizer, parent, siblings);
+        renderPhase.prepare(component, model, index, finalizer, parent, siblings);
         return renderPhase;
     }
 

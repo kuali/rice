@@ -85,11 +85,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     @Override
     public void performInitialization(Object model, Component component) {
         super.performInitialization(model, component);
-
-        if (headerFieldPrototype != null) {
-            ViewLifecycle.spawnSubLifecyle(model, headerFieldPrototype, component,
-                    null, UifConstants.ViewPhases.INITIALIZE, true);
-        }
     }
 
     /**
@@ -153,10 +148,12 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             // add space field for label column
             SpaceField spaceField = ComponentFactory.getSpaceField();
             comparisonItems.add(spaceField);
+            ViewLifecycle.spawnSubLifecyle(model, spaceField, group);
 
             for (ComparableInfo comparable : groupComparables) {
                 Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
+                ViewLifecycle.spawnSubLifecyle(model, compareHeaderField, group);
 
                 comparisonItems.add(compareHeaderField);
             }
@@ -240,7 +237,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 suppressLabel = true;
             }
         }
-
+        
         // update the group's list of components
         group.setItems(comparisonItems);
     }

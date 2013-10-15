@@ -56,9 +56,9 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
      * @param model Top level object containing the data
      * @param parentPhase The finalize phase processed on the parent component.
      */
-    protected void prepare(Component component, Object model, Component parent,
-            FinalizeComponentPhase parentPhase) {
-        super.prepare(component, model, parentPhase == null ?
+    protected void prepare(Component component, Object model, int index,
+            Component parent, FinalizeComponentPhase parentPhase) {
+        super.prepare(component, model, index, parentPhase == null ?
                 Collections.<ViewLifecyclePhase> emptyList() :
                 Collections.<ViewLifecyclePhase> singletonList(parentPhase));
         this.parent = parent;
@@ -66,7 +66,7 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
         if (ViewLifecycle.isRenderInLifecycle()) {
             ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
             this.renderPhase = LifecyclePhaseFactory.render(
-                    component, model, this, null, Collections.unmodifiableList(topList));
+                    component, model, index, this, null, Collections.unmodifiableList(topList));
             topList.add(this.renderPhase);
         }
     }
@@ -162,20 +162,23 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
         }
 
         // initialize nested components
+        int index = 0;
         for (Component nestedComponent : nestedComponents) {
             if (nestedComponent != null) {
                 FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedComponent, model, component, this);
+                        nestedComponent, model, index, component, this);
 
                 if (ViewLifecycle.isRenderInLifecycle()) {
                     RenderComponentPhase nestedRenderPhase = LifecyclePhaseFactory.render(
-                            nestedComponent, model, nestedFinalizePhase, this.renderPhase,
+                            nestedComponent, model, index, nestedFinalizePhase, this.renderPhase,
                             renderPhases);
                     renderPhases.add(nestedRenderPhase);
                     nestedFinalizePhase.renderPhase = nestedRenderPhase;
                 }
 
                 successors.add(nestedFinalizePhase);
+                
+                index++;
             }
         }
 

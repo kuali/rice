@@ -2238,6 +2238,32 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * Holds a trace back to the code that copied this component, if applicable.
+     * 
+     * <p>
+     * This Throwable is not an error, or other exception condition, but can be set as the cause of
+     * another error to help with troubleshooting.
+     * </p>
+     */
+    private Throwable copyTrace;
+    
+    /**
+     * Get a trace back to the code that copied this component, if applicable.
+     * 
+     * <p>
+     * This Throwable is not an error, or other exception condition, but can be set as the cause of
+     * another error to help with troubleshooting.
+     * </p>
+     * 
+     * @return A trace back to the code that copied this component, if applicable. Null if the
+     *         component was not copied.
+     */
+    @Override
+    public Throwable getCopyTrace() {
+        return this.copyTrace;
+    }
+
+    /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
      */
     @SuppressWarnings("unchecked")
@@ -2255,6 +2281,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } catch (IllegalAccessException e) {
             throw new IllegalStateException("Failed to copy component", e);
         }
+        
+        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
+        copy.copyTrace = new Throwable("Component copied" + (phase == null ? "" : " during phase " + phase));
 
         if (ViewLifecycle.isLifecycleActive()) {
             copy.allowModification();

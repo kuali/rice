@@ -69,9 +69,10 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
      * @param component the component instance that should be updated
      * @param model top level object containing the data
      */
-    protected void prepare(Component component, Object model, FinalizeComponentPhase finalizer,
-            RenderComponentPhase parent, List<RenderComponentPhase> siblings) {
-        super.prepare(component, model, finalizer == null
+    protected void prepare(Component component, Object model, int index,
+            FinalizeComponentPhase finalizer, RenderComponentPhase parent,
+            List<RenderComponentPhase> siblings) {
+        super.prepare(component, model, index, finalizer == null
                 ? Collections.<ViewLifecyclePhase> emptyList()
                 : Collections.<ViewLifecyclePhase> singletonList(finalizer));
         this.parent = parent;

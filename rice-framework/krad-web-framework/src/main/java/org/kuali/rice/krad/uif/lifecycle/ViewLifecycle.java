@@ -256,7 +256,23 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @throws IllegalStateException If strict mode is enabled.
      */
     public static void reportIllegalState(String message) {
-        IllegalStateException illegalState = new IllegalStateException(message);
+        reportIllegalState(message, null);
+    }
+
+    /**
+     * Report an illegal state in the view lifecycle.
+     * 
+     * <p>
+     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
+     * Otherwise, a warning will be logged.
+     * </p>
+     * 
+     * @param message The message describing the illegal state.
+     * @param cause The (potential) cause of the illegal state.
+     * @throws IllegalStateException If strict mode is enabled.
+     */
+    public static void reportIllegalState(String message, Throwable cause) {
+        IllegalStateException illegalState = new IllegalStateException(message, cause);
 
         if (ViewLifecycle.isStrict()) {
             throw illegalState;
@@ -738,7 +754,19 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         if (StringUtils.isBlank(startPhase)) {
-            startPhase = UifConstants.ViewPhases.INITIALIZE;
+            String compStatus = component.getViewStatus();
+            
+            if (UifConstants.ViewStatus.CREATED.equals(compStatus)) {
+                startPhase = UifConstants.ViewPhases.INITIALIZE;
+            } else if (UifConstants.ViewStatus.INITIALIZED.equals(compStatus)) {
+                startPhase = UifConstants.ViewPhases.APPLY_MODEL;
+            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(compStatus)) {
+                startPhase = UifConstants.ViewPhases.FINALIZE;
+            } else {
+                reportIllegalState("View lifecycle has already been applied to " + component.getClass().getName() + " "
+                        + component.getId(), component.getCopyTrace());
+            }
+            
         } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
                 .equals(startPhase) && !UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
             throw new RuntimeException("Invalid start phase given: " + startPhase);

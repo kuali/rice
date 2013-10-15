@@ -131,7 +131,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
                 
                 RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(
-                        msg, null, null, null, Collections.<RenderComponentPhase> emptyList());
+                        msg, null, 0, null, null, Collections.<RenderComponentPhase> emptyList());
                 renderPhase.run();
                 
                 assertTrue(msg.isSelfRendered());

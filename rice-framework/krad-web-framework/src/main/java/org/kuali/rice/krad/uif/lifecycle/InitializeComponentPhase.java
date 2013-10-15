@@ -99,16 +99,17 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
         Object model = getModel();
 
         // initialize nested components
+        int index = 0;
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null && !nestedComponent.isInitialized()) {
-                successors.offer(LifecyclePhaseFactory.initialize(nestedComponent, model, this));
+                successors.offer(LifecyclePhaseFactory.initialize(nestedComponent, model, index++, this));
             }
         }
 
         // initialize component prototypes
         for (Component nestedComponent : component.getComponentPrototypes()) {
             if (nestedComponent != null) {
-                successors.add(LifecyclePhaseFactory.initialize(nestedComponent, model, this));
+                successors.add(LifecyclePhaseFactory.initialize(nestedComponent, model, index++, this));
             }
         }
     }

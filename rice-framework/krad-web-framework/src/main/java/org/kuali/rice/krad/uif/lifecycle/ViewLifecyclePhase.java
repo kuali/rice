@@ -37,8 +37,17 @@ public interface ViewLifecyclePhase extends Runnable {
     
     /**
      * Get the model to use in processing this phase.
+     * 
+     * @return The model to use in processing this phase.
      */
     Object getModel();
+    
+    /**
+     * Get the index within a parent phase's original list of successors of this phase.
+     * 
+     * @return The index within a parent phase's list of successors of this phase.
+     */
+    int getIndex();
     
     /**
      * Determine if this lifecycle phase has completed processing.

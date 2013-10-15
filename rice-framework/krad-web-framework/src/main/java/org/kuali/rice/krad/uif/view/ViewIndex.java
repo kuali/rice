@@ -31,9 +31,9 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 
 /**
- * Holds component indexes of a <code>View</code> instance for convenient retrieval during the lifecycle
- * and persisting components for the refresh process
- *
+ * Holds component indexes of a <code>View</code> instance for convenient retrieval during the
+ * lifecycle and persisting components for the refresh process
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndex implements Serializable {
@@ -41,13 +41,10 @@ public class ViewIndex implements Serializable {
 
     protected Map<String, Component> index;
     protected Map<String, DataField> dataFieldIndex;
-    protected Set<String> idsToHoldInIndex;
 
     protected Map<String, CollectionGroup> collectionsIndex;
 
     protected Map<String, Component> initialComponentStates;
-
-    protected Set<String> idsToHoldInitialState;
 
     protected Map<String, PropertyEditor> fieldPropertyEditors;
     protected Map<String, PropertyEditor> secureFieldPropertyEditors;
@@ -55,36 +52,37 @@ public class ViewIndex implements Serializable {
 
     protected Map<String, Map<String, Object>> postContext;
 
+    private Set<String> idsToHoldInIndex;
+
+    private Set<String> assignedIds;
+
     /**
      * Constructs new instance
      */
     public ViewIndex() {
         index = new HashMap<String, Component>();
         dataFieldIndex = new HashMap<String, DataField>();
-        idsToHoldInIndex = new HashSet<String>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
-        idsToHoldInitialState = new HashSet<String>();
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
         postContext = new HashMap<String, Map<String, Object>>();
+        assignedIds = new HashSet<String>();
     }
 
     /**
-     * Walks through the View tree and indexes all components found. All components
-     * are indexed by their IDs with the special indexing done for certain components
-     *
+     * Walks through the View tree and indexes all components found. All components are indexed by
+     * their IDs with the special indexing done for certain components
+     * 
      * <p>
-     * <code>DataField</code> instances are indexed by the attribute path.
-     * This is useful for retrieving the InputField based on the incoming
-     * request parameter
+     * <code>DataField</code> instances are indexed by the attribute path. This is useful for
+     * retrieving the InputField based on the incoming request parameter
      * </p>
-     *
+     * 
      * <p>
-     * <code>CollectionGroup</code> instances are indexed by the collection
-     * path. This is useful for retrieving the CollectionGroup based on the
-     * incoming request parameter
+     * <code>CollectionGroup</code> instances are indexed by the collection path. This is useful for
+     * retrieving the CollectionGroup based on the incoming request parameter
      * </p>
      */
     protected void index(View view) {
@@ -98,20 +96,20 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Adds an entry to the main index for the given component. If the component
-     * is of type <code>DataField</code> or <code>CollectionGroup</code> an
-     * entry is created in the corresponding indexes for those types as well. Then
-     * the #indexComponent method is called for each of the component's children
-     *
+     * Adds an entry to the main index for the given component. If the component is of type
+     * <code>DataField</code> or <code>CollectionGroup</code> an entry is created in the
+     * corresponding indexes for those types as well. Then the #indexComponent method is called for
+     * each of the component's children
+     * 
      * <p>
      * If the component is already contained in the indexes, it will be replaced
      * </p>
-     *
+     * 
      * <p>
-     * Special processing is done for DataField instances to register their property editor which will
-     * be used for form binding
+     * Special processing is done for DataField instances to register their property editor which
+     * will be used for form binding
      * </p>
-     *
+     * 
      * @param component component instance to index
      */
     public void indexComponent(Component component) {
@@ -119,23 +117,34 @@ public class ViewIndex implements Serializable {
             return;
         }
 
-        index.put(component.getId(), component);
+        synchronized (index) {
+            index.put(component.getId(), component);
+        }
 
         if (component instanceof DataField) {
             DataField field = (DataField) component;
-            dataFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
+            synchronized (dataFieldIndex) {
+                dataFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
+            }
 
             // pull out information we will need to support the form post
             if (component.isRender()) {
                 if (field.hasSecureValue()) {
-                    secureFieldPropertyEditors.put(field.getBindingInfo().getBindingPath(), field.getPropertyEditor());
+                    synchronized (secureFieldPropertyEditors) {
+                        secureFieldPropertyEditors.put(field.getBindingInfo().getBindingPath(),
+                                field.getPropertyEditor());
+                    }
                 } else {
-                    fieldPropertyEditors.put(field.getBindingInfo().getBindingPath(), field.getPropertyEditor());
+                    synchronized (fieldPropertyEditors) {
+                        fieldPropertyEditors.put(field.getBindingInfo().getBindingPath(), field.getPropertyEditor());
+                    }
                 }
             }
         } else if (component instanceof CollectionGroup) {
             CollectionGroup collectionGroup = (CollectionGroup) component;
-            collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
+            synchronized (collectionsIndex) {
+                collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
+            }
         }
 
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
@@ -148,6 +157,10 @@ public class ViewIndex implements Serializable {
      * needed for the post
      */
     public void clearIndexesAfterRender() {
+        
+        Set<String> idsToHoldInitialState = new HashSet<String>();
+        Set<String> idsToHoldInIndex = new HashSet<String>();
+
         // build list of factory ids for components whose initial or final state needs to be kept
         for (Component component : index.values()) {
             if (component == null) {
@@ -158,12 +171,10 @@ public class ViewIndex implements Serializable {
                 continue;
             }
 
-            if (component.isForceSessionPersistence() || canBeRefreshed(component)) {
-                idsToHoldInitialState.add(component.getBaseId());
-                idsToHoldInIndex.add(component.getId());
-            }
-            // if component is a collection we need to keep it for add/delete and other collection functions
-            else if (component instanceof CollectionGroup) {
+            if (component.isForceSessionPersistence() || canBeRefreshed(component) ||
+                    // if component is a collection we need to keep it for 
+                    // add/delete and other collection functions
+                    (component instanceof CollectionGroup)) {
                 idsToHoldInitialState.add(component.getBaseId());
                 idsToHoldInIndex.add(component.getId());
             }
@@ -176,6 +187,7 @@ public class ViewIndex implements Serializable {
                 }
             }
         }
+        this.idsToHoldInIndex = idsToHoldInIndex;
 
         // now filter the indexes to include only the components that we need (determined above)
         Map<String, Component> holdInitialComponentStates = new HashMap<String, Component>();
@@ -194,7 +206,9 @@ public class ViewIndex implements Serializable {
                 // hold expressions for refresh (since they could have been pushed from a parent)
                 if ((component.getRefreshExpressionGraph() != null) && !component.getRefreshExpressionGraph()
                         .isEmpty()) {
-                    componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
+                    synchronized (componentExpressionGraphs) {
+                        componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
+                    }
                 }
 
                 ViewCleaner.cleanComponent(component, this);
@@ -208,12 +222,13 @@ public class ViewIndex implements Serializable {
             ViewCleaner.cleanComponent(collectionGroup, this);
         }
 
-        dataFieldIndex = new HashMap<String, DataField>();
+        dataFieldIndex.clear();
+        assignedIds.clear();
     }
 
     /**
      * Indicates if the given component has configuration that it allows it to be refreshed
-     *
+     * 
      * @param component instance to check
      * @return true if component can be refreshed, false if not
      */
@@ -233,17 +248,17 @@ public class ViewIndex implements Serializable {
     /**
      * Indicates whether the given component id is for a component maintained by the view index for
      * the refresh process
-     *
+     * 
      * @param componentId id for the component to check
      * @return true if the component id is for a refreshed component, false if not
      */
     public boolean isIdForRefreshComponent(String componentId) {
-        return idsToHoldInIndex.contains(componentId);
+        return idsToHoldInIndex != null && idsToHoldInIndex.contains(componentId);
     }
 
     /**
      * Retrieves a <code>Component</code> from the view index by Id
-     *
+     * 
      * @param id id for the component to retrieve
      * @return Component instance found in index, or null if no such component exists
      */
@@ -253,7 +268,7 @@ public class ViewIndex implements Serializable {
 
     /**
      * Retrieves a <code>DataField</code> instance from the index
-     *
+     * 
      * @param propertyPath full path of the data field (from the form)
      * @return DataField instance for the path or Null if not found
      */
@@ -262,9 +277,9 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Retrieves a <code>DataField</code> instance that has the given property name
-     * specified (note this is not the full binding path and first match is returned)
-     *
+     * Retrieves a <code>DataField</code> instance that has the given property name specified (note
+     * this is not the full binding path and first match is returned)
+     * 
      * @param propertyName property name for field to retrieve
      * @return DataField instance found or null if not found
      */
@@ -282,10 +297,9 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Gets the Map that contains attribute field indexing information. The Map
-     * key points to an attribute binding path, and the Map value is the
-     * <code>DataField</code> instance
-     *
+     * Gets the Map that contains attribute field indexing information. The Map key points to an
+     * attribute binding path, and the Map value is the <code>DataField</code> instance
+     * 
      * @return data fields index map
      */
     public Map<String, DataField> getDataFieldIndex() {
@@ -293,10 +307,9 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Gets the Map that contains collection indexing information. The Map key
-     * gives the binding path to the collection, and the Map value givens the
-     * <code>CollectionGroup</code> instance
-     *
+     * Gets the Map that contains collection indexing information. The Map key gives the binding
+     * path to the collection, and the Map value givens the <code>CollectionGroup</code> instance
+     * 
      * @return collection index map
      */
     public Map<String, CollectionGroup> getCollectionsIndex() {
@@ -305,10 +318,9 @@ public class ViewIndex implements Serializable {
 
     /**
      * Retrieves a <code>CollectionGroup</code> instance from the index
-     *
+     * 
      * @param collectionPath full path of the collection (from the form)
-     * @return CollectionGroup instance for the collection path or Null if not
-     *         found
+     * @return CollectionGroup instance for the collection path or Null if not found
      */
     public CollectionGroup getCollectionGroupByPath(String collectionPath) {
         return collectionsIndex.get(collectionPath);
@@ -316,19 +328,21 @@ public class ViewIndex implements Serializable {
 
     /**
      * Preserves initial state of components needed for doing component refreshes
-     *
+     * 
      * <p>
-     * Some components, such as those that are nested or created in code cannot be requested from the
-     * spring factory to get new instances. For these a copy of the component in its initial state is
-     * set in this map which will be used when doing component refreshes (which requires running just that
-     * component's lifecycle)
+     * Some components, such as those that are nested or created in code cannot be requested from
+     * the spring factory to get new instances. For these a copy of the component in its initial
+     * state is set in this map which will be used when doing component refreshes (which requires
+     * running just that component's lifecycle)
      * </p>
-     *
+     * 
      * <p>
-     * Map entries are added during the perform initialize phase from {@link org.kuali.rice.krad.uif.service.ViewHelperService}
+     * Map entries are added during the perform initialize phase from
+     * {@link org.kuali.rice.krad.uif.service.ViewHelperService}
      * </p>
-     *
-     * @return map with key giving the factory id for the component and the value the component instance
+     * 
+     * @return map with key giving the factory id for the component and the value the component
+     *         instance
      */
     public Map<String, Component> getInitialComponentStates() {
         return initialComponentStates;
@@ -336,24 +350,27 @@ public class ViewIndex implements Serializable {
 
     /**
      * Adds a copy of the given component instance to the map of initial component states keyed
-     *
+     * 
      * <p>
-     * Component is only added if its factory id is not set yet (which would happen if it had a spring bean id
-     * and we can get the state from Spring). Once added the factory id will be set to the component id
+     * Component is only added if its factory id is not set yet (which would happen if it had a
+     * spring bean id and we can get the state from Spring). Once added the factory id will be set
+     * to the component id
      * </p>
-     *
+     * 
      * @param component component instance to add
      */
     public void addInitialComponentStateIfNeeded(Component component) {
         if (StringUtils.isBlank(component.getBaseId())) {
             component.setBaseId(component.getId());
-            initialComponentStates.put(component.getBaseId(), ComponentUtils.copy(component));
+            synchronized (initialComponentStates) {
+                initialComponentStates.put(component.getBaseId(), ComponentUtils.copy(component));
+            }
         }
     }
 
     /**
      * Setter for the map holding initial component states
-     *
+     * 
      * @param initialComponentStates
      */
     public void setInitialComponentStates(Map<String, Component> initialComponentStates) {
@@ -361,15 +378,15 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Maintains configuration of properties that have been configured for the view (if render was set to
-     * true) and there corresponding PropertyEdtior (if configured)
-     *
+     * Maintains configuration of properties that have been configured for the view (if render was
+     * set to true) and there corresponding PropertyEdtior (if configured)
+     * 
      * <p>
-     * Information is pulled out of the View during the lifecycle so it can be used when a form post is done
-     * from the View. Note if a field is secure, it will be placed in the {@link #getSecureFieldPropertyEditors()} map
-     * instead
+     * Information is pulled out of the View during the lifecycle so it can be used when a form post
+     * is done from the View. Note if a field is secure, it will be placed in the
+     * {@link #getSecureFieldPropertyEditors()} map instead
      * </p>
-     *
+     * 
      * @return map of property path (full) to PropertyEditor
      */
     public Map<String, PropertyEditor> getFieldPropertyEditors() {
@@ -377,15 +394,15 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Maintains configuration of secure properties that have been configured for the view (if render was set to
-     * true) and there corresponding PropertyEdtior (if configured)
-     *
+     * Maintains configuration of secure properties that have been configured for the view (if
+     * render was set to true) and there corresponding PropertyEdtior (if configured)
+     * 
      * <p>
-     * Information is pulled out of the View during the lifecycle so it can be used when a form post is done
-     * from the View. Note if a field is non-secure, it will be placed in the {@link #getFieldPropertyEditors()} map
-     * instead
+     * Information is pulled out of the View during the lifecycle so it can be used when a form post
+     * is done from the View. Note if a field is non-secure, it will be placed in the
+     * {@link #getFieldPropertyEditors()} map instead
      * </p>
-     *
+     * 
      * @return map of property path (full) to PropertyEditor
      */
     public Map<String, PropertyEditor> getSecureFieldPropertyEditors() {
@@ -393,17 +410,18 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Map of components with their associated expression graphs that will be used during
-     * the component refresh process
-     *
+     * Map of components with their associated expression graphs that will be used during the
+     * component refresh process
+     * 
      * <p>
-     * Because expressions that impact a component being refreshed might be on a parent component, a special
-     * map needs to be held around that contains expressions that apply to the component and all its nested
-     * components. This map is populated during the initial view processing and populating of the property
-     * expressions from the initial expression graphs
+     * Because expressions that impact a component being refreshed might be on a parent component, a
+     * special map needs to be held around that contains expressions that apply to the component and
+     * all its nested components. This map is populated during the initial view processing and
+     * populating of the property expressions from the initial expression graphs
      * </p>
-     *
-     * @return Map<String, Map<String, String>> key is component id and value is expression graph map
+     * 
+     * @return Map<String, Map<String, String>> key is component id and value is expression graph
+     *         map
      * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean,
      *      boolean)
      */
@@ -413,14 +431,15 @@ public class ViewIndex implements Serializable {
 
     /**
      * A map of state that is held in the session
-     *
+     * 
      * <p>
-     * Instead of storing entire components in the session in order to retrieve information for posts, just the
-     * state that is needed can be added to this map and then retrieve on the post through the posted view's index
+     * Instead of storing entire components in the session in order to retrieve information for
+     * posts, just the state that is needed can be added to this map and then retrieve on the post
+     * through the posted view's index
      * </p>
-     *
-     * @return Map of post context which is a map of maps. First map is keyed by component id, then each map
-     * value gives the context for that component
+     * 
+     * @return Map of post context which is a map of maps. First map is keyed by component id, then
+     *         each map value gives the context for that component
      */
     public Map<String, Map<String, Object>> getPostContext() {
         return postContext;
@@ -428,7 +447,7 @@ public class ViewIndex implements Serializable {
 
     /**
      * Adds an entry to the post context for the given component
-     *
+     * 
      * @param componentId id of the component the context is associated with
      * @param entryKey key for the entry
      * @param entryValue value for the entry
@@ -440,15 +459,36 @@ public class ViewIndex implements Serializable {
             componentContext = postContext.get(componentId);
         } else {
             componentContext = new HashMap<String, Object>();
-            postContext.put(componentId, componentContext);
+            synchronized (postContext) {
+                postContext.put(componentId, componentContext);
+            }
         }
 
-        componentContext.put(entryKey, entryValue);
+        synchronized (postContext) {
+            componentContext.put(entryKey, entryValue);
+        }
+    }
+    
+    /**
+     * Observe an assigned ID.
+     * 
+     * @param id The ID to observe.
+     * 
+     * @return True if the ID is unique, false if the ID has already been observed.
+     */
+    public boolean observeAssignedId(String id) {
+        if (assignedIds.contains(id)) {
+            return false;
+        }
+        
+        synchronized (assignedIds) {
+            return assignedIds.add(id);
+        }
     }
 
     /**
      * Retrieves a context entry values for the given component and entry key
-     *
+     * 
      * @param componentId id of the component the entry is associated with
      * @param entryKey key for the entry
      * @return value associated with the entry, or null if entry is not found
@@ -469,7 +509,7 @@ public class ViewIndex implements Serializable {
 
     /**
      * Returns a clone of the view index.
-     *
+     * 
      * @return ViewIndex clone
      */
     public ViewIndex copy() {

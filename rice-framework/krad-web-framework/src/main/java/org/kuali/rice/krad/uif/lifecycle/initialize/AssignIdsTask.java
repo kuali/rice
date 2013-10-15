@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import java.util.UUID;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -23,7 +24,9 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Assign a unique ID to the component, if one has not already been assigned.
@@ -31,6 +34,17 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AssignIdsTask extends AbstractViewLifecycleTask {
+
+    /**
+     * Reusable linked queue for walking the lifecycle phase tree while generating an ID, without
+     * object creation.
+     */
+    private static final ThreadLocal<Queue<ViewLifecyclePhase>> TAIL_QUEUE = new ThreadLocal<Queue<ViewLifecyclePhase>>() {
+        @Override
+        protected Queue<ViewLifecyclePhase> initialValue() {
+            return new LinkedList<ViewLifecyclePhase>();
+        }
+    };
 
     /**
      * Create a task to assign component IDs during the initialize phase.
@@ -42,6 +56,50 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
     }
 
     /**
+     * Generate a new ID for a lifecycle element at the current phase.
+     * 
+     * @param element The lifecycle element for which to generate an ID.
+     * @return An ID, unique within the current view, for the given element.
+     */
+    private String generateId(LifecycleElement element) {
+        final int prime = 6971;
+        int hash = element.getClass().getName().hashCode();
+        Queue<ViewLifecyclePhase> phaseQueue = TAIL_QUEUE.get();
+        try {
+            phaseQueue.offer(getPhase());
+            while (!phaseQueue.isEmpty()) {
+                ViewLifecyclePhase phase = phaseQueue.poll();
+                
+                Component component = phase.getComponent();
+                hash *= prime;
+                if (component != null) {
+                    hash += component.getClass().getName().hashCode();
+                    
+                    String id = component.getId();
+                    hash *= prime;
+                    if (id != null) {
+                        hash += id.hashCode();
+                    }
+                }
+
+                hash = prime * hash + phase.getIndex();
+                
+                phaseQueue.addAll(phase.getPredecessors());
+            }
+        } finally {
+            phaseQueue.clear();
+        }
+
+        String id;
+        do {
+            hash *= 4507;
+            id = Integer.toString(hash, 36);
+        } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
+
+        return id;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
      */
     @Override
@@ -49,15 +107,15 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
         Component component = getPhase().getComponent();
 
         if (StringUtils.isBlank(component.getId())) {
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
-        } // TODO: else validate that component ID is unique
+            component.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(component));
+        }
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
             if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + UUID.randomUUID().toString());
-            } // TODO: else validate that layout manager ID is unique
+                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(layoutManager));
+            }
         }
     }
 

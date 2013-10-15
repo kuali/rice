@@ -39,6 +39,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
 
     private Component component;
     private Object model;
+    private int index = -1;
     private List<? extends ViewLifecyclePhase> predecessors;
 
     private final Queue<ViewLifecycleTask> pendingTasks;
@@ -72,6 +73,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
         }
         
         model = null;
+        index = -1;
         component = null;
         predecessors = null;
         pendingTasks.clear();
@@ -83,15 +85,17 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
     /**
      * Prepare this phase for reuse.
      */
-    protected void prepare(Component component, Object model, List<? extends ViewLifecyclePhase> predecessors) {
+    protected void prepare(Component component, Object model, int index,
+            List<? extends ViewLifecyclePhase> predecessors) {
         if (component.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
                     "Component is already in the expected end status " + getEndViewStatus()
                             + " before this phase " + component.getClass() + " " + component.getId() + "\nLast phase: "
-                            + component.getLastPhase());
+                            + component.getLastPhase(), component.getCopyTrace());
         }
 
         this.model = model;
+        this.index = index;
         this.component = component;
         this.predecessors = Collections.unmodifiableList(new ArrayList<ViewLifecyclePhase>(predecessors));
     }
@@ -134,6 +138,14 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
     @Override
     public final Object getModel() {
         return model;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getIndex()
+     */
+    @Override
+    public final int getIndex() {
+        return index;
     }
 
     /**
@@ -267,7 +279,8 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
                             "Component is not in the expected status " + getStartViewStatus()
                                     + " at the start of this phase, found " + component.getClass() + " "
                                     + component.getId() + " " + component.getViewStatus() +
-                                    "\nLast phase: " + component.getLastPhase() + "\nThis phase: " + this);
+                                    "\nLast phase: " + component.getLastPhase() + "\nThis phase: " + this,
+                            component.getCopyTrace());
                 }
                 
                 initializePendingTasks(pendingTasks);
@@ -299,6 +312,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             
         } catch (Throwable t) {
             LOG.warn("Error in lifecycle phase " + this, t);
+            LOG.warn("Copy trace related to previous warning", component.getCopyTrace());
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
@@ -408,12 +422,6 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             sb.append(" ");
             sb.append(tp.getComponent().getId());
 
-            for (ViewLifecycleTask task : tp.getPendingTasks()) {
-                sb.append(indent);
-                sb.append("  ");
-                sb.append(task);
-            }
-            
             if (tp.getActiveTask() != null) {
                 sb.append(indent);
                 sb.append("  ");
@@ -421,6 +429,12 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
                 sb.append(" (active)");
             }
 
+            for (ViewLifecycleTask task : tp.getPendingTasks()) {
+                sb.append(indent);
+                sb.append("  ");
+                sb.append(task);
+            }
+            
             if (tp == this) {
                 sb.append("\nSuccessor Phases:");
                 for (ViewLifecyclePhase sp : successors) {

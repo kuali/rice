@@ -64,9 +64,9 @@ public class ApplyModelComponentPhase extends AbstractViewLifecyclePhase {
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      * @param parentPhase The apply model phase processed on the parent component.
      */
-    protected void prepare(Component component, Object model, Component parent,
+    protected void prepare(Component component, Object model, int index, Component parent,
                 Set<String> visitedIds, ApplyModelComponentPhase parentPhase) {
-        super.prepare(component, model, parentPhase == null ?
+        super.prepare(component, model, index, parentPhase == null ?
                 Collections.<ViewLifecyclePhase> emptyList() :
                 Collections.<ViewLifecyclePhase> singletonList(parentPhase));
         this.parent = parent;
@@ -184,9 +184,11 @@ public class ApplyModelComponentPhase extends AbstractViewLifecyclePhase {
         Object model = getModel();
 
         // initialize nested components
+        int index = 0;
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
-                successors.offer(LifecyclePhaseFactory.applyModel(nestedComponent, model, component, visitedIds, this));
+                successors.offer(LifecyclePhaseFactory
+                        .applyModel(nestedComponent, model, index++, component, visitedIds, this));
             }
         }
     }

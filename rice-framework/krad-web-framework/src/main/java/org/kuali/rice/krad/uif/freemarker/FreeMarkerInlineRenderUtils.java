@@ -178,7 +178,8 @@ public class FreeMarkerInlineRenderUtils {
                     env.include(component.getTemplate(), env.getTemplate().getEncoding(), true);
                 }
 
-                Macro fmMacro = (Macro) env.getMainNamespace().get(component.getTemplateName());
+                Macro fmMacro = component.getTemplateName() == null ? null :
+                        (Macro) env.getMainNamespace().get(component.getTemplateName());
 
                 if (fmMacro == null) {
                     throw new TemplateException("No macro found using " + component.getTemplateName(), env);

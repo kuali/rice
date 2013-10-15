@@ -71,22 +71,27 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
     public DocumentType findByName(String name, boolean caseSensitive) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
         if (caseSensitive) {
             if (StringUtils.contains(name, "*")) {
                 name = StringUtils.replace(name, "*", "%");
-                builder.setPredicates(likeIgnoreCase("name", name.trim()));
+                predicates.add(likeIgnoreCase("name", name.trim()));
             } else {
-                builder.setPredicates(equal("name", name));
+                predicates.add(equal("name", name));
             }
 
         } else {
             if (name.contains("*") || name.contains("%")) {
                 name.replace("*", "%");
-                builder.setPredicates(likeIgnoreCase("name", name));
+                predicates.add(likeIgnoreCase("name", name));
             } else {
-                builder.setPredicates(equalIgnoreCase("name", name));
+                predicates.add(equalIgnoreCase("name", name));
             }
+
         }
+        predicates.add(equal("currentInd", Boolean.TRUE));
+        Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
+        builder.setPredicates(preds);
         QueryResults<DocumentType> results = getDataObjectService().findMatching(DocumentType.class, builder.build());
         if (results != null && !results.getResults().isEmpty()) {
             return results.getResults().get(0);

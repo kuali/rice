@@ -201,6 +201,7 @@ public class DataDictionary {
             @Override
             public Void call() throws Exception {
                 LOG.info("Starting Data Dictionary Post Processing");
+
                 timer.start("Spring Post Processing");
                 PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
                 propertyPlaceholderConfigurer.setProperties(ConfigContext.getCurrentContextConfig().getProperties());
@@ -210,8 +211,9 @@ public class DataDictionary {
                         new DictionaryBeanFactoryPostProcessor(DataDictionary.this, ddBeans);
                 dictionaryBeanPostProcessor.postProcessBeanFactory();
                 timer.stop();
-                timer.start("UIF Post Processing");
+
                 // post processes UIF beans for pulling out expressions within property values
+                timer.start("UIF Post Processing");
                 UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
                 factoryPostProcessor.postProcessBeanFactory(ddBeans);
                 timer.stop();
@@ -248,6 +250,7 @@ public class DataDictionary {
                 timer.start("UIF Indexing");
                 uifIndex.run();
                 timer.stop();
+
                 LOG.info("Completed Data Dictionary Post Processing");
                 return null;
             }

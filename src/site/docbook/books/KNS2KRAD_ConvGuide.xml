@@ -1307,14 +1307,18 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS6">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.addAdditionalSections() has been removed
               in KRAD. To add additional sections dynamically to an inquiry override <emphasis
                 role="keyword"> performFinalize</emphasis> method of ViewHelperService instead and
               add custom components. The custom Inquirable implementation can be specified using the
                 <emphasis role="keyword"> viewHelperServiceClass</emphasis> property of the view
               which in turn would extend <emphasis role="keyword"
-                >org.kuali.rice.krad.inquiry.InquirableImpl</emphasis>.
+                >org.kuali.rice.krad.inquiry.InquirableImpl</emphasis>.<inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
               <programlisting linenumbering="numbered">&lt;bean id="Sample-InquiryView" parent="Uif-InquiryView">
   ...
   &lt;property name="viewHelperServiceClass"  value="org.kuali.rice.krad.inquiry.CustomInquirableImpl/>
@@ -1322,12 +1326,16 @@
 &lt;/bean></programlisting>
             </para>
           </listitem>
-          <listitem>
+          <listitem  xml:id="IS7">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.getSection() has been removed in KRAD.
               To modify existing sections dynamically in an inquiry override <emphasis
                 role="keyword"> performFinalize</emphasis> method of ViewHelperService. The list of
               components can be obtained from the view object using <emphasis role="keyword"
-                >getComponentsForLifecycle</emphasis>. </para>
+                >getComponentsForLifecycle</emphasis>. <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
           <listitem>
             <para>The property that contains the inquiry display fields was renamed from <emphasis

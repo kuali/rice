@@ -25,7 +25,7 @@ import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 
 public interface RuleDAO {
 
-    public void save(RuleBaseValues ruleBaseValues);
+    public RuleBaseValues save(RuleBaseValues ruleBaseValues);
     public void delete(String ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesByName(String name);
     public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);

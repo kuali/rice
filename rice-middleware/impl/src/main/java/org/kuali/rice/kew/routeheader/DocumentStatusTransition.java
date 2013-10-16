@@ -16,19 +16,17 @@
 package org.kuali.rice.kew.routeheader;
 
 import org.joda.time.DateTime;
-import org.kuali.rice.krad.bo.NoteType;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-
+import java.util.Map;
 
 /**
  * Model bean representing the valid application document statuses for a document type
@@ -111,6 +109,25 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 	public void setStatusTransitionDate(java.sql.Timestamp statusTransitionDate) {
 		this.statusTransitionDate = statusTransitionDate;
 	}
+
+    public DocumentStatusTransition deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (DocumentStatusTransition)visited.get(this);
+        }
+        DocumentStatusTransition copy = new DocumentStatusTransition();
+        visited.put(this, copy);
+        copy.statusTransitionId = statusTransitionId;
+        copy.documentId = documentId;
+        copy.oldAppDocStatus = oldAppDocStatus;
+        copy.newAppDocStatus = newAppDocStatus;
+        if (statusTransitionDate != null) {
+            copy.statusTransitionDate = new Timestamp(statusTransitionDate.getTime());
+        }
+        if (documentRouteHeaderValue != null) {
+            copy.documentRouteHeaderValue = documentRouteHeaderValue.deepCopy(visited);
+        }
+        return copy;
+    }
 
     public static DocumentStatusTransition from(org.kuali.rice.kew.api.document.DocumentStatusTransition im) {
         if (im == null) {

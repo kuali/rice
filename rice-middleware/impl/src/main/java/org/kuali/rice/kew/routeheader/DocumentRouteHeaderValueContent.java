@@ -26,6 +26,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Map;
 
 @Entity
 @Table(name="KREW_DOC_HDR_CNTNT_T")
@@ -62,6 +63,17 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
 	}
+
+    public DocumentRouteHeaderValueContent deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (DocumentRouteHeaderValueContent)visited.get(this);
+        }
+        DocumentRouteHeaderValueContent copy = new DocumentRouteHeaderValueContent();
+        visited.put(this, copy);
+        copy.documentId = documentId;
+        copy.documentContent = documentContent;
+        return copy;
+    }
 	
 	public static org.kuali.rice.kew.api.document.DocumentContent to(DocumentRouteHeaderValueContent content) {
 		if (content == null) {

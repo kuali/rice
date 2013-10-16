@@ -338,39 +338,38 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
         performanceLogger.log("Preparing rule: " + rule.getDescription());
 
-        Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
         generateRuleNameIfNeeded(rule);
         assignResponsibilityIds(rule);
         rule.setCurrentInd(Boolean.TRUE);
         Timestamp date = new Timestamp(System.currentTimeMillis());
         rule.setActivationDate(date);
         rule.setDeactivationDate(null);
-
-        rulesToSave.put(rule.getId(), rule);
-        if (rule.getPreviousRuleId() != null) {
-        	RuleBaseValues oldRule = findRuleBaseValuesById(rule.getPreviousRuleId());
-        	rule.setPreviousVersion(oldRule);
-        }
         rule.setVersionNbr(0);
         rule.setObjectId(null);
-        RuleBaseValues oldRule = rule.getPreviousVersion();
+
+        RuleBaseValues oldRule = null;
+        if (rule.getPreviousRuleId() != null) {
+        	oldRule = findRuleBaseValuesById(rule.getPreviousRuleId());
+        }
         if (oldRule != null) {
         	performanceLogger.log("Setting previous rule: " + oldRule.getId() + " to non current.");
         	oldRule.setCurrentInd(Boolean.FALSE);
         	oldRule.setDeactivationDate(date);
-        	rulesToSave.put(oldRule.getId(), oldRule);
         	responsibilityIds.addAll(getModifiedResponsibilityIds(oldRule, rule));
         	rule.setVersionNbr(getNextVersionNumber(oldRule));
+            oldRule = getRuleDAO().save(oldRule);
+            rule.setPreviousVersion(oldRule);
+            performanceLogger.log("Saved old rule: " + oldRule.getId());
         }
                
+        // now save the new rule
+        rule = getRuleDAO().save(rule);
+      	performanceLogger.log("Saved rule: " + rule.getId());
 
         boolean isRuleDelegation = ruleDelegation != null;
-        
-        for (RuleBaseValues ruleToSave : rulesToSave.values()) {
-        	getRuleDAO().save(ruleToSave);
-        	performanceLogger.log("Saved rule: " + ruleToSave.getId());
-        }
         if (isRuleDelegation) {
+            // update our reference to the delegation rule, because it could have changed
+            ruleDelegation.setDelegationRule(rule);
         	responsibilityIds.add(ruleDelegation.getResponsibilityId());
         	ruleDelegation.setDelegateRuleId(rule.getId());
         	getRuleDelegationService().save(ruleDelegation);

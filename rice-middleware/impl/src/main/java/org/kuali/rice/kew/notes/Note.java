@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * A note attached to a document.  May also contain a List of attachments.
@@ -272,6 +272,36 @@ public class Note implements Serializable, NoteContract {
 	public String getText() {
 		return getNoteText();
 	}
+
+    public Note deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (Note)visited.get(this);
+        }
+        Note copy = new Note();
+        visited.put(this, copy);
+        copy.noteId = noteId;
+        copy.documentId = documentId;
+        copy.noteAuthorWorkflowId = noteAuthorWorkflowId;
+        if (noteCreateDate != null) {
+            copy.noteCreateDate = new Timestamp(noteCreateDate.getTime());
+        }
+        copy.noteText = noteText;
+        copy.lockVerNbr = lockVerNbr;
+        copy.noteAuthorEmailAddress = noteAuthorEmailAddress;
+        copy.noteAuthorNetworkId = noteAuthorNetworkId;
+        copy.noteAuthorFullName = noteAuthorFullName;
+        copy.noteCreateLongDate = noteCreateLongDate;
+        copy.authorizedToEdit = authorizedToEdit;
+        copy.editingNote = editingNote;
+        if (attachments != null) {
+            List<Attachment> copies = new ArrayList<Attachment>();
+            for (Attachment attachment : attachments) {
+                copies.add(attachment.deepCopy(visited));
+            }
+            copy.attachments = copies;
+        }
+        return copy;
+    }
 	
 	public static org.kuali.rice.kew.api.note.Note to(Note note) {
 		if (note == null) {

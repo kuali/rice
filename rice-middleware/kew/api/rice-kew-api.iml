@@ -37,7 +37,7 @@
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-core-api" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-core-api:test-jar:tests:2.4.0-M2-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-core-api:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
   </component>

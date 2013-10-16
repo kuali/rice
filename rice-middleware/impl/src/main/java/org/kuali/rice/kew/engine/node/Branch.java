@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a branch in the routing path of the document.
@@ -149,6 +150,38 @@ public class Branch implements Serializable {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
+
+    public Branch deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (Branch)visited.get(this);
+        }
+        Branch copy = new Branch();
+        visited.put(this, copy);
+        copy.branchId = branchId;
+        copy.name = name;
+        copy.lockVerNbr = lockVerNbr;
+        if (parentBranch != null) {
+            copy.parentBranch = parentBranch.deepCopy(visited);
+        }
+        if (branchState != null) {
+            List<BranchState> copies = new ArrayList<BranchState>();
+            for (BranchState state : branchState) {
+                copies.add(state.deepCopy(visited));
+            }
+            copy.branchState = copies;
+        }
+        if (initialNode != null) {
+            copy.initialNode = initialNode.deepCopy(visited);
+        }
+        if (splitNode != null) {
+            copy.splitNode = splitNode.deepCopy(visited);
+        }
+        if (joinNode != null) {
+            copy.joinNode = joinNode.deepCopy(visited);
+        }
+        return copy;
+    }
+
 
     public String toString() {
         return "[Branch: branchId=" + branchId +

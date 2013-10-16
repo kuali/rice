@@ -70,8 +70,8 @@ public class RuleDAOJpa implements RuleDAO {
 		"where newRsp.rule_id=? and "+
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
-	public void save(RuleBaseValues ruleBaseValues) {
-        getDataObjectService().save(ruleBaseValues);
+	public RuleBaseValues save(RuleBaseValues ruleBaseValues) {
+        return getDataObjectService().save(ruleBaseValues);
 	}
 
 	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {

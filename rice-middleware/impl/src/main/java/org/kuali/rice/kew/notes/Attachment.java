@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.notes;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +28,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * An attachment which is attached to a {@link Note}.
@@ -41,7 +39,6 @@ import java.io.InputStream;
  */
 @Entity(name="org.kuali.rice.kew.notes.Attachment")
 @Table(name="KREW_ATT_T")
-//@Sequence(name="KREW_DOC_NTE_S",property="attachmentId")
 @NamedQueries({
 	@NamedQuery(name="Attachment.FindAttachmentById",query="select a from org.kuali.rice.kew.notes.Attachment as a where a.attachmentId = :attachmentId")
 })
@@ -120,11 +117,23 @@ public class Attachment {
 	public void setAttachedObject(InputStream attachedObject) {
 		this.attachedObject = attachedObject;
 	}
-	
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KRADServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
 
+    public Attachment deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (Attachment)visited.get(this);
+        }
+        Attachment copy = new Attachment();
+        visited.put(this, copy);
+        copy.attachmentId = attachmentId;
+        copy.noteId = noteId;
+        copy.fileName = fileName;
+        copy.fileLoc = fileLoc;
+        copy.mimeType = mimeType;
+        copy.lockVerNbr = lockVerNbr;
+        if (note != null) {
+            copy.note = note.deepCopy(visited);
+        }
+        return copy;
+    }
 }
 

@@ -4,6 +4,10 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp/overlays" />
+    <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp/overlays" />
+    <file url="file://$PROJECT_DIR$/rice-middleware/serviceregistry/overlays" />
+    <file url="file://$PROJECT_DIR$/rice-middleware/web/overlays" />
     <type id="jpa" />
     <type id="struts" />
     <type id="web" />

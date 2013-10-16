@@ -39,7 +39,6 @@ import org.kuali.rice.kew.engine.StandardWorkflowEngine;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NoOpNode;
 import org.kuali.rice.kew.engine.node.NodeJotter;
-import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RequestsNode;
@@ -47,29 +46,22 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -121,15 +113,17 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     		}
     		context.setActivationContext(activationContext);
     		context.setEngineState(new EngineState());
+            // a map used to prevent duplicate deep copying of objects used in the simulation
+            Map<Object, Object> visitedForDeepCopy = new HashMap<Object, Object>();
     		// suppress policy errors when running a simulation for the purposes of display on the route log
     		RequestsNode.setSuppressPolicyErrors(context);
-    		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context);
+    		DocumentRouteHeaderValue document = createSimulationDocument(documentId, criteria, context, visitedForDeepCopy);
             document.setInitiatorWorkflowId("simulation");
     		if ( (criteria.isDocumentSimulation()) && ( (document.isProcessed()) || (document.isFinal()) ) ) {
     			results.setDocument(document);
     			return;
     		}
-    		routeDocumentIfNecessary(document, criteria, context);
+    		routeDocumentIfNecessary(document, criteria, context, visitedForDeepCopy);
     		results.setDocument(document);
     		documentId = document.getDocumentId();
     		
@@ -148,15 +142,14 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     			context.setDocument(document);
     			// TODO set document content
     			context.setEngineState(new EngineState());
-    			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);
     			while (! nodeInstancesToProcess.isEmpty()) {
-    				RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeInstancesToProcess.remove(0);
+    				RouteNodeInstance nodeInstance = nodeInstancesToProcess.remove(0);
     				if ( !nodeInstance.isActive() ) {
     					continue;
     				}
     				NodeJotter.jotNodeInstance(context.getDocument(), nodeInstance);
     				context.setNodeInstance(nodeInstance);
-    				processContext = processNodeInstance(context, helper);
+    				ProcessContext processContext = processNodeInstance(context, helper);
     				if (!hasReachedCompletion(processContext, context.getEngineState().getGeneratedRequests(), nodeInstance, criteria)) {
     					if (processContext.isComplete()) {
     						if (!processContext.getNextNodeInstances().isEmpty()) {
@@ -168,7 +161,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     					context.getActivationContext().getSimulatedActionsTaken().addAll(processPotentialActionsTaken(context, document, nodeInstance, criteria));
     				}
     			}
-    			List simulatedActionRequests = context.getEngineState().getGeneratedRequests();
+    			List<ActionRequestValue> simulatedActionRequests = context.getEngineState().getGeneratedRequests();
     			Collections.sort(simulatedActionRequests, new Utilities.RouteLogActionRequestSorter());
     			results.setSimulatedActionRequests(simulatedActionRequests);
     			results.setSimulatedActionsTaken(context.getActivationContext().getSimulatedActionsTaken());
@@ -263,7 +256,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 
     private List<ActionTakenValue> processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) {
     	List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
-    	List requestsToCheck = new ArrayList();
+    	List<ActionRequestValue> requestsToCheck = new ArrayList<ActionRequestValue>();
     	requestsToCheck.addAll(routeContext.getEngineState().getGeneratedRequests());
         requestsToCheck.addAll(routeHeader.getActionRequests());
     	List<ActionRequestValue> pendingActionRequestValues = getCriteriaActionsToDoByNodeName(requestsToCheck, justProcessedNode.getName());
@@ -290,10 +283,9 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         return actions;
     }
 
-    private List<ActionRequestValue> getCriteriaActionsToDoByNodeName(List generatedRequests, String nodeName) {
+    private List<ActionRequestValue> getCriteriaActionsToDoByNodeName(List<ActionRequestValue> generatedRequests, String nodeName) {
     	List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
-        for (Iterator iterator = generatedRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue request = (ActionRequestValue) iterator.next();
+        for (ActionRequestValue request : generatedRequests) {
             if ( (request.isPending()) && request.getNodeInstance() != null && nodeName.equals(request.getNodeInstance().getName())) {
             	requests.add(request);
             }
@@ -317,10 +309,10 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
      * If the documentId is available, we load the document from the database, otherwise we create one based on the given
      * DocumentType and xml content.
      */
-    private DocumentRouteHeaderValue createSimulationDocument(String documentId, SimulationCriteria criteria, RouteContext context) {
+    private DocumentRouteHeaderValue createSimulationDocument(String documentId, SimulationCriteria criteria, RouteContext context, Map<Object, Object> visitedForDeepCopy) {
     	DocumentRouteHeaderValue document = null;
     	if (criteria.isDocumentSimulation()) {
-            document = getDocumentForSimulation(documentId);
+            document = getDocumentForSimulation(documentId, visitedForDeepCopy);
             if (!org.apache.commons.lang.StringUtils.isEmpty(criteria.getXmlContent())) {
                 document.setDocContent(criteria.getXmlContent());
             }
@@ -329,7 +321,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         	if (documentType == null) {
         		throw new IllegalArgumentException("Specified document type could not be found for name '"+criteria.getDocumentTypeName()+"'");
         	}
-        	documentId = context.getEngineState().getNextSimulationId().toString();
+        	documentId = context.getEngineState().getNextSimulationId();
         	document = new DocumentRouteHeaderValue();
         	context.setDocument(document);
         	document.setDocumentId(documentId);
@@ -344,10 +336,10 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         	throw new IllegalArgumentException("Workflow simulation engine could not locate document with id "+documentId);
         }
         for (ActionRequestValue actionRequest : document.getActionRequests()) {
-        	actionRequest = deepCopy(actionRequest);
+        	actionRequest = actionRequest.deepCopy(visitedForDeepCopy);
         	document.getSimulatedActionRequests().add(actionRequest);
         	for (ActionItem actionItem : actionRequest.getActionItems()) {
-        		actionRequest.getSimulatedActionItems().add(deepCopy(actionItem));
+        		actionRequest.getSimulatedActionItems().add(actionItem.deepCopy(visitedForDeepCopy));
         	}
         }
         context.setDocument(document);
@@ -355,81 +347,16 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
 		return document;
     }
 
-    private DocumentRouteHeaderValue getDocumentForSimulation(String documentId) {
+    private DocumentRouteHeaderValue getDocumentForSimulation(String documentId, Map<Object, Object> visitedForDeepCopy) {
         DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
-        // document has lazy references to route node instances and others, this causes problems for the deep copy, so
-        // let's make sure that those get instantiated by walking the graph and touching those relationships
-        touchRouteNodeInstances(document.getInitialRouteNodeInstances());
-        for (DocumentStatusTransition transition : document.getAppDocStatusHistory()) {
-            transition.getVersionNumber();
-        }
-        for (Note note : document.getNotes()) {
-            // currently, attachments are eager fetched on notes, so let's just make sure the note gets loaded
-            note.getLockVerNbr();
-        }
-        DocumentRouteHeaderValue copy = deepCopy(document);
-        return copy;
+        return document.deepCopy(visitedForDeepCopy);
     }
 
-    private void touchRouteNodeInstances(List<RouteNodeInstance> routeNodeInstances) {
-        routeNodeInstances.size(); // forces instantiation of indirect references in EclipseLink...blech
-        for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
-            routeNodeInstance.getLockVerNbr();
-            routeNodeInstance.getState().size();
-            for (NodeState nodeState : routeNodeInstance.getState()) {
-                nodeState.getLockVerNbr();
-            }
-            touchRouteNodeInstances(routeNodeInstance.getNextNodeInstances());
-        }
-    }
-
-    private <T extends Serializable> T deepCopy(T src) {
-        // TODO - fix this up! we really don't want to be depending on deepclone here
-        return CloneUtils.deepClone(src);
-    }
-
-//    private <T extends Serializable> T deepCopy(T src) {
-//        T obj = null;
-//        if (src != null) {
-//            ObjectOutputStream oos = null;
-//            ObjectInputStream ois = null;
-//            try {
-//                ByteArrayOutputStream serializer = new ByteArrayOutputStream();
-//                oos = new ObjectOutputStream(serializer);
-//                oos.writeObject(src);
-//
-//                ByteArrayInputStream deserializer = new ByteArrayInputStream(serializer.toByteArray());
-//                ois = new ObjectInputStream(deserializer);
-//                obj = (T)ois.readObject();
-//            }
-//            catch (IOException e) {
-//                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-//            }
-//            catch (ClassNotFoundException e) {
-//                throw new RuntimeException("unable to complete deepCopy from src '" + src.toString() + "'", e);
-//            }
-//            finally {
-//                try {
-//                    if (oos != null) {
-//                        oos.close();
-//                    }
-//                    if (ois != null) {
-//                        ois.close();
-//                    }
-//                }
-//                catch (IOException e) {
-//                    // ignoring this IOException, since the streams are going to be abandoned now anyway
-//                }
-//            }
-//        }
-//        return obj;
-//    }
-
-    private void routeDocumentIfNecessary(DocumentRouteHeaderValue document, SimulationCriteria criteria, RouteContext routeContext) throws InvalidActionTakenException {
+    private void routeDocumentIfNecessary(DocumentRouteHeaderValue document, SimulationCriteria criteria, RouteContext routeContext, Map<Object, Object> visitedForDeepCopy) throws InvalidActionTakenException {
     	if (criteria.getRoutingUser() != null) {
             ActionTakenValue action = createDummyActionTaken(document, criteria.getRoutingUser(), KewApiConstants.ACTION_TAKEN_ROUTED_CD, null);
     		routeContext.getActivationContext().getSimulatedActionsTaken().add(action);
-            simulateDocumentRoute(action, document, criteria.getRoutingUser(), routeContext);
+            simulateDocumentRoute(action, document, criteria.getRoutingUser(), routeContext, visitedForDeepCopy);
     	}
     }
 
@@ -528,7 +455,7 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
     }
 
     // below is pretty much a copy of RouteDocumentAction... but actions have to be faked for now
-    private void simulateDocumentRoute(ActionTakenValue actionTaken, DocumentRouteHeaderValue document, Person user, RouteContext routeContext) throws InvalidActionTakenException {
+    private void simulateDocumentRoute(ActionTakenValue actionTaken, DocumentRouteHeaderValue document, Person user, RouteContext routeContext, Map<Object, Object> visitedForDeepCopy) throws InvalidActionTakenException {
         if (document.isRouted()) {
             throw new WorkflowRuntimeException("Document can not simulate a route if it has already been routed");
         }
@@ -536,9 +463,9 @@ public class SimulationEngine extends StandardWorkflowEngine implements Simulati
         // TODO delyea - deep copy below
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue actionRequest : actionRequestService.findPendingByDoc(document.getDocumentId())) {
-            ActionRequestValue arv = deepCopy(actionRequest);
+            ActionRequestValue arv = actionRequest.deepCopy(visitedForDeepCopy);
             for (ActionItem actionItem : arv.getActionItems()) {
-        		arv.getSimulatedActionItems().add(deepCopy(actionItem));
+        		arv.getSimulatedActionItems().add(actionItem.deepCopy(visitedForDeepCopy));
         	}
             actionRequests.add(arv);
         }

@@ -182,9 +182,9 @@
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="module" module-name="rice-krms-api" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-krms-api:test-jar:tests:2.4.0-M2-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-krms-api:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-krms-impl" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-krms-impl:test-jar:tests:2.4.0-M2-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-krms-impl:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-krms-framework" />
     <orderEntry type="module" module-name="rice-krms-api" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity-tools:2.0" level="project" />

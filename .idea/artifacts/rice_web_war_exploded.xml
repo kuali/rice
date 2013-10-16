@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-web:war exploded">
-    <output-path>$PROJECT_DIR$/rice-middleware/web/target/rice-web-2.4.0-M2-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/rice-middleware/web/target/rice-web-2.4.0-M3-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-web/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -8,13 +8,13 @@
           <element id="module-output" name="rice-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="rice-krms-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-impl" />
           </element>
-          <element id="archive" name="rice-core-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
-          <element id="archive" name="rice-core-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
@@ -37,7 +37,7 @@
           <element id="library" level="project" name="Maven: com.google.guava:guava:11.0" />
           <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:1.3.9" />
           <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.6" />
-          <element id="archive" name="rice-core-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.3.RELEASE" />
@@ -64,46 +64,46 @@
           <element id="library" level="project" name="Maven: org.codehaus.btm:btm:2.1.2" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />
-          <element id="archive" name="rice-krad-app-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-app-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-app-framework" />
           </element>
-          <element id="archive" name="rice-kim-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-api" />
           </element>
-          <element id="archive" name="rice-kew-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-api" />
           </element>
-          <element id="archive" name="rice-ksb-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
-          <element id="archive" name="rice-location-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-api" />
           </element>
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" />
-          <element id="archive" name="rice-krad-data-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-data-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-data" />
           </element>
-          <element id="archive" name="rice-core-service-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-api" />
           </element>
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.4" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.15.0-GA" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
           <element id="library" level="project" name="Maven: org.springframework:spring-instrument-tomcat:3.2.3.RELEASE" />
-          <element id="archive" name="rice-krad-web-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-web-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-web-framework" />
           </element>
-          <element id="archive" name="rice-core-service-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springmodules:spring-modules-ojb:0.8a" />
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.7" />
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
-          <element id="archive" name="rice-kew-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-framework" />
           </element>
-          <element id="archive" name="rice-kim-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.3.RELEASE" />
@@ -116,7 +116,7 @@
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.0" />
           <element id="library" level="project" name="Maven: javax.json:javax.json-api:1.0" />
           <element id="library" level="project" name="Maven: org.glassfish:javax.json:1.0.1" />
-          <element id="archive" name="rice-kns-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kns-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kns" />
           </element>
           <element id="library" level="project" name="Maven: org.apache.struts:struts-core:1.3.10" />
@@ -169,61 +169,61 @@
           <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.3.4.O" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:1.8.4" />
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />
-          <element id="archive" name="rice-core-service-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-impl" />
           </element>
           <element id="library" level="project" name="Maven: xalan:xalan:2.7.1" />
           <element id="library" level="project" name="Maven: xalan:serializer:2.7.1" />
-          <element id="archive" name="rice-krms-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-framework" />
           </element>
-          <element id="archive" name="rice-krms-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krms-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-api" />
           </element>
           <element id="library" level="project" name="Maven: org.apache.velocity:velocity-tools:2.0" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: sslext:sslext:1.2-0" />
           <element id="library" level="project" name="Maven: org.apache.velocity:velocity:1.6.4" />
-          <element id="archive" name="rice-location-web-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-web-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-web" />
           </element>
-          <element id="archive" name="rice-location-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-framework" />
           </element>
-          <element id="archive" name="rice-location-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-location-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-impl" />
           </element>
-          <element id="archive" name="rice-kew-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-impl" />
           </element>
-          <element id="archive" name="rice-ksb-web-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-web-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-web" />
           </element>
-          <element id="archive" name="rice-ksb-client-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-client-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-client-impl" />
           </element>
-          <element id="archive" name="rice-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
-          <element id="archive" name="rice-ken-api-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-ken-api-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ken-api" />
           </element>
-          <element id="archive" name="rice-kim-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-impl" />
           </element>
-          <element id="archive" name="rice-core-service-web-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-web-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-web" />
           </element>
-          <element id="archive" name="rice-core-web-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-web-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-web" />
           </element>
-          <element id="archive" name="rice-ksb-server-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-server-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-server-impl" />
           </element>
-          <element id="archive" name="rice-edl-framework-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-edl-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
           </element>
-          <element id="archive" name="rice-krad-service-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-service-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-service-impl" />
           </element>
           <element id="library" level="project" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" />
@@ -231,7 +231,7 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" />
-          <element id="archive" name="rice-edl-impl-2.4.0-M2-SNAPSHOT.jar">
+          <element id="archive" name="rice-edl-impl-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
           </element>
         </element>

@@ -15,29 +15,6 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
@@ -56,6 +33,28 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the model for action items. These are displayed as the action list as well.  Mapped to ActionItemService.
@@ -566,6 +565,43 @@ public class ActionItem implements ActionItemContract, Serializable {
             minimalRouteHeader = KEWServiceLocator.getActionListService().getMinimalRouteHeader(documentId);
         }
         return minimalRouteHeader;
+    }
+
+    public ActionItem deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (ActionItem)visited.get(this);
+        }
+        ActionItem copy = new ActionItem();
+        visited.put(this, copy);
+        copy.id = id;
+        copy.principalId = principalId;
+        if (dateAssigned != null) {
+            copy.dateAssigned = new Timestamp(dateAssigned.getTime());
+        }
+        copy.actionRequestCd = actionRequestCd;
+        copy.actionRequestId = actionRequestId;
+        copy.documentId = documentId;
+        copy.groupId = groupId;
+        copy.docTitle = docTitle;
+        copy.docLabel = docLabel;
+        copy.docHandlerURL = docHandlerURL;
+        copy.docName = docName;
+        copy.responsibilityId = responsibilityId;
+        copy.roleName = roleName;
+        copy.delegatorPrincipalId = delegatorPrincipalId;
+        copy.delegatorGroupId = delegatorGroupId;
+        copy.delegationType = delegationType;
+        copy.requestLabel = requestLabel;
+        copy.dateAssignedStringValue = dateAssignedStringValue;
+        if (lastApprovedDate != null) {
+            copy.lastApprovedDate = new Timestamp(lastApprovedDate.getTime());
+        }
+        copy.delegatorName = delegatorName;
+        copy.groupName = groupName;
+        if (routeHeader != null) {
+            copy.routeHeader = routeHeader.deepCopy(visited);
+        }
+        return copy;
     }
 
     public static org.kuali.rice.kew.api.action.ActionItem to(ActionItem bo) {

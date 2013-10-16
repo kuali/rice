@@ -51,7 +51,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.List;
+import java.util.Map;
 
 /**
  * Model object mapped to ojb for representing actions taken on documents by users. The type of the action is indicated
@@ -316,6 +317,36 @@ public class ActionTakenValue implements Serializable {
 
     public boolean isCompletion() {
     	return KewApiConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
+    }
+
+    public ActionTakenValue deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (ActionTakenValue)visited.get(this);
+        }
+        ActionTakenValue copy = new ActionTakenValue();
+        visited.put(this, copy);
+        copy.actionTakenId = actionTakenId;
+        copy.documentId = documentId;
+        copy.actionTaken = actionTaken;
+        if (actionDate != null) {
+            copy.actionDate = new Timestamp(actionDate.getTime());
+        }
+        copy.annotation = annotation;
+        copy.docVersion = docVersion;
+        copy.principalId = principalId;
+        copy.delegatorPrincipalId = delegatorPrincipalId;
+        copy.delegatorGroupId = delegatorGroupId;
+        copy.currentIndicator = currentIndicator;
+        copy.lockVerNbr = lockVerNbr;
+        if (actionRequests != null) {
+            List<ActionRequestValue> copies = new ArrayList<ActionRequestValue>();
+            for (ActionRequestValue actionRequest : actionRequests) {
+                copies.add(actionRequest.deepCopy(visited));
+            }
+            copy.actionRequests = copies;
+        }
+        copy.actionDateString = actionDateString;
+        return copy;
     }
     
     public static ActionTaken to(ActionTakenValue actionTakenBo) {

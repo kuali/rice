@@ -15,15 +15,16 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -33,18 +34,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a materialized instance of a {@link RouteNode} definition on a {@link DocumentRouteHeaderValue}.  Node instances
@@ -160,7 +156,7 @@ public class RouteNodeInstance implements Serializable {
     	while (getNextNodeInstances().size() <= index) {
     		nextNodeInstances.add(new RouteNodeInstance());
     	}
-    	return (RouteNodeInstance) getNextNodeInstances().get(index);
+    	return getNextNodeInstances().get(index);
     }
     public void setNextNodeInstances(List<RouteNodeInstance> nextNodeInstances) {
         this.nextNodeInstances = nextNodeInstances;
@@ -274,11 +270,55 @@ public class RouteNodeInstance implements Serializable {
     	while (state.size() <= index) {
             state.add(new NodeState());
         }
-        return (NodeState) getState().get(index);
+        return getState().get(index);
     }   
 
     public void populateState(List<NodeState> state) {
         this.state.addAll(state);
+    }
+
+    public RouteNodeInstance deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (RouteNodeInstance)visited.get(this);
+        }
+        RouteNodeInstance copy = new RouteNodeInstance();
+        visited.put(this, copy);
+        copy.routeNodeInstanceId = routeNodeInstanceId;
+        copy.documentId = documentId;
+        copy.active = active;
+        copy.complete = complete;
+        copy.initial = initial;
+        copy.lockVerNbr = lockVerNbr;
+        // no need to deep copy route node because it's static configuration
+        copy.routeNode = routeNode;
+        if (branch != null) {
+            copy.branch = branch.deepCopy(visited);
+        }
+        if (process != null) {
+            copy.process = process.deepCopy(visited);
+        }
+        if (nextNodeInstances != null) {
+            List<RouteNodeInstance> copies = new ArrayList<RouteNodeInstance>();
+            for (RouteNodeInstance nextNodeInstance : nextNodeInstances) {
+                copies.add(nextNodeInstance.deepCopy(visited));
+            }
+            copy.nextNodeInstances = copies;
+        }
+        if (previousNodeInstances != null) {
+            List<RouteNodeInstance> copies = new ArrayList<RouteNodeInstance>();
+            for (RouteNodeInstance previousNodeInstance : previousNodeInstances) {
+                copies.add(previousNodeInstance.deepCopy(visited));
+            }
+            copy.previousNodeInstances = copies;
+        }
+        if (state != null) {
+            List<NodeState> copies = new ArrayList<NodeState>();
+            for (NodeState aState : state) {
+                copies.add(aState.deepCopy(visited));
+            }
+            copy.state = copies;
+        }
+        return copy;
     }
     
     public String toString() {

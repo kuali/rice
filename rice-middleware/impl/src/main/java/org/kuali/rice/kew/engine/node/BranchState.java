@@ -23,6 +23,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.util.Map;
 
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
@@ -78,14 +79,19 @@ public class BranchState extends State {
         this.lockVerNbr = lockVerNbr;
     }
 
-//
-//    public String getBranchId() {
-//        return branchId;
-//    }
-//
-//    public void setBranchId(String branchId) {
-//        this.branchId = branchId;
-//    }
+    public BranchState deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (BranchState)visited.get(this);
+        }
+        BranchState copy = new BranchState(getKey(), getValue());
+        visited.put(this, copy);
+        copy.stateId = stateId;
+        copy.lockVerNbr = lockVerNbr;
+        if (branch != null) {
+            copy.branch = branch.deepCopy(visited);
+        }
+        return copy;
+    }
 
 }
 

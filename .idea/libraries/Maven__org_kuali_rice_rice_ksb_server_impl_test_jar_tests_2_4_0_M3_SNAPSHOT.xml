@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.kuali.rice:rice-ksb-server-impl:test-jar:tests:2.4.0-M3-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-server-impl/2.4.0-M3-SNAPSHOT/rice-ksb-server-impl-2.4.0-M3-SNAPSHOT-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-server-impl/2.4.0-M3-SNAPSHOT/rice-ksb-server-impl-2.4.0-M3-SNAPSHOT-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/rice/rice-ksb-server-impl/2.4.0-M3-SNAPSHOT/rice-ksb-server-impl-2.4.0-M3-SNAPSHOT-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

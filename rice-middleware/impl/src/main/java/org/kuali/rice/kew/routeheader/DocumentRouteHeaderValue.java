@@ -38,7 +38,6 @@ import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEbo;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -76,7 +75,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -148,8 +146,7 @@ import java.util.Map;
                     ,@NamedAttributeNode("docVersion")
                     })
 })
-public class
-        DocumentRouteHeaderValue extends DataObjectBase implements DocumentContract, DocumentSearchCriteriaEbo {
+public class DocumentRouteHeaderValue extends DataObjectBase implements DocumentContract, DocumentSearchCriteriaEbo {
 
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
@@ -264,8 +261,6 @@ public class
     private List<Note> notes = new ArrayList<Note>();
 
     @Transient private DocumentRouteHeaderValueContent documentContent;
-    @Transient private List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
-    @Transient private Collection queueItems = new ArrayList();
     @Transient private boolean routingReport = false;
     @Transient private List<ActionRequestValue> simulatedActionRequests;
 
@@ -338,14 +333,6 @@ public class
      */
     public String getDocStatusPolicy() {
         return getDocumentType().getDocumentStatusPolicy().getPolicyStringValue();
-    }
-
-    public Collection getQueueItems() {
-        return queueItems;
-    }
-
-    public void setQueueItems(Collection queueItems) {
-        this.queueItems = queueItems;
     }
 
     public List<ActionItem> getActionItems() {
@@ -1023,20 +1010,6 @@ public class
         return null;
     }
 
-//	/**
-//	 * @param searchableAttributeValues The searchableAttributeValues to set.
-//	 */
-//	public void setSearchableAttributeValues(List<SearchableAttributeValue> searchableAttributeValues) {
-//		this.searchableAttributeValues = searchableAttributeValues;
-//	}
-//
-//	/**
-//	 * @return Returns the searchableAttributeValues.
-//	 */
-//	public List<SearchableAttributeValue> getSearchableAttributeValues() {
-//		return searchableAttributeValues;
-//	}
-
     public boolean isRoutingReport() {
         return routingReport;
     }
@@ -1242,6 +1215,64 @@ public class
 
     @Override
     public void refresh() {
+    }
+
+    public DocumentRouteHeaderValue deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (DocumentRouteHeaderValue)visited.get(this);
+        }
+        DocumentRouteHeaderValue copy = new DocumentRouteHeaderValue();
+        visited.put(this, copy);
+        copy.documentId = documentId;
+        copy.documentTypeId = documentTypeId;
+        copy.docRouteStatus = docRouteStatus;
+        copy.docRouteLevel = docRouteLevel;
+        copy.dateModified = copyTimestamp(dateModified);
+        copy.createDate = copyTimestamp(createDate);
+        copy.approvedDate = copyTimestamp(approvedDate);
+        copy.finalizedDate = copyTimestamp(finalizedDate);
+        copy.docTitle = docTitle;
+        copy.appDocId = appDocId;
+        copy.docVersion = docVersion;
+        copy.initiatorWorkflowId = initiatorWorkflowId;
+        copy.routedByUserWorkflowId = routedByUserWorkflowId;
+        copy.routeStatusDate = copyTimestamp(routeStatusDate);
+        copy.appDocStatus = appDocStatus;
+        copy.appDocStatusDate = copyTimestamp(appDocStatusDate);
+        if (documentContent != null) {
+            copy.documentContent = documentContent.deepCopy(visited);
+        }
+        copy.routingReport = routingReport;
+        if (initialRouteNodeInstances != null) {
+            List<RouteNodeInstance> copies = new ArrayList<RouteNodeInstance>();
+            for (RouteNodeInstance routeNodeInstance : initialRouteNodeInstances) {
+                copies.add(routeNodeInstance.deepCopy(visited));
+            }
+            copy.setInitialRouteNodeInstances(copies);
+        }
+        if (appDocStatusHistory != null) {
+            List<DocumentStatusTransition> copies = new ArrayList<DocumentStatusTransition>();
+            for (DocumentStatusTransition documentStatusTransition : appDocStatusHistory) {
+                copies.add(documentStatusTransition.deepCopy(visited));
+            }
+            copy.setAppDocStatusHistory(copies);
+        }
+        if (notes != null) {
+            List<Note> copies = new ArrayList<Note>();
+            for (Note note : notes) {
+                copies.add(note.deepCopy(visited));
+            }
+            copy.setNotes(copies);
+        }
+
+        return copy;
+    }
+
+    private Timestamp copyTimestamp(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        return new Timestamp(timestamp.getTime());
     }
 
 }

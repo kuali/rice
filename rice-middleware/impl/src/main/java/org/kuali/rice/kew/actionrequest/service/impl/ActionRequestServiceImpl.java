@@ -267,7 +267,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequest == null || actionRequest.isActive() || actionRequest.isDeactivated()) {
             return;
         }
-        // first, we know we are going to activate this guy, so let's save him
         processResponsibilityId(actionRequest);
         if (deactivateOnActionAlreadyTaken(actionRequest, activationContext)) {
             return;

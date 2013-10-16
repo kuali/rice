@@ -67,6 +67,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 /**
  * Entity which represents a request for action against a document. Contains references to children/parent if a member of a graph.
  *
@@ -968,8 +970,73 @@ public class ActionRequestValue implements Serializable {
 	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
 		this.routeHeader = routeHeader;
 	}
-	
-	public static ActionRequest to(ActionRequestValue actionRequestBo) {
+
+    public ActionRequestValue deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (ActionRequestValue)visited.get(this);
+        }
+        ActionRequestValue copy = new ActionRequestValue();
+        visited.put(this, copy);
+        copy.actionRequestId = actionRequestId;
+        copy.actionRequested = actionRequested;
+        copy.documentId = documentId;
+        copy.ruleBaseValuesId = ruleBaseValuesId;
+        copy.status = status;
+        copy.responsibilityId = responsibilityId;
+        copy.groupId = groupId;
+        copy.roleName = roleName;
+        copy.qualifiedRoleName = qualifiedRoleName;
+        copy.qualifiedRoleNameLabel = qualifiedRoleNameLabel;
+        copy.recipientTypeCd = recipientTypeCd;
+        copy.priority = priority;
+        copy.routeLevel = routeLevel;
+        copy.docVersion = docVersion;
+        if (createDate != null) {
+            copy.createDate = new Timestamp(createDate.getTime());
+        }
+        copy.responsibilityDesc = responsibilityDesc;
+        copy.annotation = annotation;
+        copy.jrfVerNbr = jrfVerNbr;
+        copy.principalId = principalId;
+        copy.forceAction = forceAction;
+        copy.currentIndicator = currentIndicator;
+        copy.approvePolicy = approvePolicy;
+        copy.delegationTypeCode = delegationTypeCode;
+        copy.requestLabel = requestLabel;
+        if (parentActionRequest != null) {
+            copy.parentActionRequest = parentActionRequest.deepCopy(visited);
+        }
+        if (actionTaken != null) {
+            copy.actionTaken = actionTaken.deepCopy(visited);
+        }
+        if (nodeInstance != null) {
+            copy.nodeInstance = nodeInstance.deepCopy(visited);
+        }
+        if (childrenRequests != null) {
+            List<ActionRequestValue> copies = new ArrayList<ActionRequestValue>();
+            for (ActionRequestValue childRequest : childrenRequests) {
+                copies.add(childRequest.deepCopy(visited));
+            }
+            copy.childrenRequests = copies;
+        }
+
+        copy.createDateString = createDateString;
+        copy.displayStatus = displayStatus;
+        copy.resolveResponsibility = resolveResponsibility;
+        if (routeHeader != null) {
+            copy.routeHeader = routeHeader.deepCopy(visited);
+        }
+        if (simulatedActionItems != null) {
+            List<ActionItem> copies = new ArrayList<ActionItem>();
+            for (ActionItem simulatedActionItem : simulatedActionItems) {
+                copies.add(simulatedActionItem.deepCopy(visited));
+            }
+            copy.simulatedActionItems = copies;
+        }
+        return copy;
+    }
+
+    public static ActionRequest to(ActionRequestValue actionRequestBo) {
 		if (actionRequestBo == null) {
 			return null;
 		}

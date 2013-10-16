@@ -15,9 +15,18 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.util.Map;
 
 /**
  * The state of a {@link RouteNodeInstance} represented as a key-value pair of Strings.
@@ -39,16 +48,11 @@ import javax.persistence.*;
 public class NodeState extends State {
 
     private static final long serialVersionUID = -4382379569851955918L;
-//
-//    @Id
-//    @PortableSequenceGenerator(name="KREW_RTE_NODE_S")
-//    @GeneratedValue(generator="KREW_RTE_NODE_S")
-//    @Column(name="RTE_NODE_INSTN_ST_ID")
-//    protected String stateId;
 
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
+
     @Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
@@ -83,15 +87,19 @@ public class NodeState extends State {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
-//
-//    @Override
-//    public String getStateId() {
-//        return stateId;
-//    }
-//
-//    @Override
-//    public void setStateId(String stateId) {
-//        this.stateId = stateId;
-//    }
+
+    public NodeState deepCopy(Map<Object, Object> visited) {
+        if (visited.containsKey(this)) {
+            return (NodeState)visited.get(this);
+        }
+        NodeState copy = new NodeState(getKey(), getValue());
+        visited.put(this, copy);
+        copy.stateId = stateId;
+        copy.lockVerNbr = lockVerNbr;
+        if (nodeInstance != null) {
+            copy.nodeInstance = nodeInstance.deepCopy(visited);
+        }
+        return copy;
+    }
 
 }

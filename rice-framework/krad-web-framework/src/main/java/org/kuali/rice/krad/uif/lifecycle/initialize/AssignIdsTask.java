@@ -58,23 +58,50 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
     /**
      * Generate a new ID for a lifecycle element at the current phase.
      * 
+     * <p>
+     * This method used a product of primes similar to the one used for generating String hash
+     * codes. In order to minimize to collisions a large prime is used, then when collisions are
+     * detected a different large prime is used to generate an alternate ID.
+     * </p>
+     * 
+     * <p>
+     * The hash code that the generated ID is based on is equivalent (though not identical) to
+     * taking the hash code of the string concenation of all class names, non-null IDs, and
+     * successor index positions in the lifecycle phase tree for all predecessors of the current
+     * phase.
+     * </p>
+     * 
      * @param element The lifecycle element for which to generate an ID.
      * @return An ID, unique within the current view, for the given element.
+     * 
+     * @see String#hashCode() for the algorithm this method is based on.
      */
     private String generateId(LifecycleElement element) {
-        final int prime = 6971;
+        // Calculate a hash code based on the path to the top of the phase tree
+        // without building a string.
+
+        final int prime = 6971; // Seed prime for hashing
+
+        // Initialize hash to the class of the lifecycle element
         int hash = element.getClass().getName().hashCode();
+
+        // Reuse a tail recursion queue to avoid object creation overhead.
         Queue<ViewLifecyclePhase> phaseQueue = TAIL_QUEUE.get();
         try {
+            // Start with the current phase.
             phaseQueue.offer(getPhase());
             while (!phaseQueue.isEmpty()) {
+
+                // Poll the queue for the next phase to calculate
                 ViewLifecyclePhase phase = phaseQueue.poll();
-                
+
+                // Include the class name and ID of the component
+                // at the current phase to the hash
                 Component component = phase.getComponent();
                 hash *= prime;
                 if (component != null) {
                     hash += component.getClass().getName().hashCode();
-                    
+
                     String id = component.getId();
                     hash *= prime;
                     if (id != null) {
@@ -82,18 +109,32 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
                     }
                 }
 
+                // Include the index of the current phase in the successor
+                // list of the predecessor phase that defined it.
                 hash = prime * hash + phase.getIndex();
-                
+
+                // Include all predecessors in the hash.
                 phaseQueue.addAll(phase.getPredecessors());
             }
         } finally {
+            // Ensure that the recursion queue is clear to prevent
+            // corruption by pooled thread reuse.
             phaseQueue.clear();
         }
 
         String id;
         do {
-            hash *= 4507;
-            id = Integer.toString(hash, 36);
+            // Iteratively take the product of the hash and another large prime
+            hash *= 4507; // until a unique ID has been generated.
+            // The use of large primes will minimize collisions, reducing the
+            // likelihood of race conditions leading to components coming out
+            // with different IDs on different server instances and/or test runs.
+            
+            // Eliminate negatives without losing precision, and express in base-36
+            id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
+            
+            // Use the view index to detect collisions, keep looping until an
+            // id unique to the current view has been generated.
         } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
 
         return id;

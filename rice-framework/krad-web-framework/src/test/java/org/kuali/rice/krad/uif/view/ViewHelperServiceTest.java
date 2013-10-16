@@ -169,7 +169,8 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
         pform.setPostedView(performanceView);
         pform.setView(null);
 
-        String tableId = "u-34owe4";
+        assertEquals("uwdv4lg", performanceView.getItems().get(0).getItems().get(1).getId());
+        String tableId = "uwdv4lg";
 
         request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

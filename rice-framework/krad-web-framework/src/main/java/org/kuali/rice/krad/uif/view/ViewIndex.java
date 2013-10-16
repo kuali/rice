@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -53,6 +54,7 @@ public class ViewIndex implements Serializable {
     protected Map<String, Map<String, Object>> postContext;
 
     private Set<String> idsToHoldInIndex;
+    private Set<String> idsToHoldInitialState;
 
     private Set<String> assignedIds;
 
@@ -68,6 +70,8 @@ public class ViewIndex implements Serializable {
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
         postContext = new HashMap<String, Map<String, Object>>();
+        idsToHoldInIndex = new HashSet<String>();
+        idsToHoldInitialState = new HashSet<String>();
         assignedIds = new HashSet<String>();
     }
 
@@ -158,9 +162,6 @@ public class ViewIndex implements Serializable {
      */
     public void clearIndexesAfterRender() {
         
-        Set<String> idsToHoldInitialState = new HashSet<String>();
-        Set<String> idsToHoldInIndex = new HashSet<String>();
-
         // build list of factory ids for components whose initial or final state needs to be kept
         for (Component component : index.values()) {
             if (component == null) {
@@ -175,45 +176,54 @@ public class ViewIndex implements Serializable {
                     // if component is a collection we need to keep it for 
                     // add/delete and other collection functions
                     (component instanceof CollectionGroup)) {
-                idsToHoldInitialState.add(component.getBaseId());
-                idsToHoldInIndex.add(component.getId());
+                synchronized (idsToHoldInitialState) {
+                    idsToHoldInitialState.add(component.getBaseId());
+                }
+                synchronized (idsToHoldInIndex) {
+                    idsToHoldInIndex.add(component.getId());
+                }
             }
             else if ((component instanceof InputField)) {
                 InputField inputField = (InputField) component;
 
                 if ((inputField.getAttributeQuery() != null) || ((inputField.getSuggest() != null) && inputField
                         .getSuggest().isRender())) {
-                    idsToHoldInIndex.add(component.getId());
+                    synchronized (idsToHoldInIndex) {
+                        idsToHoldInIndex.add(component.getId());
+                    }
                 }
             }
         }
-        this.idsToHoldInIndex = idsToHoldInIndex;
 
         // now filter the indexes to include only the components that we need (determined above)
         Map<String, Component> holdInitialComponentStates = new HashMap<String, Component>();
-        for (String factoryId : initialComponentStates.keySet()) {
-            if (idsToHoldInitialState.contains(factoryId)) {
-                holdInitialComponentStates.put(factoryId, initialComponentStates.get(factoryId));
+        synchronized (initialComponentStates) {
+            for (Entry<String, Component> factoryEntry : initialComponentStates.entrySet()) {
+                if (idsToHoldInitialState.contains(factoryEntry.getKey())) {
+                    holdInitialComponentStates.put(factoryEntry.getKey(), factoryEntry.getValue());
+                }
             }
         }
         initialComponentStates = holdInitialComponentStates;
 
         Map<String, Component> holdComponentStates = new HashMap<String, Component>();
-        for (String id : index.keySet()) {
-            if (idsToHoldInIndex.contains(id)) {
-                Component component = this.index.get(id);
+        synchronized (index) {
+            for (Entry<String, Component> indexEntry : index.entrySet()) {
+                if (idsToHoldInIndex.contains(indexEntry.getKey())) {
+                    Component component = indexEntry.getValue();
 
-                // hold expressions for refresh (since they could have been pushed from a parent)
-                if ((component.getRefreshExpressionGraph() != null) && !component.getRefreshExpressionGraph()
-                        .isEmpty()) {
-                    synchronized (componentExpressionGraphs) {
-                        componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
+                    // hold expressions for refresh (since they could have been pushed from a parent)
+                    if ((component.getRefreshExpressionGraph() != null) && !component.getRefreshExpressionGraph()
+                            .isEmpty()) {
+                        synchronized (componentExpressionGraphs) {
+                            componentExpressionGraphs.put(component.getBaseId(), component.getRefreshExpressionGraph());
+                        }
                     }
+
+                    ViewCleaner.cleanComponent(component, this);
+
+                    holdComponentStates.put(indexEntry.getKey(), component);
                 }
-
-                ViewCleaner.cleanComponent(component, this);
-
-                holdComponentStates.put(id, component);
             }
         }
         index = holdComponentStates;

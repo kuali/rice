@@ -1202,7 +1202,7 @@
     <section>
       <title>Base Inquiry Bean</title>
       <para>
-        <itemizedlist>
+        <itemizedlist xml:id="IBB1">
           <listitem>
             <para>Inquiries are now defined via <emphasis role="keyword">Uif-InquiryView</emphasis>
               definitions instead of the KNS <emphasis role="keyword">InquiryDefinition</emphasis>
@@ -1213,7 +1213,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IBB2">
             <para>The title of the view is specified via the <emphasis role="keyword"
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
                 >title</emphasis> property. [KNS line: 2, KRAD line: 2] <inlinemediaobject>
@@ -1223,7 +1223,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IBB3">
             <para>The data object class is specified via the <emphasis role="keyword"
                 >dataObjectClassName</emphasis> property and is no longer specified via the
                 <emphasis role="keyword">BusinessObjectEntry</emphasis> as it doesn't exist in KRAD
@@ -1235,7 +1235,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IBB4">
             <para>The <emphasis role="keyword">inquirableClass</emphasis> has now changed to
                 <emphasis role="keyword">viewHelperServiceClass</emphasis>, along with a class
               parent change. See below for more information. [KNS line: 3, KRAD line: 4] <inlinemediaobject>
@@ -1252,7 +1252,7 @@
       <title>Sections</title>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="IS1">
             <para>The property that contains the inquiry sections was renamed from <emphasis
                 role="keyword">inquirySections</emphasis> to <emphasis role="keyword"
                 >items</emphasis>. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
@@ -1262,7 +1262,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS2">
             <para>The bean <emphasis role="keyword">InquirySectionDefinition</emphasis> was removed
               and can be replaced with any subclass of <emphasis role="keyword">Group</emphasis>,
               although the default is a child of <emphasis role="keyword"
@@ -1273,7 +1273,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS3">
             <para>The title of the section is specified via the <emphasis role="keyword"
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
                 >title</emphasis> property. [KNS line: 7, KRAD line: 8] <inlinemediaobject>
@@ -1283,7 +1283,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS4">
             <para>The property that controls whether the section defaults to open has moved from
                 <emphasis role="keyword">defaultOpen</emphasis> to the <emphasis role="keyword"
                 >Disclosure</emphasis> object and is now accessed via <emphasis role="keyword"
@@ -1294,7 +1294,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS5">
             <para>To use multiple columns for the section use the <emphasis role="keyword"
                 >layoutManager.numberOfColumns</emphasis> property to configure the layout manager
               instead of specifying the <emphasis role="keyword">numberOfColumns</emphasis>
@@ -1337,7 +1337,7 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS8">
             <para>The property that contains the inquiry display fields was renamed from <emphasis
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
               >items</emphasis>. [KNS line: 10, KRAD line: 11] <inlinemediaobject>
@@ -1347,7 +1347,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS9">
             <para>Data fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to
                 <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 12-14, KRAD line:
               13-15] <inlinemediaobject>
@@ -1357,7 +1357,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS10">
             <para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now
               a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 12-14, KRAD
               line: 13-15] <inlinemediaobject>
@@ -1367,7 +1367,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IS11">
             <para>The <emphasis role="keyword">noInquiry</emphasis> property, which suppresses
               rendering the inquiry link on the fields, has moved to the <emphasis role="keyword"
                 >Inquiry</emphasis> object and is now accessed via <emphasis role="keyword"
@@ -1387,7 +1387,7 @@
       <title>Collections</title>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="IC1">
             <para>The bean <emphasis role="keyword">InquiryCollectionDefinition</emphasis> was
               removed and can be replaced with any subclass of <emphasis role="keyword"
                 >CollectionGroup</emphasis>, although the default is a child of <emphasis
@@ -1399,7 +1399,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC2">
             <para>The <emphasis role="keyword">businessObjectClass</emphasis> property of the
               collection has been changed to <emphasis role="keyword"
                 >collectionObjectClass</emphasis>. [KNS line: 25, KRAD line: 23] <inlinemediaobject>
@@ -1409,7 +1409,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC3">
             <para>The <emphasis role="keyword">attributeName</emphasis> property of the collection
               has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 26,
               KRAD line: 24] <inlinemediaobject>
@@ -1419,7 +1419,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC4">
             <para>The property that contains the inquiry display fields was renamed from <emphasis
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
               >items</emphasis>. [KNS line: 27, KRAD line: 25] <inlinemediaobject>
@@ -1429,7 +1429,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC5">
             <para>The property <emphasis role="keyword">summaryTitle</emphasis> has been moved to
                 <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 33, KRAD
               line: 31] <inlinemediaobject>
@@ -1439,7 +1439,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC6">
             <para>The container <emphasis role="keyword">summaryFields</emphasis> has been moved to
                 <emphasis role="keyword">layoutManager.summaryFields</emphasis> and simplified to
               just take a list of values. [KNS line: 34, KRAD line: 32] <inlinemediaobject>
@@ -1449,7 +1449,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IC7">
             <para>In general, only simple nestings such as the ones shown above are supported by the
               conversion script. Any other combinations, such as <emphasis role="keyword"
                 >InquiryCollectionDefinition</emphasis>s directly inside an <emphasis role="keyword"
@@ -1465,13 +1465,13 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="II">
       <title>Inquirable / KualiInquirableImpl</title>
       <para>KRAD adds <emphasis role="keyword">InquirableImpl</emphasis> to eventually replace
           <emphasis role="keyword">KualiInquirableImpl</emphasis>. Normally, this class does not
         need to be extended unless advanced customizations are required. </para>
       <itemizedlist>
-        <listitem>
+        <listitem xml:id="II1">
           <para>In order to customize Inquiry links, the code originally in a subclass of <emphasis
               role="keyword">org.kuali.rice.kns.inquiry.Inquirable.getInquiryUrl</emphasis> will
             need to move to <emphasis role="keyword"
@@ -1488,7 +1488,7 @@
         </listitem>
       </itemizedlist>
     </section>
-    <section>
+    <section xml:id="IIA">
       <title>InquiryAuthorizer</title>
       <para>KRAD moves the functionality of <emphasis role="keyword">InquiryAuthorizer</emphasis> to
           <emphasis role="keyword">InquiryViewAuthorizer</emphasis>. While the data dictionary entry
@@ -1503,7 +1503,7 @@
         </inlinemediaobject>
       </para>
     </section>
-    <section>
+    <section xml:id="IIPC">
       <title>InquiryPresentationController</title>
       <para>KRAD moves the functionality of <emphasis role="keyword"
           >InquiryPresentationController</emphasis> to <emphasis role="keyword"
@@ -1519,12 +1519,12 @@
         </inlinemediaobject>
       </para>
     </section>
-    <section>
+    <section xml:id="IM">
       <title>ModuleService / RemoteModuleServiceBase / ModuleServiceBase</title>
       <para>KRAD has both added and deprecated methods in this interface and its base
         classes.</para>
       <itemizedlist>
-        <listitem>
+        <listitem xml:id="IM1">
           <para><emphasis role="keyword">getExternalizableBusinessObjectInquiryUrl</emphasis> has
             been moved to <emphasis role="keyword">getExternalizableDataObjectInquiryUrl</emphasis>.
             Helper methods of <emphasis role="keyword"
@@ -1542,37 +1542,10 @@
       </itemizedlist>
     </section>
     <section>
-      <title>KualiInquiryAction</title>
-      <para>KRAD removes <emphasis role="keyword">KualiInquiryAction</emphasis> and replaces it with
-          <emphasis role="keyword">InquiryController</emphasis>. Normally, this class does not need
-        to be extended unless advanced customizations are required, but any implementer already
-        extending this class will have to make the switch manually. <inlinemediaobject>
-          <imageobject>
-            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
-          </imageobject>
-        </inlinemediaobject>
-      </para>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>Overrides of the methods <emphasis role="keyword">downloadAttachment</emphasis>,
-                <emphasis role="keyword">downloadCustomBOAttachment</emphasis>, and <emphasis
-                role="keyword">downloadBOAttachment</emphasis> need to be moved to <emphasis
-                role="keyword">InquiryController</emphasis> and adapted to the new Spring MVC
-              format. <inlinemediaobject>
-                <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
-                </imageobject>
-              </inlinemediaobject></para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </section>
-    <section>
       <title>Other Inquiry Features</title>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="IOF1">
             <para><emphasis role="bold">Inquiry Header Links</emphasis></para>
             <para>It is now possible to add links in the header of the Inquiry page. This was
               supposed to be possible in the KNS but never worked. Thus, any links desired in the
@@ -1590,7 +1563,7 @@
 &lt;/property></programlisting>
             </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IOF2">
             <para><emphasis role="bold">Section Permission Checks</emphasis></para>
             <para>The viewability of sections in Inquiries are controlled by a KIM permission only
               when a <emphasis role="keyword">componentSecurity</emphasis> is configured in the
@@ -1614,7 +1587,7 @@
             <para>A permission which extends the <emphasis role="keyword">KR-KRAD : View
                 Group</emphasis> template will have to be created.</para>
           </listitem>
-          <listitem>
+          <listitem xml:id="IOF3">
             <para><emphasis role="bold">Field Permission Checks</emphasis></para>
             <para>The viewability of fields in Inquiries are controlled by a KIM permission only
               when either <itemizedlist>
@@ -2664,7 +2637,7 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="MDPC">
       <title>MaintenanceDocumentPresentationController</title>
         <para>KRAD splits the <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
           interface into one for the maintenance entry and one for the maintenance view.  The one for

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.DocumentHeaderService;
 
 /**
@@ -43,7 +44,7 @@ public class DocumentHeaderServiceImpl implements DocumentHeaderService {
     @Override
     public DocumentHeader saveDocumentHeader(DocumentHeader documentHeader) {
         WorkflowDocument workflowDocument = documentHeader.getWorkflowDocument();
-        DocumentHeader savedDocumentHeader = dataObjectService.save(documentHeader);
+        DocumentHeader savedDocumentHeader = dataObjectService.save(documentHeader, PersistenceOption.FLUSH);
         savedDocumentHeader.setWorkflowDocument( workflowDocument );
         return savedDocumentHeader;
     }

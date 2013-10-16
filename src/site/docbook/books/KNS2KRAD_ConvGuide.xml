@@ -2597,10 +2597,19 @@
     <para>
       <itemizedlist>
         <listitem xml:id="MBB1">
+          <para>The parent bean of the maintenance document has changed from <emphasis role="keyword">MaintenanceDocumentEntry</emphasis>
+            to <emphasis role="keyword">uifMaintenanceDocumentEntry</emphasis>. [KNS line: 1, KRAD line: 1]
+            <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject></para>
+        </listitem>
+        <listitem xml:id="MBB2">
           <para>The maintainable class for a given document is specified in the same way in KRAD as was
             done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
             MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
-            org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
+              org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
             [KNS line: 4, KRAD line: 4] <inlinemediaobject>
               <imageobject>
                 <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
@@ -2608,14 +2617,26 @@
             </inlinemediaobject>
           </para>
         </listitem>
-        <listitem xml:id="MBB2">
-          <para>For including extra Javascript files, <emphasis role="keyword"
-            >webScriptFiles</emphasis> has changed to <emphasis role="keyword"
-            >additionalScriptFiles</emphasis>. [KNS line: 6-10, KRAD line: 9-13] <inlinemediaobject>
+        <listitem xml:id="MBB3">
+          <para>Maintenance sections are now referenced in a completely new bean parented by <emphasis role="keyword">Uif-MaintenanceView</emphasis>
+            instead of the KNS <emphasis role="keyword">MaintainableSectionDefinition</emphasis> beans.
+            Note that the sections are no longer referenced inside the <emphasis role="keyword">uifMaintenanceDocumentEntry</emphasis>
+            and instead are referenced in the view and are linked back to the <emphasis role="keyword">uifMaintenanceDocumentEntry</emphasis>
+            via <emphasis role="keyword">dataObjectClassName</emphasis> [KNS line: 12, KRAD line: 7]
+            <inlinemediaobject>
               <imageobject>
                 <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
               </imageobject>
-            </inlinemediaobject>
+            </inlinemediaobject></para>
+        </listitem>
+        <listitem xml:id="MBB4">
+          <para>For including extra Javascript files, <emphasis role="keyword"
+                  >webScriptFiles</emphasis> has changed to <emphasis role="keyword"
+                  >additionalScriptFiles</emphasis>. [KNS line: 6-10, KRAD line: 9-13] <inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+            </imageobject>
+          </inlinemediaobject>
           </para>
         </listitem>
       </itemizedlist>
@@ -2659,23 +2680,41 @@
         </itemizedlist>
       </para>
     </section>
-    <section xml:id="MDPC">
+    <section>
       <title>MaintenanceDocumentPresentationController</title>
         <para>KRAD splits the <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
           interface into one for the maintenance entry and one for the maintenance view.  The one for
           the maintenance entry is also named <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
           but has been reparented.  The one for the maintenance view is <emphasis role="keyword">ViewPresentationController</emphasis>.
-          Any references to <emphasis role="keyword">getConditionallyHiddenSectionIds</emphasis> and
-          <emphasis role="keyword">getConditionallyReadOnlySectionIds</emphasis> in <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
-          should be moved to <emphasis role="keyword">ViewPresentationController</emphasis> and
-          translated to <emphasis role="keyword">canViewGroup</emphasis> and <emphasis role="keyword">canEditGroup</emphasis>
-          respectively.
-          <inlinemediaobject>
-            <imageobject>
-              <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
-            </imageobject>
-        </inlinemediaobject>
-      </para>
+        </para>
+        <itemizedlist>
+          <listitem xml:id="MDPC1">
+            <para>Any references to <emphasis role="keyword">getConditionallyHiddenSectionIds</emphasis> and
+              <emphasis role="keyword">getConditionallyReadOnlySectionIds</emphasis> in <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
+              should be moved to <emphasis role="keyword">ViewPresentationController</emphasis> and
+              translated to <emphasis role="keyword">canViewGroup</emphasis> and <emphasis role="keyword">canEditGroup</emphasis>
+              respectively.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+            </inlinemediaobject>
+          </para>
+        </listitem>
+        <listitem xml:id="MDPC2">
+          <para>Sections can contain an ID attribute in KRAD just like they could in the KNS.  However,
+            if this ID was not specified in the KNS, it defaulted to the tab name. In KRAD, this defaults
+            to the bean name, so implementers using this defaulting capability in the <emphasis role="keyword">getConditionallyHiddenSectionIds</emphasis>
+            and <emphasis role="keyword">getConditionallyReadOnlySectionIds</emphasis> methods will
+            need to change any references from the tab name to the bean name.
+            <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
+          </para>
+        </listitem>
+      </itemizedlist>
     </section>
     <section>
       <title>Specifying a javascript function to call on tab out from a field</title>

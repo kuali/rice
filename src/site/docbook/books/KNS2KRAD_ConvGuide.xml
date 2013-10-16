@@ -2666,12 +2666,15 @@
     </section>
     <section>
       <title>MaintenanceDocumentPresentationController</title>
-        <para>KRAD reparents <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
-          from a KNS class to a KRAD class. While the data dictionary entry will be automatically converted,
-          if it points to a custom implementation of <emphasis role="keyword"
-          >MaintenanceDocumentPresentationController</emphasis>, then the custom class will need to be
-          reparented to the new KRAD class and the methods will need to be migrated to <emphasis role="keyword"
-          >canViewGroup</emphasis> and <emphasis role="keyword">canEditField</emphasis> (for sections).
+        <para>KRAD splits the <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
+          interface into one for the maintenance entry and one for the maintenance view.  The one for
+          the maintenance entry is also named <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
+          but has been reparented.  The one for the maintenance view is <emphasis role="keyword">ViewPresentationController</emphasis>.
+          Any references to <emphasis role="keyword">getConditionallyHiddenSectionIds</emphasis> and
+          <emphasis role="keyword">getConditionallyReadOnlySectionIds</emphasis> in <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
+          should be moved to <emphasis role="keyword">ViewPresentationController</emphasis> and
+          translated to <emphasis role="keyword">canViewGroup</emphasis> and <emphasis role="keyword">canEditGroup</emphasis>
+          respectively.
           <inlinemediaobject>
             <imageobject>
               <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>

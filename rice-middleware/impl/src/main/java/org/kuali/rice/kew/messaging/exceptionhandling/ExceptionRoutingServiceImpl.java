@@ -174,6 +174,8 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
      * routing requests.  Namely, this ensures that all "force action" values are set to "true".
      */
     protected void processExceptionRequests(List<ActionRequestValue> exceptionRequests) {
+        // first, let's ensure we are only dealing with root requests
+        exceptionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(exceptionRequests);
     	if (exceptionRequests != null) {
     		for (ActionRequestValue actionRequest : exceptionRequests) {
     			processExceptionRequest(actionRequest);

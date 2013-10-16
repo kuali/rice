@@ -15,42 +15,47 @@
  */
 package org.kuali.rice.kew.impl.peopleflow;
 
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-
 import java.io.Serializable;
 
-
+@Entity
+@Table(name = "KREW_PPL_FLW_ATTR_T")
 public class PeopleFlowAttributeBo implements Serializable, Versioned {
 
-    @Column(name="PPL_FLW_ATTR_ID")
+    @Id
+    @GeneratedValue(generator = "KREW_PPL_FLW_ATTR_S")
+    @PortableSequenceGenerator(name = "KREW_PPL_FLW_ATTR_S")
+    @Column(name="PPL_FLW_ATTR_ID", nullable = false)
     private String id;
-
-    @Column(name="PPL_FLW_ID")
-    private String peopleFlowId;
 
     @Column(name="ATTR_VAL")
     private String value;
 
     @Version
-    @Column(name="VER_NBR")
+    @Column(name="VER_NBR", nullable = false)
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name="ATTR_DEFN_ID")
+    @JoinColumn(name = "PPL_FLW_ID", nullable = false)
+    private PeopleFlowBo peopleFlow;
+
+    @ManyToOne
+    @JoinColumn(name="ATTR_DEFN_ID", nullable = false)
     private KewAttributeDefinitionBo attributeDefinition;
 
-    public static PeopleFlowAttributeBo from(KewAttributeDefinition attributeDefinition, String id, String peopleFlowId,
+    public static PeopleFlowAttributeBo from(KewAttributeDefinition attributeDefinition, String id, PeopleFlowBo peopleFlow,
             String value) {
 
         if (null == attributeDefinition) {
@@ -59,7 +64,7 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
 
         PeopleFlowAttributeBo peopleFlowAttributeBo = new PeopleFlowAttributeBo();
         peopleFlowAttributeBo.setId(id);
-        peopleFlowAttributeBo.setPeopleFlowId(peopleFlowId);
+        peopleFlowAttributeBo.setPeopleFlow(peopleFlow);
         peopleFlowAttributeBo.setValue(value);
         peopleFlowAttributeBo.setAttributeDefinition(KewAttributeDefinitionBo.from(attributeDefinition));
 
@@ -86,19 +91,12 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
         this.id = id;
     }
 
-    /**
-     * Returns the people flow id.
-     * @return the people flow id
-     */
-    public String getPeopleFlowId() {
-        return peopleFlowId;
+    public PeopleFlowBo getPeopleFlow() {
+        return peopleFlow;
     }
 
-    /**
-     * @see #getPeopleFlowId()
-     */
-    public void setPeopleFlowId(String peopleFlowId) {
-        this.peopleFlowId = peopleFlowId;
+    public void setPeopleFlow(PeopleFlowBo peopleFlow) {
+        this.peopleFlow = peopleFlow;
     }
 
     /**

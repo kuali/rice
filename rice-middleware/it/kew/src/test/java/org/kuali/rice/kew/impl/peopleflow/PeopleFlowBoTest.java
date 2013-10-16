@@ -128,7 +128,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
         PeopleFlowAttributeBo peopleFlowAttr = new PeopleFlowAttributeBo();
         peopleFlowAttr.setAttributeDefinition(attribute.getAttributeDefinition());
-        peopleFlowAttr.setPeopleFlowId(peopleFlowBo.getId());
+        peopleFlowAttr.setPeopleFlow(peopleFlowBo);
         peopleFlowAttr.setValue("testAttrValue");
 
         peopleFlowBo.getAttributeBos().add(peopleFlowAttr);
@@ -167,7 +167,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
         PeopleFlowMemberBo memberBo = peopleFlowBo.getMembers().get(0);
         assertNotNull(memberBo.getId());
-        assertEquals(peopleFlowBo.getId(), memberBo.getPeopleFlowId());
+        assertEquals(peopleFlowBo.getId(), memberBo.getPeopleFlow().getId());
         assertEquals("admin", memberBo.getMemberId());
         assertEquals(MemberType.PRINCIPAL, memberBo.getMemberType());
         assertNotNull(memberBo.getPerson());
@@ -178,7 +178,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
         PeopleFlowDelegateBo delegateBo1 = memberBo.getDelegates().get(0);
         assertNotNull(delegateBo1.getId());
-        assertEquals(memberBo.getId(), delegateBo1.getPeopleFlowMemberId());
+        assertEquals(memberBo.getId(), delegateBo1.getPeopleFlowMember().getId());
         assertEquals("1", delegateBo1.getMemberId());
         assertEquals(MemberType.GROUP, delegateBo1.getMemberType());
         assertEquals(DelegationType.PRIMARY.getCode(), delegateBo1.getDelegationTypeCode());
@@ -187,7 +187,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
 
         PeopleFlowDelegateBo delegateBo2 = memberBo.getDelegates().get(1);
         assertNotNull(delegateBo2.getId());
-        assertEquals(memberBo.getId(), delegateBo2.getPeopleFlowMemberId());
+        assertEquals(memberBo.getId(), delegateBo2.getPeopleFlowMember().getId());
         assertEquals("2", delegateBo2.getMemberId());
         assertEquals(MemberType.ROLE, delegateBo2.getMemberType());
         assertEquals(DelegationType.SECONDARY.getCode(), delegateBo2.getDelegationTypeCode());

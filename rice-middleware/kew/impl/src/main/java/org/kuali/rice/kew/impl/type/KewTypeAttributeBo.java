@@ -18,13 +18,16 @@ package org.kuali.rice.kew.impl.type;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttributeContract;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  *  Kuali workflow type attribute business object.
@@ -32,27 +35,30 @@ import javax.persistence.Table;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KREW_TYP_ATTR_T")
+@Table(name = "KREW_TYP_ATTR_T")
 public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInactivatable {
 
     @Id
-    @Column(name="TYP_ATTR_ID")
+    @GeneratedValue(generator = "KREW_TYP_ATTR_S")
+    @PortableSequenceGenerator(name = "KREW_TYP_ATTR_S")
+    @Column(name = "TYP_ATTR_ID", nullable = false)
     private String id;
 
-    @Column(name="SEQ_NO")
+    @Column(name = "SEQ_NO", nullable = false)
     private Integer sequenceNumber;
 
-    @Column(name="TYP_ID")
+    @Column(name = "TYP_ID", nullable = false)
     private String typeId;
 
-    @Column(name="ACTV")
+    @Column(name = "ACTV", nullable = false)
     private boolean active;
 
-    @Column(name="VER_NBR")
+    @Version
+    @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name="ATTR_DEFN_ID")
+    @JoinColumn(name = "ATTR_DEFN_ID", nullable = false)
     private KewAttributeDefinitionBo attributeDefinition;
 
     /**

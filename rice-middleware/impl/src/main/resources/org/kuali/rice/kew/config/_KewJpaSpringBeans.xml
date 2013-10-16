@@ -81,6 +81,13 @@
     <value>org.kuali.rice.kew.actionitem.OutboxItem</value>
     <value>org.kuali.rice.kew.actionrequest.ActionRequestValue</value>
     <value>org.kuali.rice.kew.actiontaken.ActionTakenValue</value>
+    <value>org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo</value>
+    <value>org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo</value>
+    <value>org.kuali.rice.kew.impl.peopleflow.PeopleFlowDelegateBo</value>
+    <value>org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo</value>
+    <value>org.kuali.rice.kew.impl.type.KewTypeBo</value>
+    <value>org.kuali.rice.kew.impl.type.KewTypeAttributeBo</value>
+    <value>org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo</value>
   </util:list>
 
   <util:list id="additionalMetadataProviders" />

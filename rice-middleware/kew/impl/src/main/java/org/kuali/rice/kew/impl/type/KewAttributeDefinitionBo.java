@@ -18,9 +18,11 @@ package org.kuali.rice.kew.impl.type;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinitionContract;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -31,33 +33,35 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KREW_ATTR_DEFN_T")
+@Table(name = "KREW_ATTR_DEFN_T")
 public class KewAttributeDefinitionBo implements KewAttributeDefinitionContract, MutableInactivatable {
 
     @Id
-    @Column(name="ATTR_DEFN_ID")
+    @GeneratedValue(generator = "KREW_ATTR_DEFN_S")
+    @PortableSequenceGenerator(name = "KREW_ATTR_DEFN_S")
+    @Column(name = "ATTR_DEFN_ID", nullable = false)
     private String id;
 
-    @Column(name="NM")
+    @Column(name = "NM", nullable = false)
     private String name;
 
-    @Column(name="NMSPC_CD")
+    @Column(name = "NMSPC_CD", nullable = false)
     private String namespace;
 
-    @Column(name="LBL")
+    @Column(name = "LBL")
     private String label;
 
-    @Column(name="ACTV")
+    @Column(name = "ACTV", nullable = false)
     private boolean active;
 
-    @Column(name="CMPNT_NM")
+    @Column(name = "CMPNT_NM")
     private String componentName;
 
     @Version
-    @Column(name="VER_NBR")
+    @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
 
-    @Column(name="DESC_TXT")
+    @Column(name = "DESC_TXT")
     private String description;
 
     /**

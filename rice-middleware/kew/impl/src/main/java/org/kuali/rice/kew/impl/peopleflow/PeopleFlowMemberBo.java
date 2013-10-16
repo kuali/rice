@@ -30,12 +30,18 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -44,34 +50,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="KREW_PPL_FLW_MBR_T")
+@Table(name = "KREW_PPL_FLW_MBR_T")
 public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContract,BusinessObject {
 
     @Id
-    @Column(name="PPL_FLW_MBR_ID")
+    @GeneratedValue(generator = "KREW_PPL_FLW_S")
+    @PortableSequenceGenerator(name = "KREW_PPL_FLW_MBR_S")
+    @Column(name = "PPL_FLW_MBR_ID", nullable = false)
     private String id;
 
-    @Column(name="PPL_FLW_ID")
-    private String peopleFlowId;
-
-    @Column(name="MBR_ID")
+    @Column(name = "MBR_ID", nullable = false)
     private String memberId;
 
-    @Column(name="MBR_TYP_CD")
+    @Column(name = "MBR_TYP_CD", nullable = false)
     private String memberTypeCode;
 
-    @Column(name="ACTN_RQST_PLCY_CD")
+    @Column(name = "ACTN_RQST_PLCY_CD")
     private String actionRequestPolicyCode;
 
-    @Column(name="RSP_ID")
+    @Column(name = "RSP_ID", nullable = false)
     private String responsibilityId;
 
-    @Column(name="PRIO")
+    @Column(name = "PRIO")
     int priority = 1;
 
     @Version
-    @Column(name="VER_NBR")
+    @Column(name = "VER_NBR", nullable = false)
     Long versionNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "PPL_FLW_ID", nullable = false)
+    private PeopleFlowBo peopleFlow;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "peopleFlowMember", orphanRemoval = true)
+    List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
 
     // non-persisted
     @Transient
@@ -86,15 +98,6 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     @Transient
     private RoleEbo role;
 
-    List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
-
-    /**
-     * Default constructor
-     */
-    public PeopleFlowMemberBo() {
-
-    }
-
     public String getId() {
         return id;
     }
@@ -103,12 +106,12 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         this.id = id;
     }
 
-    public String getPeopleFlowId() {
-        return peopleFlowId;
+    public PeopleFlowBo getPeopleFlow() {
+        return peopleFlow;
     }
 
-    public void setPeopleFlowId(String peopleFlowId) {
-        this.peopleFlowId = peopleFlowId;
+    public void setPeopleFlow(PeopleFlowBo peopleFlow) {
+        this.peopleFlow = peopleFlow;
     }
 
     public String getMemberId() {
@@ -280,12 +283,13 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         return member.build();
     }
 
-    public static PeopleFlowMemberBo from(PeopleFlowMember member) {
+    public static PeopleFlowMemberBo from(PeopleFlowMember member, PeopleFlowBo peopleFlow) {
 
         if (member == null) {
             return null;
         }
         PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
+        memberBo.setPeopleFlow(peopleFlow);
         memberBo.setMemberId(member.getMemberId());
         memberBo.setMemberType(member.getMemberType());
         if (member.getActionRequestPolicy() != null) {
@@ -295,7 +299,7 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         memberBo.setPriority(member.getPriority());
         memberBo.setDelegates(new ArrayList<PeopleFlowDelegateBo>());
         for (PeopleFlowDelegate delegate : member.getDelegates()) {
-            memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate));
+            memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate, memberBo));
         }
         return memberBo;
     }

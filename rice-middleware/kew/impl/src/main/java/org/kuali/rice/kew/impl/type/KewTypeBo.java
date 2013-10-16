@@ -19,9 +19,12 @@ import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinitionContract;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -36,31 +39,33 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KREW_TYP_T")
+@Table(name = "KREW_TYP_T")
 public class KewTypeBo implements KewTypeDefinitionContract, MutableInactivatable {
 
     @Id
-    @Column(name="TYP_ID")
+    @GeneratedValue(generator = "KREW_TYP_S")
+    @PortableSequenceGenerator(name = "KREW_TYP_S")
+    @Column(name = "TYP_ID", nullable = false)
     private String id;
 
-    @Column(name="NM")
+    @Column(name = "NM", nullable = false)
     private String name;
 
-    @Column(name="NMSPC_CD")
+    @Column(name = "NMSPC_CD", nullable = false)
     private String namespace;
 
-    @Column(name="SRVC_NM")
+    @Column(name = "SRVC_NM")
     private String serviceName;
 
-    @Column(name="ACTV")
+    @Column(name = "ACTV", nullable = false)
     private boolean active;
 
     @Version
-    @Column(name="VER_NBR")
+    @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
 
-    @OneToMany
-    @JoinColumn(name="TYP_ID", referencedColumnName="TYP_ID")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TYP_ID", referencedColumnName = "TYP_ID")
     private  List<KewTypeAttributeBo> attributes;
 
     /**
@@ -69,7 +74,6 @@ public class KewTypeBo implements KewTypeDefinitionContract, MutableInactivatabl
      * @return the immutable object
      */
     public static KewTypeDefinition to(KewTypeBo bo) {
-
         if (null == bo) {
             return null;
         } else {

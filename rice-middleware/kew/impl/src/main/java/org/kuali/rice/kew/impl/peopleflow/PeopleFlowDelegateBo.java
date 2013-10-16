@@ -28,46 +28,53 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import java.io.Serializable;
 
 @Entity
-@Table(name="KREW_PPL_FLW_DLGT_T")
+@Table(name = "KREW_PPL_FLW_DLGT_T")
 public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateContract, BusinessObject {
 
     @Id
-    @Column(name="PPL_FLW_DLGT_ID")
+    @GeneratedValue(generator = "KREW_PPL_FLW_DLGT_S")
+    @PortableSequenceGenerator(name = "KREW_PPL_FLW_DLGT_S")
+    @Column(name = "PPL_FLW_DLGT_ID", nullable = false)
     private String id;
 
-    @Column(name="PPL_FLW_MBR_ID")
-    private String peopleFlowMemberId;
-
-    @Column(name="MBR_ID")
+    @Column(name = "MBR_ID", nullable = false)
     private String memberId;
 
-    @Column(name="MBR_TYP_CD")
+    @Column(name = "MBR_TYP_CD", nullable = false)
     private String memberTypeCode;
 
-    @Column(name="ACTN_RQST_PLCY_CD")
+    @Column(name = "ACTN_RQST_PLCY_CD")
     private String actionRequestPolicyCode;
 
-    @Column(name="DLGN_TYP_CD")
+    @Column(name = "DLGN_TYP_CD", nullable = false)
     private String delegationTypeCode;
 
-    @Column(name="RSP_ID")
+    @Column(name = "RSP_ID", nullable = false)
     private String responsibilityId;
 
     @Version
-    @Column(name="VER_NBR")
-    private String versionNumber;
+    @Column(name = "VER_NBR", nullable = false)
+    private Long versionNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "PPL_FLW_MBR_ID", nullable = false)
+    private PeopleFlowMemberBo peopleFlowMember;
 
     // not-persisted
     @Transient
@@ -91,12 +98,13 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
         return builder.build();
     }
 
-    public static PeopleFlowDelegateBo from(PeopleFlowDelegate delegate) {
+    public static PeopleFlowDelegateBo from(PeopleFlowDelegate delegate, PeopleFlowMemberBo peopleFlowMember) {
 
         if (delegate == null) {
             return null;
         }
         PeopleFlowDelegateBo delegateBo = new PeopleFlowDelegateBo();
+        delegateBo.setPeopleFlowMember(peopleFlowMember);
         delegateBo.setMemberId(delegate.getMemberId());
         delegateBo.setMemberType(delegate.getMemberType());
         if (delegate.getActionRequestPolicy() != null) {
@@ -115,14 +123,6 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPeopleFlowMemberId() {
-        return peopleFlowMemberId;
-    }
-
-    public void setPeopleFlowMemberId(String peopleFlowMemberId) {
-        this.peopleFlowMemberId = peopleFlowMemberId;
     }
 
     public String getMemberId() {
@@ -161,12 +161,20 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
         this.responsibilityId = responsibilityId;
     }
 
-    public String getVersionNumber() {
+    public Long getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(Long versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    public PeopleFlowMemberBo getPeopleFlowMember() {
+        return peopleFlowMember;
+    }
+
+    public void setPeopleFlowMember(PeopleFlowMemberBo peopleFlowMember) {
+        this.peopleFlowMember = peopleFlowMember;
     }
 
     public String getMemberName() {

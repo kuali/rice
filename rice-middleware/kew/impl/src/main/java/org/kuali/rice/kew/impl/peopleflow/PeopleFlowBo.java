@@ -26,10 +26,15 @@ import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.impl.type.KewTypeBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -52,52 +57,51 @@ import java.util.Set;
  *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KREW_PPL_FLW_T")
+@Table(name = "KREW_PPL_FLW_T")
 public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableInactivatable {
 
     private static final long serialVersionUID = -4911187431645573793L;
 
-    @Column(name="PPL_FLW_ID")
+    @Id
+    @GeneratedValue(generator = "KREW_PPL_FLW_S")
+    @PortableSequenceGenerator(name = "KREW_PPL_FLW_S")
+    @Column(name = "PPL_FLW_ID", nullable = false)
     private String id;
 
-    @Column(name="NM")
+    @Column(name = "NM", nullable = false)
     private String name;
 
-    @Column(name="NMSPC_CD")
+    @Column(name = "NMSPC_CD", nullable = false)
     private String namespaceCode;
 
-    @Column(name="TYP_ID", insertable = false, updatable = false)
+    @Column(name = "TYP_ID", insertable = false, updatable = false)
     private String typeId;
 
-    @Column(name="DESC_TXT")
+    @Column(name = "DESC_TXT")
     private String description;
 
-    @Column(name="ACTV")
+    @Column(name = "ACTV", nullable = false)
     private boolean active = true;
 
     @Version
-    @Column(name="VER_NBR")
+    @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name="TYP_ID")
+    @JoinColumn(name = "TYP_ID")
     private KewTypeBo typeBo;
 
-    @OneToMany
-    @JoinColumn(name="PPL_FLW_ID", referencedColumnName="PPL_FLW_ID")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "peopleFlow", orphanRemoval = true)
     private List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
 
-    @OneToMany
-    @JoinColumn(name="PPL_FLW_ID", referencedColumnName="PPL_FLW_ID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "peopleFlow", orphanRemoval = true)
     private List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();
 
     // non-persisted, used for maintenance
     @Transient
     private Map<String, String> attributeValues = new HashMap<String, String>();
 
-
     public static PeopleFlowBo from(PeopleFlowDefinition peopleFlow, KewTypeDefinition kewTypeDefinition) {
-
         return PeopleFlowBo.fromAndUpdate(peopleFlow, kewTypeDefinition, null);
     }
 
@@ -143,7 +147,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
                     throw new RiceIllegalArgumentException("There is no attribute definition for the given attribute " +
                             "name '" + key + "'");
                 }
-                attributesToAdd.add(PeopleFlowAttributeBo.from(attributeDefinition, null, peopleFlow.getId(),
+                attributesToAdd.add(PeopleFlowAttributeBo.from(attributeDefinition, null, result,
                         peopleFlow.getAttributes().get(key)));
             }
             result.setAttributeBos(attributesToAdd);
@@ -174,7 +178,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
 //            peopleFlowBo.getMembers().clear();
             ArrayList<PeopleFlowMemberBo> membersToAdd = new ArrayList<PeopleFlowMemberBo>();
             for (PeopleFlowMember member : peopleFlow.getMembers()) {
-                membersToAdd.add(PeopleFlowMemberBo.from(member));
+                membersToAdd.add(PeopleFlowMemberBo.from(member, peopleFlowBo));
             }
             peopleFlowBo.setMembers(membersToAdd);
         }
@@ -232,7 +236,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
 
             for (KewTypeAttribute typeAttribute: typeAttributes) {
                 PeopleFlowAttributeBo attributeBo = PeopleFlowAttributeBo.from(typeAttribute.getAttributeDefinition(),
-                        null, this.id, null);
+                        null, this, null);
                 this.attributeBos.add(attributeBo);
                 this.attributeValues.put(typeAttribute.getAttributeDefinition().getName(), "");
             }

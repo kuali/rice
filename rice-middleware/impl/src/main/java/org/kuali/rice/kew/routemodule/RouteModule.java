@@ -34,6 +34,8 @@ public interface RouteModule {
     /**
      * Generate action requests for the given RouteContext.
      *
+     * <p>The list of requests returned should only contain root action requests (those with no parent).</p>
+     *
      * @return A List of the generated ActionRequestValue objects.
      */
     List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;

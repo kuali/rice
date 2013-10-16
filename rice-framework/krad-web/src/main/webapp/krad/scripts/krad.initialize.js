@@ -576,7 +576,7 @@ function setupDisclosureHandler() {
                     disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
 
                     //run scripts for previously hidden content
-                    runHiddenScripts(disclosureContent, true, true);
+                    runHiddenScripts(disclosureContent, true, false);
 
                     link.find("#" + linkId + "_exp").show();
                     link.find("#" + linkId + "_col").hide();

@@ -2290,7 +2290,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
         
         ViewLifecyclePhase phase = ViewLifecycle.getPhase();
-        copy.copyTrace = new Throwable("Component copied" + (phase == null ? "" : " during phase " + phase));
+//        copy.copyTrace = new Throwable("Component copied" + (phase == null ? "" : " during phase " + phase));
 
         if (ViewLifecycle.isLifecycleActive()) {
             copy.allowModification();

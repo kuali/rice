@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +85,20 @@ public abstract class AbstractViewLifecycleTask implements ViewLifecycleTask {
                 throw new IllegalStateException("The phase this task is a part of is not active.");
             }
 
-            performLifecycleTask();
+            if (ProcessLogger.isTraceActive()) {
+                ProcessLogger.countBegin("lc-task-" + phase.getViewPhase());
+            }
+
+            try {
+                performLifecycleTask();
+            } finally {
+
+                if (ProcessLogger.isTraceActive()) {
+                    ProcessLogger.countEnd("lc-task-" + phase.getViewPhase(), getClass().getName() + " "
+                            + phase.getClass().getName() + " " + phase.getComponent().getClass().getName() + " "
+                            + phase.getComponent().getId());
+                }
+            }
 
             // Only recycle successfully processed tasks
             LifecycleTaskFactory.recycle(this);

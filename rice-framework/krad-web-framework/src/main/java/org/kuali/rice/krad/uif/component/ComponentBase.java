@@ -19,7 +19,9 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,6 +68,11 @@ import org.kuali.rice.krad.util.KRADUtils;
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
 
     private static final long serialVersionUID = -4449335748129894350L;
+    
+    /**
+     * Thread local stack for detecting circular chains during copy.
+     */
+    private static final ThreadLocal<Deque<Component>> COPY_STACK = new ThreadLocal<Deque<Component>>();
     
     /**
      * Track mutability status.
@@ -2288,8 +2295,51 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (ViewLifecycle.isLifecycleActive()) {
             copy.allowModification();
         }
-        
-        copyProperties(copy);
+
+        // Detect circular chains while copying.  Without this mechanism in place,
+        // a circular chain of components will result in StackOverfowError which
+        // is much more difficult to debug.  This mechanism aims to simplify the
+        // location of the circular chain so that it can be resolved.
+        Deque<Component> copyStack = COPY_STACK.get();
+        boolean outer = copyStack == null;
+        if (outer) {
+            // ComponentBase.copy() is head recursive.  When COPY_STACK is null, then
+            // we are at the head.
+            copyStack = new LinkedList<Component>();
+            COPY_STACK.set(copyStack);
+        }
+
+        try {
+            // Detected circular chain prior to pushing this component onto the copy stack,
+            // and still push this component to include in error reporting and simplify the
+            // finally block assertion that this component is at the head of the stack.
+            boolean dup = copyStack.contains(this);
+            copyStack.push(this);
+
+            if (dup) {
+                // Prevent stack overflow and report a meaningful exception if a circular
+                // component chain has been defined.
+                StringBuilder msg = new StringBuilder("Detected circular chain in component structure during copy");
+                msg.append("\nStack: ");
+                for (Component component : copyStack) {
+                    msg.append("\n  ").append(component.getClass());
+                    msg.append(" ").append(component.getId());
+                }
+                msg.append("\nPhase: ").append(ViewLifecycle.getPhase());
+                throw new IllegalStateException(msg.toString());
+            }
+
+            copyProperties(copy);
+            
+        } finally {
+            // Take *this* component off the stack, and assert that *this* was in fact popped.
+            Component popped = copyStack.pop();
+            assert this == popped : popped.getClass() + " " + popped.getId() + " != " + getClass() + " " + getId();
+            if (outer) {
+                // Remove the stack from the thread when the entire tree has been copied.
+                COPY_STACK.remove();
+            }
+        }
 
         return (T) copy;
     }

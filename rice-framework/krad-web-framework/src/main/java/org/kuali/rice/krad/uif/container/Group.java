@@ -357,6 +357,8 @@ public class Group extends ContainerBase {
     public void setItems(List<? extends Component> items) {
         if (items == null) {
             this.items = Collections.emptyList();
+        } else if (items.contains(this)) {
+            throw new IllegalArgumentException("Attempted to add group to itself");
         } else {
             this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
         }

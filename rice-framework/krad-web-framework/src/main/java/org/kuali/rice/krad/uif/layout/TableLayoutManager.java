@@ -301,7 +301,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-            ViewLifecycle.spawnSubLifecyle(model, groupingMessageField, collectionGroup);
+//            ViewLifecycle.spawnSubLifecyle(model, groupingMessageField, collectionGroup);
 
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
@@ -428,7 +428,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             List<Component> groupItems = new ArrayList<Component>();
             Group labelGroup = ComponentFactory.getVerticalBoxGroup();
-            groupItems.add(labelGroup);
 
             if (this.isShowGroupTotal()) {
                 //display none - this label is copied by the javascript

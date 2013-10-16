@@ -1110,6 +1110,8 @@
         <programlisting linenumbering="numbered">&lt;bean id="EntityType-inquiryDefinition" parent="InquiryDefinition">
   &lt;property name="title" value="Entity Type Inquiry"/>
   &lt;property name="inquirableClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
+  &lt;property name="authorizerClass" value="org.kuali.rice.kim.authorization.EntityTypeAuthorizer"/>
+  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.presentation.EntityTypePresentationController"/>
   &lt;property name="inquirySections">
     &lt;list>
       &lt;bean parent="InquirySectionDefinition">
@@ -1160,6 +1162,8 @@
   &lt;property name="headerText" value="Entity Type"/>
   &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="viewHelperServiceClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
+  &lt;property name="authorizerClass" value="org.kuali.rice.kim.authorization.EntityTypeAuthorizer"/>
+  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.view.EntityTypeViewPresentationController"/>
   &lt;property name="items">
     &lt;list>
       &lt;bean id="EntityType-InquiryView-General" parent="Uif-Disclosure-GridSection">
@@ -1245,6 +1249,24 @@
               </inlinemediaobject>
             </para>
           </listitem>
+          <listitem xml:id="IBB5">
+            <para>The <emphasis role="keyword">authorizerClass</emphasis> has now moved to the view.
+              See below for more information. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="IBB6">
+            <para>The <emphasis role="keyword">presentationControllerClass</emphasis> has now moved
+              to the view.  See below for more information. [KNS line: 5, KRAD line: 6] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
         </itemizedlist>
       </para>
     </section>
@@ -1255,7 +1277,7 @@
           <listitem xml:id="IS1">
             <para>The property that contains the inquiry sections was renamed from <emphasis
                 role="keyword">inquirySections</emphasis> to <emphasis role="keyword"
-                >items</emphasis>. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
+                >items</emphasis>. [KNS line: 6, KRAD line: 7] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1266,7 +1288,7 @@
             <para>The bean <emphasis role="keyword">InquirySectionDefinition</emphasis> was removed
               and can be replaced with any subclass of <emphasis role="keyword">Group</emphasis>,
               although the default is a child of <emphasis role="keyword"
-                >Uif-Disclosure-GridSection</emphasis>. [KNS line: 6, KRAD line: 7] <inlinemediaobject>
+                >Uif-Disclosure-GridSection</emphasis>. [KNS line: 8, KRAD line: 9] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1276,7 +1298,7 @@
           <listitem xml:id="IS3">
             <para>The title of the section is specified via the <emphasis role="keyword"
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
-                >title</emphasis> property. [KNS line: 7, KRAD line: 8] <inlinemediaobject>
+                >title</emphasis> property. [KNS line: 9, KRAD line: 10] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1287,7 +1309,7 @@
             <para>The property that controls whether the section defaults to open has moved from
                 <emphasis role="keyword">defaultOpen</emphasis> to the <emphasis role="keyword"
                 >Disclosure</emphasis> object and is now accessed via <emphasis role="keyword"
-                >disclosure.defaultOpen</emphasis>. [KNS line: 8, KRAD line: 9] <inlinemediaobject>
+                >disclosure.defaultOpen</emphasis>. [KNS line: 10, KRAD line: 11] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1300,7 +1322,7 @@
               instead of specifying the <emphasis role="keyword">numberOfColumns</emphasis>
               property. Note that in the layout manager the field label and the field itself have
               their own columns and therefore the old <emphasis role="keyword"
-                >numberOfColumns</emphasis> value needs to be doubled. [KNS line: 9, KRAD line: 10] <inlinemediaobject>
+                >numberOfColumns</emphasis> value needs to be doubled. [KNS line: 11, KRAD line: 12] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1340,7 +1362,7 @@
           <listitem xml:id="IS8">
             <para>The property that contains the inquiry display fields was renamed from <emphasis
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
-              >items</emphasis>. [KNS line: 10, KRAD line: 11] <inlinemediaobject>
+              >items</emphasis>. [KNS line: 12, KRAD line: 13] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1349,8 +1371,8 @@
           </listitem>
           <listitem xml:id="IS9">
             <para>Data fields changed from <emphasis role="keyword">FieldDefinition</emphasis> to
-                <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 12-14, KRAD line:
-              13-15] <inlinemediaobject>
+                <emphasis role="keyword">Uif-DataField</emphasis>. [KNS line: 14-16, KRAD line:
+              15-17] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1359,8 +1381,8 @@
           </listitem>
           <listitem xml:id="IS10">
             <para>The <emphasis role="keyword">attributeName</emphasis> property on the field is now
-              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 12-14, KRAD
-              line: 13-15] <inlinemediaobject>
+              a <emphasis role="keyword">propertyName</emphasis> property. [KNS line: 14-16, KRAD
+              line: 15-17] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1373,7 +1395,7 @@
                 >Inquiry</emphasis> object and is now accessed via <emphasis role="keyword"
                 >inquiry.render</emphasis>. Note here that <emphasis role="keyword"
                 >noInquiry="true"</emphasis> is equivalent to <emphasis role="keyword"
-                >inquiry.render="false"</emphasis>. [KNS line: 12, KRAD line: 13] <inlinemediaobject>
+                >inquiry.render="false"</emphasis>. [KNS line: 14, KRAD line: 15] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1391,8 +1413,8 @@
             <para>The bean <emphasis role="keyword">InquiryCollectionDefinition</emphasis> was
               removed and can be replaced with any subclass of <emphasis role="keyword"
                 >CollectionGroup</emphasis>, although the default is a child of <emphasis
-                role="keyword">Uif-Disclosure-StackedCollectionSection</emphasis>. [KNS line: 24,
-              KRAD line: 19] <inlinemediaobject>
+                role="keyword">Uif-Disclosure-StackedCollectionSection</emphasis>. [KNS line: 25,
+              KRAD line: 21] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1402,7 +1424,7 @@
           <listitem xml:id="IC2">
             <para>The <emphasis role="keyword">businessObjectClass</emphasis> property of the
               collection has been changed to <emphasis role="keyword"
-                >collectionObjectClass</emphasis>. [KNS line: 25, KRAD line: 23] <inlinemediaobject>
+                >collectionObjectClass</emphasis>. [KNS line: 27, KRAD line: 25] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1411,8 +1433,8 @@
           </listitem>
           <listitem xml:id="IC3">
             <para>The <emphasis role="keyword">attributeName</emphasis> property of the collection
-              has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 26,
-              KRAD line: 24] <inlinemediaobject>
+              has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 28,
+              KRAD line: 26] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1422,7 +1444,7 @@
           <listitem xml:id="IC4">
             <para>The property that contains the inquiry display fields was renamed from <emphasis
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
-              >items</emphasis>. [KNS line: 27, KRAD line: 25] <inlinemediaobject>
+              >items</emphasis>. [KNS line: 29, KRAD line: 30] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1431,8 +1453,8 @@
           </listitem>
           <listitem xml:id="IC5">
             <para>The property <emphasis role="keyword">summaryTitle</emphasis> has been moved to
-                <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 33, KRAD
-              line: 31] <inlinemediaobject>
+                <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 35, KRAD
+              line: 33] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1442,7 +1464,7 @@
           <listitem xml:id="IC6">
             <para>The container <emphasis role="keyword">summaryFields</emphasis> has been moved to
                 <emphasis role="keyword">layoutManager.summaryFields</emphasis> and simplified to
-              just take a list of values. [KNS line: 34, KRAD line: 32] <inlinemediaobject>
+              just take a list of values. [KNS line: 36, KRAD line: 34] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>

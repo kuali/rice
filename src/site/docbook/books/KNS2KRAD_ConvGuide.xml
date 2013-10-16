@@ -548,7 +548,7 @@
         <emphasis role="bold">KNS Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition" p:size="10"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
       <para>
         <emphasis role="bold">KRAD Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -596,7 +596,7 @@
             Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="ButtonControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -643,7 +643,7 @@
             Checkbox Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD Checkbox Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -678,7 +678,7 @@
             Currency control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
-&lt;/property>            </programlisting>
+&lt;/property></programlisting>
         </para>
         <para><emphasis role="bold">KRAD Currency Text control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -715,7 +715,7 @@
             File Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD File Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -742,7 +742,7 @@
             Hidden control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD Hidden control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -769,7 +769,7 @@
             Kuali User control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD Kim Person control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -851,8 +851,7 @@
             TextArea control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD TextArea control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -879,7 +878,7 @@
             Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
-&lt;/property>            </programlisting></para>
+&lt;/property></programlisting></para>
         <para>
           <emphasis role="bold">KRAD Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -1065,7 +1064,7 @@
             Date control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
-&lt;/property>            </programlisting>
+&lt;/property></programlisting>
         </para>
         <para> KRAD TextArea control example:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -1126,7 +1125,7 @@
         &lt;/property>
       &lt;/bean>
       &lt;bean parent="InquirySectionDefinition">
-        &lt;property name="title" value="Rule Attributes"/>
+        &lt;property name="title" value="Entity Type Details"/>
         &lt;property name="defaultOpen" value="false"/>
         &lt;property name="inquiryFields">
           &lt;list>
@@ -1176,7 +1175,7 @@
         &lt;/property>
       &lt;/bean>
       &lt;bean id="EntityType-InquiryView-Details" parent="Uif-Disclosure-StackedCollectionSection">
-        &lt;property name="headerText" value="Rule Attributes"/>
+        &lt;property name="headerText" value="Entity Type Details"/>
         &lt;property name="disclosure.defaultOpen" value="false"/>
         &lt;property name="layoutManager.numberOfColumns" value="2"/>
         &lt;property name="collectionObjectClass" 
@@ -1317,10 +1316,10 @@
               which in turn would extend <emphasis role="keyword"
                 >org.kuali.rice.krad.inquiry.InquirableImpl</emphasis>.
               <programlisting linenumbering="numbered">&lt;bean id="Sample-InquiryView" parent="Uif-InquiryView">
- ...
- &lt;property name="viewHelperServiceClass"  value="org.kuali.rice.krad.inquiry.CustomInquirableImpl/>
- ...
-&lt;/bean>              </programlisting>
+  ...
+  &lt;property name="viewHelperServiceClass"  value="org.kuali.rice.krad.inquiry.CustomInquirableImpl/>
+  ...
+&lt;/bean></programlisting>
             </para>
           </listitem>
           <listitem>
@@ -2477,6 +2476,202 @@
     <title>Maintenance Conversion</title>
     <para>&lt;add overview here></para>
     <section>
+      <title>MaintenanceDefinition in KNS Data Dictionary to MaintenanceView in KRAD</title>
+      <para><emphasis role="bold">KNS Code example:</emphasis></para>
+      <para><programlisting linenumbering="numbered">&lt;bean id="EntityTypeMaintenanceDocument" parent="MaintenanceDocumentEntry">
+  &lt;property name="dataObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="documentTypeName" value="EntityTypeMaintenanceDocument"/>
+  &lt;property name="maintainableClass" value="org.kuali.rice.kim.maintenance.EntityTypeMaintainableImpl"/>
+
+  &lt;property name="webScriptFiles">
+    &lt;list>
+      &lt;value>entityType.js&lt;/value>
+    &lt;/list>
+  &lt;/property>
+
+  &lt;property name="maintainableSections">
+    &lt;list>
+      &lt;ref bean="EntityTypeMaintenanceDocument-General"/>
+      &lt;ref bean="EntityTypeMaintenanceDocument-Details"/>
+    &lt;/list>
+   &lt;/property>
+&lt;/bean>
+
+&lt;bean id="EntityTypeMaintenanceDocument-General" parent="MaintainableSectionDefinition">
+  &lt;property name="title" value="Entity Type"/>
+  &lt;property name="defaultOpen" value="true"/>
+  &lt;property name="helpUrl" value="docs/entityType.html"/>
+  &lt;property name="maintainableItems">
+    &lt;list>
+      &lt;bean parent="MaintainableFieldDefinition" p:name="code"/>
+      &lt;bean parent="MaintainableFieldDefinition" p:required="true" p:name="name"/>
+      &lt;bean parent="MaintainableFieldDefinition" p:required="true" p:name="active"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean>
+
+&lt;bean id="EntityTypeMaintenanceDocument-Details" parent="MaintainableSectionDefinition">
+  &lt;property name="title" value="Entity Type Details"/>
+  &lt;property name="defaultOpen" value="false"/>
+  &lt;property name="helpUrl" value="docs/entityTypeDetails.html"/>
+  &lt;property name="maintainableItems">
+    &lt;list>
+      &lt;bean parent="MaintainableCollectionDefinition">
+        &lt;property name="summaryTitle" value="Entity Type Detail"/>
+        &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+        &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+        &lt;property name="name" value="entityTypeDetails"/>
+        &lt;property name="maintainableFields">
+          &lt;list>
+            &lt;bean parent="MaintainableFieldDefinition" p:name="name"/>
+            &lt;bean parent="MaintainableFieldDefinition" p:name="value"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting></para>
+      <para><emphasis role="bold">KRAD code example:</emphasis></para>
+      <para><programlisting linenumbering="numbered">&lt;bean id="EntityTypeMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+  &lt;property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+  &lt;property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
+  &lt;property name="maintainableClass" value="org.kuali.rice.kim.maintenance.EntityTypeMaintainableImpl"/>
+&lt;/bean>
+
+&lt;bean id="EntityType-MaintenanceView" parent="Uif-MaintenanceView">
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="additionalScriptFiles">
+    &lt;list>
+      &lt;value>entityType.js&lt;/value>
+    &lt;/list>
+  &lt;/property>
+
+  &lt;property name="items">
+    &lt;list>
+      &lt;ref bean="EntityType-MaintenanceView-General"/>
+      &lt;ref bean="EntityType-MaintenanceView-Details"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean>
+
+&lt;bean id="EntityType-MaintenanceView-General" parent="Uif-MaintenanceGridSection">
+  &lt;property name="headerText" value="Entity Type"/>
+  &lt;property name="disclosure.defaultOpen" value="true"/>
+  &lt;property name="help">
+    &lt;bean parent="Uif-Help">
+      &lt;property name="externalHelpUrl" value="docs/entityType.html"/>
+    &lt;/bean>
+  &lt;/property>
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-InputField" p:propertyName="code"/>
+      &lt;bean parent="Uif-InputField" p:propertyName="name"/>
+      &lt;bean parent="Uif-InputField" p:propertyName="active"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean>
+
+&lt;bean id="EntityType-MaintenanceView-Details" parent="Uif-Disclosure-StackedCollectionSection">
+  &lt;property name="headerText" value="Entity Type Details"/>
+  &lt;property name="disclosure.defaultOpen" value="false"/>
+  &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+  &lt;property name="propertyName" value="entityTypeDetails"/>
+  &lt;property name="help">
+    &lt;bean parent="Uif-Help">
+      &lt;property name="externalHelpUrl" value="docs/entityTypeDetails.html"/>
+    &lt;/bean>
+  &lt;/property>
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:attributeName="name"/>
+      &lt;bean parent="Uif-DataField" p:attributeName="value"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting></para>
+  </section>
+  <section>
+    <title>Base Maintenance Bean</title>
+    <para>
+      <itemizedlist>
+        <listitem xml:id="MBB1">
+          <para>The maintainable class for a given document is specified in the same way in KRAD as was
+            done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
+            MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
+            org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
+            [KNS line: 4, KRAD line: 4] <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
+          </para>
+        </listitem>
+        <listitem xml:id="MBB2">
+          <para>For including extra Javascript files, <emphasis role="keyword"
+            >webScriptFiles</emphasis> has changed to <emphasis role="keyword"
+            >additionalScriptFiles</emphasis>. [KNS line: 6-10, KRAD line: 9-13] <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+  <section>
+    <title>Sections</title>
+      <para>
+        <itemizedlist>
+          <listitem xml:id="MS1">
+            <para>The title of the view is specified via the <emphasis role="keyword"
+                >headerText</emphasis> property instead of the <emphasis role="keyword"
+                >title</emphasis> property. [KNS line: 21, KRAD line: 24] <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="MS2">
+            <para>The property that controls whether the section defaults to open has moved from
+              <emphasis role="keyword">defaultOpen</emphasis> to the <emphasis role="keyword"
+                >Disclosure</emphasis> object and is now accessed via <emphasis role="keyword"
+                >disclosure.defaultOpen</emphasis>. [KNS line: 22, KRAD line: 25] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MS3">
+            <para>Help links specified by <emphasis role="keyword">helpUrl</emphasis> have now been
+              changed to a full <emphasis role="keyword">Uif-Help</emphasis> which contains a property
+              <emphasis role="keyword">externalHelpUrl</emphasis> where the link is now stored.
+              [KNS line: 23, KRAD line: 26-30] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section>
+      <title>MaintenanceDocumentPresentationController</title>
+        <para>KRAD reparents <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
+          from a KNS class to a KRAD class. While the data dictionary entry will be automatically converted,
+          if it points to a custom implementation of <emphasis role="keyword"
+          >MaintenanceDocumentPresentationController</emphasis>, then the custom class will need to be
+          reparented to the new KRAD class and the methods will need to be migrated to <emphasis role="keyword"
+          >canViewGroup</emphasis> and <emphasis role="keyword">canEditField</emphasis> (for sections).
+          <inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+            </imageobject>
+        </inlinemediaobject>
+      </para>
+    </section>
+    <section>
       <title>Specifying a javascript function to call on tab out from a field</title>
       <para>
         <itemizedlist>
@@ -2491,7 +2686,7 @@
               <programlisting>&lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
   &lt;property name="onBlurScript" 
             value="jq(this).stop().animate({'height':'-=50px'},100);"/>
-&lt;/bean>              </programlisting>
+&lt;/bean></programlisting>
             </para>
           </listitem>
         </itemizedlist>
@@ -2512,13 +2707,13 @@
   &lt;property name="help">
     &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/>
   &lt;/property>
-&lt;/bean>              </programlisting>
+&lt;/bean></programlisting>
               External Help can be specified via the data dictionary, or through a system parameter. <programlisting linenumbering="numbered">&lt;bean parent="Uif-View">
   &lt;property name="help">
     &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
   &lt;/property>
 &lt;/bean></programlisting>
-              <programlisting linenumbering="numbered">&lt;bean parent="Uif-View"&gt;
+            <programlisting linenumbering="numbered">&lt;bean parent="Uif-View"&gt;
   &lt;property name="help">
     &lt;bean parent="Uif-Help">
       &lt;property name="helpDefinition">
@@ -2548,16 +2743,6 @@
         only display. <emphasis role="bold">setAlternateAndAdditionalDisplayValue</emphasis> get the
         relationship configured in the datadictionary file and set the name additional display value
         which will be displayed along with the code </para>
-    </section>
-    <section>
-      <title>Specifying a maintainable class</title>
-      <para> The maintainable class for a given document is specified in the same way in KRAD as was
-        done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
-        MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
-          org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
-        <programlisting linenumbering="numbered">&lt;property name="maintainableClass" 
-          value="org.kuali.rice.krad.maintenance.SampleMaintainableImpl"/></programlisting>
-      </para>
     </section>
     <section>
       <title>Overriding default values</title>
@@ -2687,6 +2872,29 @@
   return isValid;
 }</programlisting>
       <para>Validation of all of these customizations is left to the implementer. </para>
+    </section>
+    <section>
+      <title>Other Maintenance Features</title>
+      <para>
+        <itemizedlist>
+          <listitem xml:id="MOF1">
+            <para>Where it used to be possible to specify additional non-standard sections via the
+              Data Dictionary property <emphasis role="keyword">additionalSectionsFile</emphasis>,
+              this is no longer possible since KRAD does not use JSP, preferring instead to use
+              Freemarker.  The conversion from JSP files to the KRAD format will vary from use
+              case to use case, and thus it is not possible to provide a straight conversion from
+              JSP to Freemarker.  KRAD does however address natively many of the typical non-standard
+              layouts previously addressed by this feature, and implementers can always choose to
+              create custom components to address any other requirements.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
     </section>
   </section>
   <section>

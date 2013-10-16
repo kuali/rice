@@ -175,8 +175,6 @@
     &lt;/list>
   &lt;/property>
 &lt;/bean></programlisting>
-      </para>
-      <para>
         <itemizedlist>
           <listitem>
             <para>The parent bean for data dictionary beans in KRAD is <emphasis role="keyword"
@@ -207,7 +205,6 @@
         Definition properties remain the same between KNS and KRAD. The major differences are in how
         validation constraints and controls are defined. The examples below demonstrate the
         differences for defining various validation and controls.</para>
-      <para/>
       <para>
         <emphasis role="bold">KNS Attribute Definition code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;bean id="Country-code" parent="Country-code-parentBean"/>
@@ -551,8 +548,7 @@
         <emphasis role="bold">KNS Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition" p:size="10"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
       <para>
         <emphasis role="bold">KRAD Control example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -600,8 +596,7 @@
             Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="ButtonControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -648,8 +643,7 @@
             Checkbox Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Checkbox Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -684,8 +678,7 @@
             Currency control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
-&lt;/property>
-            </programlisting>
+&lt;/property>            </programlisting>
         </para>
         <para><emphasis role="bold">KRAD Currency Text control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -722,8 +715,7 @@
             File Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD File Control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -750,8 +742,7 @@
             Hidden control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Hidden control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -778,8 +769,7 @@
             Kuali User control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Kim Person control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -805,14 +795,16 @@
             ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115702-0700" comment="Add short summary of what link control does."?>KNS<?oxy_comment_end?>
             Link control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" p:target="_blank" p:hrefText="click here" />
+  &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" 
+        p:target="_blank" p:hrefText="click here" />
 &lt;/property></programlisting>
         </para>
         <para>
           <emphasis role="bold">KRAD Link control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="controlField">
-  &lt;bean parent="Uif-LinkField" p:fieldLabel.cssClasses="globalLinks" p:target="_blank" p:linkText="click here" href="@{#propertyName}"/>
-          &lt;/property></programlisting>
+  &lt;bean parent="Uif-LinkField" p:fieldLabel.cssClasses="globalLinks" 
+        p:target="_blank" p:linkText="click here" href="@{#propertyName}"/>
+&lt;/property></programlisting>
         </para>
         <para>
           <itemizedlist>
@@ -887,8 +879,7 @@
             Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
-&lt;/property>
-            </programlisting></para>
+&lt;/property>            </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -934,7 +925,8 @@
             ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135210-0700" comment="Add short summary of what radio control does."?>KNS<?oxy_comment_end?>
             Radio Group control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
-  &lt;bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
+  &lt;bean parent="RadioControlDefinition" 
+        p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
 &lt;/property> </programlisting></para>
         <para>
           <emphasis role="bold">KRAD Radio Group control example:
@@ -945,7 +937,7 @@
   &lt;property name="optionsFinder">
     &lt;bean class="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
   &lt;/property>
-&lt;/bean&gt;</programlisting>
+&lt;/bean></programlisting>
         </para>
         <para>
           <itemizedlist>
@@ -999,7 +991,8 @@
   &lt;property name="control">
     &lt;bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.bookstore.bo.Book"
               p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder"
-              p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" p:labelAttribute="para"/>
+              p:includeKeyInLabel="false" p:includeBlankRow="true" p:keyAttribute="id" 
+              p:labelAttribute="para"/>
   &lt;/property>
 &lt;/bean></programlisting>
         </para>
@@ -1072,8 +1065,7 @@
             Date control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
-&lt;/property>
-            </programlisting>
+&lt;/property>            </programlisting>
         </para>
         <para> KRAD TextArea control example:
           <programlisting linenumbering="numbered">&lt;property name="controlField">
@@ -1140,7 +1132,8 @@
           &lt;list>
             &lt;bean parent="InquiryCollectionDefinition">
               &lt;property name="numberOfColumns" value="1"/>
-              &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+              &lt;property name="businessObjectClass" 
+                        value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
               &lt;property name="attributeName" value="entityTypeDetails"/>
                 &lt;property name="inquiryFields">
                   &lt;list>
@@ -1186,7 +1179,8 @@
         &lt;property name="headerText" value="Rule Attributes"/>
         &lt;property name="disclosure.defaultOpen" value="false"/>
         &lt;property name="layoutManager.numberOfColumns" value="2"/>
-        &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+        &lt;property name="collectionObjectClass" 
+                  value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
         &lt;property name="propertyName" value="entityTypeDetails"/>
         &lt;property name="items">
           &lt;list>
@@ -1323,11 +1317,10 @@
               which in turn would extend <emphasis role="keyword"
                 >org.kuali.rice.krad.inquiry.InquirableImpl</emphasis>.
               <programlisting linenumbering="numbered">&lt;bean id="Sample-InquiryView" parent="Uif-InquiryView">
-                ...
-                &lt;property name="viewHelperServiceClass"  value="org.kuali.rice.krad.inquiry.CustomInquirableImpl/>
-                ...
-                &lt;/bean>
-              </programlisting>
+ ...
+ &lt;property name="viewHelperServiceClass"  value="org.kuali.rice.krad.inquiry.CustomInquirableImpl/>
+ ...
+&lt;/bean>              </programlisting>
             </para>
           </listitem>
           <listitem>
@@ -2227,8 +2220,7 @@
     &lt;/list>
   &lt;/property>
   ...
-&lt;/bean>
-</programlisting>
+&lt;/bean></programlisting>
             </listitem>
             <listitem xml:id="LLA18">
               <para><emphasis role="keyword">set/getDocFormKey</emphasis> has been removed. The
@@ -2331,8 +2323,7 @@
     &lt;/list>
   &lt;/property>
   ...
-&lt;/bean>
-</programlisting></para>
+&lt;/bean></programlisting></para>
             </listitem>
           </itemizedlist>
         </para>
@@ -2375,7 +2366,8 @@
               </inlinemediaobject></para>
             <para><emphasis role="bold">KNS code
               example:</emphasis><programlisting linenumbering="numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="entityTypeCode"/>
-  &lt;property name="overrideLookupClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="overrideLookupClass" 
+            value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="overrideFieldConversions">
     &lt;map>
       &lt;entry key="code" value="entityTypeCode"/>
@@ -2384,7 +2376,8 @@
 &lt;/bean></programlisting></para>
             <para><emphasis role="bold">KRAD code
               example:</emphasis><programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="entityTypeCode">
-  &lt;property name="quickfinder.dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="quickfinder.dataObjectClassName"
+            value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="quickfinder.fieldConversions">
     &lt;map>
       &lt;entry key="code" value="entityTypeCode"/>
@@ -2413,7 +2406,8 @@
       </para>
       <para>
         <programlisting linenumbering="numbered">&lt;bean parent="Uif-TableCollectionSection">
-  &lt;property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+  &lt;property name="collectionObjectClass" 
+            value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
   &lt;property name="propertyName" value="categories"/>
   &lt;property name="collectionLookup">
       &lt;bean parent="Uif-CollectionQuickFinder"
@@ -2469,7 +2463,8 @@
            type="org.kuali.rice.kns.demo.travel.authorization.TravelAuthorizationForm"/></programlisting>
               With KRAD the forms are specified as a property of the view.
               <programlisting>&lt;bean parent="Uif-TransactionalDocumentView">
-    &lt;property name="formClass" value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationForm"/>
+    &lt;property name="formClass" 
+              value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationForm"/>
     ...
 &lt;/bean></programlisting>
             </para>
@@ -2488,17 +2483,15 @@
           <listitem xml:id="MBA1">
             <para> In KNS this was achieved using <emphasis role="bold">
                 MaintainableFieldDefinition. webUILeaveFieldFunction</emphasis>.
-              <programlisting linenumbering="numbered">
-                &lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="false" p:webUILeaveFieldFunction="alert('you are out')"/&gt;
-              </programlisting>
+              <programlisting linenumbering="numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="false"
+      p:webUILeaveFieldFunction="alert('you are out')"/></programlisting>
               However in KRAD Component classes include properties for events that are applicable to
               the generate HTML elements. The same functionality can be obtained using the <emphasis
                 role="bold">ComponentBase.onBlurScript</emphasis>
-              <programlisting>
-                    &lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"&gt;
-                      &lt;property name="onBlurScript" value="jq(this).stop().animate({'height':'-=50px'},100);" /&gt;
-                    &lt;/bean>
-              </programlisting>
+              <programlisting>&lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
+  &lt;property name="onBlurScript" 
+            value="jq(this).stop().animate({'height':'-=50px'},100);"/>
+&lt;/bean>              </programlisting>
             </para>
           </listitem>
         </itemizedlist>
@@ -2515,31 +2508,27 @@
                 widget</emphasis> is used to render tooltip help and/or external help. Help can be
               configured at the view, page, section or sub-section, or at the field level. Tooltip
               help content is defined in the data dictionary.
-              <programlisting linenumbering="numbered">
-                &lt;bean parent="Uif-TextControl"&gt;
-                &lt;property name="help"&gt;
-                &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/&gt;
-                &lt;/property&gt;
-                &lt;/bean&gt;
-              </programlisting>
-              External Help can be specified via the data dictionary, or through a system parameter. <programlisting linenumbering="numbered">
-                &lt;bean parent="Uif-View"&gt;
-                &lt;property name="help"&gt;
-                &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/&gt;
-                &lt;/property&gt;
-                &lt;/bean&gt;
-              </programlisting>
-              <programlisting linenumbering="numbered">
-                &lt;bean parent="Uif-View"&gt;
-                &lt;property name="help"&gt;
-                &lt;bean parent="Uif-Help"&gt;
-                &lt;property name="helpDefinition"&gt;
-                &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM" p:parameterDetailType="TEST_COMPONENT"/&gt;
-                &lt;/property&gt;
-                &lt;/bean&gt;
-                &lt;/property&gt;
-                &lt;/bean&gt;
-              </programlisting>
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-TextControl">
+  &lt;property name="help">
+    &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/>
+  &lt;/property>
+&lt;/bean>              </programlisting>
+              External Help can be specified via the data dictionary, or through a system parameter. <programlisting linenumbering="numbered">&lt;bean parent="Uif-View">
+  &lt;property name="help">
+    &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-View"&gt;
+  &lt;property name="help">
+    &lt;bean parent="Uif-Help">
+      &lt;property name="helpDefinition">
+        &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" 
+              p:parameterName="TEST_PARAM" 
+              p:parameterDetailType="TEST_COMPONENT"/>
+      &lt;/property>
+    &lt;/bean>
+  &lt;/property>
+&lt;/bean></programlisting>
             </para>
           </listitem>
         </itemizedlist>
@@ -2566,9 +2555,8 @@
         done in KNS using the <emphasis role="bold">maintainableClass</emphasis> property of
         MaintenanceDocumentEntry. The maintainable class should extend <emphasis role="bold">
           org.kuali.rice.krad.maintenance.MaintainableImpl.</emphasis>
-        <programlisting linenumbering="numbered">
-                &lt;property name="maintainableClass" value="org.kuali.rice.krad.maintenance.SampleMaintainableImpl" /&gt;
-              </programlisting>
+        <programlisting linenumbering="numbered">&lt;property name="maintainableClass" 
+          value="org.kuali.rice.krad.maintenance.SampleMaintainableImpl"/></programlisting>
       </para>
     </section>
     <section>
@@ -2623,14 +2611,10 @@
         Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
         MaintenanceDocumentService.setupMaintenanceObject.</para>
       <para><emphasis role="bold">KNS BO
-          Preparation:</emphasis><programlisting linenumbering="numbered">
-            public void prepareBusinessObject(BusinessObject businessObject);
-          </programlisting><emphasis
+          Preparation:</emphasis><programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);         </programlisting><emphasis
           role="bold">KRAD BO Preparation:
-        </emphasis><programlisting linenumbering="numbered">
-            public void setupMaintenanceObject(MaintenanceDocument document, String maintenanceAction,
-            Map&lt;String, String[]&gt; requestParameters);
-          </programlisting></para>
+        </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document, 
+    String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
     </section>
     <section>
       <title>Refreshing references </title>

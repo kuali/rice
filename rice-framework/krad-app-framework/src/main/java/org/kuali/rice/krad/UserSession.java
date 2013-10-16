@@ -37,6 +37,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 4532616762540067557L;
 
+    private static final Object NULL_VALUE = new Object();
+
     private Person person;
     private Person backdoorUser;
     private AtomicInteger nextObjectKey;
@@ -173,7 +175,7 @@ public class UserSession implements Serializable {
      */
     public String addObjectWithGeneratedKey(Serializable object, String keyPrefix) {
         String objectKey = keyPrefix + nextObjectKey.incrementAndGet();
-        objectMap.put(objectKey, object);
+        addObject(objectKey, object);
         return objectKey;
     }
 
@@ -188,19 +190,23 @@ public class UserSession implements Serializable {
      */
     public String addObjectWithGeneratedKey(Object object) {
         String objectKey = nextObjectKey.incrementAndGet() + "";
-        objectMap.put(objectKey, object);
+        addObject(objectKey, object);
         return objectKey;
     }
 
     /**
-     * allows adding an arbitrary object to the session with static a string key that can be used to later access this
-     * object from
-     * the session using the retrieveObject method in this class
+     * Allows adding an arbitrary object to the session with static a string key that can be used to later access this
+     * object from the session using the retrieveObject method in this class.
      *
-     * @param object
+     * @param key the mapping key
+     * @param object the object to store
      */
     public void addObject(String key, Object object) {
-        objectMap.put(key, object);
+        if (object != null) {
+            objectMap.put(key, object);
+        } else {
+            objectMap.put(key, NULL_VALUE);
+        }
     }
 
     /**
@@ -213,18 +219,29 @@ public class UserSession implements Serializable {
      * @param object the object to store
      */
     public void addObjectIfAbsent(String key, Object object) {
-        objectMap.putIfAbsent(key, object);
+        if (object != null) {
+            objectMap.putIfAbsent(key, object);
+        } else {
+            objectMap.putIfAbsent(key, NULL_VALUE);
+        }
     }
 
     /**
-     * allows for fetching an object that has been put into the userSession based on the key that would have been
-     * returned when
-     * adding the object
+     * Allows for fetching an object that has been put into the userSession based on the key that would have been
+     * returned when adding the object.
      *
-     * @param objectKey
+     * @param objectKey the mapping key
+     *
+     * @return the stored object
      */
     public Object retrieveObject(String objectKey) {
-        return this.objectMap.get(objectKey);
+        Object object = objectMap.get(objectKey);
+
+        if (!NULL_VALUE.equals(object)) {
+            return object;
+        } else {
+            return null;
+        }
     }
 
     /**

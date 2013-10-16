@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 
 /**
  * Assign a unique ID to the component, if one has not already been assigned.
@@ -68,12 +69,14 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
      * The hash code that the generated ID is based on is equivalent (though not identical) to
      * taking the hash code of the string concenation of all class names, non-null IDs, and
      * successor index positions in the lifecycle phase tree for all predecessors of the current
-     * phase.
+     * phase.  This technique leads to a reliably unique ID that is also repeatable across server
+     * instances and test runs.
      * </p>
      * 
      * @param element The lifecycle element for which to generate an ID.
      * @return An ID, unique within the current view, for the given element.
      * 
+     * @see ViewIndex#observeAssignedId(String)
      * @see String#hashCode() for the algorithm this method is based on.
      */
     private String generateId(LifecycleElement element) {

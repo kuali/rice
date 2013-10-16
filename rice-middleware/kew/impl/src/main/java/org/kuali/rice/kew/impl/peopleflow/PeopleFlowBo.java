@@ -115,8 +115,17 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
         PeopleFlowBo result = toUpdate;
 
         if (null == toUpdate) {
-            result = new PeopleFlowBo(peopleFlow);
+            result = new PeopleFlowBo();
         }
+
+        result.setId(peopleFlow.getId());
+        result.setName(peopleFlow.getName());
+        result.setNamespaceCode(peopleFlow.getNamespaceCode());
+        result.setTypeId(peopleFlow.getTypeId());
+        result.setDescription(peopleFlow.getDescription());
+        result.setActive(peopleFlow.isActive());
+        result.setVersionNumber(peopleFlow.getVersionNumber());
+        
         // we need to translate attributes over, this is a bit more work, first let's do some validation
         if (null == peopleFlow.getTypeId()) {
             if (null != kewTypeDefinition) {

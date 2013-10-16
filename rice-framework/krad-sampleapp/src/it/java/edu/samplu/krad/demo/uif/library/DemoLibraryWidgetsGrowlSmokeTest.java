@@ -24,7 +24,7 @@ import org.openqa.selenium.WebElement;
  */
 public class DemoLibraryWidgetsGrowlSmokeTest extends DemoLibraryBase {
 
-    /**
+	   /**
      * /kr-krad/kradsampleapp?viewId=Demo-Growls-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Growls-View&methodToCall=start";
@@ -39,7 +39,7 @@ public class DemoLibraryWidgetsGrowlSmokeTest extends DemoLibraryBase {
         navigateToLibraryDemo("Widgets", "Growls");
     }
 
-    protected void testWidgetsGrowlDefault() throws Exception {
+    protected void testWidgetsGrowlServerSide() throws Exception {
 
         //check if growl text is present
         assertTextNotPresent("Sample Message Text. Data passed: none");
@@ -54,46 +54,24 @@ public class DemoLibraryWidgetsGrowlSmokeTest extends DemoLibraryBase {
         assertTextPresent("Sample Message Text. Data passed: none");
     }
 
-    protected void testWidgetsDatePickerWidget() throws Exception {
-        waitAndClickByLinkText(">> Open Library Navigation");
-        waitAndClickByLinkText("Suggest");
-        waitAndClickByLinkText("Tooltip");
-        select(By.id("Demo-LargeExampleDropdown_control"), "Tooltip On Focus");
-
-        //focus label
-        fireMouseOverEvent(By.id("u100101_label"));
-        Thread.sleep(1000);
-        WebElement tooltipFocusLabel = driver.findElement(By.xpath("//div[@data-for=\"u100101_label\"]")).findElement(
-                By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusLabel.isDisplayed()) {
-            fail("Tooltip help for label not displayed.");
-        }
-        if (!tooltipFocusLabel.getText().equals("Click on the text box for a tool tip")) {
-            fail("Incorrect inner html text for label focus tooltip.");
-        }
-
-        //focus control
-        waitAndClickById("u100101_control");
-        Thread.sleep(1000);
-        WebElement tooltipFocusControl = driver.findElement(By.xpath("//div[@data-for=\"u100101_control\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusControl.isDisplayed()) {
-            fail("Tooltip help for control not displayed.");
-        }
-        if (!tooltipFocusControl.getText().equals("This tooltip appears when the field receives focus")) {
-            fail("Incorrect inner html text for tooltip focus control.");
-        }
+    protected void testWidgetsGrowlClientSide() throws Exception {
+        selectByName("exampleShown","Client-side Growls");
+        waitAndClickByXpath("//div[@id='Demo-Growls-Example2']/div[@class='uif-verticalBoxLayout clearfix']/button");
+        Thread.sleep(500);
+        assertTextPresent("This is a test growl message");
     }
 
     @Test
     public void testWidgetsGrowlBookmark() throws Exception {
-        testWidgetsGrowlDefault();
+        testWidgetsGrowlServerSide();
+        testWidgetsGrowlClientSide();
         passed();
     }
 
     @Test
     public void testWidgetsGrowlNav() throws Exception {
-        testWidgetsGrowlDefault();
+        testWidgetsGrowlServerSide();
+        testWidgetsGrowlClientSide();
         passed();
     }
 }

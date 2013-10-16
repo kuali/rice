@@ -16,6 +16,7 @@
 package edu.samplu.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
+
 import org.junit.Test;
 
 /**
@@ -23,7 +24,7 @@ import org.junit.Test;
  */
 public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends DemoLibraryBase {
 
-    /**
+	  /**
      * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start";
@@ -119,7 +120,7 @@ public class DemoLibraryWidgetsBreadcrumbsSmokeTest extends DemoLibraryBase {
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
-        waitAndClickById("u100164");
+        waitAndClickByXpath("//div[@class='uif-verticalBoxLayout clearfix']/a[contains(text(),'Sibling Breadcrumbs')]");
         assertNewWindow("10");
     }
 

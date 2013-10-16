@@ -27,7 +27,7 @@ import java.util.Date;
  */
 public class DemoLibraryWidgetsDatePickerSmokeTest extends DemoLibraryBase {
 
-    /**
+	 /**
      * /kr-krad/kradsampleapp?viewId=Demo-DatePicker-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DatePicker-View&methodToCall=start";
@@ -39,8 +39,7 @@ public class DemoLibraryWidgetsDatePickerSmokeTest extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        navigateToExample("Widgets");
-        waitAndClickByLinkText("DatePicker");
+        navigateToLibraryDemo("Widgets", "DatePicker");
     }
 
     protected void testWidgetsDatePickerDefault() throws Exception {
@@ -50,50 +49,19 @@ public class DemoLibraryWidgetsDatePickerSmokeTest extends DemoLibraryBase {
 
         //select today
         waitAndClick(By.cssSelector(".ui-datepicker-current"));
-
-        //make sure today is populated
-        String today = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-        String populatedDate = driver.findElement(By.id("u100085_control")).getAttribute("value");
-        if (!populatedDate.equals(today)) {
-            fail("DatePicker did not populate correct value.");
-        }
-
     }
 
     protected void testWidgetsDatePickerWidget() throws Exception {
-        waitAndClickByLinkText(">> Open Library Navigation");
-        waitAndClickByLinkText("Suggest");
-        waitAndClickByLinkText("Tooltip");
-        select(By.id("Demo-LargeExampleDropdown_control"), "Tooltip On Focus");
-
-        //focus label
-        fireMouseOverEvent(By.id("u100101_label"));
-        Thread.sleep(1000);
-        WebElement tooltipFocusLabel = driver.findElement(By.xpath("//div[@data-for=\"u100101_label\"]")).findElement(
-                By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusLabel.isDisplayed()) {
-            fail("Tooltip help for label not displayed.");
-        }
-        if (!tooltipFocusLabel.getText().equals("Click on the text box for a tool tip")) {
-            fail("Incorrect inner html text for label focus tooltip.");
-        }
-
-        //focus control
-        waitAndClickById("u100101_control");
-        Thread.sleep(1000);
-        WebElement tooltipFocusControl = driver.findElement(By.xpath("//div[@data-for=\"u100101_control\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusControl.isDisplayed()) {
-            fail("Tooltip help for control not displayed.");
-        }
-        if (!tooltipFocusControl.getText().equals("This tooltip appears when the field receives focus")) {
-            fail("Incorrect inner html text for tooltip focus control.");
-        }
+        selectByName("exampleShown","Widget Input Only");
+        assertElementPresentByXpath("//input[@name='inputField1' and @readonly]");
+        waitAndClickByXpath("//div[@id='Demo-DatePicker-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/img");
+        waitAndClickByXpath("//button[@class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all']");
     }
 
     @Test
     public void testWidgetsDatePickerBookmark() throws Exception {
         testWidgetsDatePickerDefault();
+        testWidgetsDatePickerWidget();
         driver.close();
         passed();
     }
@@ -101,6 +69,7 @@ public class DemoLibraryWidgetsDatePickerSmokeTest extends DemoLibraryBase {
     @Test
     public void testWidgetsDatePickerNav() throws Exception {
         testWidgetsDatePickerDefault();
+        testWidgetsDatePickerWidget();
         driver.close();
         passed();
     }

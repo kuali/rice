@@ -602,6 +602,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View"/>
         <bean parent="Uif-Link" p:linkText="AJAX Field Query"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AjaxFieldQuery-View"/>
+        <bean parent="Uif-Link" p:linkText="Events"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Events-View"/>
       </list>
     </property>
   </bean>

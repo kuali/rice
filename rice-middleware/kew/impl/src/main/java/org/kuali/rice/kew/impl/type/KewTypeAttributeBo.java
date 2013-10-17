@@ -47,15 +47,16 @@ public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInac
     @Column(name = "SEQ_NO", nullable = false)
     private Integer sequenceNumber;
 
-    @Column(name = "TYP_ID", nullable = false)
-    private String typeId;
-
     @Column(name = "ACTV", nullable = false)
     private boolean active;
 
     @Version
     @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "TYP_ID", nullable = false)
+    private KewTypeBo type;
 
     @ManyToOne
     @JoinColumn(name = "ATTR_DEFN_ID", nullable = false)
@@ -79,13 +80,13 @@ public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInac
      * @param im immutable object
      * @return the mutable bo
      */
-    public static KewTypeAttributeBo from(KewTypeAttribute im) {
+    public static KewTypeAttributeBo from(KewTypeAttribute im, KewTypeBo kewType) {
         if (null == im) {
             return null;
         } else {
             KewTypeAttributeBo bo = new KewTypeAttributeBo();
             bo.setId(im.getId());
-            bo.setTypeId(im.getTypeId());
+            bo.setType(kewType);
             bo.setSequenceNumber(im.getSequenceNumber());
             bo.setActive(im.isActive());
             bo.setAttributeDefinition(KewAttributeDefinitionBo.from(im.getAttributeDefinition()));
@@ -126,21 +127,6 @@ public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInac
      */
     public void setSequenceNumber(Integer sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
-    }
-
-    /**
-     * Returns the type id.
-     * @return the type id
-     */
-    public String getTypeId() {
-        return typeId;
-    }
-
-    /**
-     * @see #getTypeId()
-     */
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
     }
 
     /**
@@ -199,5 +185,20 @@ public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInac
         } else {
             return null;
         }
+    }
+
+    public KewTypeBo getType() {
+        return type;
+    }
+
+    public void setType(KewTypeBo type) {
+        this.type = type;
+    }
+
+    public String getTypeId() {
+        if (getType() == null) {
+            return null;
+        }
+        return getType().getId();
     }
 }

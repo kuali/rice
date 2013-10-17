@@ -189,8 +189,12 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 
             throw new RiceIllegalStateException("The KEW Type Attribute to create already exists: " + kewTypeAttribute);
         }
+        KewTypeBo kewType = null;
+        if (kewTypeAttribute.getTypeId() != null) {
+            kewType = dataObjectService.find(KewTypeBo.class, kewTypeAttribute.getTypeId());
+        }
 
-        KewTypeAttributeBo bo = (KewTypeAttributeBo)dataObjectService.save(KewTypeAttributeBo.from(kewTypeAttribute));
+        dataObjectService.save(KewTypeAttributeBo.from(kewTypeAttribute, kewType));
     }
 
     /**
@@ -216,6 +220,11 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
             toUpdate = kewTypeAttribute;
         }
 
-        dataObjectService.save(KewTypeAttributeBo.from(toUpdate));
+        KewTypeBo kewType = existing.getType();
+        if (!existing.getTypeId().equals(kewTypeAttribute.getTypeId())) {
+            kewType = dataObjectService.find(KewTypeBo.class, kewTypeAttribute.getTypeId());
+        }
+
+        dataObjectService.save(KewTypeAttributeBo.from(toUpdate, kewType));
     }
 }

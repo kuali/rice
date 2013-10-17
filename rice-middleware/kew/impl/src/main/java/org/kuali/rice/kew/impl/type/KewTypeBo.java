@@ -64,9 +64,8 @@ public class KewTypeBo implements KewTypeDefinitionContract, MutableInactivatabl
     @Column(name = "VER_NBR", nullable = false)
     private Long versionNumber;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "TYP_ID", referencedColumnName = "TYP_ID")
-    private  List<KewTypeAttributeBo> attributes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "type", orphanRemoval = true)
+    private List<KewTypeAttributeBo> attributes;
 
     /**
      * Converts a mutable bo to it's immutable counterpart
@@ -99,7 +98,7 @@ public class KewTypeBo implements KewTypeDefinitionContract, MutableInactivatabl
             bo.setAttributes(new ArrayList<KewTypeAttributeBo>());
             if (null != im.getAttributes() && !im.getAttributes().isEmpty()) {
                 for(KewTypeAttribute attr : im.getAttributes()) {
-                    bo.getAttributes().add(KewTypeAttributeBo.from(attr));
+                    bo.getAttributes().add(KewTypeAttributeBo.from(attr, bo));
                 }
             }
 
@@ -207,6 +206,9 @@ public class KewTypeBo implements KewTypeDefinitionContract, MutableInactivatabl
      * @return a {@link List} of {@link KewTypeAttributeBo}
      */
     public List<KewTypeAttributeBo> getAttributes() {
+        if (attributes == null) {
+            attributes = new ArrayList<KewTypeAttributeBo>();
+        }
         return attributes;
     }
 

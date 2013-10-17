@@ -101,7 +101,7 @@ public class KewTypeBoServiceImplTest {
             .attributes(attrs)
             .build();
     private static KewTypeBo TEST_KEW_TYPE_BO = KewTypeBo.from(TEST_KEW_TYPE_DEF);
-    private static KewTypeAttributeBo TEST_KEW_TYPE_ATTRIBUTE_BO = KewTypeAttributeBo.from(newAttr);
+    private static KewTypeAttributeBo TEST_KEW_TYPE_ATTRIBUTE_BO = KewTypeAttributeBo.from(newAttr, TEST_KEW_TYPE_BO);
 
     private static KewTypeBo createKewTypeBo(String id, boolean isActive, String name, String namespace,
             String serviceName) {

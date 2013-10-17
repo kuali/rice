@@ -17,6 +17,7 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
@@ -28,6 +29,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
+
+import javax.persistence.PersistenceException;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -49,18 +53,17 @@ public class PeopleFlowBoTest extends KEWTestCase {
         responsibilityIdService = KEWServiceLocator.getResponsibilityIdService();
     }
 
-    @Test(expected = java.lang.Throwable.class)
+    // TODO - hopefully this test will eventually start failing because we actually want the save method to throw a
+    // {@link DataAccessException}, but that's not going to happen until the following jira is resolved:
+    //
+    // https://jira.kuali.org/browse/KULRICE-9798
+    @Test(expected = PersistenceException.class)
     public void testKewTypeBoBasicPersist() {
         KewTypeBoBuilder builder = new KewTypeBoBuilder("testType", "testNamespace");
 
-        dataObjectService.save(builder.build());
-//        try {
-            // same info again should be a no go
-            dataObjectService.save(builder.build());
-//            fail("this should violate unique constraints");
-//        } catch (Exception e) {
-            // good
-//        }
+        dataObjectService.save(builder.build(), PersistenceOption.FLUSH);
+        // try to persist the same information again, it should fail because of the unique constraint on name + namespace
+        dataObjectService.save(builder.build(), PersistenceOption.FLUSH);
     }
     @Test
     public void testKewTypeBoFullPersist() {
@@ -75,12 +78,13 @@ public class PeopleFlowBoTest extends KEWTestCase {
             attributeDefn.setLabel("label" + i);
             attributeDefn.setNamespace(kewTypeBo.getNamespace());
 
-            dataObjectService.save(attributeDefn);
+            attributeDefn = dataObjectService.save(attributeDefn);
 
             KewTypeAttributeBo typeAttribute = new KewTypeAttributeBo();
             typeAttribute.setSequenceNumber(i);
             typeAttribute.setAttributeDefinition(attributeDefn);
             kewTypeBo.getAttributes().add(typeAttribute);
+            typeAttribute.setType(kewTypeBo);
         }
 
         dataObjectService.save(kewTypeBo);
@@ -112,7 +116,9 @@ public class PeopleFlowBoTest extends KEWTestCase {
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
         criteria.setPredicates(equal("name", "testType"), equal("namespace", "testNamespace"));
 
-        KewTypeBo kewTypeBo = dataObjectService.find(KewTypeBo.class, criteria.build());
+        QueryResults<KewTypeBo> results = dataObjectService.findMatching(KewTypeBo.class, criteria.build());
+        assertEquals(1, results.getResults().size());
+        KewTypeBo kewTypeBo = results.getResults().get(0);
 
         // minimal peopleflow
         PeopleFlowBo peopleFlowBo = new PeopleFlowBo();
@@ -121,12 +127,13 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.setNamespaceCode("testNamespace");
         peopleFlowBo.setTypeId(kewTypeBo.getId());
         
-        dataObjectService.save(peopleFlowBo);
+        peopleFlowBo = dataObjectService.save(peopleFlowBo);
 
         // fill out peopleflow
         KewTypeAttributeBo attribute = kewTypeBo.getAttributes().get(0);
 
         PeopleFlowAttributeBo peopleFlowAttr = new PeopleFlowAttributeBo();
+        peopleFlowAttr.setPeopleFlow(peopleFlowBo);
         peopleFlowAttr.setAttributeDefinition(attribute.getAttributeDefinition());
         peopleFlowAttr.setPeopleFlow(peopleFlowBo);
         peopleFlowAttr.setValue("testAttrValue");
@@ -134,6 +141,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.getAttributeBos().add(peopleFlowAttr);
 
         PeopleFlowMemberBo peopleFlowMember = new PeopleFlowMemberBo();
+        peopleFlowMember.setPeopleFlow(peopleFlowBo);
         peopleFlowMember.setMemberType(MemberType.PRINCIPAL);
         peopleFlowMember.setMemberId("admin");
         peopleFlowMember.setPriority(1);
@@ -142,6 +150,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.getMembers().add(peopleFlowMember);
 
         PeopleFlowDelegateBo peopleFlowDelegate1 = new PeopleFlowDelegateBo();
+        peopleFlowDelegate1.setPeopleFlowMember(peopleFlowMember);
         peopleFlowDelegate1.setMemberType(MemberType.GROUP);
         peopleFlowDelegate1.setMemberId("1");
         peopleFlowDelegate1.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
@@ -149,6 +158,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowMember.getDelegates().add(peopleFlowDelegate1);
 
         PeopleFlowDelegateBo peopleFlowDelegate2 = new PeopleFlowDelegateBo();
+        peopleFlowDelegate2.setPeopleFlowMember(peopleFlowMember);
         peopleFlowDelegate2.setMemberType(MemberType.ROLE);
         peopleFlowDelegate2.setMemberId("2");
         peopleFlowDelegate2.setActionRequestPolicyCode(ActionRequestPolicy.FIRST.getCode());
@@ -156,7 +166,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowDelegate2.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
         peopleFlowMember.getDelegates().add(peopleFlowDelegate2);
 
-        dataObjectService.save(peopleFlowBo);
+        peopleFlowBo = dataObjectService.save(peopleFlowBo);
 
         assertNotNull(peopleFlowBo.getId());
         peopleFlowBo = dataObjectService.find(PeopleFlowBo.class, peopleFlowBo.getId());

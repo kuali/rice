@@ -27,32 +27,31 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.krms.impl.repository.RuleAttributeBo;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Tests to confirm JPA mapping for the Kew module Document type objects
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KewDocumentTypeJpaTest extends KEWTestCase{
+public class KewDocumentTypeJpaTest extends KEWTestCase {
 
     public static final String TEST_DOC_ID = "1234";
 
     @Test
     public void testDocumentTypePersistAndFetch() throws Exception{
-        DocumentType dt = setupDocumentType();
+        DocumentType dt = setupDocumentType(true);
         assertTrue("DocumentType Persisted correctly", dt != null && StringUtils.isNotBlank(dt.getDocumentTypeId()));
         DocumentTypePolicy dtp = setupDocumentTypePolicy(dt);
         assertTrue("DocumentTypePolicy persisted correctly", dtp != null && StringUtils.isNotBlank(
                 dtp.getDocumentType().getDocumentTypeId()));
+        dt.getDocumentTypePolicies().add(dtp);
 
         ApplicationDocumentStatusCategory appDocStatusCategory = setupApplicationDocumentStatusCategory(
                 dt);
@@ -68,13 +67,14 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         DocumentTypeAttributeBo documentTypeAttributeBo = setupDocumentTypeAttributeBo(dt);
         assertTrue("DocumentTypeAttributeBo persisted correctly", documentTypeAttributeBo != null &&
                         StringUtils.isNotBlank(documentTypeAttributeBo.getId()));
-
+        dt.getDocumentTypeAttributes().add(documentTypeAttributeBo);
 
         ProcessDefinitionBo processDefinitionBo = setupProcessDefinitionBo(dt);
         assertTrue("ProcessDefinitionBo persisted correctly", processDefinitionBo != null &&
                         StringUtils.isNotBlank(processDefinitionBo.getProcessId()));
+        dt.addProcess(processDefinitionBo);
 
-        KRADServiceLocator.getDataObjectService().save(dt, PersistenceOption.FLUSH);
+        dt = KRADServiceLocator.getDataObjectService().save(dt, PersistenceOption.FLUSH);
 
         dt = KRADServiceLocator.getDataObjectService().find(DocumentType.class,dt.getDocumentTypeId());
         assertTrue("Document Type fetched correctly", dt != null && StringUtils.isNotBlank(dt.getDocumentTypeId()));
@@ -93,7 +93,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeFindByDocumentId() throws Exception{
-        DocumentType documentType = setupDocumentType();
+        DocumentType documentType = setupDocumentType(true);
         String documentTypeId = documentType.getDocumentTypeId();
         setupDocumentRouteHeaderValueWithRouteHeaderAssigned(documentTypeId);
 
@@ -106,20 +106,49 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeVersionAndSave() throws Exception{
-        DocumentType parent = setupDocumentType();
-        DocumentType documentType = setupDocumentTypeNoPersist();
+        DocumentType parent = setupDocumentType(false);
+        parent.setName("MyParentDocType");
+        parent = KEWServiceLocator.getDocumentTypeService().versionAndSave(parent);
+
+        assertNotNull(parent.getDocumentTypeId());
+        assertEquals(Integer.valueOf(0), parent.getVersion());
+
+        DocumentType documentType = setupDocumentType(false);
         documentType.setDocTypeParentId(parent.getDocumentTypeId());
-        KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
+        documentType = KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
 
-        documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentType.getName());
+        assertNotNull(documentType);
+        assertEquals(Integer.valueOf(0), documentType.getVersion());
 
-        assertTrue("DocumentType has been versioned and resaved", documentType != null
-                && documentType.getVersion() == 0);
+        // now modify the doc type and re-save it, we have to be careful here, we can't just set the label on our
+        // original doc because it's managed in jpa now and would be saved! Also, we are still in the same transaction
+        // so out attempt to find old doc type internally will just return ourselves(!)
+        //
+        // set this modified version up without a parent, let's make sure that works!
+        DocumentType modified = setupDocumentType(false);
+        modified.setLabel("a custom label");
+        modified = KEWServiceLocator.getDocumentTypeService().versionAndSave(modified);
+
+        assertNotNull(modified.getDocumentTypeId());
+        assertEquals(modified.getPreviousVersionId(), documentType.getDocumentTypeId());
+        assertEquals(Integer.valueOf(1), modified.getVersion());
+        assertTrue(modified.isCurrent());
+        assertNull(modified.getParentId());
+
+        // refetch the parent, it should have no children
+        DocumentType newParent = KEWServiceLocator.getDocumentTypeService().findByName(parent.getName());
+        assertEquals(0, newParent.getChildrenDocTypes().size());
+        assertEquals(parent.getDocumentTypeId(), newParent.getDocumentTypeId());
+
+        // get the old doc type, it should no longer be current
+        DocumentType oldVersion = KEWServiceLocator.getDocumentTypeService().findById(modified.getPreviousVersionId());
+        assertEquals(Integer.valueOf(0), oldVersion.getVersion());
+        assertFalse(oldVersion.isCurrent());
     }
 
     @Test
     public void testDocumentTypeFindAllCurrentRootDocuments() throws Exception{
-        setupDocumentType();
+        setupDocumentType(true);
 
         List rootDocumentType = KEWServiceLocator.getDocumentTypeService().findAllCurrentRootDocuments();
 
@@ -128,7 +157,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeFindAllCurrent() throws Exception{
-        setupDocumentType();
+        setupDocumentType(true);
 
         List currentDocTypes = KEWServiceLocator.getDocumentTypeService().findAllCurrent();
         assertTrue("Found all current documents", currentDocTypes != null && currentDocTypes.size() == 7);
@@ -145,7 +174,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeFindByName() throws Exception{
-        DocumentType documentType = setupDocumentType();
+        DocumentType documentType = setupDocumentType(true);
         String documentTypeName = documentType.getName();
 
         documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
@@ -161,8 +190,8 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
 
     @Test
     public void testDocumentTypeServiceFind() throws Exception{
-        DocumentType parentDocType = setupDocumentType();
-        DocumentType childDocType = setupDocumentTypeNoPersist();
+        DocumentType parentDocType = setupDocumentType(true);
+        DocumentType childDocType = setupDocumentType(false);
         childDocType.setDocTypeParentId(parentDocType.getDocumentTypeId());
         childDocType.setName("CoolNewDocType");
         childDocType = KRADServiceLocator.getDataObjectService().save(childDocType, PersistenceOption.FLUSH);
@@ -177,7 +206,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
     }
 
 
-    private DocumentType setupDocumentType(){
+    private DocumentType setupDocumentType(boolean persist){
         DocumentType documentType = new DocumentType();
         documentType.setActionsUrl("/test");
         documentType.setActive(true);
@@ -196,30 +225,9 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         documentType.setReturnUrl("returnUrl");
         documentType.setPostProcessorName("PostProcessMe");
         documentType.setDocTypeParentId(null);
-
-        return KRADServiceLocator.getDataObjectService().save(documentType, PersistenceOption.FLUSH);
-    }
-
-    private DocumentType setupDocumentTypeNoPersist(){
-        DocumentType documentType = new DocumentType();
-        documentType.setActionsUrl("/test");
-        documentType.setActive(true);
-        documentType.setActualApplicationId("tst");
-        documentType.setActualNotificationFromAddress("blah@iu.edu");
-        documentType.setApplyRetroactively(true);
-        documentType.setAuthorizer("TestAuthorizer");
-        documentType.setBlanketApprovePolicy("GoodPolicy");
-        documentType.setBlanketApproveWorkgroupId("TestGroup");
-        documentType.setCurrentInd(true);
-        documentType.setDescription("testing descr");
-        documentType.setCustomEmailStylesheet("blah@iu.edu");
-        documentType.setDocumentId("1234");
-        documentType.setLabel("doc type stuff");
-        documentType.setName("gooddoctype");
-        documentType.setReturnUrl("returnUrl");
-        documentType.setPostProcessorName("PostProcessMe");
-        documentType.setDocTypeParentId(null);
-
+        if (persist) {
+            return KRADServiceLocator.getDataObjectService().save(documentType, PersistenceOption.FLUSH);
+        }
         return documentType;
     }
 
@@ -230,8 +238,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         dtp.setPolicyName("DISAPPROVE");
         dtp.setPolicyStringValue("somevalue");
         dtp.setPolicyValue(true);
-
-        return KRADServiceLocator.getDataObjectService().save(dtp);
+        return KRADServiceLocator.getDataObjectService().save(dtp, PersistenceOption.FLUSH);
     }
 
     private ApplicationDocumentStatus setApplicationDocumentStatus(DocumentType documentType, ApplicationDocumentStatusCategory category){
@@ -241,9 +248,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         applicationDocumentStatus.setSequenceNumber(1);
         applicationDocumentStatus.setStatusName("someStatus");
 
-        documentType.getApplicationStatusCategories().add(category);
-
-        return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatus);
+        return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatus, PersistenceOption.FLUSH);
     }
 
     private ApplicationDocumentStatusCategory setupApplicationDocumentStatusCategory(DocumentType documentType){
@@ -251,7 +256,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         applicationDocumentStatusCategory.setCategoryName("TestCategory");
         applicationDocumentStatusCategory.setDocumentType(documentType);
 
-        return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatusCategory);
+        return KRADServiceLocator.getDataObjectService().save(applicationDocumentStatusCategory, PersistenceOption.FLUSH);
     }
 
     private DocumentTypeAttributeBo setupDocumentTypeAttributeBo(DocumentType documentType){
@@ -262,9 +267,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         RuleAttribute ruleAttribute = setupRuleAttribute();
         documentTypeAttributeBo.setRuleAttribute(ruleAttribute);
 
-
-
-        return KRADServiceLocator.getDataObjectService().save(documentTypeAttributeBo);
+        return KRADServiceLocator.getDataObjectService().save(documentTypeAttributeBo, PersistenceOption.FLUSH);
     }
 
     private ProcessDefinitionBo setupProcessDefinitionBo(DocumentType documentType){
@@ -273,7 +276,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         processDefinitionBo.setInitial(true);
         processDefinitionBo.setName("testing");
 
-        return KRADServiceLocator.getDataObjectService().save(processDefinitionBo);
+        return KRADServiceLocator.getDataObjectService().save(processDefinitionBo, PersistenceOption.FLUSH);
     }
 
     private DocumentRouteHeaderValue setupDocumentRouteHeaderValueWithRouteHeaderAssigned(String documentTypeId) {
@@ -292,7 +295,7 @@ public class KewDocumentTypeJpaTest extends KEWTestCase{
         routeHeader.setDateModified(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");
 
-        return KRADServiceLocator.getDataObjectService().save(routeHeader);
+        return KRADServiceLocator.getDataObjectService().save(routeHeader, PersistenceOption.FLUSH);
     }
 
     private RuleAttribute setupRuleAttribute(){

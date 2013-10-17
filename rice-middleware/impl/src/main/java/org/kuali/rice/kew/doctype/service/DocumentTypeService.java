@@ -32,7 +32,7 @@ import java.util.List;
  */
 public interface DocumentTypeService extends DocumentTypeQueryService, XmlExporter {
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
-    void versionAndSave(DocumentType documentType);
+    DocumentType versionAndSave(DocumentType documentType);
 
     @CacheEvict(value={Rule.Cache.NAME, org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, Permission.Cache.NAME}, allEntries = true)
     DocumentType save(DocumentType documentType);

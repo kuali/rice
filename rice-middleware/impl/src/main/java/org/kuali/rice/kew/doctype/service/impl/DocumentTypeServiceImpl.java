@@ -99,7 +99,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return documentTypeDAO.findByName(name, caseSensitive);
     }
 
-    public void versionAndSave(DocumentType documentType) {
+    public DocumentType versionAndSave(DocumentType documentType) {
         // at this point this save is designed to version the document type by creating an entire new record if this is going to be an update and
         // not a create just throw and exception to be on the safe side
         if (documentType.getDocumentTypeId() != null && documentType.getVersionNumber() != null) {
@@ -120,7 +120,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info("Saving old document type Id " + oldDocumentType.getDocumentTypeId() + " name '" + oldDocumentType.getName() + "' (current = " + oldDocumentType.getCurrentInd() + ")");
             }
-            save(oldDocumentType);
+            oldDocumentType = save(oldDocumentType);
         }
         // check to see that no current documents exist in database
         if (!CollectionUtils.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
@@ -160,10 +160,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
                 LOG.info("Saved parent document type Id " + parent.getDocumentTypeId() + " name '" + parent.getName() + "' (current = " + parent.getCurrentInd() + ")");
             }
         }
+        return documentType;
     }
 
     public DocumentType save(DocumentType documentType) {
-    	return getDataObjectService().save(documentType);
+    	return getDataObjectService().save(documentType, PersistenceOption.FLUSH);
     }
 
     public DocumentTypeDAO getDocumentTypeDAO() {

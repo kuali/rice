@@ -1051,10 +1051,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return getDocumentTypeId();
     }
 
-    public Object copy(boolean preserveKeys) {
-        throw new UnsupportedOperationException("The copy method is deprecated and unimplemented!");
-    }
-
     public java.lang.String getReturnUrl() {
         return returnUrl;
     }

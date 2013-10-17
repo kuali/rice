@@ -73,8 +73,9 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         return (DocumentType) documentsByName.get(name);
     }
 
-    public void versionAndSave(DocumentType documentType) {
+    public DocumentType versionAndSave(DocumentType documentType) {
         addDocumentType(documentType, new MockPostProcessor(true));
+        return documentType;
     }
 
     public PostProcessor getPostProcessor(String documentTypeId) {

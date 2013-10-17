@@ -254,8 +254,7 @@ public class DocumentTypeXmlParser {
         defaultExceptionWorkgroup = null;
 
         LOG.debug("Saving document type " + documentType.getName());
-        routeDocumentType(documentType);
-        return documentType;
+        return routeDocumentType(documentType);
     }
 
     private DocumentType getFullDocumentType(boolean isOverwrite, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException, XmlException, WorkflowException, SAXException, IOException, ParserConfigurationException {
@@ -895,7 +894,7 @@ public class DocumentTypeXmlParser {
         return null;
     }
 
-    private void routeDocumentType(DocumentType documentType) {
+    private DocumentType routeDocumentType(DocumentType documentType) {
         DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentType.getName());
         // if the docType exists then check locking
         if (KRADUtils.isNotNull(docType)) {
@@ -905,7 +904,7 @@ public class DocumentTypeXmlParser {
             // below will throw a ValidationException if a valid locking document exists
             MaintenanceUtils.checkForLockingDocument(docTypeMaintainable, true);
         }
-        KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
+        return KEWServiceLocator.getDocumentTypeService().versionAndSave(documentType);
     }
 
     private String getDocumentTypeNameFromNode(Node documentTypeNode) throws XPathExpressionException {

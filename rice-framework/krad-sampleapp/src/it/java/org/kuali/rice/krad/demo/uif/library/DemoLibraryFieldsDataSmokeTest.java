@@ -1,0 +1,337 @@
+/*
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.krad.demo.uif.library;
+
+import org.kuali.rice.testtools.selenium.JiraAwareFailureUtil;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class DemoLibraryFieldsDataSmokeTest extends DemoLibraryBase {
+
+    /**
+     * /kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start
+     */
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start";
+    public static final String DIV_DATA_LABEL_DATA_FIELD_1 = "div[data-label='DataField 1']";
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Override
+    protected void navigate() throws Exception {
+        navigateToLibraryDemo("Fields", "Data Field");
+    }
+
+    protected void testDataFieldDefault() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example1");
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+        WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
+        if (!label.getText().contains("DataField 1:")) {
+            fail("Label text does not match");
+        }
+
+        assertIsVisible("#" + controlId);
+        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
+        // validate that the value comes after the label
+        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span[id='" + controlId + "']"),
+                exampleDiv);
+    }
+
+    protected void testDataFieldLabelTop() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example2");
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+        WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
+        if (!label.getText().contains("DataField 1:")) {
+            fail("Label text does not match");
+        }
+
+        WebElement labelSpan = findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"), field);
+        // top and bottom add the uif-labelBlock class
+        if (!labelSpan.getAttribute("class").contains("uif-labelBlock")) {
+            fail("Label span does not contain the appropriate class expected");
+        }
+    }
+
+    protected void testDataFieldLabelRight() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example3");
+        WebElement field = findElement(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv);
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertIsVisible("#" + controlId);
+        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+        WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
+        if (!label.getText().contains("DataField 1")) {
+            fail("Label text does not match");
+        }
+
+        // validate that the label comes after the value
+        findElement(By.cssSelector("span[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"),
+                exampleDiv);
+    }
+
+    protected void testDataFieldDefaultValue() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
+        if(!"2012".equals(valueText)) {
+            JiraAwareFailureUtil.fail("Fields Data Field Default Value 2012 not displayed", this);
+        }
+    }
+
+    protected void testDataFieldAppendProperty() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example5", "DataField 1");
+        Assert.assertTrue(valueText.endsWith("ID Val"));
+    }
+
+    protected void testDataFieldReplaceProperty() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example6", "DataField 1");
+        Assert.assertEquals("ID Val", valueText);
+    }
+
+    protected void testDataFieldReplacePropertyWithField() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example7", "DataField 1");
+        Assert.assertEquals("My Book Title", valueText);
+    }
+
+    protected void testDataFieldAppendPropertyWithField() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example8", "DataField 1");
+        Assert.assertEquals("1001 *-* My Book Title", valueText);
+    }
+
+    protected void testDataFieldApplyFullMask() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example9", "DataField 1");
+        Assert.assertEquals("*********", valueText);
+    }
+
+    protected void testDataFieldApplyPartialMask() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example10", "DataField 1");
+        Assert.assertEquals("**01", valueText);
+    }
+
+    protected void testDataFieldHideProperty() throws Exception {
+        WebElement exampleDiv = navigateToExample("Demo-DataField-Example11");
+
+        if (findElements(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv).size() > 0) {
+            failableFail(DIV_DATA_LABEL_DATA_FIELD_1 + " not hidden");
+        }
+    }
+
+    private String textValueUnderTest(String example, String testLabel) throws Exception {
+        WebElement exampleDiv = navigateToExample(example);
+        WebElement field = findElement(By.cssSelector("div[data-label='" + testLabel + "']"), exampleDiv);
+
+        String fieldId = field.getAttribute("id");
+        String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
+
+        assertIsVisible("#" + fieldId);
+        assertIsVisible("label[for='" + controlId + "']");
+        WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
+        if (!label.getText().contains(testLabel)) {
+            fail("Label text does not match");
+        }
+
+        assertIsVisible("#" + controlId);
+
+        return findElement(By.id(controlId), field).getText();
+    }
+
+    protected void testDataFieldExamples() throws Exception {
+        testDataFieldDefault();
+        testDataFieldLabelTop();
+        testDataFieldLabelRight();
+        testDataFieldDefaultValue();
+        testDataFieldAppendProperty();
+        testDataFieldReplaceProperty();
+        testDataFieldReplacePropertyWithField();
+        testDataFieldAppendPropertyWithField();
+        testDataFieldApplyFullMask();
+        testDataFieldApplyPartialMask();
+        testDataFieldHideProperty();
+    }
+
+    @Test
+    public void testDataFieldExamplesBookmark() throws Exception {
+        testDataFieldExamples();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldExamplesNav() throws Exception {
+        testDataFieldExamples();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultBookmark() throws Exception {
+        testDataFieldDefault();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultNav() throws Exception {
+        testDataFieldDefault();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelTopBookmark() throws Exception {
+        testDataFieldLabelTop();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelTopNav() throws Exception {
+        testDataFieldLabelTop();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelRightBookmark() throws Exception {
+        testDataFieldLabelRight();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldLabelRightNav() throws Exception {
+        testDataFieldLabelRight();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultValueBookmark() throws Exception {
+        testDataFieldDefaultValue();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultValueNav() throws Exception {
+        testDataFieldDefaultValue();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyBookmark() throws Exception {
+        testDataFieldAppendProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyNav() throws Exception {
+        testDataFieldAppendProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyBookmark() throws Exception {
+        testDataFieldReplaceProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyNav() throws Exception {
+        testDataFieldReplaceProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyWithFieldBookmark() throws Exception {
+        testDataFieldReplacePropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldReplacePropertyWithFieldNav() throws Exception {
+        testDataFieldReplacePropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyWithFieldBookmark() throws Exception {
+        testDataFieldAppendPropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldAppendPropertyWithFieldNav() throws Exception {
+        testDataFieldAppendPropertyWithField();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyFullMaskBookmark() throws Exception {
+        testDataFieldApplyFullMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyFullMaskNav() throws Exception {
+        testDataFieldApplyFullMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyPartialMaskBookmark() throws Exception {
+        testDataFieldApplyPartialMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldApplyPartialMaskNav() throws Exception {
+        testDataFieldApplyPartialMask();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldHidePropertyBookmark() throws Exception {
+        testDataFieldHideProperty();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldHidePropertyNav() throws Exception {
+        testDataFieldHideProperty();
+        passed();
+    }
+}

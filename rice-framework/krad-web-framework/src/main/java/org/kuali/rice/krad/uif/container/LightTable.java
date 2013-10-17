@@ -126,8 +126,12 @@ public class LightTable extends Group implements DataBinding {
 
         //init binding info
         if (bindingInfo != null) {
-            bindingInfo.setDefaults(ViewLifecycle.getActiveLifecycle().getView(), getPropertyName());
+            bindingInfo.setDefaults(ViewLifecycle.getView(), getPropertyName());
         }
+        
+        List<? extends Component> items = getItems();
+        
+        ComponentUtils.clearAndAssignIds(items);
 
         //iterate over this collections items to initialize
         for (Component item : this.getItems()) {

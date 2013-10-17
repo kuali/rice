@@ -100,8 +100,9 @@ public interface ActionListService {
     public Collection<OutboxItem> getOutbox(String principalId, ActionListFilter filter);
     public Collection<OutboxItem> getOutboxItemsByDocumentType(String documentTypeName);
     public void removeOutboxItems(String principalId, List<String> outboxItems);
-    public void saveOutboxItem(ActionItem actionItem);
-    public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);
+    public OutboxItem saveOutboxItem(ActionItem actionItem);
+    public OutboxItem saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox);
+    public OutboxItem saveOutboxItem(OutboxItem outboxItem);
 
     /**
      * Pulls a proxied version of the document route header with only the properties needed by the

@@ -163,7 +163,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
         userPrincipalName = TemporaryDocumentType.FIRST_NODE_APPROVER_1;
         Collection<OutboxItem> outboxItems = KEWServiceLocator.getActionListService().getOutbox(getPrincipalIdForName(userPrincipalName), new ActionListFilter());
         assertEquals("There should be one outbox item", 1, outboxItems.size());
-        ActionItem outboxItem = outboxItems.iterator().next();
+        OutboxItem outboxItem = outboxItems.iterator().next();
         assertEquals("The label on the outbox item should have been changed", new_label, outboxItem.getDocLabel());
 
         // verify that the action item was updated properly

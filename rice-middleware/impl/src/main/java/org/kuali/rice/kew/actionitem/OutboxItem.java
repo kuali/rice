@@ -26,7 +26,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KREW_OUT_BOX_ITM_T")
-public class OutboxItem extends ActionItem {
+public class OutboxItem extends ActionItemBase {
 
 	private static final long serialVersionUID = 5776214610837858304L;
 

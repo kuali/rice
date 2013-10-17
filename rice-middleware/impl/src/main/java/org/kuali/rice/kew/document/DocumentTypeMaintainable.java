@@ -155,9 +155,9 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
                 // save all former/current outbox action items matching document type name
                 // fields: docLabel
                 Collection<OutboxItem> outboxItems = actionListService.getOutboxItemsByDocumentType(documentTypeName);
-                for (ActionItem outboxItem : outboxItems) {
+                for (OutboxItem outboxItem : outboxItems) {
                     outboxItem.setDocLabel(newDocumentType.getLabel());
-                    actionListService.saveActionItem(outboxItem);
+                    actionListService.saveOutboxItem(outboxItem);
                 }
             }
         }

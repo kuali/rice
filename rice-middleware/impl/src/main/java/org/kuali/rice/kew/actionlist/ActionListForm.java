@@ -15,18 +15,9 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
@@ -37,6 +28,14 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Action List form implementation for the action list.
@@ -101,6 +100,10 @@ public class ActionListForm extends UifFormBase {
     private String lookupType;
     private String docTypeFullName;
     private List userWorkgroups;
+
+    private boolean helpDeskActionList;
+    private List<? extends ActionItemBase> actionList;
+    private List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems;
 
     public String getCreateDateTo() {
         return createDateTo;
@@ -322,14 +325,10 @@ public class ActionListForm extends UifFormBase {
         this.helpDeskActionList = helpDeskActionList;
     }
 
-    private boolean helpDeskActionList;
-    private List<ActionItem> actionList;
-    private List<org.kuali.rice.kew.api.action.ActionItem> ApiActionItems;
-
-    public List<ActionItem> getActionList() {
+    public List<? extends ActionItemBase> getActionList() {
         return actionList;
     }
-    public void setActionList(ArrayList<ActionItem> actionList) {
+    public void setActionList(List<? extends ActionItemBase> actionList) {
         this.actionList = actionList;
     }
 
@@ -601,7 +600,7 @@ public class ActionListForm extends UifFormBase {
     public List<org.kuali.rice.kew.api.action.ActionItem> getApiActionList() {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
 
-        for (org.kuali.rice.kew.actionitem.ActionItem actionItemObj : actionList) {
+        for (ActionItemBase actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }

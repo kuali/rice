@@ -109,8 +109,8 @@ public class OutboxTest extends KEWTestCase {
         outbox = KEWServiceLocator.getActionListService().getOutboxItemsByDocumentType(document.getDocumentTypeName());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
-        List<String> outBoxItemIds = new ArrayList();
-        ActionItem actionItem = null;
+        List<String> outBoxItemIds = new ArrayList<String>();
+        OutboxItem actionItem = null;
         for (Iterator<OutboxItem> iterator = outbox.iterator(); iterator.hasNext(); ) {
             actionItem = iterator.next();
             outBoxItemIds.add(actionItem.getId());

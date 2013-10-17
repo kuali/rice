@@ -173,7 +173,8 @@ public class LegacyDetectorTest {
         ConfigContext.getCurrentContextConfig().putProperty(KRADConstants.Config.ENABLE_LEGACY_DATA_FRAMEWORK, "true");
         detector.beginLegacyContext();
         try {
-            assertTrue(detector.useLegacy(DummyDataObject.class));
+            // since recent changes, if it's not in OJB, it's not legacy
+            assertFalse(detector.useLegacy(DummyDataObject.class));
             assertTrue(detector.useLegacy(DummyDataObjectOjb.class));
         } finally {
             detector.endLegacyContext();

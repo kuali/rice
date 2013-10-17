@@ -47,6 +47,7 @@ import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
@@ -593,10 +594,19 @@ public class ActionListServiceImpl implements ActionListService {
 
     @Override
     public ActionItem saveActionItem(ActionItem actionItem) {
-        if (actionItem.getDateAssigned() == null) {
-            actionItem.setDateAssigned(dateTimeService.getCurrentTimestamp());
+        return saveActionItemBase(actionItem);
+    }
+
+    @Override
+    public OutboxItem saveOutboxItem(OutboxItem outboxItem) {
+        return saveActionItemBase(outboxItem);
+    }
+
+    protected <T extends ActionItemBase> T saveActionItemBase(T actionItemBase) {
+        if (actionItemBase.getDateAssigned() == null) {
+            actionItemBase.setDateAssigned(dateTimeService.getCurrentTimestamp());
         }
-        return dataObjectService.save(actionItem);
+        return dataObjectService.save(actionItemBase);
     }
 
     public GroupService getGroupService(){
@@ -671,8 +681,8 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     @Override
-    public void saveOutboxItem(ActionItem actionItem) {
-        saveOutboxItem(actionItem, false);
+    public OutboxItem saveOutboxItem(ActionItem actionItem) {
+        return saveOutboxItem(actionItem, false);
     }
 
     /**
@@ -682,7 +692,7 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.ActionItem, boolean)
      */
     @Override
-    public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
+    public OutboxItem saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
         Boolean isUsingOutBox = true;
         List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KewApiConstants.USE_OUT_BOX);
         if (options == null || options.isEmpty()){
@@ -699,7 +709,7 @@ public class ActionListServiceImpl implements ActionListService {
         if (isUsingOutBox
                 && ConfigContext.getCurrentContextConfig().getOutBoxOn()
                 && getOutboxItemByDocumentIdUserId(actionItem.getDocumentId(), actionItem.getPrincipalId()) == null
-                && routeHeaderService.getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
+                && !routeHeaderService.getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
                 KewApiConstants.ROUTE_HEADER_SAVED_CD)) {
 
             // only create an outbox item if this user has taken action on the document
@@ -708,10 +718,11 @@ public class ActionListServiceImpl implements ActionListService {
             ActionTakenValue actionTaken = actionRequest.getActionTaken();
             // if an action was taken...
             if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
-                dataObjectService.save(new OutboxItem(actionItem));
+                return dataObjectService.save(new OutboxItem(actionItem));
             }
 
         }
+        return null;
     }
 
     protected OutboxItem getOutboxItemByDocumentIdUserId(String documentId, String principalId) {

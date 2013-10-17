@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import java.util.List;
-
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemBase;
+
+import java.util.List;
 
 /**
  * Implements the display tags paginated list to provide effecient paging for the action list.
@@ -29,7 +29,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
  */
 public class PaginatedActionList implements PaginatedList {
 
-	private final List<? extends ActionItem> list;
+	private final List<? extends ActionItemBase> list;
 	private final int fullListSize;
 	private final int pageNumber;
 	private final int objectsPerPage;
@@ -37,7 +37,7 @@ public class PaginatedActionList implements PaginatedList {
 	private final String sortCriterion;
 	private final SortOrderEnum sortDirection;
 
-	public PaginatedActionList(List<? extends ActionItem> list, int fullListSize, int pageNumber, int objectsPerPage, String searchId, String sortCriterion, SortOrderEnum sortDirection) {
+	public PaginatedActionList(List<? extends ActionItemBase> list, int fullListSize, int pageNumber, int objectsPerPage, String searchId, String sortCriterion, SortOrderEnum sortDirection) {
 		this.list = list;
 		this.fullListSize = fullListSize;
 		this.pageNumber = pageNumber;

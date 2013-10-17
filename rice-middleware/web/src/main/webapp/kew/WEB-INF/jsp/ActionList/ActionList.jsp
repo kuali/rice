@@ -79,7 +79,7 @@
 <kul:page headerTitle="Action List" lookup="true"
 	headerMenuBar="${ActionListForm.menuBar}"
 	transactionalDocument="false" showDocumentInfo="false"
-	htmlFormAction="ActionList" docTitle="Action List">
+	htmlFormAction="ActionList" docTitle="Action Lists">
   <script language="JavaScript" src="scripts/en-common.js"></script>
   <script language="JavaScript" src="scripts/actionlist-common.js"></script>
   <style type="text/css">
@@ -437,9 +437,6 @@
 						</display:column>
 					</c:if>
 
-                    <display-e1:column title="Testing" class="infocell">
-                        Testing
-                    </display-e1:column>
 					<display:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"

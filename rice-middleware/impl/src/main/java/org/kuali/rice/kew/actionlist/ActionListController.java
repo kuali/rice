@@ -37,6 +37,7 @@ import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionlist.web.ActionListUtil;
@@ -185,7 +186,7 @@ public class ActionListController extends UifControllerBase{
     * @param request - http request
     * @return void
     */
-    protected void initializeDelegators(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItem> actionList,HttpServletRequest request)   {
+    protected void initializeDelegators(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemBase> actionList,HttpServletRequest request)   {
         if (!KewApiConstants.DELEGATION_DEFAULT.equals(actionListForm.getDelegationId())) {
             // If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
             // then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
@@ -240,7 +241,7 @@ public class ActionListController extends UifControllerBase{
      * @param request - http request
      * @return void
      */
-    protected void initializePrimaryDelegate(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItem> actionList,HttpServletRequest request)   {
+    protected void initializePrimaryDelegate(ActionListForm actionListForm,ActionListFilter filter,List<? extends ActionItemBase> actionList,HttpServletRequest request)   {
         if (!StringUtils.isEmpty(actionListForm.getPrimaryDelegateId())) {
 
             // If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
@@ -288,7 +289,7 @@ public class ActionListController extends UifControllerBase{
         boolean freshActionList = true;
 
         // retrieve cached action list
-        List<? extends ActionItem> actionList = actionListForm.getActionList();
+        List<? extends ActionItemBase> actionList = actionListForm.getActionList();
         plog.log("Time to initialize");
 
 
@@ -457,13 +458,13 @@ public class ActionListController extends UifControllerBase{
      * @param preferences KEW user preferences
      * @return void
      */
-    private void initializeActionList(List<? extends ActionItem> actionList, Preferences preferences) {
+    private void initializeActionList(List<? extends ActionItemBase> actionList, Preferences preferences) {
         List<String> actionItemProblemIds = new ArrayList<String>();
         int index = 0;
         generateActionItemErrors(actionList);
 
-        for (Iterator<? extends ActionItem> iterator = actionList.iterator(); iterator.hasNext();) {
-            ActionItem actionItem = iterator.next();
+        for (Iterator<? extends ActionItemBase> iterator = actionList.iterator(); iterator.hasNext();) {
+            ActionItemBase actionItem = iterator.next();
             if (actionItem.getDocumentId() == null) {
                 LOG.error("Somehow there exists an ActionItem with a null document id!  actionItemId=" + actionItem.getId());
                 iterator.remove();
@@ -514,7 +515,7 @@ public class ActionListController extends UifControllerBase{
     * @form action list form
     * @return void
     */
-    protected void addCustomActions(List<? extends ActionItem> actionList,
+    protected void addCustomActions(List<? extends ActionItemBase> actionList,
             Preferences preferences, ActionListForm form) throws WorkflowException {
 
         boolean haveCustomActions = false;
@@ -537,7 +538,7 @@ public class ActionListController extends UifControllerBase{
         long end = System.currentTimeMillis();
         LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
 
-        for(ActionItem actionItem : actionList ){
+        for(ActionItemBase actionItem : actionList ){
             // evaluate custom action list component for mass actions
             try {
                 ActionItemCustomization customization = customizationMap.get(actionItem.getId());
@@ -617,9 +618,9 @@ public class ActionListController extends UifControllerBase{
     * @param actionList list of action items
     * @return List<org.kuali.rice.kew.api.action.ActionItem>
     */
-    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItem> actionList) {
+    private List<org.kuali.rice.kew.api.action.ActionItem> convertToApiActionItems(List<? extends ActionItemBase> actionList) {
         List<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>(actionList.size());
-        for (ActionItem actionItemObj : actionList) {
+        for (ActionItemBase actionItemObj : actionList) {
             apiActionItems.add(
                     org.kuali.rice.kew.api.action.ActionItem.Builder.create(actionItemObj).build());
         }
@@ -656,8 +657,8 @@ public class ActionListController extends UifControllerBase{
     * @param actionList list of action items.
     * @return void
     */
-    private void generateActionItemErrors(List<? extends ActionItem> actionList) {
-        for (ActionItem actionItem : actionList) {
+    private void generateActionItemErrors(List<? extends ActionItemBase> actionList) {
+        for (ActionItemBase actionItem : actionList) {
             if(!KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
                 GlobalVariables.getMessageMap().putError("actionRequestCd","actionitem.actionrequestcd.invalid",actionItem.getId()+"");
             }
@@ -685,7 +686,7 @@ public class ActionListController extends UifControllerBase{
 
         Object obj = ObjectPropertyUtils.getPropertyValue(form, "extensionData['actionInputField_actionSelect_line2']");
 
-        List<? extends ActionItem> actionList = actionListForm.getActionList();
+        List<? extends ActionItemBase> actionList = actionListForm.getActionList();
         if (actionList == null) {
             return getUIFModelAndView(form);
         }
@@ -700,7 +701,7 @@ public class ActionListController extends UifControllerBase{
                     !"".equals(actionToTake.getActionTakenCd()) &&
                     !"NONE".equalsIgnoreCase(actionToTake.getActionTakenCd()) &&
                     actionToTake.getActionItemId() != null) {
-                ActionItem actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
+                ActionItemBase actionItem = getActionItemFromActionList(actionList, actionToTake.getActionItemId());
                 if (actionItem == null) {
                     LOG.warn("Could not locate the ActionItem to take mass action against in the action list: " + actionToTake.getActionItemId());
                     continue;
@@ -731,8 +732,8 @@ public class ActionListController extends UifControllerBase{
     * @param actionItemId - primary key for action item
     * @return ActionItem or null
     */
-    protected ActionItem getActionItemFromActionList(List<? extends ActionItem> actionList, String actionItemId) {
-        for (ActionItem actionItem : actionList) {
+    protected ActionItemBase getActionItemFromActionList(List<? extends ActionItemBase> actionList, String actionItemId) {
+        for (ActionItemBase actionItem : actionList) {
             if (actionItem.getId().equals(actionItemId)) {
                 return actionItem;
             }
@@ -902,7 +903,7 @@ public class ActionListController extends UifControllerBase{
 
         actionListForm.setRequeryActionList(true);
 
-        return start((UifFormBase)actionListForm,request,response);
+        return start(actionListForm,request,response);
     }
 
     /**
@@ -1013,7 +1014,7 @@ public class ActionListController extends UifControllerBase{
     * @param actionTakenCode - code of action taken on the action item
     * @return boolean
     */
-    private boolean isActionCompatibleRequest(ActionItem actionItem, String actionTakenCode) {
+    private boolean isActionCompatibleRequest(ActionItemBase actionItem, String actionTakenCode) {
         boolean actionCompatible = false;
         String requestCd = actionItem.getActionRequestCd();
 

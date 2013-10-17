@@ -16,9 +16,9 @@
 package org.kuali.rice.kew.actionlist.web;
 
 import org.displaytag.decorator.TableDecorator;
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.api.actionlist.DisplayParameters;
+import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 
 
 /**
@@ -38,7 +38,7 @@ public class ActionListDecorator extends TableDecorator {
 
     @Override
     public String finishRow() {
-        ActionItem actionItem = (ActionItem) getCurrentRowObject();
+        ActionItemBase actionItem = (ActionItemBase) getCurrentRowObject();
         String returnRow = "";
         try {
         	DisplayParameters displayParameters = actionItem.getDisplayParameters();
@@ -78,7 +78,7 @@ public class ActionListDecorator extends TableDecorator {
      */
     @Override
     public String addRowClass() {
-    	ActionItem actionItem = (ActionItem) getCurrentRowObject();
+    	ActionItemBase actionItem = (ActionItemBase) getCurrentRowObject();
     	return "actionlist_" + KewApiConstants.ACTION_LIST_COLOR_NAMES.get(actionItem.getRowStyleClass());
     }
 

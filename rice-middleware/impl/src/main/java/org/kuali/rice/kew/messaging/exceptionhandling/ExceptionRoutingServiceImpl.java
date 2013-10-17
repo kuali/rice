@@ -163,6 +163,8 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	roleRouteModule.setNamespace(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KewApiConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
     	List<ActionRequestValue> requests = roleRouteModule.findActionRequests(routeContext);
+        // let's ensure we are only dealing with root requests
+        requests = KEWServiceLocator.getActionRequestService().getRootRequests(requests);
     	processExceptionRequests(requests);
     	return requests;
     }
@@ -174,8 +176,6 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
      * routing requests.  Namely, this ensures that all "force action" values are set to "true".
      */
     protected void processExceptionRequests(List<ActionRequestValue> exceptionRequests) {
-        // first, let's ensure we are only dealing with root requests
-        exceptionRequests = KEWServiceLocator.getActionRequestService().getRootRequests(exceptionRequests);
     	if (exceptionRequests != null) {
     		for (ActionRequestValue actionRequest : exceptionRequests) {
     			processExceptionRequest(actionRequest);

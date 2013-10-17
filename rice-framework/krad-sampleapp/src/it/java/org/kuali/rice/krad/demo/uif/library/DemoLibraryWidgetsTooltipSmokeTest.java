@@ -24,7 +24,7 @@ import org.openqa.selenium.WebElement;
  */
 public class DemoLibraryWidgetsTooltipSmokeTest extends DemoLibraryBase {
 
-    /**
+	 /**
      * /kr-krad/kradsampleapp?viewId=Demo-Tooltip-View&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Tooltip-View&methodToCall=start";
@@ -40,62 +40,15 @@ public class DemoLibraryWidgetsTooltipSmokeTest extends DemoLibraryBase {
     }
 
     protected void testWidgetsTooltipHover() throws Exception {
-
-        //hover label
-        Thread.sleep(1000);
-        fireMouseOverEvent(By.id("u100085_label"));
-        Thread.sleep(1000);
-        WebElement tooltipHoverLabel = driver.findElement(By.xpath("//div[@data-for=\"u100085_label\"]")).findElement(
-                By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipHoverLabel.isDisplayed()) {
-            fail("Tooltip help for label not displayed.");
-        }
-        if (!tooltipHoverLabel.getText().equals("Sample text for label tooltip")) {
-            fail("Incorrect inner html text for label tooltip hover.");
-        }
-
-        //hover control
-        fireMouseOverEvent(By.id("u100085_control"));
-        Thread.sleep(1000);
-        WebElement tooltipHoverControl = driver.findElement(By.xpath("//div[@data-for=\"u100085_control\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipHoverControl.isDisplayed()) {
-            fail("Tooltip help for control not displayed.");
-        }
-        if (!tooltipHoverControl.getText().equals("This is a helpful tooltip about this field")) {
-            fail("Incorrect inner html text for tooltip hover control.");
-        }
+        fireMouseOverEventByName("dataField1");
+        assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This is a helpful tooltip about this field')]");
+       
     }
 
     protected void testWidgetsTooltipFocus() throws Exception {
-        waitAndClickByLinkText(">> Open Library Navigation");
-        waitAndClickByLinkText("Suggest");
-        waitAndClickByLinkText("Tooltip");
-        select(By.id("Demo-LargeExampleDropdown_control"), "Tooltip On Focus");
-
-        //focus label
-        fireMouseOverEvent(By.id("u100101_label"));
-        Thread.sleep(1000);
-        WebElement tooltipFocusLabel = driver.findElement(By.xpath("//div[@data-for=\"u100101_label\"]")).findElement(
-                By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusLabel.isDisplayed()) {
-            fail("Tooltip help for label not displayed.");
-        }
-        if (!tooltipFocusLabel.getText().equals("Click on the text box for a tool tip")) {
-            fail("Incorrect inner html text for label focus tooltip.");
-        }
-
-        //focus control
-        waitAndClickById("u100101_control");
-        Thread.sleep(1000);
-        WebElement tooltipFocusControl = driver.findElement(By.xpath("//div[@data-for=\"u100101_control\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!tooltipFocusControl.isDisplayed()) {
-            fail("Tooltip help for control not displayed.");
-        }
-        if (!tooltipFocusControl.getText().equals("This tooltip appears when the field receives focus")) {
-            fail("Incorrect inner html text for tooltip focus control.");
-        }
+        selectByName("exampleShown","Tooltip On Focus");
+        waitAndTypeByXpath("//div[@id='Demo-Tooltip-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@name='dataField1']","");
+        assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This tooltip appears when the field receives focus')]");
     }
 
     @Test

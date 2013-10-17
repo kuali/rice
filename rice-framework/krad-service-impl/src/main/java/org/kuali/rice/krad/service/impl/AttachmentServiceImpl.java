@@ -197,11 +197,6 @@ public class AttachmentServiceImpl implements AttachmentService {
      */
     @Override
 	public InputStream retrieveAttachmentContents(Attachment attachment) throws IOException {
-        //refresh to get Note object in case it's not there
-        if(attachment.getNoteIdentifier()!=null) {
-            attachment.refreshNonUpdateableReferences();
-        }
-
         String parentDirectory = "";
         if(attachment.getNote()!=null && attachment.getNote().getRemoteObjectIdentifier() != null) {
             parentDirectory = attachment.getNote().getRemoteObjectIdentifier();

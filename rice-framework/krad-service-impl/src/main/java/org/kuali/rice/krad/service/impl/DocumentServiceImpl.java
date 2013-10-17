@@ -329,8 +329,7 @@ public class DocumentServiceImpl implements DocumentService {
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
                 document.getDocumentHeader().getWorkflowDocument());
-        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -743,13 +742,7 @@ public class DocumentServiceImpl implements DocumentService {
                 notes.addAll(getNoteService().getByRemoteObjectId(document.getDocumentHeader().getObjectId()));
             }
 
-            // KULRNE-5692 - force a refresh of the attachments
-            // they are not (non-updateable) references and don't seem to update properly upon load
-            for (Note note : notes) {
-                note.refreshReferenceObject("attachment");
-            }
             document.setNotes(notes);
-
         }
     }
 

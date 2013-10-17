@@ -26,6 +26,7 @@ import org.kuali.rice.kew.api.note.Note;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -81,7 +82,7 @@ public class NoteServiceImpl implements NoteService {
 		if (noteBo.getNoteCreateDate() == null) {
 			noteBo.setNoteCreateDate(new Timestamp(System.currentTimeMillis()));
 		}
-		noteBo = getDataObjectService().save(noteBo);
+		noteBo = getDataObjectService().save(noteBo, PersistenceOption.FLUSH);
 		return org.kuali.rice.kew.notes.Note.to(noteBo);
 	}
 

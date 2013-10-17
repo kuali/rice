@@ -32,6 +32,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.note.Note;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 public class NoteServiceTest extends KEWTestCase {
 	

@@ -28,6 +28,7 @@ import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 public class NoteServiceTest extends KEWTestCase {
 		
@@ -48,6 +49,7 @@ public class NoteServiceTest extends KEWTestCase {
 		
 		NoteService noteService = KEWServiceLocator.getNoteService();
 		note = noteService.saveNote(note);
+        KRADServiceLocator.getDataObjectService().flush(Note.class);
         attachment = note.getAttachments().get(0);
    		assertNotNull("Note should have a id", note.getNoteId());
 		assertNotNull("Note should have a version number", note.getLockVerNbr());

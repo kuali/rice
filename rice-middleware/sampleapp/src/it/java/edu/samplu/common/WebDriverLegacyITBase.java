@@ -4243,7 +4243,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * {@link #SEARCH_XPATH}
      * @throws InterruptedException
      */
-    private void waitAndClickSearch() throws InterruptedException {
+    protected void waitAndClickSearch() throws InterruptedException {
         waitAndClickByXpath(SEARCH_XPATH);
     }
 

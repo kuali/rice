@@ -16,11 +16,7 @@
 package org.kuali.rice.krad.library.containers;
 
 import org.junit.Test;
-
-import edu.samplu.common.Failable;
-import edu.samplu.common.ITUtil;
-import edu.samplu.common.SmokeTestBase;
-import edu.samplu.common.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -199,14 +199,15 @@ class LegacyDetector {
     public boolean useLegacy(Class<?> dataObjectClass) {
         // if we are in a legacy context, always use the legacy framework, if they are using stuff that's not mapped
         // up properly then they are doing it wrong
-        if (isInLegacyContext()) {
+        boolean ojbLoadedClass = isOjbLoadedClass(dataObjectClass);
+        if (isInLegacyContext() && ojbLoadedClass) {
             return true;
         }
         // if it's only loaded in legacy, then we can indicate to use the legacy framework
         //ADDED hack to handle classes like PersonImpl that are not in OJB but are Legacy and should
         //goto that adapter
         if (isLegacyDataFrameworkEnabled() &&
-                (isOjbLoadedClass(dataObjectClass)  || (isTransientBoOnClasspath(dataObjectClass))) &&
+                (ojbLoadedClass || (isTransientBoOnClasspath(dataObjectClass))) &&
                         !isKradDataManaged(dataObjectClass)) {
             return true;
         }

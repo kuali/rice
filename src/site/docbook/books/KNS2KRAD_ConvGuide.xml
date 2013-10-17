@@ -2306,7 +2306,31 @@
             </listitem>
             <listitem xml:id="LLA29">
               <para><emphasis role="keyword">applyFieldAuthorizationsFromNestedLookups</emphasis>
-                has been removed.</para>
+                has been removed.  Conditional masking of result field is done through Uif
+                configuration.
+                <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
+  ...
+  &lt;property name="resultFields">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:propertyName="cd">
+        &lt;property name="componentSecurity">
+          &lt;bean parent="Uif-DataFieldSecurity">
+            &lt;property name="attributeSecurity">
+              &lt;bean parent="AttributeSecurity">
+                &lt;property name="mask" value="true"/>
+                &lt;property name="maskFormatter">
+                  &lt;bean parent="MaskFormatterLiteral" p:literal="*********"/>
+                &lt;/property>
+              &lt;/bean>
+            &lt;/property>
+          &lt;/bean>
+        &lt;/property>
+      &lt;/bean>
+      ...
+    &lt;/list>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting></para>
             </listitem>
             <listitem xml:id="LLA30">
               <para><emphasis role="keyword">applyConditionalLogicForFieldDisplay</emphasis> has
@@ -2387,6 +2411,24 @@
   &lt;/property>
 &lt;/bean></programlisting></para>
           </listitem>
+          <listitem xml:id="LQF2">
+            <para>The <emphasis role="keyword">searchIconOverride</emphasis> doesn't exist in KRAD since
+              the quickfinder can be directly configured via the <emphasis role="keyword">quickfinder.quickfinderAction.actionImage.source</emphasis>.
+              Consequently, it was really not intended to be defined in the XML but rather in the JSP
+              code for a transactional document.  KRAD allows for much more flexibility and thus it
+              can be specified as well in the lookup.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+            <para>
+              <emphasis role="bold">KRAD code example:</emphasis>
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="entityTypeCode">
+  &lt;property name="quickfinder.quickfinderAction.actionImage.source" value="icon.png"/>
+&lt;/bean></programlisting></para>
+          </listitem>
         </itemizedlist>
       </para>
     </section>
@@ -2397,7 +2439,7 @@
         after another. For a maintenance document to use a multiple value lookup, the maintenance
         document must contain a collection, and a collection lookup must be configured for that
         collection. </para>
-      <para><emphasis role="bold">KNS code example</emphasis>
+      <para><emphasis role="bold">KNS code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
   &lt;property name="name" value="categories"/>
   &lt;property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
@@ -2458,7 +2500,7 @@
       <title>Other Lookup Features</title>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="LOF1">
             <para><emphasis role="bold">Custom Forms</emphasis></para>
             <para>In KNS custom forms are specified in the struts-config.xml file.
               <programlisting>&lt;form-bean name="TravelAuthorizationForm" 
@@ -2469,6 +2511,39 @@
               value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationForm"/>
     ...
 &lt;/bean></programlisting>
+            </para>
+          </listitem>
+          <listitem xml:id="LOF2">
+            <para><emphasis role="bold">Help Items</emphasis></para>
+            <para>Help items can be displayed in the same manner in KRAD as in the KNS.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+              <para>
+                <emphasis role="bold">KNS code example:</emphasis>
+                <programlisting linenumbering="numbered">&lt;property name="helpDefinition">
+  &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterDetailType="Lookup"
+                                p:parameterName="DEFAULT_HELP_URL"/>
+&lt;/property></programlisting>
+                or
+                <programlisting linenumbering="numbered">&lt;property name="helpUrl" value="link.html"/></programlisting>
+              </para>
+              <para>
+                <emphasis role="bold">KRAD code example:</emphasis>
+                <programlisting linenumbering="numbered">&lt;property name="help">
+  &lt;bean parent="Uif-Help">
+    &lt;property name="helpDefinition">
+      &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterDetailType="Lookup"
+                                    p:parameterName="DEFAULT_HELP_URL"/>
+    &lt;/property>
+  &lt;/bean>
+&lt;/property></programlisting>
+                or
+                <programlisting linenumbering="numbered">&lt;property name="help">
+  &lt;bean parent="Uif-Help" p:externalHelpUrl="link.html"/>
+&lt;/property></programlisting>
             </para>
           </listitem>
         </itemizedlist>

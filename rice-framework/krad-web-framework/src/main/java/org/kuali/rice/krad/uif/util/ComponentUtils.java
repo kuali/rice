@@ -40,6 +40,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.springframework.core.OrderComparator;
 
 /**
@@ -490,50 +491,67 @@ public class ComponentUtils {
     }
 
     /**
+     * Generate a hash code unique within the current view for a single lifecycle element. A unique
+     * ID value will be assigned to the lifecycle element, replacing the current ID.
+     * 
+     * <p>This method may only be called during the view lifecycle.</p>
+     * 
+     * @param element The element to generate a hash code for.
+     * @param seed A hash value to use as a seed for the new hash.
+     * 
+     * @return A hash code based on the provided element and seed value.
+     * @see AssignIdsTask For a complete description of the algorithm. This method implements a
+     *      single step in the algorithm described in that task.
+     */
+    public static int generateId(LifecycleElement element, int seed) {
+        if (element == null) {
+            return seed;
+        }
+        
+        final int prime = 6971;
+        int hash = prime * seed + element.getClass().getName().hashCode();
+        
+        String id = element.getId();
+        hash *= prime;
+        if (id != null) {
+            hash += id.hashCode();
+        }
+        
+        do {
+            hash *= 4507;
+            id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
+        } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
+        
+        element.setId(UifConstants.COMPONENT_ID_PREFIX + id);
+        
+        return hash;
+    }
+    
+    /**
      * Replace all IDs from a component and its children with new generated ID values.
      * 
      * <p>If there are features that depend on a static id of this
      * component, this call may cause errors.</p>
      *
      * @param component A list of component to clear all IDs from.
+     * 
+     * @see AssignIdsTask For a complete description of the algorithm.
      */
     public static void clearAndAssignIds(List<? extends Component> components) {
         if (components == null || components.isEmpty()) {
             return;
         }
         
-        final int prime = 6971;
         int hash = 1;
         Queue<Component> toClear = new LinkedList<Component>();
         toClear.addAll(components);
         while (!toClear.isEmpty()) {
             Component component = toClear.poll();
 
-            hash = prime * hash + component.getClass().getName().hashCode();
-            String id = component.getId();
-            hash *= prime;
-            if (id != null) {
-                hash += id.hashCode();
-            }
-            
-            do {
-                hash *= 4507;
-                id = Integer.toString(hash, 36);
-            } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
-
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + id);
+            hash = generateId(component, hash);
 
             if (component instanceof Container) {
-                LayoutManager layoutManager = ((Container) component).getLayoutManager();
-                
-                if (layoutManager != null) {
-                    do {
-                        hash *= 4507;
-                        id = Integer.toString(hash, 36);
-                    } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
-
-                    layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + id);
-                }
+                hash = generateId(((Container) component).getLayoutManager(), hash);
             }
 
             for (Component nested : component.getComponentsForLifecycle()) {
@@ -543,11 +561,13 @@ public class ComponentUtils {
             }
 
             List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
-            if (propertyReplacerComponents != null) {
-                for (Component nested : propertyReplacerComponents) {
-                    if (nested != null) {
-                        toClear.add(nested);
-                    }
+            if (propertyReplacerComponents == null) {
+                continue;
+            }
+            
+            for (Component nested : propertyReplacerComponents) {
+                if (nested != null) {
+                    toClear.add(nested);
                 }
             }
         }

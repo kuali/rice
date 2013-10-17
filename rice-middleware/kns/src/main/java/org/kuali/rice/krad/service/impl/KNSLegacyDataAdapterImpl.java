@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import groovy.util.logging.Log;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -89,7 +91,8 @@ import org.springframework.beans.factory.annotation.Required;
  */
 @Deprecated
 public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
-
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KNSLegacyDataAdapterImpl.class);
+	
     private static final Pattern VALUE_HOLDER_FIELD_PATTERN = Pattern.compile("^_persistence_(.*)_vh$");
 
     private final ConcurrentMap<Class<?>, List<ValueHolderFieldPair>> valueHolderFieldCache =
@@ -392,9 +395,13 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
         return returnVal;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<String> listPrimaryKeyFieldNames(Class<?> type) {
         List<String> keys = new ArrayList<String>();
+        if ( type == null ) {
+        	return keys;
+        }
         if (isPersistable(type)) {
             keys = persistenceStructureService.listPrimaryKeyFieldNames(type);
         } else {
@@ -403,11 +410,15 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
                 keys = responsibleModuleService.listPrimaryKeyFieldNames(type);
             } else {
                 // check the Data Dictionary for PK's of non PBO/EBO
-                List<String> pks = dataDictionaryService.getDataDictionary().getDataObjectEntry(type.getName())
-                        .getPrimaryKeys();
-                if (pks != null && !pks.isEmpty()) {
-                    keys = pks;
-                }
+            	DataObjectEntry dataObjectEntry = dataDictionaryService.getDataDictionary().getDataObjectEntry(type.getName());
+            	if ( dataObjectEntry != null ) {
+	                List<String> pks = dataObjectEntry.getPrimaryKeys();
+	                if (pks != null ) {
+	                    keys = pks;
+	                }
+            	} else {
+            		LOG.warn( "Unable to retrieve data object entry for non-persistable KNS-managed class: " + type.getName() );
+            	}
             }
         }
         return keys;

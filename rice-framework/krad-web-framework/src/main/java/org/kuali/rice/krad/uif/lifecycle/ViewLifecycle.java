@@ -813,13 +813,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
             active.pushPendingPhase(LifecyclePhaseFactory.initialize(component, model));
         } else {
+            Queue<ViewLifecyclePhase> phaseQueue = new LinkedList<ViewLifecyclePhase>();
             ViewLifecyclePhase pushPhase = active.activePhase;
             
             try {
+                active.activePhase = null;
+                
                 // Perform sub-lifecycle immediately in the same thread
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-                    active.activePhase = LifecyclePhaseFactory.initialize(component, model);
-                    active.activePhase.run();
+                    phaseQueue.offer(LifecyclePhaseFactory.initialize(component, model));
+                    performPendingPhases(phaseQueue);
                 }
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
@@ -828,16 +831,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
                         UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                    active.activePhase = LifecyclePhaseFactory.applyModel(component, model, parent);
-                    active.activePhase.run();
+                    phaseQueue.offer(LifecyclePhaseFactory.applyModel(component, model, parent));
+                    performPendingPhases(phaseQueue);
                 }
 
                 if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
                     return;
                 }
 
-                active.activePhase = LifecyclePhaseFactory.finalize(component, model, parent);
-                active.activePhase.run();
+                phaseQueue.offer(LifecyclePhaseFactory.finalize(component, model, parent));
+                performPendingPhases(phaseQueue);
 
             } finally {
                 active.activePhase = pushPhase;
@@ -1733,14 +1736,21 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * Execute all pending lifecycle phases.
      */
     protected void performPendingPhases() {
-        Queue<ViewLifecyclePhase> initialPhases = new LinkedList<ViewLifecyclePhase>(pendingPhases);
+        performPendingPhases(pendingPhases);
+    }
+    
+    /**
+     * Execute all pending lifecycle phases.
+     */
+    protected static void performPendingPhases(Queue<ViewLifecyclePhase> phaseQueue) {
+        Queue<ViewLifecyclePhase> initialPhases = new LinkedList<ViewLifecyclePhase>(phaseQueue);
 
-        while (!pendingPhases.isEmpty()) {
-            ViewLifecyclePhase phase = pendingPhases.poll();
+        while (!phaseQueue.isEmpty()) {
+            ViewLifecyclePhase phase = phaseQueue.poll();
             
             phase.run();
 
-            pendingPhases.addAll(phase.getSuccessors());
+            phaseQueue.addAll(phase.getSuccessors());
         }
 
         Iterator<ViewLifecyclePhase> initialPhaseIterator = initialPhases.iterator();
@@ -1748,7 +1758,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             ViewLifecyclePhase top = initialPhaseIterator.next();
 
             assert top.isComplete() : top;
-            view.getViewIndex().indexComponent(top.getComponent());
+            getView().getViewIndex().indexComponent(top.getComponent());
         }
     }
 

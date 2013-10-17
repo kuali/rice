@@ -51,11 +51,6 @@ public class ProcessRemoteFieldsHolderTask extends AbstractViewLifecycleTask {
     protected void performLifecycleTask() {
         Container container = (Container) getPhase().getComponent();
         
-        if (container instanceof CollectionGroup) {
-            // Collection items will be processed as the lines are built
-            return;
-        }
-
         List<Component> processedItems = new ArrayList<Component>();
 
         // check for holders and invoke to retrieve the remotable fields and translate

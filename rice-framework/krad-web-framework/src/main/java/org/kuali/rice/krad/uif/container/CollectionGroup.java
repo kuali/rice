@@ -180,6 +180,17 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     * Do not process remote field holders for collections. Collection items will be processed as
+     * the lines are built
+     * 
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#isProcessRemoteFieldHolders()
+     */
+    @Override
+    protected boolean isProcessRemoteFieldHolders() {
+        return false;
+    }
+
+    /**
      * The following actions are performed:
      *
      * <ul>

@@ -71,6 +71,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public ContainerBase() {
 		defaultItemPosition = 1;
 	}
+	
+	/**
+	 * Determine if remote field holders should be processed for this container.
+	 * 
+	 * @return True if remote field holders should be processed for this container.
+	 */
+	protected boolean isProcessRemoteFieldHolders() {
+	    return true;
+	}
 
 	/**
 	 * The following initialization is performed:
@@ -159,6 +168,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         
         if (layoutManager != null) {
             layoutManager.initializePendingTasks(phase, pendingTasks);
+        }
+        
+        if (isProcessRemoteFieldHolders()) {
+            pendingTasks.add(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, phase));
         }
     }
 

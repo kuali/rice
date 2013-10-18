@@ -68,4 +68,7 @@
     <KRCR_CMPNT_T ACTV_IND="Y" CMPNT_CD="ScheduleStep"
         NM="Schedule Step" NMSPC_CD="KR-NS"
         OBJ_ID="5A689075D3587AEBE0404F8189D80321" VER_NBR="1"/>
+    <KRCR_CMPNT_T ACTV_IND="Y" CMPNT_CD="TestComponent"
+        NM="Test Component" NMSPC_CD="KR-SAP"
+        OBJ_ID="69A9BABE4A0FBD56E0404F8189D82B0A" VER_NBR="1"/>
 </dataset>

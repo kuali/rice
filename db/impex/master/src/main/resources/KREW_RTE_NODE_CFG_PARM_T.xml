@@ -283,7 +283,7 @@
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2474" RTE_NODE_ID="2917" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2475" RTE_NODE_ID="2919" VAL="&lt;start name=&quot;Initiated&quot;>&#xd;&#xa;&lt;activationType>P&lt;/activationType>&#xd;&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xd;&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xd;&#xa;&lt;/start>&#xd;&#xa;"/>
+        RTE_NODE_CFG_PARM_ID="2475" RTE_NODE_ID="2919" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2476" RTE_NODE_ID="2919" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
@@ -293,7 +293,7 @@
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2479" RTE_NODE_ID="2919" VAL="Template"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2480" RTE_NODE_ID="2921" VAL="&lt;start name=&quot;Initiated&quot;>&#xd;&#xa;&lt;activationType>P&lt;/activationType>&#xd;&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xd;&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xd;&#xa;&lt;/start>&#xd;&#xa;"/>
+        RTE_NODE_CFG_PARM_ID="2480" RTE_NODE_ID="2921" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
         RTE_NODE_CFG_PARM_ID="2481" RTE_NODE_ID="2921" VAL="P"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"

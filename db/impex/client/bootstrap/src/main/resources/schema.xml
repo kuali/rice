@@ -418,6 +418,79 @@
             <reference foreign="TRIGGER_GROUP" local="TRIGGER_GROUP"/>
         </foreign-key>
     </table>
+    <table name="KRTST_PARENT_GEN_KEY_CHILD_T">
+        <column name="GENERATED_PK_COL" size="8" type="DECIMAL"/>
+        <column name="CHILDS_PK_COL" size="8" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_PARENT_GEN_KEY_T">
+        <column name="GENERATED_PK_COL" size="8" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_PARENT_OF_UPDATABLE_T">
+        <column name="PK_COL" size="8" type="DECIMAL"/>
+        <column name="UPDATABLE_CHILD_KEY_COL" size="10" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_PARENT_WITH_MULTI_KEY_T">
+        <column name="FIN_COA_CD" primaryKey="true" size="2" type="VARCHAR"/>
+        <column name="ACCOUNT_NBR" primaryKey="true" size="7" type="VARCHAR"/>
+        <column name="ORG_CD" size="4" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_ANOTHER_REF_OBJ_T">
+        <column name="STR_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="DATE_PROP" primaryKey="true" type="DATE"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_COLL_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_PROP_TWO" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_COLL_TWO_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_COLL_KEY_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_INDIRECT_COLL_T">
+        <column name="PK_COLL_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_INDIR_LINK_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="COLL_PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_REF_OBJ_T">
+        <column name="STR_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_2_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_COLL_KEY_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_EXT_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+        <column name="LONG_STR_PROP" size="200" type="VARCHAR"/>
+        <column name="DATE_PROP" type="DATE"/>
+        <column name="CURR_PROP" scale="2" size="19" type="DECIMAL"/>
+        <column name="NON_STANDARD" size="40" type="VARCHAR"/>
+        <column default="N" name="BOOL_PROP" size="1" type="CHAR"/>
+    </table>
+    <table name="KRTST_TEST_YARDO_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TWO_KEY_CHILD_T">
+        <column name="FIN_COA_CD" primaryKey="true" size="2" type="VARCHAR"/>
+        <column name="ORG_CD" primaryKey="true" size="4" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_UPDATABLE_CHILD_T">
+        <column name="PK_COL" size="10" type="VARCHAR"/>
+        <column name="SOME_DATA_COL" size="40" type="VARCHAR"/>
+    </table>
     <sequence name="KRNS_DOC_TYP_ATTR_S" nextval="1000"/>
     <sequence name="KRNS_LOCK_S" nextval="2000"/>
     <sequence name="KRNS_LOOKUP_RSLT_S" nextval="2000"/>
@@ -427,4 +500,5 @@
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
+    <sequence name="KRTST_GENERATED_PK_S" nextval="10000"/>
 </database>

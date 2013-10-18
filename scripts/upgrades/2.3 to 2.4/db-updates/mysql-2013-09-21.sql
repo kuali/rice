@@ -16,12 +16,6 @@
 
 -- KULRICE-10534 : Test data for Multi value select server side paging
 
-INSERT INTO TRV_ACCT_FO (ACCT_FO_ID,ACCT_FO_USER_NAME)
-  VALUES (4,'erin')
-;
-INSERT INTO TRV_ACCT_FO (ACCT_FO_ID,ACCT_FO_USER_NAME)
-  VALUES (5,'eric')
-;
 INSERT INTO TRV_ACCT(ACCT_NUM, ACCT_NAME, ACCT_TYPE, ACCT_FO_ID, OBJ_ID, CREATE_DT, SUBSIDIZED_PCT)
   VALUES('a4', 'Travel Account 4', 'IAT', 'erin', 'a4', NULL, 45)
 ;

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+  Copyright 2005-2013 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>3.1.4</version>
+    <version>3.3.22</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -46,8 +46,8 @@
   </ciManagement>
 
   <properties>
-    <properties.resolve>false</properties.resolve>
-
+    <project.scm.url>https://svn.kuali.org/repos/rice/trunk</project.scm.url>
+  
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
@@ -55,9 +55,6 @@
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
-
-    <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
-    <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
@@ -218,11 +215,8 @@
     <xmlunit.version>1.3</xmlunit.version>
     <xstream.version>1.2.2</xstream.version>
 
-    <!-- TODO: Cleanup properties so this can be set to true. -->
-    <properties.resolve>false</properties.resolve>
-
     <!-- database drivers location -->
-    <jdbc.drivers.location>${env.M2_REPO}</jdbc.drivers.location>
+    <jdbc.drivers.location>${settings.localRepository}</jdbc.drivers.location>
     <mysql-connector-java.jar.location>
       ${jdbc.drivers.location}/mysql/${mysql.jdbc.artifactId}/${mysql.jdbc.version}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar
     </mysql-connector-java.jar.location>
@@ -258,15 +252,20 @@
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
     <plugin.http.version>1.0.5</plugin.http.version>
 
-    <!-- Location where the spring instrumentation jar can be found -->
+    <!-- Location's for Spring instrumentation related jar's -->
+    <spring.jar.base>${settings.localRepository}/org/springframework</spring.jar.base>
+    <spring-instrument.jar>${spring.jar.base}/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar</spring-instrument.jar>
+    <spring-instrument-tomcat.jar>${spring.jar.base}/spring-instrument-tomcat/${spring.version}/spring-instrument-tomcat-${spring.version}.jar</spring-instrument-tomcat.jar>
     <spring.instrument.javaagent>
-      -javaagent:${settings.localRepository}/org/springframework/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar
+      -javaagent:${spring-instrument.jar}
     </spring.instrument.javaagent>
 
+
+    <!-- Pin the tomcat7 plugin to an explicit version -->
+    <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
   </properties>
 
   <profiles>
-    <!-- Setup the dependency tree needed by the deploy logic -->
     <!-- Optimize the nightly build -->
     <profile>
       <id>nightly</id>
@@ -309,16 +308,40 @@
     <!-- Setup the dependency tree needed by the deploy logic -->
     <profile>
       <id>kdo</id>
+      <properties>
+        <kdo.psc>org.kuali.rice.deploy.spring.DeployPSC</kdo.psc>
+        <kdo.class>org.kuali.rice.deploy.spring.DeployConfig</kdo.class>
+      </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>spring-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>load</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>load</goal>
+                </goals>
+                <configuration>
+                  <removeExistingPropertySources>true</removeExistingPropertySources>
+                  <propertySourcesConfig>${kdo.psc}</propertySourcesConfig>
+                  <annotatedClasses>
+                    <annotatedClass>${kdo.class}</annotatedClass>
+                  </annotatedClasses>
+                </configuration>
+              </execution>
+            </executions>
             <dependencies>
               <dependency>
                 <groupId>org.kuali.rice</groupId>
-                <artifactId>rice-impex-master</artifactId>
-                <classifier>sql</classifier>
+                <artifactId>rice-sql</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.rice</groupId>
+                <artifactId>rice-deploy</artifactId>
                 <version>${project.version}</version>
               </dependency>
               <dependency>
@@ -475,12 +498,12 @@
                     <testResultsTimestamp>${jmeter.testResultsTimestamp}</testResultsTimestamp>
                     <propertiesUser>
                       <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
-                            ${__P(server,localhost)}
-                            ${__P(port,80)}
-                           See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
-                               http://jmeter.apache.org/usermanual/test_plan.html#using_variables
-                               http://jmeter.apache.org/usermanual/functions.html#__P
-                               http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
+                        ${__P(server,localhost)}
+                        ${__P(port,80)}
+                        See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
+                        http://jmeter.apache.org/usermanual/test_plan.html#using_variables
+                        http://jmeter.apache.org/usermanual/functions.html#__P
+                        http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
                       -->
                       <server>${jmeter.server}</server>
                       <port>${jmeter.port}</port>
@@ -540,7 +563,6 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>${plugin.failsafe.version}</version>
             <executions>
@@ -608,7 +630,6 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>${plugin.failsafe.version}</version>
             <executions>
@@ -655,15 +676,9 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.kuali.maven.plugins</groupId>
-          <artifactId>spring-maven-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>commons-io</groupId>
-              <artifactId>commons-io</artifactId>
-              <version>2.4</version>
-            </dependency>
-          </dependencies>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>${plugin.tomcat7.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -728,7 +743,6 @@
           artifacts by making sure that all deps converge. This managed at the dep management section which is critical.
         -->
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
           <executions>
             <execution>
@@ -912,7 +926,6 @@
           </executions>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
             <!-- impl module is huge and requires at least 768m to compile -->
@@ -975,7 +988,6 @@
         </plugin>
 
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-deploy-plugin</artifactId>
           <configuration>
             <skip>${maven.skip.packaging}</skip>
@@ -1089,7 +1101,6 @@
         </plugin>
 
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
             <skip>${maven.surefire.skip}</skip>
@@ -1103,7 +1114,6 @@
         </plugin>
 
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
           <executions>
             <execution>
@@ -1223,27 +1233,6 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
-        <plugin>
-          <!-- Remove this entire plugin section once the pom is on kuali-common 2.1.31+ -->
-          <artifactId>maven-war-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-archiver</artifactId>
-              <version>${plugin.war.archiver.version}</version>
-              <exclusions>
-                <exclusion>
-                  <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-container-default</artifactId>
-                </exclusion>
-                <exclusion>
-                  <groupId>org.codehaus.plexus</groupId>
-                  <artifactId>plexus-component-api</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-          </dependencies>
-        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -1266,7 +1255,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
@@ -1388,7 +1376,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
@@ -1416,17 +1403,14 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
       </plugin>
     </plugins>
@@ -2476,9 +2460,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:${project.scm.vendor}:${project.scm.url}</connection>
+    <developerConnection>scm:${project.scm.vendor}:${project.scm.url}</developerConnection>
+    <url>${project.scm.url}</url>
   </scm>
 
 </project>

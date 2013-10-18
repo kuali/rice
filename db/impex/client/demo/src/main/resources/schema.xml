@@ -512,6 +512,79 @@
             <reference foreign="TRIGGER_GROUP" local="TRIGGER_GROUP"/>
         </foreign-key>
     </table>
+    <table name="KRTST_PARENT_GEN_KEY_CHILD_T">
+        <column name="GENERATED_PK_COL" size="8" type="DECIMAL"/>
+        <column name="CHILDS_PK_COL" size="8" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_PARENT_GEN_KEY_T">
+        <column name="GENERATED_PK_COL" size="8" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_PARENT_OF_UPDATABLE_T">
+        <column name="PK_COL" size="8" type="DECIMAL"/>
+        <column name="UPDATABLE_CHILD_KEY_COL" size="10" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_PARENT_WITH_MULTI_KEY_T">
+        <column name="FIN_COA_CD" primaryKey="true" size="2" type="VARCHAR"/>
+        <column name="ACCOUNT_NBR" primaryKey="true" size="7" type="VARCHAR"/>
+        <column name="ORG_CD" size="4" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_ANOTHER_REF_OBJ_T">
+        <column name="STR_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="DATE_PROP" primaryKey="true" type="DATE"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_COLL_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_PROP_TWO" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_COLL_TWO_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_COLL_KEY_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_INDIRECT_COLL_T">
+        <column name="PK_COLL_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_INDIR_LINK_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="COLL_PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_REF_OBJ_T">
+        <column name="STR_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_2_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="PK_COLL_KEY_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_EXT_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_TABLE_T">
+        <column name="PK_PROP" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+        <column name="LONG_STR_PROP" size="200" type="VARCHAR"/>
+        <column name="DATE_PROP" type="DATE"/>
+        <column name="CURR_PROP" scale="2" size="19" type="DECIMAL"/>
+        <column name="NON_STANDARD" size="40" type="VARCHAR"/>
+        <column default="N" name="BOOL_PROP" size="1" type="CHAR"/>
+    </table>
+    <table name="KRTST_TEST_YARDO_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OTHER_STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TWO_KEY_CHILD_T">
+        <column name="FIN_COA_CD" primaryKey="true" size="2" type="VARCHAR"/>
+        <column name="ORG_CD" primaryKey="true" size="4" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_UPDATABLE_CHILD_T">
+        <column name="PK_COL" size="10" type="VARCHAR"/>
+        <column name="SOME_DATA_COL" size="40" type="VARCHAR"/>
+    </table>
     <table name="TRAV_DOC_2_ACCOUNTS">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
@@ -542,73 +615,53 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
     </table>
-    <table name="TRVL_PER_DIEM_T">
-        <column name="ID" primaryKey="true" size="19" type="DECIMAL"/>
-        <column name="TRIP_TYP_CD" required="true" size="3" type="VARCHAR"/>
-        <column name="COUNTRY" size="100" type="VARCHAR"/>
-        <column name="COUNTRY_NM" size="100" type="VARCHAR"/>
-        <column name="COUNTY_CD" size="100" type="VARCHAR"/>
-        <column name="PRI_DEST" size="100" type="VARCHAR"/>
-        <column name="SSN_BGN_DT" type="DATE"/>
-        <column name="EFFECT_FROM_DT" type="DATE"/>
-        <column name="EFFECT_TO_DT" type="DATE"/>
-        <column name="LOAD_DT" type="DATE"/>
-        <column name="SSN_BGN_MONTH_DAY" size="5" type="VARCHAR"/>
-        <column name="BKFST" size="19" type="DECIMAL"/>
-        <column name="LUNCH" size="19" type="DECIMAL"/>
-        <column name="DIN" size="19" type="DECIMAL"/>
-        <column default="0" name="LODGING" scale="2" size="19" type="DECIMAL"/>
-        <column default="0" name="INC" scale="2" size="19" type="DECIMAL"/>
-        <column default="0" name="MEALS_INC" scale="2" size="19" type="DECIMAL"/>
-        <column name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
-        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    <table name="TRVL_TRAVELER_DTL_T">
+        <column name="ID" primaryKey="true" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-    </table>
-    <table name="TRVL_TRIP_TYP_T">
-        <column name="CODE" primaryKey="true" size="3" type="VARCHAR"/>
-        <column name="NM" required="true" size="40" type="VARCHAR"/>
-        <column name="GEN_ENC_IND" required="true" size="1" type="VARCHAR"/>
-        <column name="ENC_BAL_TYP" size="2" type="VARCHAR"/>
-        <column name="ENC_OBJ_CD" size="4" type="VARCHAR"/>
-        <column name="CONT_INFO_REQ_IND" required="true" size="1" type="VARCHAR"/>
-        <column name="BLANKET_IND" required="true" size="1" type="VARCHAR"/>
-        <column name="AUTO_TR_LIMIT" required="true" scale="2" size="19" type="DECIMAL"/>
-        <column name="USE_PER_DIEM" required="true" size="1" type="VARCHAR"/>
-        <column name="TA_REQUIRED" required="true" size="1" type="VARCHAR"/>
-        <column name="PER_DIEM_CALC_METHOD" required="true" size="1" type="VARCHAR"/>
-        <column name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <column name="CITIZENSHIP" size="40" type="VARCHAR"/>
+        <column name="CITY_NM" size="50" type="VARCHAR"/>
+        <column name="COUNTRY_CD" size="2" type="VARCHAR"/>
+        <column name="CUSTOMER_NUM" size="40" type="VARCHAR"/>
+        <column name="DOC_NBR" size="14" type="VARCHAR"/>
+        <column name="DRIVE_LIC_EXP_DT" type="DATE"/>
+        <column name="DRIVE_LIC_NUM" size="20" type="VARCHAR"/>
+        <column name="EMAIL_ADDR" size="50" type="VARCHAR"/>
+        <column name="FIRST_NM" size="40" type="VARCHAR"/>
+        <column name="GENDER" size="1" type="VARCHAR"/>
+        <column name="LAST_NM" size="40" type="VARCHAR"/>
+        <column name="MIDDLENAME" size="40" type="VARCHAR"/>
+        <column name="NON_RES_ALIEN" size="1" type="VARCHAR"/>
+        <column name="PHONE_NBR" size="20" type="VARCHAR"/>
+        <column name="EMP_PRINCIPAL_ID" size="255" type="VARCHAR"/>
+        <column name="POSTAL_STATE_CD" size="2" type="VARCHAR"/>
+        <column name="ADDR_LINE_1" size="50" type="VARCHAR"/>
+        <column name="ADDR_LINE_2" size="50" type="VARCHAR"/>
+        <column name="TRAVELER_TYP_CD" size="3" type="VARCHAR"/>
+        <column name="POSTAL_CD" size="11" type="VARCHAR"/>
+        <unique name="SYS_C0012927059">
+            <unique-column name="OBJ_ID"/>
+        </unique>
     </table>
     <table name="TRV_ACCT">
-        <column name="ACCT_NUM" required="true" size="10" type="VARCHAR"/>
-        <column name="ACCT_NAME" size="50" type="VARCHAR"/>
-        <column name="ACCT_TYPE" size="100" type="VARCHAR"/>
-        <column name="ACCT_FO_ID" size="14" type="DECIMAL"/>
-        <column name="OBJ_ID" size="36" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-        <column name="SUB_ACCT" size="10" type="VARCHAR"/>
-        <column name="SUB_ACCT_NAME" size="50" type="VARCHAR"/>
-        <column name="CREATE_DT" type="DATE"/>
-        <column name="SUBSIDIZED_PCT" type="FLOAT"/>
-    </table>
-    <table name="TRV_ACCT_EXT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
-        <column name="ACCT_TYPE" primaryKey="true" size="100" type="VARCHAR"/>
-        <column name="OBJ_ID" size="36" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
-    </table>
-    <table name="TRV_ACCT_FO">
-        <column name="ACCT_FO_ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column name="ACCT_FO_USER_NAME" required="true" size="50" type="VARCHAR"/>
-        <column name="OBJ_ID" size="36" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="ACCT_NAME" size="40" type="VARCHAR"/>
+        <column name="ACCT_TYPE" size="3" type="VARCHAR"/>
+        <column name="ACCT_FO_ID" size="40" type="VARCHAR"/>
+        <column name="CREATE_DT" type="DATE"/>
+        <column name="SUBSIDIZED_PCT" scale="2" size="5" type="DECIMAL"/>
+        <foreign-key foreignTable="TRV_ACCT_TYPE" name="TRV_ACCT_TR1">
+            <reference foreign="ACCT_TYPE" local="ACCT_TYPE"/>
+        </foreign-key>
     </table>
     <table name="TRV_ACCT_TYPE">
-        <column name="ACCT_TYPE" primaryKey="true" size="10" type="VARCHAR"/>
-        <column name="ACCT_TYPE_NAME" size="50" type="VARCHAR"/>
-        <column name="OBJ_ID" size="36" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
+        <column name="ACCT_TYPE" primaryKey="true" size="3" type="VARCHAR"/>
+        <column name="ACCT_TYPE_NAME" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
     <table name="TRV_ACCT_USE_RT_T">
         <column name="ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -656,6 +709,16 @@
             <reference foreign="ATTACHMENT_ID" local="ATTACHMENT_ID"/>
         </foreign-key>
     </table>
+    <table name="TRV_SUB_ACCT">
+        <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="SUB_ACCT" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="SUB_ACCT_NAME" size="40" type="VARCHAR"/>
+        <foreign-key foreignTable="TRV_ACCT" name="TRV_SUB_ACCT_TR1">
+            <reference foreign="ACCT_NUM" local="ACCT_NUM"/>
+        </foreign-key>
+    </table>
     <table name="TST_SEARCH_ATTR_INDX_TST_DOC_T">
         <column name="DOC_HDR_ID" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
@@ -679,7 +742,6 @@
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
+    <sequence name="KRTST_GENERATED_PK_S" nextval="10000"/>
     <sequence name="TRVL_ID_SEQ" nextval="1"/>
-    <sequence name="TRVL_PER_DIEM_ID_SEQ" nextval="1"/>
-    <sequence name="TRV_FO_ID_S" nextval="1000"/>
 </database>

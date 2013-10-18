@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+  Copyright 2005-2013 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -25,4 +25,132 @@
     <version>2.4.0-M3-SNAPSHOT</version>
   </parent>
   <artifactId>rice-sql</artifactId>
+  <profiles>
+    <profile>
+      <!-- Drop and then re-create a db from the source SQL -->
+      <id>db</id>
+      <properties>
+        <db.vendor>mysql</db.vendor>
+        <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+        <jdbc.driver.artifactId>${mysql.jdbc.artifactId}</jdbc.driver.artifactId>
+        <jdbc.driver.version>${mysql.jdbc.version}</jdbc.driver.version>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>spring-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>load</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>load</goal>
+                </goals>
+                <configuration>
+                  <propertySourcesConfig>org.kuali.rice.sql.spring.SourceDbPSC</propertySourcesConfig>
+                  <annotatedClass>org.kuali.rice.sql.spring.SourceDbExecConfig</annotatedClass>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>${jdbc.driver.groupId}</groupId>
+                <artifactId>${jdbc.driver.artifactId}</artifactId>
+                <version>${jdbc.driver.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.rice</groupId>
+                <artifactId>rice-sql</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-sql</artifactId>
+                <version>${kuali-sql.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-util</artifactId>
+                <version>${kuali-util.version}</version>
+              </dependency>
+              <dependency>
+                <groupId>org.kuali.common</groupId>
+                <artifactId>kuali-jdbc</artifactId>
+                <version>${kuali-jdbc.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>oracle</id>
+      <properties>
+        <db.vendor>oracle</db.vendor>
+        <!-- These need to match the deployment environments -->
+        <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
+        <jdbc.driver.artifactId>ojdbc6_g</jdbc.driver.artifactId>
+        <jdbc.driver.version>11.2.0.2</jdbc.driver.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>local</id>
+      <properties>
+        <properties.decrypt>false</properties.decrypt>
+        <mysql.dba.url>jdbc:mysql://localhost</mysql.dba.url>
+        <mysql.dba.username>root</mysql.dba.username>
+        <mysql.dba.password>NONE</mysql.dba.password>
+        <oracle.dba.url>jdbc:oracle:thin:@localhost:1521:XE</oracle.dba.url>
+        <oracle.dba.username>system</oracle.dba.username>
+        <oracle.dba.password>manager</oracle.dba.password>
+      </properties>
+    </profile>
+  </profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.kuali.maven.plugins</groupId>
+        <artifactId>spring-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>metainf</id>
+            <goals>
+              <goal>load</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <annotatedClass>org.kuali.common.util.metainf.spring.RiceSqlConfig</annotatedClass>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.kuali.common</groupId>
+            <artifactId>kuali-util</artifactId>
+            <version>${kuali-util.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.kuali.common</groupId>
+            <artifactId>kuali-deploy</artifactId>
+            <version>${kuali-deploy.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-deploy</artifactId>
+    </dependency>
+  </dependencies>
 </project>

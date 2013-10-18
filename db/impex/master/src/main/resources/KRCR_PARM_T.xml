@@ -158,6 +158,11 @@
         PARM_NM="IS_LAST_APPROVER_ACTIVATE_FIRST_IND"
         PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
+        NMSPC_CD="KR-KRAD" OBJ_ID="69A9BABE4A0FBD56E0404F8189D82B0D"
+        PARM_DESC_TXT="Default External Help Url"
+        PARM_NM="DEFAULT_HELP_URL" PARM_TYP_CD="HELP"
+        VAL="http://site.kuali.org/rice/latest/reference/html/help.html#lookup" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-KRAD" OBJ_ID="E3F2146BBD179481E0406E0AC31D69DB"
         PARM_DESC_TXT="Maximum number of results returned in a look-up query."
         PARM_NM="RESULTS_LIMIT" PARM_TYP_CD="CONFG" VAL="200" VER_NBR="1"/>
@@ -246,8 +251,9 @@
         OBJ_ID="5A689075D35B7AEBE0404F8189D80321"
         PARM_DESC_TXT="Time in milliseconds that the scheduleStep should wait between iterations."
         PARM_NM="STATUS_CHECK_INTERVAL" PARM_TYP_CD="CONFG" VAL="30000" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="TRAVEL" CMPNT_CD="TEST_COMPONENT"
+    <KRCR_PARM_T APPL_ID="TRAVEL" CMPNT_CD="TestComponent"
         EVAL_OPRTR_CD="A" NMSPC_CD="KR-SAP"
         OBJ_ID="B6A90093AB168D60E040DC0A1F8A1116" PARM_NM="TEST_PARAM"
-        PARM_TYP_CD="HELP" VAL="http://www.kuali.org/?system_parm" VER_NBR="1"/>
+        PARM_TYP_CD="HELP"
+        VAL="http://site.kuali.org/rice/latest/reference/html/help.html#document_type" VER_NBR="1"/>
 </dataset>

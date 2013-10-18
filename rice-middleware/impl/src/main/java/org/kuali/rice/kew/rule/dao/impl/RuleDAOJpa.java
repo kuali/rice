@@ -307,8 +307,11 @@ public class RuleDAOJpa implements RuleDAO {
         Root<RuleBaseValues> root = cq.from(RuleBaseValues.class);
         List<javax.persistence.criteria.Predicate> predicates = getSearchCriteria(root,cq,docTypeName,
                         ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-        addResponsibilityCriteria(cq,workgroupIds, workflowId, actionRequestCodes,
+        Subquery<RuleResponsibilityBo> subquery = addResponsibilityCriteria(cq,workgroupIds, workflowId, actionRequestCodes,
                         (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
+        if (subquery != null){
+            predicates.add(cb.in(root.get("id")).value(subquery));
+        }
         javax.persistence.criteria.Predicate[] preds = predicates.toArray(new javax.persistence.criteria.Predicate[predicates.size()]);
         cq.where(preds);
         TypedQuery<RuleBaseValues> q = getEntityManager().createQuery(cq);

@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.dataobject;
 
-import edu.sampleu.travel.options.TripTypeKeyValuesFinder.TripType;
+import edu.sampleu.travel.options.TripType;
 import org.kuali.rice.krad.bo.DataObjectBase;
 
 import java.io.Serializable;

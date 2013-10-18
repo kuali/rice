@@ -30,26 +30,7 @@ import java.util.List;
  */
 public class TripTypeKeyValuesFinder extends UifKeyValuesFinderBase {
 
-    public enum TripType {
-        IS("IS", "In State"), IN("IN", "International"), OS("OS", "Out of State");
-
-        private final String code;
-        private final String label;
-
-        TripType(String code, String label) {
-            this.code = code;
-            this.label = label;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-    }
+    private static final long serialVersionUID = -40567719721802689L;
 
     @Override
     public List<KeyValue> getKeyValues() {

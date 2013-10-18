@@ -162,7 +162,7 @@ public class InitializeDataFieldFromDictionaryTask extends AbstractViewLifecycle
             int pathlen = path.length();
 
             if (modelClassPath.startsWith(path) && pathlen > bestMatchLength
-                    && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen + 1) == '.') {
+                    && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen) == '.') {
                 bestMatchLength = pathlen;
                 modelClass = modelClassEntry.getValue();
                 modelProperty = modelClassPath.substring(pathlen + 1);

@@ -130,12 +130,13 @@ public class ActionListServiceImpl implements ActionListService {
 
         QueryResults<ActionItem> results = dataObjectService.findMatching(ActionItem.class, query);
 
-        Map<Object, Recipient> delegators = new HashMap<Object, Recipient>(results.getResults().size());
+        Map<String, Recipient> delegators = new HashMap<String, Recipient>(results.getResults().size());
 
         for ( ActionItem actionItem : results.getResults() ) {
-            String delegatorPrincipalId = actionItem.getDelegatorPrincipalId();
-            if (delegatorPrincipalId != null && !delegators.containsKey(delegatorPrincipalId)) {
-                delegators.put(delegatorPrincipalId, new WebFriendlyRecipient(KimApiServiceLocator.getPersonService().getPerson(delegatorPrincipalId)));
+            String recipientPrincipalId = actionItem.getPrincipalId();
+            if (recipientPrincipalId != null && !delegators.containsKey(recipientPrincipalId)) {
+                delegators.put(recipientPrincipalId, new WebFriendlyRecipient(
+                        KimApiServiceLocator.getPersonService().getPerson(recipientPrincipalId)));
             }
         }
 

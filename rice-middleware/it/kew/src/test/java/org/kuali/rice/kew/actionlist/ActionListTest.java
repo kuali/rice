@@ -56,6 +56,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -107,6 +108,7 @@ public class ActionListTest extends KEWTestCase {
             ActionItem actionItem = iterator.next();
             getActionListService().saveActionItem(actionItem);
         }
+        KradDataServiceLocator.getDataObjectService().flush(ActionItem.class);
     }
 
     @Test public void testRouteHeaderDelete() throws Exception {
@@ -486,10 +488,23 @@ public class ActionListTest extends KEWTestCase {
 
         recipients = getActionListService().findUserSecondaryDelegators(bmcgough.getPrincipalId());
     	assertEquals("Wrong size of users who were have delegated to given user via Secondary Delegation", 2, recipients.size());
-        Iterator<Recipient> recipientsIt = recipients.iterator();
-    	WebFriendlyRecipient recipient = (WebFriendlyRecipient) recipientsIt.next();
-    	assertEquals("Wrong employee id of delegator", "bmcgough", getPrincipalNameForId(recipient.getRecipientId()));
-        assertEquals("Wrong group id of delegator", getGroupIdForName("KR-WKFLW", "NonSIT"), ((KimGroupRecipient) recipientsIt.next()).getGroupId());
+        boolean foundSecondary1 = false;
+        boolean foundSecondary2 = false;
+        for (Recipient recipient : recipients) {
+            if (recipient instanceof KimGroupRecipient) {
+                KimGroupRecipient kimGroupRecepient = (KimGroupRecipient)recipient;
+                assertEquals("Wrong group id of delegator", getGroupIdForName("KR-WKFLW", "NonSIT"), kimGroupRecepient.getGroupId());
+                foundSecondary1 = true;
+            } else if (recipient instanceof WebFriendlyRecipient) {
+                WebFriendlyRecipient webRecipient = (WebFriendlyRecipient)recipient;
+                assertEquals("Wrong employee id of delegator", "bmcgough", getPrincipalNameForId(webRecipient.getRecipientId()));
+                foundSecondary2 = true;
+            } else {
+                fail("Encountered a recipient we weren't expecting! " + recipient);
+            }
+        }
+        assertTrue("Failed to find KIM group recipient", foundSecondary1);
+        assertTrue("Failed to find Web Friendly recipient", foundSecondary2);
     }
 
     @Test

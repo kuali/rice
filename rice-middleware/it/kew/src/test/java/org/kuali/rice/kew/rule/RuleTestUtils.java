@@ -147,7 +147,7 @@ public final class RuleTestUtils {
 		delegationResponsibility.setRuleBaseValues(rule);
 		delegationResponsibility.setRuleResponsibilityName(delegateId);
 		delegationResponsibility.setRuleResponsibilityType(groupTypeCode);
-		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
+		ruleDelegation = KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 		return ruleDelegation;
 	}
 }

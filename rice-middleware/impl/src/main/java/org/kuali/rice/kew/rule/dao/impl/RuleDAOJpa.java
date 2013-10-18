@@ -37,6 +37,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import java.sql.Timestamp;
@@ -340,48 +341,66 @@ public class RuleDAOJpa implements RuleDAO {
 
         List<javax.persistence.criteria.Predicate> ruleRespNamePredicates = new
                 ArrayList<javax.persistence.criteria.Predicate>();
+
+        List<javax.persistence.criteria.Predicate> userNamePreds =
+                new ArrayList<javax.persistence.criteria.Predicate>();
+
+        List<javax.persistence.criteria.Predicate> workgroupPreds =
+                new ArrayList<javax.persistence.criteria.Predicate>();
+
         
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
-            respPredicates.add(cb.in(fromResp.get("actionRequestedCd")).value(new ArrayList(actionRequestCodes)));
+            Expression<String> exp = fromResp.get("actionRequestedCd");
+            javax.persistence.criteria.Predicate actionRequestPredicate = exp.in(actionRequestCodes);
+
+            respPredicates.add(actionRequestPredicate);
         }
         
         if (!org.apache.commons.lang.StringUtils.isEmpty(workflowId)) {
             // workflow user id exists
             if (searchUser != null && searchUser) {
                 // searching user wishes to search for rules specific to user
-                ruleRespNamePredicates.add(cb.like(fromResp.get("ruleResponsibilityName"),workflowId));
-                ruleRespNamePredicates.add(cb.equal(fromResp.get("ruleResponsibilityType"),KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
+                userNamePreds.add(cb.like(fromResp.get("ruleResponsibilityName"),workflowId));
+                userNamePreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
+
+                javax.persistence.criteria.Predicate[] preds = userNamePreds.toArray(new javax.persistence.criteria.Predicate[userNamePreds.size()]);
+                ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
+
             }
             if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                 // at least one workgroup id exists and user wishes to search on workgroups
-                List<javax.persistence.criteria.Predicate> workgroupPreds =
-                                new ArrayList<javax.persistence.criteria.Predicate>();
-                workgroupPreds.add(cb.in(fromResp.get("ruleResponsibilityName")).
-                                value(new ArrayList<String>(workgroupIds)));
+
+                Expression<String> exp = fromResp.get("ruleResponsibilityName");
+                javax.persistence.criteria.Predicate groupIdPredicate = exp.in(workgroupIds);
+                workgroupPreds.add(groupIdPredicate);
                 workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
-                            KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
+                        KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
                 javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
-                ruleRespNamePredicates.add(cb.or((javax.persistence.criteria.Predicate[]) preds));
+                ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
             // no user and one workgroup id
-            ruleRespNamePredicates.add(cb.like(fromResp.get("ruleResponsibilityName"),
+            workgroupPreds.add(cb.like(fromResp.get("ruleResponsibilityName"),
                                 (String)workgroupIds.iterator().next()));
-            ruleRespNamePredicates.add(cb.equal(fromResp.get("ruleResponsibilityType"),
+            workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                         KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
+            javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
+            ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
 
         } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
             // no user and more than one workgroup id
 
-            ruleRespNamePredicates.add(cb.in(fromResp.get("ruleResponsibilityName")).
-                                        value(new ArrayList<String>(workgroupIds)));
-            ruleRespNamePredicates.add(cb.equal(fromResp.get("ruleResponsibilityType"),
+            Expression<String> exp = fromResp.get("ruleResponsibilityName");
+            javax.persistence.criteria.Predicate groupIdPredicate = exp.in(workgroupIds);
+            workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                                         KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
+            javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
+            ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
         }
 
         if (!ruleRespNamePredicates.isEmpty()) {
             javax.persistence.criteria.Predicate[] preds = ruleRespNamePredicates.toArray(new javax.persistence.criteria.Predicate[ruleRespNamePredicates.size()]);
-            respPredicates.add(cb.and((javax.persistence.criteria.Predicate[])preds));
+            respPredicates.add(cb.or((javax.persistence.criteria.Predicate[]) preds));
         }
 
         if (!respPredicates.isEmpty()) {

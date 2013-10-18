@@ -261,7 +261,12 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
     	return getRuleTemplate() != null ? getRuleTemplate().getId() : null;
     }
 
+    /**
+     * @deprecated use {@link #setRuleTemplate(RuleTemplateBo)} instead
+     */
+    @Deprecated
     public void setRuleTemplateId(String ruleTemplateId) {
+        // there's no way to do this now after the JPA conversion!
     }
 
 }

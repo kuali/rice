@@ -33,6 +33,7 @@ import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -293,8 +294,11 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         ruleAttribute.setType("RuleAttribute");
         ruleAttribute.setResourceDescriptor("noClass");
 
+        RuleTemplateBo ruleTemplate = new RuleTemplateBo();
+        ruleTemplate.setId("ruleTemplateId1");
+
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
-        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId1");
+        ruleTemplateAttribute.setRuleTemplate(ruleTemplate);
         ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 		RuleExtensionBo extension2 = new RuleExtensionBo();
@@ -323,8 +327,11 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         ruleAttribute2.setType("RuleAttribute");
         ruleAttribute2.setResourceDescriptor("noClass");
 
-		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
-        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        RuleTemplateBo ruleTemplate2 = new RuleTemplateBo();
+        ruleTemplate2.setId("ruleTemplateId2");
+
+        ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplate(ruleTemplate2);
         ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
@@ -359,12 +366,13 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         ruleAttribute.setType("RuleAttribute");
         ruleAttribute.setResourceDescriptor("noClass");
 
+        ruleTemplate = new RuleTemplateBo();
+        ruleTemplate.setId("ruleTemplateId");
 
-		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
-        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplate(ruleTemplate);
         ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
-
 
 		values2 = new ArrayList();
 		valueNew = new RuleExtensionValue();
@@ -380,9 +388,11 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         ruleAttribute2.setType("RuleAttribute");
         ruleAttribute2.setResourceDescriptor("noClass");
 
+        ruleTemplate2 = new RuleTemplateBo();
+        ruleTemplate2.setId("ruleTemplateId2");
 
-		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
-        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplate(ruleTemplate2);
         ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 
@@ -408,14 +418,18 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         values.add(value7);
 		values.add(value8);
 		extension.setExtensionValues(values);
-		ruleTemplateAttribute = new RuleTemplateAttributeBo();
+
+        ruleTemplateAttribute = new RuleTemplateAttributeBo();
 		ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
         ruleAttribute.setType("RuleAttribute");
         ruleAttribute.setResourceDescriptor("noClass");
 
-		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
-        ruleTemplateAttribute.setRuleTemplateId("ruleTemplateId");
+        ruleTemplate = new RuleTemplateBo();
+        ruleTemplate.setId("ruleTemplateId");
+
+        ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
+        ruleTemplateAttribute.setRuleTemplate(ruleTemplate);
         ruleTemplateAttribute.setDisplayOrder(new Integer(1));
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
 
@@ -434,9 +448,11 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
         ruleAttribute2.setType("RuleAttribute");
         ruleAttribute2.setResourceDescriptor("noClass");
 
+        ruleTemplate2 = new RuleTemplateBo();
+        ruleTemplate2.setId("ruleTemplateId2");
 
-		ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
-        ruleTemplateAttribute2.setRuleTemplateId("ruleTemplateId2");
+        ruleTemplateAttribute2.setRuleAttribute(ruleAttribute2);
+        ruleTemplateAttribute2.setRuleTemplate(ruleTemplate2);
         ruleTemplateAttribute2.setDisplayOrder(new Integer(2));
 		extension2.setRuleTemplateAttribute(ruleTemplateAttribute2);
 

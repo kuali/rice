@@ -15,18 +15,10 @@
  */
 package org.kuali.rice.kew.rule.service.impl;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -41,8 +33,14 @@ import org.kuali.rice.kew.routemodule.TestRouteModuleXMLHelper;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the role re-resolving.  This test depends on the route queue being synchronous.
@@ -87,7 +85,7 @@ public class RoleServiceTest extends KEWTestCase {
 	@Test public void testReResolveQualifiedRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
-		List requests = getTestRoleRequests(loadedDocument);
+		List<ActionRequestValue> requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
 
@@ -147,7 +145,7 @@ public class RoleServiceTest extends KEWTestCase {
 	@Test public void testReResolveRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
-		List requests = getTestRoleRequests(loadedDocument);
+		List<ActionRequestValue> requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
 
@@ -202,11 +200,10 @@ public class RoleServiceTest extends KEWTestCase {
 	/**
 	 * Extract requests sent to TestRole.
 	 */
-	private List getTestRoleRequests(DocumentRouteHeaderValue document) {
-		List testRoleRequests = new ArrayList();
-		List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
-		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+	private List<ActionRequestValue> getTestRoleRequests(DocumentRouteHeaderValue document) {
+		List<ActionRequestValue> testRoleRequests = new ArrayList();
+		List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getDocumentId());
+        for (ActionRequestValue actionRequest : requests) {
 			if (TEST_ROLE.equals(actionRequest.getRoleName())) {
 				testRoleRequests.add(actionRequest);
 			}
@@ -214,9 +211,8 @@ public class RoleServiceTest extends KEWTestCase {
 		return testRoleRequests;
 	}
 
-	private void assertRequestGraphs(List requests) throws Exception {
-		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iterator.next();
+	private void assertRequestGraphs(List<ActionRequestValue> requests) throws Exception {
+        for (ActionRequestValue request : requests) {
 			if (TEST_GROUP_1.equals(request.getQualifiedRoleName())) {
 				assertQualifiedRoleRequest(request, TEST_ROLE, TEST_GROUP_1);
 			} else if (TEST_GROUP_2.equals(request.getQualifiedRoleName())) {
@@ -229,8 +225,7 @@ public class RoleServiceTest extends KEWTestCase {
 		assertActionRequest(request, roleName, qualifiedRoleName);
 		List<String> recipients = TestRuleAttribute.getRecipientPrincipalIds(roleName, qualifiedRoleName);
 		assertEquals("Incorrect number of children requests.", recipients.size(), request.getChildrenRequests().size());
-		for (Iterator childIt = request.getChildrenRequests().iterator(); childIt.hasNext();) {
-			ActionRequestValue childRequest = (ActionRequestValue) childIt.next();
+		for (ActionRequestValue childRequest : request.getChildrenRequests()) {
 			assertActionRequest(childRequest, roleName, qualifiedRoleName);
 			assertTrue("Child request to invalid user: "+childRequest.getPrincipalId(), containsUser(recipients, childRequest.getPrincipalId()));
 			assertEquals("Child request should have no children.", 0, childRequest.getChildrenRequests().size());
@@ -255,17 +250,17 @@ public class RoleServiceTest extends KEWTestCase {
 	 */
 	private void assertInitiatorRequestDone(String roleName, String qualifiedRoleNameLabel) throws Exception {
         Principal initiator = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName("rkirkend");
-		List requests = KEWServiceLocator.getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), documentId);
-		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iterator.next();
+		List<ActionRequestValue> requests =
+                new ArrayList<ActionRequestValue>(KEWServiceLocator.getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), documentId));
+		for (Iterator<ActionRequestValue> iterator = requests.iterator(); iterator.hasNext();) {
+			ActionRequestValue request = iterator.next();
 			if (!initiator.getPrincipalId().equals(request.getPrincipalId())) {
 				iterator.remove();
 			}
 		}
 		assertEquals("Initiator should have a complete request and their re-resolved request.", 2, requests.size());
 		int roleRequestCount = 0;
-		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        for (ActionRequestValue actionRequest : requests) {
 			if (TEST_ROLE.equals(actionRequest.getRoleName())) {
 				roleRequestCount++;
 				assertActionRequest(actionRequest, roleName, qualifiedRoleNameLabel);
@@ -277,12 +272,12 @@ public class RoleServiceTest extends KEWTestCase {
 
 	private TestDocContent generateDocContent() {
 		TestDocContent docContent = new TestDocContent();
-		List routeLevels = new ArrayList();
+		List<TestRouteLevel> routeLevels = new ArrayList<TestRouteLevel>();
 		TestRouteLevel routeLevel1 = new TestRouteLevel();
 		routeLevels.add(routeLevel1);
 		docContent.setRouteLevels(routeLevels);
 		routeLevel1.setPriority(1);
-		List responsibilities = new ArrayList();
+		List<TestResponsibility> responsibilities = new ArrayList<TestResponsibility>();
 		routeLevel1.setResponsibilities(responsibilities);
 		TestResponsibility responsibility1 = new TestResponsibility();
 		responsibility1.setActionRequested(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);

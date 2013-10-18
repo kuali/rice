@@ -500,16 +500,27 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     @Override
+    public void deleteActionItemNoOutbox(ActionItem actionItem) {
+        deleteActionItem(actionItem, false, false);
+    }
+
+    @Override
     public void deleteActionItem(ActionItem actionItem) {
         deleteActionItem(actionItem, false);
     }
 
     @Override
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox) {
+        deleteActionItem(actionItem, forceIntoOutbox, true);
+    }
+
+    protected void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox, boolean putInOutbox) {
         dataObjectService.delete(actionItem);
         // remove notification from KCB
         notificationService.removeNotification(Collections.singletonList(ActionItem.to(actionItem)));
-        saveOutboxItem(actionItem, forceIntoOutbox);
+        if (putInOutbox) {
+            saveOutboxItem(actionItem, forceIntoOutbox);
+        }
     }
 
     @Override

@@ -73,6 +73,8 @@ public interface ActionRequestService {
 
     void deleteActionRequestGraph(ActionRequestValue actionRequest);
 
+    void deleteActionRequestGraphNoOutbox(ActionRequestValue actionRequest);
+
     ActionRequestValue findByActionRequestId(String actionRequestId);
 
     List<ActionRequestValue> findPendingRootRequestsByDocId(String documentId);

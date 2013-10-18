@@ -51,6 +51,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.sql.Timestamp;
@@ -521,7 +522,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 actionTaken.getActionRequests().add(actionRequest);
             }
             actionRequest = getDataObjectService().save(actionRequest);
-            deleteActionItems(actionRequest);
+            deleteActionItems(actionRequest, true);
         }
         actionRequest.setChildrenRequests(deactivateRequests(actionTaken, actionRequest.getChildrenRequests(), actionRequest, activationContext));
         actionRequest.setParentActionRequest(deactivateRequest(actionTaken, actionRequest.getParentActionRequest(), actionRequest, activationContext));
@@ -683,32 +684,42 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
     }
 
+    @Override
+    public void deleteActionRequestGraphNoOutbox(ActionRequestValue actionRequest) {
+        deleteActionRequestGraph(actionRequest, false);
+    }
+
     /**
      * Deletes an action request and all of its action items following the graph down through the action request's
      * children. This method should be invoked on a top-level action request.
      */
     @Override
     public void deleteActionRequestGraph(ActionRequestValue actionRequest) {
-        deleteActionItems(actionRequest);
+        deleteActionRequestGraph(actionRequest, true);
+    }
+
+    protected void deleteActionRequestGraph(ActionRequestValue actionRequest, boolean populateOutbox) {
+        if (actionRequest.getParentActionRequest() != null) {
+            throw new IllegalArgumentException("Must delete action request graph from the root, encountered a request with a parent: " + actionRequest);
+        }
+        deleteActionItemsFromGraph(actionRequest, populateOutbox);
         if (actionRequest.getActionTakenId() != null) {
             ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
-
-            if(actionTaken != null){//iu patch
-            getActionTakenService().delete(actionTaken);
-            }//iu patch
-
+            if (actionTaken != null) {
+                getActionTakenService().delete(actionTaken);
+            }
         }
+        // delete from the root, it should cascade down to the children
         getDataObjectService().delete(actionRequest);
-        for (ActionRequestValue child: actionRequest.getChildrenRequests()) {
-            deleteActionRequestGraph(child);
-        }
+        // go ahead and flush to ensure that the deletion happens before we return control to the calling code
+        getDataObjectService().flush(ActionRequestValue.class);
     }
 
     /**
      * Deletes the action items for the action request
      * @param actionRequest the action request whose action items to delete
      */
-    private void deleteActionItems(ActionRequestValue actionRequest) {
+    private void deleteActionItems(ActionRequestValue actionRequest, boolean populateOutbox) {
     	List<ActionItem> actionItems = actionRequest.getActionItems();
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("deleting " + actionItems.size() + " action items for action request: " + actionRequest);
@@ -717,7 +728,44 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("deleting action item: " + actionItem);
         	}
-            getActionListService().deleteActionItem(actionItem);
+            if (populateOutbox) {
+                getActionListService().deleteActionItem(actionItem);
+            } else {
+                getActionListService().deleteActionItemNoOutbox(actionItem);
+            }
+        }
+    }
+
+    /**
+     * Deletes the action items for the *root* action request.
+     *
+     * @param actionRequest the action request whose action items to delete
+     */
+    private void deleteActionItemsFromGraph(ActionRequestValue actionRequest, boolean populateOutbox) {
+        if (actionRequest.getParentActionRequest() != null) {
+            throw new IllegalArgumentException("Must delete action item from root of action request graph!");
+        }
+        List<ActionItem> actionItemsToDelete = new ArrayList<ActionItem>();
+        accumulateActionItemsFromGraph(actionRequest, actionItemsToDelete);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("deleting " + actionItemsToDelete.size() + " action items for action request graph: " + actionRequest);
+        }
+        for (ActionItem actionItem : actionItemsToDelete) {
+            if ( LOG.isDebugEnabled() ) {
+                LOG.debug("deleting action item: " + actionItem);
+            }
+            if (populateOutbox) {
+                getActionListService().deleteActionItem(actionItem);
+            } else {
+                getActionListService().deleteActionItemNoOutbox(actionItem);
+            }
+        }
+    }
+
+    private void accumulateActionItemsFromGraph(ActionRequestValue actionRequest, List<ActionItem> actionItems) {
+        actionItems.addAll(actionRequest.getActionItems());
+        for (ActionRequestValue childRequest : actionRequest.getChildrenRequests()) {
+            accumulateActionItemsFromGraph(childRequest, actionItems);
         }
     }
 

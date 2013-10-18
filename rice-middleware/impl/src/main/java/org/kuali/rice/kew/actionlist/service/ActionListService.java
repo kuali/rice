@@ -57,6 +57,8 @@ public interface ActionListService {
 
     public ActionItem saveActionItem(ActionItem actionItem);
 
+    public void deleteActionItemNoOutbox(ActionItem actionItem);
+
     public void deleteActionItem(ActionItem actionItem);
 
     public void deleteActionItem(ActionItem actionItem, boolean forceIntoOutbox);

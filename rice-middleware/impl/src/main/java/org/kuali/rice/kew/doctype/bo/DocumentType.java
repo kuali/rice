@@ -241,12 +241,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      * Used at parse-time only; not stored in db.
      */
     @Transient private Group defaultExceptionWorkgroup;
-    @Transient private List routeLevels;
-    @Transient private Collection childrenDocTypes;
+    @Transient private Collection<DocumentType> childrenDocTypes;
     @Transient private DocumentTypeSecurity documentTypeSecurity;
 
     public DocumentType() {
-        routeLevels = new ArrayList();
         documentTypeAttributes = new ArrayList<DocumentTypeAttributeBo>();
         documentTypePolicies = new ArrayList<DocumentTypePolicy>();
         version = new Integer(0);
@@ -603,7 +601,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return CodeTranslator.getActiveIndicatorLabel(getActive());
     }
 
-    public Collection getChildrenDocTypes() {
+    public Collection<DocumentType> getChildrenDocTypes() {
         if (this.childrenDocTypes == null) {
             this.childrenDocTypes = KEWServiceLocator.getDocumentTypeService().getChildDocumentTypes(getDocumentTypeId());
         }
@@ -699,26 +697,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             return getParentDocType().getDocumentTypeSecurity();
         }
         return this.documentTypeSecurity;
-    }
-
-
-    public List getRouteLevels() {
-        if (routeLevels.isEmpty() && getParentDocType() != null) {
-            return getParentRouteLevels(getParentDocType());
-        }
-        return routeLevels;
-    }
-
-    private List getParentRouteLevels(DocumentType parent) {
-        if (parent.getRouteLevels() == null) {
-            return getParentRouteLevels(parent.getParentDocType());
-        } else {
-            return parent.getRouteLevels();
-        }
-    }
-
-    public void setRouteLevels(List routeLevels) {
-        this.routeLevels = routeLevels;
     }
 
     public String getActionsUrl() {

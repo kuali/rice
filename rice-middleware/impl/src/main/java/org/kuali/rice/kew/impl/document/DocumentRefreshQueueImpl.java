@@ -88,7 +88,7 @@ public class DocumentRefreshQueueImpl implements DocumentRefreshQueue {
             }
         }
         for (ActionRequestValue requestToDelete : requestsToDelete) {
-            getActionRequestService().deleteActionRequestGraph(requestToDelete);
+            getActionRequestService().deleteActionRequestGraphNoOutbox(requestToDelete);
         }
         try {
             OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD);

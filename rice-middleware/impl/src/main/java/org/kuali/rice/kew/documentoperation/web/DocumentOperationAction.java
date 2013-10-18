@@ -242,7 +242,7 @@ public class DocumentOperationAction extends KewKualiAction {
 
 			}
 			if (KewApiConstants.DELETE.equals(opValue)) {
-			    getActionRequestService().deleteActionRequestGraph(actionRequest);
+			    getActionRequestService().deleteActionRequestGraphNoOutbox(actionRequest);
 			    change = true;
 			}
 		}

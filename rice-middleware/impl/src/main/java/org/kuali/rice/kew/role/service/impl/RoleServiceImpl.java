@@ -35,7 +35,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -55,11 +54,10 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving role asynchronously for "+infoString);
-    	Set documentIds = new HashSet();
+    	Set<String> documentIds = new HashSet<String>();
     	findAffectedDocuments(documentType, roleName, null, documentIds);
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
-    	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
-    		String documentId = (String) iterator.next();
+        for (String documentId : documentIds) {
             String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
             RolePokerQueue rolePokerQueue = KewApiServiceLocator.getRolePokerQueue(documentId, applicationId);
     		rolePokerQueue.reResolveRole(documentId, roleName);
@@ -74,11 +72,10 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving qualified role asynchronously for "+infoString);
-    	Set documentIds = new HashSet();
+    	Set<String> documentIds = new HashSet<String>();
     	findAffectedDocuments(documentType, roleName, qualifiedRoleNameLabel, documentIds);
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
-    	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
-    		String documentId = (String) iterator.next();
+        for (String documentId : documentIds) {
             String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
             RolePokerQueue rolePokerQueue = KewApiServiceLocator.getRolePokerQueue(documentId, applicationId);
     		rolePokerQueue.reResolveQualifiedRole(documentId, roleName, qualifiedRoleNameLabel);
@@ -97,21 +94,19 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("Cannot pass null arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving qualified role synchronously for "+infoString);
-        List nodeInstances = findNodeInstances(routeHeader, roleName);
+        List<RouteNodeInstance> nodeInstances = findNodeInstances(routeHeader, roleName);
         int requestsGenerated = 0;
         if (!nodeInstances.isEmpty()) {
             deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, qualifiedRoleNameLabel);
-            for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
-                RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
+            for (RouteNodeInstance nodeInstance : nodeInstances) {
                 RuleTemplateBo ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
                 FlexRM flexRM = new FlexRM();
         		RouteContext context = RouteContext.getCurrentRouteContext();
         		context.setDocument(routeHeader);
         		context.setNodeInstance(nodeInstance);
         		try {
-        			List actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
-        			for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-        				ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        			List<ActionRequestValue> actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
+                    for (ActionRequestValue actionRequest : actionRequests) {
         				if (roleName.equals(actionRequest.getRoleName()) && qualifiedRoleNameLabel.equals(actionRequest.getQualifiedRoleNameLabel())) {
         					actionRequest = KEWServiceLocator.getActionRequestService().initializeActionRequestGraph(actionRequest, routeHeader, nodeInstance);
         					KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
@@ -135,21 +130,19 @@ public class RoleServiceImpl implements RoleService {
             throw new RiceIllegalArgumentException("Cannot pass null arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving role synchronously for "+infoString);
-        List nodeInstances = findNodeInstances(routeHeader, roleName);
+        List<RouteNodeInstance> nodeInstances = findNodeInstances(routeHeader, roleName);
         int requestsGenerated = 0;
         if (!nodeInstances.isEmpty()) {
             deletePendingRoleRequests(routeHeader.getDocumentId(), roleName, null);
-            for (Iterator nodeIt = nodeInstances.iterator(); nodeIt.hasNext();) {
-                RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeIt.next();
+            for (RouteNodeInstance nodeInstance : nodeInstances) {
                 RuleTemplateBo ruleTemplate = nodeInstance.getRouteNode().getRuleTemplate();
                 FlexRM flexRM = new FlexRM();
         		RouteContext context = RouteContext.getCurrentRouteContext();
         		context.setDocument(routeHeader);
         		context.setNodeInstance(nodeInstance);
         		try {
-        			List actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
-        			for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-        				ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        			List<ActionRequestValue> actionRequests = flexRM.getActionRequests(routeHeader, nodeInstance, ruleTemplate.getName());
+                    for (ActionRequestValue actionRequest : actionRequests) {
         				if (roleName.equals(actionRequest.getRoleName())) {
         					actionRequest = KEWServiceLocator.getActionRequestService().initializeActionRequestGraph(actionRequest, routeHeader, nodeInstance);
         					KEWServiceLocator.getActionRequestService().saveActionRequest(actionRequest);
@@ -166,46 +159,42 @@ public class RoleServiceImpl implements RoleService {
     }
 
     // search the document type and all its children
-    private void findAffectedDocuments(DocumentType documentType, String roleName, String qualifiedRoleNameLabel, Set documentIds) {
-    	List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(documentType.getDocumentTypeId());
-    	for (Iterator iterator = pendingRequests.iterator(); iterator.hasNext();) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+    private void findAffectedDocuments(DocumentType documentType, String roleName, String qualifiedRoleNameLabel, Set<String> documentIds) {
+    	List<ActionRequestValue> pendingRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocumentType(documentType.getDocumentTypeId());
+        for (ActionRequestValue actionRequest : pendingRequests) {
 			if (roleName.equals(actionRequest.getRoleName()) &&
 					(qualifiedRoleNameLabel == null || qualifiedRoleNameLabel.equals(actionRequest.getQualifiedRoleNameLabel()))) {
 				documentIds.add(actionRequest.getDocumentId());
 			}
 		}
-    	for (Iterator iterator = documentType.getChildrenDocTypes().iterator(); iterator.hasNext();) {
-			DocumentType childDocumentType = (DocumentType) iterator.next();
+        for (DocumentType childDocumentType : documentType.getChildrenDocTypes()) {
 			findAffectedDocuments(childDocumentType, roleName, qualifiedRoleNameLabel, documentIds);
 		}
     }
 
     private void deletePendingRoleRequests(String documentId, String roleName, String qualifiedRoleNameLabel) {
-        List pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
+        List<ActionRequestValue> pendingRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(documentId);
         pendingRequests = KEWServiceLocator.getActionRequestService().getRootRequests(pendingRequests);
-        List requestsToDelete = new ArrayList();
-        for (Iterator iterator = pendingRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        List<ActionRequestValue> requestsToDelete = new ArrayList<ActionRequestValue>();
+        for (ActionRequestValue actionRequest : pendingRequests) {
             if (roleName.equals(actionRequest.getRoleName()) &&
             		(qualifiedRoleNameLabel == null || qualifiedRoleNameLabel.equals(actionRequest.getQualifiedRoleNameLabel()))) {
                 requestsToDelete.add(actionRequest);
             }
         }
         LOG.debug("Deleting "+requestsToDelete.size()+" action requests for roleName="+roleName+", qualifiedRoleNameLabel="+qualifiedRoleNameLabel);
-        for (Iterator iterator = requestsToDelete.iterator(); iterator.hasNext();) {
-            KEWServiceLocator.getActionRequestService().deleteActionRequestGraph((ActionRequestValue)iterator.next());
+        for (ActionRequestValue actionRequest : requestsToDelete) {
+            KEWServiceLocator.getActionRequestService().deleteActionRequestGraphNoOutbox(actionRequest);
         }
     }
 
-    private List findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) {
-        List nodeInstances = new ArrayList();
-        Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getDocumentId());
+    private List<RouteNodeInstance> findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) {
+        List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
+        Collection<RouteNodeInstance> activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getDocumentId());
         if (CollectionUtils.isEmpty(activeNodeInstances)) {
             throw new IllegalStateException("Document does not currently have any active nodes so re-resolving is not legal.");
         }
-        for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance activeNodeInstance : activeNodeInstances) {
             RuleTemplateBo template = activeNodeInstance.getRouteNode().getRuleTemplate();
             if (templateHasRole(template, roleName)) {
                 nodeInstances.add(activeNodeInstance);

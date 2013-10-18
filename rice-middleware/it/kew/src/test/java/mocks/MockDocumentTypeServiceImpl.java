@@ -15,139 +15,102 @@
  */
 package mocks;
 
+import org.jdom.Element;
+import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Element;
-import org.kuali.rice.core.api.impex.ExportDataSet;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
-
 
 public class MockDocumentTypeServiceImpl implements DocumentTypeService {
 
-    public DocumentType setDocumentTypeVersion(DocumentType documentType, boolean currentInd) {
-        return null;
-    }
-    public DocumentType getMostRecentDocType(String docTypeName) {
-        return null;
-    }
-    public boolean isLockedForRouting(DocumentType documentType) {
-        return false;
-    }
     private Map<String, DocumentType> documentsById = new HashMap<String, DocumentType>();
     private Map<String, DocumentType> documentsByName = new HashMap<String, DocumentType>();
-    private Map<String, PostProcessor> postProcessors = new HashMap<String, PostProcessor>();
 
-    public void makeCurrent(List documentTypes) {
-        throw new UnsupportedOperationException("not yet implmeneted");
-    }
-
-    public void addDocumentType(DocumentType documentType, PostProcessor postProcessor) {
-        documentsById.put(documentType.getDocumentTypeId(), documentType);
-        documentsByName.put(documentType.getName(), documentType);
-        postProcessors.put(documentType.getDocumentTypeId(), postProcessor);
-    }
-
+    @Override
     public DocumentType findByDocumentId(String documentId) {
 		throw new UnsupportedOperationException("not yet implemented");
 	}
 
-    public Integer getMaxVersionNumber(String name){
-        return new Integer(0);
-    }
+    @Override
     public DocumentType findById(String documentTypeId) {
-        return (DocumentType) documentsById.get(documentTypeId);
+        return documentsById.get(documentTypeId);
     }
 
+    @Override
     public DocumentType findByName(String name) {
-        return (DocumentType) documentsByName.get(name);
+        return documentsByName.get(name);
     }
 
+    @Override
     public DocumentType findByNameCaseInsensitive(String name) {
-        return (DocumentType) documentsByName.get(name);
+        return documentsByName.get(name);
     }
 
+    @Override
     public DocumentType versionAndSave(DocumentType documentType) {
-        addDocumentType(documentType, new MockPostProcessor(true));
+        addDocumentType(documentType);
         return documentType;
     }
 
-    public PostProcessor getPostProcessor(String documentTypeId) {
-        return (PostProcessor) postProcessors.get(documentTypeId);
-    }
-
-    public Collection findRouteLevels(String documentTypeId) {
-        return (Collection) ((DocumentType)documentsById.get(documentTypeId)).getRouteLevels();
-    }
-
-    public Collection find(DocumentType documentType, String docGroupName, boolean climbHiearchy) {
+    @Override
+    public Collection<DocumentType> find(DocumentType documentType, String docGroupName, boolean climbHiearchy) {
         throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
     }
 
-    public void delete(DocumentType documentType) {
-        documentsById.remove(documentType.getDocumentTypeId());
-        documentsByName.remove(documentType.getName());
-    }
-
-    public List findByRouteHeaderId (String documentId) {
-        throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
-    }
-    public void makeCurrent(String documentId) {
-        throw new UnsupportedOperationException("not implemented in MockDocumentTypeServiceImpl");
-    }
-
-    public List findAllCurrentRootDocuments() {
+    @Override
+    public List<DocumentType> findAllCurrentRootDocuments() {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.doctype.DocumentTypeService#getRootDocumentType(org.kuali.rice.kew.doctype.DocumentType)
-     */
+    @Override
     public DocumentType findRootDocumentType(DocumentType docType) {
         return null;
     }
+
+    @Override
     public void loadXml(InputStream inputStream, String principalId) {
         throw new UnsupportedOperationException("Mock document type service can't load xml");
     }
+
+    @Override
     public Element export(ExportDataSet dataSet) {
         return null;
     }
+
 	@Override
 	public boolean supportPrettyPrint() {
 		return true;
 	}
-	public List findAllCurrent() {
+
+    @Override
+	public List<DocumentType> findAllCurrent() {
         return null;
     }
-	public List getChildDocumentTypes(String documentTypeId) {
+
+    @Override
+	public List<DocumentType> getChildDocumentTypes(String documentTypeId) {
 		return null;
 	}
-	public DocumentType findByNameIgnoreCache(String documentTypeId) {
-		return null;
-	}
+
+    @Override
 	public DocumentType save(DocumentType documentType) {
        return null;
 	}
-    public void save(DocumentType documentType, boolean flushCache) {
 
-    }
-    public void flushCache() {
-
-    }
-	public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
-
-	}
-	public Integer getDocumentTypeCount() {
-		return null;
-	}
+    @Override
     public List<DocumentType> findPreviousInstances(String documentTypeName) {
         return null;
+    }
+
+    private void addDocumentType(DocumentType documentType) {
+        documentsById.put(documentType.getDocumentTypeId(), documentType);
+        documentsByName.put(documentType.getName(), documentType);
     }
 
 }

@@ -24,7 +24,7 @@ import java.util.List;
 public class TestRouteLevel {
 
     private int priority;
-    private List responsibilities = new ArrayList();
+    private List<TestResponsibility> responsibilities = new ArrayList();
     
     public int getPriority() {
         return priority;
@@ -32,10 +32,10 @@ public class TestRouteLevel {
     public void setPriority(int priority) {
         this.priority = priority;
     }
-    public List getResponsibilities() {
+    public List<TestResponsibility> getResponsibilities() {
         return responsibilities;
     }
-    public void setResponsibilities(List responsibilities) {
+    public void setResponsibilities(List<TestResponsibility> responsibilities) {
         this.responsibilities = responsibilities;
     }
     

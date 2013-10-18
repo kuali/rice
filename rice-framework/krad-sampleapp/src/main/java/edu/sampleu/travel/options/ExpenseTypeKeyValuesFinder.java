@@ -30,50 +30,7 @@ import java.util.List;
  */
 public class ExpenseTypeKeyValuesFinder extends UifKeyValuesFinderBase {
 
-    public enum ExpenseType {
-        A("A", "Airfare"),
-        L("L", "Lodging"),
-        M("M", "Moving Equipment"),
-        O("O", "Other"),
-        R("R", "Automobile Rental"),
-        T("T", "Taxi/Limousine Service"),
-        PA("PA", "Prepaid Airfare"),
-        PC("PC", "Conference Registration"),
-        PL("PL", "Prepaid Lodging"),
-        PM("PM", "Prepaid Moving Rental"),
-        PO("PO", "Prepaid Auto Rental"),
-        PR("PR", "Prepaid Tax/Limo Service"),
-        HB("HB", "Hosted Meal – Breakfast"),
-        HL("HL", "Hosted Meal – Lunch"),
-        HD("HD", "Hosted Meal – Dinner"),
-        MH("MH", "House hunting costs"),
-        MT("MT", "Temporary living"),
-        ML("ML", "Living allowances"),
-        MF("MF", "Final move meals"),
-        MM("MM", "Mileage allowed per mile threshold"),
-        MD("MD", "Domestic storage over 30 days"),
-        MI("MI", "International storage"),
-        ME("ME", "Family Travel Expense"),
-        MO("MO", "Misc. Expense"),
-        EL("EL", "Light refreshments");
-
-        private final String code;
-        private final String label;
-
-        ExpenseType(String code, String label) {
-            this.code = code;
-            this.label = label;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-    }
+    private static final long serialVersionUID = -7508920279764823039L;
 
     @Override
     public List<KeyValue> getKeyValues() {

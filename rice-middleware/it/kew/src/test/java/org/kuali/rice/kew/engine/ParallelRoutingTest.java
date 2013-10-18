@@ -168,7 +168,8 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         assertTrue("Document should be processed.", document.isProcessed());
         nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getDocumentId());
-        
+        assertEquals("The doc is processed so no node instances should be active", 0, nodeInstances.size());
+
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue("Should have request.", document.isAcknowledgeRequested());
         document.acknowledge("");

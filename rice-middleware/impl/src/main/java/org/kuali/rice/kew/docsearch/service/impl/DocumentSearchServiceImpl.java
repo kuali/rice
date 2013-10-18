@@ -548,7 +548,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
 	public List<KeyValue> getNamedSearches(String principalId) {
-		List<UserOptions> namedSearches = userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%");
+		List<UserOptions> namedSearches = new ArrayList<UserOptions>(userOptionsService.findByUserQualified(principalId, NAMED_SEARCH_ORDER_BASE + "%"));
 		List<KeyValue> sortedNamedSearches = new ArrayList<KeyValue>(0);
 		if (!namedSearches.isEmpty()) {
 			Collections.sort(namedSearches);

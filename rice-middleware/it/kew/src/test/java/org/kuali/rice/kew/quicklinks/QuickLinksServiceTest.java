@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class QuickLinksServiceTest extends KEWTestCase {
     private static String principalId = "admin";
     private static String badPrincipalId = "joeshmoe";
@@ -52,7 +52,7 @@ public class QuickLinksServiceTest extends KEWTestCase {
 
     @Override
     protected void setUpAfterDataLoad() throws Exception {
-        service = (QuickLinksService) KEWServiceLocator.getService(KEWServiceLocator.QUICK_LINKS_SERVICE);
+        service = KEWServiceLocator.getService(KEWServiceLocator.QUICK_LINKS_SERVICE);
     }
 
     @Test

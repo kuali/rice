@@ -24,7 +24,10 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.krad.bo.Attachment;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
@@ -37,16 +40,22 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -274,6 +283,79 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         modelAndView = getUIFModelAndView(form);
 
         return modelAndView;
+    }
+
+    /**
+     * Downloads the attachment to the user's browser
+     *
+     * @param uifForm
+     * @param result
+     * @param request
+     * @param response
+     * @return ModelView
+     * @throws Exception
+     */
+    @Override
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=downloadBOAttachment")
+    public ModelAndView downloadBOAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request,
+            HttpServletResponse response) throws ServletRequestBindingException, FileNotFoundException, IOException {
+
+        //first check if attachment connected to note
+        String noteIdentifierParameter = request.getParameter(KRADConstants.NOTE_IDENTIFIER);
+        if (noteIdentifierParameter != null) {
+            Long noteIdentifier = Long.valueOf(noteIdentifierParameter);
+            Note note = this.getNoteService().getNoteByNoteId(noteIdentifier);
+            if (note != null) {
+                Attachment attachment = note.getAttachment();
+                if (attachment != null) {
+
+                    //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
+                    attachment.setNote(note);
+
+                    // Add attachment to response
+                    KRADUtils.addAttachmentToResponse(response, getAttachmentService().retrieveAttachmentContents(
+                            attachment), attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentFileName(),
+                            attachment.getAttachmentFileSize());
+
+                    return null;
+                }
+            }
+        }
+
+        MaintenanceDocumentForm form = (MaintenanceDocumentForm) uifForm;
+        MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
+        Object dataObject = document.getDocumentDataObject();
+
+        if (dataObject instanceof PersistableAttachment) {
+            PersistableAttachment attachment = (PersistableAttachment) dataObject;
+            byte[] attachmentContent = attachment.getAttachmentContent();
+            if (attachmentContent != null) {
+
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(attachmentContent);
+                KRADUtils.addAttachmentToResponse(response, inputStream, attachment.getContentType(),
+                        attachment.getFileName(), attachmentContent.length);
+                return null;
+            }
+        } else if (dataObject instanceof PersistableAttachmentList) {
+            PersistableAttachmentList<PersistableAttachment> attachmentList =
+                    (PersistableAttachmentList<PersistableAttachment>) dataObject;
+            PersistableAttachmentList<PersistableAttachment> attachmentListBo =
+                    (PersistableAttachmentList<PersistableAttachment>) document.getNewMaintainableObject()
+                            .getDataObject();
+            PersistableAttachment attachment = (PersistableAttachment) attachmentListBo.getAttachments().get(
+                    Integer.parseInt(form.getActionParamaterValue("selectedLineIndex")));
+            byte[] attachmentContent = attachment.getAttachmentContent();
+            if (attachmentContent != null) {
+
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(attachmentContent);
+                KRADUtils.addAttachmentToResponse(response, inputStream, attachment.getContentType(),
+                        attachment.getFileName(), attachmentContent.length);
+                return null;
+            }
+        }
+
+        return null;
     }
 
     protected MaintenanceDocumentService getMaintenanceDocumentService() {

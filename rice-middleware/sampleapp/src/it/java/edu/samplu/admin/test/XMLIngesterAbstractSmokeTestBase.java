@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
+import edu.samplu.common.FreemarkerSTBase;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.selenium.Failable;
-import edu.samplu.common.FreemarkerSTBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public abstract class XMLIngesterAbstractSmokeTestBase extends FreemarkerSTBase 
      * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
-            + ITUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
+            + WebDriverUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
 
     // File generation
     private String PROPS_LOCATION = System.getProperty("xmlingester.props.location", null);

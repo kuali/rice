@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,11 +26,11 @@ public abstract class LocationCountryAbstractSmokeTestBase extends AdminTmplMthd
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Country&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.location.impl.country.CountryBo&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.location.impl.country.CountryBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Country&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.location.impl.country.CountryBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
@@ -45,7 +46,7 @@ public abstract class LocationCountryAbstractSmokeTestBase extends AdminTmplMthd
    
     public void testLocationCountryBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
-        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }

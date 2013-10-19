@@ -16,10 +16,9 @@
 package edu.samplu;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
-
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 public class LoginLogoutMultipleSmokeTest extends SmokeTestBase {
 

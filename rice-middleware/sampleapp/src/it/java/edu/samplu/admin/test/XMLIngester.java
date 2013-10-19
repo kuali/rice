@@ -15,8 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
-
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -28,6 +26,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.kuali.rice.testtools.selenium.ITUtil;
 import org.openqa.selenium.By;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 

@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,9 +25,10 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public abstract class AddingNameSpacesAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
+     * ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+WebDriverUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ITUtil.getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ITUtil.PORTAL_URL+"&hideReturnLink=true";
 
     /**
      * {@inheritDoc}

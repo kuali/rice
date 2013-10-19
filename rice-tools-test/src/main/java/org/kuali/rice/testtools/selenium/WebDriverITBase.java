@@ -75,7 +75,7 @@ public abstract class WebDriverITBase implements Failable {
      */
     @Before
     public void setUp() throws Exception {
-        driver = WebDriverUtil.setUp(getUserName(), ITUtil.getBaseUrlString() + "/" + getTestUrl());
+        driver = WebDriverUtil.setUp(getUserName(), WebDriverUtil.getBaseUrlString() + "/" + getTestUrl());
         WebDriverUtil.loginKradOrKns(driver, getUserName(), new Failable() {
             @Override
             public void fail(String message) {
@@ -91,7 +91,7 @@ public abstract class WebDriverITBase implements Failable {
      */
     @After
     public void tearDown() throws Exception {
-        if (ITUtil.dontTearDownPropertyNotSet()) {
+        if (WebDriverUtil.dontTearDownPropertyNotSet()) {
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }
     }

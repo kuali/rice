@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,11 +25,11 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public abstract class ClearAllCashesAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ITUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+WebDriverUtil.getBaseUrlString()+
      * "/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start"+    
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ITUtil.getBaseUrlString()+
-            "/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start";
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start";
          
     /**
      * {@inheritDoc}

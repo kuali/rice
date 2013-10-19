@@ -15,15 +15,14 @@
  */
 package edu.samplu.travel.krad.test;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 
 /**
@@ -28,8 +29,8 @@ import org.openqa.selenium.By;
  */
 public class IdentityPersonRole extends WebDriverLegacyITBase{
 
-    public static final String EDIT_URL = ITUtil.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + ITUtil.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + ITUtil.getBaseUrlString() +
+    public static final String EDIT_URL = WebDriverUtil.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + ITUtil.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
+    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
     private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "176"));

@@ -16,8 +16,8 @@
 package edu.samplu.krad.configview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.openqa.selenium.By;
 
 /**

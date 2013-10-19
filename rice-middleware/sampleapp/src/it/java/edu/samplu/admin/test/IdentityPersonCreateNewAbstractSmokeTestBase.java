@@ -15,9 +15,10 @@
  */
 package edu.samplu.admin.test;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
-import org.apache.commons.lang.RandomStringUtils;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -26,12 +27,12 @@ public abstract class IdentityPersonCreateNewAbstractSmokeTestBase extends Admin
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */    
 //    http://env2.rice.kuali.org/portal.do?channelTitle=Person&channelUrl=http://env2.rice.kuali.org/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=http://env2.rice.kuali.org/portal.do&hideReturnLink=true
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" 
-            + ITUtil.getBaseUrlString() + "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation="+
+            + WebDriverUtil.getBaseUrlString() + "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation="+
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
     /**

@@ -39,16 +39,6 @@ import java.util.Calendar;
 public class ITUtil {
 
     /**
-     * http://localhost:8080/kr-dev
-     */
-    public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
-
-    /**
-     * http://localhost:8080/krad-dev
-     */
-    public static final String DEFAULT_BASE_URL_KRAD = "http://localhost:8080/krad-dev";
-
-    /**
      * //div[@class='error']"
      */
     public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
@@ -57,11 +47,6 @@ public class ITUtil {
      * //div[@class='msg-excol']
      */
     public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
-
-    /**
-     * remote.driver.dontTearDown
-     */
-    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
 
     /**
      * Calendar.getInstance().getTimeInMillis() + ""
@@ -85,21 +70,6 @@ public class ITUtil {
     public static final String HIDE_RETURN_LINK_FALSE =  "&hideReturnLink=false";
 
     /**
-     * remote.public.hub
-     */
-    public static final String HUB_PROPERTY = "remote.public.hub";
-
-    /**
-     * remote.public.driver
-     */
-    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
-
-    /**
-     * http://localhost:4444/wd/hub
-     */
-    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
-
-    /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=
      */
     public static final String KRAD_LOOKUP_METHOD =  "/kr-krad/lookup?methodToCall=start&dataObjectClassName=";
@@ -117,7 +87,7 @@ public class ITUtil {
     /**
      * /kr-krad/kradsampleapp?viewId=KradSampleAppHome
      */
-    public static final String KRAD_PORTAL_URL = ITUtil.getBaseUrlString() + KRAD_PORTAL;
+    public static final String KRAD_PORTAL_URL = WebDriverUtil.getBaseUrlString() + KRAD_PORTAL;
 
     /**
      * /kr-krad/labs?viewId=LabsMenuView
@@ -125,9 +95,9 @@ public class ITUtil {
     public static final  String LABS = "/kr-krad/labs?viewId=LabsMenuView";
 
     /**
-     * ITUtil.getBaseUrlString() + LABS
+     * WebDriverUtil.getBaseUrlString() + LABS
      */
-    public static final String LABS_URL = ITUtil.getBaseUrlString() + LABS;
+    public static final String LABS_URL = WebDriverUtil.getBaseUrlString() + LABS;
 
     /**
      * /portal.do
@@ -135,9 +105,9 @@ public class ITUtil {
     public static final String PORTAL = "/portal.do";
 
     /**
-     * ITUtil.getBaseUrlString() + ITUtil.PORTAL
+     * WebDriverUtil.getBaseUrlString() + ITUtil.PORTAL
      */
-    public static final String PORTAL_URL =  ITUtil.getBaseUrlString() + ITUtil.PORTAL;
+    public static final String PORTAL_URL =  WebDriverUtil.getBaseUrlString() + ITUtil.PORTAL;
 
     /**
      * URLEncoder.encode(PORTAL_URL)
@@ -148,16 +118,6 @@ public class ITUtil {
      *  &showMaintenanceLinks=true
      */
     public static final String SHOW_MAINTENANCE_LINKS =  "&showMaintenanceLinks=true";
-
-    /**
-     * remote.public.url
-     */
-    public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
-
-    /**
-     * remote.autologin
-     */
-    public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
 
     /**
      * KRAD
@@ -257,21 +217,6 @@ public class ITUtil {
         return contents;
     }
 
-    /**
-     * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.
-     * 
-     * Valuable when debugging, updating, or creating new tests.  When implementing your own tearDown method rather than an
-     * inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it
-     * easy debug or update your test.
-     * {@code }
-     * @return true if the dontTearDownProperty is not set.
-     */
-    public static boolean dontTearDownPropertyNotSet() {
-        return System.getProperty(DONT_TEAR_DOWN_PROPERTY) == null ||
-                "f".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase()) ||
-                "n".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase());
-    }
-
     private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
@@ -362,20 +307,6 @@ public class ITUtil {
         failable.fail(kimIncidentReport);
     }
 
-    /**
-     * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
-     * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
-     * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
-     */
-    public static String getBaseUrlString() {
-        String baseUrl = System.getProperty(REMOTE_PUBLIC_URL_PROPERTY);
-        if (baseUrl == null) {
-            baseUrl = DEFAULT_BASE_URL;
-        }
-        baseUrl = prettyHttp(baseUrl);
-        return baseUrl;
-    }
-
     public static String getHTML(String urlToRead) {
         URL url;
         HttpURLConnection conn;
@@ -399,23 +330,6 @@ public class ITUtil {
         return result;
     }
 
-    /**
-     * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
-     * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
-     * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
-     */
-    public static String getHubUrlString() {
-        String hubUrl = System.getProperty(HUB_PROPERTY);
-        if (hubUrl == null) {
-            hubUrl = HUB_URL_PROPERTY;
-        }
-        hubUrl = prettyHttp(hubUrl);
-        if (!hubUrl.endsWith("/wd/hub")) {
-            hubUrl = hubUrl + "/wd/hub";
-        }
-        return hubUrl;
-    }
-
     private static boolean incidentReported(String contents) {
         return contents != null &&
                 contents.contains("Incident Report") &&
@@ -426,7 +340,8 @@ public class ITUtil {
     }
 
     /**
-     * Append http:// if not present.  Remove trailing /
+     * Append http:// if not present, remove trailing /.
+     *
      * @param baseUrl
      * @return
      */

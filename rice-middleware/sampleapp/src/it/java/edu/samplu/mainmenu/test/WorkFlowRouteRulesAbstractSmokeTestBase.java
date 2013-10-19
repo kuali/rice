@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,11 +25,11 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public class WorkFlowRouteRulesAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + ITUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + WebDriverUtil.getBaseUrlString() +
      * "/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + "&showMaintenanceLinks=true";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + ITUtil.getBaseUrlString() +
+    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + WebDriverUtil.getBaseUrlString() +
             "/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + "&showMaintenanceLinks=true";
     /**
@@ -43,7 +44,7 @@ public class WorkFlowRouteRulesAbstractSmokeTestBase extends MainTmplMthdSTNavBa
 
     public void testWorkFlowRouteRulesBookmark(Failable failable) throws Exception {
         testWorkFlowRouteRulesCreateNew();
-        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testWorkFlowRouteRulesEditRouteRules();
         passed();
     }

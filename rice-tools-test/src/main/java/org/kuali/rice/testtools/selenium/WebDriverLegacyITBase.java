@@ -208,11 +208,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String DOC_SUBMIT_SUCCESS_MSG_XPATH ="//div[contains(div,'Document was successfully submitted.')]";
 
     /**
-     * Set -Dremote.driver.dontTearDownOnFailure=
-     */
-    public static final String DONT_TEAR_DOWN_ON_FAILURE_PROPERTY = "remote.driver.dontTearDownOnFailure";
-
-    /**
      * edit
      */
     public static final String EDIT_LINK_TEXT = "edit";
@@ -408,7 +403,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * If WebDriverUtil.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
-     * {@link edu.samplu.common.WebDriverUtil#chromeDriverCreateCheck()}
+     * {@link org.kuali.rice.testtools.selenium.WebDriverUtil#chromeDriverCreateCheck()}
      * @throws Exception
      */
     @BeforeClass
@@ -493,7 +488,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * Tear down test as configured.  Do not allow exceptions to be thrown by tearDown, it kills the test run.
      * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
      * {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY}
-     * {@link edu.samplu.common.ITUtil#dontTearDownPropertyNotSet()}
+     * {@link org.kuali.rice.testtools.selenium.WebDriverUtil#dontTearDownPropertyNotSet()}
      * @throws Exception
      */
     @After
@@ -522,7 +517,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     private void closeAndQuitWebDriver() {
         if (driver != null) {
-            if (ITUtil.dontTearDownPropertyNotSet() && dontTearDownOnFailure()) {
+            if (WebDriverUtil.dontTearDownPropertyNotSet() && WebDriverUtil.dontTearDownOnFailure(passed)) {
                 try {
                     driver.close();
                 } catch (NoSuchWindowException nswe) {
@@ -537,13 +532,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
                     " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
         }
-    }
-
-    private boolean dontTearDownOnFailure() {
-        if (!"n".equalsIgnoreCase(System.getProperty(DONT_TEAR_DOWN_ON_FAILURE_PROPERTY, "n"))) {
-            return passed;
-        }
-        return true;
     }
 
     /**
@@ -1204,7 +1192,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
 
     protected String getBaseUrlString() {
-        return ITUtil.getBaseUrlString();
+        return WebDriverUtil.getBaseUrlString();
     }
 
     protected int getCssCount(String selector) {

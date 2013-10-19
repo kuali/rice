@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,13 +26,13 @@ public class TermSpecificationLookUpAbstractSmokeTestBase extends MainTmplMthdST
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Term%20Specification%20Lookup&channelUrl="
-     *   + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     *   + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      *   + "org.kuali.rice.krms.impl.repository.TermSpecificationBo"
      *   + ITUtil.SHOW_MAINTENANCE_LINKS
      *   + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Term%20Specification%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.krms.impl.repository.TermSpecificationBo"
             + ITUtil.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;

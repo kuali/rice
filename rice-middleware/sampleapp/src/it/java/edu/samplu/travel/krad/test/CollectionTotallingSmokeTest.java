@@ -16,8 +16,8 @@
 package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
 
 /**
  * Tests the Component section in Rice.

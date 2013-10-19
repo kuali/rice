@@ -16,11 +16,11 @@
 
 package edu.samplu.admin.test;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

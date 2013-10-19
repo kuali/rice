@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,11 +28,11 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Parameter%20Type&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Parameter%20Type&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
@@ -57,7 +58,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         params=testCreateNewParameterType(docId, parameterType,parameterCode);
         
         //Lookup
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpParameterType(params.get(0), params.get(1),params.get(2));
         
@@ -65,7 +66,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         params=testEditParameterType(params.get(0), params.get(1),params.get(2));
 
         //Verify if its edited
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpParameterType(params.get(0), params.get(1),params.get(2));
 
@@ -73,7 +74,7 @@ public abstract class ParameterTypeAbstractSmokeTestBase extends AdminTmplMthdST
         params=testCopyParameterType(params.get(0), params.get(1),params.get(2));
 
         //Verify if its copied
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         testVerifyCopyParameterType(params.get(0), params.get(1),params.get(2));
         passed();

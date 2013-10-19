@@ -45,7 +45,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from WebDriverLegacyITBase for reuse
- * without having to extend WebDriverLegacyITBase.  For the first example see waitFor
+ * without having to extend WebDriverLegacyITBase.
+ *
+ * For the first example see waitFor
  *
  * @see WebDriverLegacyITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -55,6 +57,41 @@ public class WebDriverUtil {
     public static boolean jGrowlEnabled = false;
 
     public static boolean jsHighlightEnabled = false;
+
+    /**
+     * http://localhost:8080/kr-dev
+     */
+    public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
+
+    /**
+     * http://localhost:8080/krad-dev
+     */
+    public static final String DEFAULT_BASE_URL_KRAD = "http://localhost:8080/krad-dev";
+
+    /**
+     * remote.driver.dontTearDown
+     */
+    public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
+
+    /**
+     * Set -Dremote.driver.dontTearDownOnFailure=
+     */
+    public static final String DONT_TEAR_DOWN_ON_FAILURE_PROPERTY = "remote.driver.dontTearDownOnFailure";
+
+    /**
+     * remote.public.driver
+     */
+    public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
+
+    /**
+     * -Dremote.public.hub=
+     */
+    public static final String HUB_PROPERTY = "remote.public.hub";
+
+    /**
+     * http://localhost:4444/wd/hub
+     */
+    public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
 
     /**
      * TODO parametrize for JVM Arg
@@ -76,12 +113,12 @@ public class WebDriverUtil {
     public static final boolean JGROWL_ERROR_FAILURE = false;
 
     /**
-     * green
+     * green (#66FF33)
      */
     public static final String JS_HIGHLIGHT_BACKGROUND = "#66FF33";
 
     /**
-     * green
+     * green (#66FF33)
      */
     public static final String JS_HIGHLIGHT_BOARDER = "#66FF33";
 
@@ -91,24 +128,39 @@ public class WebDriverUtil {
     public static final int JS_HIGHLIGHT_MS = 400;
 
     /**
+     * {@see JS_HIGHLIGHT_MS} as default.
+     *
      * -Dremote.driver.highlight.ms=
      */
     public static final String JS_HIGHLIGHT_MS_PROPERTY = "remote.driver.highlight.ms";
 
     /**
-     * -Dremote.driver.highlight=true to enable highlighting of elements as selenium runs
+     * Highlighting of elements as selenium runs.
+     *
+     * -Dremote.driver.highlight=true
      */
     public static final String JS_HIGHLIGHT_PROPERTY = "remote.driver.highlight";
 
     /**
+     * TODO: playback for javascript highlighting.
+     *
      * -Dremote.driver.highlight.input=
      */
     public static final String JS_HIGHLIGHT_INPUT_PROPERTY = "remote.driver.highlight.input";
 
     /**
-     * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME
+     * Local proxy used for running tests thru jmeter.
+     *
+     * Include host name and port number. Example: localhost:7777
+     *
+     * -Dremote.public.proxy=
      */
-    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
+    public static final String PROXY_HOST_PROPERTY = "remote.public.proxy";
+
+    /**
+     * -Dremote.autologin
+     */
+    public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
 
     /**
      * Set -Dremote.jgrowl.enabled=
@@ -126,23 +178,30 @@ public class WebDriverUtil {
     public static final String REMOTE_PUBLIC_CHROME = "remote.public.chrome";
 
     /**
-     * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC
+     * -Dremote.public.url=
+     */
+    public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
+
+    /**
+     * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC.
+     *
      * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT}
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
     /**
-     * Time to wait for the URL used in setup to load.  Sometimes this is the first hit on the app and it needs a bit
-     * longer than any other.  120 Seconds.
+     * Time to wait for the URL used in setup to load, 120 seconds by default.
+     *
+     * Sometimes this is the first hit on the app and it needs a bit longer than any other.
+     *
      * TODO parametrize for JVM Arg
      */
     public static final int SETUP_URL_LOAD_WAIT_SECONDS = 120;
 
     /**
-     * local proxy used for running tests thru jmeter.
-     * Include host name and port number. Example: localhost:7777
+     * Selenium's webdriver.chrome.driver parameter, you can set -Dwebdriver.chrome.driver= or Rice's REMOTE_PUBLIC_CHROME.
      */
-    public static final String PROXY_HOST_PROPERTY = "remote.public.proxy";
+    public static final String WEBDRIVER_CHROME_DRIVER = "webdriver.chrome.driver";
 
     /**
      * Setup the WebDriver test, login, and load the given web page
@@ -202,7 +261,7 @@ public class WebDriverUtil {
         // TODO Got into the situation where the first url doesn't expect server, but all others do.  Readdress once
         // the NavIT WDIT conversion has been completed.
         if (!url.startsWith("http")) {
-            url = ITUtil.getBaseUrlString() + url;
+            url = getBaseUrlString() + url;
         }
 
         driver.get(url);
@@ -269,7 +328,7 @@ public class WebDriverUtil {
      * @return chromeDriverService
      */
     public static ChromeDriverService chromeDriverCreateCheck() {
-        String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
+        String driverParam = System.getProperty(HUB_DRIVER_PROPERTY);
         // TODO can the saucelabs driver stuff be leveraged here?
         if (driverParam != null && "chrome".equals(driverParam.toLowerCase())) {
             if (System.getProperty(WEBDRIVER_CHROME_DRIVER) == null) {
@@ -288,6 +347,67 @@ public class WebDriverUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.
+     *
+     * Valuable when debugging, updating, or creating new tests.  When implementing your own tearDown method rather than an
+     * inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it
+     * easy debug or update your test.
+     *
+     * @return true if the dontTearDownProperty is not set.
+     */
+    public static boolean dontTearDownPropertyNotSet() {
+        return System.getProperty(DONT_TEAR_DOWN_PROPERTY) == null ||
+                "f".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase()) ||
+                "n".startsWith(System.getProperty(DONT_TEAR_DOWN_PROPERTY).toLowerCase());
+    }
+
+    /**
+     * Given the boolean parameter and depending on if {@see #DONT_TEAR_DOWN_ON_FAILURE_PROPERTY} is set to something other
+     * than n, don't tear down the browser window on a test failure.
+     *
+     * @param passed
+     * @return
+     */
+    public static boolean dontTearDownOnFailure(boolean passed) {
+        if (!"n".equalsIgnoreCase(System.getProperty(DONT_TEAR_DOWN_ON_FAILURE_PROPERTY, "n"))) {
+            return passed;
+        }
+        return true;
+    }
+
+    /**
+     * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
+     * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
+     * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
+     */
+    public static String getBaseUrlString() {
+        String baseUrl = System.getProperty(REMOTE_PUBLIC_URL_PROPERTY);
+        if (baseUrl == null) {
+            baseUrl = DEFAULT_BASE_URL;
+        }
+        baseUrl = ITUtil.prettyHttp(baseUrl);
+        return baseUrl;
+    }
+
+    /**
+     * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
+     *
+     * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
+     * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
+     */
+    public static String getHubUrlString() {
+        String hubUrl = System.getProperty(HUB_PROPERTY);
+        if (hubUrl == null) {
+            hubUrl = HUB_URL_PROPERTY;
+        }
+        hubUrl = ITUtil.prettyHttp(hubUrl);
+        if (!hubUrl.endsWith("/wd/hub")) {
+            hubUrl = hubUrl + "/wd/hub";
+        }
+        return hubUrl;
     }
 
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message, Throwable t) {
@@ -343,8 +463,8 @@ public class WebDriverUtil {
      * @return WebDriver or null if unable to create
      */
     public static WebDriver getWebDriver() {
-        String driverParam = System.getProperty(ITUtil.HUB_DRIVER_PROPERTY);
-        String hubParam = System.getProperty(ITUtil.HUB_PROPERTY);
+        String driverParam = System.getProperty(HUB_DRIVER_PROPERTY);
+        String hubParam = System.getProperty(HUB_PROPERTY);
         String proxyParam = System.getProperty(PROXY_HOST_PROPERTY);
 
         // setup proxy if specified as VM Arg
@@ -369,12 +489,12 @@ public class WebDriverUtil {
         } else {
             try {
                 if (driverParam == null || "firefox".equalsIgnoreCase(driverParam)) {
-                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.firefox());
+                    return new RemoteWebDriver(new URL(getHubUrlString()), DesiredCapabilities.firefox());
                 } else if ("chrome".equalsIgnoreCase(driverParam)) {
-                    return new RemoteWebDriver(new URL(ITUtil.getHubUrlString()), DesiredCapabilities.chrome());
+                    return new RemoteWebDriver(new URL(getHubUrlString()), DesiredCapabilities.chrome());
                 }
             } catch (MalformedURLException mue) {
-                System.out.println(ITUtil.getHubUrlString() + " " + mue.getMessage());
+                System.out.println(getHubUrlString() + " " + mue.getMessage());
                 mue.printStackTrace();
             }
         }
@@ -421,7 +541,7 @@ public class WebDriverUtil {
     }
 
     public static void loginKradOrKns(WebDriver driver, String user, Failable failable) throws InterruptedException {// login via either KRAD or KNS login page
-        if ("true".equalsIgnoreCase(System.getProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
+        if ("true".equalsIgnoreCase(System.getProperty(REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
             if (isKradLogin()){
                 WebDriverUtil.kradLogin(driver, user, failable);
             } else {

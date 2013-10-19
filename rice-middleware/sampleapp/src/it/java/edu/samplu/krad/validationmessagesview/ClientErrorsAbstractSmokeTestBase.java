@@ -19,6 +19,7 @@ import com.thoughtworks.selenium.SeleneseTestBase;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 
 /**
@@ -34,7 +35,7 @@ public abstract class ClientErrorsAbstractSmokeTestBase extends WebDriverLegacyI
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
 
     protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
     }
 
     /**

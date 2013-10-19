@@ -18,6 +18,7 @@ package edu.samplu.travel.krad.test;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,10 +26,10 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public abstract class TravelAccountTypeLookupAbstractSmokeTestBase extends WebDriverLegacyITBase {
 
     /**
-     * /portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +ITUtil.getBaseUrlString()+ /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
+     * /portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +WebDriverUtil.getBaseUrlString()+ /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
     public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccountType";
 
     /**

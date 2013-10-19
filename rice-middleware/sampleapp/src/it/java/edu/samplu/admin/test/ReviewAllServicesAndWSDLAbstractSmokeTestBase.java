@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,11 +25,11 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public abstract class ReviewAllServicesAndWSDLAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+ITUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+WebDriverUtil.getBaseUrlString()+
      *  "/ksb/ServiceRegistry.do";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+ITUtil.getBaseUrlString()+
-            "/ksb/ServiceRegistry.do";
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/ksb/ServiceRegistry.do";
     
     /**
      * {@inheritDoc}

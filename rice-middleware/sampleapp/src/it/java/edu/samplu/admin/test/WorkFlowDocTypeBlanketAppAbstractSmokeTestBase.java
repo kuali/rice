@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,11 +26,11 @@ public abstract class WorkFlowDocTypeBlanketAppAbstractSmokeTestBase extends Adm
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.DOC_FORM_KEY+ "88888888";
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.DOC_FORM_KEY+ "88888888";
 

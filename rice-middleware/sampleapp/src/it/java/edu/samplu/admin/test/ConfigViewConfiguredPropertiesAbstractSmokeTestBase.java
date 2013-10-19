@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,11 +25,11 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public abstract class ConfigViewConfiguredPropertiesAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ITUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+WebDriverUtil.getBaseUrlString()+
      * "/ksb/ConfigViewer.do"+
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ITUtil.getBaseUrlString()+
-            "/ksb/ConfigViewer.do";
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/ksb/ConfigViewer.do";
             
 
     /**

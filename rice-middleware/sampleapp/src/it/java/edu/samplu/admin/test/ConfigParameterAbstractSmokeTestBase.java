@@ -17,6 +17,7 @@ package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,12 +25,12 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public abstract class ConfigParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+ITUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+WebDriverUtil.getBaseUrlString()+
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+ITUtil.getBaseUrlString()+
-            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="
             +ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
 
     /**
@@ -44,7 +45,7 @@ public abstract class ConfigParameterAbstractSmokeTestBase extends AdminTmplMthd
 
     public void testConfigParameterBookmark(Failable failable) throws Exception {
         testSearchEditCancel();
-        driver.navigate().to(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }

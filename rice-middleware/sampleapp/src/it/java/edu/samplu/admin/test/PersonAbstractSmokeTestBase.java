@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,11 +28,11 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
@@ -57,7 +58,7 @@ public abstract class PersonAbstractSmokeTestBase extends AdminTmplMthdSTNavBase
         
         //LookUp Person
         selectTopFrame();
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpPerson(params.get(0), params.get(1));
 

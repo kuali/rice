@@ -18,6 +18,7 @@ package edu.samplu.travel.krad.test;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -39,7 +40,7 @@ public abstract class ConfigurationTestViewAbstractSmokeTestBase extends WebDriv
 
 
     protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
     }
 
     /**

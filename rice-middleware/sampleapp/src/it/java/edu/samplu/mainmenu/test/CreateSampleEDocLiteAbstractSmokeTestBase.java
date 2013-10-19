@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,12 +25,12 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public class CreateSampleEDocLiteAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=eDoc%20Lite&channelUrl=" + ITUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=eDoc%20Lite&channelUrl=" + WebDriverUtil.getBaseUrlString() +
      *  "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.edl.impl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=" +
      *  ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=eDoc%20Lite&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.edl.impl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=" +
+    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=eDoc%20Lite&channelUrl=" + WebDriverUtil
+            .getBaseUrlString() +"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.edl.impl.bo.EDocLiteAssociation&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}

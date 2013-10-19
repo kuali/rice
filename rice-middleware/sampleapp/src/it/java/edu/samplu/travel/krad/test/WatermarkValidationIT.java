@@ -15,13 +15,12 @@
  */
 package edu.samplu.travel.krad.test;
 
-import static junit.framework.Assert.assertEquals;
-
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
-
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverITBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * tests whether the watermarks is work as expected even when they contain an

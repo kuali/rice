@@ -18,6 +18,7 @@ package edu.samplu.travel.krad.test;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -28,17 +29,17 @@ public abstract class TravelAccountLookupAbstractSmokeTestBase extends WebDriver
 
     /**
      * "/portal.do?channelTitle=Travel%20Account%20Lookup&channelUrl="
-     * + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      * + "edu.sampleu.travel.bo.TravelAccount&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS
      */
     public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccount&returnLocation="
             + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
 
     protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
     }
 
     /**

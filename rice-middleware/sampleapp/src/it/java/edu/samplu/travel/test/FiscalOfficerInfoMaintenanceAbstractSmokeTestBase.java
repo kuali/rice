@@ -18,6 +18,7 @@ package edu.samplu.travel.test;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -29,18 +30,18 @@ public abstract class FiscalOfficerInfoMaintenanceAbstractSmokeTestBase extends 
     /**
      * ITUtil.PORTAL
      * + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
-     * + ITUtil.getBaseUrlString()
+     * + WebDriverUtil.getBaseUrlString()
      * + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL
             + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
-            + ITUtil.getBaseUrlString()
+            + WebDriverUtil.getBaseUrlString()
             + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
             + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
 
     protected void bookmark() {
-        open(ITUtil.getBaseUrlString() + BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
     }
 
     /**

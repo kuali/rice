@@ -15,8 +15,8 @@
  */
 package edu.samplu.admin.test;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.ITUtil;
 
 /**
  * JUnit implementation of XMLIngesterSTJUnitBase that navigates through the UI to the page under test.  In the future

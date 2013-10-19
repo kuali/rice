@@ -15,10 +15,10 @@
  */
 package edu.samplu;
 
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
-import org.junit.Test;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 
@@ -39,13 +39,13 @@ public class LoginInvalidUserSmokeTest extends SmokeTestBase {
 
     @Override
     public void testSetUp()  {
-        System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "false"); // turn off auto login so we can test invalid login
+        System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "false"); // turn off auto login so we can test invalid login
         super.testSetUp();
     }
 
     @Test
     public void testAdStarUserName() throws InterruptedException {
-        System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+        System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
         WebDriverUtil.loginKradOrKns(driver, "ad*", this);
         waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
         passed();
@@ -58,7 +58,7 @@ public class LoginInvalidUserSmokeTest extends SmokeTestBase {
     @Test
     public void testInvalidUserName() throws InterruptedException {
         try {
-            System.setProperty(ITUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+            System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
             WebDriverUtil.loginKradOrKns(driver, ITUtil.DTS_TWO, this);
             fail("Expected Invalid Login exception with user " + ITUtil.DTS_TWO);
         } catch (AssertionError e) {

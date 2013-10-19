@@ -15,16 +15,15 @@
  */
 package edu.samplu.travel.krad.test;
 
+import com.thoughtworks.selenium.SeleneseTestBase;
+import org.junit.Assert;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
-import org.junit.Assert;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import com.thoughtworks.selenium.SeleneseTestBase;
 
 /**
  * Tests the Component section in Rice.
@@ -35,13 +34,13 @@ public abstract class InquiryAbstractSmokeTestBase extends WebDriverLegacyITBase
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-     * + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      * +"edu.sampleu.travel.bo.TravelAccount&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL
             + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccount"
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
 

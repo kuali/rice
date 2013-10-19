@@ -15,12 +15,12 @@
  */
 package edu.samplu.common;
 
-import java.io.File;
-import java.io.InputStream;
-
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

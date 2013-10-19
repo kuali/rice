@@ -15,9 +15,10 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.SmokeTestBase;
-import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -34,12 +35,12 @@ public class ComponentSmokeTest extends SmokeTestBase {
     public static final String FOR_TEST_MESSAGE = " for Component Parameter";
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + ITUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil.getBaseUrlString() +
      "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
      ITUtil.PORTAL_URL + "&hideReturnLink=true";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
+    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil
+            .getBaseUrlString() +"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
 
     @Override

@@ -15,7 +15,6 @@
  */
 package edu.samplu.admin.test;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

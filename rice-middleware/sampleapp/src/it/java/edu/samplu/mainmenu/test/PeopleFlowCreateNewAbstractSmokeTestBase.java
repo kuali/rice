@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,12 +26,12 @@ public class PeopleFlowCreateNewAbstractSmokeTestBase extends MainTmplMthdSTNavB
 
     /**
      * ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
-     *  + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     *  + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      *  + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
      *  + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
     /**

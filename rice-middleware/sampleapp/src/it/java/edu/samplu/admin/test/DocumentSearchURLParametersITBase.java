@@ -90,7 +90,7 @@ public class DocumentSearchURLParametersITBase extends WebDriverITBase {
         
     }
     protected String getDocSearchURL(String params) {
-        return ITUtil.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
+        return WebDriverUtil.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
     }
     
     private WebElement findElementByTagAndName(String tag, String name) {

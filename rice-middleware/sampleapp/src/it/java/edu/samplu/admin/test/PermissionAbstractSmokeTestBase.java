@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,11 +28,11 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Permission&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.impl.permission.UberPermissionBo&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.impl.permission.UberPermissionBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Permission&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kim.impl.permission.UberPermissionBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
@@ -57,7 +58,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
        
         //LookUp Permission
         selectTopFrame();
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpPermission(params.get(0), params.get(1));
 
@@ -66,7 +67,7 @@ public abstract class PermissionAbstractSmokeTestBase extends AdminTmplMthdSTNav
         
         //Verify Permission
         selectTopFrame();
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testVerifyPermission(params.get(0), params.get(1));
         passed();

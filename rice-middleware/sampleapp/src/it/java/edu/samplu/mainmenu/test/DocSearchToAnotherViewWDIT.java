@@ -1,15 +1,10 @@
 package edu.samplu.mainmenu.test;
 
 import junit.framework.Assert;
-
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
-import org.junit.Test;
 import org.openqa.selenium.Alert;
-
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
 
 /**
  * test that after doc search, navigating to people flow maintenance view does not cause Javascript errors

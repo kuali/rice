@@ -15,10 +15,11 @@
  */
 package edu.samplu.admin.test;
 
-import java.util.List;
-
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,11 +28,11 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Parameter&channelUrl=" 
-     * + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Parameter&channelUrl=" 
-            + ITUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
             "org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
 
@@ -56,7 +57,7 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
         params=testCreateNewParameter(docId, parameterName);
        
         //Lookup
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpParameter(params.get(0), params.get(1));
    
@@ -64,7 +65,7 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
         params=testEditParameter(params.get(0), params.get(1));
         
         //Verify if its edited
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testVerifyModifiedParameter(params.get(0), params.get(1));
   
@@ -72,7 +73,7 @@ public abstract class ParameterAbstractSmokeTestBase extends AdminTmplMthdSTNavB
         params=testCopyParameter(params.get(0), params.get(1));
         
         //Verify if its copied
-        open(ITUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         testVerifyModifiedParameter(params.get(0), params.get(1));
         passed();

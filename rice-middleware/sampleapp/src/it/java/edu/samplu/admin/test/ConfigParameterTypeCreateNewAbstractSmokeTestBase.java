@@ -15,9 +15,10 @@
  */
 package edu.samplu.admin.test;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
-import org.apache.commons.lang.RandomStringUtils;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,12 +26,12 @@ import org.apache.commons.lang.RandomStringUtils;
 public abstract class ConfigParameterTypeCreateNewAbstractSmokeTestBase extends AdminTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+ITUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+WebDriverUtil.getBaseUrlString()+
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation="
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+ITUtil.getBaseUrlString()+
-            "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation="+
+    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+ WebDriverUtil
+            .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo&docFormKey=88888888&returnLocation="+
             ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
 
     /**

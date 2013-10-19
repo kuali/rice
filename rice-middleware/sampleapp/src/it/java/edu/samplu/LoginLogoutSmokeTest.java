@@ -15,9 +15,9 @@
  */
 package edu.samplu;
 
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.SmokeTestBase;
-import org.junit.Test;
 
 /**
  * Abstract base class for LoginLogout Smoke Tests.

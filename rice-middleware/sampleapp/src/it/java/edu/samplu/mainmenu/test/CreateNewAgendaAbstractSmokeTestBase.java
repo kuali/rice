@@ -17,6 +17,7 @@ package edu.samplu.mainmenu.test;
 
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -24,12 +25,12 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public class CreateNewAgendaAbstractSmokeTestBase extends MainTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + ITUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + WebDriverUtil.getBaseUrlString() +
      *  "/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=" +
      *  ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + ITUtil.getBaseUrlString() +
-            "/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=" +
+    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + WebDriverUtil
+            .getBaseUrlString() +"/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=" +
             ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}

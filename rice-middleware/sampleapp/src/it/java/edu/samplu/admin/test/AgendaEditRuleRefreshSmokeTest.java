@@ -16,10 +16,10 @@
 
 package edu.samplu.admin.test;
 
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
 import org.junit.Test;
-
 import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * test that repeated ajax refreshes work
@@ -28,7 +28,7 @@ import org.kuali.rice.testtools.selenium.ITUtil;
 public class AgendaEditRuleRefreshSmokeTest extends SmokeTestBase {
 
     public static final String BOOKMARK_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="
-            + ITUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.krms.impl.repository.AgendaBo"
             + ITUtil.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;

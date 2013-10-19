@@ -3021,4 +3021,144 @@
     <title>Transactional Conversion</title>
     <para>&lt;introduction here></para>
   </section>
+  <section>
+    <title>KIM Permission Conversion</title>
+    <para>Currently there is no conversion script to automatically convert or create new KRAD KIM permissions from KNS permissions.
+      This section of the guide documents the KIM structures involved and the KNS / KRAD equivalents.  To illustrate the various KIM entities,
+      examples from the Rice KIM management screens are shown.</para>
+    <para>KRAD uses KIM permissions for checking the ability to view and edit, as well as other functions.
+      In some instances the KRAD permissions are similar to their KNS counterparts.  But there are some differences.</para>
+    <para>KIM permissions are stored in Rice database tables.  They are created either by SQL script or using the Rice KIM maintenance
+      screens.</para>
+    <para>In KRAD a view is viewable by all authenticated users by default. In this case, no KIM permissions need to be defined.
+      In KNS, a default KIM permission of the appropriate type is required, with the derived role USER assigned to it.</para>
+    <section xml:id="IKP0">
+      <title>Inquiry Permissions</title>
+      <para>In KNS, there are three types of KIM permissions related to Inquiries
+        <itemizedlist>
+          <listitem><para>Inquire Into Records - may the user inquire on objects of that type.</para></listitem>
+          <listitem><para>Full Unmask Field - may a security masked field be displayed in the clear.</para></listitem>
+          <listitem><para>Partial Unmask Field - may a security masked field be partially displayed.</para></listitem>
+        </itemizedlist>
+      </para>
+      <section xml:id="IKP30">
+        <title>Inquire Into Records</title>
+        <para>Checks the user's ability to inquiry objects of that type. In KRAD the <emphasis role="keyword">Open View</emphasis> permission
+          is used in place of the KNS <emphasis role="keyword">Inquire Into Records</emphasis> permission.</para>
+        <para>The KRAD Can View permission uses different KIM entities than the KRAD Inquire Into Records permission.
+          <itemizedlist>
+            <listitem><para>KIM Permission</para>
+              <para><emphasis role="bold">KRAD Open View Permission</emphasis>
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KRAD_OpenView_Inquiry.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject>
+                <itemizedlist>
+                  <listitem><para>In KRAD <emphasis role="keyword">Open View</emphasis> permissions are used in place of the KNS
+                    <emphasis role="keyword">Inquire Into Records</emphasis> permissions to limit access to an inquiry view.</para></listitem>
+                  <listitem><para>In KRAD the <emphasis role="keyword">Open View</emphasis> permission has a single Detail attribute: <emphasis role="keyword">viewId</emphasis>.
+                    This is in contrast to the two permission detail attributes <emphasis role="keyword">namespaceCode</emphasis> and <emphasis role="keyword">componentName</emphasis> used by the KNS
+                    <emphasis role="keyword">Inquire Into Records</emphasis> permissions to limit access to an inquiry view.</para></listitem>
+                </itemizedlist>
+              </para>
+            </listitem>
+            <listitem><para>KIM Permission Template: Inquire Into Records</para>
+              <para><emphasis role="bold">KNS Namespace or Component KimType:</emphasis>
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KNS_PermTemplate_InquireIntoRecords.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject>
+              </para><para><emphasis role="bold">KRAD View KimType:</emphasis>
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KRAD_PermTemplate_OpenView.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+              <para>In KRAD the <emphasis role="keyword">Open View</emphasis> permission template is used in place of the
+                KNS <emphasis role="keyword">Inquire Into Records</emphasis> permission template.</para></listitem>
+            <listitem><para>KIM Type: Namespace or Component</para>
+              <para><emphasis role="bold">KNS Inquire Into Records Permission Template:</emphasis>
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KNS_KimType_NamespaceOrComponent.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject>
+              </para>
+              <para><emphasis role="bold">KRAD Open View Permission Template:</emphasis></para><para>
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KRAD_KimType_View.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject></para>
+              <para><itemizedlist>
+                <listitem><para>In KRAD the <emphasis role="keyword">Open View</emphasis> permission template is used in place of the
+                  KNS <emphasis role="keyword">Inquire Into Records</emphasis> permission template.</para></listitem>
+              </itemizedlist></para>
+            </listitem>
+            <listitem><para>KIM Roles - the same roles can be applied to either KNS or KRAD permissions. It is not necessary to create separate KRAD equivalent roles.</para></listitem>
+          </itemizedlist></para>
+        <section>
+          <para><emphasis role="bold">To Restrict an Inquiry to users assigned a supervisor role in KRAD:</emphasis>
+            <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
+          </para>
+          <para><itemizedlist>
+            <listitem><para>Create a new KIM Permission Using the KR-KRAD Open View Template</para>
+              <para><inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_ConvGuide/KRAD_Create_CanOpenPermission.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+                The Open View permission has one Permission Detail attribute: <emphasis role="keyword">viewID</emphasis>. Set the viewId to be the name of the
+                Inquiry View defined for the data object.</para>
+              <para><programlisting linenumbering="numbered">&lt;bean id="AgendaBo-InquiryView" parent="Uif-InquiryView">
+                &lt;property name="headerText" value="Agenda Inquiry"/>
+                &lt;property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+                &lt;property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
+                &lt;property name="additionalScriptFiles"></programlisting></para></listitem>
+            <listitem><para>Assign the newly created permission to the appropriate roles</para>
+              <para>Edit the role(s) allowed to open the view. Add the permission to the role.</para>
+              <para>                <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_ConvGuide/KRAD_AssignInquiryPermissionToRole.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+              </para></listitem>
+          </itemizedlist>
+          </para>
+        </section>
+        <section>
+          <para><emphasis role="bold">To make an inquiry available to all users in KRAD:</emphasis></para>
+          <para><itemizedlist>
+            <listitem><para>Do Nothing!  <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
+            </para></listitem>
+          </itemizedlist>
+          </para>
+        </section>
+      </section>
+      <section>
+        <title>Full Ummask Field</title>
+        <para> TODO </para>
+      </section>
+      <section>
+        <title>Partial Ummask Field</title>
+        <para> TODO </para>
+      </section>
+    </section>
+    <section>
+      <title>Lookup Permissions</title>
+    </section>
+    <section>
+      <title>Maintenance Permissions</title>
+    </section>
+  </section>
 </article>

@@ -35,23 +35,49 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Simple {@link org.openqa.selenium.remote.RemoteWebDriver} test that demonstrates how to run your Selenium tests with <a href="http://saucelabs.com/ondemand">Sauce OnDemand</a>.
+ * Helper class for {@link org.openqa.selenium.remote.RemoteWebDriver} when writing Selenium tests making use of Saucelabs
+ * or <a href="http://saucelabs.com/ondemand">Sauce OnDemand</a>.
  *
- * This test also includes the <a href="">Sauce JUnit</a> helper classes, which will use the Sauce REST API to mark the Sauce Job as passed/failed.
+ * Saucelabs properties need to be set as JVM arguments.  See the SAUCE_ Constants defined below.  Required <b>saucelabs</b>
+ * parameters are: {@see #REMOTE_DRIVER_SAUCELABS_PROPERTY} (master use saucelabs flag), {@see #SAUCE_USER_PROPERTY},
+ * {@see #SAUCE_KEY_PROPERTY}, {@see #SAUCE_VERSION_PROPERTY}.
  *
- * In order to use the {@link SauceOnDemandTestWatcher}, the test must implement the {@link SauceOnDemandSessionIdProvider} interface.
+ * An example:
+ * {@code
+ * -Dremote.public.url=env14.rice.kuali.org -Dremote.driver.saucelabs -Dsaucelabs.user=YOUR-SAUCELABS-USER
+ * -Dsaucelabs.key=YOUR-SAUCELABS-KEY -Dsaucelabs.browser.version=22 -Dsaucelabs.platform=linux -Dsaucelabs.browser=ff
+ * -Dremote.public.user=admin -Drice.version=42222
+ * }
+ *
+ * To make use of SauceLabsWebDriverHelper, call its {@see #setUp} with the Test Class and Test Name and retrieve the configured
+ * WebDriver using {@see #getDriver}. {@code
+ * SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
+ * saucelabs.setUp(className, testName);
+ * driver = saucelabs.getDriver();
+ * }
+ *
+ * Also includes the <a href="">Sauce JUnit</a> helper classes, which will use the Sauce REST API to mark the
+ * Sauce Job as passed/failed.
+ *
+ * In order to use {@link SauceOnDemandTestWatcher} the {@link SauceOnDemandSessionIdProvider} interface is implemented.
  *
  */
 public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider {
 
     /**
-     * Use Saucelabs flag.  For ease of disabling saucelabs without having to remove other saucelabs property settings.
+     * Use Saucelabs flag.
+     *
+     * For ease of disabling saucelabs without having to remove other saucelabs property settings, if not present saucelabs
+     * will not be used.
+     *
      * -Dremote.driver.saucelabs
      */
     public static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
 
     /**
-     * Saucelabs browser, default is Firefox.  See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a>
+     * Saucelabs browser, default is Firefox.
+     *
+     * See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a>
      * ff = Firefox
      * ie = Internet Explorer
      * chrome = Google Chrome
@@ -60,82 +86,112 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * safari = Safari
      * ipad = IPad
      * iphone = IPhone
+     *
      * -Dsaucelabs.browser=
      */
     public static final String SAUCE_BROWSER_PROPERTY = "saucelabs.browser";
 
     /**
-     * Suacelabs build, default is unknown.
+     * Suacelabs build displayed as saucelabs build, default is unknown.
+     *
      * -Drice.version=
      */
     public static final String SAUCE_BUILD_PROPERTY = "rice.version";
 
     /**
-     * Create a unix shell script to download saucelab resources, default is false
+     * Create a unix shell script to download saucelab resources, default is false.
+     *
      * Note - saucelabs history only goes back so far, if you run enough tests the resources will no longer
      * be available for downloading.
+     *
      * -Dsaucelabs.download.script=false
      */
     public static final String SAUCE_DOWNLOAD_SCRIPT_PROPERTY = "saucelabs.download.scripts";
 
     /**
      * Saucelabs idle timeout in seconds, default is 180
+     *
      * -Dsaucelabs.idle.timeout.seconds=
      */
     public static final String SAUCE_IDLE_TIMEOUT_SECONDS_PROPERTY = "saucelabs.idle.timeout.seconds";
 
     /**
      * Saucelabs key, required.
+     *
      * -Dsaucelabs.key=
      */
     public static final String SAUCE_KEY_PROPERTY = "saucelabs.key";
 
     /**
-     * Saucelabs max duration in seconds, default is 480
+     * Saucelabs max duration in seconds, default is 480.
+     *
      * -Dsaucelabs.max.duration.seconds=
      */
     public static final String SAUCE_MAX_DURATION_SECONDS_PROPERTY = "saucelabs.max.duration.seconds";
 
     /**
-     * Saucelabs platform (OS) replace spaces with underscores, default is Linux.  See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a>
+     * Saucelabs platform (OS) replace spaces with underscores, default is Linux.
+     *
+     * See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a>
+     *
      * -Dsaucelabs.platform=
      */
     public static final String SAUCE_PLATFORM_PROPERTY = "saucelabs.platform";
 
     /**
-     * Saucelabs ignore security domains in IE, which can introduce flakiness, default is true.  See <a href="http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_The_does_not_work_well_on_Vista._How_do_I_get_it_to_work_as_e">InternetExplorerDriver FAQ</a>
+     * Saucelabs ignore security domains in IE, which can introduce flakiness, default is true.
+     *
+     * See <a href="http://code.google.com/p/selenium/wiki/FrequentlyAskedQuestions#Q:_The_does_not_work_well_on_Vista._How_do_I_get_it_to_work_as_e">InternetExplorerDriver FAQ</a>
+     *
      * -Dsaucelabs.ie.ignore.domains=false
      */
     public static final String SAUCE_IE_INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS_PROPERTY = "saucelabs.ie.ignore.domains";
 
     /**
-     * Saucelabs popup disable setting, default is false (not disabled).  See <a href="https://saucelabs.com/docs/additional-config">DISABLE POPUP HANDLER</a>
+     * Saucelabs popup disable setting, default is false (not disabled).
+     *
+     * See <a href="https://saucelabs.com/docs/additional-config">DISABLE POPUP HANDLER</a>
+     *
      * -Dsaucelabs.pop.disable=
      */
     public static final String SAUCE_POPUP_PROPERTY = "saucelabs.pop.disable";
 
     /**
      * Saucelabs share setting, default is share.
+     *
      * -Dsaucelabs.share=
      */
     public static final String SAUCE_SHARE_PROPERTY = "saucelabs.share";
 
     /**
-     * Saucelabs user
+     * Saucelabs user, required.
+     *
      * -Dsaucelabs.user=
      */
     public static final String SAUCE_USER_PROPERTY = "saucelabs.user";
 
     /**
-     * Browser Version. See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a>
-     * 0 or null is current version of <b>Chrome</b>.  If using a browser other than Chrome this must be set else an Exception will be thrown.
+     * Saucelabs browser Version, required.
+     *
+     * See <a href="https://saucelabs.com/docs/platforms">Saucelabs Resources</a> 0 or null is current version of <b>Chrome</b>.
+     * If using a browser other than Chrome this must be set else an Exception will be thrown.
+     *
      * -Dsaucelabs.version=
      */
     public static final String SAUCE_VERSION_PROPERTY = "saucelabs.browser.version";
 
     /**
-     * Constructs a {@link SauceOnDemandAuthentication} instance using the supplied user name/access key.  To use the authentication
-     * supplied by environment variables or from an external file, use the no-arg {@link SauceOnDemandAuthentication} constructor.
+     * Saucelabs REST API delay in milliseconds, default is 5000.
+     *
+     * -Dsaucelabs.rest.api.delay.ms=
+     */
+    public static final String SAUCE_REST_API_DELAY_MS = "saucelabs.rest.api.delay.ms";
+
+    /**
+     * Constructs a {@link SauceOnDemandAuthentication} instance using the supplied user name/access key.
+     *
+     * To use the authentication supplied by environment variables or from an external file, use the no-arg
+     * {@link SauceOnDemandAuthentication} constructor.
      */
     public SauceOnDemandAuthentication authentication = new SauceOnDemandAuthentication(System.getProperty(SAUCE_USER_PROPERTY), System.getProperty(SAUCE_KEY_PROPERTY));
 
@@ -144,9 +200,13 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
     private String sessionId;
 
     /**
-     * Saucelabs setup
-     * @param className
-     * @param testName
+     * Saucelabs setUp.
+     *
+     * Creates a {@link org.openqa.selenium.remote.RemoteWebDriver} instance with the DesiredCapabilities as configured
+     * using the JVM arguments described as SAUCE_ Constants in this class.  After setUp the WebDriver can be accessed via
+     * {@see #getDriver}.
+     * @param className class name of the test being setup as a String
+     * @param testName test name of the test being setup as a String
      * @throws Exception
      */
     public void setUp(String className, String testName) throws Exception {
@@ -226,11 +286,14 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
     }
 
     /**
-     * Do Suacelabs related teardown things.  Mostly flag the tests as passed or failed.
-     * @param passed
-     * @param sessionId
-     * @param sauceUser
-     * @param sauceKey
+     * Saucelabs tearDown, flag the tests as passed or failed.
+     *
+     * Uses the SauceREST API to register a test as passed or failed.  {@see #SAUCE_REST_API_DELAY_MS}
+     *
+     * @param passed true if passed, falsed if failed, as a boolean
+     * @param sessionId saucelabs test session id, as a String
+     * @param sauceUser saucelabs user
+     * @param sauceKey saucelabs key
      * @throws Exception
      */
     public static void tearDown(boolean passed, String sessionId, String sauceUser, String sauceKey) throws Exception {
@@ -252,7 +315,8 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 client.jobFailed(sessionId);
             }
 
-            Thread.sleep(5000); // give the client message a chance to get processed on saucelabs side
+            // give the client message a chance to get processed on saucelabs side
+            Thread.sleep(Integer.parseInt(System.getProperty(SAUCE_REST_API_DELAY_MS, "5000")));
         }
     }
 
@@ -274,7 +338,8 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
     }
 
     /**
-     * Returns the driver
+     * Returns the (RemoteWebDriver) driver.
+     *
      * @return WebDriver
      */
     public WebDriver getDriver() {

@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreemarkerJMeterGenerator {
+public class FreemarkerJmeterTestGenerator {
 
     private static Configuration cfg = new Configuration();
 
@@ -45,7 +45,7 @@ public class FreemarkerJMeterGenerator {
     private static String DIR_TMPL = "/jmeter/";
 
     //Configuration
-    private static TemplateLoader templateLoader = new ClassTemplateLoader(FreemarkerJMeterGenerator.class, DIR_TMPL);
+    private static TemplateLoader templateLoader = new ClassTemplateLoader(FreemarkerJmeterTestGenerator.class, DIR_TMPL);
 
     public static void main(String[] args) throws Exception {
         cfg.setTemplateLoader(templateLoader);
@@ -57,7 +57,7 @@ public class FreemarkerJMeterGenerator {
     }
 
     private static void csvFreemarkerTemplate(String template, String csvLocation) throws IOException {
-        InputStream in = FreemarkerJMeterGenerator.class.getResourceAsStream(csvLocation);
+        InputStream in = FreemarkerJmeterTestGenerator.class.getResourceAsStream(csvLocation);
         BufferedReader csvReader = new BufferedReader(new InputStreamReader(in));
 
         try {

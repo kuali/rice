@@ -15,6 +15,7 @@
  */
 package edu.samplu.admin.test;
 
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
@@ -22,7 +23,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ReviewAllServicesAndWsdlAftBase extends AdminTmplMthdAftNavBase {
+public abstract class ReviewAllServicesAndWsdlAft extends AdminTmplMthdAftNavBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+WebDriverUtil.getBaseUrlString()+
@@ -41,18 +42,7 @@ public abstract class ReviewAllServicesAndWsdlAftBase extends AdminTmplMthdAftNa
         return "Service Registry";
     }
 
-    public void testReviewAllServicesAndWSDLBookmark(Failable failable) throws Exception {
-        testReviewAllServicesAndWSDL();
-        passed();
-    }
-
-    public void testReviewAllServicesAndWSDLNav(Failable failable) throws Exception {
-        testReviewAllServicesAndWSDL();
-        passed();
-    }    
-    
-    public void testReviewAllServicesAndWSDL() throws Exception
-    {
+    public void testReviewAllServicesAndWsdl() throws Exception {
         Thread.sleep(10000);
         selectFrameIframePortlet();
         assertTextPresent("{http://rice.kuali.org/core/v2_0}componentService");
@@ -60,5 +50,15 @@ public abstract class ReviewAllServicesAndWsdlAftBase extends AdminTmplMthdAftNa
         Thread.sleep(10000);
         assertTextPresent("{http://rice.kuali.org/core/v2_0}componentService");
         waitAndClickByXpath("//a[contains(text(),'/remoting/soap/core/v2_0/componentService')]");
+    }
+
+    @Test
+    public void testReviewAllServicesAndWsdlBookmark() throws Exception {
+        testReviewAllServicesAndWsdl();
+    }
+
+    @Test
+    public void testReviewAllServicesAndWsdlNav() throws Exception {
+        testReviewAllServicesAndWsdl();
     }
 }

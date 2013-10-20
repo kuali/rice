@@ -26,7 +26,7 @@ import java.util.Properties;
  * TODO Setup as command line tool or implement gold standard/acceptance testing for the templated result.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NeustarJSTemplate extends FreemarkerAftBase {
+public class NeustarJavaScriptTemplate extends FreemarkerAftBase {
 
     @Override
     public void fail(String message) {

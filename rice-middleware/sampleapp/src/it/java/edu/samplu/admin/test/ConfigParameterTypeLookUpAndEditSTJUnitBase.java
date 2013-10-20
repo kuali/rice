@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigParameterTypeLookUpAndEditSTJUnitBase extends ConfigParameterTypeLookUpAndEditAbstractSmokeTestBase {
+public abstract class ConfigParameterTypeLookUpAndEditSTJUnitBase extends ConfigParameterTypeLookUpAndEditAftBase {
 
     @Override
     public void fail(String message) {

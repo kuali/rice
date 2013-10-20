@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class PermissionSTJUnitBase extends PermissionAbstractSmokeTestBase {
+public abstract class PermissionSTJUnitBase extends PermissionAftBase {
 
     @Override
     public void fail(String message) {

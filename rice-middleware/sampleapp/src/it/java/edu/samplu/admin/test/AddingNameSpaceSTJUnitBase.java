@@ -21,7 +21,7 @@ import org.junit.Assert;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class AddingNameSpaceSTJUnitBase extends AddingNameSpacesAbstractSmokeTestBase {
+public class AddingNameSpaceSTJUnitBase extends AddingNameSpacesAftBase {
 
     @Override
     public void fail(String string) {

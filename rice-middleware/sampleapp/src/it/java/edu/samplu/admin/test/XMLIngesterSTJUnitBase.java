@@ -27,7 +27,7 @@ import java.io.IOException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class XMLIngesterSTJUnitBase extends XMLIngesterAbstractSmokeTestBase {
+public abstract class XMLIngesterSTJUnitBase extends XmlIngesterAftBase {
 
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();

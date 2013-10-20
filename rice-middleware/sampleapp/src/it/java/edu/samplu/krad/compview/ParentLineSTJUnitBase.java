@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ParentLineSTJUnitBase extends ParentLineAbstractSmokeTestBase {
+public abstract class ParentLineSTJUnitBase extends ParentLineAftBase {
 
     @Override
     public void fail(String message) {

@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigNamespaceLookUpAndEditSTJUnitBase extends ConfigNamespaceLookUpAndEditAbstractSmokeTestBase {
+public abstract class ConfigNamespaceLookUpAndEditSTJUnitBase extends ConfigNamespaceLookUpAndEditAftBase {
 
     @Override
     public void fail(String message) {

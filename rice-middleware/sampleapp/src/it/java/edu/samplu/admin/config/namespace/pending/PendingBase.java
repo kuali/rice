@@ -1,6 +1,6 @@
 package edu.samplu.admin.config.namespace.pending;
 
-import edu.samplu.admin.test.AdminTmplMthdSTNavBase;
+import edu.samplu.admin.test.AdminTmplMthdAftNavBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.ITUtil;
 
@@ -8,7 +8,7 @@ import org.kuali.rice.testtools.selenium.ITUtil;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class PendingBase extends AdminTmplMthdSTNavBase {
+public abstract class PendingBase extends AdminTmplMthdAftNavBase {
     /**
      * methodToCall.insertAdHocRoutePerson
      */

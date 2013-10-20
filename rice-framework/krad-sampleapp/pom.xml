@@ -140,7 +140,7 @@
       <properties>
         <saucelabs.connect.skip>false</saucelabs.connect.skip>
         <saucelabs.connect.includes>
-          **/*SmokeTest.java
+          **/*Aft.java
         </saucelabs.connect.includes>
       </properties>
     </profile>
@@ -150,7 +150,7 @@
       <properties>
         <stests.skip>false</stests.skip>
         <stests.includes>
-          **/*SmokeTest.java
+          **/*Aft.java
         </stests.includes>
       </properties>
     </profile>

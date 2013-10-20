@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MaintenanceQuickfinderIconsSTJUnitBase extends MaintenanceQuickfinderIconsAbstractSmokeTestBase {
+public abstract class MaintenanceQuickfinderIconsSTJUnitBase extends MaintenanceQuickfinderIconsAftBase {
 
     @Override
     public void fail(String message) {

@@ -23,7 +23,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterNavIT extends AdminTmplMthdSTNavBase {
+public class ConfigParameterNavIT extends AdminTmplMthdAftNavBase {
 
     @Override
     public void fail(String message) {

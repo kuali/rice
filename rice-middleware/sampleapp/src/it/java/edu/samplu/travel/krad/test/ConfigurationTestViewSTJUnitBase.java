@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigurationTestViewSTJUnitBase extends ConfigurationTestViewAbstractSmokeTestBase {
+public abstract class ConfigurationTestViewSTJUnitBase extends ConfigurationTestViewAftBase {
 
     @Override
     public void fail(String message) {

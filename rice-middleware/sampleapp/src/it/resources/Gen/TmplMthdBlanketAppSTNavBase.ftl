@@ -15,7 +15,7 @@
  */
 package ${package};
 
-import edu.samplu.common.NavTemplateMethodSTBase;
+import edu.samplu.common.NavTemplateMethodAftBase;
 
 /**
  * blanket approving a new document, results in a final document

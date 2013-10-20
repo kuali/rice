@@ -15,12 +15,12 @@
  */
 package edu.samplu.krad.travelview;
 
-import edu.samplu.common.NavTemplateMethodSTBase;
+import edu.samplu.common.NavTemplateMethodAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class KradTmplMthdSTNavBase extends NavTemplateMethodSTBase {
+public abstract class KradTmplMthdSTNavBase extends NavTemplateMethodAftBase {
 
     @Override
     protected String getCreateNewLinkLocator() {

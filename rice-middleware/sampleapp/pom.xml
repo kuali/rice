@@ -35,10 +35,8 @@
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
     <kuali.generate.reports>false</kuali.generate.reports>
-    <saucelabs.connect.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</saucelabs.connect.excludes>
-    <saucelabs.connect.includes>**/*IT.java,**/*Gen.java</saucelabs.connect.includes>
-    <stests.excludes>**/krad/labs/**/*.java,**/krad/demo/**/*.java,**/krad/library/**/*.java</stests.excludes>
-    <stests.includes>**/*IT.java,**/*Gen.java</stests.includes>
+    <saucelabs.connect.includes>**/*Aft.java</saucelabs.connect.includes>
+    <stests.includes>**/*Aft.java</stests.includes>
   </properties>
 
   <build>

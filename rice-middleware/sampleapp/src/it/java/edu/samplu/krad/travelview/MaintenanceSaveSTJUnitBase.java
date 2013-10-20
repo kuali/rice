@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MaintenanceSaveSTJUnitBase extends MaintenanceSaveAbstractSmokeTestBase {
+public abstract class MaintenanceSaveSTJUnitBase extends MaintenanceSaveAftBase {
 
     @Override
     public void fail(String message) {

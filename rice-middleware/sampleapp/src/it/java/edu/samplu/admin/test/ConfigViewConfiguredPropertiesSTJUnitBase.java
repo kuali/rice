@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigViewConfiguredPropertiesSTJUnitBase extends ConfigViewConfiguredPropertiesAbstractSmokeTestBase {
+public abstract class ConfigViewConfiguredPropertiesSTJUnitBase extends ConfigViewConfiguredPropertiesAftBase {
 
     @Override
     public void fail(String message) {

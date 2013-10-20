@@ -15,7 +15,7 @@
  */
 package ${package};
 
-import edu.samplu.common.NavTemplateMethodSTBase;
+import edu.samplu.common.NavTemplateMethodAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LocationCountryBlanketAppSTJUnitBase extends LocationCountryBlanketAppAbstractSmokeTestBase {
+public abstract class LocationCountryBlanketAppSTJUnitBase extends LocationCountryBlanketAppAftBase {
 
     @Override
     public void fail(String message) {

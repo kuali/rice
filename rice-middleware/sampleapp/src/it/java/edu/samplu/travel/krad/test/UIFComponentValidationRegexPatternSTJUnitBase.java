@@ -24,7 +24,7 @@ import org.junit.Assert;
  * @see edu.samplu.travel.krad.test.UIFComponentValidationRegexPatternSTJUnitBkMrkGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UIFComponentValidationRegexPatternSTJUnitBase extends UIFComponentValidationRegexPatternAbstractSmokeTestBase {
+public abstract class UIFComponentValidationRegexPatternSTJUnitBase extends UifComponentValidationRegexPatternAftBase {
 
     @Override
     public void fail(String string) {

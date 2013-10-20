@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MaintenanceAddDeleteFiscalOfficerSTJUnitBase extends MaintenanceAddDeleteFiscalOfficerAbstractSmokeTestBase {
+public abstract class MaintenanceAddDeleteFiscalOfficerSTJUnitBase extends MaintenanceAddDeleteFiscalOfficerAftBase {
 
     @Override
     public void fail(String message) {

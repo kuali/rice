@@ -47,7 +47,7 @@ import java.util.Properties;
  * @deprecated XMLIngesterSTJUnitNavGen
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XMLIngester extends AdminTmplMthdSTNavBase {
+public class XMLIngester extends AdminTmplMthdAftNavBase {
 
     protected final Logger LOG = Logger.getLogger(getClass());
 

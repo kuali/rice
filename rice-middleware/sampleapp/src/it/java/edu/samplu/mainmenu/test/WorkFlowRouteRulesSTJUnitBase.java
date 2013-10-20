@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WorkFlowRouteRulesSTJUnitBase extends WorkFlowRouteRulesAbstractSmokeTestBase {
+public abstract class WorkFlowRouteRulesSTJUnitBase extends WorkFlowRouteRulesAftBase {
 
     @Override
     public void fail(String message) {

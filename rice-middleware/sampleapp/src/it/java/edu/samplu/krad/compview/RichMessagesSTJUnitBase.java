@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class RichMessagesSTJUnitBase extends RichMessagesAbstractSmokeTestBase {
+public abstract class RichMessagesSTJUnitBase extends RichMessagesAftBase {
 
     @Override
     public void fail(String message) {

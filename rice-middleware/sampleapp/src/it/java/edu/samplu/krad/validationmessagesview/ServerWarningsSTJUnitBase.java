@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ServerWarningsSTJUnitBase extends ServerWarningsAbstractSmokeTestBase {
+public abstract class ServerWarningsSTJUnitBase extends ServerWarningsAftBase {
 
     @Override
     public void fail(String message) {

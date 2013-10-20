@@ -26,7 +26,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdSTNavBase {
+public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
     // values set by default for repeatable testing; left as configurable for load tests
     protected List<File> fileUploadList;
 
@@ -38,7 +38,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdSTNavBase {
     /**
      * This overridden method ...
      *
-     * @see edu.samplu.common.NavTemplateMethodSTBase#getLinkLocator()
+     * @see edu.samplu.common.NavTemplateMethodAftBase#getLinkLocator()
      */
     @Override
     protected String getLinkLocator() {

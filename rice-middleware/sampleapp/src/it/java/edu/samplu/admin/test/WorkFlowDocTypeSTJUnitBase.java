@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WorkFlowDocTypeSTJUnitBase extends WorkFlowDocTypeAbstractSmokeTestBase {
+public abstract class WorkFlowDocTypeSTJUnitBase extends WorkFlowDocTypeAftBase {
 
     @Override
     public void fail(String message) {

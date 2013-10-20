@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class TravelAccountLookupSTJUnitBase extends TravelAccountLookupAbstractSmokeTestBase {
+public abstract class TravelAccountLookupSTJUnitBase extends TravelAccountLookupAftBase {
 
     @Override
     public void fail(String message) {

@@ -21,7 +21,7 @@ import org.junit.Assert;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class CreateDocTypeSTJUnitBase extends CreateDocTypeAbstractSmokeTestBase {
+public class CreateDocTypeSTJUnitBase extends CreateDocTypeAftBase {
 
     @Override
     public void fail(String string) {

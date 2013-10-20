@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class IdentityResponsibilityBlanketAppSTJUnitBase extends IdentityResponsibilityBlanketAppAbstractSmokeTestBase {
+public abstract class IdentityResponsibilityBlanketAppSTJUnitBase extends IdentityResponsibilityBlanketAppAftBase {
 
     @Override
     public void fail(String message) {

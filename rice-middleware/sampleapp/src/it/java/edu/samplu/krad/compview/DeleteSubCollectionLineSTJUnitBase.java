@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DeleteSubCollectionLineSTJUnitBase extends DeleteSubCollectionLineAbstractSmokeTestBase {
+public abstract class DeleteSubCollectionLineSTJUnitBase extends DeleteSubCollectionLineAftBase {
 
     @Override
     public void fail(String message) {

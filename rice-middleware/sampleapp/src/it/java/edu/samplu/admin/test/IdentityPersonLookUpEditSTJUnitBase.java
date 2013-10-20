@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class IdentityPersonLookUpEditSTJUnitBase extends IdentityPersonLookUpEditAbstractSmokeTestBase {
+public abstract class IdentityPersonLookUpEditSTJUnitBase extends IdentityPersonLookUpEditAftBase {
 
     @Override
     public void fail(String message) {

@@ -20,7 +20,7 @@ import org.junit.Assert;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class CreateNewAgendaSTJUnitBase extends CreateNewAgendaAbstractSmokeTestBase {
+public abstract class CreateNewAgendaSTJUnitBase extends CreateNewAgendaAftBase {
 
     @Override
     public void fail(String message) {

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.lookups;
 
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoLabsLookupBase extends SmokeTestBase {
+public abstract class DemoLabsLookupBase extends AutomatedFunctionalTestBase {
 
     protected void navigateToLookup(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Lookups");

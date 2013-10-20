@@ -15,14 +15,14 @@
  */
 package edu.samplu.mainmenu.test;
 
-import edu.samplu.common.NavTemplateMethodSTBase;
+import edu.samplu.common.NavTemplateMethodAftBase;
 import org.kuali.rice.testtools.selenium.Failable;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodSTBase {
+public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodAftBase {
 
     public static final String DATA_TABLES_INFO = "dataTables_info";
 

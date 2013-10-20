@@ -17,12 +17,12 @@ package org.kuali.rice.testtools.selenium.breadcrumb;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.SmokeTestBase;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-public abstract class BreadcrumbAftBase extends SmokeTestBase {
+public abstract class BreadcrumbAftBase extends AutomatedFunctionalTestBase {
 
     /**
      * //div[@class='uif-breadcrumbSiblingContent']//div[@class='uif-inputField']//ul[@class='uif-optionList']

@@ -241,9 +241,10 @@ public class PostProcessorTest extends KEWTestCase {
 				DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentBId);
 				// now let's execute the thread
 				new Thread(updateDocumentThread).start();
-				// let's wait for a few seconds to either let the thread process or let it aquire the lock
+				// let's wait for a few seconds to either let the thread process or let it acquire the lock
 				Thread.sleep(5000);
 				// now update document B
+                document.setDocTitle(document.getDocTitle() + "...making a change...");
 				KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
 			}
 			return super.afterProcess(event);
@@ -269,6 +270,8 @@ public class PostProcessorTest extends KEWTestCase {
 				public Object doInTransaction(TransactionStatus status) {
 					KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
 					DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+                    // have to actually change something on the doc to get this work
+                    document.setDocTitle(document.getDocTitle() + "UDT");
 					KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
 					return null;
 				}

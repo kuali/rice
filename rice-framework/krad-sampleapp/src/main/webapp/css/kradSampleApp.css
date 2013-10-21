@@ -781,7 +781,6 @@ a.demo-documentationLink {
     height: 64px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
-    display: none;
 }
 
 .demo-appFooter .demo-foundationInfo {
@@ -824,7 +823,7 @@ a.demo-documentationLink {
     color: #FFFFFF;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
-    display: none;
+    /*display: none;*/
 }
 
 .demo-thirdTier h2 {

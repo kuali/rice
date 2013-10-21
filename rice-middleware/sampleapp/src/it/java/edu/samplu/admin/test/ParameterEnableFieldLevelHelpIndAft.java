@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParameterEnableFieldLevelHelpIndSmokeTest extends AutomatedFunctionalTestBase {
+public class ParameterEnableFieldLevelHelpIndAft extends AutomatedFunctionalTestBase {
 
     @Override
     protected String getBookmarkUrl() {

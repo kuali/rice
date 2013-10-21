@@ -642,7 +642,7 @@
         <column name="ADDR_LINE_2" size="50" type="VARCHAR"/>
         <column name="TRAVELER_TYP_CD" size="3" type="VARCHAR"/>
         <column name="POSTAL_CD" size="11" type="VARCHAR"/>
-        <unique name="SYS_C0012944965">
+        <unique name="SYS_C0012951342">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>

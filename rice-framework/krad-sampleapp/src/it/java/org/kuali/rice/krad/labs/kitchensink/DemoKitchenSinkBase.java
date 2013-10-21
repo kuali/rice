@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoLabsKitchenSinkBase extends AutomatedFunctionalTestBase {
+public abstract class DemoKitchenSinkBase extends AutomatedFunctionalTestBase {
 
     protected void navigateToKitchenSink(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Kitchen Sink");

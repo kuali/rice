@@ -615,10 +615,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertButtonDisabledByText(String buttonText) {
+        jGrowl("Assert " + buttonText + " button is disabled");
         SeleneseTestBase.assertTrue(!findButtonByText(buttonText).isEnabled());
     }
 
     protected void assertButtonEnabledByText(String buttonText) {
+        jGrowl("Assert " + buttonText + " button is enabled");
         SeleneseTestBase.assertTrue(findButtonByText(buttonText).isEnabled());
     }
 
@@ -3552,6 +3554,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testMultiValueSelectAllThisPage() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
+        alertDismiss();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all on this page, all checkboxes should be checked and return button enabled
@@ -4322,23 +4325,25 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
-        jiraAwareWaitAndClick(By.linkText(text), "");
+        waitAndClickByLinkText(text, "");
     }
 
     protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
-        jiraAwareWaitAndClick(By.linkText(text), message);
+        waitAndClickByLinkText(text, message, this);
     }
 
     protected void waitAndClickByLinkText(String text, Failable failable) throws InterruptedException {
-        jiraAwareWaitAndClick(By.linkText(text), "", failable);
+        waitAndClickByLinkText(text, "", failable);
     }
 
     protected void waitAndClickByLinkText(String text, String message, Failable failable) throws InterruptedException {
+        jGrowl("Click " + text + " link.");
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
     }
 
-    protected void waitAndClickLinkContainingText(String linkTest, String message) throws InterruptedException {
-        waitAndClickByXpath("//a[contains(text(), '" + linkTest + "')]", message);
+    protected void waitAndClickLinkContainingText(String linkText, String message) throws InterruptedException {
+        jGrowl("Click link containing " + linkText + " .");
+        waitAndClickByXpath("//a[contains(text(), '" + linkText + "')]", message);
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
@@ -4370,6 +4375,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
+        jGrowl("Click " + buttonText + " button.");
         waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
     }
 
@@ -4537,6 +4543,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void waitAndClickDropDown(String dropDownText) throws InterruptedException {
+        jGrowl("Click the " + dropDownText + " drop down.");
         WebElement dropdownMenu = waitAndGetElementByAttributeValue("class", "dropdown-toggle");
         Thread.sleep(1000);
         dropdownMenu.click();

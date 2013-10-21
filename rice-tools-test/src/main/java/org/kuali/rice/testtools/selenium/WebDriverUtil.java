@@ -44,11 +44,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * <p>
  * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from WebDriverLegacyITBase for reuse
  * without having to extend WebDriverLegacyITBase.
- *
+ * </p><p>
  * For the first example see waitFor
- *
+ * </p>
  * @see WebDriverLegacyITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -128,16 +129,20 @@ public class WebDriverUtil {
     public static final int JS_HIGHLIGHT_MS = 400;
 
     /**
+     * <p>
      * {@see JS_HIGHLIGHT_MS} as default.
-     *
+     * </p><p>
      * -Dremote.driver.highlight.ms=
+     * </p>
      */
     public static final String JS_HIGHLIGHT_MS_PROPERTY = "remote.driver.highlight.ms";
 
     /**
+     * <p>
      * Highlighting of elements as selenium runs.
-     *
+     * </p><p>
      * -Dremote.driver.highlight=true
+     * </p>
      */
     public static final String JS_HIGHLIGHT_PROPERTY = "remote.driver.highlight";
 
@@ -149,11 +154,13 @@ public class WebDriverUtil {
     public static final String JS_HIGHLIGHT_INPUT_PROPERTY = "remote.driver.highlight.input";
 
     /**
+     * <p>
      * Local proxy used for running tests thru jmeter.
-     *
+     * </p><p>
      * Include host name and port number. Example: localhost:7777
-     *
+     * </p><p>
      * -Dremote.public.proxy=
+     * </p>
      */
     public static final String PROXY_HOST_PROPERTY = "remote.public.proxy";
 
@@ -183,18 +190,22 @@ public class WebDriverUtil {
     public static final String REMOTE_PUBLIC_URL_PROPERTY = "remote.public.url";
 
     /**
+     * <p>
      * Set -Dremote.public.wait.seconds to override DEFAULT_WAIT_SEC.
-     *
+     * </p><p>
      * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT}
+     * </p>
      */
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
     /**
+     * <p>
      * Time to wait for the URL used in setup to load, 120 seconds by default.
-     *
+     * </p><p>
      * Sometimes this is the first hit on the app and it needs a bit longer than any other.
-     *
+     * </p><p>
      * TODO parametrize for JVM Arg
+     * <p>
      */
     public static final int SETUP_URL_LOAD_WAIT_SECONDS = 120;
 
@@ -280,8 +291,7 @@ public class WebDriverUtil {
     public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
 
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
-            SauceLabsWebDriverHelper.tearDown(passed, sessionId, System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
-                    System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
+            SauceLabsWebDriverHelper.tearDown(passed, sessionId);
         }
 
         if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {

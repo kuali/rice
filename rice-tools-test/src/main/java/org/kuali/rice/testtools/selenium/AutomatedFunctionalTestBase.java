@@ -65,6 +65,7 @@ public abstract class AutomatedFunctionalTestBase extends WebDriverLegacyITBase 
     @Override
     public void fail(String message) {
         passed = false;
+        jGrowlSticky(message);
         Assert.fail(message);
     }
 

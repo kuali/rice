@@ -36,6 +36,7 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends AutomatedFunction
 
     @Override
     protected void navigate() throws Exception {
+        jGrowl("Click the Library Link");
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Multi-Value Lookup");
@@ -47,9 +48,11 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends AutomatedFunction
         waitAndClickButtonByText("Search");
         assertButtonDisabledByText("return selected");
 
+        jGrowl("Check Travel Account 1 checkbox");
         waitAndClickByValue("IAT:Travel Account 1:a1");
         assertButtonEnabledByText("return selected");
 
+        jGrowl("Uncheck Travel Account 1 checkbox");
         waitAndClickByValue("IAT:Travel Account 1:a1");
         assertButtonDisabledByText("return selected");
 

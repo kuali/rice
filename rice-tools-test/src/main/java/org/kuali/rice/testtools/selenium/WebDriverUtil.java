@@ -70,12 +70,20 @@ public class WebDriverUtil {
     public static final String DEFAULT_BASE_URL_KRAD = "http://localhost:8080/krad-dev";
 
     /**
-     * remote.driver.dontTearDown
+     * <p>
+     * Set to true to not close the browser after the test has run.
+     * </p><p>
+     * -Dremote.driver.dontTearDown=true
+     * </p>
      */
     public static final String DONT_TEAR_DOWN_PROPERTY = "remote.driver.dontTearDown";
 
     /**
-     * Set -Dremote.driver.dontTearDownOnFailure=
+     * <p>
+     * Set to true to not close the browser after the test has if the test failed.
+     * </p><p>
+     * -Dremote.driver.dontTearDownOnFailure=true
+     * </p>
      */
     public static final String DONT_TEAR_DOWN_ON_FAILURE_PROPERTY = "remote.driver.dontTearDownOnFailure";
 
@@ -95,15 +103,17 @@ public class WebDriverUtil {
     public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
 
     /**
+     * 1000 Milliseconds.
      * TODO parametrize for JVM Arg
-     * 1000 Milliseconds
      */
     public static int IMPLICIT_WAIT_TIME_LOOP_MS = 1000;
 
     /**
-     * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT} to configure
-     * Default 30 Seconds
+     * <p>
+     * {@see IMPLICIT_WAIT_TIME_SECONDS_DEFAULT} to configure, default 30 seconds.
+     * </p><p>
      * In code don't use this variable but call {@see configuredImplicityWait} to get the configured value.
+     * </p>
      */
     public static int IMPLICIT_WAIT_TIME_SECONDS_DEFAULT = 30;
 
@@ -124,7 +134,7 @@ public class WebDriverUtil {
     public static final String JS_HIGHLIGHT_BOARDER = "#66FF33";
 
     /**
-     * 400 milliseconds
+     * 400 milliseconds.
      */
     public static final int JS_HIGHLIGHT_MS = 400;
 
@@ -165,12 +175,22 @@ public class WebDriverUtil {
     public static final String PROXY_HOST_PROPERTY = "remote.public.proxy";
 
     /**
-     * -Dremote.autologin
+     * <p>
+     * Skip automatice login if set to anything other than true/
+     * </p><p>
+     * -Dremote.autologin=false
+     * </p>
      */
     public static final String REMOTE_AUTOLOGIN_PROPERTY = "remote.autologin";
 
     /**
-     * Set -Dremote.jgrowl.enabled=
+     * <p>
+     * Set to true to enable jGrowl test messages.
+     * </p><p>
+     * When enabled, jGrowl messages will be sent when clicking on buttons and links identified by their text.
+     * </p><p>
+     * -Dremote.jgrowl.enabled=true
+     * </p>
      */
     public static final String REMOTE_JGROWL_ENABLED = "remote.jgrowl.enabled";
 
@@ -360,12 +380,13 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
      * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.
-     *
+     * <p></p>
      * Valuable when debugging, updating, or creating new tests.  When implementing your own tearDown method rather than an
      * inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it
      * easy debug or update your test.
-     *
+     * </p>
      * @return true if the dontTearDownProperty is not set.
      */
     public static boolean dontTearDownPropertyNotSet() {
@@ -377,7 +398,6 @@ public class WebDriverUtil {
     /**
      * Given the boolean parameter and depending on if {@see #DONT_TEAR_DOWN_ON_FAILURE_PROPERTY} is set to something other
      * than n, don't tear down the browser window on a test failure.
-     *
      * @param passed
      * @return
      */
@@ -389,8 +409,11 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
      * In order to run as a smoke test the ability to set the baseUrl via the JVM arg remote.public.url is required.
+     * </p><p>
      * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
+     * </p>
      * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
      */
     public static String getBaseUrlString() {
@@ -403,9 +426,11 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
      * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
-     *
+     * </p><p>
      * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
+     * </p>
      * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
      */
     public static String getHubUrlString() {

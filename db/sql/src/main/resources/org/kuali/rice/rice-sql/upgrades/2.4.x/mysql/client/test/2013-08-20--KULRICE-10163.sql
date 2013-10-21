@@ -75,6 +75,8 @@ CREATE TABLE KRTST_TEST_TABLE_T  (
     CURR_PROP    	decimal(19,2),
     NON_STANDARD 	varchar(40),
     BOOL_PROP    	char(1) DEFAULT 'N',
+    ENCR_PROP     varchar(255),
+    RO_PROP       varchar(40),
     PRIMARY KEY(PK_PROP)
 )
 /

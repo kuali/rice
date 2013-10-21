@@ -34,12 +34,6 @@
     <dependency>
       <groupId>org.kuali.common</groupId>
       <artifactId>kuali-deploy</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.oracle</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.kuali.common</groupId>

@@ -134,12 +134,6 @@
             <groupId>org.kuali.common</groupId>
             <artifactId>kuali-deploy</artifactId>
             <version>${kuali-deploy.version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>com.oracle</groupId>
-                <artifactId>*</artifactId>
-              </exclusion>
-            </exclusions>
           </dependency>
         </dependencies>
       </plugin>
@@ -157,12 +151,6 @@
     <dependency>
       <groupId>org.kuali.common</groupId>
       <artifactId>kuali-deploy</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.oracle</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 </project>

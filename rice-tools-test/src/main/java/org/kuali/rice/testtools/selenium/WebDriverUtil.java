@@ -219,6 +219,16 @@ public class WebDriverUtil {
     public static final String REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY = "remote.public.wait.seconds";
 
     /**
+     * Set -Dremote.public.user= to the username to login as
+     */
+    public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
+
+    /**
+     * You probably don't want to really be using a userpool, set -Dremote.public.userpool= to base url if you must.
+     */
+    public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
+
+    /**
      * <p>
      * Time to wait for the URL used in setup to load, 120 seconds by default.
      * </p><p>
@@ -301,22 +311,27 @@ public class WebDriverUtil {
     }
 
     /**
-     *
-     * @param passed
-     * @param sessionId
-     * @param testParam
-     * @param userParam
+     *<p>
+     * Calls {@see SauceLabsWebDriverHelper#tearDown} if {@see #REMOTE_PUBLIC_USERPOOL_PROPERTY} is enabled, calls a user pool
+     * url with the given poolParamTest and poolParamUser.
+     *</p>
+     * @param passed used by {@see SauceLabsWebDriverHelper#tearDown} to record Saucelabs test status can be null if Saucelabs
+     * is not being used
+     * @param sessionId used by {@see SauceLabsWebDriverHelper#tearDown} to record Saucelabs sessionId status can be null if Saucelabs
+     * is not being used
+     * @param poolParamTest can be null unless a user pool is being used
+     * @param poolParamUser can be null unless a user pool is being used
      * @throws Exception
      */
-    public static void tearDown(boolean passed, String sessionId, String testParam, String userParam) throws Exception {
+    public static void tearDown(boolean passed, String sessionId, String poolParamTest, String poolParamUser) throws Exception {
 
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
             SauceLabsWebDriverHelper.tearDown(passed, sessionId);
         }
 
-        if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
-            ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
-                    + testParam + "&user=" + userParam));
+        if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
+            ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
+                    + poolParamTest + "&user=" + poolParamUser));
         }
     }
 
@@ -328,11 +343,11 @@ public class WebDriverUtil {
     public static String determineUser(String testParam) {
         String user = null;
 
-        if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY) != null) {
-            return System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY);
-        } else if (System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
+        if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
+            return System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
+        } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
             String userResponse = ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
-                    WebDriverLegacyITBase.REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
+                    REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
             return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
         }
 

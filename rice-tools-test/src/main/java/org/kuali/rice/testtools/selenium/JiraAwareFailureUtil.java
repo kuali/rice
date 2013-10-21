@@ -24,18 +24,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created as a way to link Rice Smoke Test failures to existing Jiras as a html link in Jenkins.
- *
- * The more failures the more useful it is to not have to keep tracking down the same Jiras.  Having this feature for
- * Integration Tests as well would be a huge help for the QA team.
- *
+ * <p>
+ * Link test failures to existing Jiras as a html link in Jenkins.
+ * </p><p>
+ * The more failures the more useful it is to not have to keep tracking down the same Jiras.
+ * </p><p>
  * Set jira.aware.regex.failures.location and jira.aware.contains.failures.location to define file locations, else
  * JiraAwareRegexFailures.properties and JiraAwareContainsFailures.properties will be read as a resource stream.
- * 
+ * </p><p>
  * TODO:
  * <ol>
  *   <li>Integration Test integration.  ITs often fail by the 10s tracking down existing Jiras is a huge time sink.</li>
  * </ol>
+ * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JiraAwareFailureUtil {
@@ -70,9 +71,11 @@ public class JiraAwareFailureUtil {
     }
 
     /**
-     * Calls failOnMatchedJira(String, Failable) and fails if no matched jira failures
-     * @param message
-     * @param failable
+     * <p>
+     * Calls {@see #failOnMatchedJira(String, Failable)} and calls fail on the {@see Failable#fail} if no matched jira failures.
+     * </p>
+     * @param message to pass to fail
+     * @param failable {@see Failable#fail}
      */
     public static void fail(String message, Failable failable) {
         failOnMatchedJira(message, failable);
@@ -80,10 +83,12 @@ public class JiraAwareFailureUtil {
     }
 
     /**
-     * Calls failOnMatchedJira(String, String, Failable) and fails if no matched jira failures
+     * <p>
+     * Calls {@see #failOnMatchedJira(String, String, Failable)} and calls fail on the {@see Failable#fail} fails if no matched jira failures.
+     * </p>
      * @param contents
-     * @param message
-     * @param failable
+     * @param message to pass to fail
+     * @param failable {@see Failable#fail}
      */
     public static void fail(String contents, String message, Failable failable) {
         failOnMatchedJira(contents, message, failable);
@@ -91,7 +96,9 @@ public class JiraAwareFailureUtil {
     }
 
     /**
-     * Calls failOnMatchedJira(String, String) with the contents and if no match is detected then the message.
+     * <p>
+     * Calls {@see #failOnMatchedJira(String, String)} with the contents and if no match is detected then the message.
+     * </p>
      * @param contents to check for containing of the jiraMatches keys.
      * @param message to check for containing of the jiraMatches keys if contents doesn't
      * @param failable to fail with the jiraMatches value if the contents or message is detected
@@ -102,7 +109,9 @@ public class JiraAwareFailureUtil {
     }
 
     /**
-     * If the contents contents the jiraMatches key, call fail on failable passing in the jiraMatches value for the matched key.
+     * <p>
+     * If the contents contents the jiraMatches key, calls fail on the {@see Failable#fail} passing in the jiraMatches value for the matched key.
+     * </p>
      * @param contents to check for containing of the jiraMatches keys.
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */

@@ -28,25 +28,18 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
+ * <p>
+ * Util Properties methods which have come from refactoring test generation using freemarker.
+ * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class PropertiesUtils {
 
-
-    public static Properties loadPropertiesWithSystemOverrides(InputStream inputStream) throws IOException {
-        Properties props = PropertiesUtils.loadProperties(inputStream);
-        PropertiesUtils.systemPropertiesOverride(props);
-        return props;
-    }
-
-    public static Properties loadPropertiesWithSystemOverridesAndNumberedPropertiesToList(InputStream inputStream) throws IOException {
-        Properties props = PropertiesUtils.loadProperties(inputStream);
-        PropertiesUtils.systemPropertiesOverride(props);
-        PropertiesUtils.transformNumberedPropertiesToList(props);
-        return props;
-    }
-
+    /**
+     * @param inputStream to read properties from
+     * @return Properties read from given Inputstream
+     * @throws IOException
+     */
     public static Properties loadProperties(InputStream inputStream) throws IOException {
         Properties props = new Properties();
 
@@ -58,9 +51,12 @@ public class PropertiesUtils {
     }
 
     /**
+     * <p>
+     * Read Properties from given Inputstream or Resource Loaction if the InputStream is null.
+     * </p>
      * @param fileLocation null means use resourceLocation
-     * @param resourceLocation
-     * @return
+     * @param resourceLocation load resource as a stream {@code getClass().getClassLoader().getResourceAsStream(resourceLocation);}
+     * @return Properties read from given Inputstream or Resource Loaction if the InputStream is null
      * @throws IOException
      */
     public Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
@@ -79,6 +75,26 @@ public class PropertiesUtils {
         return props;
     }
 
+    public static Properties loadPropertiesWithSystemOverrides(InputStream inputStream) throws IOException {
+        Properties props = PropertiesUtils.loadProperties(inputStream);
+        PropertiesUtils.systemPropertiesOverride(props);
+        return props;
+    }
+
+    public static Properties loadPropertiesWithSystemOverridesAndNumberedPropertiesToList(InputStream inputStream) throws IOException {
+        Properties props = PropertiesUtils.loadProperties(inputStream);
+        PropertiesUtils.systemPropertiesOverride(props);
+        PropertiesUtils.transformNumberedPropertiesToList(props);
+        return props;
+    }
+
+    /**
+     * <p>
+     * Given a key that ends in a number, remove the number.
+     * </p>
+     * @param numberedKey in the form of some.key.number
+     * @return some.key part of some.key.number
+     */
     public static String removeNumber(final String numberedKey) {
         String unnumberedKey = numberedKey;
         int firstNumberIndex = unnumberedKey.length() - 1;
@@ -90,34 +106,50 @@ public class PropertiesUtils {
         return unnumberedKey;
     }
 
+    /**
+     * <p>
+     * Override the given Properties with JVM argument {@code -Dkey=value}.
+     * </p>
+     * @param props properties to update with System.getProperty overrides.
+     */
     public static void systemPropertiesOverride(Properties props) {
         PropertiesUtils.systemPropertiesOverride(props, null);
     }
 
     /**
+     * <p>
+     * Override the given Properties with JVM argument {@code -Darg.key=value}.
+     * </p>
      * -Dkey.propertyname= to override the property value for propertyname.
      * @param props properties to update with System.getProperty overrides.
-     * @param key optional value that the property names will be appended to.
+     * @param arg optional value that the property names will be appended to.
      */
-    public static void systemPropertiesOverride(Properties props, String key) {
+    public static void systemPropertiesOverride(Properties props, String arg) {
         Enumeration<?> names = props.propertyNames();
         Object nameObject;
-        String name;
+        String key;
         while (names.hasMoreElements()) {
 
             nameObject = names.nextElement();
             if (nameObject instanceof String) {
 
-                name = (String)nameObject;
-                if (key == null || key.isEmpty()) {
-                    props.setProperty(name, System.getProperty(name, props.getProperty(name)));
+                key = (String)nameObject;
+                if (arg == null || arg.isEmpty()) {
+                    props.setProperty(key, System.getProperty(key, props.getProperty(key)));
                 } else {
-                    props.setProperty(name, System.getProperty(key + "." + name, props.getProperty(name)));
+                    props.setProperty(key, System.getProperty(arg + "." + key, props.getProperty(key)));
                 }
             }
         }
     }
 
+    /**
+     * <p>
+     * Transform the given Properties keys which end in numbers to a List placed in a Map with the map key being the unumbered
+     * part of the Properties key with an s appended to it.
+     * </p>
+     * @param props Properties to have keys ending in
+     */
     public static void transformNumberedPropertiesToList(Properties props) {
         String key = null;
         String unnumberedKey = null;

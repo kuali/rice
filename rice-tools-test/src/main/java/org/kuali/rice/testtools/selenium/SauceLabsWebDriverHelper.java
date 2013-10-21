@@ -383,7 +383,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 + System.getProperty(SAUCE_PLATFORM_PROPERTY, Platform.UNIX.toString()) + "-"
                 + System.getProperty(SAUCE_BROWSER_PROPERTY) + "-"
                 + System.getProperty(SAUCE_VERSION_PROPERTY) + "-"
-                + System.getProperty(WebDriverLegacyITBase.REMOTE_PUBLIC_USER_PROPERTY, "admin") + "-"
+                + System.getProperty(WebDriverUtil.REMOTE_PUBLIC_USER_PROPERTY, "admin") + "-"
                 + System.getProperty(SAUCE_BUILD_PROPERTY, "unknown_build") + "-"
                 + ITUtil.DTS + "-"
                 + resource;

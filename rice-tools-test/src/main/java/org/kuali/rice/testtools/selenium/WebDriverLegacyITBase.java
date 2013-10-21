@@ -268,16 +268,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String REGEX_VALID = "^.*\\bvalid\\b.*$";
 
     /**
-     * Set -Dremote.public.user= to the username to login as
-     */
-    public static final String REMOTE_PUBLIC_USER_PROPERTY = "remote.public.user";
-
-    /**
-     * You probably don't want to really be using a userpool, set -Dremote.public.userpool= to base url if you must.
-     */
-    public static final String REMOTE_PUBLIC_USERPOOL_PROPERTY = "remote.public.userpool";
-
-    /**
      * return selected
      */
     public static final String RETURN_SELECTED_BUTTON_TEXT = "return selected";
@@ -487,7 +477,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     /**
      * Tear down test as configured.  Do not allow exceptions to be thrown by tearDown, it kills the test run.
      * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
-     * {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USERPOOL_PROPERTY}
+     * {@link WebDriverUtil#REMOTE_PUBLIC_USERPOOL_PROPERTY}
      * {@link org.kuali.rice.testtools.selenium.WebDriverUtil#dontTearDownPropertyNotSet()}
      * @throws Exception
      */
@@ -1280,7 +1270,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * "admin" by default.  Can be overridden using {@link WebDriverLegacyITBase#REMOTE_PUBLIC_USER_PROPERTY}
+     * "admin" by default.  Can be overridden using {@see WebDriverUtil#REMOTE_PUBLIC_USER_PROPERTY}
      * @return string
      */
     public String getUserName() {
@@ -1288,9 +1278,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
+     * <p>
      * Handles simple nested frame content; validates that a frame and nested frame exists before
-     * switching to it
+     * switching to it.
+     * </p><p>
      * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * </p>
      */
     protected void gotoNestedFrame() {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);

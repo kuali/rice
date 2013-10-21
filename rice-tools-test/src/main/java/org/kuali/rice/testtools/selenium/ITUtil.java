@@ -16,6 +16,8 @@
 package org.kuali.rice.testtools.selenium;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

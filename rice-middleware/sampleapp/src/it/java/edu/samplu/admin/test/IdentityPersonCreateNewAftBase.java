@@ -16,7 +16,7 @@
 package edu.samplu.admin.test;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 

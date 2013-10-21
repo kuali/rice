@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.Failable;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
@@ -46,18 +45,19 @@ public class DemoContainersGroupAft extends DemoLibraryBase {
         waitAndClickByLinkText("Group");
     }
 
-    public void testBasicGroupNav(Failable failable) throws Exception {
-        testBasicGroupBookmark(this);
+    @Test
+    public void testBasicGroupNav() throws Exception {
+        testBasicGroupBookmark();
     }
 
     /**
      * Asserts basic group elements are present: header, validation messages,
      * instructional text, and the actual items
      *
-     * @param failable
      * @throws Exception
      */
-    public void testBasicGroupBookmark(Failable failable) throws Exception {
+    @Test
+    public void testBasicGroupBookmark() throws Exception {
         navigationMenu();
 
         WebElement element = driver.findElement(By.id("Demo-Group-Example1"));
@@ -70,15 +70,5 @@ public class DemoContainersGroupAft extends DemoLibraryBase {
         List<WebElement> inputFields = element.findElements(By.className("uif-inputField"));
         SeleneseTestBase.assertTrue("group does not contain correct number of items", inputFields.size() == 4);
         passed();
-    }
-
-    @Test
-    public void testBasicGroupBookmark() throws Exception {
-        testBasicGroupBookmark(this);
-    }
-
-    @Test
-    public void testBasicGroupNav() throws Exception {
-        testBasicGroupNav(this);
     }
 }

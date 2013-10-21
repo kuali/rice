@@ -22,6 +22,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;

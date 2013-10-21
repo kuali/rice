@@ -17,7 +17,7 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Assert;
-import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;

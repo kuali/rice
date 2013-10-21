@@ -16,7 +16,6 @@
 package edu.samplu.admin.test;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 

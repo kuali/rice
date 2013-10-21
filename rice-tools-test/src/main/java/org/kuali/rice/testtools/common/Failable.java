@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.testtools.selenium;
+package org.kuali.rice.testtools.common;
 
 /**
  * Externalize fail so JiraAwareUtils can fail tests in a Jira Aware way.

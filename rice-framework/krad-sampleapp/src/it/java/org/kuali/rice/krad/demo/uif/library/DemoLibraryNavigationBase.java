@@ -1,7 +1,6 @@
 package org.kuali.rice.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.Failable;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -20,10 +19,5 @@ public abstract class DemoLibraryNavigationBase extends DemoLibraryBase {
         assertNavigationView("Page 2", "Test Course 2");
         assertNavigationView("Page 3", "Test Course 3");
         assertNavigationView("Page 1", "Test Course 1");
-    }
-
-    public void testNavigationViewBookmark(Failable failable) throws Exception {
-        testNavigationView();
-        passed();
     }
 }

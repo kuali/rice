@@ -38,6 +38,7 @@ public class DemoNavigationViewAft extends DemoLibraryNavigationBase {
 
     @Test
     public void testNavigationViewBookmark() throws Exception {
-        testNavigationViewBookmark(this);
+        testNavigationView();
+        passed();
     }
 }

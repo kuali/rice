@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.testtools.selenium;
-
-import org.kuali.rice.testtools.common.PropertiesUtils;
+package org.kuali.rice.testtools.common;
 
 import java.io.IOException;
 import java.util.Iterator;

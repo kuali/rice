@@ -17,7 +17,7 @@ package edu.samplu.admin.test;
 
 import edu.samplu.common.FreemarkerAftBase;
 import org.kuali.rice.testtools.common.PropertiesUtils;
-import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
@@ -104,7 +104,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     /**
      * Navigate to the page under test and call {@link #testIngestion}
      *
-     * @param failable {@link org.kuali.rice.testtools.selenium.Failable}
+     * @param failable {@link org.kuali.rice.testtools.common.Failable}
      * @throws Exception
      */
     protected void testIngestionNav(Failable failable) throws Exception {

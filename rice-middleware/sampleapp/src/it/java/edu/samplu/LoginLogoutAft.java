@@ -38,7 +38,7 @@ public class LoginLogoutAft extends AutomatedFunctionalTestBase {
     }
 
     /**
-     * Navigate to the page under test click logout.  {@link LoginLogoutAft#waitAndClickLogout(org.kuali.rice.testtools.selenium.Failable)}
+     * Navigate to the page under test click logout.  {@link LoginLogoutAft#waitAndClickLogout(org.kuali.rice.testtools.common.Failable)}
      *
      * @throws {@link Exception}
      */

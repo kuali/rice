@@ -15,7 +15,7 @@
  */
 package edu.samplu.travel.test;
 
-import org.kuali.rice.testtools.selenium.Failable;
+import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;

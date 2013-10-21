@@ -18,6 +18,8 @@ package org.kuali.rice.testtools.selenium;
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;

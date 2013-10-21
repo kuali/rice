@@ -17,6 +17,8 @@ package org.kuali.rice.testtools.selenium;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 
 public class JiraAwareFailureUtilTest implements Failable {
 

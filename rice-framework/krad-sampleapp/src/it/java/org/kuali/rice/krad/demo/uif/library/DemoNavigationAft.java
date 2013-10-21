@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.uif.library;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.selenium.Failable;
 import org.junit.Test;
 
 /**
@@ -52,26 +51,18 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
         assertTextPresent("Navigation View");
     }
 
-    public void testNavigationMenuBookmark(Failable failable) throws Exception {
-        testNavigationTabs();
-        testNavigationView();
-        passed();
-    }
-
-    public void testNavigationMenuNav(Failable failable) throws Exception {
-        navigateToLibraryDemo("Navigation", "Navigation Group");
-        testNavigationTabs();
-        testNavigationView();
-        passed();
-    }
-
     @Test
     public void testNavigationMenuBookmark() throws Exception {
-        testNavigationMenuBookmark(this);
+        testNavigationTabs();
+        testNavigationView();
+        passed();
     }
 
     @Test
     public void testNavigationMenuNav() throws Exception {
-        testNavigationMenuNav(this);
+        navigateToLibraryDemo("Navigation", "Navigation Group");
+        testNavigationTabs();
+        testNavigationView();
+        passed();
     }
 }

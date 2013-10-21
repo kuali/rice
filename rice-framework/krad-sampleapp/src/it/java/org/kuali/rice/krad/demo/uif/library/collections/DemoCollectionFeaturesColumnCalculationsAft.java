@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.collections;
 
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
-import org.kuali.rice.testtools.selenium.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.testtools.selenium;
+package org.kuali.rice.testtools.common;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 
 public class JiraAwareFailureUtilTest implements Failable {
 

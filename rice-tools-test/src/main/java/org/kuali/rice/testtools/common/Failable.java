@@ -16,8 +16,9 @@
 package org.kuali.rice.testtools.common;
 
 /**
- * Externalize fail so JiraAwareUtils can fail tests in a Jira Aware way.
- *
+ * <p>
+ * Externalize fail so {@see JiraAwareFailureUtil} can fail tests in a Jira aware way.
+ * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Failable {

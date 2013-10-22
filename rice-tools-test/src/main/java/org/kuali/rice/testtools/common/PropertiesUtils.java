@@ -16,6 +16,7 @@
 package org.kuali.rice.testtools.common;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -53,6 +54,8 @@ public class PropertiesUtils {
     /**
      * <p>
      * Read Properties from given Inputstream or Resource Loaction if the InputStream is null.
+     * </p><p>
+     * If a FileNotFoundException is thrown opening the InputStream an attempt will be made to read as a resource.
      * </p>
      * @param fileLocation null means use resourceLocation
      * @param resourceLocation load resource as a stream {@code getClass().getClassLoader().getResourceAsStream(resourceLocation);}
@@ -63,7 +66,12 @@ public class PropertiesUtils {
         Properties props = null;
         InputStream in = null;
         if(fileLocation != null) {
-            in = new FileInputStream(fileLocation);
+            try {
+                in = new FileInputStream(fileLocation);
+            } catch (FileNotFoundException fio) {
+                System.out.println(fio.getMessage() + " trying to read as resource.");
+                in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+            }
         } else {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
         }
@@ -75,12 +83,35 @@ public class PropertiesUtils {
         return props;
     }
 
+    /**
+     * <p>
+     * Read the properties from an inputStream overridding keys defined as JVM arguments.
+     * </p><p>
+     * {see #systemPropertiesOverride}
+     * </p>
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     public static Properties loadPropertiesWithSystemOverrides(InputStream inputStream) throws IOException {
         Properties props = PropertiesUtils.loadProperties(inputStream);
         PropertiesUtils.systemPropertiesOverride(props);
         return props;
     }
 
+    /**
+     * <p>
+     * Read the properties from an inputStream overridding keys defined as JVM arguments and transforming numbered keys
+     * into a list.
+     * </p><p>
+     * {see #systemPropertiesOverride}
+     * {@see #transformNumberedPropertiesToList}
+     * </p>
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     public static Properties loadPropertiesWithSystemOverridesAndNumberedPropertiesToList(InputStream inputStream) throws IOException {
         Properties props = PropertiesUtils.loadProperties(inputStream);
         PropertiesUtils.systemPropertiesOverride(props);

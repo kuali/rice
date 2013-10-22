@@ -27,8 +27,12 @@ import java.util.regex.Pattern;
  * </p><p>
  * The more failures the more useful it is to not have to keep tracking down the same Jiras.
  * </p><p>
- * Set jira.aware.regex.failures.location and jira.aware.contains.failures.location to define file locations, else
- * JiraAwareRegexFailures.properties and JiraAwareContainsFailures.properties will be read as a resource stream.
+ * Set -Djira.aware.regex.failures.location and -Djira.aware.contains.failures.location to define file locations, else
+ * JiraAwareRegexFailures.properties and JiraAwareContainsFailures.properties will be read as a resource stream.  To
+ * override the Jira browse url set -Djira.aware.browse.url
+ * </p><p>
+ * To make use of JiraAwareFailureUtil implement {@see Failable} and call {@code JiraAwareFailureUtil.fail(contents, message, failable);} instead of
+ * asserts or Assert.fail().
  * </p><p>
  * TODO:
  * <ol>
@@ -40,15 +44,38 @@ import java.util.regex.Pattern;
 public class JiraAwareFailureUtil {
 
     /**
+     * <p>
+     * Set -Djira.aware.base.url to point your Jira url base (include trailing slash), defaults to
      * https://jira.kuali.org/browse/
+     * </p>
      */
-    public static final String JIRA_BROWSE_URL = "https://jira.kuali.org/browse/";
+    public static final String JIRA_BROWSE_URL_PROPERTY = "jira.aware.browse.url";
 
-    private static String REGEX_PROPS_LOCATION = System.getProperty("jira.aware.regex.failures.location", null);
+    private static String JIRA_BROWSE_URL = System.getProperty(JIRA_BROWSE_URL_PROPERTY,"https://jira.kuali.org/browse/");
+
     private static String REGEX_DEFAULT_PROPS_LOCATION = "JiraAwareRegexFailures.properties";
 
-    private static String CONTAINS_PROPS_LOCATION = System.getProperty("jira.aware.contains.failures.location", null);
+    /**
+     * <p>
+     * Set -Djira.aware.regex.failures.location to point to the the regex failures properties, defaults to
+     * JiraAwareRegexFailures.properties
+     * </p>
+     */
+    public static final String REGEX_LOCATION_POPERTY = "jira.aware.regex.failures.location";
+
+    private static String REGEX_PROPS_LOCATION = System.getProperty(REGEX_LOCATION_POPERTY, REGEX_DEFAULT_PROPS_LOCATION);
+
     private static String CONTAINS_DEFAULT_PROPS_LOCATION = "JiraAwareContainsFailures.properties";
+
+    /**
+     * <p>
+     * Set -Djira.aware.contains.failures.location to point to the the regex failures properties, defaults to
+     * JiraAwareContainsFailures.properties
+     * </p>
+     */
+    public static final String CONTAINS_LOCATION_PROERTY = "jira.aware.contains.failures.location";
+
+    private static String CONTAINS_PROPS_LOCATION = System.getProperty(CONTAINS_LOCATION_PROERTY, CONTAINS_DEFAULT_PROPS_LOCATION);
 
     static Properties regexJiraMatches; // for more powerful matching
 

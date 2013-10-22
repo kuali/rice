@@ -225,13 +225,15 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
-    	getLegacyDataAdapter().saveDocument(document);
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        // Need to preserve the workflow document header, which just got left behind
+        savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().superUserApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
+        		savedDocument.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(savedDocument);
+        return savedDocument;
     }
 
     /**
@@ -240,13 +242,15 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
-    	getLegacyDataAdapter().saveDocument(document);
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
+        Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        // Need to preserve the workflow document header, which just got left behind
+        savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().superUserCancel(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation);
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
+        		savedDocument.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(savedDocument);
+        return savedDocument;
     }
 
     /**
@@ -255,8 +259,10 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
-    	getLegacyDataAdapter().saveDocument(document);
-        return superUserDisapproveDocumentWithoutSaving(document, annotation);
+        Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        // Need to preserve the workflow document header, which just got left behind
+        savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        return superUserDisapproveDocumentWithoutSaving(savedDocument, annotation);
     }
 
     /**
@@ -422,18 +428,18 @@ public class DocumentServiceImpl implements DocumentService {
         checkForNulls(document);
 
         document.prepareForSave();
-        validateAndPersistDocument(document, new CompleteDocumentEvent(document));
+        Document savedDocument = validateAndPersistDocument(document, new CompleteDocumentEvent(document));
 
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().complete(document.getDocumentHeader().getWorkflowDocument(), annotation,
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().complete(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation,
                 adHocRecipients);
 
         UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
+        		savedDocument.getDocumentHeader().getWorkflowDocument());
 
-        removeAdHocPersonsAndWorkgroups(document);
+        removeAdHocPersonsAndWorkgroups(savedDocument);
 
-        return document;
+        return savedDocument;
     }
 
     protected void checkForNulls(Document document) {
@@ -840,6 +846,8 @@ public class DocumentServiceImpl implements DocumentService {
                 LOG.info("storing document " + document.getDocumentNumber());
             }
             savedDocument = getLegacyDataAdapter().saveDocument(document);
+            // Need to preserve the workflow document header, which just got left behind
+            savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         } catch (OptimisticLockingFailureException e) {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;
@@ -913,7 +921,10 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document updateDocument(Document document) {
         checkForNulls(document);
-        return getLegacyDataAdapter().saveDocument(document);
+        Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        // Need to preserve the workflow document header, which just got left behind
+        savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        return savedDocument;
     }
 
     /**

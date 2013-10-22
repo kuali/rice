@@ -226,6 +226,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
         Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        savedDocument.processAfterRetrieve();
         // Need to preserve the workflow document header, which just got left behind
         savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         prepareWorkflowDocument(savedDocument);
@@ -243,6 +244,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
         Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        savedDocument.processAfterRetrieve();
         // Need to preserve the workflow document header, which just got left behind
         savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         prepareWorkflowDocument(savedDocument);
@@ -260,6 +262,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
         Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        savedDocument.processAfterRetrieve();
         // Need to preserve the workflow document header, which just got left behind
         savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return superUserDisapproveDocumentWithoutSaving(savedDocument, annotation);
@@ -846,6 +849,7 @@ public class DocumentServiceImpl implements DocumentService {
                 LOG.info("storing document " + document.getDocumentNumber());
             }
             savedDocument = getLegacyDataAdapter().saveDocument(document);
+            savedDocument.processAfterRetrieve();
             // Need to preserve the workflow document header, which just got left behind
             savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         } catch (OptimisticLockingFailureException e) {
@@ -922,6 +926,7 @@ public class DocumentServiceImpl implements DocumentService {
     public Document updateDocument(Document document) {
         checkForNulls(document);
         Document savedDocument = getLegacyDataAdapter().saveDocument(document);
+        savedDocument.processAfterRetrieve();
         // Need to preserve the workflow document header, which just got left behind
         savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
         return savedDocument;

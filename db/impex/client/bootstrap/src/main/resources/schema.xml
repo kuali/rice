@@ -503,4 +503,9 @@
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
     <sequence name="KRTST_GENERATED_PK_S" nextval="10000"/>
+    <sequence name="TRVL_CO_ID_S" nextval="10020"/>
+    <sequence name="TRVL_DEST_ID_S" nextval="10020"/>
+    <sequence name="TRVL_EXP_ITM_ID_S" nextval="10020"/>
+    <sequence name="TRVL_MLG_RT_ID_S" nextval="10001"/>
+    <sequence name="TRVL_PD_EXP_ID_S" nextval="10020"/>
 </database>

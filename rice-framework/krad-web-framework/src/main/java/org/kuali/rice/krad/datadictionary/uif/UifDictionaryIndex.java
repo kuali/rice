@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -31,8 +30,8 @@ import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -95,7 +94,7 @@ public class UifDictionaryIndex implements Runnable {
             LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
         }
         
-        return ViewLifecycle.getMutableCopy(view);
+        return view.copy();
     }
 
     /**
@@ -117,30 +116,26 @@ public class UifDictionaryIndex implements Runnable {
                 throw new DataDictionaryException("Unable to find View with id: " + viewId);
             }
 
-            View newView = ViewLifecycle.encapsulateInitialization(new Callable<View>(){
-                @Override
-                public View call() throws Exception {
-                    View view = ddBeans.getBean(beanName, View.class);
-                    
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Updating view status to CREATED for view: " + view.getId());
-                    }
+            View view = ddBeans.getBean(beanName, View.class);
+            
+            CopyUtils.preventModification(view);
 
-                    return view;
-                }});
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            }
 
             boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_DEV_MODE);
 
             if (!inDevMode) {
                 synchronized (viewCache) {
-                    viewCache.put(viewId, newView);
+                    viewCache.put(viewId, view);
                 }
             } else if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "DEV MODE - View " + viewId + " will not be cached");
             }
             
-            cachedView = newView;
+            cachedView = view;
         }
 
         return cachedView;

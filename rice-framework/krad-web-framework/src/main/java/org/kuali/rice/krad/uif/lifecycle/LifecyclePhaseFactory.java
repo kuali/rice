@@ -179,12 +179,12 @@ public final class LifecyclePhaseFactory {
      * 
      * @param task The task to recycle.
      */
-    static void recycle(AbstractViewLifecyclePhase task) {
+    static void recycle(ViewLifecyclePhaseBase task) {
         getRecycler(task.getClass()).recycle(task);
     }
 
     @SuppressWarnings("unchecked")
-    private final static <T extends AbstractViewLifecyclePhase> Recycler<T> getRecycler(Class<?> phaseClass) {
+    private final static <T extends ViewLifecyclePhaseBase> Recycler<T> getRecycler(Class<?> phaseClass) {
         Map<Class<?>, Reference<Recycler<?>>> recycleMap = RECYCLE.get();
         if (recycleMap == null) {
             recycleMap = new WeakHashMap<Class<?>, Reference<Recycler<?>>>();
@@ -201,7 +201,7 @@ public final class LifecyclePhaseFactory {
         return recycler;
     }
 
-    private final static class Recycler<T extends AbstractViewLifecyclePhase> {
+    private final static class Recycler<T extends ViewLifecyclePhaseBase> {
 
         private final Queue<T> recycleQueue = new LinkedList<T>();
 

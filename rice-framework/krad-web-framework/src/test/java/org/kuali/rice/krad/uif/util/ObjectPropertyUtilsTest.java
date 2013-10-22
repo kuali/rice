@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -47,7 +46,6 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
@@ -510,52 +508,37 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         // Below recreates the stack trace that ensued due to poorly escaped quotes,
         // and proves that the parser works around bad quoting in a manner similar to BeanWrapper 
 
-        final CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
-        final CollectionTestForm form = new CollectionTestForm();
+        CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
+        CollectionTestForm form = new CollectionTestForm();
         CollectionTestItem item = new CollectionTestItem();
         item.setFoobar("barfoo");
         ObjectPropertyUtils.setPropertyValue(form, "foo.baz['foo_bar_'badquotes'_.foobar']", item);
         assertEquals("barfoo", form.foo.baz.get("foo_bar_'badquotes'_.foobar").foobar);
 
-        final FormView view = ViewLifecycle.encapsulateInitialization(new Callable<FormView>(){
-            @Override
-            public FormView call() throws Exception {
-                FormView view = new FormView();
-                view.setFormClass(CollectionTestForm.class);
-                view.setViewHelperService(new ViewHelperServiceImpl());
-                view.setPresentationController(new ViewPresentationControllerBase());
-                view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
-                return view;
-            }});
-        
-        final CollectionGroup collectionGroup =
-                ViewLifecycle.encapsulateInitialization(new Callable<CollectionGroup>(){
-            @Override
-            public CollectionGroup call() throws Exception {
-                CollectionGroup collectionGroup = new CollectionGroup();
-                collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
-                collectionGroup.setAddLinePropertyName("addLineFoo");
+        FormView view = new FormView();
+        view.setFormClass(CollectionTestForm.class);
+        view.setViewHelperService(new ViewHelperServiceImpl());
+        view.setPresentationController(new ViewPresentationControllerBase());
+        view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
 
-                StackedLayoutManager layoutManager = new StackedLayoutManager();
-                Group lineGroupPrototype = new Group();
-                layoutManager.setLineGroupPrototype(lineGroupPrototype);
-                collectionGroup.setLayoutManager(layoutManager);
+        CollectionGroup collectionGroup = new CollectionGroup();
+        collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
+        collectionGroup.setAddLinePropertyName("addLineFoo");
 
-                BindingInfo addLineBindingInfo = new BindingInfo();
-                addLineBindingInfo.setBindingPath("foo.baz['foo_bar_'badquotes'_.foobar']");
-                collectionGroup.setAddLineBindingInfo(addLineBindingInfo);
+        StackedLayoutManager layoutManager = new StackedLayoutManager();
+        Group lineGroupPrototype = new Group();
+        layoutManager.setLineGroupPrototype(lineGroupPrototype);
+        collectionGroup.setLayoutManager(layoutManager);
 
-                BindingInfo collectionBindingInfo = new BindingInfo();
-                collectionBindingInfo.setBindingPath("foo.bar");
-                collectionGroup.setBindingInfo(collectionBindingInfo);
-                return collectionGroup;
-            }});
+        BindingInfo addLineBindingInfo = new BindingInfo();
+        addLineBindingInfo.setBindingPath("foo.baz['foo_bar_'badquotes'_.foobar']");
+        collectionGroup.setAddLineBindingInfo(addLineBindingInfo);
 
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
-            @Override
-            public void run() {
-                collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
-            }});
+        BindingInfo collectionBindingInfo = new BindingInfo();
+        collectionBindingInfo.setBindingPath("foo.bar");
+        collectionGroup.setBindingInfo(collectionBindingInfo);
+
+        collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
     }
 
     @Test

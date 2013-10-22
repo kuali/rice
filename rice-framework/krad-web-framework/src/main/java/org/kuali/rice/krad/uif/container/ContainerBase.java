@@ -170,7 +170,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             layoutManager.initializePendingTasks(phase, pendingTasks);
         }
         
-        if (isProcessRemoteFieldHolders()) {
+        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)
+                && isProcessRemoteFieldHolders()) {
             pendingTasks.add(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, phase));
         }
     }

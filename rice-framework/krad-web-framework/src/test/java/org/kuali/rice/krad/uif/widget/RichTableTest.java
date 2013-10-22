@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,7 +46,6 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
-import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import com.google.common.collect.Lists;
@@ -87,52 +85,47 @@ public class RichTableTest {
 
     //private
     @Before
-    public void setup() {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
+    public void setup() throws Throwable {
+        richTable = new RichTable();
 
-            @Override
-            public Void call() throws Exception {
-                richTable = new RichTable();
+        richTable = spy(richTable);
 
-                richTable = spy(richTable);
+        ConfigurationService configurationService = mock(ConfigurationService.class);
+        doReturn(configurationService).when(richTable).getConfigurationService();
 
-                ConfigurationService configurationService = mock(ConfigurationService.class);
-                doReturn(configurationService).when(richTable).getConfigurationService();
+        group = new CollectionGroup();
+        group.setCollectionObjectClass(Employee.class);
 
-                group = new CollectionGroup();
-                group.setCollectionObjectClass(Employee.class);
+        TableLayoutManager layoutManager = new TableLayoutManager();
+        layoutManager.setRenderSequenceField(true);
 
-                TableLayoutManager layoutManager = new TableLayoutManager();
-                layoutManager.setRenderSequenceField(true);
+        List<Component> items = new ArrayList<Component>(1);
+        DataField name = new DataField();
+        name.setPropertyName("employeeId");
+        items.add(name);
+        DataField number = new DataField();
+        number.setPropertyName("positionTitle");
+        items.add(number);
+        DataField contactEmail = new DataField();
+        contactEmail.setPropertyName("contactEmail");
+        items.add(contactEmail);
 
-                List<Component> items = new ArrayList<Component>(1);
-                DataField name = new DataField();
-                name.setPropertyName("employeeId");
-                items.add(name);
-                DataField number = new DataField();
-                number.setPropertyName("positionTitle");
-                items.add(number);
-                DataField contactEmail = new DataField();
-                contactEmail.setPropertyName("contactEmail");
-                items.add(contactEmail);
+        layoutManager = spy(layoutManager);
+        doReturn(items).when(layoutManager).getFirstRowFields();
+        doReturn(layoutManager).when(layoutManager).copy();
+        doReturn(layoutManager).when(layoutManager).clone();
 
-                layoutManager = spy(layoutManager);
-                doReturn(items).when(layoutManager).getFirstRowFields();
-                doReturn(layoutManager).when(layoutManager).copy();
+        group.setLayoutManager(layoutManager);
+        group.setIncludeLineSelectionField(false);
+        group.setRenderLineActions(false);
 
-                group.setLayoutManager(layoutManager);
-                group.setIncludeLineSelectionField(false);
-                group.setRenderLineActions(false);
-
-                group.setItems(items);
-                
-                return null;
-            }});
+        group.setItems(items);
 
         mockView = mock(LookupView.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
         when(mockView.copy()).thenReturn(mockView);
+        when(mockView.clone()).thenReturn(mockView);
     }
 
     @Test
@@ -328,22 +321,17 @@ public class RichTableTest {
      * @param optionsOnRichTable - a string in JSON format of the options set on the rich table
      * @param optionKey - a string with the rich table option key being tested
      */
-    private void assertRichTableComponentOptions(final String optionsOnGroup, final String optionsOnRichTable, final String optionKey) {
+    private void assertRichTableComponentOptions(String optionsOnGroup, final String optionsOnRichTable, final String optionKey) {
 
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                Map<String, String> templateOptions = richTable.getTemplateOptions();
-                if (templateOptions == null) {
-                    templateOptions = new HashMap<String, String>();
-                } else {
-                    templateOptions = new HashMap<String, String>(templateOptions);
-                }
+        Map<String, String> templateOptions = richTable.getTemplateOptions();
+        if (templateOptions == null) {
+            templateOptions = new HashMap<String, String>();
+        } else {
+            templateOptions = new HashMap<String, String>(templateOptions);
+        }
 
-                templateOptions.put(optionKey, optionsOnGroup);
-                richTable.setTemplateOptions(templateOptions);        
-                return null;
-            }});
+        templateOptions.put(optionKey, optionsOnGroup);
+        richTable.setTemplateOptions(templateOptions);
         
         ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, new Runnable(){
             @Override

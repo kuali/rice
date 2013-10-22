@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
+
 /**
  * List implementation for internal use by a lifecycle element.
  *
@@ -30,7 +32,8 @@ import java.util.ListIterator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LifecycleAwareList<E> implements List<E>, UifCloneable, Serializable {
+public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, Serializable {
+
     private static final long serialVersionUID = -8971217230511446882L;
 
     /**
@@ -167,6 +170,12 @@ public class LifecycleAwareList<E> implements List<E>, UifCloneable, Serializabl
      */
     public LifecycleAwareList(LifecycleElement lifecycleElement, List<E> delegate) {
         this.lifecycleElement = lifecycleElement;
+        
+        List<E> wrapped = delegate;
+        while (wrapped instanceof LifecycleAwareList) {
+            wrapped = ((LifecycleAwareList<E>) wrapped).delegate;
+        }
+        
         this.delegate = delegate;
     }
 
@@ -318,6 +327,27 @@ public class LifecycleAwareList<E> implements List<E>, UifCloneable, Serializabl
     public List<E> subList(int fromIndex, int toIndex) {
         return new LifecycleAwareList<E>(lifecycleElement, this.delegate.subList(fromIndex, toIndex));
     }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.Copyable#copy()
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T copy() {
+        try {
+            return (T) clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Unexpected error in clone()", e);
+        }
+    }
+
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
 
     /**
      * @see java.lang.Object#clone()

@@ -19,7 +19,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -34,7 +33,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult;
 import org.kuali.rice.krad.uif.util.ColumnSort;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.MultiColumnComparator;
@@ -94,12 +92,8 @@ public class DataTablesPagingHelper {
                 newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
 
                 // run lifecycle on the table component and update in view
-                ViewLifecycleResult result = ViewLifecycle
-                        .performComponentLifecycle(view, form, request, response,
+                ViewLifecycle.performComponentLifecycle(view, form, request, response,
                                 newCollectionGroup, oldCollectionGroup.getId());
-                newCollectionGroup = result.getRefreshComponent();
-                form.setPostedView(result.getProcessedView());
-                
             }
 
             this.tableLayoutManager = (TableLayoutManager) newCollectionGroup.getLayoutManager();
@@ -225,12 +219,8 @@ public class DataTablesPagingHelper {
                 sortIndices[i] = i;
             }
 
-            MultiColumnComparator comparator = ViewLifecycle
-                    .encapsulateInitialization(new Callable<MultiColumnComparator>(){
-                @Override
-                public MultiColumnComparator call() throws Exception {
-                    return new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view);
-                }});
+            MultiColumnComparator comparator =
+                    new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view);
             Arrays.sort(sortIndices, comparator);
 
             // apply the sort to the modelCollection

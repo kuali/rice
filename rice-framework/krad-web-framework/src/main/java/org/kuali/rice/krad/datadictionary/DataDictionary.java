@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
@@ -50,7 +49,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
@@ -196,65 +194,59 @@ public class DataDictionary {
      * @param allowConcurrentValidation - indicates whether the indexing should occur on a different thread
      * or the same thread
      */
-    public void performDictionaryPostProcessing(final boolean allowConcurrentValidation) {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                LOG.info("Starting Data Dictionary Post Processing");
+    public void performDictionaryPostProcessing(boolean allowConcurrentValidation) {
+        LOG.info("Starting Data Dictionary Post Processing");
 
-                timer.start("Spring Post Processing");
-                PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
-                propertyPlaceholderConfigurer.setProperties(ConfigContext.getCurrentContextConfig().getProperties());
-                propertyPlaceholderConfigurer.postProcessBeanFactory(ddBeans);
+        timer.start("Spring Post Processing");
+        PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+        propertyPlaceholderConfigurer.setProperties(ConfigContext.getCurrentContextConfig().getProperties());
+        propertyPlaceholderConfigurer.postProcessBeanFactory(ddBeans);
 
-                DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor =
-                        new DictionaryBeanFactoryPostProcessor(DataDictionary.this, ddBeans);
-                dictionaryBeanPostProcessor.postProcessBeanFactory();
-                timer.stop();
+        DictionaryBeanFactoryPostProcessor dictionaryBeanPostProcessor =
+                new DictionaryBeanFactoryPostProcessor(DataDictionary.this, ddBeans);
+        dictionaryBeanPostProcessor.postProcessBeanFactory();
+        timer.stop();
 
-                // post processes UIF beans for pulling out expressions within property values
-                timer.start("UIF Post Processing");
-                UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
-                factoryPostProcessor.postProcessBeanFactory(ddBeans);
-                timer.stop();
+        // post processes UIF beans for pulling out expressions within property values
+        timer.start("UIF Post Processing");
+        UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();
+        factoryPostProcessor.postProcessBeanFactory(ddBeans);
+        timer.stop();
 
-                timer.start("Instantiating DD Beans");
-                ddBeans.preInstantiateSingletons();
-                timer.stop();
+        timer.start("Instantiating DD Beans");
+        ddBeans.preInstantiateSingletons();
+        timer.stop();
 
-                // Allow the DD to perform final post processing in a controlled order
-                // Unlike the Spring post processor, we will only call for these operations on the
-                // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
-                timer.start("DD Post Processing");
-                for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
-                    entry.dataDictionaryPostProcessing();
-                }
-                for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
-                    entry.dataDictionaryPostProcessing();
-                }
-                timer.stop();
+        // Allow the DD to perform final post processing in a controlled order
+        // Unlike the Spring post processor, we will only call for these operations on the
+        // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
+        timer.start("DD Post Processing");
+        for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
+            entry.dataDictionaryPostProcessing();
+        }
+        for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
+            entry.dataDictionaryPostProcessing();
+        }
+        timer.stop();
 
-                timer.start("Data Dictionary Indexing");
-                ddIndex.run();
-                timer.stop();
+        timer.start("Data Dictionary Indexing");
+        ddIndex.run();
+        timer.stop();
 
-                // The UIF defaulting must be done before the UIF indexing but after
-                // the main DD data object indexing
-                timer.start("UIF Defaulting");
-                // Check if there are inquiry definitions for data objects
-                generateMissingInquiryDefinitions();
-                // Check if there are lookup definitions for data objects
-                generateMissingLookupDefinitions();
-                timer.stop();
+        // The UIF defaulting must be done before the UIF indexing but after
+        // the main DD data object indexing
+        timer.start("UIF Defaulting");
+        // Check if there are inquiry definitions for data objects
+        generateMissingInquiryDefinitions();
+        // Check if there are lookup definitions for data objects
+        generateMissingLookupDefinitions();
+        timer.stop();
 
-                timer.start("UIF Indexing");
-                uifIndex.run();
-                timer.stop();
+        timer.start("UIF Indexing");
+        uifIndex.run();
+        timer.stop();
 
-                LOG.info("Completed Data Dictionary Post Processing");
-                return null;
-            }
-        });
+        LOG.info("Completed Data Dictionary Post Processing");
     }
 
     protected void generateMissingInquiryDefinitions() {
@@ -339,48 +331,42 @@ public class DataDictionary {
         }
     }
 
-    public void validateDD(final boolean validateEbos) {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                timer.start("Validation");
-                DataDictionary.validateEBOs = validateEbos;
+    public void validateDD(boolean validateEbos) {
+        timer.start("Validation");
+        DataDictionary.validateEBOs = validateEbos;
 
-                Validator.resetErrorReport();
+        Validator.resetErrorReport();
 
-                Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
-                for (DataObjectEntry entry : doBeans.values()) {
-                    entry.completeValidation(new ValidationTrace());
+        Map<String, DataObjectEntry> doBeans = ddBeans.getBeansOfType(DataObjectEntry.class);
+        for (DataObjectEntry entry : doBeans.values()) {
+            entry.completeValidation(new ValidationTrace());
+        }
+
+        Map<String, DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
+        for (DocumentEntry entry : docBeans.values()) {
+            entry.completeValidation(new ValidationTrace());
+        }
+
+        List<ErrorReport> errorReports = Validator.getErrorReports();
+        if (errorReports.size() > 0) {
+            boolean errors = false;
+            LOG.error("***********************************************************");
+            LOG.error("ERRORS OR WARNINGS REPORTED UPON DATA DICTIONARY VALIDATION");
+            LOG.error("***********************************************************");
+            for (ErrorReport err : errorReports) {
+                if (err.isError()) {
+                    LOG.error(err.errorMessage());
+                    errors = true;
+                } else {
+                    LOG.warn(err.errorMessage());
                 }
-
-                Map<String, DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
-                for (DocumentEntry entry : docBeans.values()) {
-                    entry.completeValidation(new ValidationTrace());
-                }
-
-                List<ErrorReport> errorReports = Validator.getErrorReports();
-                if (errorReports.size() > 0) {
-                    boolean errors = false;
-                    LOG.error("***********************************************************");
-                    LOG.error("ERRORS OR WARNINGS REPORTED UPON DATA DICTIONARY VALIDATION");
-                    LOG.error("***********************************************************");
-                    for (ErrorReport err : errorReports) {
-                        if (err.isError()) {
-                            LOG.error(err.errorMessage());
-                            errors = true;
-                        } else {
-                            LOG.warn(err.errorMessage());
-                        }
-                    }
-                    if (errors) {
-                        throw new DataDictionaryException("Errors during DD validation, failing validation.");
-                    }
-                }
-
-                timer.stop();
-                return null;
             }
-        });
+            if (errors) {
+                throw new DataDictionaryException("Errors during DD validation, failing validation.");
+            }
+        }
+
+        timer.stop();
     }
 
     public void validateDD() {

@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RenderComponentPhase extends AbstractViewLifecyclePhase {
+public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     private RenderComponentPhase parent;
     private List<RenderComponentPhase> siblings;
@@ -53,7 +53,7 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     }
     
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#recycle()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
      */
     @Override
     protected void recycle() {
@@ -113,7 +113,7 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     }
     
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#getPredecessors()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#getPredecessors()
      */
     @Override
     public List<? extends ViewLifecyclePhase> getPredecessors() {
@@ -127,7 +127,7 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     /**
      * Perform rendering on the given component.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializePendingTasks(java.util.Queue)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -142,7 +142,7 @@ public class RenderComponentPhase extends AbstractViewLifecyclePhase {
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

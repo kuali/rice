@@ -21,6 +21,8 @@ import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.util.ArrayList;
@@ -110,25 +112,30 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
     }
 
     /**
-     * Copies object by value
-     *
-     * @return copiedClass
+     * @see Copyable#clone()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
+    @Override
+    public MaintenanceActiveCollectionFilter clone() throws CloneNotSupportedException {
+        return (MaintenanceActiveCollectionFilter) super.clone();
     }
 
     /**
+     * @see Copyable#copy()
+     * @see CloneUtils#copy(Copyable)
+     */
+    public final <T> T copy() {
+        return CopyUtils.copy(this);
+    }
+
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
+
+   /**
      * Copies the properties over for the copy method.
      *
      * @param maintenanceActiveCollectionFilter MaintenanceActiveCollectionFilter instance to copy properties to

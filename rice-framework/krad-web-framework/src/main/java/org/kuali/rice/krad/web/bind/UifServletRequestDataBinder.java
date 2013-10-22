@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.bind;
 
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -130,57 +128,51 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      * @param request - HTTP Servlet Request instance
      */
     @Override
-    public void bind(final ServletRequest request) {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                _bind(request);
+    public void bind(ServletRequest request) {
+        _bind(request);
 
-                UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
+        UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
 
-                // if doing a partial page update or ajax request with no updating, do not initialize view
-                if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {
-                    View view = null;
+        // if doing a partial page update or ajax request with no updating, do not initialize view
+        if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {
+            View view = null;
 
-                    // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
-                    String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
-                    if (StringUtils.isBlank(viewId)) {
-                        viewId = request.getParameter(UifParameters.VIEW_ID);
-                    }
+            // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
+            String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
+            if (StringUtils.isBlank(viewId)) {
+                viewId = request.getParameter(UifParameters.VIEW_ID);
+            }
 
-                    if (StringUtils.isNotBlank(viewId)) {
-                        view = getViewService().getViewById(viewId);
-                    }
+            if (StringUtils.isNotBlank(viewId)) {
+                view = getViewService().getViewById(viewId);
+            }
 
-                    // attempt to get view instance by type parameters
-                    if (view == null) {
-                        view = getViewByType(request, form);
-                    }
+            // attempt to get view instance by type parameters
+            if (view == null) {
+                view = getViewByType(request, form);
+            }
 
-                    // if view not found attempt to find one based on the cached form
-                    if (view == null) {
-                        view = getViewFromPreviousModel(form);
+            // if view not found attempt to find one based on the cached form
+            if (view == null) {
+                view = getViewFromPreviousModel(form);
 
-                        if (view != null) {
-                            LOG.warn("Obtained viewId from cached form, this may not be safe!");
-                        }
-                    }
-
-                    if (view != null) {
-                        form.setViewId(view.getId());
-
-
-                    } else {
-                        form.setViewId(null);
-                    }
-
-                    form.setView(view);
+                if (view != null) {
+                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
                 }
+            }
 
-                // invoke form callback for custom binding
-                form.postBind((HttpServletRequest) request);
-                return null;
-            }});
+            if (view != null) {
+                form.setViewId(view.getId());
+
+            } else {
+                form.setViewId(null);
+            }
+
+            form.setView(view);
+        }
+
+        // invoke form callback for custom binding
+        form.postBind((HttpServletRequest) request);
     }
 
     /**

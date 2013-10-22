@@ -66,22 +66,18 @@ public class InputFieldTest {
         when(view.getViewStatus()).thenReturn(UifConstants.ViewStatus.FINAL);
         when(bindingInfo.getBindingPath()).thenReturn("testInteger");
         when(bindingInfo.copy()).thenReturn(bindingInfo);
+        when(bindingInfo.clone()).thenReturn(bindingInfo);
 
         // setup input field with binding info and readonly
-        final InputField testObj = ViewLifecycle.encapsulateInitialization(new Callable<InputField>(){
-            @Override
-            public InputField call() throws Exception {
-                InputField testObj = new InputField();        
-                testObj.setBindingInfo(bindingInfo);
-                testObj.setReadOnly(true);
-                testObj.setOptionsFinder(optionsFinder);
-                return testObj;
-            }});
+        final InputField testObj = new InputField();
+        testObj.setBindingInfo(bindingInfo);
+        testObj.setReadOnly(true);
+        testObj.setOptionsFinder(optionsFinder);
         
         ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
             @Override
             public void run() {
-                testObj.<InputField> copy().performFinalize(model, testObj);
+                testObj.performFinalize(model, testObj);
             }});
 
     }

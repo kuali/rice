@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -43,6 +42,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.lookup.LookupInputField;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -82,9 +82,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.InquiryView;
-import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -199,28 +197,23 @@ public class ComponentFactory {
             throw new RuntimeException(id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
         }
 
-        return ViewLifecycle.encapsulateInitialization(new Callable<Component>() {
-            @Override
-            public Component call() throws Exception {
-                Component component = null;
-                if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
-                    component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
-                    LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
-                } else {
-                    component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
-                            origComponent.getBaseId());
-                    LOG.debug("getNewInstanceForRefresh: id '" + id
-                            + "' was NOT found in initialStates. New one fetched from DD");
-                }
+        Component component = null;
+        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
+            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
+            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
+        } else {
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                    origComponent.getBaseId());
+            LOG.debug("getNewInstanceForRefresh: id '" + id
+                    + "' was NOT found in initialStates. New one fetched from DD");
+        }
 
-                if (component != null) {
-                    component = ComponentUtils.copy(component);
-                    component.setId(origComponent.getBaseId());
-                }
-                
-                return component;
-            }
-        });
+        if (component != null) {
+            component = ComponentUtils.copy(component);
+            component.setId(origComponent.getBaseId());
+        }
+
+        return component;
     }
 
     /**
@@ -235,23 +228,18 @@ public class ComponentFactory {
         if (cache.containsKey(beanId)) {
             component = cache.get(beanId);
         } else {
-            component = ViewLifecycle.encapsulateInitialization(new Callable<Component>() {
-                @Override
-                public Component call() throws Exception {
-                    Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
-                            .getDictionaryObject(beanId);
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
+                    .getDictionaryObject(beanId);
 
-                    // clear id before returning so duplicates do not occur
-                    component.setId(null);
-                    component.setBaseId(null);
+            // clear id before returning so duplicates do not occur
+            component.setId(null);
+            component.setBaseId(null);
 
-                    // populate property expressions from expression graph
-                    ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
-
-                    return component;
-                }
-            });
+            // populate property expressions from expression graph
+            ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
             
+            CopyUtils.preventModification(component);
+
             // add to cache
             synchronized (cache) {
                 cache.put(beanId, component);

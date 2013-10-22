@@ -15,18 +15,15 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.concurrent.Callable;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.view.View;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * test various FieldBase methods
@@ -42,56 +39,36 @@ public class FieldBaseTest {
      */
     public void testRequiredMessageDisplay() throws Exception {
 
-        // create mock objects for view, view helper service, model, and component
-        View mockView =  mock(View.class);
-        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
-        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
-        when(mockView.copy()).thenReturn(mockView);
-        final Object nullModel = null;
-        final Component mockComponent = mock(Component.class);
+        // create mock component
+//        View mockView =  mock(View.class);
+//        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+//        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
+//        when(mockView.copy()).thenReturn(mockView);
+//        when(mockView.clone()).thenReturn(mockView);
+        Object nullModel = null;
+        Component mockComponent = mock(Component.class);
 
         // build asterisk required message and mock label to test rendering
-        final Label mockLabel = mock(Label.class);
-        final Message message = ViewLifecycle.encapsulateInitialization(new Callable<Message>(){
-            @Override
-            public Message call() throws Exception {
-                Message message = new Message();
-                message.setMessageText("*");
-                message.setRender(true);
-                when(mockLabel.copy()).thenReturn(mockLabel);
-                return message;
-            }});
+        Label mockLabel = mock(Label.class);
+        Message message = new Message();
+        message.setMessageText("*");
+        message.setRender(true);
+        when(mockLabel.copy()).thenReturn(mockLabel);
+        when(mockLabel.clone()).thenReturn(mockLabel);
 
-        // required and not readonly - render
-        final FieldBase fieldBase = ViewLifecycle.encapsulateInitialization(new Callable<FieldBase>(){
-            @Override
-            public FieldBase call() throws Exception {
-                FieldBase fieldBase = new FieldBase();
-                fieldBase.setFieldLabel(mockLabel);
-                fieldBase.setRequired(true);
-                fieldBase.setReadOnly(false);
-                return fieldBase;
-            }});
+        FieldBase fieldBase = new FieldBase();
+        fieldBase.setFieldLabel(mockLabel);
+        fieldBase.setRequired(true);
+        fieldBase.setReadOnly(false);
 
-        Runnable finalizeField = new Runnable(){
-            @Override
-            public void run() {
-                when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
-                fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
-            }};
-            
-        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, finalizeField);
+        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
+        fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
         assertTrue(fieldBase.getFieldLabel().getRequiredMessage().isRender());
 
         // required and readonly -  do not render
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                fieldBase.setReadOnly(true);
-                return null;
-            }});
-
-        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, finalizeField);
+        fieldBase.setReadOnly(true);
+        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
+        fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
         assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
     }
 }

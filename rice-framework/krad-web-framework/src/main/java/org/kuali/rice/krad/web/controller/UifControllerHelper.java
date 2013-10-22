@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -229,66 +228,18 @@ public class UifControllerHelper {
 
             View postedView = form.getPostedView();
 
-            // check if the component is nested in a box layout in order to reapply the layout item style
-            boolean boxLayoutHorizontalItem = false;
-            boolean boxLayoutVerticalItem = false;
-
-            if (form.isUpdateComponentRequest()) {
-                Component postedComponent = ComponentUtils.findNestedComponentById(postedView, refreshComponentId);
-                if (postedComponent != null && postedComponent.getCssClasses() != null &&
-                        postedComponent.getCssClasses().contains("uif-boxLayoutHorizontalItem")) {
-                    boxLayoutHorizontalItem = true;
-                } else if (postedComponent != null && postedComponent.getCssClasses() != null &&
-                        postedComponent.getCssClasses().contains("uif-boxLayoutVerticalItem")) {
-                    boxLayoutVerticalItem = true;
-                }
-            }
-
             // get a new instance of the component
-            final Component comp =
+            Component component =
                     ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
 
             // run lifecycle and update in view
-            form.setPostedView(postedView = ViewLifecycle.performComponentLifecycle(
-                    postedView, form, request, response, comp, refreshComponentId).getProcessedView());
-
-            // TODO: this should be in ViewHelperServiceImpl#performComponentLifecycle where other
-            // adjustments are made, and it should use constants
-
-            final boolean addHorizontal = boxLayoutHorizontalItem;
-            final boolean addVertical = boxLayoutVerticalItem;
-            ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-                @Override
-                public Void call() throws Exception {
-                    // add the layout item style that should happen in the parent BoxLayoutManager
-                    // and is skipped in a child component refresh
-                    if (addHorizontal) {
-                        comp.addStyleClass("uif-boxLayoutHorizontalItem");
-                    } else if (addVertical) {
-                        comp.addStyleClass("uif-boxLayoutVerticalItem");
-                    }
-
-                    View postedView = form.getPostedView();
-                    // regenerate server message content for page
-                    postedView.getCurrentPage().getValidationMessages().generateMessages(
-                            false, postedView, form, postedView.getCurrentPage());
-                    return null;
-                }});
+            ViewLifecycle.performComponentLifecycle(
+                    postedView, form, request, response, component, refreshComponentId);
 
         } else {
             // full view build
             final View view = form.getView();
             if ( view != null ) {
-                // set view page to page requested on form
-                if (StringUtils.isNotBlank(form.getPageId())) {
-                    // TODO: Move to within lifecycle
-                    ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-                        @Override
-                        public Void call() throws Exception {
-                            view.setCurrentPageId(form.getPageId());
-                            return null;
-                        }});
-                }
 
                 @SuppressWarnings("unchecked")
                 Map<String, String> parameterMap =
@@ -296,7 +247,8 @@ public class UifControllerHelper {
                 parameterMap.putAll(form.getViewRequestParameters());
 
                 // build view which will prepare for rendering
-                form.setView(ViewLifecycle.buildView(view, form, request, response, parameterMap));
+                ViewLifecycle.buildView(view, form, request, response, parameterMap);
+                
             } else {
                 LOG.warn( "View in form was null: " + form);
             }

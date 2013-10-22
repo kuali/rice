@@ -34,13 +34,13 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
+public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
     private Component parent;
     private RenderComponentPhase renderPhase;
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#recycle()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
      */
     @Override
     protected void recycle() {
@@ -104,17 +104,17 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#notifyCompleted()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#notifyCompleted()
      */
     @Override
     protected void notifyCompleted() {
-        super.notifyCompleted();
+        super.notifyCompleted();        
         assert renderPhase == null || renderPhase.isComplete();
         renderPhase = null;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#isComplete()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#isComplete()
      */
     @Override
     public boolean isComplete() {
@@ -132,7 +132,7 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
     /**
      * Update state of the component and perform final preparation for rendering.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializePendingTasks(java.util.Queue)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -142,12 +142,14 @@ public class FinalizeComponentPhase extends AbstractViewLifecyclePhase {
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
+        
+        getComponent().initializePendingTasks(this, tasks);
     }
 
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

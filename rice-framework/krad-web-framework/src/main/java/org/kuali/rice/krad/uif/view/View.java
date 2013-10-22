@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -46,7 +47,11 @@ import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.ViewHeader;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
@@ -64,6 +69,8 @@ import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -94,7 +101,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 @BeanTags({@BeanTag(name = "view-bean", parent = "Uif-View"),
         @BeanTag(name = "view-knsTheme-bean", parent = "Uif-View-KnsTheme")})
 public class View extends ContainerBase {
+    
     private static final long serialVersionUID = -1220009725554576953L;
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ContainerBase.class);
 
     private String namespaceCode;
     private String viewName;
@@ -234,8 +244,16 @@ public class View extends ContainerBase {
     @SuppressWarnings("unchecked")
     @Override
     public void performInitialization(Object model) {
+        if (model instanceof UifFormBase) {
+            UifFormBase form = (UifFormBase) model;
+            // set view page to page requested on form
+            if (StringUtils.isNotBlank(form.getPageId())) {
+                setCurrentPageId(form.getPageId());
+            }
+        }
+
         super.performInitialization(model);
-        
+
         assert this == ViewLifecycle.getView();
 
         // populate items on page for single paged view
@@ -407,6 +425,50 @@ public class View extends ContainerBase {
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     */
+    @Override
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+        super.initializePendingTasks(phase, pendingTasks);
+        
+        if (UifConstants.ViewPhases.FINALIZE.equals(phase.getViewPhase())) {
+            pendingTasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, phase));
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
+     */
+    @Override
+    public void notifyCompleted(ViewLifecyclePhase phase) {
+        super.notifyCompleted(phase);
+
+        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
+            // initialize the expression evaluator impl
+            viewHelperService.getExpressionEvaluator().initializeEvaluationContext(phase.getModel());
+
+            // get the list of dialogs from the view and then set the refreshedByAction on the
+            // dialog to true.
+            // This will leave the component in the viewIndex to be updated using an AJAX call
+            // TODO: Figure out a better way to store dialogs only if it is rendered using an
+            // ajax request
+            for (Component dialog : getDialogs()) {
+                dialog.setRefreshedByAction(true);
+            }
+        }
+
+        // do indexing                               
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("processing indexing for view: " + getId() + " after phase " + phase);
+        }
+        index();
+        
+        if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
+            ViewLifecycle.getHelper().performCustomViewFinalize(phase.getModel());
+        }
     }
 
     /**
@@ -1182,7 +1244,6 @@ public class View extends ContainerBase {
      * Invoked to produce a ViewIndex of the current view's components
      */
     public void index() {
-        checkMutable(false);
         if (this.viewIndex == null) {
             this.viewIndex = new ViewIndex();
         }

@@ -130,21 +130,17 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     String getViewStatus();
 
     /**
-     * Get the last view lifecycle phase that worked with this component.
-     */
-    ViewLifecyclePhase getLastPhase();
-    
-    /**
      * Set the view lifecycle processing status for this component.
      * 
      * @param phase The phase that has just finished processing the component.
      */
     void setViewStatus(ViewLifecyclePhase phase);
-
+    
     /**
-     * Clear out the last phase setting, to ensure no reference remains to a recycled phase.
+     * Receive notification that a lifecycle phase, and all successor phases, have been completed on
+     * this component.
      */
-    void clearLastPhase();
+    void notifyCompleted(ViewLifecyclePhase phase);
 
     /**
      * Set the view lifecycle processing status for this component, explicitly.
@@ -1278,18 +1274,5 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param postRenderContent
      */
     public void setPostRenderContent(String postRenderContent);
-
-    /**
-     * Get a trace back to the code that copied this component, if applicable.
-     * 
-     * <p>
-     * This Throwable is not an error, or other exception condition, but can be set as the cause of
-     * another error to help with troubleshooting.
-     * </p>
-     * 
-     * @return A trace back to the code that copied this component, if applicable. Null if the
-     *         component was not copied.
-     */
-    Throwable getCopyTrace();
 
 }

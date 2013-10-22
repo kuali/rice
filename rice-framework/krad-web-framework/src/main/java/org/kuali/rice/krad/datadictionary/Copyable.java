@@ -15,11 +15,36 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-public interface Copyable {
+import org.kuali.rice.krad.uif.util.CopyUtils;
+
+/**
+ * Marks KRAD framework objects that support deep copying.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public interface Copyable extends Cloneable {
+
     /**
-     * Return a copy of the class
-     *
+     * Return a copy of the class.
+     * 
      * @return the copy
+     * @see CopyUtils#copy(Object)
      */
-    public <T> T copy();
+    <T> T copy();
+    
+    /**
+     * Indicated that a given instance may not be modified until copied, if supported.
+     */
+    void preventModification();
+
+    /**
+     * Override {@link Object#clone()} to assign the public modifier.
+     * 
+     * @see CopyUtils#isUseClone() When cloning is enabled, {@link #clone} is used for shallow copy
+     *      operations.
+     * @see Cloneable
+     * @see Object#clone()
+     */
+    Object clone() throws CloneNotSupportedException;
+
 }

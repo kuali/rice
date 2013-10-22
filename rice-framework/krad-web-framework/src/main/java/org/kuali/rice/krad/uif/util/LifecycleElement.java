@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import java.io.Serializable;
 import java.util.Queue;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -28,7 +29,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface LifecycleElement extends Serializable {
+public interface LifecycleElement extends Serializable, Copyable {
 
     /**
      * The unique id (within a given tree) for the element.
@@ -50,7 +51,7 @@ public interface LifecycleElement extends Serializable {
      * @param id - string to set as the component id
      */
     void setId(String id);
-
+    
     /**
      * Determine if this lifecycle element is mutable.
      *
@@ -142,12 +143,5 @@ public interface LifecycleElement extends Serializable {
      */
     @Deprecated
     void performFinalize(Object model, Component parent);
-
-    /**
-     * Copy the object
-     *
-     * @return the copied object
-     */
-    public <T> T copy();
 
 }

@@ -269,21 +269,27 @@ public class BreadcrumbOptions implements Serializable, Copyable {
     }
 
     /**
-     * Returns a copy of the breadcrumb options.
-     *
-     * @return BreadcrumbOptions copy of the component
+     * @see Copyable#clone()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T) this.getClass().newInstance();
-        } catch (Exception exception) {
-            throw new RuntimeException();
-        }
+    @Override
+    public BreadcrumbOptions clone() throws CloneNotSupportedException {
+        return (BreadcrumbOptions) super.clone();
+    }
 
-        copyProperties(copiedClass);
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
 
-        return copiedClass;
+    /**
+     * @see Copyable#copy()
+     * @see CopyUtils#copy(Copyable)
+     */
+    public final <T> T copy() {
+        return CopyUtils.copy(this);
     }
 
     /**

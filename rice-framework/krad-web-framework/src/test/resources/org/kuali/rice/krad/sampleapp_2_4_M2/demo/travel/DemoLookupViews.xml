@@ -47,7 +47,7 @@
   <bean id="LookupSampleViewURLSearch" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewURLSearch"/>
     <property name="headerText" value="Lookup Sample - Return results of URL criteria"/>
-    <property name="renderSearchButtons" value="false"/>
+    <property name="renderCriteriaActions" value="false"/>
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:readOnly="true"/>

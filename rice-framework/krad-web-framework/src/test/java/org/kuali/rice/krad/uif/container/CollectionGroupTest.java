@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,16 +28,10 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.view.View;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * various tests for CollectionGroup
- *
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionGroupTest {
@@ -44,18 +39,13 @@ public class CollectionGroupTest {
 
     @Before
     public void setup() {
-        group = ViewLifecycle.encapsulateInitialization(new Callable<CollectionGroup>(){
-            @Override
-            public CollectionGroup call() throws Exception {
-                CollectionGroup group = new CollectionGroup();
-                List<Component> items = new ArrayList<Component>();
-                InputField field = new InputField();
-                field.setControl(new SelectControl());
-                items.add(field);
-                items.add(new TextAreaControl());
-                group.setItems(items);
-                return group;
-            }});
+        group = new CollectionGroup();
+        List<Component> items = new ArrayList<Component>();
+        InputField field = new InputField();
+        field.setControl(new SelectControl());
+        items.add(field);
+        items.add(new TextAreaControl());
+        group.setItems(items);
     }
 
     /**
@@ -63,25 +53,17 @@ public class CollectionGroupTest {
      */
     @Test
     public void testPushCollectionGroupToReference() {
-        View view = mock(View.class);
-        ViewHelperService helper = mock(ViewHelperService.class);
-        when(view.getViewHelperService()).thenReturn(helper);
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
-            @Override
-            public void run() {
-                CollectionGroup mutableGroup = group.copy();
-                mutableGroup.pushCollectionGroupToReference();
-                for (Component component: mutableGroup.getItems()) {
-                    testForCollectionGroupInContext(component, mutableGroup);
-                }
-                Control innerControl = ((InputField) mutableGroup.getItems().get(0)).getControl();
-                testForCollectionGroupInContext(innerControl, mutableGroup);
-            }});
+        group.pushCollectionGroupToReference();
+        for (Component component : group.getItems()) {
+            testForCollectionGroupInContext(component, group);
+        }
+        Control innerControl = ((InputField) group.getItems().get(0)).getControl();
+        testForCollectionGroupInContext(innerControl, group);
     }
 
     /**
      * test that the collection group is available in the component's contexts
-     *
+     * 
      * @param component
      */
     private void testForCollectionGroupInContext(Component component, CollectionGroup group) {
@@ -90,5 +72,5 @@ public class CollectionGroupTest {
         assertTrue("The collection group found is not the parent group",
                 component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP) == group);
     }
-    
+
 }

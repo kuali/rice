@@ -16,10 +16,13 @@
 package org.kuali.rice.krad.uif.container;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -100,22 +103,27 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
     }
 
     /**
-     * Copies object by value
-     *
-     * @return copiedClass
+     * @see Copyable#clone()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
+    @Override
+    public ELCollectionFilter clone() throws CloneNotSupportedException {
+        return (ELCollectionFilter) super.clone();
+    }
 
-        copyProperties(copiedClass);
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
 
-        return copiedClass;
+    /**
+     * @see Copyable#copy()
+     * @see CopyUtils#copy(Copyable)
+     */
+    public final <T> T copy() {
+        return CopyUtils.copy(this);
     }
 
     /**

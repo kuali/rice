@@ -20,6 +20,9 @@ package org.kuali.rice.krad.uif.util;
  * constructed, for faster copying.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated The {@link #clone} method has been added to {@link Copyable}. This interface is now
+ *             redundant, but is still used on a small scale for special handling in
+ *             {@link CloneUtils}.
  */
 public interface UifCloneable extends Cloneable {
 

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,6 +57,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.LightTable;
+import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -67,10 +67,8 @@ import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
@@ -92,7 +90,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * @see LifecycleEventListener
  */
 @SuppressWarnings("deprecation")
-public class ViewLifecycle implements ViewLifecycleResult, Serializable {
+public class ViewLifecycle implements Serializable {
 
     private static Logger LOG = Logger.getLogger(ViewLifecycle.class);
 
@@ -272,7 +270,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @throws IllegalStateException If strict mode is enabled.
      */
     public static void reportIllegalState(String message, Throwable cause) {
-        IllegalStateException illegalState = new IllegalStateException(message, cause);
+        IllegalStateException illegalState = new IllegalStateException(
+                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
 
         if (ViewLifecycle.isStrict()) {
             throw illegalState;
@@ -292,16 +291,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private final ViewHelperService helper;
 
     /**
-     * Set of mutable element identities.
-     */
-    private final Set<Long> mutableIdentities;
-
-    /**
-     * The original view associated with this context.
-     */
-    private final View originalView;
-
-    /**
      * The model involved in the current view lifecycle.
      */
     private final Object model;
@@ -312,19 +301,9 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private final LifecycleRenderingContext renderingContext;
 
     /**
-     * A mutable copy of the view private to this execution context.
+     * The view being processed by this lifecycle.
      */
     private View view;
-
-    /**
-     * A mutable copy of the refresh component, private to this execution context.
-     */
-    private Component refreshComponent;
-
-    /**
-     * Flag indicating if the purpose of this lifecycle context is to encapsulate a view copy.
-     */
-    private final boolean copy;
 
     /**
      * The phase currently active on this lifecycle.
@@ -337,36 +316,17 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     private final Deque<ViewLifecyclePhase> pendingPhases;
 
     /**
-     * Private constructor, for spawning an initialization context.
-     * 
-     * @see #getActiveLifecycle() For access to a thread-local instance.
-     */
-    private ViewLifecycle() {
-        this.originalView = null;
-        this.model = null;
-        this.renderingContext = null;
-        this.helper = null;
-        this.eventRegistrations = null;
-        this.mutableIdentities = null;
-        this.copy = false;
-        this.pendingPhases = null;
-    }
-
-    /**
      * Private constructor, for spawning a lifecycle context.
      * 
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
     private ViewLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, boolean copy) {
-        this.originalView = view;
         this.model = model;
         this.renderingContext = model != null && request != null && response != null && 
                 isRenderInLifecycle() ? new LifecycleRenderingContext(model, request, response) : null;
         this.helper = view.getViewHelperService();
         this.eventRegistrations = new ArrayList<EventRegistration>();
-        this.mutableIdentities = new HashSet<Long>();
-        this.copy = copy;
         this.pendingPhases = new LinkedList<ViewLifecyclePhase>();
     }
 
@@ -408,40 +368,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         pendingPhases.offer(pendingPhase);
     }
 
-    /**
-     * Get the original, immutable, view instance.
-     * 
-     * @return The original, immutable, view instance that the lifecycle context view is based on.
-     */
-    public View getOriginalView() {
-        if (originalView == null) {
-            throw new IllegalStateException("Context original view is not available");
-        }
-
-        return originalView;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult#getProcessedView()
-     */
-    @Override
-    public View getProcessedView() {
-        if (originalView == null) {
-            throw new IllegalStateException("Context view is not available");
-        }
-
-        return view;
-    }
-
-    /**
-     * @see ViewLifecycleResult#getRefreshComponent()
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public Component getRefreshComponent() {
-        return this.refreshComponent;
-    }
-    
     /**
      * Invoked when an event occurs to invoke registered listeners.
      * 
@@ -529,11 +455,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         offerPendingPhase(LifecyclePhaseFactory.finalize(view, model));
         performPendingPhases();
-
-        String clientStateScript = buildClientSideStateScript(model);
-        view.setPreLoadScript(ScriptUtils.appendScript(view.getPreLoadScript(), clientStateScript));
-
-        helper.performCustomViewFinalize(model);
     }
 
     /**
@@ -557,16 +478,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
 
         offerPendingPhase(LifecyclePhaseFactory.initialize(view, model));
         performPendingPhases();
-
-        // initialize the expression evaluator impl
-        helper.getExpressionEvaluator().initializeEvaluationContext(model);
-
-        // get the list of dialogs from the view and then set the refreshedByAction on the dialog to true.
-        // This will leave the component in the viewIndex to be updated using an AJAX call
-        // TODO: Figure out a better way to store dialogs only if it is rendered using an ajax request
-        for (Component dialog : view.getDialogs()) {
-            dialog.setRefreshedByAction(true);
-        }
     }
 
     /**
@@ -763,8 +674,8 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(compStatus)) {
                 startPhase = UifConstants.ViewPhases.FINALIZE;
             } else {
-                reportIllegalState("View lifecycle has already been applied to " + component.getClass().getName() + " "
-                        + component.getId(), component.getCopyTrace());
+                reportIllegalState("View lifecycle has already been applied to "
+                        + component.getClass().getName() + " " + component.getId());
             }
             
         } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
@@ -849,72 +760,12 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
     }
 
     /**
-     * Determine the identity of a lifecycle element.
-     * 
-     * @param element The lifecycle element.
-     * @return An identifier for the element, unique to its instance.
-     */
-    private static long getIdentity(LifecycleElement element) {
-        return System.identityHashCode(element) + (element.getClass().hashCode() >>> 32);
-    }
-
-    /**
-     * Encapsulate a new view initialization process on the current thread.
-     */
-    public static <T> T encapsulateInitialization(Callable<T> initializationProcess) {
-        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
-
-        try {
-            TL_VIEW_LIFECYCLE.set(new ViewLifecycle());
-
-            try {
-                return initializationProcess.call();
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new IllegalStateException("Unexpected initialization error", e);
-            }
-
-        } finally {
-            if (oldViewContext == null) {
-                TL_VIEW_LIFECYCLE.remove();
-            } else {
-                TL_VIEW_LIFECYCLE.set(oldViewContext);
-            }
-        }
-    }
-
-    /**
      * Encapsulate a new view lifecycle process on the current thread.
      * 
      * @param lifecycleProcess The lifecycle process to encapsulate.
      * @return
      */
-    public static View getMutableCopy(View view) {
-        ViewLifecycle oldViewContext = TL_VIEW_LIFECYCLE.get();
-
-        try {
-            ViewLifecycle copyLifecycle = new ViewLifecycle(view, null, null, null, true);
-            TL_VIEW_LIFECYCLE.set(copyLifecycle);
-
-            return view.copy();
-
-        } finally {
-            if (oldViewContext == null) {
-                TL_VIEW_LIFECYCLE.remove();
-            } else {
-                TL_VIEW_LIFECYCLE.set(oldViewContext);
-            }
-        }
-    }
-
-    /**
-     * Encapsulate a new view lifecycle process on the current thread.
-     * 
-     * @param lifecycleProcess The lifecycle process to encapsulate.
-     * @return
-     */
-    public static ViewLifecycleResult encapsulateLifecycle(View view, Object model,
+    public static void encapsulateLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, Runnable lifecycleProcess) {
         ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
         if (viewLifecycle != null) {
@@ -922,12 +773,12 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
         }
 
         try {
-            TL_VIEW_LIFECYCLE.set(viewLifecycle = new ViewLifecycle(view, model, request, response, false));
+            viewLifecycle = new ViewLifecycle(view, model, request, response, false);
+            TL_VIEW_LIFECYCLE.set(viewLifecycle);
             viewLifecycle.view = view;
 
             lifecycleProcess.run();
-
-            return viewLifecycle;
+            
         } finally {
             TL_VIEW_LIFECYCLE.remove();
         }
@@ -1022,57 +873,7 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @return True if a view context is active on the current thread.
      */
     public static boolean isActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null;
-    }
-
-    /**
-     * Determine if view initialization is active on the current thread.
-     * 
-     * @return True if a view initialization context is active on the current thread.
-     */
-    public static boolean isInitializing() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.originalView == null;
-    }
-
-    /**
-     * Determine if a view lifecycle context is active on the current thread.
-     * 
-     * @return True if a view lifecycle context is active on the current thread.
-     */
-    public static boolean isLifecycleActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.originalView != null;
-    }
-
-    /**
-     * Determine if a lifecycle element is mutable within the current lifecycle.
-     * 
-     * @param element The lifecycle element.
-     * @return True if the lifecycle element has been registered as mutable within the current
-     *         lifecycle.
-     */
-    public static boolean isMutable(LifecycleElement element) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null || viewLifecycle.mutableIdentities == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
-        }
-
-        // TODO: Isolate mutability to same lifecycle
-        // viewLifecycle.mutableIdentities.contains(getIdentity(element));
-        return true;
-    }
-
-    /**
-     * Determine if a call to {@link #getMutableCopy(View)} is in progress.
-     * 
-     * @return True if a call to {@link #getMutableCopy(View)} is in progress.
-     */
-    public static boolean isCopyActive() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle != null && viewLifecycle.copy;
+        return TL_VIEW_LIFECYCLE.get() != null;
     }
 
     /**
@@ -1099,11 +900,10 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * 
      * @return A copy of the view, built for rendering.
      */
-    public static View buildView(View view, Object model,
+    public static void buildView(View view, Object model,
             HttpServletRequest request, HttpServletResponse response,
             final Map<String, String> parameters) {
-        View builtView = ViewLifecycle
-                .encapsulateLifecycle(view, model, request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
@@ -1124,23 +924,11 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 }
                 viewLifecycle.performInitialization();
 
-                // do indexing                               
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("processing indexing for view: " + view.getId());
-                }
-                view.index();
-
                 // Apply Model Phase
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing apply model phase for view: " + view.getId());
                 }
                 viewLifecycle.performApplyModel();
-
-                // do indexing
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("reindexing after apply model for view: " + view.getId());
-                }
-                view.index();
 
                 // Finalize Phase
                 if (LOG.isInfoEnabled()) {
@@ -1148,24 +936,16 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 }
                 viewLifecycle.performFinalize();
 
-                // do indexing
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("processing final indexing for view: " + view.getId());
-                }
-                view.index();
-
             }
-        }).getProcessedView();
+        });
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
                 UifConstants.VALIDATE_VIEWS_ONBUILD)) {
             ValidationController validator = new ValidationController(true, true, true, true, false);
             Log tempLogger = LogFactory.getLog(ViewLifecycle.class);
-            validator.validate(builtView, tempLogger, false);
+            validator.validate(view, tempLogger, false);
         }
-
-        return builtView;
     }
 
     /**
@@ -1196,21 +976,31 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
-    public static ViewLifecycleResult performComponentLifecycle(View view, Object model,
+    public static void performComponentLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, final Component component,
             final String origId) {
-        return encapsulateLifecycle(view, model, request, response, new Runnable() {
+        encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = getActiveLifecycle();
                 View view = ViewLifecycle.getView();
                 Object model = ViewLifecycle.getModel();
                 
-                Component newComponent = component.copy();
+                Component newComponent = component;
                 Component origComponent = view.getViewIndex().getComponentById(origId);
 
-                // TODO: REMOVE
-                // view.assignComponentIds(newComponent);
+                // check if the component is nested in a box layout in order to
+                // reapply the layout item style
+                List<String> origCss = origComponent.getCssClasses();
+                if (origCss != null && (model instanceof UifFormBase)
+                        && ((UifFormBase) model).isUpdateComponentRequest()) {
+                    
+                    if (origCss.contains(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS)) {
+                        component.addStyleClass(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS);
+                    } else if (origCss.contains(UifConstants.BOX_LAYOUT_VERTICAL_ITEM_CSS)) {
+                        component.addStyleClass(UifConstants.BOX_LAYOUT_VERTICAL_ITEM_CSS);
+                    }
+                }
 
                 Map<String, Object> origContext = origComponent.getContext();
 
@@ -1378,25 +1168,13 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
                 ((ViewModel) model).setGrowlScript(growlScript);
 
                 view.getViewIndex().indexComponent(newComponent);
+                
+                PageGroup page = view.getCurrentPage();
+                // regenerate server message content for page
+                page.getValidationMessages().generateMessages(false, view, model, page);
 
-                viewLifecycle.refreshComponent = newComponent;
             }
         });
-    }
-
-    /**
-     * Indicate that a lifecycle element is mutable within the current lifecycle.
-     * 
-     * @param element The lifecycle element.
-     */
-    public static void setMutable(LifecycleElement element) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
-        }
-
-        viewLifecycle.mutableIdentities.add(getIdentity(element));
     }
 
     /**
@@ -1453,46 +1231,6 @@ public class ViewLifecycle implements ViewLifecycleResult, Serializable {
             }
         }
 
-    }
-
-    /**
-     * Builds script that will initialize configuration parameters and component state on the client
-     * 
-     * <p>
-     * Here client side state is initialized along with configuration variables that need exposed to
-     * script
-     * </p>
-     * 
-     * @param view view instance that is being built
-     * @param model model containing the client side state map
-     */
-    protected String buildClientSideStateScript(Object model) {
-        Map<String, Object> clientSideState = ((ViewModel) model).getClientStateForSyncing();
-
-        // script for initializing client side state on load
-        String clientStateScript = "";
-        if (!clientSideState.isEmpty()) {
-            clientStateScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.INITIALIZE_VIEW_STATE,
-                    clientSideState);
-        }
-
-        // add necessary configuration parameters
-        String kradImageLocation = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                UifConstants.ConfigProperties.KRAD_IMAGES_URL);
-        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
-                UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION, kradImageLocation);
-
-        String kradURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                UifConstants.ConfigProperties.KRAD_URL);
-        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
-                UifConstants.ClientSideVariables.KRAD_URL, kradURL);
-
-        String applicationURL = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.ConfigParameters.APPLICATION_URL);
-        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
-                UifConstants.ClientSideVariables.APPLICATION_URL, applicationURL);
-
-        return clientStateScript;
     }
 
     /**

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.component.Component;
@@ -65,7 +66,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     private List<PropertyReplacer> propertyReplacers;
     
-    private boolean mutable;
+    private boolean cached;
 
     public LayoutManagerBase() {
         super();
@@ -79,27 +80,9 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
-        if (!ViewLifecycle.isActive()) {
-            ViewLifecycle.reportIllegalState(
-                    "View context is not active, attempting to change layout manager "
-                            + getClass() + " " + getId());
-            return;
-        }
-
-        if (ViewLifecycle.isCopyActive()) {
-            return;
-        }
-
-        if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
-            ViewLifecycle.reportIllegalState("Layout manager " + getClass() + " " + getId()
+        if (cached) {
+            ViewLifecycle.reportIllegalState("Cached layout manager " + getClass() + " " + getId()
                     + " is immutable, use copy() to get a mutable instance");
-            return;
-        }
-
-        if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
-            ViewLifecycle.reportIllegalState(
-                    "View has not been fully initialized, attempting to change layout manager "
-                    + getClass() + " " + getId());
             return;
         }
     }
@@ -108,22 +91,14 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#isMutable(boolean)
      */
     public boolean isMutable(boolean legalDuringInitialization) {
-        return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
-                (ViewLifecycle.isInitializing() && legalDuringInitialization);
+        return !cached;
     }
     
     /**
-     * Mark this layout manager as mutable within the current view lifecycle.
-     * 
-     * @param mutable True to allow state to change within the current view lifecycle.
+     * @param mutable the mutable to set
      */
-    public void allowModification() {
-        if (!ViewLifecycle.isLifecycleActive()) {
-            throw new IllegalStateException("View lifecycle is not active");
-        }
-        
-        this.mutable = true;
-        ViewLifecycle.setMutable(this);
+    public void setCached(boolean cached) {
+        this.cached = cached;
     }
 
     /**
@@ -492,33 +467,21 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         this.propertyReplacers = propertyReplacers;
     }
 
+    @Override
+    public LayoutManagerBase clone() throws CloneNotSupportedException {
+        LayoutManagerBase copy = (LayoutManagerBase) super.clone();
+        copy.cached = false;
+        return copy;
+    }
     
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     * Mark this instance as cached to prevent modification.
+     * 
+     * @see Copyable#preventModification()
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T copy() {
-        if (!ViewLifecycle.isActive()) {
-            throw new IllegalStateException("View context is not active");
-        }
-        
-        LayoutManagerBase copy = null;
-        try {
-            copy = (LayoutManagerBase) this.getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException("Failed to copy layout manager", e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Failed to copy layout manager", e);
-        }
-
-        if (ViewLifecycle.isLifecycleActive()) {
-            copy.allowModification();
-        }
-        
-        copyProperties(copy);
-
-        return (T) copy;
+    public void preventModification() {
+        this.cached = true;
     }
 
     /**
@@ -529,6 +492,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         super.copyProperties(layoutManager);
 
         LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
+
+        layoutManagerBaseCopy.cached = false;
 
         layoutManagerBaseCopy.setId(this.id);
         layoutManagerBaseCopy.setTemplate(this.template);

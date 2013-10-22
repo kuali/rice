@@ -37,7 +37,6 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleResult;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
@@ -61,6 +60,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -256,15 +256,13 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+        ViewLifecycle.encapsulateLifecycle(
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddLine(
                         ViewLifecycle.getView(), uifForm, selectedCollectionPath);
             }});
-        
-        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -289,15 +287,13 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+        ViewLifecycle.encapsulateLifecycle(
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddBlankLine(ViewLifecycle.getView(), uifForm,
                         selectedCollectionPath);
             }});
-        
-        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -327,15 +323,13 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+        ViewLifecycle.encapsulateLifecycle(
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionSaveLine(
                         ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
             }});
-        
-        uifForm.setPostedView(lifecycleResult.getProcessedView());
 
         return getUIFModelAndView(uifForm);
     }
@@ -367,16 +361,13 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycleResult lifecycleResult = ViewLifecycle.encapsulateLifecycle(
+        ViewLifecycle.encapsulateLifecycle(
                 uifForm.getPostedView(), uifForm, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionDeleteLine(
                         ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
             }});
-        
-        uifForm.setPostedView(lifecycleResult.getProcessedView());
-
 
         return getUIFModelAndView(uifForm);
     }

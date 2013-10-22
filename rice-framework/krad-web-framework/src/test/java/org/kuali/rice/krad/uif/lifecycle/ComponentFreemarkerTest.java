@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.component;
+package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,16 +27,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.lifecycle.LifecyclePhaseFactory;
-import org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
@@ -66,15 +62,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
     @Test
     public void testMessage() throws Throwable {
-        Message m = ViewLifecycle.encapsulateInitialization(new Callable<Message>() {
-
-            @Override
-            public Message call() throws Exception {
-                Message msg = ComponentFactory.getMessage().copy();
-                msg.setMessageText("foobar");
-                return msg;
-            }
-        });
+        Message m = ComponentFactory.getMessage();
+        m.setMessageText("foobar");
 
         FreeMarkerViewResolver viewResolver = (FreeMarkerViewResolver)
                 UifUnitTestUtils.getWebApplicationContext().getBean("viewResolver");
@@ -129,11 +118,11 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 msg.setMessageText("foobar");
                 ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
-                
+
                 RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(
                         msg, null, 0, null, null, Collections.<RenderComponentPhase> emptyList());
                 renderPhase.run();
-                
+
                 assertTrue(msg.isSelfRendered());
                 assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
                         "foobar    </span>", msg.getRenderedHtmlOutput().trim());

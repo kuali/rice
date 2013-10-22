@@ -33,9 +33,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
+public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
-    private final Logger LOG = LoggerFactory.getLogger(AbstractViewLifecyclePhase.class);
+    private final Logger LOG = LoggerFactory.getLogger(ViewLifecyclePhaseBase.class);
 
     private Component component;
     private Object model;
@@ -54,7 +54,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
     /**
      * Default constructor.
      */
-    public AbstractViewLifecyclePhase() {
+    public ViewLifecyclePhaseBase() {
         LinkedList<ViewLifecycleTask> pendingTaskList = new LinkedList<ViewLifecycleTask>();
         this.pendingTasks = pendingTaskList;
         this.unmodifiablePendingTasks = Collections.unmodifiableList(pendingTaskList);
@@ -68,10 +68,6 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * Reset this phase for recycling.
      */
     protected void recycle() {
-        if (component != null && component.getLastPhase() == this) {
-            component.clearLastPhase();
-        }
-        
         model = null;
         index = -1;
         component = null;
@@ -90,8 +86,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
         if (component.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
                     "Component is already in the expected end status " + getEndViewStatus()
-                            + " before this phase " + component.getClass() + " " + component.getId() + "\nLast phase: "
-                            + component.getLastPhase(), component.getCopyTrace());
+                            + " before this phase " + component.getClass() + " " + component.getId());
         }
 
         this.model = model;
@@ -238,7 +233,7 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             }
         }
 
-        if (!ViewLifecycle.isLifecycleActive()) {
+        if (!ViewLifecycle.isActive()) {
             throw new IllegalStateException("No view lifecyle is not active on the current thread");
         }
 
@@ -277,10 +272,9 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
                 if (!component.getViewStatus().equals(getStartViewStatus())) {
                     ViewLifecycle.reportIllegalState(
                             "Component is not in the expected status " + getStartViewStatus()
-                                    + " at the start of this phase, found " + component.getClass() + " "
-                                    + component.getId() + " " + component.getViewStatus() +
-                                    "\nLast phase: " + component.getLastPhase() + "\nThis phase: " + this,
-                            component.getCopyTrace());
+                                    + " at the start of this phase, found " + component.getClass()
+                                    + " " + component.getId() + " " + component.getViewStatus() +
+                                    "\nThis phase: " + this);
                 }
                 
                 initializePendingTasks(pendingTasks);
@@ -312,7 +306,6 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
             
         } catch (Throwable t) {
             LOG.warn("Error in lifecycle phase " + this, t);
-            LOG.warn("Copy trace related to previous warning", component.getCopyTrace());
 
             if (t instanceof RuntimeException) {
                 throw (RuntimeException) t;
@@ -348,8 +341,8 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
         }
         
         for (ViewLifecyclePhase predecessor : predecessors) {
-            if (predecessor instanceof AbstractViewLifecyclePhase) {
-                ((AbstractViewLifecyclePhase) predecessor).notifyPredecessors();
+            if (predecessor instanceof ViewLifecyclePhaseBase) {
+                ((ViewLifecyclePhaseBase) predecessor).notifyPredecessors();
             }
         }
         
@@ -374,7 +367,9 @@ public abstract class AbstractViewLifecyclePhase implements ViewLifecyclePhase {
      * Override for additional handling when all tasks and successor tasks have been completed for
      * this phase.
      */
-    protected void notifyCompleted() {}
+    protected void notifyCompleted() {
+        component.notifyCompleted(this);
+    }
     
     /**
      * Determine if this phase was defined internally, has completed all tasks, and is no longer

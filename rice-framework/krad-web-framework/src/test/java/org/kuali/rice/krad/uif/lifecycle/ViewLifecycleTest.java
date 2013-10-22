@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.view;
+package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -21,7 +21,6 @@ import static org.junit.Assert.assertSame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -36,7 +35,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -44,6 +42,7 @@ import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
@@ -57,7 +56,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
+public class ViewLifecycleTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
     public static void setUpClass() throws Throwable {
@@ -133,10 +132,9 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
             @Override
             public void run() {
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-                assertSame(transactionView, viewLifecycle.getOriginalView());
-                
                 View view = ViewLifecycle.getView();
-                //                assertNotSame(transactionView, view);
+                assertSame(transactionView, view);
+                
                 assertEquals("TransactionView", view.getId());
                 
                 ProcessLogger.trace("begin-init");
@@ -147,9 +145,6 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
                 
                 ProcessLogger.trace("set-request");
                 viewLifecycle.performInitialization();
-                
-                ProcessLogger.trace("perform-init");
-                view.index();
                 
                 ProcessLogger.trace("end-init");
             }});
@@ -254,17 +249,12 @@ public class ViewHelperServiceTest extends ProcessLoggingUnitTest {
     @Test
     public void testMutability() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        final View loginView = viewService.getViewById("DummyLoginView");
-        Group group = ViewLifecycle.encapsulateInitialization(new Callable<Group>(){
-            @Override
-            public Group call() throws Exception {
-                Group group = ComponentFactory.getGroupWithDisclosureGridLayout();
-                group.setId("foo");
-                group.setHeaderText("bar");
-                group.setItems(new ArrayList<Component>());
-                ((List<Group>) loginView.getItems()).add(group);
-                return group;
-            }});
+        View loginView = viewService.getViewById("DummyLoginView");
+        Group group = ComponentFactory.getGroupWithDisclosureGridLayout();
+        group.setId("foo");
+        group.setHeaderText("bar");
+        group.setItems(new ArrayList<Component>());
+        ((List<Group>) loginView.getItems()).add(group);
         assertSame(group, loginView.getItems().get(loginView.getItems().size()-1));
     }
 

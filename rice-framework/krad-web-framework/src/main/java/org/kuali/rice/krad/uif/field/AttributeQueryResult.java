@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.kuali.rice.krad.datadictionary.Copyable;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 
 /**
  * Object that is returned for Ajax attribute queries and exposed
@@ -118,22 +119,27 @@ public class AttributeQueryResult implements Serializable, Copyable {
     }
 
     /**
-     * Returns a copy of the attribute query result.
-     *
-     * @return AttributeQueryResult copy of the component
+     * @see Copyable#clone()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
+    @Override
+    public AttributeQueryResult clone() throws CloneNotSupportedException {
+        return (AttributeQueryResult) super.clone();
+    }
 
-        copyProperties(copiedClass);
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
 
-        return copiedClass;
+    /**
+     * @see Copyable#copy()
+     * @see CopyUtils#copy(Copyable)
+     */
+    public final <T> T copy() {
+        return CopyUtils.copy(this);
     }
 
     /**
@@ -141,8 +147,7 @@ public class AttributeQueryResult implements Serializable, Copyable {
      *
      * @param attributeQuery The AttributeQuery to copy
      */
-    protected <T> void copyProperties(T attributeQueryResult) {
-        AttributeQueryResult attributeQueryResultCopy = (AttributeQueryResult) attributeQueryResult;
+    protected void copyProperties(AttributeQueryResult attributeQueryResultCopy) {
 
         if (this.resultFieldData != null) {
             attributeQueryResultCopy.setResultFieldData(new HashMap<String, String>(this.resultFieldData));

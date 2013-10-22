@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -28,12 +24,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 
 /**
  * Utility class for copying objects using reflection. Modified from the jCommon
@@ -59,7 +60,7 @@ public class CloneUtils {
     @SuppressWarnings("unchecked")
     public static final <O> O deepCloneReflection(O original) throws Exception {
         try {
-            return (O) deepCloneReflectionInternal(original, new HashMap<Object, Object>(), false);
+            return (O) deepCloneReflectionInternal(original, new IdentityHashMap<Object, Object>(), false);
         } catch (Exception ex) {
             LOG.warn("Exception during clone (returning original): ", ex);
             return original;
@@ -148,7 +149,9 @@ public class CloneUtils {
             Object copy = instantiate(original);
 
             // Put into cache
-            cache.put(original, copy);
+            if (original != Collections.EMPTY_LIST && original != Collections.EMPTY_MAP) { 
+                cache.put(original, copy);
+            }
 
             // iterate through and copy fields
             for (Field f : fields) {

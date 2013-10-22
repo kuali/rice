@@ -19,6 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter;
+import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
 
@@ -120,23 +123,28 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
     }
 
     /**
-     * Copies object by value
-     *
-     * @return copiedClass
+     * @see Copyable#clone()
      */
-    public <T> T copy() {
-        T copiedClass = null;
-        try {
-            copiedClass = (T)this.getClass().newInstance();
-        }
-        catch(Exception exception) {
-            throw new RuntimeException();
-        }
-
-        copyProperties(copiedClass);
-
-        return copiedClass;
+    @Override
+    public MethodInvokerConfig clone() throws CloneNotSupportedException {
+        return (MethodInvokerConfig) super.clone();
     }
+
+    /**
+     * @see Copyable#copy()
+     * @see CloneUtils#copy(Copyable)
+     */
+    public final <T> T copy() {
+        return CopyUtils.copy(this);
+    }
+
+    /**
+     * Modification is not controlled at this level.
+     * 
+     * @see Copyable#preventModification()
+     */
+    @Override
+    public void preventModification() {}
 
     /**
      * Copies the properties over for the copy method.

@@ -21,8 +21,12 @@ package org.kuali.rice.krad.uif.component;
  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.TreeMap;
-import java.util.concurrent.Callable;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,9 +34,6 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.View;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,20 +44,15 @@ public class ComponentBaseTest {
 
     @Before
     public void setUp() throws Exception {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                // use an action field, since ComponentBase is abstract
-                component = new Action();
-                component.setId("action1");
-                // used a TreeMap since it makes specific guarantees as to the order of entries
-                dataAttributes = new TreeMap<String, String>();
-                // set data attributes - for testing purposes only - they do not have any functional significance
-                dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
-                dataAttributes.put("transitions", "3");
-                component.setDataAttributes(dataAttributes);
-                return null;
-            }});
+        // use an action field, since ComponentBase is abstract
+        component = new Action();
+        component.setId("action1");
+        // used a TreeMap since it makes specific guarantees as to the order of entries
+        dataAttributes = new TreeMap<String, String>();
+        // set data attributes - for testing purposes only - they do not have any functional significance
+        dataAttributes.put("iconTemplateName", "cool-icon-%s.png");
+        dataAttributes.put("transitions", "3");
+        component.setDataAttributes(dataAttributes);
     }
 
     @Test

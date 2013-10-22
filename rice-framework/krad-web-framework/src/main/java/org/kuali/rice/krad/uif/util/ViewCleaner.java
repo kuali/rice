@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -29,7 +29,6 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 
@@ -59,45 +58,40 @@ public class ViewCleaner {
      * @param view view instance to clean
      */
     public static void cleanView(final View view) {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                view.setApplicationHeader(null);
-                view.setApplicationFooter(null);
-                view.setBreadcrumbs(null);
-                view.setBreadcrumbOptions(null);
-                view.setBreadcrumbItem(null);
-                view.setParentLocation(null);
-                view.setPathBasedBreadcrumbs(null);
-                view.setNavigation(null);
-                view.setPage(null);
-                view.setNavigation(null);
-                view.setAdditionalCssFiles(null);
-                view.setAdditionalScriptFiles(null);
-                view.setActionFlags(null);
-                view.setEditModes(null);
-                view.setViewMenuLink(null);
-                view.setViewMenuLink(null);
-                view.setPreLoadScript(null);
-                view.setViewTemplates(new ArrayList<String>());
-                view.setSessionPolicy(null);
-                view.setViewHelperServiceClass(null);
+        view.setViewStatus(UifConstants.ViewStatus.CREATED);
+        view.setApplicationHeader(null);
+        view.setApplicationFooter(null);
+        view.setBreadcrumbs(null);
+        view.setBreadcrumbOptions(null);
+        view.setBreadcrumbItem(null);
+        view.setParentLocation(null);
+        view.setPathBasedBreadcrumbs(null);
+        view.setNavigation(null);
+        view.setPage(null);
+        view.setNavigation(null);
+        view.setAdditionalCssFiles(null);
+        view.setAdditionalScriptFiles(null);
+        view.setActionFlags(null);
+        view.setEditModes(null);
+        view.setViewMenuLink(null);
+        view.setViewMenuLink(null);
+        view.setPreLoadScript(null);
+        view.setViewTemplates(new ArrayList<String>());
+        view.setSessionPolicy(null);
+        view.setViewHelperServiceClass(null);
 
-                view.getViewIndex().clearIndexesAfterRender();
+        view.getViewIndex().clearIndexesAfterRender();
 
-                // clear all view pages exception the current page
-                PageGroup currentPage = view.getCurrentPage();
-                cleanComponent(currentPage, view.getViewIndex());
+        // clear all view pages exception the current page
+        PageGroup currentPage = view.getCurrentPage();
+        cleanComponent(currentPage, view.getViewIndex());
 
-                cleanComponent(view, view.getViewIndex());
+        cleanComponent(view, view.getViewIndex());
 
-                List<Component> pages = new ArrayList<Component>();
-                pages.add(currentPage);
+        List<Component> pages = new ArrayList<Component>();
+        pages.add(currentPage);
 
-                view.setItems(pages);
-                return null;
-            }
-        });
+        view.setItems(pages);
     }
 
     /**
@@ -114,6 +108,7 @@ public class ViewCleaner {
             return;
         }
 
+        component.setViewStatus(UifConstants.ViewStatus.CREATED);
         component.setTemplate(null);
         component.setTemplateName(null);
         component.setTitle(null);

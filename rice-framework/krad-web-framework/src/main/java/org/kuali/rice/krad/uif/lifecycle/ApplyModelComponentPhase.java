@@ -38,14 +38,14 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ApplyModelComponentPhase extends AbstractViewLifecyclePhase {
+public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
     private Component parent;
     private Set<String> visitedIds;
     private Map<String, Object> commonContext;
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#recycle()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
      */
     @Override
     protected void recycle() {
@@ -160,7 +160,7 @@ public class ApplyModelComponentPhase extends AbstractViewLifecyclePhase {
      * called for all the component children
      * </p>
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializePendingTasks(java.util.Queue)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -171,12 +171,14 @@ public class ApplyModelComponentPhase extends AbstractViewLifecyclePhase {
         tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomApplyModelTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
+        
+        getComponent().initializePendingTasks(this, tasks);
     }
 
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

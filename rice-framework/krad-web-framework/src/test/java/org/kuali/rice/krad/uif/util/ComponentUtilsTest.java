@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,12 +39,6 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.view.View;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
@@ -57,48 +52,39 @@ public class ComponentUtilsTest {
 
     @Before
     public void setup() {
-        component = ViewLifecycle.encapsulateInitialization(new Callable<Component>(){
-            @Override
-            public Component call() throws Exception {
-                Component component = new InputField();
-                componentId = "field1";
-                component.setId(componentId);
-                component.setBaseId(componentId);
-                return component;
-            }});
+        component = new InputField();
+        componentId = "field1";
+        component.setId(componentId);
+        component.setBaseId(componentId);
     }
 
     // Initialization methods
     private CollectionGroup initializeCollectionGroup() {
-        return ViewLifecycle.encapsulateInitialization(new Callable<CollectionGroup>(){
-            @Override
-            public CollectionGroup call() throws Exception {
-                CollectionGroup collectionGroup = new CollectionGroup();
-                collectionGroup = (CollectionGroup) initializeComponentBase(collectionGroup);
+        CollectionGroup collectionGroup = new CollectionGroup();
+        collectionGroup = (CollectionGroup) initializeComponentBase(collectionGroup);
 
-                DataField field1 = initializeDataField();
-                DataField field2 = initializeDataField();
-                List<DataField> fields = new ArrayList<DataField>();
-                fields.add(field1);
-                fields.add(field2);
-                collectionGroup.setAddLineItems(fields);
+        DataField field1 = initializeDataField();
+        DataField field2 = initializeDataField();
+        List<DataField> fields = new ArrayList<DataField>();
+        fields.add(field1);
+        fields.add(field2);
+        collectionGroup.setAddLineItems(fields);
 
-                Action action1 = new Action();
-                action1 = (Action) initializeComponentBase(action1);
-                action1.setActionLabel("Action Label");
-                action1.setActionScript("<script>Action script</script>");
+        Action action1 = new Action();
+        action1 = (Action) initializeComponentBase(action1);
+        action1.setActionLabel("Action Label");
+        action1.setActionScript("<script>Action script</script>");
 
-                Action action2 = new Action();
-                action2 = (Action) initializeComponentBase(action2);
-                action2.setActionLabel("Action Label 2");
-                action2.setActionScript("<script>Action script 2</script>");
-                List<Action> addLineActions = new ArrayList<Action>();
-                addLineActions.add(action1);
-                addLineActions.add(action2);
-                collectionGroup.setAddLineActions(addLineActions);
+        Action action2 = new Action();
+        action2 = (Action) initializeComponentBase(action2);
+        action2.setActionLabel("Action Label 2");
+        action2.setActionScript("<script>Action script 2</script>");
+        List<Action> addLineActions = new ArrayList<Action>();
+        addLineActions.add(action1);
+        addLineActions.add(action2);
+        collectionGroup.setAddLineActions(addLineActions);
 
-                return collectionGroup;
-            }});
+        return collectionGroup;
     }
 
     private FieldBase initializeFieldBase() {
@@ -230,17 +216,12 @@ public class ComponentUtilsTest {
      */
     @Test
     public void testUpdateIdWithSuffix() {
-        ViewLifecycle.encapsulateInitialization(new Callable<Void>(){
-            @Override
-            public Void call() throws Exception {
-                ComponentUtils.updateIdWithSuffix(component, null);
-                assertTrue(component.getId().equalsIgnoreCase(componentId));
+        ComponentUtils.updateIdWithSuffix(component, null);
+        assertTrue(component.getId().equalsIgnoreCase(componentId));
 
-                String suffix = "_field";
-                ComponentUtils.updateIdWithSuffix(component, suffix);
-                assertTrue(component.getId().equalsIgnoreCase(componentId + suffix));
-                return null;
-            }});
+        String suffix = "_field";
+        ComponentUtils.updateIdWithSuffix(component, suffix);
+        assertTrue(component.getId().equalsIgnoreCase(componentId + suffix));
     }
 
     @Test
@@ -248,25 +229,11 @@ public class ComponentUtilsTest {
      * test {@link ComponentUtils#copyUsingCloning} using a FieldBase object
      */
     public void testCopyUsingCloningWithFieldBaseSucceeds() {
-        final FieldBase fieldBaseOriginal = ViewLifecycle.encapsulateInitialization(new Callable<FieldBase>(){
-            @Override
-            public FieldBase call() throws Exception {
-                return initializeFieldBase();
-            }});
-        
-        View view = mock(View.class);
-        ViewHelperService helper = mock(ViewHelperService.class);
-        when(view.getViewHelperService()).thenReturn(helper);
-        
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
+        FieldBase fieldBaseOriginal = initializeFieldBase();
+        FieldBase fieldBaseCopy = copy(fieldBaseOriginal);
 
-            @Override
-            public void run() {
-                FieldBase fieldBaseCopy = copy(fieldBaseOriginal);
-
-                assertTrue(ComponentCopyPropertiesMatch(fieldBaseOriginal, fieldBaseCopy));
-                assertTrue(fieldBaseOriginal.getShortLabel().equals(fieldBaseCopy.getShortLabel()));
-            }});
+        assertTrue(ComponentCopyPropertiesMatch(fieldBaseOriginal, fieldBaseCopy));
+        assertTrue(fieldBaseOriginal.getShortLabel().equals(fieldBaseCopy.getShortLabel()));
     }
 
     public static <T extends Component> T copy(T component) {
@@ -278,22 +245,10 @@ public class ComponentUtilsTest {
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object
      */
     public void testCopyUsingCloningWithDataFieldSucceeds() {
-        final DataField dataFieldOriginal = ViewLifecycle.encapsulateInitialization(new Callable<DataField>(){
-            @Override
-            public DataField call() throws Exception {
-                return initializeDataField();
-            }});
-        
-        View view = mock(View.class);
-        ViewHelperService helper = mock(ViewHelperService.class);
-        when(view.getViewHelperService()).thenReturn(helper);
-        
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
-            @Override
-            public void run() {
-                DataField dataFieldCopy = copy(dataFieldOriginal);
-                assertTrue(ComponentCopyPropertiesMatch(dataFieldOriginal, dataFieldCopy));
-            }});
+        DataField dataFieldOriginal = initializeDataField();
+
+        DataField dataFieldCopy = copy(dataFieldOriginal);
+        assertTrue(ComponentCopyPropertiesMatch(dataFieldOriginal, dataFieldCopy));
     }
 
     /**
@@ -301,29 +256,20 @@ public class ComponentUtilsTest {
      */
     @Test
     public void testCopyUsingCloningWithSimpleCollectionGroupSucceeds() {
-        final CollectionGroup collectionGroupOriginal = initializeCollectionGroup();
-        View view = mock(View.class);
-        ViewHelperService helper = mock(ViewHelperService.class);
-        when(view.getViewHelperService()).thenReturn(helper);
-        
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
+        CollectionGroup collectionGroupOriginal = initializeCollectionGroup();
+        CollectionGroup collectionGroupCopy = copy(collectionGroupOriginal);
 
-            @Override
-            public void run() {
-                CollectionGroup collectionGroupCopy = copy(collectionGroupOriginal);
+        assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
 
-                assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
+        for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
+            assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i),
+                    (ComponentBase) collectionGroupCopy.getAddLineItems().get(i)));
+        }
 
-                for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
-                    assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i),
-                            (ComponentBase) collectionGroupCopy.getAddLineItems().get(i)));
-                }
-
-                for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
-                    assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
-                            collectionGroupCopy.getAddLineActions().get(i)));
-                }
-            }});
+        for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
+            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
+                    collectionGroupCopy.getAddLineActions().get(i)));
+        }
     }
 
     private boolean ComponentCopyPropertiesMatch(Component originalComponent, Component copiedComponent) {

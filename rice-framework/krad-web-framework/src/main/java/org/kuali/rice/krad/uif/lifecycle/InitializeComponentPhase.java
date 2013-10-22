@@ -33,7 +33,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
+public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
@@ -91,7 +91,7 @@ public class InitializeComponentPhase extends AbstractViewLifecyclePhase {
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecyclePhase#initializeSuccessors(java.util.List)
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

@@ -196,6 +196,7 @@ public class UifConstants {
     }
 
     public static class ViewStatus {
+        public static final String CACHED = "X";
         public static final String CREATED = "C";
         public static final String INITIALIZED = "I";
         public static final String MODEL_APPLIED = "M";
@@ -416,6 +417,9 @@ public class UifConstants {
     }
 
     public static final String EVENT_NAMESPACE = "uif";
+    
+    public static final String BOX_LAYOUT_HORIZONTAL_ITEM_CSS = "uif-boxLayoutHorizontalItem";
+    public static final String BOX_LAYOUT_VERTICAL_ITEM_CSS = "uif-boxLayoutVerticalItem";
 
     public static final class JsEvents {
         public static final String DIALOG_RESPONSE = "dialogresponse." + EVENT_NAMESPACE;

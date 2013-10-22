@@ -15,13 +15,9 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,6 +25,7 @@ import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -38,6 +35,7 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
@@ -69,16 +67,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private static final long serialVersionUID = -4449335748129894350L;
     
-    /**
-     * Thread local stack for detecting circular chains during copy.
-     */
-    private static final ThreadLocal<Deque<Component>> COPY_STACK = new ThreadLocal<Deque<Component>>();
-    
-    /**
-     * Track mutability status.
-     */
-    private boolean mutable;
-
     private String id;
     private String baseId;
     private String template;
@@ -188,8 +176,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String preRenderContent;
     private String postRenderContent;
     
-    private transient Reference<ViewLifecyclePhase> lastPhase;
-
     public ComponentBase() {
         super();
 
@@ -223,27 +209,26 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
-        if (!ViewLifecycle.isActive()) {
-            ViewLifecycle.reportIllegalState(
-                    "View context is not active, attempting to change component "
-                            + getClass() + " " + getId());
-            return;
-        }
-
-        if (ViewLifecycle.isCopyActive()) {
-            return;
-        }
-
-        if (ViewLifecycle.isLifecycleActive() && !(mutable && ViewLifecycle.isMutable(this))) {
-            ViewLifecycle.reportIllegalState("Component " + getClass() + " " + getId()
+        if (UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
+            ViewLifecycle.reportIllegalState("Cached component " + getClass() + " " + getId()
                     + " is immutable, use copy() to get a mutable instance");
             return;
         }
 
-        if (ViewLifecycle.isInitializing() && !legalDuringInitialization) {
-            ViewLifecycle.reportIllegalState(
-                    "View has not been fully initialized, attempting to change component "
-                    + getClass() + " " + getId());
+        if (ViewLifecycle.isActive()) {
+            return;
+        }
+        
+        if (UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+            if (!legalDuringInitialization) {
+                ViewLifecycle.reportIllegalState(
+                        "View has not been fully initialized, attempting to change component "
+                                + getClass() + " " + getId());
+                return;
+            }
+        } else {
+            ViewLifecycle.reportIllegalState("Component " + getClass() + " " + getId()
+                    + " has been initialized, but the lifecycle is not active.");
             return;
         }
     }
@@ -252,24 +237,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see LifecycleElement#isMutable(boolean)
      */
     public boolean isMutable(boolean legalDuringInitialization) {
-        return (ViewLifecycle.isLifecycleActive() && mutable && ViewLifecycle.isMutable(this)) ||
-                (ViewLifecycle.isInitializing() && legalDuringInitialization);
+        return (UifConstants.ViewStatus.CREATED.equals(viewStatus) && legalDuringInitialization)
+                || ViewLifecycle.isActive();
     }
     
-    /**
-     * Mark this component as mutable within the current view lifecycle.
-     * 
-     * @param mutable True to allow component state to change within the current view lifecycle.
-     */
-    public void allowModification() {
-        if (!ViewLifecycle.isLifecycleActive()) {
-            throw new IllegalStateException("View lifecycle is not active");
-        }
-        
-        this.mutable = true;
-        ViewLifecycle.setMutable(this);
-    }
-
     /**
      * Indicates what lifecycle phase the component instance is in
      *
@@ -289,30 +260,16 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Get the last lifecycle phase that worked with this component, if it hasn't been collected
-     * yet.
-     * 
-     * <p>
-     * This is primarily used for reporting lifecycle status, to help troubleshoot duplicate
-     * components, and should not be held using a hard reference.
-     * </p>
-     * 
-     * @see Component#getLastPhase()
-     */
-    @Override
-    public ViewLifecyclePhase getLastPhase() {
-        return this.lastPhase == null ? null : this.lastPhase.get();
-    }
-    
-    /**
      * Setter for the view status
      *
      * @param viewStatus
      */
     @Override
     public void setViewStatus(String status) {
-        checkMutable(true);
-        this.lastPhase = null;
+        if (!UifConstants.ViewStatus.CREATED.equals(status)) {
+            checkMutable(true);
+        }
+        
         this.viewStatus = status;
     }
 
@@ -323,19 +280,20 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        checkMutable(true);
-        this.lastPhase = new WeakReference<ViewLifecyclePhase>(phase);
+        if (!viewStatus.equals(phase.getStartViewStatus())) {
+            ViewLifecycle.reportIllegalState("Component " + getClass().getName() + " is not in expected status "
+                    + phase.getStartViewStatus() + " marking the completion of a lifecycle phase, found " + viewStatus
+                    + "\nPhase: " + phase);
+        }
+
         this.viewStatus = phase.getEndViewStatus();
     }
 
     /**
-     * Setter for the view status
-     *
-     * @param viewStatus
+     * @see Component#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
      */
     @Override
-    public void clearLastPhase() {
-        this.lastPhase = null;
+    public void notifyCompleted(ViewLifecyclePhase phase) {
     }
 
     /**
@@ -387,7 +345,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void performInitialization(Object model) {
-        checkMutable(false);
     }
 
     /**
@@ -403,8 +360,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
-        checkMutable(false);
-        
         View view = ViewLifecycle.getView();
         
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -435,13 +390,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void performFinalize(Object model, Component parent) {
-        checkMutable(false);
-
-        View view = ViewLifecycle.getView();
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
-
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
+            View view = ViewLifecycle.getView();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
             progressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this, progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
@@ -450,6 +402,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // conditional refresh expression setup
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
+            View view = ViewLifecycle.getView();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
             conditionalRefresh = expressionEvaluator.replaceBindingPrefixes(view, this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
@@ -457,6 +411,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         if (refreshWhenChangedPropertyNames != null) {
+            View view = ViewLifecycle.getView();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
             List<String> adjustedRefreshPropertyNames = new ArrayList<String>(refreshWhenChangedPropertyNames.size());
             for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
                 adjustedRefreshPropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,
@@ -545,7 +501,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
 
-        if (this.libraryCssClasses != null && view.isUseLibraryCssClasses()) {
+        if (this.libraryCssClasses != null && (!ViewLifecycle.isActive() ||
+                ViewLifecycle.getView().isUseLibraryCssClasses())) {
             finalCssClasses.addAll(libraryCssClasses);
         }
 
@@ -1136,7 +1093,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setSelfRendered(boolean)
      */
     public void setSelfRendered(boolean selfRendered) {
-        checkMutable(true);
+        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
+        if (!(phase instanceof RenderComponentPhase) || this != phase.getComponent()) {
+            checkMutable(true);
+        }
+        
         this.selfRendered = selfRendered;
     }
 
@@ -1152,7 +1113,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRenderedHtmlOutput(java.lang.String)
      */
     public void setRenderedHtmlOutput(String renderedHtmlOutput) {
-        checkMutable(true);
+        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
+        if (!(phase instanceof RenderComponentPhase) || this != phase.getComponent()) {
+            checkMutable(true);
+        }
+        
         this.renderedHtmlOutput = renderedHtmlOutput;
     }
 
@@ -1299,7 +1264,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object)
      */
     public void pushObjectToContext(String objectName, Object object) {
-        checkMutable(false);
+        checkMutable(true);
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
             context = new LifecycleAwareMap<String, Object>(this);
         }
@@ -1313,7 +1278,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     * PropertyReplacer object. Only checks for a list, map or component.
     */
     protected void pushToPropertyReplacerContext(String objectName, Object object) {
-        checkMutable(false);
+        checkMutable(true);
         List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
         if (propertyReplacerComponents != null) {
             for (Component replacerComponent : propertyReplacerComponents) {
@@ -1326,7 +1291,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.ComponentBase#pushAllToContext
      */
     public void pushAllToContext(Map<String, Object> objects) {
-        checkMutable(false);
+        checkMutable(true);
         if (objects == null || objects.isEmpty()) {
             return;
         }
@@ -2244,104 +2209,35 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         this.postRenderContent = postRenderContent;
     }
 
-    /**
-     * Holds a trace back to the code that copied this component, if applicable.
-     * 
-     * <p>
-     * This Throwable is not an error, or other exception condition, but can be set as the cause of
-     * another error to help with troubleshooting.
-     * </p>
-     */
-    private Throwable copyTrace;
-    
-    /**
-     * Get a trace back to the code that copied this component, if applicable.
-     * 
-     * <p>
-     * This Throwable is not an error, or other exception condition, but can be set as the cause of
-     * another error to help with troubleshooting.
-     * </p>
-     * 
-     * @return A trace back to the code that copied this component, if applicable. Null if the
-     *         component was not copied.
-     */
     @Override
-    public Throwable getCopyTrace() {
-        return this.copyTrace;
+    public ComponentBase clone() throws CloneNotSupportedException {
+        ComponentBase copy = (ComponentBase) super.clone();
+        
+        // Copy initialized status, but reset to created for others.
+        // This allows prototypes to bypass repeating the initialized phase.
+        if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
+            copy.viewStatus = UifConstants.ViewStatus.INITIALIZED;
+        } else {
+            copy.viewStatus = UifConstants.ViewStatus.CREATED;
+        }
+        
+        return copy;
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copy()
+     * Set view status to {@link UifConstants.ViewStatus#CACHED} to prevent modification.
+     * 
+     * @see Copyable#preventModification()
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T copy() {
-        if (!ViewLifecycle.isActive()) {
-            throw new IllegalStateException("View context is not active");
+    public void preventModification() {
+        if (!UifConstants.ViewStatus.CREATED.equals(viewStatus)
+                && !UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
+            ViewLifecycle.reportIllegalState("View status is " + viewStatus + " prior to caching "
+                    + getClass().getName() + " " + getId() + ", expected C or X");
         }
-        
-        ComponentBase copy = null;
-        try {
-            copy = (ComponentBase) this.getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException("Failed to copy component", e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Failed to copy component", e);
-        }
-        
-        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
-//        copy.copyTrace = new Throwable("Component copied" + (phase == null ? "" : " during phase " + phase));
-
-        if (ViewLifecycle.isLifecycleActive()) {
-            copy.allowModification();
-        }
-
-        // Detect circular chains while copying.  Without this mechanism in place,
-        // a circular chain of components will result in StackOverfowError which
-        // is much more difficult to debug.  This mechanism aims to simplify the
-        // location of the circular chain so that it can be resolved.
-        Deque<Component> copyStack = COPY_STACK.get();
-        boolean outer = copyStack == null;
-        if (outer) {
-            // ComponentBase.copy() is head recursive.  When COPY_STACK is null, then
-            // we are at the head.
-            copyStack = new LinkedList<Component>();
-            COPY_STACK.set(copyStack);
-        }
-
-        try {
-            // Detected circular chain prior to pushing this component onto the copy stack,
-            // and still push this component to include in error reporting and simplify the
-            // finally block assertion that this component is at the head of the stack.
-            boolean dup = copyStack.contains(this);
-            copyStack.push(this);
-
-            if (dup) {
-                // Prevent stack overflow and report a meaningful exception if a circular
-                // component chain has been defined.
-                StringBuilder msg = new StringBuilder("Detected circular chain in component structure during copy");
-                msg.append("\nStack: ");
-                for (Component component : copyStack) {
-                    msg.append("\n  ").append(component.getClass());
-                    msg.append(" ").append(component.getId());
-                }
-                msg.append("\nPhase: ").append(ViewLifecycle.getPhase());
-                throw new IllegalStateException(msg.toString());
-            }
-
-            copyProperties(copy);
-            
-        } finally {
-            // Take *this* component off the stack, and assert that *this* was in fact popped.
-            Component popped = copyStack.pop();
-            assert this == popped : popped.getClass() + " " + popped.getId() + " != " + getClass() + " " + getId();
-            if (outer) {
-                // Remove the stack from the thread when the entire tree has been copied.
-                COPY_STACK.remove();
-            }
-        }
-
-        return (T) copy;
+     
+        viewStatus = UifConstants.ViewStatus.CACHED;
     }
 
     /**
@@ -2363,8 +2259,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             componentCopy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
-        componentCopy.lastPhase = null;
-        
+
         List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
         if (copyAdditionalComponentsToRefresh != null) {
             componentCopy.setAdditionalComponentsToRefresh(new ArrayList<String>(copyAdditionalComponentsToRefresh));

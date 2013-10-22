@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>rice-framework</artifactId>
     <groupId>org.kuali.rice</groupId>
@@ -32,15 +33,15 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-    	<groupId>org.kuali.rice</groupId>
-    	<artifactId>rice-core-framework</artifactId>
-    	<version>${project.version}</version>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-core-framework</artifactId>
+      <version>${project.version}</version>
     </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>rice-core-service-api</artifactId>
-          <version>${project.version}</version>
-      </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-service-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
@@ -53,20 +54,20 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
-  	<dependency>
- 	    <groupId>org.eclipse.persistence</groupId>
-	    <artifactId>org.eclipse.persistence.jpa</artifactId>
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.jpa</artifactId>
       <optional>true</optional>
-  	</dependency>
+    </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+    </dependency>
 
     <!-- test dependencies -->
     <dependency>
@@ -81,52 +82,28 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
     </dependency>
-	<dependency>
-		<groupId>org.hsqldb</groupId>
-		<artifactId>hsqldb</artifactId>
-		<version>2.2.9</version>
-		<scope>test</scope>
-	</dependency>
-  <dependency>
-    <groupId>commons-dbcp</groupId>
-    <artifactId>commons-dbcp</artifactId>
-    <scope>test</scope>
-  </dependency>
-	<dependency>
-		<groupId>javax.validation</groupId>
-		<artifactId>validation-api</artifactId>
-		<version>1.0.0.GA</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-    <artifactId>spring-instrument-tomcat</artifactId>
-    <version>${spring.version}</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.tomcat</groupId>
-		<artifactId>tomcat-catalina</artifactId>
-		<version>7.0.0</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-instrument</artifactId>
-        <version>${spring.version}</version>
-		<type>jar</type>
-		<scope>provided</scope>
-	</dependency>
-
-        	<!-- Commenting out for now - I'm not sure if we need it and a number
-	of the annotations OVERLAP with javax.validation, which could lead to confusion. -->
-	<!-- 
-	<dependency>
-		<groupId>org.springmodules</groupId>
-		<artifactId>spring-modules-validation</artifactId>
-		<version>0.8</version>
-	</dependency>
-	 -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.2.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.0.0.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-instrument</artifactId>
+      <version>${spring.version}</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
-  
-
 </project>

@@ -24,6 +24,7 @@ import org.kuali.common.deploy.env.spring.DeployEnvironmentConfig;
 import org.kuali.common.deploy.project.DeployProjectConstants;
 import org.kuali.common.jdbc.project.spring.JdbcProjectConfig;
 import org.kuali.common.jdbc.project.spring.JdbcPropertyLocationsConfig;
+import org.kuali.common.util.Assert;
 import org.kuali.common.util.Mode;
 import org.kuali.common.util.project.ProjectService;
 import org.kuali.common.util.project.ProjectUtils;
@@ -74,6 +75,7 @@ public class DeployPSC implements PropertySourceConfig {
 	@Override
 	@Bean
 	public PropertySource<?> propertySource() {
+
 		DeployEnvironment deployEnv = deployEnvConfig.deployEnvironment();
 
 		// Generic jdbc locations
@@ -82,11 +84,15 @@ public class DeployPSC implements PropertySourceConfig {
 		// Pull in configuration specific to this branch of Rice
 		Location branchLoc = getOptionalLocation(RiceDeployProjectConstants.ID, "deploy.properties");
 
+		// Extract the group code
+		String groupCode = project.getProperties().getProperty("project.groupId.code");
+		Assert.noBlanks(groupCode);
+
 		// Pull in configuration specific to this Rice application
-		Location appLoc = getOptionalLocation(DEPLOY, project.getArtifactId() + ".properties");
+		Location appLoc = getOptionalLocation(DEPLOY, groupCode + "/" + project.getArtifactId() + ".properties");
 
 		// Pull in configuration specific to the environment we are deploying to
-		Location envLoc = getOptionalLocation(DEPLOY, deployEnv.getName() + ".properties");
+		Location envLoc = getOptionalLocation(DEPLOY, groupCode + "/" + deployEnv.getName() + ".properties");
 
 		// Combine them making sure Rice properties go in last
 		List<Location> locations = new ArrayList<Location>();

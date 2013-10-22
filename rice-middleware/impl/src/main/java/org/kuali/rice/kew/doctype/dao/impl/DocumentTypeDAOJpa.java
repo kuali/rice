@@ -25,6 +25,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -64,10 +65,12 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 		this.entityManager = entityManager;
 	}
 
+    @Override
 	public DocumentType findByName(String name){
 		return findByName(name, true); // by default find by name is case sensitive
 	}
 
+    @Override
     public DocumentType findByName(String name, boolean caseSensitive) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
@@ -82,7 +85,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 
         } else {
             if (name.contains("*") || name.contains("%")) {
-                name.replace("*", "%");
+                name = name.replace("*", "%");
                 predicates.add(likeIgnoreCase("name", name));
             } else {
                 predicates.add(equalIgnoreCase("name", name));
@@ -100,6 +103,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         return null;
     }
 
+    @Override
 	public Integer getMaxVersionNumber(String docTypeName) {
         TypedQuery<Integer> query = getEntityManager().
                 createNamedQuery("DocumentType.GetMaxVersionNumber", Integer.class);
@@ -107,10 +111,12 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         return query.getSingleResult();
 	}
 
+    @Override
 	public List<String> getChildDocumentTypeIds(String parentDocumentTypeId) {
 		try {
             getEntityManager().flush();
-            Query query = getEntityManager().createNamedQuery("DocumentType.GetChildDocumentTypeIds");
+            TypedQuery<String> query =
+                    getEntityManager().createNamedQuery("DocumentType.GetChildDocumentTypeIds", String.class);
             query.setParameter("parentDocumentTypeId", parentDocumentTypeId);
             return query.getResultList();
 		} catch (Exception e) {
@@ -119,6 +125,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 		}
 	}
 
+    @Override
 	public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
 		LOG.debug("documentType: "+ documentType);
 		LOG.debug("docTypeParent: "+ docTypeParent);
@@ -183,18 +190,17 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         parentPredicates.add(equal("docTypeParentId", parentId));
     }
 
-	private void assembleChildrenCriteria(Collection childrenDocTypes, List<Predicate> parentPredicates) {
+	private void assembleChildrenCriteria(Collection<DocumentType> childrenDocTypes, List<Predicate> parentPredicates) {
 		if (childrenDocTypes != null) {
-			Iterator childrenDocTypesIter = childrenDocTypes.iterator();
-			while (childrenDocTypesIter.hasNext()) {
-				DocumentType child = (DocumentType) childrenDocTypesIter.next();
+            for (DocumentType child : childrenDocTypes) {
 				addParentIdOrCriteria(child.getParentId(), parentPredicates);
 				assembleChildrenCriteria(child.getChildrenDocTypes(), parentPredicates);
 			}
 		}
 	}
 
-    public List findAllCurrent() {
+    @Override
+    public List<DocumentType> findAllCurrent() {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder = org.kuali
             .rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(
@@ -204,7 +210,8 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         return results.getResults();
     }
 
-    public List findAllCurrentByName(String name) {
+    @Override
+    public List<DocumentType> findAllCurrentByName(String name) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder = org.kuali
                 .rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("name", name), equal("currentInd", Boolean.TRUE));
@@ -212,6 +219,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         return results.getResults();
     }
 
+    @Override
     public String findDocumentTypeIdByName(String documentTypeName) {
         TypedQuery<String> query = getEntityManager().
                 createNamedQuery("DocumentType.GetIdByName", String.class);
@@ -222,7 +230,8 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
             return null;
         }
     }
-    
+
+    @Override
     public String findDocumentTypeNameById(String documentTypeId) {
         TypedQuery<String> query = getEntityManager().
                 createNamedQuery("DocumentType.FindDocumentTypeNameById", String.class);
@@ -234,6 +243,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         }
     }
 
+    @Override
     public DocumentType findDocumentTypeByDocumentId(String documentId){
         TypedQuery<DocumentType> query =
                 getEntityManager().createNamedQuery("DocumentType.GetDocumentTypeByDocumentId", DocumentType.class);
@@ -243,6 +253,12 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public void incrementOptimisticLock(String documentTypeId) {
+        DocumentType documentType = getEntityManager().getReference(DocumentType.class, documentTypeId);
+        getEntityManager().lock(documentType, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }
 
 

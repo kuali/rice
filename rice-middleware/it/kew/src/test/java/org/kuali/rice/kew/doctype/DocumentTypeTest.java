@@ -41,12 +41,16 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.test.BaselineTestCase;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -441,25 +445,32 @@ public class DocumentTypeTest extends KEWTestCase {
 
     	// try loading each of these in parallel threads to verify caching can
     	// handle concurrency situations
-    	int num = 7;
-    	Thread[] threads = new Thread[num];
-    	Callback[] callbacks = new Callback[num];
-    	for (int i = 0; i < num; i++) {
-    		callbacks[i] = new Callback();
-    	}
-    	threads[0] = new Thread(new LoadXml("ParentWithChildrenDocTypeConfiguration.xml", callbacks[0]));
-    	threads[1] = new Thread(new LoadXml("DocTypeIngestTestConfig1.xml", callbacks[1]));
-    	threads[2] = new Thread(new LoadXml("DocumentTypeAttributeFetchTest.xml", callbacks[2]));
-    	threads[3] = new Thread(new LoadXml("ChildDocType1.xml", callbacks[3]));
-    	threads[4] = new Thread(new LoadXml("ChildDocType2.xml", callbacks[4]));
-    	threads[5] = new Thread(new LoadXml("ChildDocType3.xml", callbacks[5]));
-    	threads[6] = new Thread(new LoadXml("ChildDocType4.xml", callbacks[6]));
-    	for (Thread thread : threads) {
-    		thread.start();
-    	}
+        String[] fileNames = {
+                "ParentWithChildrenDocTypeConfiguration.xml",
+                "DocTypeIngestTestConfig1.xml",
+                "DocumentTypeAttributeFetchTest.xml",
+                "ChildDocType1.xml",
+                "ChildDocType2.xml",
+                "ChildDocType3.xml",
+                "ChildDocType4.xml",
+        };
+
+        List<Callback> callbacks = new ArrayList<Callback>();
+        CyclicBarrier barrier = new CyclicBarrier(fileNames.length);
+
+        List<Thread> threads = new ArrayList<Thread>();
+        for (int i = 0; i < fileNames.length; i++) {
+            Callback callback = new Callback();
+            callbacks.add(callback);
+            threads.add(new Thread(new LoadXml(fileNames[i], callback, barrier)));
+        }
+        for (Thread thread : threads) {
+            thread.start();
+        }
     	for (Thread thread : threads) {
     		thread.join(2*60*1000);
     	}
+
     	// What should have happened here was an optimistic lock being thrown from the
     	// document type XML import.  Currently, that code is catching and just logging
     	// those errors (not rethrowing), so there's no way for us to check that the
@@ -625,21 +636,37 @@ public class DocumentTypeTest extends KEWTestCase {
 
     private class LoadXml implements Runnable {
 
-    	private String xmlFile;
-    	private Callback callback;
+    	private final String xmlFile;
+    	private final Callback callback;
+        private final CyclicBarrier barrier;
 
-    	public LoadXml(String xmlFile, Callback callback) {
+    	LoadXml(String xmlFile, Callback callback, CyclicBarrier barrier) {
     		this.xmlFile = xmlFile;
     		this.callback = callback;
+            this.barrier = barrier;
     	}
 
-		public void run() {
-			try {
-				loadXmlFile(xmlFile);
-			} catch (Throwable t) {
-				callback.record(xmlFile, t);
-			}
-		}
+        public void run() {
+            getTransactionTemplate().execute(new TransactionCallbackWithoutResult() {
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+
+                    try {
+                        barrier.await(120, TimeUnit.SECONDS);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        loadXmlFile(xmlFile);
+                    } catch (Throwable t) {
+                        callback.record(xmlFile, t);
+                    }
+//                    try {
+//                        barrier.await(120, TimeUnit.SECONDS);
+//                    } catch (Exception e) {
+//                    }
+                }
+            });
+        }
 
     }
 

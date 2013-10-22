@@ -37,7 +37,7 @@
   <param name="notification.quartz.autostartup">false</param>
 
   <param name="datasource.pool.minSize">5</param>
-  <param name="datasource.pool.maxSize">5</param>
+  <param name="datasource.pool.maxSize">50</param>
   <param name="datasource.pool.maxWait">30000</param>
 
   <param name="unittest.jetty.server1.port" override="false" random="true">10000-10999</param>

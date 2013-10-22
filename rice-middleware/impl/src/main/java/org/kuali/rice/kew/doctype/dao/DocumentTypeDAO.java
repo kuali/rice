@@ -32,7 +32,7 @@ public interface DocumentTypeDAO {
      * @param name
      * @return DocumentType or null
      */
-    public DocumentType findByName(String name);
+    DocumentType findByName(String name);
 
     /**
      * Find Document Type by name
@@ -40,7 +40,7 @@ public interface DocumentTypeDAO {
      * @param caseSensitive
      * @return DocumentType or null
      */
-    public DocumentType findByName(String name, boolean caseSensitive);
+    DocumentType findByName(String name, boolean caseSensitive);
 
     /**
      * Find Document Types by document type and parent name
@@ -49,53 +49,60 @@ public interface DocumentTypeDAO {
      * @param climbHierarchy
      * @return Collection of matching document types
      */
-    public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParentName, boolean climbHierarchy);
+    Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParentName, boolean climbHierarchy);
 
     /**
      * Get Max version number of document type
      * @param docTypeName
      * @return max version number
      */
-    public Integer getMaxVersionNumber(String docTypeName);
+    Integer getMaxVersionNumber(String docTypeName);
 
     /**
      * Find all current document types
      * @return List of current DocumentTypes
      */
-    public List findAllCurrent();
+    List findAllCurrent();
 
     /**
      * Find all current with name
      * @param name
      * @return List of Document Type by name
      */
-    public List findAllCurrentByName(String name);
+    List findAllCurrentByName(String name);
 
     /**
      * Get Child Document Type ids by parent id
      * @param parentDocumentTypeId
      * @return List of child document type ids
      */
-    public List<String> getChildDocumentTypeIds(String parentDocumentTypeId);
+    List<String> getChildDocumentTypeIds(String parentDocumentTypeId);
 
     /**
      * Find document type id by name
      * @param documentTypeName
      * @return document type id
      */
-    public String findDocumentTypeIdByName(String documentTypeName);
+    String findDocumentTypeIdByName(String documentTypeName);
 
     /**
      * Find Document type name by id
      * @param documentTypeId
      * @return document type name
      */
-    public String findDocumentTypeNameById(String documentTypeId);
+    String findDocumentTypeNameById(String documentTypeId);
 
     /**
      * Find Document Type by document id
      * @param documentId
      * @return DocumentType
      */
-    public DocumentType findDocumentTypeByDocumentId(String documentId);
+    DocumentType findDocumentTypeByDocumentId(String documentId);
+
+    /**
+     * Increments the optimstic locking version number for the document type with the given id.
+     *
+     * @param documentTypeId the id of the document type for which to increment the version number
+     */
+    void incrementOptimisticLock(String documentTypeId);
 }

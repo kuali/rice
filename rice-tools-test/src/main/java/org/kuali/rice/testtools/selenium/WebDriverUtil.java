@@ -47,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from WebDriverLegacyITBase for reuse
+ * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from {@see WebDriverLegacyITBase} for reuse
  * without having to extend WebDriverLegacyITBase.
  * </p><p>
  * For the first example see waitFor
@@ -423,6 +423,20 @@ public class WebDriverUtil {
             return passed;
         }
         return true;
+    }
+
+    /**
+     * <p>
+     * Find and highlight the WebElement using the given WebDriver and By.
+     * </p>
+     * @param driver driver to find on
+     * @param by selector to find
+     * @return
+     */
+    public static WebElement findElement(WebDriver driver, By by) {
+        WebElement found = driver.findElement(by);
+        WebDriverUtil.highlightElement(driver, found);
+        return found;
     }
 
     /**

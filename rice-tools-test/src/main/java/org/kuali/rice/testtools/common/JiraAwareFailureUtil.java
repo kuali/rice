@@ -95,6 +95,8 @@ public class JiraAwareFailureUtil {
         }
     }
 
+    private JiraAwareFailureUtil() {}
+
     /**
      * <p>
      * Calls {@see #failOnMatchedJira(String, Failable)} and calls fail on the {@see Failable#fail} if no matched jira failures.
@@ -122,7 +124,7 @@ public class JiraAwareFailureUtil {
 
     /**
      * <p>
-     * Calls {@see #failOnMatchedJira(String, String)} with the contents and if no match is detected then the message.
+     * Calls {@see #failOnMatchedJira(String, Failable)} with the contents and if no match is detected then the message.
      * </p>
      * @param contents to check for containing of the jiraMatches keys.
      * @param message to check for containing of the jiraMatches keys if contents doesn't

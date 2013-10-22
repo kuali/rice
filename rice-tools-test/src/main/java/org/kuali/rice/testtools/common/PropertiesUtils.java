@@ -89,8 +89,8 @@ public class PropertiesUtils {
      * </p><p>
      * {see #systemPropertiesOverride}
      * </p>
-     * @param inputStream
-     * @return
+     * @param inputStream to read properties from
+     * @return Properties loaded from inputStream and overridden with JVM arguments
      * @throws IOException
      */
     public static Properties loadPropertiesWithSystemOverrides(InputStream inputStream) throws IOException {
@@ -109,7 +109,7 @@ public class PropertiesUtils {
      * </p>
      *
      * @param inputStream
-     * @return
+     * @return Properties loaded from inputStream, overridden with JVM arguments, and keys ending in numbers transformed to a List
      * @throws IOException
      */
     public static Properties loadPropertiesWithSystemOverridesAndNumberedPropertiesToList(InputStream inputStream) throws IOException {

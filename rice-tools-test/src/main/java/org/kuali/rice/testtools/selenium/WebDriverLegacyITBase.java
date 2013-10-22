@@ -1307,7 +1307,9 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     /**
-     * Fail using the Failable fail method.  Calls jGrowlSticky then fail.
+     * <p>
+     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
+     * </p>
      * @param message to display with failure
      */
     public void failableFail(String message) {
@@ -1321,9 +1323,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected WebElement findElement(By by) {
-        WebElement found = driver.findElement(by);
-        WebDriverUtil.highlightElement(driver, found);
-        return found;
+        return WebDriverUtil.findElement(driver, by);
     }
 
     protected WebElement findElement(By by, WebElement elementToFindOn) {

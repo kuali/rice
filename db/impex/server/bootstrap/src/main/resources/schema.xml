@@ -3808,6 +3808,73 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
     </table>
+    <table name="TRVL_CO_T">
+        <column name="CO_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="CO_NM" required="true" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="Y" name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
+        <unique name="TRVL_CO_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
+    <table name="TRVL_DEST_T">
+        <column name="TRVL_DEST_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="TRVL_TYP_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="DEST_NM" required="true" size="40" type="VARCHAR"/>
+        <column name="POSTAL_CNTRY_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="POSTAL_STATE_CD" required="true" size="40" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
+        <unique name="TRVL_DEST_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
+    <table name="TRVL_EXP_ITM_T">
+        <column name="EXP_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="EXP_TYP_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="EXP_AMT" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="EXP_DESC" required="true" size="255" type="VARCHAR"/>
+        <column name="EXP_DT" type="DATE"/>
+        <column default="Y" name="EXP_REIMB" size="1" type="VARCHAR"/>
+        <column default="Y" name="EXP_TXBL" size="1" type="VARCHAR"/>
+        <unique name="TRVL_EXP_ITEM_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
+    <table name="TRVL_MLG_RT_T">
+        <column name="MLG_RT_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="MLG_RT_CD" required="true" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="MLG_RT_NM" required="true" size="40" type="VARCHAR"/>
+        <column name="MLG_RT" required="true" size="8" type="DECIMAL"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <unique name="TRVL_MIL_RT_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
+    <table name="TRVL_PD_EXP_T">
+        <column name="PD_EXP_ID" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="PD_DT" type="DATE"/>
+        <column name="BKFST_VAL" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="LNCH_VAL" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="DNNR_VAL" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="INCD_VAL" required="true" scale="2" size="19" type="DECIMAL"/>
+        <column name="MLG_RT_ID" required="true" size="40" type="VARCHAR"/>
+        <column name="MLG_EST" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="TRVL_MLG_RT_T" name="TRVL_PD_EXP_FK1">
+            <reference foreign="MLG_RT_ID" local="MLG_RT_ID"/>
+        </foreign-key>
+        <unique name="TRVL_PD_EXP_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="TRVL_TRAVELER_DTL_T">
         <column name="ID" primaryKey="true" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -3972,5 +4039,10 @@
     <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
     <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
     <sequence name="KRTST_GENERATED_PK_S" nextval="10000"/>
+    <sequence name="TRVL_CO_ID_S" nextval="10020"/>
+    <sequence name="TRVL_DEST_ID_S" nextval="10020"/>
+    <sequence name="TRVL_EXP_ITM_ID_S" nextval="10020"/>
     <sequence name="TRVL_ID_SEQ" nextval="1"/>
+    <sequence name="TRVL_MLG_RT_ID_S" nextval="10001"/>
+    <sequence name="TRVL_PD_EXP_ID_S" nextval="10020"/>
 </database>

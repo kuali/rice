@@ -219,7 +219,7 @@ public class LookupUtils {
     }
 
     /**
-     * Retrieves the default application search limit configured through a system parameter
+     * Retrieves the default application search limit configured through a system parameter.
      *
      * @return default result set limit of the application
      */
@@ -228,6 +228,23 @@ public class LookupUtils {
                 .getParameterValueAsString(KRADConstants.KRAD_NAMESPACE,
                         KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
                         KRADConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        if (limitString != null) {
+            return Integer.valueOf(limitString);
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieves the default application multiple value search limit configured through a system parameter.
+     *
+     * @return default multiple value result set limit of the application
+     */
+    public static Integer getApplicationMultipleValueSearchResultsLimit() {
+        String limitString = CoreFrameworkServiceLocator.getParameterService()
+                .getParameterValueAsString(KRADConstants.KRAD_NAMESPACE,
+                        KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
+                        KRADConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }

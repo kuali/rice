@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -134,7 +135,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      */
     @Override
     public Integer getResultSetLimitForLookup(Class<?> dataObjectClass, LookupForm lookupForm) {
-        LookupView lookupView = null;
+        LookupView lookupView;
         boolean multipleValueSelectSpecifiedOnURL = false;
 
         if (KRADUtils.isNotNull(lookupForm)) {
@@ -158,14 +159,25 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
             lookupView = (LookupView) getDataDictionary().getViewByTypeIndex(ViewType.LOOKUP, indexKey);
         }
 
+        Integer limit = null;
+
         if (lookupView != null) {
             if (lookupView.isMultipleValuesSelect() || multipleValueSelectSpecifiedOnURL) {
-                return lookupView.getMultipleValuesSelectResultSetLimit();
+                limit = lookupView.getMultipleValuesSelectResultSetLimit();
+
+                if (limit == null) {
+                    limit = LookupUtils.getApplicationMultipleValueSearchResultsLimit();
+                }
             } else {
-                return lookupView.getResultSetLimit();
+                limit = lookupView.getResultSetLimit();
+
+                if (limit == null) {
+                    limit = LookupUtils.getApplicationSearchResultsLimit();
+                }
             }
         }
-        return null;
+
+        return limit;
     }
 
     /**

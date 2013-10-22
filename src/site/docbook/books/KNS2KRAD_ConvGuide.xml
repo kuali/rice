@@ -3023,15 +3023,20 @@
   </section>
   <section>
     <title>KIM Permission Conversion</title>
-    <para>Currently there is no conversion script to automatically convert or create new KRAD KIM permissions from KNS permissions.
+    <note><para>Currently there is no conversion script to automatically convert or create new KRAD KIM permissions from KNS permissions.
       This section of the guide documents the KIM structures involved and the KNS / KRAD equivalents.  To illustrate the various KIM entities,
-      examples from the Rice KIM management screens are shown.</para>
-    <para>KRAD uses KIM permissions for checking the ability to view and edit, as well as other functions.
-      In some instances the KRAD permissions are similar to their KNS counterparts.  But there are some differences.</para>
+      examples from the Rice KIM management screens are shown.</para></note>
+    <para>KRAD uses KIM permissions for checking the ability to open views, view  and edit groups, lines and fields, as well as
+      the ability to perform actions.  In several instances the KRAD permissions are similar to their KNS counterparts, but use different
+      permissions templates and qualifiers.  But there are some differences:      <itemizedlist>
+        <listitem><para>In KNS the permission was checked against the business object. In KRAD, the permission is checked against the view name.
+          And you may have multiple views on the same object with different permissions.</para></listitem>
+        <listitem><para>In KRAD a view is viewable by all authenticated users by default. In this case, no KIM permissions need to be defined.
+          In KNS, a default KIM permission of the appropriate type is required, with the derived role USER assigned to it.</para></listitem>
+      </itemizedlist>
+    </para>
     <para>KIM permissions are stored in Rice database tables.  They are created either by SQL script or using the Rice KIM maintenance
-      screens.</para>
-    <para>In KRAD a view is viewable by all authenticated users by default. In this case, no KIM permissions need to be defined.
-      In KNS, a default KIM permission of the appropriate type is required, with the derived role USER assigned to it.</para>
+      screens. <question>Is XML Import an option?</question></para>
     <section xml:id="IKP0">
       <title>Inquiry Permissions</title>
       <para>In KNS, there are three types of KIM permissions related to Inquiries
@@ -3048,6 +3053,15 @@
         <para>The KRAD Can View permission uses different KIM entities than the KRAD Inquire Into Records permission.
           <itemizedlist>
             <listitem><para>KIM Permission</para>
+              <para><emphasis role="bold">KNS Inquire Into Records Permission</emphasis></para>
+                <para>The following example illustrates the differences between a KNS Inquiry Into Records permission and a KRAD
+                Open VIew permission.
+                <inlinemediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KNS_InquiryIntoRecords_permission.png" contentdepth="15"/>
+                  </imageobject>
+                </inlinemediaobject>
+              </para>
               <para><emphasis role="bold">KRAD Open View Permission</emphasis>
                 <inlinemediaobject>
                   <imageobject>
@@ -3107,7 +3121,7 @@
               </imageobject>
             </inlinemediaobject>
           </para>
-          <para><itemizedlist>
+          <para><orderedlist>
             <listitem><para>Create a new KIM Permission Using the KR-KRAD Open View Template</para>
               <para><inlinemediaobject>
                 <imageobject>
@@ -3115,21 +3129,21 @@
                 </imageobject>
               </inlinemediaobject>
                 The Open View permission has one Permission Detail attribute: <emphasis role="keyword">viewID</emphasis>. Set the viewId to be the name of the
-                Inquiry View defined for the data object.</para>
+                Inquiry View defined for the data object. [Line 1 below]</para>
               <para><programlisting linenumbering="numbered">&lt;bean id="AgendaBo-InquiryView" parent="Uif-InquiryView">
                 &lt;property name="headerText" value="Agenda Inquiry"/>
                 &lt;property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
                 &lt;property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
                 &lt;property name="additionalScriptFiles"></programlisting></para></listitem>
             <listitem><para>Assign the newly created permission to the appropriate roles</para>
-              <para>Edit the role(s) allowed to open the view. Add the permission to the role.</para>
-              <para>                <inlinemediaobject>
+              <para>Edit the role(s) being given permission to open the view. Add the permission to the role.</para>
+              <para><inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/KRAD_ConvGuide/KRAD_AssignInquiryPermissionToRole.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
               </para></listitem>
-          </itemizedlist>
+          </orderedlist>
           </para>
         </section>
         <section>
@@ -3145,13 +3159,27 @@
           </para>
         </section>
       </section>
-      <section>
+      <section xml:id="IKP31">
         <title>Full Ummask Field</title>
-        <para> TODO </para>
+        <para>The Full Unmask Field permission is used in both KNS and KRAD. The existing KNS permissions will work as is in KRAD. No conversion
+        or duplication is necessary.</para>
+        <para><inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_ConvGuide/KNS_FullUnmaskField_Permission.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
+        </para>
       </section>
-      <section>
+      <section xml:id="IKP32">
         <title>Partial Ummask Field</title>
-        <para> TODO </para>
+        <para>The Full Unmask Field permission is used in both KNS and KRAD. The existing KNS permissions will work as is in KRAD. No conversion
+          or duplication is necessary.</para>
+        <para><inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_ConvGuide/KNS_PartialUnmaskField_Permission.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
+        </para>
       </section>
     </section>
     <section>

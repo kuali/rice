@@ -37,6 +37,13 @@ import java.util.Set;
 public interface ViewModel extends Serializable {
 
     /**
+     * Called before Spring binds the request to the form to allow for pre-processing before setting values.
+     *
+     * @param request - request object containing the query parameters
+     */
+    public void preBind(HttpServletRequest request);
+    
+    /**
      * Called after Spring binds the request to the form and before the controller method is invoked
      *
      * @param request - request object containing the query parameters

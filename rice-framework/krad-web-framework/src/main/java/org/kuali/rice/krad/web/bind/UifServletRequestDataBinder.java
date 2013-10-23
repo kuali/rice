@@ -109,7 +109,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
     
     /**
-     * Performs data binding from servlet request parameters to the form, initializes view object, then calls
+     * Calls {@link org.kuali.rice.krad.web.form.UifFormBase#preBind(HttpServletRequest)}, Performs data binding from servlet request parameters to the form, initializes view object, then calls
      * {@link org.kuali.rice.krad.web.form.UifFormBase#postBind(javax.servlet.http.HttpServletRequest)}
      *
      * <p>
@@ -129,9 +129,11 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      */
     @Override
     public void bind(ServletRequest request) {
-        _bind(request);
-
         UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
+
+        form.preBind((HttpServletRequest) request);
+
+        _bind(request);
 
         // if doing a partial page update or ajax request with no updating, do not initialize view
         if (!form.isUpdateComponentRequest() && !form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {

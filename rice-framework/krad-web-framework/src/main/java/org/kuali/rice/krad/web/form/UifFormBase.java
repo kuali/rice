@@ -163,6 +163,14 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void preBind(HttpServletRequest request) {
+        // do nothing - here for framework
+    }
+    
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#postBind(javax.servlet.http.HttpServletRequest)
      */
     @Override

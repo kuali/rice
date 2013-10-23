@@ -161,113 +161,113 @@ else
 	println 'Aborting script.'
 }
 
-/*
-This class is simply for logging basic messages.
-*/
-class Logger {
-    def logFile
-    def lineNumber = 1
+///*
+//This class is simply for logging basic messages.
+//*/
+//class Logger {
+//    def logFile
+//    def lineNumber = 1
+//
+//    def Logger() {
+//        this("errors.log")
+//    }
+//    
+//    def Logger(file) {
+//        logFile = new File(file)
+//        if (logFile.exists()) {
+//            logFile.delete()
+//        }  
+//    }
+//    
+//    def log(message) {
+//        logFile << "${lineNumber}) ${message}" 
+//        logFile << "\n"
+//        lineNumber++
+//    }
+//}
 
-    def Logger() {
-        this("errors.log")
-    }
-    
-    def Logger(file) {
-        logFile = new File(file)
-        if (logFile.exists()) {
-            logFile.delete()
-        }  
-    }
-    
-    def log(message) {
-        logFile << "${lineNumber}) ${message}" 
-        logFile << "\n"
-        lineNumber++
-    }
-}
-
-/* 
-Below are the class definitions responsible for holding the OJB metedata. 
-*/
-
-class Field {
-    def id
-    def name
-    def column
-    def jdbcType
-    def primarykey
-    def nullable
-    def indexed
-    def autoincrement
-    def sequenceName
-    def locking
-    def conversion    
-    def access
-}
-
-class Key {
-    def fieldRef
-    def fieldIdRef
-}
-
-class Order_By{
-	def _name
-	def _sort
-	}
-
-class ReferenceDescriptor {
-    def name
-    def classRef
-    def proxy
-    def autoRetrieve
-    def autoUpdate
-    def autoDelete
-    def foreignKeys = []
-}
-
-class CollectionDescriptor {
-    def name
-    def collectionClass
-    def elementClassRef
-    def orderBy
-    def sort
-    def indirectionTable
-    def proxy
-    def autoRetrieve
-    def autoUpdate
-    def autoDelete
-    def fkPointingToThisClassColumn
-    def fkPointingToElementClassColumn
-    def inverseForeignKeys = []    
-    def manyToMany
-	def orderByElements = []
-}
-
-class ClassDescriptor {
-    def compoundPrimaryKey = false
-    def pkClassIdText = ""
-    def cpkFilename = ""
-    def tableName
-    def className
-    def primaryKeys = []
-    def fields = [:]
-    def referenceDescriptors = [:]
-    def collectionDescriptors = [:]
-}
-
-public class JPAConversionHandlers{
-	public static conversion_util = new ConversionUtils();
-	public static metadata_handler = new MetaDataHandler();
-	public static persistence_handler = new PersistenceFileHandler();
-	public static mysql_handler = new MySQLHandler();
-	public static type_handler = new CustomerTypeHandler();
-	public static annotation_handler = new AnnotationHandler();
-	
-	public static info_log = new Logger("jpa_info.log");
-	public static error_log = new Logger("jpa_error.log");
-
-	public static bo_log = new Logger("jpa_bo.log");
-	public static cpk_log = new Logger("jpa_cpk.log");
-	
-	public static SQL_DATE_PATTERN = ~/Date|Timestamp|(java\.sql\.Date)|(java\.sql\.Timestamp)/;
-}
+///* 
+//Below are the class definitions responsible for holding the OJB metedata. 
+//*/
+//
+//class Field {
+//    def id
+//    def name
+//    def column
+//    def jdbcType
+//    def primarykey
+//    def nullable
+//    def indexed
+//    def autoincrement
+//    def sequenceName
+//    def locking
+//    def conversion    
+//    def access
+//}
+//
+//class Key {
+//    def fieldRef
+//    def fieldIdRef
+//}
+//
+//class Order_By{
+//	def _name
+//	def _sort
+//	}
+//
+//class ReferenceDescriptor {
+//    def name
+//    def classRef
+//    def proxy
+//    def autoRetrieve
+//    def autoUpdate
+//    def autoDelete
+//    def foreignKeys = []
+//}
+//
+//class CollectionDescriptor {
+//    def name
+//    def collectionClass
+//    def elementClassRef
+//    def orderBy
+//    def sort
+//    def indirectionTable
+//    def proxy
+//    def autoRetrieve
+//    def autoUpdate
+//    def autoDelete
+//    def fkPointingToThisClassColumn
+//    def fkPointingToElementClassColumn
+//    def inverseForeignKeys = []    
+//    def manyToMany
+//	def orderByElements = []
+//}
+//
+//class ClassDescriptor {
+//    def compoundPrimaryKey = false
+//    def pkClassIdText = ""
+//    def cpkFilename = ""
+//    def tableName
+//    def className
+//    def primaryKeys = []
+//    def fields = [:]
+//    def referenceDescriptors = [:]
+//    def collectionDescriptors = [:]
+//}
+//
+//public class JPAConversionHandlers{
+//	public static conversion_util = new ConversionUtils();
+//	public static metadata_handler = new MetaDataHandler();
+//	public static persistence_handler = new PersistenceFileHandler();
+//	public static mysql_handler = new MySQLHandler();
+//	public static type_handler = new CustomerTypeHandler();
+//	public static annotation_handler = new AnnotationHandler();
+//	
+//	public static info_log = new Logger("jpa_info.log");
+//	public static error_log = new Logger("jpa_error.log");
+//
+//	public static bo_log = new Logger("jpa_bo.log");
+//	public static cpk_log = new Logger("jpa_cpk.log");
+//	
+//	public static SQL_DATE_PATTERN = ~/Date|Timestamp|(java\.sql\.Date)|(java\.sql\.Timestamp)/;
+//}

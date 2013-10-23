@@ -1,3 +1,10 @@
+import ojbmetadata.ClassDescriptor;
+import ojbmetadata.CollectionDescriptor;
+import ojbmetadata.Field;
+import ojbmetadata.Key;
+import ojbmetadata.Order_By;
+import ojbmetadata.ReferenceDescriptor;
+
 /**
  * Copyright 2005-2013 The Kuali Foundation
  *

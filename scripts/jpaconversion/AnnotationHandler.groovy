@@ -1,3 +1,5 @@
+import ojbmetadata.Field;
+
 /**
  * Copyright 2005-2013 The Kuali Foundation
  *

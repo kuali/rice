@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.rule.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.internal.jpa.querydef.SubQueryImpl;
 import org.kuali.rice.core.api.criteria.OrderByField;
 import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
@@ -24,6 +25,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -38,6 +40,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import java.sql.Timestamp;
@@ -405,8 +409,9 @@ public class RuleDAOJpa implements RuleDAO {
 
         if (!respPredicates.isEmpty()) {
 
-            javax.persistence.criteria.Predicate[] preds = respPredicates.toArray(new javax.persistence.criteria.Predicate[respPredicates.size()]);
-            subquery.where((javax.persistence.criteria.Predicate[])preds);
+            javax.persistence.criteria.Predicate[] preds = respPredicates.toArray(
+                    new javax.persistence.criteria.Predicate[respPredicates.size()]);
+            subquery.where((javax.persistence.criteria.Predicate[]) preds);
             subquery.select(fromResp.get("ruleBaseValuesId"));
             return subquery;
         }
@@ -420,7 +425,7 @@ public class RuleDAOJpa implements RuleDAO {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
 
         predicates.add(cb.equal(root.get("currentInd"),Boolean.TRUE));
-        predicates.add(cb.equal(root.get("templateRuleInd"),Boolean.FALSE));
+        predicates.add(cb.equal(root.get("templateRuleInd"), Boolean.FALSE));
         if (activeInd != null) {
             predicates.add(cb.equal(root.get("active"),activeInd));
         }
@@ -440,11 +445,16 @@ public class RuleDAOJpa implements RuleDAO {
             for (Iterator iter2 = extensionValues.entrySet().iterator(); iter2.hasNext();) {
                 Map.Entry entry = (Map.Entry) iter2.next();
                 if (!StringUtils.isEmpty((String) entry.getValue())) {
-                    Subquery<RuleExtensionBo> subQuery = query.subquery(RuleExtensionBo.class);
-                    subQuery.where(cb.equal(root.get("ruleExtensions.extensionValues.key"),entry.getKey()),
-                            cb.like(root.<String>get("ruleExtensions.extensionValues.value"),
+                    Subquery ruleExtSubQuery = query.subquery(RuleExtensionBo.class);
+                    Root<RuleExtensionBo> ruleExtRoot = ruleExtSubQuery.from(RuleExtensionBo.class);
+                    javax.persistence.criteria.Predicate predAnd = cb.and(
+                            cb.equal(ruleExtRoot.get("extensionValues").get("key"),entry.getKey()),
+                            cb.like(ruleExtRoot.get("extensionValues").<String>get("value"),
                                     ("%" + (String) entry.getValue() + "%").toUpperCase()));
-                    predicates.add(cb.exists(subQuery));
+                    ruleExtSubQuery.where(predAnd);
+                    ruleExtSubQuery.select(ruleExtRoot.get("ruleBaseValuesId"));
+
+                    predicates.add(cb.in(root.get("id")).value(ruleExtSubQuery));
                 }
             }
         }

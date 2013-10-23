@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.dao.RuleTemplateDAO;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
@@ -100,7 +101,7 @@ public class RuleTemplateDAOJpa implements RuleTemplateDAO {
      }
 
     public RuleTemplateBo save(RuleTemplateBo ruleTemplate) {
-    	return getDataObjectService().save(ruleTemplate);
+    	return getDataObjectService().save(ruleTemplate, PersistenceOption.FLUSH);
     }
 
     public String getNextRuleTemplateId() {

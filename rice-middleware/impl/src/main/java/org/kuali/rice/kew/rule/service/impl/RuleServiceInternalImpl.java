@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -71,6 +72,7 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.annotation.Required;
@@ -344,7 +346,8 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         Timestamp date = new Timestamp(System.currentTimeMillis());
         rule.setActivationDate(date);
         rule.setDeactivationDate(null);
-        rule.setVersionNbr(0);
+        rule.setVersionNbr(null);
+        rule.setVersionNumber(null);
         rule.setObjectId(null);
 
         RuleBaseValues oldRule = null;
@@ -361,6 +364,16 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
             rule.setPreviousVersion(oldRule);
             performanceLogger.log("Saved old rule: " + oldRule.getId());
         }
+
+//        }
+
+        for(RuleResponsibilityBo ruleResponsibilityBo : rule.getRuleResponsibilities()){
+            if(StringUtils.isBlank(ruleResponsibilityBo.getId())){
+                ruleResponsibilityBo.setVersionNumber(null);
+            }
+        }
+
+
                
         // now save the new rule
         rule = getRuleDAO().save(rule);
@@ -1204,10 +1217,13 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     public RuleDelegationBo saveRuleDelegation(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted) {
     	RuleBaseValues rule = ruleDelegation.getDelegationRule();
+        //rule = (RuleBaseValues)SerializationUtils.deepCopy(rule);
 		rule.setPreviousRuleId(rule.getId());
 		rule.setPreviousVersion(null);
 		rule.setId(null);
 		ruleDelegation.setRuleDelegationId(null);
+
+        ruleDelegation.setDelegationRule(rule);
 		makeCurrent(ruleDelegation, isRetroactiveUpdatePermitted);
 		return ruleDelegation;
     }

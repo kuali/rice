@@ -16,8 +16,10 @@
 package org.kuali.rice.kew.rule;
 
 import mocks.MockDocumentRefreshQueueImpl;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -25,6 +27,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.List;
@@ -149,8 +152,17 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		String newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
 		// change the delegation type to secondary
 		newRuleDelegation.setDelegationType(DelegationType.SECONDARY);
-		saveNewVersion(newRuleDelegation);
-		String newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
+		newRuleDelegation = saveNewVersion(newRuleDelegation);
+
+        KRADServiceLocator.getDataObjectService().flush(RuleDelegationBo.class);
+        ruleDelegations = KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(
+                originalResp.getResponsibilityId());
+        String newRuleDelegationId2 = null;
+        for(RuleDelegationBo ruleDelegationBo : ruleDelegations){
+            if(!StringUtils.equals(ruleDelegationBo.getRuleDelegationId(),newRuleDelegationId)){
+                newRuleDelegationId2 = ruleDelegationBo.getRuleDelegationId();
+            }
+        }
 
 		// let's check the original and verify that its been re-versioned
 		newRuleDelegation = KEWServiceLocator.getRuleDelegationService().findByRuleDelegationId(newRuleDelegationId);
@@ -165,28 +177,30 @@ public class AddRuleDelegationTest extends KEWTestCase {
 			if (ruleDelegation.getRuleDelegationId().equals(newRuleDelegationId2)) {
 				// this is our reversioned rule
 				foundReversionedDelegateRule = true;
-				assertEquals("Previous version relationship should be set up now", newRuleDelegation.getDelegationRule().getId(), ruleDelegation.getDelegationRule().getPreviousRuleId());
-				assertEquals("Rule Version should have been incremented.",
-						Long.valueOf(newRuleDelegation.getVersionNumber().longValue() + 1),
-						ruleDelegation.getVersionNumber());
+				assertEquals("Previous version relationship should be set up now",
+                        newRuleDelegation.getDelegationRule().getId(), ruleDelegation.getDelegationRule().getPreviousRuleId());
+				assertTrue("Rule current indicator should be set to 1.",
+						ruleDelegation.getDelegationRule().getCurrentInd());
 			}
 		}
 		assertTrue("Failed to find the reversioned delegate rule", foundReversionedDelegateRule);
 	}
 
-	private void saveNewVersion(RuleDelegationBo ruleDelegation) {
+	private RuleDelegationBo saveNewVersion(RuleDelegationBo ruleDelegation) {
 		// clear out the keys
+        ruleDelegation = (RuleDelegationBo)SerializationUtils.deepCopy(ruleDelegation);
 		ruleDelegation.setRuleDelegationId(null);
 		ruleDelegation.setDelegateRuleId(null);
         ruleDelegation.setObjectId(null);
+        ruleDelegation.setVersionNumber(null);
+
 		for (RuleResponsibilityBo ruleResponsibility : ruleDelegation.getDelegationRule().getRuleResponsibilities()) {
 			ruleResponsibility.setRuleBaseValuesId(null);
-			//ruleResponsibility.setRuleBaseValues(null);
 			ruleResponsibility.setResponsibilityId(null);
 			ruleResponsibility.setId(null);
             ruleResponsibility.setObjectId(null);
 		}
-		KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
+		return KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 	}
 
 }

@@ -41,6 +41,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,9 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 	private Integer displayOrder;
     @Column(name="DFLT_VAL")
 	private String defaultValue;
+
+    @Transient
+    private String ruleTemplateId;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="RULE_TMPL_ID", nullable = false)

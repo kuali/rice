@@ -54,8 +54,6 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
 	@GeneratedValue(generator="KREW_RULE_TMPL_OPTN_S")
 	@Column(name="RULE_TMPL_OPTN_ID")
 	private String id;
-    @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
-	private String ruleTemplateId;
     @Column(name="KEY_CD")
 	private String code;
     @Column(name="VAL")
@@ -65,7 +63,7 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
 	private Long versionNumber;
 
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_TMPL_ID")
+	@JoinColumn(name="RULE_TMPL_ID",nullable = false)
 	private RuleTemplateBo ruleTemplate;
     
     public RuleTemplateOptionBo(){}
@@ -105,12 +103,9 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
     }
     @Override
     public String getRuleTemplateId() {
-        return ruleTemplateId;
+        return getRuleTemplate() != null ? getRuleTemplate().getId() : null;
     }
 
-    public void setRuleTemplateId(String ruleTemplateId) {
-        this.ruleTemplateId = ruleTemplateId;
-    }
     @Override
     public String getId() {
         return id;

@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,6 +52,7 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id
+    @PortableSequenceGenerator(name="KREW_RTE_TMPL_S")
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
 	@Column(name="DLGN_RULE_ID")
 	private String ruleDelegationId;

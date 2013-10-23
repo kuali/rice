@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.rule.RuleContract;
-import org.kuali.rice.kew.api.rule.RuleExtension;
+import org.kuali.rice.kew.api.rule.*;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
@@ -54,6 +54,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,7 +71,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract {
+public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract, Cloneable {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
@@ -130,7 +131,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL},mappedBy="ruleBaseValues")
 	private List<RuleExtensionBo> ruleExtensions;
 
-    @ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplateBo ruleTemplate;
 
@@ -694,5 +695,44 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             return null;
         }
         return org.kuali.rice.kew.api.rule.Rule.Builder.create(bo).build();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        RuleBaseValues rule = new RuleBaseValues();
+        rule.setId(this.getId());
+        rule.setName(getName());
+        rule.setRuleTemplate(getRuleTemplate());
+        rule.setActive(isActive());
+        rule.setDescription(getDescription());
+
+        rule.setDocTypeName(getDocTypeName());
+        rule.setFromDateValue(getFromDateValue());
+        rule.setToDateValue(getToDateValue());
+        rule.setForceAction(isForceAction());
+        rule.setPreviousRuleId(getPreviousRuleId());
+
+        if (CollectionUtils.isNotEmpty(getRuleResponsibilities())) {
+            List<RuleResponsibilityBo> responsibilitys = new ArrayList<RuleResponsibilityBo>();
+            for (RuleResponsibilityBo c : getRuleResponsibilities()) {
+                responsibilitys.add(c);
+            }
+            rule.setRuleResponsibilities(responsibilitys);
+        } else {
+            rule.setRuleResponsibilities(Collections.<RuleResponsibilityBo>emptyList());
+        }
+        if (CollectionUtils.isNotEmpty(getRuleExtensions())) {
+            List<RuleExtensionBo> extensions = new ArrayList<RuleExtensionBo>();
+            for (RuleExtensionBo ruleExtensionBo : getRuleExtensions()) {
+                extensions.add(ruleExtensionBo);
+            }
+            rule.setRuleExtensions(extensions);
+        } else {
+            rule.setRuleExtensions(Collections.<RuleExtensionBo>emptyList());
+        }
+        if (getRuleExpressionDef() != null) {
+            rule.setRuleExpressionDef(getRuleExpressionDef());
+        }
+        return rule;
     }
 }

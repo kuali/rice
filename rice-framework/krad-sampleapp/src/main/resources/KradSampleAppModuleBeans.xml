@@ -31,7 +31,7 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
 
-  <import resource="_KradSampleAppJpaSpringBeans.xml"/>  
+  <import resource="_KradSampleAppJpaSpringBeans.xml"/>
 
   <bean id="kradSampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-SAP"/>
@@ -40,6 +40,7 @@
       <list>
         <value>classpath:org/kuali/rice/krad/demo</value>
         <value>classpath:org/kuali/rice/krad/labs</value>
+        <value>classpath:edu/sampleu/travel</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">
@@ -51,6 +52,7 @@
       <list>
         <value>org.kuali.rice.krad.demo</value>
         <value>org.kuali.rice.krad.labs</value>
+        <value>edu.sampleu.travel.dataobject</value>
       </list>
     </property>
     <property name="resourceBundleNames">

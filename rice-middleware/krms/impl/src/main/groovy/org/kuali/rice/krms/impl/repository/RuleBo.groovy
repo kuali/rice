@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.impl.repository;
+package org.kuali.rice.krms.impl.repository
 
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import java.util.Map.Entry
 import org.apache.commons.lang.StringUtils
@@ -404,7 +405,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     private static String getNewId(String table, Class clazz) {
         if (sequenceAccessorService == null) {
             // we don't assign to sequenceAccessorService to preserve existing behavior
-            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
+            return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();

@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.kns.service.KNSServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krad.service.KRADServiceLocator
@@ -181,7 +182,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     }
 
     public BusinessObjectService getBoService() {
-        return KRADServiceLocator.getBusinessObjectService();
+        return KNSServiceLocator.getBusinessObjectService();
     }
 
 
@@ -373,7 +374,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
     private static String getNewId(String table, Class clazz) {
         if (sequenceAccessorService == null) {
             // we don't assign to sequenceAccessorService to preserve existing behavior
-            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
+            return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(table, clazz) + "";
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
         return id.toString();

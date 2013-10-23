@@ -686,7 +686,7 @@ public class ObjectPropertyReference {
                 IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
                         + name + "' is readable on " +
                         (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
-                LOG.warn(missingPropertyException, missingPropertyException);
+                LOG.warn(missingPropertyException);
             }
 
             return null;
@@ -799,7 +799,7 @@ public class ObjectPropertyReference {
                 IllegalArgumentException missingPropertyException = new IllegalArgumentException("No property name '"
                         + name + "' is readable or writable on " +
                         (implClass == beanClass ? implClass.toString() : "impl " + implClass + ", bean " + beanClass));
-                LOG.warn(missingPropertyException, missingPropertyException);
+                LOG.warn(missingPropertyException);
             }
 
             return writeMethod == null ? null : writeMethod.getParameterTypes()[0];

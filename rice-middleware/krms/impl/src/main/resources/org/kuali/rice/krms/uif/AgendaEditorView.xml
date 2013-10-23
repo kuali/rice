@@ -637,7 +637,7 @@
               <bean parent="Uif-VerticalBoxGroup" p:hidden="true" p:style="float: right;">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-DataField" p:propertyName="agendaItem.id" p:cssClasses="agendaItemId" p:additionalHiddenPropertyNames="agendaItem.id" />
+                    <bean parent="Uif-DataField" p:propertyName="agendaItemLine.id" p:cssClasses="agendaItemId" p:additionalHiddenPropertyNames="agendaItemLine.id" />
                   </list>
                 </property>
               </bean>

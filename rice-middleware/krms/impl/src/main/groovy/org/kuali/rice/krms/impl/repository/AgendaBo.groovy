@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository
 
+import org.kuali.rice.kns.service.KNSServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract
 import org.apache.commons.lang.StringUtils
@@ -47,6 +48,10 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
     public AgendaBo() {
         active = true;
         items = new ArrayList<AgendaItemBo>();
+    }
+
+    public AgendaBo getAgenda() {
+        retern this;
     }
 
     public Map<String, String> getAttributes() {
@@ -131,7 +136,7 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
     private static String getNewId(){
         if (sequenceAccessorService == null) {
             // we don't assign to sequenceAccessorService to preserve existing behavior
-            return KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class) + "";
+            return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class) + "";
         }
         Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_S, AgendaBo.class);
         return id.toString();

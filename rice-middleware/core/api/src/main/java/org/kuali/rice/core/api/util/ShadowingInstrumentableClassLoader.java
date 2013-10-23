@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.test.runners;
+package org.kuali.rice.core.api.util;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;

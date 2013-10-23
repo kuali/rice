@@ -34,22 +34,16 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerScheduler;
 import org.junit.runners.model.Statement;
 import org.junit.runners.model.TestClass;
-import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.kuali.rice.core.api.util.ShadowingInstrumentableClassLoader;
 import org.kuali.rice.test.MethodAware;
-import org.springframework.instrument.classloading.WeavingTransformer;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 

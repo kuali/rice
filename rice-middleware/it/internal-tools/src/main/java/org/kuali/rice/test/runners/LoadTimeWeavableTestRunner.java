@@ -67,12 +67,14 @@ import static org.junit.internal.runners.rules.RuleFieldValidator.*;
  */
 public class LoadTimeWeavableTestRunner extends Runner implements Filterable, Sortable {
 
+    private static final String[] JUNIT_CLASSLOADER_EXCLUDES = { "org.junit.", "junit.framework." };
+
     private final TestClass fTestClass;
     private Method currentMethod;
 
     // static because we only need one custom loader per JVM in which the tests are running, otherwise the memory
     // usage gets crazy!
-    private static URLClassLoader customLoader;
+    private static ClassLoader customLoader;
 
     private Sorter fSorter = Sorter.NULL;
 
@@ -93,7 +95,8 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     public LoadTimeWeavableTestRunner(Class<?> testClass) throws InitializationError {
         if (LoadTimeWeavableTestRunner.customLoader == null) {
             URL[] parentUrls = ((URLClassLoader)testClass.getClassLoader()).getURLs();
-            LoadTimeWeavableTestRunner.customLoader = new JUnitCustomClassLoader(parentUrls, testClass.getClassLoader());
+            LoadTimeWeavableTestRunner.customLoader =
+                    new ShadowingInstrumentableClassLoader(testClass.getClassLoader(), JUNIT_CLASSLOADER_EXCLUDES);
         }
         this.fTestClass = getCustomTestClass(testClass, customLoader);
         validate();
@@ -688,8 +691,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     @Deprecated
     protected Statement withBefores(FrameworkMethod method, Object target,
             Statement statement) {
-        List<FrameworkMethod> befores = getTestClass().getAnnotatedMethods(
-                Before.class);
+        List<FrameworkMethod> befores = getTestClass().getAnnotatedMethods(Before.class);
         return befores.isEmpty() ? statement : new RunBefores(statement,
                 befores, target);
     }
@@ -742,8 +744,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      *         test
      */
     protected List<org.junit.rules.MethodRule> rules(Object target) {
-        return getTestClass().getAnnotatedFieldValues(target, Rule.class,
-                org.junit.rules.MethodRule.class);
+        return getTestClass().getAnnotatedFieldValues(target, Rule.class, org.junit.rules.MethodRule.class);
     }
 
     /**
@@ -793,275 +794,5 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
         }
         return annotation.timeout();
     }
-
-    public static class JUnitCustomClassLoader extends URLClassLoader {
-
-        private static final String[] SYSTEM_CLASSES = new String[] { "java.", "javax.", "org.xml.", "org.w3c.", "com.sun.", "sun." };
-        private static final String[] DELEGATE_TO_PARENT =  new String[] { "org.junit.", "junit.framework." };
-
-        private final WeavingTransformer weavingTransformer;
-
-        public JUnitCustomClassLoader() {
-            super(new URL[0]);
-            this.weavingTransformer = new WeavingTransformer(this);
-        }
-
-        public JUnitCustomClassLoader(ClassLoader parent) {
-            super(new URL[0], parent);
-            this.weavingTransformer = new WeavingTransformer(this);
-        }
-
-        public JUnitCustomClassLoader(URL[] urls, ClassLoader parent) {
-            super(urls, parent);
-            this.weavingTransformer = new WeavingTransformer(this);
-        }
-
-        @Override
-        public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-            if (isDelegateToParentClass(name)) {
-                return loadParentClass(name, resolve);
-            }
-            Class<?> loadedClass = loadExistingClass(name, resolve);
-            if (loadedClass != null) {
-                return loadedClass;
-            }
-            loadedClass = loadSystemClass(name, resolve);
-            if (loadedClass != null) {
-                return loadedClass;
-            }
-            loadedClass = loadLocalClass(name, resolve);
-            if (loadedClass != null) {
-                return loadedClass;
-            }
-            loadedClass = loadParentClass(name, resolve);
-            if (loadedClass != null) {
-                return loadedClass;
-            }
-            throw new ClassNotFoundException(name);
-        }
-
-        @Override
-        public URL getResource(String name) {
-            URL resource = findResource(name);
-            if (resource == null) {
-                resource = getParent().getResource(name);
-            }
-            return resource;
-        }
-
-        @Override
-        public Enumeration<URL> getResources(String name) throws IOException {
-            Enumeration<URL> localResources = findResources(name);
-            Enumeration<URL> parentResources = getParent().getResources(name);
-            return CollectionUtils.concat(localResources, parentResources);
-        }
-
-
-
-        private Class<?> loadExistingClass(String name, boolean resolve) {
-            Class<?> loadedClass = findLoadedClass(name);
-            if (loadedClass != null && resolve) {
-                resolveClass(loadedClass);
-            }
-            return loadedClass;
-        }
-
-        private Class<?> loadSystemClass(String name, boolean resolve) {
-            Class<?> loadedClass = null;
-            if (isSystemClass(name)) {
-                try {
-                    loadedClass = getSystemClassLoader().loadClass(name);
-                    if (loadedClass != null && resolve) {
-                        resolveClass(loadedClass);
-                    }
-                } catch (ClassNotFoundException e) {
-                    // not found in system class loader
-                }
-            }
-            return loadedClass;
-        }
-
-        private Class<?> loadLocalClass(String name, boolean resolve) {
-            Class<?> loadedClass = null;
-            try {
-                loadedClass = findClass(name);
-                if (loadedClass != null && resolve) {
-                    resolveClass(loadedClass);
-                }
-            } catch (ClassNotFoundException e) {
-                // not found locally
-            }
-            return loadedClass;
-        }
-
-        private Class<?> loadParentClass(String name, boolean resolve) {
-            Class<?> loadedClass = null;
-            try {
-                loadedClass = getParent().loadClass(name);
-                if (loadedClass != null && resolve) {
-                    resolveClass(loadedClass);
-                }
-            } catch (ClassNotFoundException e) {
-                // not found in parent
-            }
-            return loadedClass;
-        }
-
-        /**
-         * This method modeled on the isSystemPath method in Jetty's ContextLoader.
-         *
-         * When loading classes from the system classloader, we really only want to load certain classes
-         * from there so this will tell us whether or not the class name given is one we want to load
-         * from the system classloader.
-         */
-        private boolean isSystemClass(String name) {
-            name = name.replace('/','.');
-            while(name.startsWith(".")) {
-                name=name.substring(1);
-            }
-            for (int index = 0; index < SYSTEM_CLASSES.length; index++) {
-                String systemClass = SYSTEM_CLASSES[index];
-                if (systemClass.endsWith(".")) {
-                    if (name.startsWith(systemClass)) {
-                        return true;
-                    }
-                }
-                else if (name.equals(systemClass)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private boolean isDelegateToParentClass(String name) {
-            name = name.replace('/','.');
-            while(name.startsWith(".")) {
-                name=name.substring(1);
-            }
-            for (int index = 0; index < DELEGATE_TO_PARENT.length; index++) {
-                String parentClass = DELEGATE_TO_PARENT[index];
-                if (parentClass.endsWith(".")) {
-                    if (name.startsWith(parentClass)) {
-                        return true;
-                    }
-                }
-                else if (name.equals(parentClass)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /**
-         * Delegate for LoadTimeWeaver's {@code addTransformer} method.
-         * Typically called through ReflectiveLoadTimeWeaver.
-         * @see org.springframework.instrument.classloading.LoadTimeWeaver#addTransformer
-         * @see org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver
-         */
-        public void addTransformer(ClassFileTransformer transformer) {
-            this.weavingTransformer.addTransformer(transformer);
-        }
-
-        /**
-         * Delegate for LoadTimeWeaver's {@code getThrowawayClassLoader} method.
-         * Typically called through ReflectiveLoadTimeWeaver.
-         * @see org.springframework.instrument.classloading.LoadTimeWeaver#getThrowawayClassLoader
-         * @see org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver
-         */
-        public ClassLoader getThrowawayClassLoader() {
-            JUnitCustomClassLoader tempLoader = new JUnitCustomClassLoader();
-            shallowCopyFieldState(this, tempLoader);
-            return tempLoader;
-        }
-
-        // The code below is originally taken from ReflectionUtils and optimized for
-        // local usage. There is no dependency on ReflectionUtils to keep this class
-        // self-contained (since it gets deployed into Tomcat's server class loader).
-
-        /**
-         * Given the source object and the destination, which must be the same class
-         * or a subclass, copy all fields, including inherited fields. Designed to
-         * work on objects with public no-arg constructors.
-         * @throws IllegalArgumentException if arguments are incompatible or either
-         * is {@code null}
-         */
-        private static void shallowCopyFieldState(final Object src, final Object dest) throws IllegalArgumentException {
-            if (src == null) {
-                throw new IllegalArgumentException("Source for field copy cannot be null");
-            }
-            if (dest == null) {
-                throw new IllegalArgumentException("Destination for field copy cannot be null");
-            }
-            Class targetClass = findCommonAncestor(src.getClass(), dest.getClass());
-
-            // Keep backing up the inheritance hierarchy.
-            do {
-                // Copy each field declared on this class unless it's static or
-                // file.
-                Field[] fields = targetClass.getDeclaredFields();
-                for (int i = 0; i < fields.length; i++) {
-                    Field field = fields[i];
-                    // Skip static and final fields (the old FieldFilter)
-                    // do not copy resourceEntries - it's a cache that holds class entries.
-                    if (!(Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers()) ||
-                            field.getName().equals("resourceEntries"))) {
-                        try {
-                            // copy the field (the old FieldCallback)
-                            field.setAccessible(true);
-                            Object srcValue = field.get(src);
-                            field.set(dest, srcValue);
-                        }
-                        catch (IllegalAccessException ex) {
-                            throw new IllegalStateException(
-                                    "Shouldn't be illegal to access field '" + fields[i].getName() + "': " + ex);
-                        }
-                    }
-                }
-                targetClass = targetClass.getSuperclass();
-            }
-            while (targetClass != null && targetClass != Object.class);
-        }
-
-        private static Class findCommonAncestor(Class one, Class two) throws IllegalArgumentException {
-            Class ancestor = one;
-            while (ancestor != Object.class || ancestor != null) {
-                if (ancestor.isAssignableFrom(two)) {
-                    return ancestor;
-                }
-                ancestor = ancestor.getSuperclass();
-            }
-            // try the other class hierarchy
-            ancestor = two;
-            while (ancestor != Object.class || ancestor != null) {
-                if (ancestor.isAssignableFrom(one)) {
-                    return ancestor;
-                }
-                ancestor = ancestor.getSuperclass();
-            }
-            return null;
-        }
-
-
-        public String toString() {
-            StringBuilder sb = new StringBuilder("[urls=");
-            URL[] urls = getURLs();
-            if (urls == null) {
-                sb.append("null");
-            } else {
-                for (int i = 0; i < urls.length; i++) {
-                    sb.append(urls[i]);
-                    sb.append(",");
-                }
-                // remove trailing comma
-                if (urls.length > 1) {
-                    sb.setLength(sb.length() - 1);
-                }
-            }
-            sb.append("]");
-            return sb.toString();
-        }
-
-    }
-
 
 }

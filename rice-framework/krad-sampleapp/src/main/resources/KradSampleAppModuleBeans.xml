@@ -157,6 +157,7 @@
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx10Resources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewPx11Resources</value>
         <!-- Labs -->
+        <value>org.kuali.rice.krad.labs.resources.LabsInquiryResources</value>
         <value>org.kuali.rice.krad.labs.resources.LabsLookupResources</value>
       </list>
     </property>

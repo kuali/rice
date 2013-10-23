@@ -145,5 +145,10 @@
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
+  <bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" lazy-init="true">
+    <property name="dataSource" ref="kewDataSource" />
+  </bean>
+
+
 </beans>
 

@@ -39,10 +39,10 @@ import static org.junit.Assert.*;
 
 /**
  * Test the basic persistence of business objects related to PeopleFlows
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PeopleFlowBoTest extends KEWTestCase {
-
-//    private BusinessObjectService boService;
 
     private DataObjectService dataObjectService;
     private ResponsibilityIdService responsibilityIdService;

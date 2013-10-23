@@ -91,9 +91,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Transient
     protected DocumentHeader documentHeader;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(
-            name = "DOC_HDR_ID", insertable = false, updatable = false)
+    @Transient
     protected List<PessimisticLock> pessimisticLocks;
 
     @Transient
@@ -204,6 +202,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         // do nothing
     }
 
+    /**
+     * Return the list of actions a user could take on a document which should not result
+     * in the recalculation of the {@link PessimisticLock}s.
+     * 
+     * @see #doActionTaken(ActionTakenEvent)
+     */
     protected List<String> getNonLockingActionTakenCodes() {
         List<String> actionTakenStatusCodes = new ArrayList<String>();
         actionTakenStatusCodes.add(KewApiConstants.ACTION_TAKEN_SAVED_CD);
@@ -686,20 +690,15 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     @Override
     public List<PessimisticLock> getPessimisticLocks() {
-        return this.pessimisticLocks;
+        return pessimisticLocks;
     }
 
     /**
      * @see org.kuali.rice.krad.document.Document#refreshPessimisticLocks()
-     * @deprecated This is not needed with the relationship set up with JPA annotations
      */
     @Override
-    @Deprecated
     public void refreshPessimisticLocks() {
-        this.pessimisticLocks.clear();
-        // need to copy the list because the lock service returns an immutable list here
-        this.pessimisticLocks = new ArrayList<PessimisticLock>(KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(
-                this.documentNumber));
+        pessimisticLocks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForDocument(documentNumber);
     }
 
     /**
@@ -714,7 +713,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     @Override
     public void addPessimisticLock(PessimisticLock lock) {
-        this.pessimisticLocks.add(lock);
+        pessimisticLocks.add(lock);
     }
 
     /**

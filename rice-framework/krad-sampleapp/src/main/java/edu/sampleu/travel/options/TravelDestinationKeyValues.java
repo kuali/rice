@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.options;
 
-import edu.sampleu.travel.dataobject.TravelMileageRate;
+import edu.sampleu.travel.dataobject.TravelDestination;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -27,23 +27,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides a simple key values for mileage rate (needed for lookup screens on Travel Per Diem Expense)
+ * This class provides a simple key values for travel destinations
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MileageRateKeyValues  extends KeyValuesBase {
+public class TravelDestinationKeyValues extends KeyValuesBase {
+
     private static final long serialVersionUID = 1L;
 
     @Override
     public List<KeyValue> getKeyValues() {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
 
-        QueryResults<TravelMileageRate> bos = KRADServiceLocator.getDataObjectService().findMatching( TravelMileageRate.class, QueryByCriteria
-                .Builder.create().build() );
+        QueryResults<TravelDestination> bos = KRADServiceLocator.getDataObjectService().findMatching(
+                TravelDestination.class, QueryByCriteria.Builder.create().build());
 
         keyValues.add(new ConcreteKeyValue("", ""));
-        for ( TravelMileageRate typ : bos.getResults() ) {
-            keyValues.add(new ConcreteKeyValue(typ.getMileageRateId(), typ.getMileageRateCd()));
+        for (TravelDestination typ : bos.getResults()) {
+            keyValues.add(new ConcreteKeyValue(typ.getTravelDestinationId(), typ.getTravelDestinationName()));
         }
 
         return keyValues;

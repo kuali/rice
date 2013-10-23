@@ -16,6 +16,7 @@
 package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.MileageRateKeyValues;
+import edu.sampleu.travel.options.TravelDestinationKeyValues;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
@@ -66,7 +67,7 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @Column(name="TRVL_DEST_ID",length=40)
     @Label("Primary Destination")
     @Description("Primary Destination related to per diem expense")
-    @KeyValuesFinderClass(MileageRateKeyValues.class)
+    @KeyValuesFinderClass(TravelDestinationKeyValues.class)
     @UifDisplayHints({
             @UifDisplayHint(UifDisplayHintType.NONE),
             @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),

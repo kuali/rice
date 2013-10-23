@@ -15,9 +15,20 @@
  */
 package edu.sampleu.travel.dataobject;
 
-import edu.sampleu.travel.options.ExpenseType;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -28,22 +39,51 @@ import java.util.Date;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+@Entity
+@Table(name = "TRVL_EXP_ITM_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelExpenseItem extends DataObjectBase implements Serializable {
 
     private static final long serialVersionUID = -4092206384418712220L;
 
+    @Id @Column(name = "EXP_ITM_ID", length = 10)
+    @Label("id")
+    @Description(
+            "Unique identifier for item")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelExpenseItemId;
 
-    private ExpenseType travelExpenseTypeCd;
+    @Column(name = "EXP_TYP_CD", length = 10)
+    @Label("Expense type")
+    @Description("type of expense")
 
+    private String travelExpenseTypeCd;
+
+    @Column(name = "EXP_DESC", length = 10)
+    @Label("Expense Description")
+    @Description("Description of expense")
     private String expenseDesc;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "EXP_DT")
+    @Label("Date of Expense")
     private Date expenseDate;
 
+    @Column(name = "EXP_AMT", length = 10)
+    @Label("Expense Description")
+    @Description("amount of expense")
     private BigDecimal expenseAmount;
 
+    @Column(name = "EXP_REIMB", nullable = false, length = 1)
+    @javax.persistence.Convert(converter = BooleanYNConverter.class)
+    @Label("Reimbursable")
+    @Description("Whether expense is reimbursed to traveler")
     private boolean reimbursable;
 
+    @Column(name = "EXP_TXBL", nullable = false, length = 1)
+    @javax.persistence.Convert(converter = BooleanYNConverter.class)
+    @Label("Taxable")
+    @Description("Whether expense is taxed")
     private boolean taxable;
 
     public String getTravelExpenseItemId() {
@@ -54,11 +94,11 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
         this.travelExpenseItemId = travelExpenseItemId;
     }
 
-    public ExpenseType getTravelExpenseTypeCd() {
+    public String getTravelExpenseTypeCd() {
         return travelExpenseTypeCd;
     }
 
-    public void setTravelExpenseTypeCd(ExpenseType travelExpenseTypeCd) {
+    public void setTravelExpenseTypeCd(String travelExpenseTypeCd) {
         this.travelExpenseTypeCd = travelExpenseTypeCd;
     }
 

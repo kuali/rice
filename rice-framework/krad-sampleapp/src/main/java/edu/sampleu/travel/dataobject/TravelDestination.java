@@ -15,31 +15,58 @@
  */
 package edu.sampleu.travel.dataobject;
 
-import edu.sampleu.travel.options.TripType;
+import edu.sampleu.travel.options.PostalCountryCodeKeyValuesFinder;
+import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * This class provides travel destination record
+ * This class provides travel destination record for TEM sample
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
+@Entity
+@Table(name = "TRVL_DEST_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelDestination extends DataObjectBase implements Serializable {
 
     private static final long serialVersionUID = 8448891916448081149L;
 
+    @Id @Column(name = "TRVL_DEST_ID", length = 40)
+    @Label("id")
+    @Description("Unique identifier for destination item")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelDestinationId;
 
-    private TripType tripTypeCd;
-
+    @Column(name = "DEST_NM", length = 40)
+    @Label("Destination name")
+    @Description("Name of location")
     private String travelDestinationName;
 
+    @Column(name = "POSTAL_CNTRY_CD")
+    @KeyValuesFinderClass(PostalCountryCodeKeyValuesFinder.class)
     private String countryCd;
 
+    @Column(name = "POSTAL_STATE_CD")
+    @KeyValuesFinderClass(PostalStateCodeKeyValuesFinder.class)
     private String stateCd;
 
+    @Column(name = "ACTV_IND", nullable = false, length = 1)
+    @javax.persistence.Convert(converter = BooleanYNConverter.class)
+    @Label("Active")
+    @Description("Whether active or inactive")
     private boolean active = Boolean.TRUE;
 
     public String getTravelDestinationId() {
@@ -48,14 +75,6 @@ public class TravelDestination extends DataObjectBase implements Serializable {
 
     public void setTravelDestinationId(String travelDestinationId) {
         this.travelDestinationId = travelDestinationId;
-    }
-
-    public TripType getTripTypeCd() {
-        return tripTypeCd;
-    }
-
-    public void setTripTypeCd(TripType tripTypeCd) {
-        this.tripTypeCd = tripTypeCd;
     }
 
     public String getTravelDestinationName() {

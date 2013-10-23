@@ -15,8 +15,31 @@
  */
 package edu.sampleu.travel.dataobject;
 
+import edu.sampleu.travel.options.MileageRateKeyValues;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
+import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.Relationship;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,24 +49,91 @@ import java.util.Date;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Entity
+@Table(name = "TRVL_PD_EXP_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelPerDiemExpense extends DataObjectBase implements Serializable {
 
     private static final long serialVersionUID = 6269893036439679855L;
 
+    @Id
+    @Column(name = "PD_EXP_ID", length = 10)
+    @Label("id")
+    @Description("Unique identifier for per diem expense item")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelPerDiemExpenseId;
 
+    @Column(name="TRVL_DEST_ID",length=40)
+    @Label("Primary Destination")
+    @Description("Primary Destination related to per diem expense")
+    @KeyValuesFinderClass(MileageRateKeyValues.class)
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.NONE),
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
+    private String travelDestinationId;
+
+    @Relationship(foreignKeyFields="travelDestinationId")
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+    @JoinColumn(name="TRVL_DEST_ID", insertable=false, updatable=false)
+    @InheritProperties({
+            @InheritProperty(name="travelDestinationId",
+                    label=@Label("Primary Destination"),
+                    displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
+    @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)
+    private TravelDestination travelDestination;
+
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "PD_DT")
+    @Label("Date of Use")
     private Date perDiemDate;
 
+    @Column(name = "BKFST_VAL")
+    @Label("Breakfast Value")
     private BigDecimal breakfastValue;
 
+    @Column(name = "LNCH_VAL")
+    @Label("Lunch Value")
     private BigDecimal lunchValue;
 
+    @Column(name = "DNNR_VAL")
+    @Label("Dinner Value")
     private BigDecimal dinnerValue;
 
+    @Column(name = "INCD_VAL")
+    @Label("Amount estimated for incidentals")
     private BigDecimal incidentalsValue;
 
-    private String mileageRateCd;
+    @Column(name="MLG_RT_ID",length=40)
+    @Label("Mileage Rate")
+    @Description("Mileage Rate Code Used")
+    @KeyValuesFinderClass(MileageRateKeyValues.class)
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.NONE),
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
+    private String mileageRateId;
 
+    @Relationship(foreignKeyFields="mileageRateId")
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+    @JoinColumn(name="MLG_RT_ID", insertable=false, updatable=false)
+    @InheritProperties({
+            @InheritProperty(name="mileageRateCd",
+                    label=@Label("Mileage rate"),
+                    displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
+    private TravelMileageRate mileageRate;
+
+    public TravelMileageRate getMileageRate() {
+        return mileageRate;
+    }
+
+    public void setMileageRate(TravelMileageRate mileageRate) {
+        this.mileageRate = mileageRate;
+    }
+
+    @Column(name = "MLG_EST")
+    @Label("Number of estimated miles")
     private BigDecimal estimatedMileage;
 
     public String getTravelPerDiemExpenseId() {
@@ -94,12 +184,20 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
         this.incidentalsValue = incidentalsValue;
     }
 
-    public String getMileageRateCd() {
-        return mileageRateCd;
+    public String getTravelDestinationId() {
+        return travelDestinationId;
     }
 
-    public void setMileageRateCd(String mileageRateCd) {
-        this.mileageRateCd = mileageRateCd;
+    public TravelDestination getTravelDestination() {
+        return travelDestination;
+    }
+
+    public String getMileageRateId() {
+        return mileageRateId;
+    }
+
+    public void setMileageRateCd(String mileageRateId) {
+        this.mileageRateId = mileageRateId;
     }
 
     public BigDecimal getEstimatedMileage() {

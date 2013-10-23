@@ -16,7 +16,17 @@
 package edu.sampleu.travel.dataobject;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -26,18 +36,39 @@ import java.math.BigDecimal;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+@Entity
+@Table(name = "TRVL_MLG_RT_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelMileageRate extends DataObjectBase implements Serializable {
 
     private static final long serialVersionUID = 4525338013753227579L;
 
+    @Id @Column(name = "MLG_RT_ID", length = 40)
+    @Label("id")
+    @Description("Unique identifier for item")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String mileageRateId;
 
+    @Column(name = "MLG_RT_CD", length = 40)
+    @Label("Mileage rate code")
+    @Description("Unique identifier for mileage rate")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String mileageRateCd;
 
+    @Column(name = "MLG_RT_NM", length = 40)
+    @Label("Mileage Rate name")
+    @Description("name of rate (i.e. domestic)")
     private String mileageRateName;
 
+    @Column(name = "MLG_RT", length = 10)
+    @Label("Mileage Rate")
+    @Description("rate in dollars per mile")
     private BigDecimal mileageRate;
 
+    @Column(name = "ACTV_IND", nullable = false, length = 1)
+    @Label("Active")
+    @Description("Whether active or inactive")
+    @javax.persistence.Convert(converter = BooleanYNConverter.class)
     boolean active = Boolean.TRUE;
 
     public String getMileageRateId() {

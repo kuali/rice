@@ -71,7 +71,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name="KREW_RULE_T")
-public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract, Cloneable {
+public class RuleBaseValues extends PersistableBusinessObjectBase implements RuleContract {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id
@@ -695,44 +695,5 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             return null;
         }
         return org.kuali.rice.kew.api.rule.Rule.Builder.create(bo).build();
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        RuleBaseValues rule = new RuleBaseValues();
-        rule.setId(this.getId());
-        rule.setName(getName());
-        rule.setRuleTemplate(getRuleTemplate());
-        rule.setActive(isActive());
-        rule.setDescription(getDescription());
-
-        rule.setDocTypeName(getDocTypeName());
-        rule.setFromDateValue(getFromDateValue());
-        rule.setToDateValue(getToDateValue());
-        rule.setForceAction(isForceAction());
-        rule.setPreviousRuleId(getPreviousRuleId());
-
-        if (CollectionUtils.isNotEmpty(getRuleResponsibilities())) {
-            List<RuleResponsibilityBo> responsibilitys = new ArrayList<RuleResponsibilityBo>();
-            for (RuleResponsibilityBo c : getRuleResponsibilities()) {
-                responsibilitys.add(c);
-            }
-            rule.setRuleResponsibilities(responsibilitys);
-        } else {
-            rule.setRuleResponsibilities(Collections.<RuleResponsibilityBo>emptyList());
-        }
-        if (CollectionUtils.isNotEmpty(getRuleExtensions())) {
-            List<RuleExtensionBo> extensions = new ArrayList<RuleExtensionBo>();
-            for (RuleExtensionBo ruleExtensionBo : getRuleExtensions()) {
-                extensions.add(ruleExtensionBo);
-            }
-            rule.setRuleExtensions(extensions);
-        } else {
-            rule.setRuleExtensions(Collections.<RuleExtensionBo>emptyList());
-        }
-        if (getRuleExpressionDef() != null) {
-            rule.setRuleExpressionDef(getRuleExpressionDef());
-        }
-        return rule;
     }
 }

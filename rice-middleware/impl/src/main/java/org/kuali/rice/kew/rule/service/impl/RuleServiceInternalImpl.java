@@ -346,7 +346,6 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         Timestamp date = new Timestamp(System.currentTimeMillis());
         rule.setActivationDate(date);
         rule.setDeactivationDate(null);
-        rule.setVersionNbr(null);
         rule.setVersionNumber(null);
         rule.setObjectId(null);
 
@@ -1203,7 +1202,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 		rule.setPreviousVersion(null);
 		rule.setId(null);
 		makeCurrent(rule, isRetroactiveUpdatePermitted);
-		return rule;
+		return getRuleDAO().findRuleBaseValuesByName(rule.getName());
     }
 
     public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted) {

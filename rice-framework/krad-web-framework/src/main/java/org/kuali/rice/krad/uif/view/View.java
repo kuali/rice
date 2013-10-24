@@ -409,19 +409,25 @@ public class View extends ContainerBase {
 
         this.setOnDocumentReadyScript(onReadyScript);
 
-        // breadcrumb handling
+        // Breadcrumb handling
         breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
 
-        // add validation default js options for validation framework to View's data attributes
+        // Add validation default js options for validation framework to View's data attributes
         Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                 UifConstants.GROUP_VALIDATION_DEFAULTS_MAP_ID);
         Object fieldValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                 UifConstants.FIELD_VALIDATION_DEFAULTS_MAP_ID);
+        Object actionDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                UifConstants.ACTION_DEFAULTS_MAP_ID);
 
+
+        // Add data defaults for common components to the view for use in js (to reduce size of individual components)
         this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
                 (Map<String, String>) groupValidationDataDefaults));
         this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
                 (Map<String, String>) fieldValidationDataDefaults));
+        this.addDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS, ScriptUtils.convertToJsValue(
+                        (Map<String, String>) actionDataDefaults));
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");

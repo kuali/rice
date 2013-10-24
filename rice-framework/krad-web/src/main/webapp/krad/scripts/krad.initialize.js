@@ -205,9 +205,25 @@ function initFieldHandlers() {
     };
 
     //add global action handler
-    jQuery(document).on("click", "a[data-onclick], button[data-onclick], img[data-onclick], input[data-onclick]",
+    jQuery(document).on("click", "a[data-role='Action'], button[data-role='Action'], "
+            + "img[data-role='Action'], input[data-role='Action']",
             function (e) {
-                var functionData = jQuery(this).data("onclick");
+                e.preventDefault();
+                var action = jQuery(this);
+
+                // Disabled check
+                if(action.hasClass(kradVariables.DISABLED_CLASS)){
+                    return false;
+                }
+
+                initActionData(action);
+
+                // Dirty check (if enabled)
+                if (action.data(kradVariables.PERFORM_DIRTY_VALIDATION) ===  true && dirtyFormState.checkDirty(e)) {
+                    return;
+                }
+
+                var functionData = action.data(kradVariables.ACTION_ONCLICK_DATA);
                 eval("var actionFunction = function(e) {" + functionData + "};");
 
                 return actionFunction.call(this, e);

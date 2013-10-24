@@ -50,7 +50,7 @@
 
     <#local imagePlacement="${element.actionImagePlacement}"/>
 
-<a id="${element.id}" ${href!} ${name!} onclick="return false;" ${krad.attrBuild(element)}
+<a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
 ${tabindex} ${element.simpleDataAttributes!}>
 
     <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>

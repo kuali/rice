@@ -14,6 +14,41 @@
  * limitations under the License.
  */
 
+var actionDefaults = jQuery("div[data-role='view']").data(kradVariables.ACTION_DEFAULTS);
+
+/**
+ * Initialize action data for the action by merging any custom settings with global default settings
+ *
+ * @param jqComponent a jq object that represents the component to correct data for
+ */
+function initActionData(jqActionComponent) {
+    // If an action does not have a setting for something in defaults, use the default
+    jQuery.each(actionDefaults, function(key, value){
+        var dataValue = jqActionComponent.data(key.toLowerCase());
+        if (dataValue === undefined) {
+            jqActionComponent.data(key.toLowerCase(), value);
+        }
+    });
+
+    // Insert focusId and jumpToId settings into submitData
+    var submitData = jqActionComponent.data(kradVariables.SUBMIT_DATA);
+    var focusId = jqActionComponent.data(kradVariables.FOCUS_ID);
+    if (focusId && focusId !== kradVariables.SELF) {
+        submitData.focusId = focusId;
+    }
+    else if (focusId && focusId === kradVariables.SELF) {
+        submitData.focusId = jqActionComponent.attr("id");
+    }
+
+    var jumpToId = jqActionComponent.data(kradVariables.JUMP_TO_ID);
+    if (jumpToId && jumpToId !== kradVariables.SELF) {
+        submitData.jumpToId = jumpToId;
+    }
+    else if (jumpToId && jumpToId === kradVariables.SELF) {
+        submitData.jumpToId = jqActionComponent.attr("id");
+    }
+}
+
 /**
  * Sets up a new request configured from the given action component and submits
  * the request
@@ -372,7 +407,7 @@ function retrieveCollectionPage(linkElement, collectionId) {
     var parentLI = link.parent();
 
     // Skip processing if the link supplied is disabled or active
-    if (parentLI.is(kradVariables.DISABLED_CLASS) || parentLI.is(kradVariables.ACTIVE_CLASS)) {
+    if (parentLI.is("." + kradVariables.DISABLED_CLASS) || parentLI.is(kradVariables.ACTIVE_CLASS)) {
         return;
     }
 

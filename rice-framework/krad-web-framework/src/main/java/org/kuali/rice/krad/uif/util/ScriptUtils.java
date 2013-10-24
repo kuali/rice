@@ -226,9 +226,8 @@ public class ScriptUtils {
         else if (NumberUtils.isNumber(value)) {
             return originalValue;
         } else {
-            // use single quotes since hidden scripts are placed in
-            // the value attribute which surrounds the script with double quotes
-            return "'" + originalValue + "'";
+            // String values require double quotes
+            return "\"" + originalValue + "\"";
         }
     }
 

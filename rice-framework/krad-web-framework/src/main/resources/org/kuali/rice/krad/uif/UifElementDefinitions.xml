@@ -41,24 +41,6 @@
       </list>
     </property>
     <property name="displayMessages" value="true"/>
-    <property name="validationDataDefaults">
-      <map>
-        <entry key="summarize" value="true"/>
-        <entry key="displayMessages" value="true"/>
-        <entry key="collapseFieldMessages" value="true"/>
-        <entry key="showPageSummaryHeader" value="true"/>
-
-        <entry key="displayLabel" value="true"/>
-        <entry key="displayHeaderSummary" value="true"/>
-        <entry key="hasOwnMessages" value="false"/>
-        <entry key="pageLevel" value="false"/>
-        <entry key="forceShow" value="false"/>
-        <entry key="serverErrors" value="[]"/>
-        <entry key="serverWarnings" value="[]"/>
-        <entry key="serverInfo" value="[]"/>
-        <entry key="serverErrors" value="[]"/>
-      </map>
-    </property>
   </bean>
 
 
@@ -249,6 +231,21 @@
     </property>
     <property name="loadingMessageText" value="Loading..."/>
   </bean>
+
+  <util:map id="Uif-Action-DataDefaults">
+    <entry key="focusOnIdAfterSubmit" value="SELF"/>
+    <entry key="loadingMessage" value="Loading..."/>
+    <entry key="clearDirtyOnAction" value="false"/>
+    <entry key="dirtyOnAction" value="false"/>
+    <entry key="validate" value="false"/>
+    <entry key="performDirtyValidation" value="false"/>
+    <entry key="ajaxSubmit" value="true"/>
+    <entry key="disableBlocking" value="false"/>
+    <entry key="onClick" value="actionInvokeHandler(this);"/>
+    <entry key="submit_data" value="{}"/>
+    <entry key="focusId" value="SELF"/>
+    <entry key="jumpToId" value="SELF"/>
+  </util:map>
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
   <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-Action">

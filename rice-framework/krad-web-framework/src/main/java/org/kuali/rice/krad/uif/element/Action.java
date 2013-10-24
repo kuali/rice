@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -27,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -40,6 +36,11 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Field that presents an action that can be taken on the UI such as submitting
@@ -160,7 +161,8 @@ public class Action extends ContentElementBase {
             ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
             ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluator.replaceBindingPrefixes(viewLifecycle.getView(), this, disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(viewLifecycle.getView(), this,
+                    disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -183,7 +185,7 @@ public class Action extends ContentElementBase {
     @Override
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
-        
+
         ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
         View view = viewLifecycle.getView();
 
@@ -232,33 +234,13 @@ public class Action extends ContentElementBase {
 
         setupRefreshAction(view);
 
+        // Apply dirty check if it is enabled for the view and the action requires it
+        if (view instanceof FormView) {
+            performDirtyValidation = performDirtyValidation && ((FormView) view).isApplyDirtyCheck();
+        }
+
         buildActionData(view, model, parent);
 
-        // build final onclick script
-        String onClickScript = this.getOnClickScript();
-        if (StringUtils.isNotBlank(actionScript)) {
-            onClickScript = ScriptUtils.appendScript(onClickScript, actionScript);
-        } else {
-            onClickScript = ScriptUtils.appendScript(onClickScript, "actionInvokeHandler(this);");
-        }
-
-        // add dirty check if it is enabled for the view and the action requires it
-        if (view instanceof FormView) {
-            if (((FormView) view).isApplyDirtyCheck() && performDirtyValidation) {
-                onClickScript = "if (dirtyFormState.checkDirty(e) == false) { " + onClickScript + " ; } ";
-            }
-        }
-
-        //stop action if the action is disabled
-        if (disabled) {
-            this.addStyleClass("disabled");
-            this.setSkipInTabOrder(true);
-        }
-        onClickScript = "if(jQuery(this).hasClass('disabled')){ return false; }" + onClickScript;
-
-        //on click script becomes a data attribute for use in a global handler on the client
-        this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, KRADUtils.convertToHTMLAttributeSafeString(
-                "e.preventDefault();" + onClickScript));
     }
 
     /**
@@ -324,18 +306,38 @@ public class Action extends ContentElementBase {
      * @param parent component the holds the action
      */
     protected void buildActionData(View view, Object model, Component parent) {
+        HashMap<String, String> actionDataAttributes = new HashMap<String, String>();
+
+        Map<String, String> dataDefaults =
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                        UifConstants.ACTION_DEFAULTS_MAP_ID));
+
         // map properties to data attributes
-        addDataAttribute("ajaxsubmit", Boolean.toString(ajaxSubmit));
-        addDataAttributeIfNonEmpty("successcallback", this.successCallback);
-        addDataAttributeIfNonEmpty("errorcallback", this.errorCallback);
-        addDataAttributeIfNonEmpty("presubmitcall", this.preSubmitCall);
-        addDataAttributeIfNonEmpty("loadingmessage", this.loadingMessageText);
-        addDataAttributeIfNonEmpty("disableblocking", Boolean.toString(this.disableBlocking));
-        addDataAttributeIfNonEmpty("ajaxreturntype", this.ajaxReturnType);
-        addDataAttributeIfNonEmpty("refreshid", this.refreshId);
-        addDataAttribute("validate", Boolean.toString(this.performClientSideValidation));
-        addDataAttribute("dirtyOnAction", Boolean.toString(this.dirtyOnAction));
-        addDataAttribute("clearDirtyOnAction", Boolean.toString(this.clearDirtyOnAction));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.AJAX_SUBMIT,
+                Boolean.toString(ajaxSubmit));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.SUCCESS_CALLBACK, this.successCallback);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.ERROR_CALLBACK,
+                this.errorCallback);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.PRE_SUBMIT_CALL, this.preSubmitCall);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.LOADING_MESSAGE, this.loadingMessageText);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.DISABLE_BLOCKING, Boolean.toString(this.disableBlocking));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.AJAX_RETURN_TYPE, this.ajaxReturnType);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.REFRESH_ID,
+                this.refreshId);
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.VALIDATE,
+                Boolean.toString(this.performClientSideValidation));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.DIRTY_ON_ACTION, Boolean.toString(this.dirtyOnAction));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.CLEAR_DIRTY,
+                Boolean.toString(this.clearDirtyOnAction));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                UifConstants.ActionDataAttributes.PERFORM_DIRTY_VALIDATION, Boolean.toString(
+                this.performDirtyValidation));
 
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
@@ -352,27 +354,69 @@ public class Action extends ContentElementBase {
         }
 
         // if focus id not set default to focus on action
-        if ((focusOnIdAfterSubmit == null) || focusOnIdAfterSubmit.equalsIgnoreCase(
-                UifConstants.Order.SELF.toString())) {
-            focusOnIdAfterSubmit = this.getId();
-        } else if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())) {
+        if (focusOnIdAfterSubmit.equalsIgnoreCase(UifConstants.Order.NEXT_INPUT.toString())) {
             focusOnIdAfterSubmit = UifConstants.Order.NEXT_INPUT.toString() + ":" + this.getId();
         }
 
-        submitData.put("focusId", focusOnIdAfterSubmit);
-
-        // if jump to not set default to jump to location of the action
-        if (StringUtils.isBlank(jumpToIdAfterSubmit) && StringUtils.isBlank(jumpToNameAfterSubmit)) {
-            jumpToIdAfterSubmit = this.getId();
-        }
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.FOCUS_ID,
+                focusOnIdAfterSubmit);
 
         if (StringUtils.isNotBlank(jumpToIdAfterSubmit)) {
-            submitData.put("jumpToId", jumpToIdAfterSubmit);
-        } else {
-            submitData.put("jumpToName", jumpToNameAfterSubmit);
+            addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.JUMP_TO_ID,
+                    jumpToIdAfterSubmit);
+        } else if (StringUtils.isNotBlank(jumpToNameAfterSubmit)) {
+            addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                    UifConstants.ActionDataAttributes.JUMP_TO_NAME, jumpToNameAfterSubmit);
         }
 
-        addDataAttribute(UifConstants.DataAttributes.SUBMIT_DATA, ScriptUtils.toJSON(submitData));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.DataAttributes.SUBMIT_DATA,
+                ScriptUtils.toJSON(submitData));
+
+        // build final onclick script
+        String onClickScript = this.getOnClickScript();
+        if (StringUtils.isNotBlank(actionScript)) {
+            onClickScript = ScriptUtils.appendScript(onClickScript, actionScript);
+        } else {
+            onClickScript = ScriptUtils.appendScript(onClickScript, "actionInvokeHandler(this);");
+        }
+
+        //stop action if the action is disabled
+        if (disabled) {
+            this.addStyleClass("disabled");
+            this.setSkipInTabOrder(true);
+        }
+
+        // on click script becomes a data attribute for use in a global handler on the client
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.DataAttributes.ONCLICK,
+                KRADUtils.convertToHTMLAttributeSafeString(onClickScript));
+
+        if (!actionDataAttributes.isEmpty()) {
+            this.getDataAttributes().putAll(actionDataAttributes);
+        }
+
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
+    }
+
+    /**
+     * Adds the value passed to the valueMap with the key specified, if the value does not match the
+     * value which already exists in defaults (to avoid having to write out extra data that can later
+     * be derived from the defaults in the js client-side)
+     *
+     * @param valueMap the data map being constructed
+     * @param defaults defaults for validation messages
+     * @param key the variable name being added
+     * @param value the value set on this object as a String equivalent
+     */
+    protected void addActionDataSettingsValue(Map<String, String> valueMap, Map<String, String> defaults, String key,
+            String value) {
+        if (StringUtils.isBlank(value)) {
+            return;
+        }
+
+        String defaultValue = defaults.get(key);
+        if (defaultValue == null || !value.equals(defaultValue)) {
+            valueMap.put(key, value);
+        }
     }
 
     /**

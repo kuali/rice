@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * General constants used within the User Interface Framework.
  *
@@ -63,6 +65,7 @@ public class UifConstants {
     public static final String LOGGED_OUT_VIEW_ID = "Uif-LoggedOutView";
     public static final String GROUP_VALIDATION_DEFAULTS_MAP_ID = "Uif-GroupValidationMessages-DataDefaults";
     public static final String FIELD_VALIDATION_DEFAULTS_MAP_ID = "Uif-FieldValidationMessages-DataDefaults";
+    public static final String ACTION_DEFAULTS_MAP_ID = "Uif-Action-DataDefaults";
     public static final String REFERER = "Referer";
     public static final String NO_RETURN = "NO_RETURN";
 
@@ -347,6 +350,7 @@ public class UifConstants {
     }
 
     public static final class RoleTypes {
+        public static final String ACTION = "Action";
         public static final String CONTROL = "Control";
         public static final String INPUT_FIELD = "InputField";
         public static final String GROUP = "Group";
@@ -356,11 +360,12 @@ public class UifConstants {
     public static final class DataAttributes {
         public static final String TYPE = "type";
         public static final String ROLE = "role";
-        public static final String ONCLICK = "onclick";
+        public static final String ONCLICK = "onClick";
         public static final String SUBMIT_DATA = "submit_data";
         public static final String HAS_MESSAGES = "has_messages";
         public static final String SERVER_MESSAGES = "server_messages";
         public static final String VALIDATION_MESSAGES = "validation_messages";
+        public static final String ACTION_DEFAULTS = "action_defaults";
         public static final String GROUP_VALIDATION_DEFAULTS = "group_validation_defaults";
         public static final String FIELD_VALIDATION_DEFAULTS = "field_validation_defaults";
         public static final String MESSAGES_FOR = "messages_for";
@@ -394,6 +399,24 @@ public class UifConstants {
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
+    }
+    
+    public static final class ActionDataAttributes {
+        public static final String AJAX_SUBMIT = "ajaxSubmit";
+        public static final String SUCCESS_CALLBACK = "successCallback";
+        public static final String ERROR_CALLBACK = "errorCallback";
+        public static final String PRE_SUBMIT_CALL = "preSubmitCall";
+        public static final String LOADING_MESSAGE = "loadingMessage";
+        public static final String DISABLE_BLOCKING = "disableBlocking";
+        public static final String AJAX_RETURN_TYPE = "ajaxReturnType";
+        public static final String REFRESH_ID = "refreshId";
+        public static final String VALIDATE = "validate";
+        public static final String DIRTY_ON_ACTION = "dirtyOnAction";
+        public static final String CLEAR_DIRTY = "clearDirtyOnAction";
+        public static final String PERFORM_DIRTY_VALIDATION = "performDirtyValidation";
+        public static final String FOCUS_ID = "focusId";
+        public static final String JUMP_TO_ID = "jumpToId";
+        public static final String JUMP_TO_NAME = "jumpToName";
     }
 
     public static final class CaseConstraintOperators {

@@ -21,6 +21,8 @@ function JavascriptKradVariables() {
 }
 
 JavascriptKradVariables.prototype = {
+    ACTION_DEFAULTS: "action_defaults",
+    ACTION_ONCLICK_DATA: "onclick",
     ACTIVE_CLASS: ".active",
     APPLICATION_FOOTER_WRAPPER: "Uif-ApplicationFooter-Wrapper",
     APP_ID: "Uif-Application",
@@ -51,12 +53,13 @@ JavascriptKradVariables.prototype = {
 
     DIRTY_CLASS: "dirty",
     DISABLE_BROWSER_CACHE: "disableBrowserCache",
-    DISABLED_CLASS: ".disabled",
+    DISABLED_CLASS: "disabled",
     DIALOG_PLACEHOLDER: "_dialogPlaceholder",
     ERROR_HIGHLIGHT_SECTION_CLASS: "uif-errorHighlight-section",
     ERROR_MESSAGE_ITEM_CLASS: "uif-errorMessageItem-field",
     FIELD_CLASS: "uif-field",
     FORM_KEY: "formKey",
+    FOCUS_ID: "focusid",
     GRID_LAYOUT_CELL_CLASS: "uif-gridLayoutCell",
     HAS_ERROR_CLASS: "uif-hasError",
     HAS_INFO_CLASS: "uif-hasInfo",
@@ -70,7 +73,7 @@ JavascriptKradVariables.prototype = {
         DISCLOSURE_CONTENT: "_disclosureContent",
         DISCLOSURE_TOGGLE: "_toggle"
     },
-
+    JUMP_TO_ID: "jumptoid",
     PAGE_ID: "pageId",
     PORTAL_IFRAME_ID: "iframeportlet",
     INCIDENT_REPORT_VIEW_CLASS: "Uif-IncidentReportView",
@@ -117,6 +120,7 @@ JavascriptKradVariables.prototype = {
     PAGE_VALIDATION_MESSAGE_ERROR_CLASS: "uif-pageValidationMessages-error",
     PAGE_VALIDATION_MESSAGE_INFO_CLASS: "uif-pageValidationMessages-info",
     PAGE_VALIDATION_MESSAGE_WARNING_CLASS: "uif-pageValidationMessages-warning",
+    PERFORM_DIRTY_VALIDATION: "performdirtyvalidation",
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
@@ -128,6 +132,7 @@ JavascriptKradVariables.prototype = {
     REQUIRED_MESSAGE_CLASS: "uif-requiredMessage",
     SAVE_LINE_ACTION_CLASS: "uif-saveLineAction",
     SELECT_FIELD_STYLE_CLASS: "uif-select-line",
+    SELF: "SELF",
     SERVER_MESSAGE_ITEMS_CLASS: "uif-serverMessageItems",
     SESSION_TIMEOUT_WARNING_DIALOG: "Uif-SessionTimeoutWarning-DialogGroup",
     SESSION_TIMEOUT_DIALOG: "Uif-SessionTimeout-DialogGroup",

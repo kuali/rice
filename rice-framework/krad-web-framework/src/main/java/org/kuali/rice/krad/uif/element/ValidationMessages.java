@@ -70,8 +70,6 @@ public class ValidationMessages extends ContentElementBase {
     private List<String> warnings;
     private List<String> infos;
 
-    private Map<String, String> validationDataDefaults;
-
     /**
      * PerformFinalize will generate the messages and counts used by the
      * errorsField based on the keys that were matched from the MessageMap for
@@ -350,14 +348,16 @@ public class ValidationMessages extends ContentElementBase {
         return this.infos;
     }
 
-    public Map<String, String> getValidationDataDefaults() {
-        return validationDataDefaults;
-    }
-
-    public void setValidationDataDefaults(Map<String, String> validationDataDefaults) {
-        this.validationDataDefaults = validationDataDefaults;
-    }
-
+    /**
+     * Adds the value passed to the valueMap with the key specified, if the value does not match the
+     * value which already exists in defaults (to avoid having to write out extra data that can later
+     * be derived from the defaults in the js)
+     *
+     * @param valueMap the data map being constructed
+     * @param defaults defaults for validation messages
+     * @param key the variable name being added
+     * @param value the value set on this object
+     */
     protected void addValidationDataSettingsValue(Map<String, Object> valueMap, Map<String, String> defaults,
             String key, Object value) {
         String defaultValue = defaults.get(key);
@@ -419,10 +419,6 @@ public class ValidationMessages extends ContentElementBase {
 
         if (infos != null) {
             validationMessagesCopy.setInfos(new ArrayList<String>(this.infos));
-        }
-
-        if (this.getValidationDataDefaults() != null) {
-            validationMessagesCopy.setValidationDataDefaults(new HashMap<String, String>(this.validationDataDefaults));
         }
     }
 

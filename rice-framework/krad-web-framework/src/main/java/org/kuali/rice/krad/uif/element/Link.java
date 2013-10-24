@@ -80,6 +80,7 @@ public class Link extends ContentElementBase {
         if (lightBox != null && lightBox.isRender()){
             this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "handleLightboxOpen(jQuery(this), " +
                     lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
+            this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
             lightBox.setRender(false);
         }
     }

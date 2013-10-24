@@ -608,12 +608,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void assertButtonDisabledByText(String buttonText) {
         jGrowl("Assert " + buttonText + " button is disabled");
-        SeleneseTestBase.assertTrue(!findButtonByText(buttonText).isEnabled());
+        if (findButtonByText(buttonText).isEnabled()) {
+            failableFail(buttonText + " button is not disabled");
+        }
     }
 
     protected void assertButtonEnabledByText(String buttonText) {
         jGrowl("Assert " + buttonText + " button is enabled");
-        SeleneseTestBase.assertTrue(findButtonByText(buttonText).isEnabled());
+        if (!findButtonByText(buttonText).isEnabled()) {
+            failableFail(buttonText + " button is not enabled");
+        }
     }
 
     protected void assertCancelConfirmation() throws InterruptedException {

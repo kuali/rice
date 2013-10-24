@@ -68,7 +68,7 @@ public class DemoContainerGroupAft extends AutomatedFunctionalTestBase {
     
     protected void testLibraryContainerGroupScrollpane() throws Exception {
         selectByName("exampleShown","Scrollpane");
-        assertElementPresentByXpath("//div[@style='height: 100px;overflow:auto;']");
+        assertElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
     }
     
     @Test

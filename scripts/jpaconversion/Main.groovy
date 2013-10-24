@@ -1,3 +1,6 @@
+import org.apache.commons.io.FileUtils;
+
+
 /**
  * Copyright 2005-2013 The Kuali Foundation
  *
@@ -16,13 +19,18 @@
 // Main driver script for the OJB to JPA conversion
 
 
-def projectHome = "${System.getenv()['PROJECT_HOME']}/rice-20"
-def projectSourceBase = "$projectHome/rice-middleware/impl/src/main/java"
-def ojbRepoFile = "$projectHome/rice-middleware/impl/src/main/resources/org/kuali/rice/kcb/config/OJB-repository-kcb.xml"
+def projectHome = new File("${System.getenv()['PROJECT_HOME']}/rice-20").canonicalPath
+def projectSourceBase = new File("$projectHome/rice-middleware/impl/src/main/java").canonicalPath
+def ojbRepoFile = new File("$projectHome/rice-middleware/impl/src/main/resources/org/kuali/rice/kcb/config/OJB-repository-kcb.xml").canonicalPath
+def backupPath = new File("$projectSourceBase/../backup").canonicalPath
 
-println "Project Home: $projectHome"
-println "Source Base:  $projectSourceBase"
-println "OJB File: $ojbRepoFile"
+println "Project Home:        $projectHome"
+println "Source Base:         $projectSourceBase"
+println "Source Backup Path:  $backupPath"
+println "OJB File:            $ojbRepoFile"
+println ""
+
+FileUtils.forceMkdir( new File( backupPath ) )
 
 def logger = JPAConversionHandlers.bo_log
 def classes = [:]
@@ -32,8 +40,27 @@ println '\nFirst pass completed, metadata captured.'
 println "Class Metadata Extracted: \n$classes"
 
 
+/* TODO:
+ * back up files being modified - create bak directory at same location as src
+ * Update java files with new annotations
+ * 	Skip if already annotated?
+ * Generate IdClass if a class with that name does not already exist. 
+ */
 
+/*  
+	TYPE CONVERTERS - need to update those to current
 
+EXISTING GENERATES THESE - ADJUST TO NEW ANNOTATIONS
+	@GeneratedValue(generator="KREN_MSG_S")
+	@GenericGenerator(name="KREN_MSG_S", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
+		 parameters={@Parameter(name="sequence_name",value="KREN_MSG_S"), 
+				 @Parameter(name="value_column",value="id")})
+
+ */
+
+println '\nGenerating Business Object POJOs with JPA Annotations...'
+JPAConversionHandlers.annotation_handler.generateJPABO(classes, 
+	[projectSourceBase], projectHome, true, true, backupPath, logger, false)
 
 
 public class JPAConversionHandlers {

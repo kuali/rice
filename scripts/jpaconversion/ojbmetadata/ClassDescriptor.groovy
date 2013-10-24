@@ -16,7 +16,7 @@
 package ojbmetadata
 import groovy.transform.ToString;
 
-@ToString(includePackage=false)
+@ToString(includePackage=false,includeNames=true)
 public class ClassDescriptor {
 	def compoundPrimaryKey = false
 	def pkClassIdText = ""

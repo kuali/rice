@@ -44,25 +44,25 @@ public class TravelMileageRate extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = 4525338013753227579L;
 
     @Id @Column(name = "MLG_RT_ID", length = 40)
-    @Label("id")
+    @Label("ID")
     @Description("Unique identifier for item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String mileageRateId;
 
     @Column(name = "MLG_RT_CD", length = 40)
-    @Label("Mileage rate code")
+    @Label("Mileage Rate Code")
     @Description("Unique identifier for mileage rate")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String mileageRateCd;
 
     @Column(name = "MLG_RT_NM", length = 40)
-    @Label("Mileage Rate name")
-    @Description("name of rate (i.e. domestic)")
+    @Label("Mileage Rate Name")
+    @Description("Name of rate (i.e. Domestic)")
     private String mileageRateName;
 
     @Column(name = "MLG_RT", length = 10)
     @Label("Mileage Rate")
-    @Description("rate in dollars per mile")
+    @Description("Rate in dollars per mile")
     private BigDecimal mileageRate;
 
     @Column(name = "ACTV_IND", nullable = false, length = 1)

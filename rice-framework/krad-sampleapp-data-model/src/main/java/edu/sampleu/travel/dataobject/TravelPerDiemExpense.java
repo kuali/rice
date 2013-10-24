@@ -18,6 +18,7 @@ package edu.sampleu.travel.dataobject;
 import edu.sampleu.travel.options.MileageRateKeyValues;
 import edu.sampleu.travel.options.TravelDestinationKeyValues;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
@@ -35,6 +36,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -59,6 +61,8 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
 
     @Id
     @Column(name = "PD_EXP_ID", length = 10)
+    @GeneratedValue(generator = "TRVL_PD_EXP_ID_S")
+    @PortableSequenceGenerator(name = "TRVL_PD_EXP_ID_S")
     @Label("id")
     @Description("Unique identifier for per diem expense item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
@@ -189,15 +193,23 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
         return travelDestinationId;
     }
 
+    public void setTravelDestinationId(String travelDestinationId) {
+        this.travelDestinationId = travelDestinationId;
+    }
+
     public TravelDestination getTravelDestination() {
         return travelDestination;
+    }
+
+    public void setTravelDestination(TravelDestination travelDestination) {
+        this.travelDestination = travelDestination;
     }
 
     public String getMileageRateId() {
         return mileageRateId;
     }
 
-    public void setMileageRateCd(String mileageRateId) {
+    public void setMileageRateId(String mileageRateId) {
         this.mileageRateId = mileageRateId;
     }
 

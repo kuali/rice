@@ -17,29 +17,27 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <name>Rice Framework</name>
+  <name>Rice KRAD Sample Application Data Model</name>
   <parent>
-    <artifactId>rice</artifactId>
+    <artifactId>rice-framework</artifactId>
     <groupId>org.kuali.rice</groupId>
     <version>2.4.0-M3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>rice-framework</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>rice-krad-sampleapp-data-model</artifactId>
+  <packaging>jar</packaging>
 
-  <modules>
-    <module>krad-data</module>
-    <module>krad-app-framework</module>
-    <module>krad-development-tools</module>
-    <module>krad-it</module>
-    <module>krad-sampleapp</module>
-    <module>krad-sampleapp-data-model</module>
-    <module>krad-service-impl</module>
-    <module>krad-theme-builder</module>
-    <module>krad-web</module>
-    <module>krad-web-framework</module>
-    <module>krad-theme-builder/src/test/builder</module>
-  </modules>
-
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-app-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-web-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

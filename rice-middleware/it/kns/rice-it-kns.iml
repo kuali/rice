@@ -180,6 +180,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="module" module-name="rice-it-krad" scope="TEST" production-on-test="" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-it-krad:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="rice-krad-sampleapp-data-model" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-krad-web-framework" scope="TEST" production-on-test="" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-krad-web-framework:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />

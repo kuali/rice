@@ -17,6 +17,7 @@ package edu.sampleu.travel.dataobject;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraint
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -44,6 +46,8 @@ public class TravelMileageRate extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = 4525338013753227579L;
 
     @Id @Column(name = "MLG_RT_ID", length = 40)
+    @GeneratedValue(generator = "TRVL_MLG_RT_ID_S")
+    @PortableSequenceGenerator(name = "TRVL_MLG_RT_ID_S")
     @Label("ID")
     @Description("Unique identifier for item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")

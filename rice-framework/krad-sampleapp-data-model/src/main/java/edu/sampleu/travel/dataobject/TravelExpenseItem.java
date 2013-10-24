@@ -17,6 +17,7 @@ package edu.sampleu.travel.dataobject;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraint
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,6 +49,8 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = -4092206384418712220L;
 
     @Id @Column(name = "EXP_ITM_ID", length = 10)
+    @GeneratedValue(generator = "TRVL_EXP_ITM_ID_S")
+    @PortableSequenceGenerator(name = "TRVL_EXP_ITM_ID_S")
     @Label("id")
     @Description(
             "Unique identifier for item")

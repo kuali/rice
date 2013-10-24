@@ -139,6 +139,12 @@
       <type>test-jar</type>
     </dependency>
 
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-sampleapp-data-model</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <!-- HACK!! this dependency should not be here -->
     <dependency>
       <groupId>${project.groupId}</groupId>

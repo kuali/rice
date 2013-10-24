@@ -19,6 +19,7 @@ import edu.sampleu.travel.options.PostalCountryCodeKeyValuesFinder;
 import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
@@ -28,6 +29,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraint
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -45,10 +47,17 @@ public class TravelDestination extends DataObjectBase implements Serializable {
     private static final long serialVersionUID = 8448891916448081149L;
 
     @Id @Column(name = "TRVL_DEST_ID", length = 40)
+    @GeneratedValue(generator = "TRVL_DEST_ID_S")
+    @PortableSequenceGenerator(name = "TRVL_DEST_ID_S")
     @Label("id")
     @Description("Unique identifier for destination item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelDestinationId;
+
+    @Column(name = "TRVL_TYP_CD", length = 40)
+    @Label("Travel type code")
+    @Description("Type of destination")
+    private String travelTypeCode;
 
     @Column(name = "DEST_NM", length = 40)
     @Label("Destination name")
@@ -75,6 +84,14 @@ public class TravelDestination extends DataObjectBase implements Serializable {
 
     public void setTravelDestinationId(String travelDestinationId) {
         this.travelDestinationId = travelDestinationId;
+    }
+
+    public String getTravelTypeCode() {
+        return travelTypeCode;
+    }
+
+    public void setTravelTypeCode(String travelTypeCode) {
+        this.travelTypeCode = travelTypeCode;
     }
 
     public String getTravelDestinationName() {

@@ -50,6 +50,9 @@ import java.util.concurrent.TimeUnit;
  * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from {@see WebDriverLegacyITBase} for reuse
  * without having to extend WebDriverLegacyITBase.
  * </p><p>
+ * For compatibility with {@see JiraAwareFailureUtil}, external test framework asserts and fails should not be called from
+ * WebDriverUtil, instead use WebDriverUtil asserts or explicit if checks and call a JiraAwareFailureUtil.fail method.
+ * </p><p>
  * For the first example see waitFor
  * </p>
  * @see WebDriverLegacyITBase
@@ -396,6 +399,14 @@ public class WebDriverUtil {
         return null;
     }
 
+    public static String deLinespace(String contents) {
+        while (contents.contains("\n\n")) {
+            contents = contents.replaceAll("\n\n", "\n");
+        }
+
+        return contents;
+    }
+
     /**
      * <p>
      * Setting the JVM arg remote.driver.dontTearDown to y or t leaves the browser window open when the test has completed.
@@ -423,6 +434,49 @@ public class WebDriverUtil {
             return passed;
         }
         return true;
+    }
+
+    private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
+        String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
+        String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
+        docId = docId.substring(0, docId.indexOf("</span>"));
+        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+
+        String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
+        viewId = viewId.substring(0, viewId.indexOf("</span>"));
+        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
+
+        return "\nIncident report "+ message+ " navigating to "+ linkLocator+ " : View Id: "+ viewId.trim()+ " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
+    }
+
+    private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
+        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
+        String docIdPre = "type=\"hidden\" value=\"";
+        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
+
+        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
+        String stackTracePre = "value=\"";
+        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
+
+        return "\nIncident report "+ message+ " navigating to "+ linkLocator + " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
+    }
+
+    public static void failOnMatchedJira(String contents, Failable failable) {
+        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
+    }
+
+    private static void failWithReportInfo(String contents, String linkLocator, String message) {
+        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
+        SeleneseTestBase.fail(incidentReportInformation); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
+    }
+
+    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
+        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
+        SeleneseTestBase.fail(kimIncidentReport); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
     }
 
     /**
@@ -497,7 +551,7 @@ public class WebDriverUtil {
         String failMessage = t.getMessage() + "\n" + ExceptionUtils.getStackTrace(t);
         System.out.println("jGrowl failure " + failMessage);
         if (JGROWL_ERROR_FAILURE) {
-            SeleneseTestBase.fail(failMessage);
+            SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet
         }
     }
 
@@ -637,6 +691,21 @@ public class WebDriverUtil {
         }
     }
 
+    private static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+        failOnMatchedJira(contents, failable);
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            failWithReportInfo(contents, linkLocator, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            failWithReportInfoForKim(contents, linkLocator, message);
+        }
+
+        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
+                contents)); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
+    }
+
     /**
      * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
      * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
@@ -712,72 +781,5 @@ public class WebDriverUtil {
 
         driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return driver.findElements(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
-    }
-
-
-    public static void failOnMatchedJira(String contents, Failable failable) {
-        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
-    }
-    
-    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
-        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
-        SeleneseTestBase.fail(kimIncidentReport);
-    }
-    
-    private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
-        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
-        String docIdPre = "type=\"hidden\" value=\"";
-        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
-
-        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
-        String stackTracePre = "value=\"";
-        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
-
-        return "\nIncident report "+ message+ " navigating to "+ linkLocator + " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
-    }
-    
-    private static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
-
-        if (contents.indexOf("Incident Feedback") > -1) {
-            failWithReportInfo(contents, linkLocator, message);
-        }
-
-        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
-            failWithReportInfoForKim(contents, linkLocator, message);
-        }
-
-        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
-                contents));
-    }
-
-    private static void failWithReportInfo(String contents, String linkLocator, String message) {
-        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
-        SeleneseTestBase.fail(incidentReportInformation);
-    }
-    
-    private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
-        String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
-        String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-        docId = docId.substring(0, docId.indexOf("</span>"));
-        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
-
-        String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-        viewId = viewId.substring(0, viewId.indexOf("</span>"));
-        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
-
-        String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
-    
-        return "\nIncident report "+ message+ " navigating to "+ linkLocator+ " : View Id: "+ viewId.trim()+ " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
-    }
-    
-    public static String deLinespace(String contents) {
-        while (contents.contains("\n\n")) {
-            contents = contents.replaceAll("\n\n", "\n");
-        }
-        
-        return contents;
     }
 }

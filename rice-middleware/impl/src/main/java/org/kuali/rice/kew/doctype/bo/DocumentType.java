@@ -112,7 +112,12 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
         @NamedQuery(name = "DocumentType.GetDocumentTypeByDocumentId", query = "SELECT DT FROM DocumentType DT, "
                 + "DocumentRouteHeaderValue DH WHERE DH.documentTypeId=DT.documentTypeId AND DH.documentId = :documentId"),
         @NamedQuery(name = "DocumentType.GetDocumentTypeByName", query = "SELECT d FROM DocumentType d "
-                + "WHERE d.currentInd = true AND d.name = :name")
+                + "WHERE d.currentInd = true AND d.name = :name"),
+        @NamedQuery(name = "DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId", query =
+                "SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv " +
+                "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId "
+                + "AND dt.active = true AND dt.currentInd = true " +
+                "ORDER BY UPPER(dt.label)")
 })
 public class DocumentType extends PersistableBusinessObjectBase implements MutableInactivatable, DocumentTypeEBO, DocumentTypeContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);

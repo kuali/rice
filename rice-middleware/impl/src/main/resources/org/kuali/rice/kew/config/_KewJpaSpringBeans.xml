@@ -149,6 +149,8 @@
     <property name="dataSource" ref="kewDataSource" />
   </bean>
 
+  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpa" lazy-init="true"/>
 
+  <bean id="enStatsDAO" class="org.kuali.rice.kew.stats.dao.impl.StatsDaoJpa" lazy-init="true"/>
 </beans>
 

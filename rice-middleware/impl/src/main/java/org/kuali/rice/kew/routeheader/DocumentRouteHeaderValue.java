@@ -119,7 +119,10 @@ import java.util.Map;
 @Entity
 @Table(name="KREW_DOC_HDR_T")
 @NamedQueries({
-    //@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(d.documentId, d.docRouteStatus, d.docTitle) FROM DocumentRouteHeaderValue d WHERE d.initiatorWorkflowId = :initiatorWorkflowId AND d.docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY d.createDate DESC"),
+    @NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query=
+            "SELECT d FROM DocumentRouteHeaderValue d WHERE d.initiatorWorkflowId = :initiatorWorkflowId AND "
+                    + "d.docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"
+                    + KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY d.createDate DESC"),
     @NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue "
             + "as d where d.documentId = :documentId"),
     @NamedQuery(name="DocumentRouteHeaderValue.GetAppDocStatus", query="SELECT d.appDocStatus from "

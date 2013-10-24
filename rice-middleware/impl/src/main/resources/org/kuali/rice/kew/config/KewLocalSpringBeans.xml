@@ -24,7 +24,6 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
   <import resource="classpath:org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/kew/config/_KewLocalOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewJpaSpringBeans.xml"/>
 

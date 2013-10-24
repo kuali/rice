@@ -27,9 +27,11 @@ import org.kuali.rice.kew.quicklinks.ActionListStats;
 import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,25 +40,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
+public class QuickLinksDAOJpa implements QuickLinksDAO {
 
-    @PersistenceContext(unitName = "kew-unit")
+    @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
 
     @Override
 	@SuppressWarnings("unchecked")
     public List<ActionListStats> getActionListStats(final String principalId) {
         try {
-            final List<Object[]> stats = entityManager.createNamedQuery("ActionItem.QuickLinks.FindActionListStatsByPrincipalId").setParameter("principalId", principalId).setParameter("delegationType", DelegationType
+            final List<Object[]> stats = getEntityManager().createNamedQuery("ActionItem.GetQuickLinksDocumentTypeNameAndCount").
+                    setParameter("principalId", principalId).setParameter("delegationType", DelegationType
                     .SECONDARY.getCode()).getResultList();
             final List<ActionListStats> docTypes = new ArrayList<ActionListStats>(stats.size());
             for (Object[] res : stats) {
                 final String docTypeName = (String) res[0];
                 final Long count = (Long) res[1];
 
-                final List<String> docTypeLabel = entityManager.createNamedQuery("DocumentType.GetDocumentTypeByName").setParameter("name", docTypeName).getResultList();
-                if (docTypeLabel.size() > 0) {
-                    docTypes.add(new ActionListStats(docTypeName, docTypeLabel.get(0), count.intValue()));
+                final DocumentType docType = getDocumentTypeService().findByName(docTypeName);
+                if(docType != null){
+                    docTypes.add(new ActionListStats(docTypeName, docType.getLabel(), count.intValue()));
                 }
             }
             Collections.sort(docTypes);
@@ -84,7 +87,9 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
         }
 
         try {
-            final List<Object[]> list = entityManager.createNamedQuery("DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
+            final List<Object[]> list = getEntityManager().createNamedQuery(
+                    "DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId").
+                    setParameter("initiatorWorkflowId", principalId).getResultList();
             final List<InitiatedDocumentType> documentTypesByName = new ArrayList<InitiatedDocumentType>(list.size());
             for (Object[] doc : list) {
                 final String docTypeName = (String) doc[0];
@@ -126,7 +131,16 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
 	@SuppressWarnings("unchecked")
     public List<WatchedDocument> getWatchedDocuments(final String principalId) {
         try {
-            return entityManager.createNamedQuery("DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
+            List<DocumentRouteHeaderValue> documentRouteHeaderValues =  getEntityManager().createNamedQuery(
+                    "DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId").
+                    setParameter("initiatorWorkflowId", principalId).getResultList();
+            List<WatchedDocument> watchedDocuments = new ArrayList<WatchedDocument>();
+            for(DocumentRouteHeaderValue documentRouteHeader : documentRouteHeaderValues){
+                WatchedDocument watchedDocument = new WatchedDocument(documentRouteHeader.getDocumentId(),
+                        documentRouteHeader.getDocRouteStatusLabel(),documentRouteHeader.getDocTitle());
+                watchedDocuments.add(watchedDocument);
+            }
+            return watchedDocuments;
         } catch (Exception e) {
             throw new WorkflowRuntimeException("Error getting watched documents for user: " + principalId, e);
         }

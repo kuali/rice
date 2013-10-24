@@ -21,8 +21,11 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.SQLException;
@@ -38,24 +41,25 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-// There isn't an obvious place to put these @NamedQueries since they are just doing select count(*) from various tables.
-// Thus I'm using the query literals in this class, move these NamedQuerys to wherever they need to go.
-// @NamedQueries({
-//    @NamedQuery(name="Stats.DocumentsRoutedReport",  query="select count(*) as count, drhv.docRouteStatus from DocumentRouteHeaderValue drhv where drhv.createDate between :beginDate and :endDate group by docRouteStatus"),
-//    @NamedQuery(name="Stats.NumActiveItemsReport",  query="select count(*) from ActionItem ai"),
-//    @NamedQuery(name="Stats.NumInitiatedDocsByDocTypeReport",  query="select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name"),
-//    @NamedQuery(name="Stats.NumUsersReport",  query="select count(distinct workflowId) from UserOptions uo"),
-//    @NamedQuery(name="Stats.NumberOfDocTypesReport",  query="select count(*) from DocumentType dt where dt.currentInd = true")
-//  })
-public class StatsDaoJpaImpl implements StatsDAO {
+public class StatsDaoJpa implements StatsDAO {
 
-    @PersistenceContext
+    public static final String STATS_DOCUMENTS_ROUTED_REPORT = "select count(drhv) as cnt, drhv.docRouteStatus "
+                            + "from DocumentRouteHeaderValue drhv "
+                            + "where drhv.createDate between :beginDate and :endDate group by drhv.docRouteStatus";
+    public static final String STATS_NUM_ACTIVE_ITEMS_REPORT = "select count(ai) from ActionItem ai";
+    public static final String STATS_NUM_INITIATED_DOCS_BY_DOC_TYPE_REPORT = "select count(drhv), dt.name from "
+            + "DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and "
+            + "drhv.documentTypeId = dt.documentTypeId group by dt.name";
+    public static final String STATS_NUM_USERS_REPORT = "select count(distinct(uo.workflowId)) from UserOptions uo";
+    public static final String STATS_NUM_DOC_TYPES_REPORT =
+                    "select count(dt) from DocumentType dt where dt.currentInd = true";
+
+    @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
     
     @Override
 	public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
-        Query query = entityManager.createQuery("select count(*) as count, drhv.docRouteStatus from DocumentRouteHeaderValue drhv where drhv.createDate between :beginDate and :endDate group by docRouteStatus");
-//        Query query = entityManager.createNamedQuery("Stats.DocumentsRoutedReport");
+        Query query = getEntityManager().createQuery(STATS_DOCUMENTS_ROUTED_REPORT);
         query.setParameter("beginDate", new Timestamp(begDate.getTime()));
         query.setParameter("endDate", new Timestamp(endDate.getTime()));
         
@@ -87,14 +91,13 @@ public class StatsDaoJpaImpl implements StatsDAO {
 
     @Override
 	public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumActionItems(entityManager.createQuery("select count(*) from ActionItem ai").getSingleResult().toString());
-//        stats.setNumActionItems(entityManager.createNamedQuery("Stats.NumActiveItemsReport").getSingleResult().toString());
+        stats.setNumActionItems(getEntityManager().createQuery(STATS_NUM_ACTIVE_ITEMS_REPORT)
+                .getSingleResult().toString());
     }
 
     @Override
 	public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
-        Query query = entityManager.createQuery("select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name");
-//        Query query = entityManager.createNamedQuery("Stats.NumInitiatedDocsByDocTypeReport");
+        Query query = getEntityManager().createQuery(STATS_NUM_INITIATED_DOCS_BY_DOC_TYPE_REPORT);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -29);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -116,14 +119,13 @@ public class StatsDaoJpaImpl implements StatsDAO {
 
     @Override
 	public void NumUsersReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumUsers(entityManager.createQuery("select count(distinct uo.workflowId) from UserOptions uo").getSingleResult().toString());
-//        stats.setNumUsers(entityManager.createNamedQuery("Stats.NumUsersReport").getSingleResult().toString());
+        stats.setNumUsers(getEntityManager().createQuery(STATS_NUM_USERS_REPORT).getSingleResult().toString());
     }
 
     @Override
 	public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumDocTypes(entityManager.createQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
-//        stats.setNumDocTypes(entityManager.createNamedQuery("Stats.NumberOfDocTypesReport").getSingleResult().toString());
+        stats.setNumDocTypes(getEntityManager().createQuery(
+                STATS_NUM_DOC_TYPES_REPORT).getSingleResult().toString());
     }
 
     public EntityManager getEntityManager() {

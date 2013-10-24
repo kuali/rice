@@ -27,7 +27,6 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewCommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewDataSourceSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedRemoteSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewEmbeddedServiceBusSpringBeans.xml"/>
 

@@ -19,7 +19,6 @@ import edu.sampleu.travel.options.PostalCountryCode;
 import edu.sampleu.travel.options.PostalStateCode;
 import edu.sampleu.travel.options.TripType;
 import org.junit.Test;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
@@ -27,19 +26,17 @@ import org.kuali.rice.test.BaselineTestCase;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Tests basic {@code TravelPerDiemExpense} persistence.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class TravelPerDiemExpenseTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");

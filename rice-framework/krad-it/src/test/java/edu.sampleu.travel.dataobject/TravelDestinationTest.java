@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class TravelDestinationTest extends KRADTestCase {
 
     private static final String TYPE_CODE = TripType.OS.getCode();

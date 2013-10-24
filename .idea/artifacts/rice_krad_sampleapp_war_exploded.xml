@@ -8,6 +8,9 @@
           <element id="module-output" name="rice-krad-sampleapp" />
         </element>
         <element id="directory" name="lib">
+          <element id="archive" name="rice-krad-sampleapp-data-model-2.4.0-M3-SNAPSHOT.jar">
+            <element id="module-output" name="rice-krad-sampleapp-data-model" />
+          </element>
           <element id="archive" name="rice-krad-app-framework-2.4.0-M3-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-app-framework" />
           </element>

@@ -455,7 +455,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             }
         } catch (Exception e) {
             throw new RiceRuntimeException(
-                    "Exception trying to invoke action " + action.name() + "for document: " + document
+                    "Exception trying to invoke action " + action.name() + " for document: " + document
                             .getDocumentNumber(), e);
         }
 

@@ -47,10 +47,7 @@ println "Class Metadata Extracted: \n$classes"
  */
 
 /*  
-	TYPE CONVERTERS - need to update those to current
-
-	DATE vs TIMESTAMP - need to base on object - if java.sql.Date - MUST USE DATE
-
+	REFERENCES - It's adding the links on the properties and the classes - need to remove from properties
  */
 
 println '\nGenerating Business Object POJOs with JPA Annotations...'

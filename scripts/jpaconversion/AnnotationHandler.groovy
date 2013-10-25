@@ -50,10 +50,8 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupDir,
 	        }
 	        
 	        if (!javaFile) {
-	            logger.log "${file} does not exist.  Can not annotate ${c.className}.  Please check that its source directory is included in this script."
-					if ( verbose ) {
-						println "Unable to find $file, skipping"
-					}
+	            logger.log "Class file for ${c.className} does not exist.  Can not annotate.  Please check that its source directory is included in this script."
+	            println "Class file for ${c.className} does not exist.  Can not annotate.  Please check that its source directory is included in this script."
 	            return
 	        }
 	        

@@ -46,6 +46,7 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends AutomatedFunction
         lightBoxLookupAddMultipleLines();
 
         waitAndClickButtonByText("Search");
+        acceptAlertIfPresent();
         assertButtonDisabledByText("return selected");
 
         jGrowl("Check Travel Account 1 checkbox");

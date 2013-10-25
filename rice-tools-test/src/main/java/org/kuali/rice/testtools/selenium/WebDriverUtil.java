@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
@@ -320,6 +321,7 @@ public class WebDriverUtil {
      * Calls {@see SauceLabsWebDriverHelper#tearDown} if {@see #REMOTE_PUBLIC_USERPOOL_PROPERTY} is enabled, calls a user pool
      * url with the given poolParamTest and poolParamUser.
      *</p>
+     *
      * @param passed used by {@see SauceLabsWebDriverHelper#tearDown} to record Saucelabs test status can be null if Saucelabs
      * is not being used
      * @param sessionId used by {@see SauceLabsWebDriverHelper#tearDown} to record Saucelabs sessionId status can be null if Saucelabs
@@ -341,26 +343,72 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
+     * If an alert is present accept it print the alert text to System.out
+     * </p>
      *
-     * @param testParam
-     * @return
+     * @param driver to accept alert on
      */
-    public static String determineUser(String testParam) {
-        String user = null;
-
-        if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
-            return System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
-        } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
-            String userResponse = ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
-                    REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
-            return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
+    public static void acceptAlertIfPresent(WebDriver driver) {
+        if (WebDriverUtil.isAlertPresent(driver)) {
+            System.out.println("Alert present " + WebDriverUtil.alertText(driver));
+            alertAccept(driver);
         }
+    }
 
-        return user;
+    /**
+     * <p>
+     * Accept the javascript alert (clicking OK).
+     * </p>
+     *
+     * @param driver WebDriver to accept alert on
+     */
+    public static void alertAccept(WebDriver driver) {
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+    }
+
+    /**
+     * <p>
+     * Dismiss the javascript alert (clicking Cancel).
+     * </p>
+     *
+     * @param driver WebDriver to dismiss alert on
+     */
+    public static void alertDismiss(WebDriver driver) {
+        Alert alert = driver.switchTo().alert();
+        alert.dismiss();
+    }
+
+    /**
+     * <p>
+     * Return alert text.
+     * </p>
+     *
+     * @param driver to get alert text from
+     * @return alert text
+     */
+    public static String alertText(WebDriver driver) {
+        return driver.switchTo().alert().getText();
+    }
+
+    public static void assertButtonDisabledByText(WebDriver driver, String buttonText, Failable failable) {
+        jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is disabled");
+        if (findButtonByText(driver, buttonText).isEnabled()) {
+            failable.fail(buttonText + " button is not disabled");
+        }
+    }
+
+    public static void assertButtonEnabledByText(WebDriver driver, String buttonText, Failable failable) {
+        jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is enabled");
+        if (!findButtonByText(driver, buttonText).isEnabled()) {
+            failable.fail(buttonText + " button is not enabled");
+        }
     }
 
     /***
      * @link ITUtil#checkForIncidentReport
+     *
      * @param driver
      * @param locator
      * @param message
@@ -375,6 +423,7 @@ public class WebDriverUtil {
      * @link #REMOTE_PUBLIC_CHROME
      * @link #WEBDRIVER_CHROME_DRIVER
      * @link ITUtil#HUB_DRIVER_PROPERTY
+     *
      * @return chromeDriverService
      */
     public static ChromeDriverService chromeDriverCreateCheck() {
@@ -399,12 +448,49 @@ public class WebDriverUtil {
         return null;
     }
 
+    /**
+     * <p>
+     * Return the configured implicity wait seconds, {@see #REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY} and {@see #IMPLICIT_WAIT_TIME_SECONDS_DEFAULT}.
+     * </p>
+     *
+     * @return seconds for implicity wait
+     */
+    public static int configuredImplicityWait() {
+        return Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, IMPLICIT_WAIT_TIME_SECONDS_DEFAULT + ""));
+    }
+
+    /**
+     * <p>
+     * Remove double line spacing.
+     * </p>
+     *
+     * @param contents String to remove double line spacing from
+     * @return String with double line spacing removed.
+     */
     public static String deLinespace(String contents) {
         while (contents.contains("\n\n")) {
             contents = contents.replaceAll("\n\n", "\n");
         }
 
         return contents;
+    }
+
+    /**
+     * @param testParam
+     * @return user
+     */
+    public static String determineUser(String testParam) {
+        String user = null;
+
+        if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
+            return System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
+        } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
+            String userResponse = ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
+                    REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
+            return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
+        }
+
+        return user;
     }
 
     /**
@@ -415,6 +501,7 @@ public class WebDriverUtil {
      * inherited one, it is a common courtesy to include this check and not stop and shutdown the browser window to make it
      * easy debug or update your test.
      * </p>
+     *
      * @return true if the dontTearDownProperty is not set.
      */
     public static boolean dontTearDownPropertyNotSet() {
@@ -426,6 +513,7 @@ public class WebDriverUtil {
     /**
      * Given the boolean parameter and depending on if {@see #DONT_TEAR_DOWN_ON_FAILURE_PROPERTY} is set to something other
      * than n, don't tear down the browser window on a test failure.
+
      * @param passed
      * @return
      */
@@ -481,8 +569,22 @@ public class WebDriverUtil {
 
     /**
      * <p>
+     * Find Button by text.
+     * </p>
+     *
+     * @param driver to find button on
+     * @param buttonText text to find button by
+     * @return WebElement of button with button text
+     */
+    public static WebElement findButtonByText(WebDriver driver, String buttonText) {
+        return findElement(driver, By.xpath("//button[contains(text(), '" + buttonText + "')]"));
+    }
+
+    /**
+     * <p>
      * Find and highlight the WebElement using the given WebDriver and By.
      * </p>
+     *
      * @param driver driver to find on
      * @param by selector to find
      * @return
@@ -499,6 +601,7 @@ public class WebDriverUtil {
      * </p><p>
      * Trailing slashes are trimmed.  If the remote.public.url does not start with http:// it will be added.
      * </p>
+     *
      * @return http://localhost:8080/kr-dev by default else the value of remote.public.url
      */
     public static String getBaseUrlString() {
@@ -512,10 +615,25 @@ public class WebDriverUtil {
 
     /**
      * <p>
+     * Return the WebElement that has the attribute name with the given value.
+     * </p>
+     *
+     * @param driver to get element from
+     * @param attributeName attribute name to find element by
+     * @param value for the attribute name to find element by
+     * @return WebElement
+     */
+    public static WebElement getElementByAttributeValue(WebDriver driver, String attributeName, String value){
+        return findElement(driver, By.cssSelector("[" + attributeName + "='" + value +"']"));
+    }
+
+    /**
+     * <p>
      * In order to run as a smoke test under selenium grid the ability to set the hubUrl via the JVM arg remote.public.hub is required.
      * </p><p>
      * Trailing slashes are trimmed.  If the remote.public.hub does not start with http:// it will be added.
      * </p>
+     *
      * @return http://localhost:4444/wd/hub by default else the value of remote.public.hub
      */
     public static String getHubUrlString() {
@@ -530,56 +648,14 @@ public class WebDriverUtil {
         return hubUrl;
     }
 
-    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message, Throwable t) {
-        if (jGrowlEnabled) { // check if jGrowl is enabled to skip over the stack trace extraction if it is not.
-            jGrowl(driver, jGrowlHeader, sticky, message + " " + t.getMessage() + "\n" + ExceptionUtils.getStackTrace(t));
-        }
-    }
-
-    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
-        if (jGrowlEnabled) {
-            try {
-                String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
-                ((JavascriptExecutor) driver).executeScript(javascript);
-            } catch (Throwable t) {
-                jGrowlException(t);
-            }
-        }
-    }
-
-    public static void jGrowlException(Throwable t) {
-        String failMessage = t.getMessage() + "\n" + ExceptionUtils.getStackTrace(t);
-        System.out.println("jGrowl failure " + failMessage);
-        if (JGROWL_ERROR_FAILURE) {
-            SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet
-        }
-    }
-
-    public static void highlightElement(WebDriver webDriver, WebElement webElement) {
-        if (jsHighlightEnabled && webElement != null) {
-            try {
-//                System.out.println("highlighting " + webElement.toString() + " on url " + webDriver.getCurrentUrl());
-                JavascriptExecutor js = (JavascriptExecutor) webDriver;
-                String jsHighlight = "element = arguments[0];\n"
-                        + "originalStyle = element.getAttribute('style');\n"
-                        + "element.setAttribute('style', originalStyle + \"; background: "
-                        + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
-                        + "setTimeout(function(){\n"
-                        + "    element.setAttribute('style', originalStyle);\n"
-                        + "}, " + System.getProperty(JS_HIGHLIGHT_MS_PROPERTY, JS_HIGHLIGHT_MS + "") + ");";
-                js.executeScript(jsHighlight, webElement);
-            } catch (Throwable t) {
-                System.out.println("Throwable during javascript highlight element");
-                t.printStackTrace();
-            }
-        }
-    }
-
-
     /**
-     * remote.public.driver set to chrome or firefox (null assumes firefox)
+     * <p>
+     * remote.public.driver set to chrome or firefox (null assumes firefox).
+     * </p><p>
      * if remote.public.hub is set a RemoteWebDriver is created (Selenium Grid)
      * if proxy.host is set, the web driver is setup to use a proxy
+     * </p>
+     *
      * @return WebDriver or null if unable to create
      */
     public static WebDriver getWebDriver() {
@@ -621,16 +697,129 @@ public class WebDriverUtil {
         return null;
     }
 
-    public static int configuredImplicityWait() {
-        return Integer.parseInt(System.getProperty(REMOTE_PUBLIC_WAIT_SECONDS_PROPERTY, IMPLICIT_WAIT_TIME_SECONDS_DEFAULT + ""));
+    /**
+     * <p>
+     * Highlight given WebElement.
+     * </p>
+     *
+     * @param webDriver to execute highlight on
+     * @param webElement to highlight
+     */
+    public static void highlightElement(WebDriver webDriver, WebElement webElement) {
+        if (jsHighlightEnabled && webElement != null) {
+            try {
+                //                System.out.println("highlighting " + webElement.toString() + " on url " + webDriver.getCurrentUrl());
+                JavascriptExecutor js = (JavascriptExecutor) webDriver;
+                String jsHighlight = "element = arguments[0];\n"
+                        + "originalStyle = element.getAttribute('style');\n"
+                        + "element.setAttribute('style', originalStyle + \"; background: "
+                        + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
+                        + "setTimeout(function(){\n"
+                        + "    element.setAttribute('style', originalStyle);\n"
+                        + "}, " + System.getProperty(JS_HIGHLIGHT_MS_PROPERTY, JS_HIGHLIGHT_MS + "") + ");";
+                js.executeScript(jsHighlight, webElement);
+            } catch (Throwable t) {
+                System.out.println("Throwable during javascript highlight element");
+                t.printStackTrace();
+            }
+        }
     }
 
     /**
-     * Logs in using the KRAD Login Page
-     * If the JVM arg remote.autologin is set, auto login as admin will not be done.
-     * @param driver
-     * @param userName
-     * @param failable
+     * <p>
+     * Return true if an alert is present, false if not.
+     * </p>
+     *
+     * @param driver to check for presents of alert on
+     * @return true if there is an alert present, false if not
+     */
+    public static boolean isAlertPresent(WebDriver driver) {
+        try {
+            driver.switchTo().alert();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * <p>
+     * Use the KRAD Login Screen or the old KNS Login Screen
+     * </p>
+     *
+     * @return true if Krad login
+     */
+    public static boolean isKradLogin(){
+        // check system property, default to KRAD
+        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
+        if (loginUif == null) {
+            loginUif = ITUtil.REMOTE_UIF_KRAD;
+        }
+
+        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
+    }
+
+    /**
+     * <p>
+     * Display jGrowl.
+     * </p>
+     *
+     * @param driver WebDriver to execute jGrowl on
+     * @param jGrowlHeader header text for jGrowl
+     * @param sticky true to set the jGrowl to sticky, false for not sticky
+     * @param message message to display in the jGrowl
+     * @param throwable message and stacktrace to included in jGrowl
+     */
+    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message, Throwable throwable) {
+        if (jGrowlEnabled) { // check if jGrowl is enabled to skip over the stack trace extraction if it is not.
+            jGrowl(driver, jGrowlHeader, sticky, message + " " + throwable.getMessage() + "\n" + ExceptionUtils.getStackTrace(throwable));
+        }
+    }
+
+    /**
+     * <p>
+     * Display jGrowl.
+     * </p>
+     *
+     * @param driver WebDriver to execute jGrowl on
+     * @param jGrowlHeader header text for jGrowl
+     * @param sticky true to set the jGrowl to sticky, false for not sticky
+     * @param message message to display in the jGrowl
+     */
+    public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
+        if (jGrowlEnabled) {
+            try {
+                String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
+                ((JavascriptExecutor) driver).executeScript(javascript);
+            } catch (Throwable t) {
+                jGrowlException(t);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * Print jGrowl Excetion to System.out, if {@see #JGROWL_ERROR_FAILURE} is set to true, fail.
+     * </p>
+     *
+     * @param throwable message and stack trace to print and if configured fail with
+     */
+    public static void jGrowlException(Throwable throwable) {
+        String failMessage = throwable.getMessage() + "\n" + ExceptionUtils.getStackTrace(throwable);
+        System.out.println("jGrowl failure " + failMessage);
+        if (JGROWL_ERROR_FAILURE) {
+            SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet
+        }
+    }
+
+    /**
+     * <p>
+     * Logs in using the KRAD Login Page, if the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * </p>
+     *
+     * @param driver to login with
+     * @param userName to login with
+     * @param failable to fail on if there is a login problem
      * @throws InterruptedException
      */
     public static void kradLogin(WebDriver driver, String userName, Failable failable) throws InterruptedException {
@@ -644,10 +833,13 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
      * Logs into the Rice portal using the KNS Style Login Page.
-     * @param driver
-     * @param userName
-     * @param failable
+     * </p>
+     *
+     * @param driver to login with
+     * @param userName to login with
+     * @param failable to fail on if there is a login problem
      * @throws InterruptedException
      */
     public static void login(WebDriver driver, String userName, Failable failable) throws InterruptedException {
@@ -660,6 +852,16 @@ public class WebDriverUtil {
             ITUtil.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable, "KNS Login failure");
     }
 
+    /**
+     * <p>
+     * Login as KRAD or KNS if {@see #REMOTE_AUTOLOGIN_PROPERTY} is not set to true.
+     * </p>
+     *
+     * @param driver to login with
+     * @param user to login with
+     * @param failable to fail on if there is a login problem
+     * @throws InterruptedException
+     */
     public static void loginKradOrKns(WebDriver driver, String user, Failable failable) throws InterruptedException {// login via either KRAD or KNS login page
         if ("true".equalsIgnoreCase(System.getProperty(REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
             if (isKradLogin()){
@@ -667,27 +869,6 @@ public class WebDriverUtil {
             } else {
                 WebDriverUtil.login(driver, user, failable);
             }
-        }
-    }
-
-    /**
-     * Use the KRAD Login Screen or the old KNS Login Screen
-     */
-    public static boolean isKradLogin(){
-        // check system property, default to KRAD
-        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
-        if (loginUif == null) {
-            loginUif = ITUtil.REMOTE_UIF_KRAD;
-        }
-
-        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
-    }
-
-    protected static void selectFrameSafe(WebDriver driver, String locator) {
-        try {
-            driver.switchTo().frame(locator);
-        } catch (NoSuchFrameException nsfe) {
-            // don't fail
         }
     }
 
@@ -707,13 +888,68 @@ public class WebDriverUtil {
     }
 
     /**
+     * <p>
+     * Select frame defined by locator without throwing an Exception if it doesn't exist.
+     * </p>
+     *
+     * @param driver to select frame on
+     * @param locator to identify frame to select
+     */
+    public static void selectFrameSafe(WebDriver driver, String locator) {
+        try {
+            driver.switchTo().frame(locator);
+        } catch (NoSuchFrameException nsfe) {
+            // don't fail
+        }
+    }
+
+    /**
+     * <p>
+     * Return the WebElement that has the attribute name with the given value within the given seconds to wait.
+     * </p>
+     *
+     * @param driver to get element from
+     * @param attribute name to find element by
+     * @param attributeValue for the attribute name to find element by
+     * @param waitSeconds number of seconds to wait
+     * @return WebElement
+     * @throws InterruptedException
+     */
+    public static WebElement waitAndGetElementByAttributeValue(WebDriver driver, String attribute, String attributeValue, int waitSeconds) throws InterruptedException {
+        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
+        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds)
+                failed = true;
+            try {
+                if (failed || (getElementByAttributeValue(driver, attribute, attributeValue) != null)) {
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        WebElement element = getElementByAttributeValue(driver, attribute, attributeValue);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
+        return element;
+    }
+
+    /**
+     * <p>
      * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
      * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
+     * </p>
      *
-     * @param driver WebDriver
-     * @param waitSeconds int
-     * @param by By
-     * @param message String
+     * @param driver WebDriver to wait on
+     * @param waitSeconds seconds to wait
+     * @param by By to wait for
+     * @param message to display if by is not found in waitSeconds
      * @throws InterruptedException
      */
     public static WebElement waitFor(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {
@@ -741,22 +977,46 @@ public class WebDriverUtil {
         return element;
     }
 
+    /**
+     * <p>
+     * Wait for WebElements.
+     * </p>
+     *
+     * @param driver WebDriver to wait on
+     * @param by By to wait for
+     * @return
+     * @throws InterruptedException
+     */
     public static List<WebElement> waitFors(WebDriver driver, By by) throws InterruptedException {
         return waitFors(driver, configuredImplicityWait(), by, "");
     }
 
+    /**
+     * <p>
+     * Wait for WebElements.
+     * </p>
+     *
+     * @param driver WebDriver to wait on
+     * @param by By to wait for
+     * @param message to display if by is not found in waitSeconds
+     * @return List of WebElements found
+     * @throws InterruptedException
+     */
     public static List<WebElement> waitFors(WebDriver driver, By by, String message) throws InterruptedException {
         return waitFors(driver, configuredImplicityWait(), by, message);
     }
 
-    /**
+   /**
+    * <p>
     * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the
     * by cannot be found.  No action is performed on the by, so it is possible that the by found is not visible or enabled.
+    * </p>
     *
-    * @param driver WebDriver
-    * @param waitSeconds int
-    * @param by By
-    * @param message String
+    * @param driver WebDriver to wait on
+    * @param waitSeconds seconds to wait
+    * @param by By to wait for
+    * @param message to display if by is not found in waitSeconds
+    * @return List of WebElements found
     * @throws InterruptedException
     */
     public static List<WebElement> waitFors(WebDriver driver, int waitSeconds, By by, String message) throws InterruptedException {

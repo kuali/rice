@@ -542,25 +542,20 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * Accept the javascript alert (clicking OK)
-     *
      */
     protected void alertAccept() {
-        Alert alert = driver.switchTo().alert();
-        //update is executed
-        alert.accept();
+        WebDriverUtil.alertAccept(driver);
     }
 
     /**
      * Dismiss the javascript alert (clicking Cancel)
-     *
      */
     protected void alertDismiss() {
-        Alert alert = driver.switchTo().alert();
-        //update is executed
-        alert.dismiss();
+        WebDriverUtil.alertDismiss(driver);
     }
 
     protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
+        acceptAlertIfPresent();
         WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
         List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
         for (WebElement checkbox: checkboxes) {
@@ -607,17 +602,11 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected void assertButtonDisabledByText(String buttonText) {
-        jGrowl("Assert " + buttonText + " button is disabled");
-        if (findButtonByText(buttonText).isEnabled()) {
-            failableFail(buttonText + " button is not disabled");
-        }
+        WebDriverUtil.assertButtonDisabledByText(driver, buttonText, this);
     }
 
     protected void assertButtonEnabledByText(String buttonText) {
-        jGrowl("Assert " + buttonText + " button is enabled");
-        if (!findButtonByText(buttonText).isEnabled()) {
-            failableFail(buttonText + " button is not enabled");
-        }
+        WebDriverUtil.assertButtonEnabledByText(driver, buttonText, this);
     }
 
     protected void assertCancelConfirmation() throws InterruptedException {
@@ -1122,28 +1111,7 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     }
 
     protected WebElement waitAndGetElementByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
-        // jenkins implies that implicitlyWait is worse than sleep loop for finding elements by 100+ test failures on the old sampleapp
-        //        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
-        //        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        boolean failed = false;
-
-        for (int second = 0;; second++) {
-            Thread.sleep(1000);
-            if (second >= waitSeconds)
-                failed = true;
-            try {
-                if (failed || (getElementByAttributeValue(attribute, attributeValue) != null)) {
-                    break;
-                }
-            } catch (Exception e) {}
-        }
-
-        WebElement element = getElementByAttributeValue(attribute, attributeValue);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
-        return element;
+        return WebDriverUtil.waitAndGetElementByAttributeValue(driver, attribute, attributeValue, waitSeconds);
     }
 
     protected List<WebElement> waitAndGetElementsByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
@@ -1312,18 +1280,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     /**
      * <p>
-     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
+     * Set passed to false, call jGrowlSticky with the given message, then fail.
      * </p>
      * @param message to display with failure
      */
     public void failableFail(String message) {
-        passed = false;
-        jGrowlSticky(message);
-        fail(message); // Failable.fail
+        fail(message); // Failable.fail in AutomatedFunctionalTestBase sets passed to false, calls jGrowlSticky with the given message
     }
 
     protected WebElement findButtonByText(String buttonText) {
-        return findElement(By.xpath("//button[contains(text(), '" + buttonText + "')]"));
+        return WebDriverUtil.findButtonByText(driver, buttonText);
     }
 
     protected WebElement findElement(By by) {
@@ -1543,18 +1509,18 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         WebDriverUtil.jGrowl(driver, jGrowlHeader, true, message);
     }
 
-    private void jiraAwareFail(By by, String message, Throwable t) {
-        JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
-        // if there isn't a matched jira to fail on, then fail
-        checkForIncidentReport(by.toString(), message);
-        failableFail(t.getMessage() + "\n" + by.toString() + " " + message + " " + driver.getCurrentUrl());
-    }
-
     private void jiraAwareFail(String message) {
         JiraAwareFailureUtil.failOnMatchedJira(message, message, this);
         // if there isn't a matched jira to fail on, then fail
         checkForIncidentReport(message, message);
         failableFail(message + " " + driver.getCurrentUrl());
+    }
+
+    private void jiraAwareFail(By by, String message, Throwable t) {
+        JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
+        // if there isn't a matched jira to fail on, then fail
+        checkForIncidentReport(by.toString(), message);
+        failableFail(t.getMessage() + "\n" + by.toString() + " " + message + " " + driver.getCurrentUrl());
     }
 
     protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
@@ -3512,10 +3478,12 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
+        acceptAlertIfPresent();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all, all checkboxes should be checked and return button enabled
         waitAndClickDropDown("select all items");
+        acceptAlertIfPresent();
         if (!areAllMultiValueSelectsChecked()) {
             JiraAwareFailureUtil.fail("select all items failure", this);
         }
@@ -3551,9 +3519,13 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
+    protected void acceptAlertIfPresent() {
+        WebDriverUtil.acceptAlertIfPresent(driver);
+    }
+
     protected void testMultiValueSelectAllThisPage() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
-        alertDismiss();
+        acceptAlertIfPresent();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all on this page, all checkboxes should be checked and return button enabled

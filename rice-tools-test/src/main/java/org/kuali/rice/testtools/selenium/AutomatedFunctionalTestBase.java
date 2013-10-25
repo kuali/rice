@@ -62,6 +62,12 @@ public abstract class AutomatedFunctionalTestBase extends WebDriverLegacyITBase 
         }
     }
 
+    /**
+     * <p>
+     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
+     * </p>
+     * @param message to display with failure
+     */
     @Override
     public void fail(String message) {
         passed = false;

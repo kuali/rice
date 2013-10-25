@@ -15,21 +15,39 @@
  */
 package org.kuali.rice.krad.data.jpa.converters;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
  * 
  */
 @Converter
-public class InverseBooleanYNConverter extends BooleanYNConverter {
+public class InverseBooleanYNConverter implements AttributeConverter<Boolean, String> {
+
+	protected static final Set<String> YES_VALUES = new HashSet<String>();
+	static {
+		YES_VALUES.add("Y");
+		YES_VALUES.add("y");
+		YES_VALUES.add("true");
+		YES_VALUES.add("TRUE");
+	}
 
 	@Override
 	public String convertToDatabaseColumn(Boolean objectValue) {
-		return super.convertToDatabaseColumn(objectValue).equals("Y") ? "N" : "Y";
+		if (objectValue == null) {
+			return "Y";
+		}
+		return !objectValue ? "Y" : "N";
 	}
 
 	@Override
 	public Boolean convertToEntityAttribute(String dataValue) {
-		return !super.convertToEntityAttribute(dataValue);
+		if (dataValue == null) {
+			return true;
+		}
+		return !YES_VALUES.contains(dataValue);
 	}
 }

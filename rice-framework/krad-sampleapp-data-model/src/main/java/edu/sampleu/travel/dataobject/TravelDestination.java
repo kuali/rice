@@ -17,6 +17,7 @@ package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.PostalCountryCodeKeyValuesFinder;
 import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
+import edu.sampleu.travel.options.TripTypeKeyValuesFinder;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
@@ -25,6 +26,9 @@ import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
 import javax.persistence.Column;
@@ -56,7 +60,11 @@ public class TravelDestination extends DataObjectBase implements Serializable {
 
     @Column(name = "TRVL_TYP_CD", length = 40)
     @Label("Travel type code")
-    @Description("Type of destination")
+    @Description("Trip Type")
+    @KeyValuesFinderClass(TripTypeKeyValuesFinder.class)
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.DROPDOWN),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     private String travelTypeCode;
 
     @Column(name = "DEST_NM", length = 40)

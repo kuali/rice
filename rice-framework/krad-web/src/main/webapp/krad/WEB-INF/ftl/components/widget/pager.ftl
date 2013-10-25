@@ -33,14 +33,14 @@
         <#if widget.renderFirstLast>
             <li ${prevClass!}>
                 <a data-onclick="${widget.linkScript}" data-num="first" class="uif-pageFirst"
-                   href="#">First</a>
+                   href="#" data-role="Action">First</a>
             </li>
         </#if>
 
         <#if widget.renderPrevNext>
             <li ${prevClass!}>
                 <a data-onclick="${widget.linkScript}" data-num="prev" class="uif-pagePrev"
-                   href="#">&laquo;</a>
+                   href="#" data-role="Action">&laquo;</a>
             </li>
         </#if>
 
@@ -52,7 +52,7 @@
 
             <li ${liClass!}>
                 <a data-onclick="${widget.linkScript}" data-num="${pageNum}"
-                   href="#">${pageNum}</a>
+                   href="#" data-role="Action">${pageNum}</a>
             </li>
         </#list>
 
@@ -63,14 +63,14 @@
         <#if widget.renderPrevNext>
             <li ${nextClass!}>
                 <a data-onclick="${widget.linkScript}" data-num="next" class="uif-pageNext"
-                   href="#">&raquo;</a>
+                   href="#" data-role="Action">&raquo;</a>
             </li>
         </#if>
 
         <#if widget.renderFirstLast>
             <li ${nextClass!}>
                 <a data-onclick="${widget.linkScript}" data-num="last" class="uif-pageLast"
-                   href="#">Last</a>
+                   href="#" data-role="Action">Last</a>
             </li>
         </#if>
     </ul>

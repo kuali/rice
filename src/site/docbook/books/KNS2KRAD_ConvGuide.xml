@@ -3036,7 +3036,7 @@
       </itemizedlist>
     </para>
     <para>KIM permissions are stored in Rice database tables.  They are created either by SQL script or using the Rice KIM maintenance
-      screens. <question>Is XML Import an option?</question></para>
+      screens.</para>
     <section xml:id="IKP0">
       <title>Inquiry Permissions</title>
       <para>In KNS, there are three types of KIM permissions related to Inquiries

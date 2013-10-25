@@ -20,8 +20,8 @@ import org.apache.commons.io.FileUtils;
 
 
 def projectHome = new File("${System.getenv()['PROJECT_HOME']}/rice-20").canonicalPath
-def projectSourceBase = new File("$projectHome/rice-middleware/impl/src/main/java").canonicalPath
-def ojbRepoFile = new File("$projectHome/rice-middleware/impl/src/main/resources/org/kuali/rice/kcb/config/OJB-repository-kcb.xml").canonicalPath
+def projectSourceBase = new File("$projectHome/rice-middleware/core-service/impl/src/main/java").canonicalPath
+def ojbRepoFile = new File("$projectHome/rice-middleware/core-service/impl/src/main/resources/org/kuali/rice/coreservice/config/OJB-repository-core-service.xml").canonicalPath
 def backupPath = new File("$projectSourceBase/../backup").canonicalPath
 
 println "Project Home:        $projectHome"
@@ -41,7 +41,6 @@ println "Class Metadata Extracted: \n$classes"
 
 
 /* TODO:
- * back up files being modified - create bak directory at same location as src
  * Update java files with new annotations
  * 	Skip if already annotated?
  * Generate IdClass if a class with that name does not already exist. 
@@ -50,11 +49,7 @@ println "Class Metadata Extracted: \n$classes"
 /*  
 	TYPE CONVERTERS - need to update those to current
 
-EXISTING GENERATES THESE - ADJUST TO NEW ANNOTATIONS
-	@GeneratedValue(generator="KREN_MSG_S")
-	@GenericGenerator(name="KREN_MSG_S", strategy="org.hibernate.id.enhanced.SequenceStyleGenerator", 
-		 parameters={@Parameter(name="sequence_name",value="KREN_MSG_S"), 
-				 @Parameter(name="value_column",value="id")})
+	DATE vs TIMESTAMP - need to base on object - if java.sql.Date - MUST USE DATE
 
  */
 
@@ -64,11 +59,8 @@ JPAConversionHandlers.annotation_handler.generateJPABO(classes,
 
 
 public class JPAConversionHandlers {
-	public static conversion_util = new ConversionUtils();
 	public static metadata_handler = new MetaDataHandler();
-	public static persistence_handler = new PersistenceFileHandler();
-	public static mysql_handler = new MySQLHandler();
-	public static type_handler = new CustomerTypeHandler();
+	public static type_handler = new TypeConverterHandler();
 	public static annotation_handler = new AnnotationHandler();
 
 	public static info_log = new Logger("jpa_info.log");
@@ -76,6 +68,4 @@ public class JPAConversionHandlers {
 
 	public static bo_log = new Logger("jpa_bo.log");
 	public static cpk_log = new Logger("jpa_cpk.log");
-
-	public static SQL_DATE_PATTERN = ~/Date|Timestamp|(java\.sql\.Date)|(java\.sql\.Timestamp)/;
 }

@@ -1,3 +1,5 @@
+import javax.management.QualifiedAttributeValueExp;
+
 import ojbmetadata.ClassDescriptor
 import ojbmetadata.CollectionDescriptor;
 import ojbmetadata.Field
@@ -22,10 +24,11 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupDir,
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/
-	if(pkClassesOnly)
+	if(pkClassesOnly) {
 		logger = JPAConversionHandlers.cpk_log
+	}
 		
-	def type_handler = new CustomerTypeHandler();
+	//def type_handler = JPAConversionHandlers.type_handler;
 	classes.values().each {
 	    ClassDescriptor c ->     
 	        println "Class Name: $c.className"
@@ -144,24 +147,45 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupDir,
 		                    text = addJpaImport(text, "Basic")
 		                    text = addJpaImport(text, "FetchType")
 		                }
-//		                if (f.conversion?.toString()?.size() > 0){
-//		                	logger.log "\tHandling custom Types for ${c.className}.${f.name}"
-//							text = addImportHibernate(text, "Type")
-//							def this_anna = type_handler.handleCustomerTypes(f.conversion, f)
-//							annotation += this_anna
-//							
-//							if(f.primarykey){
-//								c.pkClassIdText = addImportHibernate(c.pkClassIdText, "Type")
-//								def pkImport = findImportType(text, f.name)
-//								c.pkClassIdText = addOtherImport(c.pkClassIdText, pkImport)
-//								cpkFieldText = annotate(cpkFieldText, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", this_anna)
-//							}
-//		                }					
-		                if (f.jdbcType?.equalsIgnoreCase("date") || f.jdbcType?.equalsIgnoreCase("timestamp")) {
-		                	annotation += "\t@Temporal(TemporalType.TIMESTAMP)\n\t";
+		                if (f.conversion?.toString()?.size() > 0){
+		                	logger.log "\tHandling custom Types for ${c.className}.${f.name}"
+							
+							def converterClass = JPAConversionHandlers.type_handler.handleCustomTypes(f.conversion, f)
+							if ( converterClass ) {
+								text = addJpaImport(text, "Convert")
+								def converterAnnotation = "@Convert(converter=${converterClass}.class)\n\t"
+								def qualifiedConverterClass = converterClass
+								annotation += converterAnnotation
+								// don't add an import for the error messages
+								if ( converterClass.contains( "OJB:") ) {
+									converterClass = ""
+									// if a fully qualified class
+								} else if ( !converterClass.contains( "." ) ) {
+									// assume core converter
+									qualifiedConverterClass = "org.kuali.rice.krad.data.jpa.converters.$converterClass"
+								}
+								if ( qualifiedConverterClass ) {
+									text = addOtherImport(text,qualifiedConverterClass)
+								}
+								if(f.primarykey){
+									if ( qualifiedConverterClass ) {
+										c.pkClassIdText = addOtherImport(c.pkClassIdText,qualifiedConverterClass)
+									}
+									c.pkClassIdText = addJpaImport(text, "Convert")
+									cpkFieldText = annotate(cpkFieldText, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", converterAnnotation)
+								}
+							}
+		                }					
+		                if (f.jdbcType?.equalsIgnoreCase("date")) {
+		                	annotation += "\t@Temporal(TemporalType.DATE)\n\t";
 		                	text = addJpaImport(text, "Temporal") 
 		                	text = addJpaImport(text, "TemporalType")                    
 		                }
+						if ( f.jdbcType?.equalsIgnoreCase("timestamp")) {
+							annotation += "\t@Temporal(TemporalType.TIMESTAMP)\n\t";
+							text = addJpaImport(text, "Temporal")
+							text = addJpaImport(text, "TemporalType")
+						}
 						
 		                if (f.nullable == true) nullable = ", nullable=${f.nullable}"
 		                annotation += "@Column(name=\"${f.column}\"${nullable})"
@@ -620,7 +644,7 @@ def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 		ret = true
 		
 	ret
-	}
+}
 
 def findBiDirectionRelationships(classes, cls, refcls, logger ) throws Exception{	
 	println '*******************start looking for bi-directions between\t' + 
@@ -667,20 +691,5 @@ def findBiDirectionRelationships(classes, cls, refcls, logger ) throws Exception
 			logger.log( "\tFound a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
 		}
 	}
-	ret
+	return ret
 }
-
-def findImportType(_text, _name) throws Exception{
-	
-	def _fieldPattern = ~/(private|protected)\s+\w+\s+${_name}/
-	def _field = _text.find(_fieldPattern)    
-    def _type = (_field.split())[1]
-    def _importPattern = "import.*(${_type})"  
-	def _importStatment = _text.find(_importPattern)
-    def _ret = _importStatment.split()[1];
-
-	println("+++++++++++++++++++++++got type\t" + _type + "\timport\t" +  _importStatment + "\tret\t" + _ret)
-	
-	_ret
-}
-	

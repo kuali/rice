@@ -279,6 +279,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             if (valueChanged) {
                 // add script to show change icon
                 String onReadyScript = "showChangeIcon('" + field.getId() + "');";
+                field.setRenderMarkerIconSpan(true);
                 field.setOnDocumentReadyScript(onReadyScript);
             }
             // TODO: add script for value changed?

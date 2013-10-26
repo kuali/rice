@@ -103,7 +103,9 @@
         </@krad.fieldLbl>
 
         <!-- placeholder for dynamic field markers -->
-        <span id="${field.id}_markers"></span>
+        <#if field.renderMarkerIconSpan>
+            <span id="${field.id}_markers"></span>
+        </#if>
 
         <#if !readOnly>
             <#-- render error container for field -->
@@ -114,7 +116,9 @@
         </#if>
 
         <#-- render span and values for informational properties -->
-        <span id="${field.id}_info_message"></span>
+        <#if field.renderInfoMessageSpan>
+            <span id="${field.id}_info_message"></span>
+        </#if>
 
         <#if field.propertyNamesForAdditionalDisplay??>
 	        <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>

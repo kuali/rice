@@ -473,6 +473,9 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             script += getAttributeQuery().getQueryMethodArgumentFieldsJsString() + ",";
             script += getAttributeQuery().getReturnFieldMappingJsString() + ");";
 
+            // show the span wich will contain the info
+            this.setRenderInfoMessageSpan(true);
+
             if (StringUtils.isNotBlank(getControl().getOnBlurScript())) {
                 script = getControl().getOnBlurScript() + script;
             }

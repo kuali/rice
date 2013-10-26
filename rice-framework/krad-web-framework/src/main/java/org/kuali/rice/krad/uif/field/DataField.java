@@ -111,6 +111,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
 
     private Help help;
 
+    // Optional span render flags
+    private boolean renderInfoMessageSpan;
+    private boolean renderMarkerIconSpan;
+
     public DataField() {
         super();
 
@@ -878,6 +882,42 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     @Override
     public void setHelp(Help help) {
         this.help = help;
+    }
+
+    /**
+     * When true, render the info message span which contains can contain additional information
+     * about the field (used by Field Query functionality)
+     *
+     * @return true if the span will be rendered, false otherwise
+     */
+    public boolean isRenderInfoMessageSpan() {
+        return renderInfoMessageSpan;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.DataField#isRenderInfoMessageSpan()
+     * @param renderInfoMessageSpan
+     */
+    public void setRenderInfoMessageSpan(boolean renderInfoMessageSpan) {
+        this.renderInfoMessageSpan = renderInfoMessageSpan;
+    }
+
+    /**
+     * When true, render the marker icon span to show icons related to the field (used by CompareFieldCreateModifier on
+     * maintenance documetnts to mark editted fields)
+     *
+     * @return true if the the marker icon span will be rendered, false otherwise
+     */
+    public boolean isRenderMarkerIconSpan() {
+        return renderMarkerIconSpan;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.DataField#isRenderMarkerIconSpan()
+     * @param renderMarkerIconSpan
+     */
+    public void setRenderMarkerIconSpan(boolean renderMarkerIconSpan) {
+        this.renderMarkerIconSpan = renderMarkerIconSpan;
     }
 
     /**

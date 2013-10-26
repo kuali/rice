@@ -33,6 +33,7 @@
         <ref bean="Demo-Events-Example3"/>
         <ref bean="Demo-Events-Example4"/>
         <ref bean="Demo-Events-Example5"/>
+        <ref bean="Demo-Events-Example6"/>
       </list>
     </property>
   </bean>
@@ -266,6 +267,32 @@
           </property>
         </bean>
         <!-- ex:Demo-Events-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Events-Example6" parent="Uif-VerticalBoxSection" p:headerText="OnKeyPress, OnKeyUp, OnKeyDown Examples">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Events-Example6 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField13" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
+              p:fieldLabel.renderColon="true" p:instructionalText="Type within the input field">
+          <property name="control">
+            <bean parent="Uif-TextControl">
+              <property name="onKeyPressScript" value="alert('Pressed a Key');" />
+            </bean>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="inputField14" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
+                p:instructionalText="Press a key and hold it down.  Then release it.">
+          <property name="control">
+            <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:style="border=2px solid #88ff88;">
+              <property name="onKeyDownScript" value="jq(this).stop().animate({'borderWidth':'10px'},100);" />
+              <property name="onKeyUpScript" value="jq(this).stop().animate({'borderWidth':'2px'},100);" />
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-Events-Example6 end-->
       </list>
     </property>
   </bean>

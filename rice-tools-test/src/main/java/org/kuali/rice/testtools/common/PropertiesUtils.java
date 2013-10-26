@@ -57,6 +57,7 @@ public class PropertiesUtils {
      * </p><p>
      * If a FileNotFoundException is thrown opening the InputStream an attempt will be made to read as a resource.
      * </p>
+     *
      * @param fileLocation null means use resourceLocation
      * @param resourceLocation load resource as a stream {@code getClass().getClassLoader().getResourceAsStream(resourceLocation);}
      * @return Properties read from given Inputstream or Resource Loaction if the InputStream is null
@@ -87,8 +88,9 @@ public class PropertiesUtils {
      * <p>
      * Read the properties from an inputStream overridding keys defined as JVM arguments.
      * </p><p>
-     * {see #systemPropertiesOverride}
+     * {@see #systemPropertiesOverride}
      * </p>
+     *
      * @param inputStream to read properties from
      * @return Properties loaded from inputStream and overridden with JVM arguments
      * @throws IOException
@@ -104,7 +106,7 @@ public class PropertiesUtils {
      * Read the properties from an inputStream overridding keys defined as JVM arguments and transforming numbered keys
      * into a list.
      * </p><p>
-     * {see #systemPropertiesOverride}
+     * {@see #systemPropertiesOverride}
      * {@see #transformNumberedPropertiesToList}
      * </p>
      *
@@ -123,6 +125,7 @@ public class PropertiesUtils {
      * <p>
      * Given a key that ends in a number, remove the number.
      * </p>
+     *
      * @param numberedKey in the form of some.key.number
      * @return some.key part of some.key.number
      */
@@ -141,6 +144,7 @@ public class PropertiesUtils {
      * <p>
      * Override the given Properties with JVM argument {@code -Dkey=value}.
      * </p>
+     *
      * @param props properties to update with System.getProperty overrides.
      */
     public static void systemPropertiesOverride(Properties props) {
@@ -150,8 +154,10 @@ public class PropertiesUtils {
     /**
      * <p>
      * Override the given Properties with JVM argument {@code -Darg.key=value}.
-     * </p>
+     * </p><p>
      * -Dkey.propertyname= to override the property value for propertyname.
+     * </p>
+     *
      * @param props properties to update with System.getProperty overrides.
      * @param arg optional value that the property names will be appended to.
      */
@@ -179,6 +185,7 @@ public class PropertiesUtils {
      * Transform the given Properties keys which end in numbers to a List placed in a Map with the map key being the unumbered
      * part of the Properties key with an s appended to it.
      * </p>
+     *
      * @param props Properties to have keys ending in
      */
     public static void transformNumberedPropertiesToList(Properties props) {

@@ -230,14 +230,14 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
     public static final String KRAD_XPATH = "KRAD";
 
     /**
-     * KUALI - Kuali Systems
+     * Kuali :: Collection Totaling
      */
-    public static final String LABEL_KUALI_KUALI_SYSTEMS = "KUALI - Kuali Systems";
+    public static final String KUALI_COLLECTION_TOTALLING_WINDOW_XPATH = "Kuali :: Collection Totaling";
 
     /**
-     * KUALI : Default
+     * //a[text()='Collection Totaling']
      */
-    public static final String LABEL_KUALI_DEFAULT = "KUALI : Default";
+    public static final String KUALI_COLLECTION_TOTALLING_XPATH = "//a[text()='Collection Totaling']";
 
     /**
      * Kuali :: Uif Components
@@ -248,6 +248,16 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      * "Kuali :: View Title"
      */
     public static final String KUALI_VIEW_WINDOW_TITLE = "Kuali :: View Title";
+
+    /**
+     * KUALI - Kuali Systems
+     */
+    public static final String LABEL_KUALI_KUALI_SYSTEMS = "KUALI - Kuali Systems";
+
+    /**
+     * KUALI : Default
+     */
+    public static final String LABEL_KUALI_DEFAULT = "KUALI : Default";
 
     /**
      * //input[@name='imageField' and @value='Logout']
@@ -356,16 +366,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
      */
     public static final String VALIDATION_FRAMEWORK_DEMO_XPATH = "(//a[contains(text(),'Validation Framework Demo')])";
 
-    /**
-     * Kuali :: Collection Totaling
-     */
-    public static final String KUALI_COLLECTION_TOTALLING_WINDOW_XPATH = "Kuali :: Collection Totaling";
-
-    /**
-     * //a[text()='Collection Totaling']
-     */
-    public static final String KUALI_COLLECTION_TOTALLING_XPATH = "//a[text()='Collection Totaling']";
-    
     /**
      * XML Ingester
      */

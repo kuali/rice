@@ -392,6 +392,15 @@ public class WebDriverUtil {
         return driver.switchTo().alert().getText();
     }
 
+    /**
+     * <p>
+     * Fail if the button defined by the buttonText is enabled.
+     * </p>
+     *
+     * @param driver to get the button from
+     * @param buttonText to identify the button
+     * @param failable to fail on if button identified by buttonText is enabled.
+     */
     public static void assertButtonDisabledByText(WebDriver driver, String buttonText, Failable failable) {
         jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is disabled");
         if (findButtonByText(driver, buttonText).isEnabled()) {
@@ -399,6 +408,15 @@ public class WebDriverUtil {
         }
     }
 
+    /**
+     * <p>
+     * Fail if the button defined by the buttonText is disabled.
+     * </p>
+     *
+     * @param driver to get the button from
+     * @param buttonText to identify the button
+     * @param failable to fail on if button identified by buttonText is disabled.
+     */
     public static void assertButtonEnabledByText(WebDriver driver, String buttonText, Failable failable) {
         jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is enabled");
         if (!findButtonByText(driver, buttonText).isEnabled()) {
@@ -407,22 +425,21 @@ public class WebDriverUtil {
     }
 
     /***
-     * @link ITUtil#checkForIncidentReport
+     * {@see ITUtil#checkForIncidentReport}
      *
-     * @param driver
-     * @param locator
-     * @param message
+     * @param driver to get page source from
+     * @param locator current locator
+     * @param message to display and be matched against in the event of a failure
      */
-    public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable,
-            String message) {
+    public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable, String message) {
         ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
     }
 
     /**
-     * @link http://code.google.com/p/chromedriver/downloads/list
-     * @link #REMOTE_PUBLIC_CHROME
-     * @link #WEBDRIVER_CHROME_DRIVER
-     * @link ITUtil#HUB_DRIVER_PROPERTY
+     * <p>
+     * <a href="http://code.google.com/p/chromedriver/downloads/list">ChromeDriver downloads</a>, {@see #REMOTE_PUBLIC_CHROME},
+     * {@see #WEBDRIVER_CHROME_DRIVER}, and {@see #HUB_DRIVER_PROPERTY}
+     * </p>
      *
      * @return chromeDriverService
      */
@@ -476,7 +493,12 @@ public class WebDriverUtil {
     }
 
     /**
-     * @param testParam
+     * <p>
+     * If {@see #REMOTE_PUBLIC_USER_PROPERTY} property is set, return its value, else if {@see #REMOTE_PUBLIC_USERPOOL_PROPERTY}
+     * is set use it to query the userpool service passing the testParam.
+     * </p>
+     * *
+     * @param testParam to use if using a user pool
      * @return user
      */
     public static String determineUser(String testParam) {
@@ -553,6 +575,13 @@ public class WebDriverUtil {
         return "\nIncident report "+ message+ " navigating to "+ linkLocator + " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
     }
 
+    /**
+     * <p>
+     * {@see JiraAwareFailureUtil#failOnMatchedJira(String, Failable)}.
+     * </p>
+     * @param contents to check for a jira aware fail match
+     * @param failable to call fail on if a jira aware match is found
+     */
     public static void failOnMatchedJira(String contents, Failable failable) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
     }

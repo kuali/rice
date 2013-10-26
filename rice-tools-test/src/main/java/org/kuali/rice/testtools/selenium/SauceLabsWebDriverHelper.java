@@ -81,7 +81,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
 
     /**
      * <p>
-     * Use Saucelabs flag.
+     * Use Saucelabs flag, <b>required</b>.
      * </p><p>
      * For ease of disabling saucelabs without having to remove other saucelabs property settings, if not present saucelabs
      * will not be used.
@@ -257,6 +257,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * using the JVM arguments described as SAUCE_ Constants in this class.  After setUp the WebDriver can be accessed via
      * {@see #getDriver}.  You'll also need {@see #getSessionId} for when you call {@see #tearDown}
      * </p>
+     *
      * @param className class name of the test being setup as a String
      * @param testName test name of the test being setup as a String
      * @throws Exception
@@ -343,6 +344,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * </p><p>
      * Uses the SauceREST API to register a test as passed or failed.  {@see #SAUCE_REST_API_DELAY_MS}
      * </p>
+     *
      * @param passed true if passed, falsed if failed, as a boolean
      * @param sessionId saucelabs test session id, as a String
      * @throws Exception
@@ -393,6 +395,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * <p>
      * Returns the (RemoteWebDriver) driver.
      * </p>
+     *
      * @return WebDriver
      */
     public WebDriver getDriver() {

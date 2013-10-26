@@ -101,6 +101,7 @@ public class JiraAwareFailureUtil {
      * <p>
      * Calls {@see #failOnMatchedJira(String, Failable)} and calls fail on the {@see Failable#fail} if no matched jira failures.
      * </p>
+     *
      * @param message to pass to fail
      * @param failable {@see Failable#fail}
      */
@@ -113,8 +114,9 @@ public class JiraAwareFailureUtil {
      * <p>
      * Calls {@see #failOnMatchedJira(String, String, Failable)} and calls fail on the {@see Failable#fail} fails if no matched jira failures.
      * </p>
-     * @param contents
-     * @param message to pass to fail
+     *
+     * @param contents to check for jira matches on
+     * @param message to pass to fail, also checked for jira matches
      * @param failable {@see Failable#fail}
      */
     public static void fail(String contents, String message, Failable failable) {
@@ -126,6 +128,7 @@ public class JiraAwareFailureUtil {
      * <p>
      * Calls {@see #failOnMatchedJira(String, Failable)} with the contents and if no match is detected then the message.
      * </p>
+     *
      * @param contents to check for containing of the jiraMatches keys.
      * @param message to check for containing of the jiraMatches keys if contents doesn't
      * @param failable to fail with the jiraMatches value if the contents or message is detected
@@ -137,8 +140,9 @@ public class JiraAwareFailureUtil {
 
     /**
      * <p>
-     * If the contents contents the jiraMatches key, calls fail on the {@see Failable#fail} passing in the jiraMatches value for the matched key.
+     * If the contents contains the jiraMatches key, calls fail on the {@see Failable#fail} passing in the jiraMatches value for the matched key.
      * </p>
+     *
      * @param contents to check for containing of the jiraMatches keys.
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */

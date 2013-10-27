@@ -1,6 +1,6 @@
 package edu.sampleu.admin.config.namespace.pending;
 
-import edu.sampleu.admin.test.AdminTmplMthdAftNavBase;
+import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.ITUtil;
 

@@ -16,12 +16,12 @@
 package org.kuali.rice.krad.demo.uif.library.controls;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoControlSpinnerAft extends AutomatedFunctionalTestBase {
+public class DemoControlSpinnerAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SpinnerControl-View

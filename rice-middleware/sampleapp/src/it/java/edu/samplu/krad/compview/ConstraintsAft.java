@@ -18,12 +18,12 @@ package edu.samplu.krad.compview;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConstraintsAft extends AutomatedFunctionalTestBase {
+public class ConstraintsAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3

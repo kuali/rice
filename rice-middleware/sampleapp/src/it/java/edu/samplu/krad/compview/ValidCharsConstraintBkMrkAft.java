@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class ValidCharsConstraintBkMrkAft extends ValidCharsConstraintSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // TODO fix
     @Test
     public void testValidCharsConstraintBookmark() throws Exception {

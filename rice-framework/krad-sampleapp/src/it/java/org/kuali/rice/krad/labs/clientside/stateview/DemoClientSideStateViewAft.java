@@ -17,12 +17,12 @@ package org.kuali.rice.krad.labs.clientside.stateview;
 
 import org.junit.Test;
 import org.junit.Assert;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoClientSideStateViewAft extends AutomatedFunctionalTestBase {
+public class DemoClientSideStateViewAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/labs?viewId=Lab-ClientSideState&formKey=ff000d97-13e9-4130-81a3-bc0217e8e0eb&

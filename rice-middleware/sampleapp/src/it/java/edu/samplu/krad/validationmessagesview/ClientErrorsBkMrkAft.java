@@ -22,11 +22,6 @@ import org.junit.Test;
  */
 public class ClientErrorsBkMrkAft extends ClientErrorsSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Test
     public void testClientErrorsBookmark() throws Exception {
         testClientErrorsBookmark(this);

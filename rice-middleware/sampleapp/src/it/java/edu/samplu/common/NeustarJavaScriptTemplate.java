@@ -33,13 +33,18 @@ public class NeustarJavaScriptTemplate extends FreemarkerAftBase {
         Assert.fail(message);
     }
 
+    @Override
+    protected String getBookmarkUrl() {
+        return null;
+    }
+
     /**
      * This is ugly, I'm doing it to remove the loading property duplication, we should probably turn this class into a
      * command line tool and do extractions to support that, but isn't the current focus...
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return null;
     }
 

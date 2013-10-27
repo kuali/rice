@@ -28,14 +28,19 @@ public abstract class Help2AftBase extends WebDriverLegacyITBase {
      * /kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start
      */
     public static final String BOOKMARK_URL = "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView-Help&methodToCall=start";
-   
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link Help2AftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoKitchenSinkBase extends AutomatedFunctionalTestBase {
+public abstract class DemoKitchenSinkBase extends WebDriverLegacyITBase {
 
     protected void navigateToKitchenSink(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Kitchen Sink");

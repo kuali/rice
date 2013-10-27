@@ -18,7 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.elements;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
@@ -26,7 +26,7 @@ import com.thoughtworks.selenium.SeleneseTestBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoElementsActionAft extends AutomatedFunctionalTestBase {
+public class DemoElementsActionAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start

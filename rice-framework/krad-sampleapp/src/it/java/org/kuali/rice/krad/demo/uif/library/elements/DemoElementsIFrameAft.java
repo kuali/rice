@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.elements;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoElementsIFrameAft extends AutomatedFunctionalTestBase {
+public class DemoElementsIFrameAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Iframe-View&methodToCall=start

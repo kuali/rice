@@ -18,7 +18,6 @@ package edu.samplu.travel.krad.test;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -32,9 +31,9 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
 
-
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**
@@ -43,7 +42,7 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.demo.uif.library.collections;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoCollectionFeaturesMultiValueLookupAft extends AutomatedFunctionalTestBase {
+public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-LightTable-View&methodToCall=start

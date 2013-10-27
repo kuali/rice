@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class UifTooltipBkMrkAft extends UifTooltipSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // TODO fix
     @Test
     public void testUifTooltipBookmark() throws Exception {

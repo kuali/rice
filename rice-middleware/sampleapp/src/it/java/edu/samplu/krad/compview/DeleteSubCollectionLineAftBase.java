@@ -38,13 +38,18 @@ public abstract class DeleteSubCollectionLineAftBase extends WebDriverLegacyITBa
      */
     public static final String FIELD_ELEMENT_NAME = "list4[0].subList[0].field1";
     
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link DeleteSubCollectionLineAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

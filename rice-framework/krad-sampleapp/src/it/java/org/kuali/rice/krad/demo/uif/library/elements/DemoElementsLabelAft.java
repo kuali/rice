@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.elements;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoElementsLabelAft extends AutomatedFunctionalTestBase {
+public class DemoElementsLabelAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Label-View&methodToCall=start

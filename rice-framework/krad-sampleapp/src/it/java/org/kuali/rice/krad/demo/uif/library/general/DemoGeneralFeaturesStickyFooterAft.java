@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.general;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoGeneralFeaturesStickyFooterAft extends AutomatedFunctionalTestBase {
+public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-StickyFooter-View&methodToCall=start

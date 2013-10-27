@@ -22,11 +22,6 @@ import org.junit.Test;
  */
 public class DeleteSubCollectionLineBkMrkAft extends DeleteSubCollectionLineSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Test
     public void testDeleteSubCollectionLineBookmark() throws Exception {
         testDeleteSubCollectionLineBookmark(this);

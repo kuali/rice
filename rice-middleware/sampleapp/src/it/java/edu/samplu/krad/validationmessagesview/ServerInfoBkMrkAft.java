@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class ServerInfoBkMrkAft extends ServerInfoSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // TODO fix
     @Test
     public void testServerInfoBookmark() throws Exception {

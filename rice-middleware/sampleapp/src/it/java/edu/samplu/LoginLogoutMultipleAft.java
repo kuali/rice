@@ -17,10 +17,10 @@ package edu.samplu;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
 
-public class LoginLogoutMultipleAft extends AutomatedFunctionalTestBase {
+public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
 
     /**
      * "//div[@id='login-info']/strong[2]"
@@ -44,7 +44,7 @@ public class LoginLogoutMultipleAft extends AutomatedFunctionalTestBase {
     }
 
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

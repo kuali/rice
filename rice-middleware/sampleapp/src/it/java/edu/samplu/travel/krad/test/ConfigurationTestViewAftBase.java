@@ -18,7 +18,6 @@ package edu.samplu.travel.krad.test;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -39,8 +38,9 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
     String addLineIdSuffix = "InputField_add_control";
 
 
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

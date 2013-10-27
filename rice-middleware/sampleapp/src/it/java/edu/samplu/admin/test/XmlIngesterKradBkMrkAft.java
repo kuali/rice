@@ -35,7 +35,7 @@ public class XmlIngesterKradBkMrkAft extends XMLIngesterSTJUnitBase {
     }
 
     @Override
-    public String getTestUrl() {
+    public String getBookmarkUrl() {
 //        return BOOKMARK_URL;
 //        return "/kr-login/login?methodToCall=start&viewId=DummyLoginView&dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart&pageId=LoginPage";
 // /kr-krad/ingester?methodToCall=start&viewId=XmlIngester&dataObjectClassName=org.kuali.rice.core.web.impex.XmlIngesterForm&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart

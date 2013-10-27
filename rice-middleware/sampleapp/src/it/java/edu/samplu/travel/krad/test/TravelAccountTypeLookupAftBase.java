@@ -41,13 +41,17 @@ public abstract class TravelAccountTypeLookupAftBase extends WebDriverLegacyITBa
         return "//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'" + contains + "')]";
     }
 
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

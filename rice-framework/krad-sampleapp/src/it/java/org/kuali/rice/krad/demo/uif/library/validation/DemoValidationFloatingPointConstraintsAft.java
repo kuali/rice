@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoValidationFloatingPointConstraintsAft extends AutomatedFunctionalTestBase {
+public class DemoValidationFloatingPointConstraintsAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View&methodToCall=start

@@ -40,8 +40,9 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
             + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
             + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
 
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**
@@ -51,7 +52,7 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMaintenanceEditAft extends AutomatedFunctionalTestBase {
+public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/maintenance?methodToCall=maintenanceEdit&number=a14&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true

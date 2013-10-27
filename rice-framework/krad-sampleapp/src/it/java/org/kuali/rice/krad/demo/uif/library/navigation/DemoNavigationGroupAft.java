@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.navigation;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoNavigationGroupAft extends AutomatedFunctionalTestBase {
+public class DemoNavigationGroupAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View&methodToCall=start

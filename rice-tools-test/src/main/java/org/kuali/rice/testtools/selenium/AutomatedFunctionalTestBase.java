@@ -15,67 +15,45 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 
 /**
- * Automated Functional Tests should extend this Base class or have it in their class hierarchy.
+ * Automated Functional Tests should extend this Base class or have it in their class hierarchy, enables
+ * bookmark mode for test methods ending in Bookmark and navigation mode for test methods ending in Nav.
  *
  * The abstract method getBookmarkUrl should be implemented to return the Bookmark URL
  * of the page under test.  The abstract method navigate should be implemented to Navigate
- * through the UI to the page under test.
+ * through the UI to the page under test.  {@see #navigateInternal} should be called from a setUp.
+ *
+ * Runs With {@see AutomatedFunctionalTestRunner}.
  */
 @RunWith(AutomatedFunctionalTestRunner.class)
-public abstract class AutomatedFunctionalTestBase extends WebDriverLegacyITBase {
+public abstract class AutomatedFunctionalTestBase {
 
-    protected String testUrl = ITUtil.KRAD_PORTAL;
+    protected String testUrl;
 
     protected boolean shouldNavigate = false;
 
     protected abstract String getBookmarkUrl();
 
+    protected abstract String getNavigationUrl();
+
     protected abstract void navigate() throws Exception;
 
-    @Override
-    public String getTestUrl() {
-//        if (this.getClass().toString().contains("krad.demo") ||
-//            this.getClass().toString().contains("krad.labs")) {
-            return testUrl;
-//        } else {
-//            return ITUtil.PORTAL;
-//        }
-    }
-
     protected void enableBookmarkMode() {
+        this.shouldNavigate = false;
         this.testUrl = getBookmarkUrl();
     }
 
     protected void enableNavigationMode() {
         this.shouldNavigate = true;
-        String classString = this.getClass().toString();
-        if (classString.contains("krad.demo") || classString.contains("krad.library")) {
-            this.testUrl = ITUtil.KRAD_PORTAL;
-        } else if (classString.contains("krad.labs")) {
-            this.testUrl = ITUtil.LABS;
-        } else {
-            this.testUrl = ITUtil.PORTAL;
-        }
+        this.testUrl = getNavigationUrl();
     }
 
-    /**
-     * <p>
-     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
-     * </p>
-     * @param message to display with failure
-     */
-    @Override
-    public void fail(String message) {
-        passed = false;
-        jGrowlSticky(message);
-        Assert.fail(message);
+    protected String getTestUrl() {
+        return testUrl;
     }
 
-    @Override
     protected void navigateInternal() throws Exception {
         if (this.shouldNavigate) {
             navigate();

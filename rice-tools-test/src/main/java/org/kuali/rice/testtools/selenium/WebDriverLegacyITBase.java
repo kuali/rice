@@ -18,6 +18,7 @@ package org.kuali.rice.testtools.selenium;
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -65,7 +66,7 @@ import static org.junit.Assert.assertEquals;
  * <p>Calls to passed() probably don't belong in the methods reused here.</p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
     /**
      * Administration
@@ -405,22 +406,6 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             chromeDriverService.start();
     }
 
-    /**
-     * Navigation tests should return ITUtil.PORTAL.
-     * Bookmark tests should return BOOKMARK_URL.
-     *
-     * @return string
-     */
-    public abstract String getTestUrl();
-
-    /**
-     * SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
-     * @throws Exception
-     */
-    protected void navigateInternal() throws Exception {
-        // just a hook...for now...
-    }
-
     protected void startSession(Method method) throws Exception {
         testMethodName = method.getName(); // TestNG
     }
@@ -524,6 +509,37 @@ public abstract class WebDriverLegacyITBase implements Failable { //implements c
             System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
                     " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
         }
+    }
+
+    @Override
+    protected String getNavigationUrl() {
+        String classString = this.getClass().toString();
+        if (classString.contains("krad.demo")) {
+            return ITUtil.KRAD_PORTAL;
+        } else if (classString.contains("krad.labs")) {
+            return ITUtil.LABS;
+        } else {
+            return ITUtil.PORTAL;
+        }
+    }
+
+
+    /**
+     * <p>
+     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
+     * </p>
+     * @param message to display with failure
+     */
+    @Override
+    public void fail(String message) {
+        passed = false;
+        jGrowlSticky(message);
+        Assert.fail(message);
+    }
+
+    @Override
+    protected void navigate() throws Exception {
+        // No-op for convenience
     }
 
     /**

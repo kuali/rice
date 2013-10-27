@@ -17,13 +17,13 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoValidationDatePatternConstraintsAft extends AutomatedFunctionalTestBase {
+public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraint-View&methodToCall=start

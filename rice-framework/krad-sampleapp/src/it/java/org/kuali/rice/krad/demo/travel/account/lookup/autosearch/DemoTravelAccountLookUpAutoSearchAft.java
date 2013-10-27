@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.demo.travel.account.lookup.autosearch;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoTravelAccountLookUpAutoSearchAft extends AutomatedFunctionalTestBase {
+public abstract class DemoTravelAccountLookUpAutoSearchAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/lookup?methodToCall=search&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&lookupCriteria['number']=a*&readOnlyFields=number&hideReturnLink=true&showMaintenanceLinks=true

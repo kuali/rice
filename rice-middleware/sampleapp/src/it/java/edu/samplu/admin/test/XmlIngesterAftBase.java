@@ -69,13 +69,18 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
         return DIR_TMPL;
     }
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link ITUtil#PORTAL}.  Bookmark Tests should override and return {@link XmlIngesterAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

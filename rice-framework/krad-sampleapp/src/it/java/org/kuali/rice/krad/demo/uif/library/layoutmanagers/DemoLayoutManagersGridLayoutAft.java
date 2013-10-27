@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.layoutmanagers;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLayoutManagersGridLayoutAft extends AutomatedFunctionalTestBase {
+public class DemoLayoutManagersGridLayoutAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-GridLayoutManager-View&methodToCall=start

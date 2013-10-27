@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,13 +37,20 @@ import static org.junit.Assert.*;
  */
 public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
 
+    public static String BOOKMARK_URL = WebDriverUtil.getBaseUrlString()+ "/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start";
+
     @Override
     public void fail(String message) {
         Assert.fail(message);
     }
 
     @Override
-    public String getTestUrl() {
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Override
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 
@@ -134,7 +142,7 @@ public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
     @Test
     public void testDataAttributesPresentInControls () throws Exception{
         assertEquals("Kuali Portal Index", getTitle());
-        open(getBaseUrlString()+ "/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start");
+        open(getBookmarkUrl());
         waitForPageToLoad(); // if this times out make a special one that 50000
         
         // custom suffix to mark  test bean ids

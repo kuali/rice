@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.collections;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import org.openqa.selenium.By;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoCollectionFeaturesColumnCalculationsAft extends AutomatedFunctionalTestBase {
+public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&methodToCall=start

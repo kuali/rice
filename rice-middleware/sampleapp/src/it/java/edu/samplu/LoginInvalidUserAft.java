@@ -16,7 +16,7 @@
 package edu.samplu;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -25,7 +25,7 @@ import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LoginInvalidUserAft extends AutomatedFunctionalTestBase {
+public class LoginInvalidUserAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {

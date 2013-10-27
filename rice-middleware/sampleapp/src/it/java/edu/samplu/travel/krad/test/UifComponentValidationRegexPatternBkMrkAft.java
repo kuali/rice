@@ -23,11 +23,6 @@ import org.junit.Test;
  */
 public class UifComponentValidationRegexPatternBkMrkAft extends UIFComponentValidationRegexPatternSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // lots of selector updates needed.
     @Test
     public void testValidCharacterConstraintBookmark() throws Exception {

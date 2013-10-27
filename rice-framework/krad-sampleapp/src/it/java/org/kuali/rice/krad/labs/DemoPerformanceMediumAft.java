@@ -1,14 +1,14 @@
 package org.kuali.rice.krad.labs;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoPerformanceMediumAft extends AutomatedFunctionalTestBase {
+public class DemoPerformanceMediumAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/labs?viewId=Lab-PerformanceMedium

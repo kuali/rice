@@ -15,13 +15,13 @@
  */
 package edu.samplu.common;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class NavTemplateMethodAftBase extends AutomatedFunctionalTestBase {
+public abstract class NavTemplateMethodAftBase extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
@@ -29,7 +29,7 @@ public abstract class NavTemplateMethodAftBase extends AutomatedFunctionalTestBa
     }
 
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return testUrl;
     }
 

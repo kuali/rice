@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class ServerWarningsBkMrkAft extends ServerWarningsSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // TODO selector updates
     @Test
     public void testServerWarningsBookmark() throws Exception {

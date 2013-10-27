@@ -21,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -34,6 +35,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class DocSearchAft extends WebDriverLegacyITBase {
 
+    public static String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" + WebDriverUtil
+            .getBaseUrlString() + "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+
     String docId;
     String parentName;
 
@@ -43,7 +47,12 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     }
 
     @Override
-    public String getTestUrl(){
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+    @Override
+    protected String getTestUrl(){
         return ITUtil.PORTAL;
     }
     

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.demo.lookup.resultlimit;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoSampleLookUpResultLimitAft extends AutomatedFunctionalTestBase {
+public class DemoSampleLookUpResultLimitAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewResultsLimit&hideReturnLink=true

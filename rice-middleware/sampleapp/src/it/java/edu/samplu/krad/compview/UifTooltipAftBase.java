@@ -33,14 +33,19 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
     
     private static final String NAME_FIELD_1 = "field1";
     private static final String NAME_FIELD_2 = "field2";
-    
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link UifTooltipAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

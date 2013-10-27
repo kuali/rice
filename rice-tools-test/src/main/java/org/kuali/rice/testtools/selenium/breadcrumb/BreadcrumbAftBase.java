@@ -17,12 +17,12 @@ package org.kuali.rice.testtools.selenium.breadcrumb;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-public abstract class BreadcrumbAftBase extends AutomatedFunctionalTestBase {
+public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
 
     /**
      * //div[@class='uif-breadcrumbSiblingContent']//div[@class='uif-inputField']//ul[@class='uif-optionList']

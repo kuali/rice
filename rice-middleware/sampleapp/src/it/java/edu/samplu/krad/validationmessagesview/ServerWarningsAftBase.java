@@ -18,7 +18,6 @@ package edu.samplu.krad.validationmessagesview;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
  * Tests the Component section in Rice.
@@ -32,8 +31,9 @@ public abstract class ServerWarningsAftBase extends WebDriverLegacyITBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
 
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**

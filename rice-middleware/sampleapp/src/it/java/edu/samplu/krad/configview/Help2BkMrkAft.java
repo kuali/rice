@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class Help2BkMrkAft extends Help2STJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // TODO fix
     @Test
     public void testHelp2Bookmark() throws Exception {

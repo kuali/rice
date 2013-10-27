@@ -32,8 +32,9 @@ public abstract class ServerInfoAftBase extends WebDriverLegacyITBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start";
 
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**

@@ -38,8 +38,9 @@ public abstract class TravelAccountLookupAftBase extends WebDriverLegacyITBase {
             + "edu.sampleu.travel.bo.TravelAccount&returnLocation="
             + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
 
-    protected void bookmark() {
-        open(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
     }
 
     /**
@@ -49,7 +50,7 @@ public abstract class TravelAccountLookupAftBase extends WebDriverLegacyITBase {
      * @return
      */
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

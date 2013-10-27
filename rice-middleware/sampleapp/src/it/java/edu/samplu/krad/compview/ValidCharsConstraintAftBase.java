@@ -31,13 +31,18 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4";
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link ValidCharsConstraintAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    
     @Override
-    public String getTestUrl() {
+    protected String getTestUrl() {
         return ITUtil.PORTAL;
     }
 

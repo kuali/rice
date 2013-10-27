@@ -17,14 +17,14 @@ package edu.samplu.travel.krad.test;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CollectionTotallingAft extends AutomatedFunctionalTestBase {
+public class CollectionTotallingAft extends WebDriverLegacyITBase {
 
     /**
      * "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";

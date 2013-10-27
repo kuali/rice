@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.demo.lookupviews.lookup.conditionalcriteria;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpConditionalCriteriaAft extends AutomatedFunctionalTestBase {
+public class DemoLookUpConditionalCriteriaAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewConditionalCriteria&hideReturnLink=true

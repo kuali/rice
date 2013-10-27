@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.controls;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoControlSelectAft extends AutomatedFunctionalTestBase {
+public class DemoControlSelectAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SelectControl-View&methodToCall=start

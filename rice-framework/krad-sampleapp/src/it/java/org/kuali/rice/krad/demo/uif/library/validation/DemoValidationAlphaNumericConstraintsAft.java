@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.demo.uif.library.validation;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoValidationAlphaNumericConstraintsAft extends AutomatedFunctionalTestBase {
+public class DemoValidationAlphaNumericConstraintsAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&methodToCall=start

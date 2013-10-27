@@ -16,7 +16,7 @@
 package edu.samplu.admin.test;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -25,7 +25,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentAft extends AutomatedFunctionalTestBase {
+public class ComponentAft extends WebDriverLegacyITBase {
 
     String docId;
 
@@ -44,7 +44,7 @@ public class ComponentAft extends AutomatedFunctionalTestBase {
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
 
     @Override
-    public String getBookmarkUrl() {
+    protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 

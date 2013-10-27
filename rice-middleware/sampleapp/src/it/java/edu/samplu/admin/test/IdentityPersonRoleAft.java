@@ -30,7 +30,7 @@ import org.openqa.selenium.By;
 public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
 
     public static final String EDIT_URL = WebDriverUtil.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + ITUtil.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
-    public static final String TEST_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtil.getBaseUrlString() +
+    public static final String BOOKARM_URL = ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtil.getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             ITUtil.PORTAL_URL + "&hideReturnLink=true";
     private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "176"));
@@ -45,8 +45,8 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
     }
 
     @Override
-    public String getTestUrl() {
-        return TEST_URL;
+    protected String getBookmarkUrl() {
+        return BOOKARM_URL;
     }
 
     @Test

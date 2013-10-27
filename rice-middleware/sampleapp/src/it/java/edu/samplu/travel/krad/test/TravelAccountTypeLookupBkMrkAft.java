@@ -23,11 +23,6 @@ import org.junit.Test;
  */
 public class TravelAccountTypeLookupBkMrkAft extends TravelAccountTypeLookupSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // link removed
     @Test
     public void testTravelAccountTypeLookupBookmark() throws Exception {

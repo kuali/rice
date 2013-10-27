@@ -17,13 +17,13 @@ package org.kuali.rice.krad.demo.uif.library.collections;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 ;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoCollectionFeaturesAddLineAft extends AutomatedFunctionalTestBase {
+public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-CollectionAddLine-View

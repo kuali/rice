@@ -16,12 +16,12 @@
 package org.kuali.rice.krad.demo.uif.library.containers;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoContainerTabGroupAft extends AutomatedFunctionalTestBase {
+public class DemoContainerTabGroupAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-TabGroup-View&methodToCall=start

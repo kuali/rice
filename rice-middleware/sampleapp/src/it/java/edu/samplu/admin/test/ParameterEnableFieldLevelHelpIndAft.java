@@ -16,7 +16,7 @@
 package edu.samplu.admin.test;
 
 import org.kuali.rice.testtools.selenium.ITUtil;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParameterEnableFieldLevelHelpIndAft extends AutomatedFunctionalTestBase {
+public class ParameterEnableFieldLevelHelpIndAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {

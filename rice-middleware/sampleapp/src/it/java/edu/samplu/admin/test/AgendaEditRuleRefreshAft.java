@@ -17,7 +17,7 @@
 package edu.samplu.admin.test;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -25,7 +25,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
  * test that repeated ajax refreshes work
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaEditRuleRefreshAft extends AutomatedFunctionalTestBase {
+public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
 
     public static final String BOOKMARK_URL =ITUtil.PORTAL+"?channelTitle=Agenda%20Lookup&channelUrl="
             + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD

@@ -17,12 +17,12 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoClientResponsivenessConditionalRefreshAft extends AutomatedFunctionalTestBase {
+public class DemoClientResponsivenessConditionalRefreshAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-ConditionalRefresh-View&methodToCall=start

@@ -24,11 +24,6 @@ import org.junit.Test;
  */
 public class FiscalOfficerInfoMaintenanceBkMrkAft extends FiscalOfficerInfoMaintenanceSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Ignore // link removed
     @Test
     public void testFiscalOfficerInfoMaintenanceBookmark() throws Exception {

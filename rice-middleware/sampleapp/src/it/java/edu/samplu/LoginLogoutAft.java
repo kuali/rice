@@ -16,7 +16,7 @@
 package edu.samplu;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.ITUtil;
 
 /**
@@ -24,7 +24,7 @@ import org.kuali.rice.testtools.selenium.ITUtil;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LoginLogoutAft extends AutomatedFunctionalTestBase {
+public class LoginLogoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {

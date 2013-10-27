@@ -22,11 +22,6 @@ import org.junit.Test;
  */
 public class DirtyFieldsCheckBkMrkAft extends DirtyFieldsCheckSTJUnitBase {
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     @Test
     public void testDirtyFieldsCheckBookmark() throws Exception {
         testDirtyFieldsCheckBookmark(this);

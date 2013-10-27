@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.krad.demo.uif.library.elements;
 
-import static org.junit.Assert.assertTrue;
-
+import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoElementsActionAft extends WebDriverLegacyITBase {
+public class DemoElementsActionAft extends DemoLibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start
@@ -34,7 +33,7 @@ public class DemoElementsActionAft extends WebDriverLegacyITBase {
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start";
 
     @Override
-    protected String getBookmarkUrl() {
+    public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
@@ -109,24 +108,81 @@ public class DemoElementsActionAft extends WebDriverLegacyITBase {
         driver.findElement(By.partialLinkText("Action Link with right image")).findElement(By.className(
                 "rightActionImage"));
     }
-    
-    @Test
-    public void testLibraryElementsActionBookmark() throws Exception {
+
+    protected void testActionButton() throws Exception {
+        waitAndClickByLinkText("Buttons");
+        waitForElementPresentByClassName("prettyprint");
+        assertTextPresent("Buttons");
+        assertTextPresent("Action Field buttons");
+
+        waitAndClickButtonByText("button");
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        waitAndClickButtonByText("Image BOTTOM");
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        waitAndClickById("ST-DemoButtonImageTop");
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
+        driver.findElement(By.id("ST-DemoButtonImageLeft")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.id("ST-DemoButtonImageRight")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.id("ST-DemoButtonImageOnly")).click();
+        assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
+        driver.switchTo().alert().accept();
+
+        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]/preceding-sibling::button/img"));
+        driver.findElement(By.xpath("//button/img[contains(@alt,'Image Only button')]"));
+
+        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
+    }
+
+    private void testAllActionTabs() throws Exception {
         testActionDefault();
         testActionPresubmit();
         testActionSuccessCallback();
         testActionValidation();
         testActionImages();
+        testActionButton();
+    }
+
+    @Test
+    public void testActionButtonAndImagesBookmark() throws Exception {
+        testActionImages();
+        testActionButton();
         passed();
     }
 
     @Test
-    public void testLibraryElementsActionNav() throws Exception {
-        testActionDefault();
-        testActionPresubmit();
-        testActionSuccessCallback();
-        testActionValidation();
-        testActionImages();
+    public void testActionButtonBookmark() throws Exception {
+        testActionButton();
         passed();
-    }  
+    }
+
+    @Test
+    public void testActionButtonNav() throws Exception {
+        testActionButton();
+        passed();
+    }
+
+    @Test
+    public void testActionBookmark() throws Exception {
+        testAllActionTabs();
+        passed();
+    }
+
+    @Test
+    public void testActionNav() throws Exception {
+        testAllActionTabs();
+        passed();
+    }
 }

@@ -16,17 +16,16 @@
 package org.kuali.rice.kns.util;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.MessageMap;
-import org.springframework.util.AutoPopulatingList;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -84,7 +83,7 @@ public class ErrorContainer implements Serializable {
     private boolean hasFormatterError() {
     	if (errorMap.getErrorCount()>0) {
             for (String errorKey : errorMap.getAllPropertiesWithErrors()) {
-            	AutoPopulatingList errorValues = errorMap.getMessages(errorKey);
+            	List errorValues = errorMap.getMessages(errorKey);
             	for (ErrorMessage errorMessage : (List<ErrorMessage>)errorValues) {
                     if (errorMessage.getErrorKey().equals(RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR)) {
                         return true;

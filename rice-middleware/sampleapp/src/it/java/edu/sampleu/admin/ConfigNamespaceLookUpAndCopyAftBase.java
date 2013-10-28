@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -29,9 +29,9 @@ public abstract class ConfigNamespaceLookUpAndCopyAftBase extends AdminTmplMthdA
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */   
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
-            ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
+            AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     /**
      * {@inheritDoc}
@@ -58,8 +58,10 @@ public abstract class ConfigNamespaceLookUpAndCopyAftBase extends AdminTmplMthdA
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10765 Namespace 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.namespace.NamespaceBo");
         waitAndClickByLinkText("copy");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy" + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
-        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS2" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code","KR-SYS2" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","");
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 2");
         waitAndTypeByName("document.newMaintainableObject.applicationId","");

@@ -16,7 +16,7 @@
 package edu.sampleu.krad.validationmessagesview;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -37,14 +37,14 @@ public abstract class ServerWarningsAftBase extends WebDriverLegacyITBase {
     }
 
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
      * Bookmark Tests should override and return {@link ServerWarningsAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     protected void navigation() throws InterruptedException {

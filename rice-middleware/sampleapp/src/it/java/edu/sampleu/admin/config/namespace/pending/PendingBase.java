@@ -2,7 +2,7 @@ package edu.sampleu.admin.config.namespace.pending;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -110,7 +110,8 @@ public abstract class PendingBase extends AdminTmplMthdAftNavBase {
     protected void fillInNamespaceOverview(String descBase, String codeNameBase, String nameBase, String appId) throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME, descBase + " " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName(DOCUMENT_DESCRIPTION_NAME, descBase + " " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
         String randomFour = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName(DOCUMENT_CODE_NAME, codeNameBase + randomFour);
         waitAndTypeByName(DOCUMENT_NAME, nameBase + randomFour);

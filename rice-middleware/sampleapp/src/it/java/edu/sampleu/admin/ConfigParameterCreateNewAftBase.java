@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -29,9 +29,9 @@ public abstract class ConfigParameterCreateNewAftBase extends AdminTmplMthdAftNa
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Parameter&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.parameter.ParameterBo&docFormKey=88888888&returnLocation="
-            +ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+            + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     /**
      * {@inheritDoc}
@@ -56,10 +56,12 @@ public abstract class ConfigParameterCreateNewAftBase extends AdminTmplMthdAftNa
     public void testConfigParameterCreateNew() throws Exception {
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter create new " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
         waitAndTypeByName("document.newMaintainableObject.componentCode","ActionList");
-        waitAndTypeByName("document.newMaintainableObject.name","Test_Action_List_Parameter_" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.name","Test_Action_List_Parameter_" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.description","Test Action List Parameter");
         selectByName("document.newMaintainableObject.parameterTypeCode","Config");
         waitAndClickByName("document.newMaintainableObject.evaluationOperatorCode");

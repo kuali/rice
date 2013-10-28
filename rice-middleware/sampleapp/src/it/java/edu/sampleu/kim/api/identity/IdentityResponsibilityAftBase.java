@@ -17,7 +17,7 @@ package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -30,10 +30,10 @@ public abstract class IdentityResponsibilityAftBase extends AdminTmplMthdAftNavB
      * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Responsibility&channelUrl=" 
-            + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD +
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Responsibility&channelUrl="
+            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo&docFormKey=88888888&returnLocation=" +
-            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK ;
+            AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK ;
 
     /**
      * {@inheritDoc}

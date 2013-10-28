@@ -16,8 +16,8 @@
 package edu.sampleu;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
@@ -29,7 +29,7 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     @Override
@@ -59,8 +59,8 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
     public void testInvalidUserName() throws InterruptedException {
         try {
             System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
-            WebDriverUtil.loginKradOrKns(driver, ITUtil.DTS_TWO, this);
-            fail("Expected Invalid Login exception with user " + ITUtil.DTS_TWO);
+            WebDriverUtil.loginKradOrKns(driver, AutomatedFunctionalTestUtils.DTS_TWO, this);
+            fail("Expected Invalid Login exception with user " + AutomatedFunctionalTestUtils.DTS_TWO);
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("Invalid"));
             passed();

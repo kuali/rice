@@ -37,7 +37,7 @@ import java.util.Calendar;
  * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ITUtil {
+public class AutomatedFunctionalTestUtils {
 
     /**
      * //div[@class='error']"
@@ -56,7 +56,7 @@ public class ITUtil {
 
     /**
      * Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase()
-     * @Deprecated {@link ITUtil#createUniqueDtsPlusTwoRandomChars()}
+     * @Deprecated {@link AutomatedFunctionalTestUtils#createUniqueDtsPlusTwoRandomChars()}
      */
     public static final String DTS_TWO = Calendar.getInstance().getTimeInMillis() + "" + RandomStringUtils.randomAlphabetic(2).toLowerCase();
 
@@ -108,7 +108,7 @@ public class ITUtil {
     /**
      * WebDriverUtil.getBaseUrlString() + ITUtil.PORTAL
      */
-    public static final String PORTAL_URL =  WebDriverUtil.getBaseUrlString() + ITUtil.PORTAL;
+    public static final String PORTAL_URL =  WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.PORTAL;
 
     /**
      * URLEncoder.encode(PORTAL_URL)
@@ -157,7 +157,7 @@ public class ITUtil {
      * @return
      */
     public static String createUniqueDtsPlusTwoRandomCharsNot9Digits() {
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         dtsTwo = dtsTwo.substring(0, 5) + dtsTwo.substring(13, 14) + dtsTwo.substring(6, 12);
         return dtsTwo;
     }

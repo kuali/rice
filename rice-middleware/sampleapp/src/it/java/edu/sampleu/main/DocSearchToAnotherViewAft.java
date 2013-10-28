@@ -2,7 +2,7 @@ package edu.sampleu.main;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.Alert;
@@ -22,13 +22,13 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
-        return ITUtil.PORTAL + "?channelTitle=Document%20Search&channelUrl=" + WebDriverUtil.getBaseUrlString()
-                + "/kew/DocumentSearch.do?docFormKey=88888888&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+        return AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Document%20Search&channelUrl=" + WebDriverUtil.getBaseUrlString()
+                + "/kew/DocumentSearch.do?docFormKey=88888888&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
     }
 
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
 	@Test

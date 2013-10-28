@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -29,9 +29,9 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */   
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
-            ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
+            AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     /**
      * {@inheritDoc}
@@ -57,8 +57,10 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
     {
         selectFrameIframePortlet();
         waitAndClickByXpath(CREATE_NEW_XPATH);        
-        waitAndTypeByName("document.documentHeader.documentDescription", "Test description of Namespace create new " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
-        waitAndTypeByName("document.newMaintainableObject.code", "KR-SYS3" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.documentHeader.documentDescription", "Test description of Namespace create new " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.newMaintainableObject.code", "KR-SYS3" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 3");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
         waitAndClickByName("methodToCall.route");

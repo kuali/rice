@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -28,7 +28,7 @@ public abstract class ClearIndividualCashesAftBase extends AdminTmplMthdAftNavBa
      * ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+WebDriverUtil.getBaseUrlString()+
      * "/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start"+    
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start";
          
     /**

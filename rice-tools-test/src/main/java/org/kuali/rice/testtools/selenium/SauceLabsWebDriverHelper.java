@@ -310,7 +310,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
         capabilities.setCapability("platform", System.getProperty(SAUCE_PLATFORM_PROPERTY, Platform.UNIX.toString()).replaceAll("_", " "));
         capabilities.setCapability("idle-timeout", Integer.parseInt(System.getProperty(SAUCE_IDLE_TIMEOUT_SECONDS_PROPERTY, "180")));
         capabilities.setCapability("max-duration", Integer.parseInt(System.getProperty(SAUCE_MAX_DURATION_SECONDS_PROPERTY, "480")));
-        capabilities.setCapability("name",  className + "." + testName + "-" + ITUtil.DTS);
+        capabilities.setCapability("name",  className + "." + testName + "-" + AutomatedFunctionalTestUtils.DTS);
         capabilities.setCapability("disable-popup-handler", System.getProperty(SAUCE_POPUP_PROPERTY, "false"));
         capabilities.setCapability("public", System.getProperty(SAUCE_SHARE_PROPERTY, "public restricted"));
 
@@ -388,7 +388,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 + System.getProperty(SAUCE_VERSION_PROPERTY) + "-"
                 + System.getProperty(WebDriverUtil.REMOTE_PUBLIC_USER_PROPERTY, "admin") + "-"
                 + System.getProperty(SAUCE_BUILD_PROPERTY, "unknown_build") + "-"
-                + ITUtil.DTS + "-"
+                + AutomatedFunctionalTestUtils.DTS + "-"
                 + resource;
     }
 

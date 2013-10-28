@@ -16,7 +16,7 @@
 package edu.sampleu.travel;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -29,7 +29,7 @@ public abstract class TravelAccountTypeLookupAftBase extends WebDriverLegacyITBa
      * /portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl=" +WebDriverUtil.getBaseUrlString()+ /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page3
      */
     public static final String BOOKMARK_URL = "/portal.do?channelTitle=Travel%20Account%20Type%20Lookup&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccountType";
 
     /**
@@ -46,13 +46,13 @@ public abstract class TravelAccountTypeLookupAftBase extends WebDriverLegacyITBa
     }
 
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     protected void navigation() throws Exception {

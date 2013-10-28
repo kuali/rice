@@ -17,8 +17,8 @@ package edu.sampleu;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.ITUtil;
 
 public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
 
@@ -34,7 +34,7 @@ public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     @Override

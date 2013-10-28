@@ -16,7 +16,7 @@
 package edu.sampleu.main;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -31,11 +31,11 @@ public class TermSpecificationLookUpAftBase extends MainTmplMthdSTNavBase{
      *   + ITUtil.SHOW_MAINTENANCE_LINKS
      *   + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Term%20Specification%20Lookup&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Term%20Specification%20Lookup&channelUrl="
+            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.krms.impl.repository.TermSpecificationBo"
-            + ITUtil.SHOW_MAINTENANCE_LINKS
-            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+            + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS
+            + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}
      * Term Specification Lookup

@@ -380,7 +380,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected WebDriver driver;
     protected String user = "admin";
     protected int waitSeconds;
-    protected String uiFramework = ITUtil.REMOTE_UIF_KNS;   // default to KNS
+    protected String uiFramework = AutomatedFunctionalTestUtils.REMOTE_UIF_KNS;   // default to KNS
 
     public @Rule
     TestName testName = new TestName();
@@ -451,7 +451,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      */
     private String kulrice9804() {
         String testUrl = getTestUrl();
-        if (testUrl.contains(ITUtil.HIDE_RETURN_LINK) &&
+        if (testUrl.contains(AutomatedFunctionalTestUtils.HIDE_RETURN_LINK) &&
             !testUrl.contains("&showMaintenanceLinks=true")) {
             testUrl += "&showMaintenanceLinks=true";
         }
@@ -508,11 +508,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected String getNavigationUrl() {
         String classString = this.getClass().toString();
         if (classString.contains("krad.demo")) {
-            return ITUtil.KRAD_PORTAL;
+            return AutomatedFunctionalTestUtils.KRAD_PORTAL;
         } else if (classString.contains("krad.labs")) {
-            return ITUtil.LABS;
+            return AutomatedFunctionalTestUtils.LABS;
         } else {
-            return ITUtil.PORTAL;
+            return AutomatedFunctionalTestUtils.PORTAL;
         }
     }
 
@@ -831,7 +831,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     private void blanketApproveAssert() throws InterruptedException {
         checkForDocError();
-        ITUtil.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this, "Blanket Approve failure");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this,
+                "Blanket Approve failure");
         waitAndClickDocSearch();
         waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
@@ -840,7 +841,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -854,7 +855,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @throws InterruptedException
      */
     protected void blanketApproveTest() throws InterruptedException {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -910,14 +911,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected String extractErrorText() {
-        String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
-        errorText = ITUtil.blanketApprovalCleanUpErrorText(errorText);
-        if (driver.findElements(By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-            errorText = ITUtil.blanketApprovalCleanUpErrorText(driver.findElement( // don't highlight
-                    By.xpath(ITUtil.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+        String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        errorText = AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(errorText);
+        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+            errorText = AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(driver.findElement(
+                    // don't highlight
+                    By.xpath(AutomatedFunctionalTestUtils.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
         }
         if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
-            errorText = errorText + ITUtil.blanketApprovalCleanUpErrorText(driver.findElement(By.xpath(DIV_LEFT_ERRMSG)).getText()); // don't highlight
+            errorText = errorText + AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(driver.findElement(
+                    By.xpath(DIV_LEFT_ERRMSG)).getText()); // don't highlight
         }
         return errorText;
     }
@@ -927,8 +930,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @return
      */
     public boolean hasDocError() {
-        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 return true;
             }
@@ -942,8 +945,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @return
      */
     public boolean hasDocError(String errorTextToMatch) {
-        if (driver.findElements(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(ITUtil.DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 WebElement errorDiv = driver.findElement(By.xpath("//div[@class='left-errmsg']/div[2]/div")); // don't highlight
                 if (errorDiv != null) {
@@ -964,11 +967,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected void checkForIncidentReport(String locator, String message) {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, this, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, this, message);
     }
 
     protected void checkForIncidentReport(String locator, Failable failable, String message) {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
     }
 
     protected void clearText(By by) throws InterruptedException {
@@ -1000,8 +1003,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected String configNameSpaceBlanketApprove() throws Exception {
         String docId = waitForDocId();
-        String dtsPlusTwoChars = ITUtil.createUniqueDtsPlusTwoRandomChars();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        String dtsPlusTwoChars = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Namespace " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
         assertBlanketApproveButtonsPresent();
         waitAndTypeByXpath(DOC_CODE_XPATH, "VTN" + dtsPlusTwoChars);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
@@ -1644,7 +1648,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
         selectOptionByName("document.groupNamespace", "KR-IDM");
         waitForPageToLoad();
-        String groupName = "BrownGroup " + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.groupName", groupName);
         checkByName("document.active");
         waitAndClickByXpath(SAVE_XPATH_2);
@@ -1730,7 +1734,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickByXpath(componentLookUp);
         waitAndClickSearch();
         waitAndClickReturnValue();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         String parameterName = "ValidationTestParameter" + dtsTwo;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
@@ -1780,7 +1784,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickSearch();
         waitForPageToLoad();
         waitAndClickReturnValue();
-        String docTypeName = "TestDocType" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String docTypeName = "TestDocType" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
@@ -1814,7 +1818,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        parameterName = "TestIndicator" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndTypeByName("document.newMaintainableObject.value", "Y");
         waitAndTypeByName("document.newMaintainableObject.description", "for testing");
@@ -1848,7 +1852,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter Type");
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
-        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        parameterType = "testing " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1889,7 +1893,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
-        parameterName = "TestIndicator" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        parameterName = "TestIndicator" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1920,7 +1924,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         parameterCode = RandomStringUtils.randomAlphabetic(4).toLowerCase();
         waitAndTypeByName("document.newMaintainableObject.code", parameterCode);
         clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        parameterType = "testing " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -1976,7 +1980,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         docId = waitForDocId();
         waitAndTypeByName("document.documentHeader.documentDescription", "Editing Test Parameter");
         clearTextByName("document.newMaintainableObject.name");
-        parameterType = "testing " + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        parameterType = "testing " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
@@ -2106,7 +2110,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         selectFrameIframePortlet();
         waitAndCreateNew();                
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.groupNamespace']", LABEL_KUALI_KUALI_SYSTEMS);
@@ -2125,7 +2129,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         selectFrameIframePortlet();
         waitAndCreateNew();        
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
                 "Validation Test Permission " + dtsTwo);
         assertBlanketApproveButtonsPresent();
@@ -2167,7 +2171,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", LABEL_KUALI_KUALI_SYSTEMS);
@@ -2187,7 +2191,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");        
         String docId = waitForDocId();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
         assertBlanketApproveButtonsPresent();
         selectByXpath("//select[@id='document.roleNamespace']", LABEL_KUALI_KUALI_SYSTEMS);
@@ -2211,7 +2215,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
         assertBlanketApproveButtonsPresent();
         waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
         selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
         blanketApproveTest();
@@ -2224,7 +2229,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        String countryName = "Validation Test Country " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String countryName = "Validation Test Country " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, countryName);
         waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
@@ -2259,7 +2265,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndTypeByName("code", "IN");
         waitAndClickSearch();
         waitAndClickReturnValue();
-        String countyName = "Validation Test County" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String countyName = "Validation Test County" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
         blanketApproveTest();
@@ -2389,7 +2395,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
         new Select(findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
         findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + ITUtil.DTS);
+        findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + AutomatedFunctionalTestUtils.DTS);
 
         jGrowl("Add Member kr");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
@@ -2486,7 +2492,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
         selectOptionByName("document.newMaintainableObject.templateId", "36");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-SYS");
-        permissionName = "removeme" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        permissionName = "removeme" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.name", permissionName);
         waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
         checkByName("document.newMaintainableObject.active");
@@ -2557,7 +2563,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
         
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
-        personName = "cbrown" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        personName = "cbrown" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.principalName", personName);
         waitAndClickSave();
         waitForPageToLoad();
@@ -2926,7 +2932,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
-        String random = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitForPageToLoad();
         Thread.sleep(3000);
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
@@ -3547,7 +3553,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        String dtsTwo = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + dtsTwo);
         waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(1));
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);
@@ -3785,7 +3791,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrameIframePortlet();
         checkForIncidentReport("testVerifyAddDeleteFiscalOfficerLegacy");
-        waitAndTypeByName("document.documentHeader.documentDescription", ITUtil.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.documentHeader.documentDescription", AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
@@ -3980,7 +3987,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void testVerifySave() throws Exception {
         selectFrameIframePortlet();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + ITUtil.DTS);
+        waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + AutomatedFunctionalTestUtils.DTS);
         waitAndClickByName("document.newMaintainableObject.dataObject.number");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
         waitAndTypeByName("document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
@@ -4007,7 +4014,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
-        String dts = ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String dts = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + dts);
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -4389,7 +4396,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
             JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);
             failableFail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
-                    + "\n" + ITUtil.deLinespace(driver.getPageSource()));
+                    + "\n" + AutomatedFunctionalTestUtils.deLinespace(driver.getPageSource()));
         }
     }
 
@@ -4723,7 +4730,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @return
      */
     protected boolean isKrad(){
-        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(getUiFramework()));
+        return (AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD.equalsIgnoreCase(getUiFramework()));
     }
 
     protected WebElement getElementByAttribute(String attributeName){

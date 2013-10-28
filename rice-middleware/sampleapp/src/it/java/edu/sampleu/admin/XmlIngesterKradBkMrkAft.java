@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 
 /**
  * JUnit implementation of XMLIngesterSTJUnitBase that navigates through the UI to the page under test.  In the future
@@ -31,7 +31,7 @@ public class XmlIngesterKradBkMrkAft extends XmlIngesterSTJUnitBase {
 
     public XmlIngesterKradBkMrkAft(){
         super();
-        this.setUiFramework(ITUtil.REMOTE_UIF_KRAD);
+        this.setUiFramework(AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD);
     }
 
     @Override

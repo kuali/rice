@@ -18,7 +18,7 @@ package edu.sampleu.admin;
 
 import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
@@ -42,7 +42,7 @@ public class DocumentSearchUrlParametersAft extends WebDriverITBase {
 
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     private static final String DOCUMENT_TYPE_NAME = "KualiNotification";

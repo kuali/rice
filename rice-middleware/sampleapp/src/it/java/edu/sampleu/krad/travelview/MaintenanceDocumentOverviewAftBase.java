@@ -16,7 +16,7 @@
 package edu.sampleu.krad.travelview;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -29,9 +29,9 @@ public abstract class MaintenanceDocumentOverviewAftBase extends KradTmplMthdSTN
      * "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtil
             .getBaseUrlString() +"/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
-            ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+            AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
     /**
      * {@inheritDoc}
      * Travel Account Maintenance (New)

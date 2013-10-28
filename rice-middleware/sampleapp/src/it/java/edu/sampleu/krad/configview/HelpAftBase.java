@@ -16,7 +16,7 @@
 package edu.sampleu.krad.configview;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -35,13 +35,13 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
     }
 
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link HelpAftBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link HelpAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     protected void navigation() throws Exception {

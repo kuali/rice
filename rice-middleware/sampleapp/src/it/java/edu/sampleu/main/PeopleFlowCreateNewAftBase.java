@@ -16,7 +16,7 @@
 package edu.sampleu.main;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -30,10 +30,10 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
      *  + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
      *  + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=People%20Flow&channelUrl="
+            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
-            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
+            + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
     /**
      * {@inheritDoc}
      * People Flow

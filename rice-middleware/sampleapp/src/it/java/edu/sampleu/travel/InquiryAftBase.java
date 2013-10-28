@@ -18,7 +18,7 @@ package edu.sampleu.travel;
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Assert;
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.Alert;
@@ -38,11 +38,11 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
      * +"edu.sampleu.travel.bo.TravelAccount&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL
             + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccount"
-            + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS;
+            + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
 
     /**
      * //*[contains(button,"Search")]/button
@@ -60,13 +60,13 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
     public static final String FANCYBOX_IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */    
     @Override
     public String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     protected void navigation() throws Exception {

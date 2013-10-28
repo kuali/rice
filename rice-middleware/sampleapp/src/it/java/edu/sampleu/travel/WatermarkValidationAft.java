@@ -16,7 +16,7 @@
 package edu.sampleu.travel;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverITBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
 public class WatermarkValidationAft extends WebDriverITBase {
 	@Override
 	public String getTestUrl() {
-		return ITUtil.PORTAL;
+		return AutomatedFunctionalTestUtils.PORTAL;
 	}
 
 	@Test

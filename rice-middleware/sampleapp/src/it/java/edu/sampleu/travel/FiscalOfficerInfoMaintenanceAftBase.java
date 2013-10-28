@@ -16,7 +16,7 @@
 package edu.sampleu.travel;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -34,11 +34,11 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
      * + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL
             + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
             + WebDriverUtil.getBaseUrlString()
             + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
-            + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+            + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     @Override
     protected String getBookmarkUrl() {
@@ -46,14 +46,14 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
     }
 
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.ITUtil#PORTAL}.
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
      * Bookmark Tests should override and return {@link edu.sampleu.travel.krad.test.CollectionTotallingAbstractSmokeTestBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     protected void navigation() throws InterruptedException {

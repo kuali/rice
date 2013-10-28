@@ -18,7 +18,7 @@ package edu.sampleu.admin;
 import edu.sampleu.common.FreemarkerAftBase;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 
@@ -39,7 +39,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     /**
      * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
             + WebDriverUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
 
     // File generation
@@ -75,13 +75,13 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     }
 
     /**
-     * Nav tests start at {@link ITUtil#PORTAL}.  Bookmark Tests should override and return {@link XmlIngesterAftBase#BOOKMARK_URL}
+     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link XmlIngesterAftBase#BOOKMARK_URL}
      * {@inheritDoc}
      * @return
      */
     @Override
     protected String getTestUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     /**
@@ -166,7 +166,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
             Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
             if(props.get("userIncludeDTSinPrefix") != null
                     && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
-                props.setProperty("userPrefix", "" + props.get("userPrefix") + ITUtil.DTS);
+                props.setProperty("userPrefix", "" + props.get("userPrefix") + AutomatedFunctionalTestUtils.DTS);
             }
             PropertiesUtils.systemPropertiesOverride(props, "XMLIngester");
 

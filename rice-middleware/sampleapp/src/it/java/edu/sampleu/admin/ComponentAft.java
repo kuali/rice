@@ -16,8 +16,8 @@
 package edu.sampleu.admin;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.ITUtil;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -39,9 +39,9 @@ public class ComponentAft extends WebDriverLegacyITBase {
      "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
      ITUtil.PORTAL_URL + "&hideReturnLink=true";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil
             .getBaseUrlString() +"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
-            ITUtil.PORTAL_URL + "&hideReturnLink=true";
+            AutomatedFunctionalTestUtils.PORTAL_URL + "&hideReturnLink=true";
 
     @Override
     protected String getBookmarkUrl() {
@@ -67,8 +67,8 @@ public class ComponentAft extends WebDriverLegacyITBase {
     protected void testComponentParameter() throws Exception {
         //Create New
         waitAndCreateNew();
-        String componentName = "TestName" + ITUtil.createUniqueDtsPlusTwoRandomChars();
-        String componentCode = "TestCode" + ITUtil.createUniqueDtsPlusTwoRandomChars();
+        String componentName = "TestName" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String componentCode = "TestCode" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         docId = testCreateNewComponent(componentName, componentCode, FOR_TEST_MESSAGE);
 
         //Lookup

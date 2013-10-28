@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -28,7 +28,7 @@ public abstract class ReviewAllServicesAndWsdlAft extends AdminTmplMthdAftNavBas
      * ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+WebDriverUtil.getBaseUrlString()+
      *  "/ksb/ServiceRegistry.do";
      */
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Service%20Registry&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/ksb/ServiceRegistry.do";
     
     /**

@@ -26,7 +26,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.openqa.selenium.By;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -102,7 +102,7 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
             Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
             if(props.get("userIncludeDTSinPrefix") != null
                     && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
-                props.setProperty("userPrefix", "" + props.get("userPrefix") + ITUtil.DTS);
+                props.setProperty("userPrefix", "" + props.get("userPrefix") + AutomatedFunctionalTestUtils.DTS);
             }
             systemPropertiesOverride(props);
 

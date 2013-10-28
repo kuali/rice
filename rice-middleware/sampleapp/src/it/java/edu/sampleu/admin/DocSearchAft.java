@@ -19,7 +19,7 @@ package edu.sampleu.admin;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
@@ -35,8 +35,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class DocSearchAft extends WebDriverLegacyITBase {
 
-    public static String BOOKMARK_URL = ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" + WebDriverUtil
-            .getBaseUrlString() + "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
+    public static String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Document%20Type&channelUrl=" + WebDriverUtil
+            .getBaseUrlString() + "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     String docId;
     String parentName;
@@ -53,7 +53,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getTestUrl(){
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
     
     public void createAndSaveDoc() throws Exception{
@@ -78,7 +78,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForPageToLoad();
         parentName= driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[3]")).getText();
         waitAndClickByLinkText("return value");
-        String docTypeName = "TestDocType " + ITUtil.DTS;
+        String docTypeName = "TestDocType " + AutomatedFunctionalTestUtils.DTS;
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']", "${kr.url}/maintenance.do?methodToCall=docHandler");

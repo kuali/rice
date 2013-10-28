@@ -17,8 +17,8 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.ITUtil;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,7 +65,7 @@ public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends We
     private void setParameter(String namespaceCode, String componentCode, String parameterName, String parameterValue)
             throws Exception {
 
-        driver.get(ITUtil.LABS_URL);
+        driver.get(AutomatedFunctionalTestUtils.LABS_URL);
         waitAndClickByLinkText("Parameter Updater");
 
         waitAndTypeByName("namespaceCode", namespaceCode);

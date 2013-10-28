@@ -337,8 +337,8 @@ public class WebDriverUtil {
         }
 
         if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {
-            ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test="
-                    + poolParamTest + "&user=" + poolParamUser));
+            AutomatedFunctionalTestUtils.getHTML(AutomatedFunctionalTestUtils.prettyHttp(System.getProperty(
+                    REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + poolParamTest + "&user=" + poolParamUser));
         }
     }
 
@@ -432,7 +432,7 @@ public class WebDriverUtil {
      * @param message to display and be matched against in the event of a failure
      */
     public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable, String message) {
-        ITUtil.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
     }
 
     /**
@@ -507,8 +507,8 @@ public class WebDriverUtil {
         if (System.getProperty(REMOTE_PUBLIC_USER_PROPERTY) != null) {
             return System.getProperty(REMOTE_PUBLIC_USER_PROPERTY);
         } else if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) { // deprecated
-            String userResponse = ITUtil.getHTML(ITUtil.prettyHttp(System.getProperty(
-                    REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
+            String userResponse = AutomatedFunctionalTestUtils.getHTML(AutomatedFunctionalTestUtils.prettyHttp(
+                    System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) + "?test=" + testParam.trim()));
             return userResponse.substring(userResponse.lastIndexOf(":") + 2, userResponse.lastIndexOf("\""));
         }
 
@@ -638,7 +638,7 @@ public class WebDriverUtil {
         if (baseUrl == null) {
             baseUrl = DEFAULT_BASE_URL;
         }
-        baseUrl = ITUtil.prettyHttp(baseUrl);
+        baseUrl = AutomatedFunctionalTestUtils.prettyHttp(baseUrl);
         return baseUrl;
     }
 
@@ -670,7 +670,7 @@ public class WebDriverUtil {
         if (hubUrl == null) {
             hubUrl = HUB_URL_PROPERTY;
         }
-        hubUrl = ITUtil.prettyHttp(hubUrl);
+        hubUrl = AutomatedFunctionalTestUtils.prettyHttp(hubUrl);
         if (!hubUrl.endsWith("/wd/hub")) {
             hubUrl = hubUrl + "/wd/hub";
         }
@@ -782,10 +782,10 @@ public class WebDriverUtil {
         // check system property, default to KRAD
         String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
         if (loginUif == null) {
-            loginUif = ITUtil.REMOTE_UIF_KRAD;
+            loginUif = AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD;
         }
 
-        return (ITUtil.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
+        return (AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
     }
 
     /**
@@ -857,8 +857,9 @@ public class WebDriverUtil {
             driver.findElement(By.id("Rice-LoginButton")).click();
             Thread.sleep(1000);
             String contents = driver.getPageSource();
-            ITUtil.failOnInvalidUserName(userName, contents, failable);
-            ITUtil.checkForIncidentReport(driver.getPageSource(), "Krad Login", failable, "Krad Login failure");
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login", failable,
+                    "Krad Login failure");
     }
 
     /**
@@ -877,8 +878,9 @@ public class WebDriverUtil {
             driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
             Thread.sleep(1000);
             String contents = driver.getPageSource();
-            ITUtil.failOnInvalidUserName(userName, contents, failable);
-            ITUtil.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable, "KNS Login failure");
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable,
+                    "KNS Login failure");
     }
 
     /**

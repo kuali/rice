@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -32,7 +32,7 @@ public class ParameterEnableFieldLevelHelpIndAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     @Override

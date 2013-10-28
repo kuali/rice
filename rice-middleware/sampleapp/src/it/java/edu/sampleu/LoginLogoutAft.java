@@ -16,8 +16,8 @@
 package edu.sampleu;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.ITUtil;
 
 /**
  * Abstract base class for LoginLogout Smoke Tests.
@@ -28,7 +28,7 @@ public class LoginLogoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected String getBookmarkUrl() {
-        return ITUtil.PORTAL;
+        return AutomatedFunctionalTestUtils.PORTAL;
     }
 
     @Override

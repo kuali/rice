@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.ITUtil;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
 /**
@@ -29,9 +29,9 @@ public abstract class ConfigNamespaceLookUpAndEditAftBase extends AdminTmplMthdA
      * "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
      * +ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
      */   
-    public static final String BOOKMARK_URL = ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
-            ITUtil.PORTAL_URL+ ITUtil.HIDE_RETURN_LINK;
+            AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
     /**
      * {@inheritDoc}
@@ -58,7 +58,8 @@ public abstract class ConfigNamespaceLookUpAndEditAftBase extends AdminTmplMthdA
         selectFrameIframePortlet();
         waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("edit");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace " + ITUtil.createUniqueDtsPlusTwoRandomCharsNot9Digits());
+        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace " + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomCharsNot9Digits());
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");

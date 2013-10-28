@@ -105,7 +105,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
+     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

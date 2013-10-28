@@ -47,6 +47,11 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param component the component instance that should be updated
      * @param model top level object containing the data
+     * @param index The position of the assocaited finalize phase within it's predecessor's
+     *        successor queue.
+     * @param parent The parent component.
+     * @param pendingChildren The number of child rendering phases to expect to be queued for
+     *        processing before this phase.
      */
     protected void prepare(Component component, Object model, int index,
             RenderComponentPhase parent, int pendingChildren) {
@@ -90,7 +95,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Perform rendering on the given component.
      * 
-     * @see ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
+     * @see ViewLifecyclePhaseBase#initializePendingTasks(Queue)
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -103,7 +108,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
+     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

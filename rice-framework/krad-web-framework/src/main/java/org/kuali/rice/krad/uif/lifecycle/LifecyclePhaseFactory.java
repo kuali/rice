@@ -37,10 +37,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
-     * @param parent The parent component.
-     * @param index The index of the phase within the nested component list.
-     * @param nextPhase The applyModel phase to spawn after the successful completion of the
-     *        initialize phase.
+     * @return A lifecycle processing task for processing the initialize phase on the component.
      */
     public static InitializeComponentPhase initialize(Component component, Object model) {
         return initialize(component, model, 0, null, null);
@@ -55,6 +52,7 @@ public final class LifecyclePhaseFactory {
      * @param index The index of the phase within the nested component list.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
+     * @return A lifecycle processing task for processing the initialize phase on the component.
      */
     public static InitializeComponentPhase initialize(Component component, Object model,
             int index, Component parent, ApplyModelComponentPhase nextPhase) {
@@ -68,6 +66,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
+     * @return A lifecycle processing task for processing the apply model phase on the component.
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model) {
         return applyModel(component, model, 0, null, null, new HashSet<String>());
@@ -79,6 +78,7 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param parent The component.
+     * @return A lifecycle processing task for processing the apply model phase on the component.
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, Component parent) {
         return applyModel(component, model, 0, parent, null, new HashSet<String>());
@@ -94,6 +94,7 @@ public final class LifecyclePhaseFactory {
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @param visitedIds The set of visited IDs to track while applying model.
+     * @return A lifecycle processing task for processing the apply model phase on the component.
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model,
             int index, Component parent, FinalizeComponentPhase nextPhase, Set<String> visitedIds) {
@@ -107,6 +108,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
+     * @return A lifecycle processing task for processing the finalize phase on the component.
      */
     public static FinalizeComponentPhase finalize(Component component, Object model) {
         return finalize(component, model, 0, null);
@@ -118,6 +120,7 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param parent The parent component.
+     * @return A lifecycle processing task for processing the finalize phase on the component.
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, Component parent) {
         return finalize(component, model, 0, parent);
@@ -130,6 +133,7 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The parent component.
      * @param index The index of the phase within the nested component list.
+     * @return A lifecycle processing task for processing the finalize phase on the component.
      */
     public static FinalizeComponentPhase finalize(Component component, Object model,
             int index, Component parent) {
@@ -141,8 +145,11 @@ public final class LifecyclePhaseFactory {
     /**
      * Create a new lifecycle phase processing task for rendering a component.
      * 
-     * @param finalizePhase The finalize component phase associated with this rendering phase.
-     * @param parent The rendering phase for the parent of the component associated with this phase.
+     * @param component The component to render.
+     * @param model The model associated with the component.
+     * @param index The position of the associated finalize phase's within its predecessor's
+     *        successor queue.
+     * @return A lifecycle processing task for processing the render phase on the component.
      */
     public static RenderComponentPhase render(Component component, Object model, int index) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
@@ -155,6 +162,9 @@ public final class LifecyclePhaseFactory {
      * 
      * @param finalizePhase The finalize component phase associated with this rendering phase.
      * @param parent The rendering phase for the parent of the component associated with this phase.
+     * @param pendingChildren The number of child phases to expect to be queued with this phase as
+     *        their rendering parent.
+     * @return A lifecycle processing task for processing the render phase on the component.
      */
     public static RenderComponentPhase render(
             FinalizeComponentPhase finalizePhase, RenderComponentPhase parent, int pendingChildren) {

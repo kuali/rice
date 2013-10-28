@@ -131,14 +131,13 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         ViewLifecycle.encapsulateLifecycle(transactionView, tform, null, null, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
                 View view = ViewLifecycle.getView();
                 assertSame(transactionView, view);
                 
                 assertEquals("TransactionView", view.getId());
                 
                 ProcessLogger.trace("begin-init");
-                viewLifecycle.populateViewFromRequestParameters(Collections.<String, String> emptyMap());
+                ViewLifecycle.getHelper().populateViewFromRequestParameters(Collections.<String, String> emptyMap());
                 
                 ProcessLogger.trace("populate-request");
                 tform.setViewRequestParameters(view.getViewRequestParameters());

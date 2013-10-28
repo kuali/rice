@@ -999,8 +999,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         // apply default values if a new line was created
         if (newLine != null) {
-            ViewLifecycle.getActiveLifecycle()
-                .applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
+            ViewLifecycle.getHelper().applyDefaultValuesForCollectionLine(collectionGroup, newLine);
         }
     }
 

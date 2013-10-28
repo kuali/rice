@@ -69,11 +69,11 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     }
 
     /**
-     * Execute the lifecycle phase.
+     * Execute the lifecycle task.
      * 
      * <p>
      * This method performs state validation and updates component view status. Override
-     * {@link #performLifecyclePhase()} to provide phase-specific behavior.
+     * {@link #performLifecycleTask()} to provide task-specific behavior.
      * </p>
      * 
      * @see java.lang.Runnable#run()

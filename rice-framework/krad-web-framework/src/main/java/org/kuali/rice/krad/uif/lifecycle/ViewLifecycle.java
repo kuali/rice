@@ -16,16 +16,11 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,49 +31,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.validator.ValidationController;
-import org.kuali.rice.krad.messages.MessageService;
-import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.component.PropertyReplacer;
-import org.kuali.rice.krad.uif.component.RequestParameter;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.LightTable;
-import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.BooleanMap;
-import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
-import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
-import org.kuali.rice.krad.util.ErrorMessage;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.valuefinder.ValueFinder;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Lifecycle object created during the view processing to hold event registrations.
@@ -86,7 +45,6 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see LifecycleEventListener
  */
-@SuppressWarnings("deprecation")
 public class ViewLifecycle implements Serializable {
 
     private static Logger LOG = Logger.getLogger(ViewLifecycle.class);
@@ -95,17 +53,21 @@ public class ViewLifecycle implements Serializable {
 
     private static final ThreadLocal<ViewLifecycleProcessor> PROCESSOR = new ThreadLocal<ViewLifecycleProcessor>();
 
-    /**
-     * Enumerates potential lifecycle events.
-     */
-    public static enum LifecycleEvent {
-        LIFECYCLE_COMPLETE
-    }
-
     private static Boolean strict;
     private static Boolean renderInLifecycle;
     private static Boolean asynchronousLifecycle;
     private static Boolean trace;
+
+    /**
+     * Enumerates potential lifecycle events.
+     */
+    public static enum LifecycleEvent {
+        
+        /**
+         * Indicates that the finalize phase processing has been completed on the component.
+         */
+        LIFECYCLE_COMPLETE
+    }
 
     /**
      * Registration of an event.
@@ -172,6 +134,9 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
+         * Set the registered Event.
+         * 
+         * @param event The registered event.
          * @see EventRegistration#getEvent()
          */
         public void setEvent(LifecycleEvent event) {
@@ -179,6 +144,9 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
+         * Set the component.
+         * 
+         * @param eventComponent The component.
          * @see EventRegistration#getEventComponent()
          */
         public void setEventComponent(Component eventComponent) {
@@ -186,6 +154,9 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
+         * Set the event listener.
+         * 
+         * @param eventListener The event listener.
          * @see EventRegistration#getEventListener()
          */
         public void setEventListener(LifecycleEventListener eventListener) {
@@ -349,6 +320,10 @@ public class ViewLifecycle implements Serializable {
     /**
      * Private constructor, for spawning a lifecycle context.
      * 
+     * @param view The view to process with the lifecycle.
+     * @param model The model to use in processing the lifecycle.
+     * @param request The active servlet request.
+     * @param response The active servlet response. 
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
     private ViewLifecycle(View view, Object model,
@@ -374,129 +349,6 @@ public class ViewLifecycle implements Serializable {
         for (EventRegistration registration : eventRegistrations) {
             if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventComponent)) {
                 registration.getEventListener().processEvent(event, view, model, eventComponent);
-            }
-        }
-    }
-
-    /**
-     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
-     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
-     * request).
-     * 
-     * <p>
-     * The <code>View</code> instance is inspected for fields that have the
-     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
-     * request parameter map, the request value is used to set the view property. The Map of
-     * parameter name/values that match are placed in the view so they can be later retrieved to
-     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
-     * parameter key/value pairs to the returned map if necessary.
-     * </p>
-     * 
-     * <p>
-     * For each field found, if there is a corresponding key/value pair in the request parameters,
-     * the value is used to populate the field. In addition, any conditional properties of
-     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
-     * parameter value does not get overridden by the dictionary conditional logic
-     * </p>
-     * 
-     * @see org.kuali.rice.krad.uif.component.RequestParameter
-     */
-    public void populateViewFromRequestParameters(Map<String, String> parameters) {
-        View view = getView();
-
-        // build Map of property replacers by property name so that we can remove them
-        // if the property was set by a request parameter
-        Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
-        List<PropertyReplacer> propertyReplacerSource = view.getPropertyReplacers();
-        if (propertyReplacerSource != null) {
-            for (PropertyReplacer replacer : propertyReplacerSource) {
-                String replacerPropertyName = replacer.getPropertyName();
-                Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(replacerPropertyName);
-
-                if (propertyReplacers == null) {
-                    viewPropertyReplacers.put(replacerPropertyName,
-                            propertyReplacers = new HashSet<PropertyReplacer>());
-                }
-
-                propertyReplacers.add(replacer);
-            }
-        }
-
-        Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(view.getClass(),
-                RequestParameter.class);
-
-        // for each request parameter allowed on the view, if the request contains a value use
-        // to set on View, and clear and conditional expressions or property replacers for that field
-        Map<String, String> viewRequestParameters = new HashMap<String, String>();
-        for (String fieldToPopulate : annotatedFields.keySet()) {
-            RequestParameter requestParameter = (RequestParameter) annotatedFields.get(fieldToPopulate);
-
-            // use specified parameter name if given, else use field name to retrieve parameter value
-            String requestParameterName = requestParameter.parameterName();
-            if (StringUtils.isBlank(requestParameterName)) {
-                requestParameterName = fieldToPopulate;
-            }
-
-            if (!parameters.containsKey(requestParameterName)) {
-                continue;
-            }
-
-            String fieldValue = parameters.get(requestParameterName);
-            if (StringUtils.isNotBlank(fieldValue)) {
-                viewRequestParameters.put(requestParameterName, fieldValue);
-                ObjectPropertyUtils.setPropertyValue(view, fieldToPopulate, fieldValue);
-
-                // remove any conditional configuration so value is not
-                // overridden later during the apply model phase
-                if (view.getPropertyExpressions().containsKey(fieldToPopulate)) {
-                    view.getPropertyExpressions().remove(fieldToPopulate);
-                }
-
-                if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
-                    Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
-                    for (PropertyReplacer replacer : propertyReplacers) {
-                        view.getPropertyReplacers().remove(replacer);
-                    }
-                }
-            }
-        }
-
-        view.setViewRequestParameters(viewRequestParameters);
-    }
-
-    /**
-     * Update the reference objects listed in referencesToRefresh of the model
-     * 
-     * <p>
-     * The the individual references in the referencesToRefresh string are separated by
-     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
-     * </p>
-     * 
-     * @param model top level object containing the data
-     * @param referencesToRefresh list of references to refresh (
-     */
-    public void refreshReferences(Object model, String referencesToRefresh) {
-        for (String reference : StringUtils.split(referencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR)) {
-            if (StringUtils.isBlank(reference)) {
-                continue;
-            }
-
-            //ToDo: handle add line
-
-            if (DataObjectUtils.isNestedAttribute(reference)) {
-                String parentPath = DataObjectUtils.getNestedAttributePrefix(reference);
-                Object parentObject = ObjectPropertyUtils.getPropertyValue(model, parentPath);
-                String referenceObjectName = DataObjectUtils.getNestedAttributePrimitive(reference);
-
-                if (parentObject == null) {
-                    LOG.warn("Unable to refresh references for " + referencesToRefresh +
-                            ". Object not found in model. Nothing refreshed.");
-                    continue;
-                }
-
-                refreshReference(parentObject, referenceObjectName);
-            } else {
-                refreshReference(model, reference);
             }
         }
     }
@@ -675,8 +527,11 @@ public class ViewLifecycle implements Serializable {
     /**
      * Encapsulate a new view lifecycle process on the current thread.
      * 
+     * @param view The view to perform lifecycle processing on.
+     * @param model The model associated with the view.
+     * @param request The active servlet request.
+     * @param response The active servlet response.
      * @param lifecycleProcess The lifecycle process to encapsulate.
-     * @return
      */
     public static void encapsulateLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, Runnable lifecycleProcess) {
@@ -749,6 +604,21 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
+     * Get the servlet request for this lifecycle.
+     * 
+     * @return The servlet request for this lifecycle.
+     */
+    public static HttpServletRequest getRequest() {
+        ViewLifecycle active = getActiveLifecycle();
+
+        if (active.model == null) {
+            throw new IllegalStateException("Request is not available");
+        }
+
+        return active.request;
+    }
+
+    /**
      * Get the current phase of the active lifecycle.
      * 
      * @return The current phase of the active lifecycle, or null if no phase is currently active.
@@ -787,8 +657,8 @@ public class ViewLifecycle implements Serializable {
      * Note a processor as active on the current thread.
      * 
      * <p>
-     * This method is intended only for use by {@link AsynchronousLifecycleWorker} in setting the
-     * context for worker threads. Use
+     * This method is intended only for use by {@link AsynchronousViewLifecycleProcessor} in setting
+     * the context for worker threads. Use
      * {@link #encapsulateLifecycle(View, Object, HttpServletRequest, HttpServletResponse, Runnable)}
      * to populate an appropriate processor for for web request and other transaction threads.
      * </p>
@@ -845,87 +715,17 @@ public class ViewLifecycle implements Serializable {
      * 
      * @param view - view instance that should be built
      * @param model - object instance containing the view data
+     * @param request The active servlet request.
+     * @param response The active servlet response.
      * @param parameters - Map of key values pairs that provide configuration for the
      *        <code>View</code>, this is generally comes from the request and can be the request
      *        parameter Map itself. Any parameters not valid for the View will be filtered out
-     * 
-     * @return A copy of the view, built for rendering.
      */
     public static void buildView(View view, Object model,
             HttpServletRequest request, HttpServletResponse response,
             final Map<String, String> parameters) {
-        ViewLifecycle.encapsulateLifecycle(view, model, request, response, new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycleProcessor processor = getProcessor();
-                ViewLifecycle viewLifecycle = processor.getLifecycle();
-                View view = ViewLifecycle.getView();
-                ViewHelperService helper = ViewLifecycle.getHelper();
-                UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
-
-                if (isTrace()) {
-                    ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
-                }
-                
-                // populate view from request parameters
-                viewLifecycle.populateViewFromRequestParameters(parameters);
-
-                // backup view request parameters on form for recreating lost
-                // views (session timeout)
-                model.setViewRequestParameters(view.getViewRequestParameters());
-
-                // invoke initialize phase on the views helper service
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("performing initialize phase for view: " + view.getId());
-                }
-
-                helper.performCustomViewInitialization(model);
-
-                processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null));
-
-                if (isTrace()) {
-                    ProcessLogger.trace("initialize:" + view.getId());
-                }
-                
-                // Apply Model Phase
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("performing apply model phase for view: " + view.getId());
-                }
-                
-                // apply default values if they have not been applied yet
-                if (!model.isDefaultsApplied()) {
-                    viewLifecycle.applyDefaultValues(view, view, model);
-                    model.setDefaultsApplied(true);
-                }
-
-                // get action flag and edit modes from authorizer/presentation controller
-                viewLifecycle.retrieveEditModesAndActionFlags(view, (UifFormBase) model);
-
-                // set view context for conditional expressions
-                viewLifecycle.setViewContext();
-
-                processor.performPhase(LifecyclePhaseFactory.applyModel(view, model));
-
-                if (isTrace()) {
-                    ProcessLogger.trace("apply-model:" + view.getId());
-                }
-
-                // Finalize Phase
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("performing finalize phase for view: " + view.getId());
-                }
-
-                // get script for generating growl messages
-                String growlScript = viewLifecycle.buildGrowlScript();
-                ((ViewModel) model).setGrowlScript(growlScript);
-
-                processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null));
-                
-                if (isTrace()) {
-                    ProcessLogger.trace("finalize:" + view.getId());
-                }
-            }
-        });
+        ViewLifecycle.encapsulateLifecycle(
+                view, model, request, response, new ViewLifecycleFullBuild(parameters));
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
@@ -953,529 +753,16 @@ public class ViewLifecycle implements Serializable {
      *
      * @param view view instance the component belongs to
      * @param model object containing the full view data
+     * @param request The active servlet request.
+     * @param response The active servlet response.
      * @param component component instance to perform lifecycle for
      * @param origId id of the component within the view, used to pull the current component from the view
-     * @return The results of performing the lifecycle on the provided view.
-     * @see {@link org.kuali.rice.krad.uif.service.ViewHelperService#performComponentLifecycle(
-     *org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component,
-     *      java.lang.String)
-     * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)}
-     * @see {@link #performComponentApplyModel(View, Component, Object)}
-     * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
     public static void performComponentLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, final Component component,
             final String origId) {
-        encapsulateLifecycle(view, model, request, response, new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycleProcessor processor = getProcessor();
-                View view = ViewLifecycle.getView();
-                Object model = ViewLifecycle.getModel();
-
-                if (isTrace()) {
-                    ProcessLogger.trace("begin-component-lifecycle:" + component.getId());
-                }
-                
-                Component newComponent = component;
-                Component origComponent = view.getViewIndex().getComponentById(origId);
-
-                // check if the component is nested in a box layout in order to
-                // reapply the layout item style
-                List<String> origCss = origComponent.getCssClasses();
-                if (origCss != null && (model instanceof UifFormBase)
-                        && ((UifFormBase) model).isUpdateComponentRequest()) {
-
-                    if (origCss.contains(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS)) {
-                        component.addStyleClass(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS);
-                    } else if (origCss.contains(UifConstants.BOX_LAYOUT_VERTICAL_ITEM_CSS)) {
-                        component.addStyleClass(UifConstants.BOX_LAYOUT_VERTICAL_ITEM_CSS);
-                    }
-                }
-
-                Map<String, Object> origContext = origComponent.getContext();
-
-                Component parent = origContext == null ? null : (Component) origContext
-                        .get(UifConstants.ContextVariableNames.PARENT);
-
-                // update context on all components within the refresh component to catch context set by parent
-                if (origContext != null) {
-                    newComponent.pushAllToContext(origContext);
-
-                    List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(newComponent);
-                    for (Component nestedComponent : nestedComponents) {
-                        nestedComponent.pushAllToContext(origContext);
-                    }
-                }
-
-                // make sure the dataAttributes are the same as original
-                newComponent.setDataAttributes(origComponent.getDataAttributes());
-
-                // initialize the expression evaluator
-                view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
-
-                // the expression graph for refreshed components is captured in the view index (initially it might expressions
-                // might have come from a parent), after getting the expression graph then we need to populate the expressions
-                // on the configurable for which they apply
-                Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
-                        newComponent.getBaseId());
-                newComponent.setExpressionGraph(expressionGraph);
-                ExpressionUtils.populatePropertyExpressionsFromGraph(newComponent, false);
-
-                // binding path should stay the same
-                if (newComponent instanceof DataBinding) {
-                    ((DataBinding) newComponent).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
-                    ((DataBinding) newComponent).getBindingInfo().setBindingPath(
-                            ((DataBinding) origComponent).getBindingInfo().getBindingPath());
-                }
-
-                // copy properties that are set by parent components in the full view lifecycle
-                if (newComponent instanceof Field) {
-                    ((Field) newComponent).setLabelRendered(((Field) origComponent).isLabelRendered());
-                }
-
-                if (origComponent.isRefreshedByAction()) {
-                    newComponent.setRefreshedByAction(true);
-                }
-
-                // reset data if needed
-                if (newComponent.isResetDataOnRefresh()) {
-                    // TODO: this should handle groups as well, going through nested data fields
-                    if (newComponent instanceof DataField) {
-                        // TODO: should check default value
-
-                        // clear value
-                        ObjectPropertyUtils.initializeProperty(model,
-                                ((DataField) newComponent).getBindingInfo().getBindingPath());
-                    }
-                }
-                
-                if (isTrace()) {
-                    ProcessLogger.trace("ready:" + newComponent.getId());
-                }
-                
-                processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model));
-
-                if (isTrace()) {
-                    ProcessLogger.trace("initialize:" + newComponent.getId());
-                }
-
-                // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
-                String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
-                if (StringUtils.isNotBlank(suffix)) {
-                    ComponentUtils.updateIdWithSuffix(newComponent, suffix);
-                    ComponentUtils.updateChildIdsWithSuffixNested(newComponent, suffix);
-                }
-
-                // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
-                // set the sub collection id prefix from the original component (this is needed when the group being
-                // refreshed is part of another collection)
-                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-                    List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
-                            origComponent,
-                            CollectionGroup.class);
-                    List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
-                            CollectionGroup.class);
-
-                    for (int i = 0; i < collectionGroups.size(); i++) {
-                        CollectionGroup origCollectionGroup = origCollectionGroups.get(i);
-                        CollectionGroup collectionGroup = collectionGroups.get(i);
-
-                        String prefix = origCollectionGroup.getBindingInfo().getBindByNamePrefix();
-                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                                collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                            ComponentUtils.prefixBindingPath(collectionGroup, prefix);
-                        }
-
-                        String lineSuffix = origCollectionGroup.getSubCollectionSuffix();
-                        collectionGroup.setSubCollectionSuffix(lineSuffix);
-                    }
-
-                    // Handle LightTables, as well
-                    List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
-                            LightTable.class);
-                    List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent,
-                            LightTable.class);
-
-                    for (int i = 0; i < lightTables.size(); i++) {
-                        LightTable origLightTable = origLightTables.get(i);
-                        LightTable lightTable = lightTables.get(i);
-
-                        String prefix = origLightTable.getBindingInfo().getBindByNamePrefix();
-                        if (StringUtils.isNotBlank(prefix) && StringUtils.isBlank(
-                                lightTable.getBindingInfo().getBindByNamePrefix())) {
-                            ComponentUtils.prefixBindingPath(lightTable, prefix);
-                        }
-                    }
-                }
-
-                // if disclosed by action and request was made, make sure the component will display
-                if (newComponent.isDisclosedByAction()) {
-                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.RENDER, true);
-                    ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
-                }
-
-                processor.performPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
-
-                if (isTrace()) {
-                    ProcessLogger.trace("apply-model:" + newComponent.getId());
-                }
-
-                // adjust nestedLevel property on some specific collection cases
-                if (newComponent instanceof Container) {
-                    ComponentUtils.adjustNestedLevelsForTableCollections((Container) newComponent, 0);
-                } else if (newComponent instanceof FieldGroup) {
-                    ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
-                }
-
-                processor.performPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
-
-                if (isTrace()) {
-                    ProcessLogger.trace("finalize:" + newComponent.getId());
-                }
-
-                // make sure id, binding, and label settings stay the same as initial
-                if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-                    List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
-                    List<Component> originalNestedGroupComponents = ComponentUtils
-                            .getAllNestedComponents(origComponent);
-
-                    for (Component nestedComponent : nestedGroupComponents) {
-                        Component origNestedComponent = ComponentUtils.findComponentInList(
-                                originalNestedGroupComponents,
-                                nestedComponent.getId());
-
-                        if (origNestedComponent != null) {
-                            // update binding
-                            if (nestedComponent instanceof DataBinding) {
-                                ((DataBinding) nestedComponent).setBindingInfo(
-                                        ((DataBinding) origNestedComponent).getBindingInfo());
-                                ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-                                        ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-                            }
-
-                            // update label rendered flag
-                            if (nestedComponent instanceof Field) {
-                                ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
-                                        .isLabelRendered());
-                            }
-
-                            if (origNestedComponent.isRefreshedByAction()) {
-                                nestedComponent.setRefreshedByAction(true);
-                            }
-                        }
-                    }
-                }
-
-                // get script for generating growl messages
-                String growlScript = processor.getLifecycle().buildGrowlScript();
-                ((ViewModel) model).setGrowlScript(growlScript);
-
-                view.getViewIndex().indexComponent(newComponent);
-
-                PageGroup page = view.getCurrentPage();
-                // regenerate server message content for page
-                page.getValidationMessages().generateMessages(false, view, model, page);
-
-                if (isTrace()) {
-                    ProcessLogger.trace("end-component-lifecycle:" + newComponent.getId());
-                }
-            }
-        });
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValuesForCollectionLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object)
-     */
-    public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
-            Object line) {
-        // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
-                DataField.class);
-        for (DataField dataField : dataFields) {
-            String bindingPath = "";
-            if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
-                bindingPath = dataField.getBindingInfo().getBindByNamePrefix() + ".";
-            }
-            bindingPath += dataField.getBindingInfo().getBindingName();
-
-            populateDefaultValueForField(view, line, dataField, bindingPath);
-        }
-    }
-
-    /**
-     * Iterates through the view components picking up data fields and applying an default value
-     * configured
-     * 
-     * @param view view instance we are applying default values for
-     * @param component component that should be checked for default values
-     * @param model model object that values should be set on
-     */
-    protected void applyDefaultValues(View view, Component component, Object model) {
-        if (component == null) {
-            return;
-        }
-
-        // if component is a data field apply default value
-        if (component instanceof DataField) {
-            DataField dataField = ((DataField) component);
-
-            // need to make sure binding is initialized since this could be on a page we have not initialized yet
-            dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
-
-            populateDefaultValueForField(view, model, dataField, dataField.getBindingInfo().getBindingPath());
-        }
-
-        for (Component nested : component.getComponentsForLifecycle()) {
-            applyDefaultValues(view, nested, model);
-        }
-
-        // if view, need to add all pages since only one will be on the lifecycle
-        if (component instanceof View) {
-            for (Component nested : ((View) component).getItems()) {
-                applyDefaultValues(view, nested, model);
-            }
-        }
-
-    }
-
-    /**
-     * Builds JS script that will invoke the show growl method to display a growl message when the
-     * page is rendered
-     * 
-     * <p>
-     * A growl call will be created for any explicit growl messages added to the message map.
-     * </p>
-     * 
-     * <p>
-     * Growls are only generated if @{link
-     * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
-     * messages are set as info messages for the page
-     * </p>
-     * 
-     * @param view view instance for which growls are being generated
-     * @return JS script string for generated growl messages
-     */
-    protected String buildGrowlScript() {
-        String growlScript = "";
-
-        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
-
-        MessageMap messageMap = GlobalVariables.getMessageMap();
-        for (GrowlMessage growl : messageMap.getGrowlMessages()) {
-            if (view.isGrowlMessagingEnabled()) {
-                String message = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
-                        growl.getMessageKey());
-
-                if (StringUtils.isNotBlank(message)) {
-                    if (growl.getMessageParameters() != null) {
-                        message = message.replace("'", "''");
-                        message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
-                    }
-
-                    // escape single quotes in message or title since that will cause problem with plugin
-                    message = message.replace("'", "\\'");
-
-                    String title = growl.getTitle();
-                    if (StringUtils.isNotBlank(growl.getTitleKey())) {
-                        title = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
-                                growl.getTitleKey());
-                    }
-                    title = title.replace("'", "\\'");
-
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
-                }
-            } else {
-                ErrorMessage infoMessage = new ErrorMessage(growl.getMessageKey(), growl.getMessageParameters());
-                infoMessage.setNamespaceCode(growl.getNamespaceCode());
-                infoMessage.setComponentCode(growl.getComponentCode());
-
-                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, infoMessage);
-            }
-        }
-
-        return growlScript;
-    }
-
-    /**
-     * Applies the default value configured for the given field (if any) to the line given object
-     * property that is determined by the given binding path
-     * 
-     * @param view view instance the field belongs to
-     * @param object object that should be populated
-     * @param dataField field to check for configured default value
-     * @param bindingPath path to the property on the object that should be populated
-     */
-    public void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
-        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
-                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
-            return;
-        }
-
-        Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
-
-        // Default value only applies when the value being set is null (has no value on the form)
-        if (currentValue != null) {
-            return;
-        }
-
-        Object defaultValue = getDefaultValueForField(view, object, dataField);
-
-        ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
-    }
-
-    /**
-     * Retrieves the default value that is configured for the given data field
-     * 
-     * <p>
-     * The field's default value is determined in the following order:
-     * 
-     * <ol>
-     * <li>If default value on field is non-blank</li>
-     * <li>If expression is found for default value</li>
-     * <li>If default value finder class is configured for field</li>
-     * <li>If an expression is found for default values</li>
-     * <li>If default values on field is not null</li>
-     * </ol>
-     * </p>
-     * 
-     * @param view view instance the field belongs to
-     * @param object object that should be populated
-     * @param dataField field to retrieve default value for
-     * @return Object default value for field or null if value was not found
-     */
-    protected Object getDefaultValueForField(View view, Object object, DataField dataField) {
-        Object defaultValue = null;
-
-        if (StringUtils.isNotBlank(dataField.getDefaultValue())) {
-            defaultValue = dataField.getDefaultValue();
-        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
-                UifConstants.ComponentProperties.DEFAULT_VALUE)) {
-            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
-        } else if (dataField.getDefaultValueFinderClass() != null) {
-            ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
-
-            defaultValue = defaultValueFinder.getValue();
-        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
-                UifConstants.ComponentProperties.DEFAULT_VALUES)) {
-            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUES);
-        } else if (dataField.getDefaultValues() != null) {
-            defaultValue = dataField.getDefaultValues();
-        }
-
-        ExpressionEvaluator expressionEvaluator = getHelper().getExpressionEvaluator();
-
-        if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
-                .containsElPlaceholder((String) defaultValue)) {
-            Map<String, Object> context = view.getPreModelContext();
-            context.putAll(dataField.getContext());
-
-            defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, (String) defaultValue);
-            defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, (String) defaultValue);
-        }
-
-        return defaultValue;
-    }
-
-    /**
-     * Perform a database or data dictionary based refresh of a specific property object
-     * 
-     * <p>
-     * The object needs to be of type PersistableBusinessObject.
-     * </p>
-     * 
-     * @param parentObject parent object that references the object to be refreshed
-     * @param referenceObjectName property name of the parent object to be refreshed
-     */
-    protected void refreshReference(Object parentObject, String referenceObjectName) {
-        if (!(parentObject instanceof PersistableBusinessObject)) {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                    .getName() + ". Class not of type PersistableBusinessObject");
-            return;
-        }
-
-        LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
-        DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-
-        if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName)
-                || legacyDataAdapter.hasCollection(parentObject.getClass(), referenceObjectName)) {
-            // refresh via database mapping
-            legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
-        } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
-            // refresh via data dictionary mapping
-            Object referenceObject = DataObjectUtils.getPropertyValue(parentObject, referenceObjectName);
-            if (!(referenceObject instanceof PersistableBusinessObject)) {
-                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                        .getName() + ". Class not of type PersistableBusinessObject");
-                return;
-            }
-
-            referenceObject = legacyDataAdapter.retrieve((PersistableBusinessObject) referenceObject);
-            if (referenceObject == null) {
-                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                        .getName() + ".");
-                return;
-            }
-
-            try {
-                KRADUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
-            } catch (Exception e) {
-                LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
-                        .getMessage());
-                throw new RuntimeException(
-                        "Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
-                                .getMessage());
-            }
-        } else {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                    .getName() + ".");
-        }
-    }
-
-    /**
-     * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
-     * the view to get the exported action flags and edit modes that can be used in conditional
-     * logic
-     * 
-     * @param view view instance that is being built and presentation/authorizer pulled for
-     * @param model Object that contains the model data
-     */
-    protected void retrieveEditModesAndActionFlags(View view, UifFormBase model) {
-        ViewPresentationController presentationController = view.getPresentationController();
-        ViewAuthorizer authorizer = view.getAuthorizer();
-
-        Set<String> actionFlags = presentationController.getActionFlags(view, model);
-        Set<String> editModes = presentationController.getEditModes(view, model);
-
-        // if user session is not established cannot invoke authorizer
-        if (GlobalVariables.getUserSession() != null) {
-            Person user = GlobalVariables.getUserSession().getPerson();
-
-            actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
-            editModes = authorizer.getEditModes(view, model, user, editModes);
-        }
-
-        view.setActionFlags(new BooleanMap(actionFlags));
-        view.setEditModes(new BooleanMap(editModes));
-    }
-
-    /**
-     * Sets up the view context which will be available to other components through their context
-     * for conditional logic evaluation.
-     */
-    protected void setViewContext() {
-        view.pushAllToContext(view.getPreModelContext());
-
-        // evaluate view expressions for further context
-        for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
-            String variableName = variableExpression.getKey();
-            Object value = helper.getExpressionEvaluator().evaluateExpression(view.getContext(),
-                    variableExpression.getValue());
-            view.pushObjectToContext(variableName, value);
-        }
+        encapsulateLifecycle(
+                view, model, request, response, new ViewLifecycleComponentBuild(origId, component));
     }
 
 }

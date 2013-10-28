@@ -49,6 +49,9 @@ public interface ViewLifecycleProcessor {
     /**
      * Perform a lifecycle phase according to this processor's semantics, blocking until the phase
      * has been completely processed.
+     * 
+     * @param initialPhase The initial lifecycle phase. Once this phase has been completely
+     *        processed, this method will return.
      */
     void performPhase(ViewLifecyclePhase initialPhase);
 

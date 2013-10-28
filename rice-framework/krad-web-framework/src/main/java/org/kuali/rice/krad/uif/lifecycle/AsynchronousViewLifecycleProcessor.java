@@ -242,7 +242,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * @see ViewLifecycleProcessor#pushPendingPhase(ViewLifecyclePhase[])
+     * @see ViewLifecycleProcessor#pushPendingPhase(ViewLifecyclePhase)
      */
     @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
@@ -285,7 +285,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
      * This method should only be called a single time by the controlling thread in order to wait
      * for all pending phases to be performed, and should not be called by any worker threads.
      * 
-     * @see ViewLifecycleProcessor#performPendingPhases()
+     * @see ViewLifecycleProcessor#performPhase(ViewLifecyclePhase)
      */
     @Override
     public void performPhase(ViewLifecyclePhase initialPhase) {
@@ -353,7 +353,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     /**
      * Recycle a phase context after processing.
      * 
-     * @return The a phase context, retrieved by {@link #pollPendingPhase()}.
+     * @param aphase The phase context, previously acquire using by
+     *        {@link #getAsynchronousPhase(ViewLifecyclePhase)}.
      */
     private static void recyclePhase(AsynchronousLifecyclePhase aphase) {
         if (aphase.initial) {

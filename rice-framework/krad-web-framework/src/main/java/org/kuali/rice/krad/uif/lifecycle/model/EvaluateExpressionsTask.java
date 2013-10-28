@@ -54,8 +54,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
      * Checks against the visited ids to see if the id is duplicate, if so it is adjusted to make an
      * unique id by appending an unique identifier
      * 
-     * @param id id to adjust if necessary
-     * @param visitedIds tracks components ids that have been seen for adjusting duplicates
+     * @param element The component or layout manager to adjust the ID on.
      * @return original or adjusted id
      */
     public String adjustIdIfNecessary(LifecycleElement element) {

@@ -15,9 +15,12 @@
  */
 package org.kuali.rice.krad.uif.service;
 
+import java.util.Map;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -59,7 +62,6 @@ public interface ViewHelperService {
     /**
      * Hook for service overrides to perform custom initialization on the component
      * 
-     * @param view view instance containing the component
      * @param component component instance to initialize
      */
     void performCustomInitialization(Component component);
@@ -67,7 +69,6 @@ public interface ViewHelperService {
     /**
      * Hook for service overrides to perform custom apply model logic on the component
      * 
-     * @param view view instance containing the component
      * @param component component instance to apply model to
      * @param model Top level object containing the data (could be the model or a top level business
      *        object, dto)
@@ -158,7 +159,6 @@ public interface ViewHelperService {
      * New components instances can be retrieved using {@link ComponentFactory}
      * </p>
      * 
-     * @param view view instance the container belongs to
      * @param model object containing the view data
      * @param container container instance to add components to
      */
@@ -199,6 +199,7 @@ public interface ViewHelperService {
      * @param view view instance that is being presented (the action was taken on)
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionPath full path to the collection on the model
+     * @param selectedLineIndex The index within the collection of the line to save.
      */
     public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
 
@@ -235,7 +236,7 @@ public interface ViewHelperService {
      * @param model top level object containing the data
      * @param tableId id of the table being generated
      * @param formatType format which the table should be generated in
-     * @return
+     * @return The generated table data.
      */
     public String buildExportTableData(View view, Object model, String tableId, String formatType);
 
@@ -257,5 +258,133 @@ public interface ViewHelperService {
      * @param inquiry instance of the inquiry widget being built for the property
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
+
+    /**
+     * Sets up the view context which will be available to other components through their context
+     * for conditional logic evaluation.
+     */
+    void setViewContext();
+
+    /**
+     * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
+     * the view to get the exported action flags and edit modes that can be used in conditional
+     * logic
+     */
+    void retrieveEditModesAndActionFlags();
+
+    /**
+     * Perform a database or data dictionary based refresh of a specific property object
+     * 
+     * <p>
+     * The object needs to be of type PersistableBusinessObject.
+     * </p>
+     * 
+     * @param parentObject parent object that references the object to be refreshed
+     * @param referenceObjectName property name of the parent object to be refreshed
+     */
+    void refreshReference(Object parentObject, String referenceObjectName);
+
+    /**
+     * Update the reference objects listed in referencesToRefresh of the model
+     * 
+     * <p>
+     * The the individual references in the referencesToRefresh string are separated by
+     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
+     * </p>
+     * 
+     * @param referencesToRefresh list of references to refresh (
+     */
+    void refreshReferences(String referencesToRefresh);
+    
+    /**
+     * Retrieves the default value that is configured for the given data field
+     * 
+     * <p>
+     * The field's default value is determined in the following order:
+     * 
+     * <ol>
+     * <li>If default value on field is non-blank</li>
+     * <li>If expression is found for default value</li>
+     * <li>If default value finder class is configured for field</li>
+     * <li>If an expression is found for default values</li>
+     * <li>If default values on field is not null</li>
+     * </ol>
+     * </p>
+     * 
+     * @param object object that should be populated
+     * @param dataField field to retrieve default value for
+     * @return Object default value for field or null if value was not found
+     */
+    Object getDefaultValueForField(Object object, DataField dataField);
+
+    /**
+     * Applies the default value configured for the given field (if any) to the line given object
+     * property that is determined by the given binding path
+     * 
+     * @param object object that should be populated
+     * @param dataField field to check for configured default value
+     * @param bindingPath path to the property on the object that should be populated
+     */
+    void populateDefaultValueForField(Object object, DataField dataField, String bindingPath);
+
+    /**
+     * Builds JS script that will invoke the show growl method to display a growl message when the
+     * page is rendered
+     * 
+     * <p>
+     * A growl call will be created for any explicit growl messages added to the message map.
+     * </p>
+     * 
+     * <p>
+     * Growls are only generated if @{link
+     * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
+     * messages are set as info messages for the page
+     * </p>
+     * 
+     * @return JS script string for generated growl messages
+     */
+    String buildGrowlScript();
+
+    /**
+     * Iterates through the view components picking up data fields and applying an default value
+     * configured
+     * 
+     * @param component component that should be checked for default values
+     */
+    void applyDefaultValues(Component component);
+
+    /**
+     * Populate default values the model backing a line in a collection group.
+     * 
+     * @param collectionGroup The collection group.
+     * @param line The model object backing the line.
+     */
+    void applyDefaultValuesForCollectionLine(CollectionGroup collectionGroup, Object line);
+
+    /**
+     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
+     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
+     * request).
+     * 
+     * <p>
+     * The <code>View</code> instance is inspected for fields that have the
+     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
+     * request parameter map, the request value is used to set the view property. The Map of
+     * parameter name/values that match are placed in the view so they can be later retrieved to
+     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
+     * parameter key/value pairs to the returned map if necessary.
+     * </p>
+     * 
+     * <p>
+     * For each field found, if there is a corresponding key/value pair in the request parameters,
+     * the value is used to populate the field. In addition, any conditional properties of
+     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
+     * parameter value does not get overridden by the dictionary conditional logic
+     * </p>
+     * 
+     * @param parameters The request parameters that apply to the view.
+     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     */
+    void populateViewFromRequestParameters(Map<String, String> parameters);
 
 }

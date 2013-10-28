@@ -73,8 +73,8 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase {
      * script
      * </p>
      * 
-     * @param view view instance that is being built
-     * @param model model containing the client side state map
+     * @param model model containing the client side state map.
+     * @return The client side state script associated with this model.
      */
     protected String buildClientSideStateScript(Object model) {
         Map<String, Object> clientSideState = ((ViewModel) model).getClientStateForSyncing();

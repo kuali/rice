@@ -52,6 +52,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -64,6 +65,7 @@ import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("deprecation")
 public class MaintainableImpl extends ViewHelperServiceImpl implements Maintainable {
     private static final long serialVersionUID = 9125271369161634992L;
 
@@ -259,7 +261,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#saveDataObject
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void saveDataObject() {
         if ( dataObject == null ) {
@@ -272,7 +273,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#deleteDataObject
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void deleteDataObject() {
         if (dataObject == null) {
@@ -368,7 +368,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         if (getDataObject() == null) {
             isOldDataObjectInExistence = false;
         } else {
-            @SuppressWarnings("deprecation")
             Map<String, ?> keyFieldValues = getLegacyDataAdapter().getPrimaryKeyFieldValuesDOMDS(getDataObject());
             for (Object keyValue : keyFieldValues.values()) {
                 if (keyValue == null) {
@@ -550,7 +549,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         }
 
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(form.getMaintenanceAction())) {
-            View view = ViewLifecycle.getActiveLifecycle().getView();
+            View view = ViewLifecycle.getView();
 
             if (component instanceof DataField) {
                 DataField field = (DataField) component;
@@ -593,7 +592,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * @param field field being checked for restrictions
      */
     private void clearUnauthorizedField(View view, ViewModel model, DataField field) {
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+        ViewHelperService helper = ViewLifecycle.getHelper();
         String bindingPath = field.getBindingInfo().getBindingPath();
 
         if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
@@ -606,7 +605,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                     ObjectPropertyUtils.setPropertyValue(model, bindingPath, null);
                 }
 
-                viewLifecycle.populateDefaultValueForField(view, model, field, bindingPath);
+                helper.populateDefaultValueForField(model, field, bindingPath);
             }
         }
     }

@@ -44,6 +44,8 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
 
     /**
      * Create a new synchronous processor for a lifecycle.
+     * 
+     * @param lifecycle The lifecycle to process.
      */
     public SynchronousViewLifecycleProcessor(ViewLifecycle lifecycle) {
         super(lifecycle);

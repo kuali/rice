@@ -29,6 +29,8 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
 
     /**
      * Create a new synchronous processor for a lifecycle.
+     * 
+     * @param lifecycle The lifecycle to process.
      */
     ViewLifecycleProcessorBase(ViewLifecycle lifecycle) {
         this.lifecycle = lifecycle;

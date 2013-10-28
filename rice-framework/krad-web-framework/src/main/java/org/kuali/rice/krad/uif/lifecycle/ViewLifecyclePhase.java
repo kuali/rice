@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 
@@ -72,7 +71,7 @@ public interface ViewLifecyclePhase extends Runnable {
      * Get the view lifecycle phase constant that corresponds to this phase processing task.
      * 
      * @return The view lifecycle phase constant that corresponds to this phase processing task.
-     * @see UifConstants.ViewPhases
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
      */
     String getViewPhase();
 

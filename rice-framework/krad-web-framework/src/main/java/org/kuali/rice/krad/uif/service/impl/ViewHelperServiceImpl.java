@@ -16,40 +16,62 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.inquiry.Inquirable;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.PropertyReplacer;
+import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.BooleanMap;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.util.ErrorMessage;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.GrowlMessage;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -57,6 +79,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("deprecation")
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     
     private static final long serialVersionUID = 1772618197133239852L;
@@ -74,9 +97,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Helper function to determine whether if column should be displayed. Used to help extract
      * columns used in screen format such as action or select that is not needed for export.
      * 
-     * @param layoutManager
-     * @param collectionGroup
-     * @return
+     * @param layoutManager The layout manager.
+     * @param collectionGroup The collection group.
+     * @return Index numbers for all columns that should be ignored.
      */
     private List<Integer> findIgnoredColumns(TableLayoutManager layoutManager, CollectionGroup collectionGroup) {
         List<Integer> ignoreColumns = new ArrayList<Integer>();
@@ -123,7 +146,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * New components instances can be retrieved using {@link ComponentFactory}
      * </p>
      * 
-     * @param view view instance the container belongs to
      * @param model object containing the view data
      * @param container container instance to add components to
      */
@@ -139,8 +161,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param model top level object containing the data
      * @param tableId id of the table being generated
      * @param formatType format which the table should be generated in
-     * @return
+     * @return The generated table data.
      */
+    @Override
     public String buildExportTableData(View view, Object model, String tableId, String formatType) {
         // load table format elements used for generated particular style
         Map<String, String> exportTableFormatOptions = getExportTableFormatOptions(formatType);
@@ -222,7 +245,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Hook for service overrides to perform custom apply model logic on the component
      * 
-     * @param view view instance containing the component
      * @param component component instance to apply model to
      * @param model Top level object containing the data (could be the model or a top level business
      *        object, dto)
@@ -235,7 +257,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Hook for service overrides to perform custom component finalization
      * 
-     * @param view view instance containing the component
      * @param component component instance to update
      * @param model Top level object containing the data
      * @param parent Parent component for the component being finalized
@@ -248,7 +269,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Hook for service overrides to perform custom initialization on the component
      * 
-     * @param view view instance containing the component
      * @param component component instance to initialize
      */
     @Override
@@ -366,8 +386,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         Object newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
-        ViewLifecycle.getActiveLifecycle()
-                .applyDefaultValuesForCollectionLine(view, model, collectionGroup, newLine);
+        applyDefaultValuesForCollectionLine(collectionGroup, newLine);
         addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
 
         ((UifFormBase) model).getAddedCollectionItems().add(newLine);
@@ -490,7 +509,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processMultipleValueLookupResults
      */
-    @SuppressWarnings({"deprecation", "unchecked"})
+    @SuppressWarnings("unchecked")
     public void processMultipleValueLookupResults(View view, Object model, String collectionPath,
             String lookupResultValues) {
         // if no line values returned, no population is needed
@@ -538,8 +557,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             // apply default values to new line
-            ViewLifecycle.getActiveLifecycle()
-                    .applyDefaultValuesForCollectionLine(view, model, collectionGroup, lineDataObject);
+            applyDefaultValuesForCollectionLine(collectionGroup, lineDataObject);
 
             String[] fieldValues = StringUtils.splitByWholeSeparatorPreserveAllTokens(lineValue, ":");
             if (fieldValues.length != toFieldNames.length) {
@@ -578,7 +596,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Helper method used to build formatted table row data for export
      * 
-     * @return
+     * @param columnData Formatted column data.
+     * @param tableFormatOptions Format options: startRow and endRow are added to the row,
+     *        startColumn and endColumn are added to each column.
+     * @param ignoredColumns Index numbers of columns to ignore.
+     * 
+     * @return Formatted table data for one row.
      */
     protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
             List<Integer> ignoredColumns) {
@@ -607,8 +630,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Identify table formatting elements based on formatType. Defaults to txt format if not found
      * 
-     * @param formatType
-     * @return
+     * @param formatType The format type: csv, xls, or xml.
+     * @return The format options for to use with the indicated format type.
      */
     protected Map<String, String> getExportTableFormatOptions(String formatType) {
         HashMap<String, String> map = new HashMap<String, String>();
@@ -701,11 +724,440 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return isValid;
     }
 
+    /**
+     * Populate default values the model backing a line in a collection group.
+     * 
+     * @param collectionGroup The collection group.
+     * @param line The model object backing the line.
+     */
+    @Override
+    public void applyDefaultValuesForCollectionLine(CollectionGroup collectionGroup, Object line) {
+        // retrieve all data fields for the collection line
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
+                DataField.class);
+        for (DataField dataField : dataFields) {
+            String bindingPath = "";
+            if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
+                bindingPath = dataField.getBindingInfo().getBindByNamePrefix() + ".";
+            }
+            bindingPath += dataField.getBindingInfo().getBindingName();
+
+            populateDefaultValueForField(line, dataField, bindingPath);
+        }
+    }
+
+    /**
+     * Iterates through the view components picking up data fields and applying an default value
+     * configured
+     * 
+     * @param component component that should be checked for default values
+     */
+    @Override
+    public void applyDefaultValues(Component component) {
+        if (component == null) {
+            return;
+        }
+
+        View view = ViewLifecycle.getView();
+        Object model = ViewLifecycle.getModel();
+        
+        // if component is a data field apply default value
+        if (component instanceof DataField) {
+            DataField dataField = ((DataField) component);
+
+            // need to make sure binding is initialized since this could be on a page we have not initialized yet
+            dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
+
+            populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
+        }
+
+        for (Component nested : component.getComponentsForLifecycle()) {
+            applyDefaultValues(nested);
+        }
+
+        // if view, need to add all pages since only one will be on the lifecycle
+        if (component instanceof View) {
+            for (Component nested : ((View) component).getItems()) {
+                applyDefaultValues(nested);
+            }
+        }
+
+    }
+
+    /**
+     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
+     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
+     * request).
+     * 
+     * <p>
+     * The <code>View</code> instance is inspected for fields that have the
+     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
+     * request parameter map, the request value is used to set the view property. The Map of
+     * parameter name/values that match are placed in the view so they can be later retrieved to
+     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
+     * parameter key/value pairs to the returned map if necessary.
+     * </p>
+     * 
+     * <p>
+     * For each field found, if there is a corresponding key/value pair in the request parameters,
+     * the value is used to populate the field. In addition, any conditional properties of
+     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
+     * parameter value does not get overridden by the dictionary conditional logic
+     * </p>
+     * 
+     * @param parameters The request parameters that apply to the view.
+     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     */
+    @Override
+    public void populateViewFromRequestParameters(Map<String, String> parameters) {
+        View view = ViewLifecycle.getView();
+
+        // build Map of property replacers by property name so that we can remove them
+        // if the property was set by a request parameter
+        Map<String, Set<PropertyReplacer>> viewPropertyReplacers = new HashMap<String, Set<PropertyReplacer>>();
+        List<PropertyReplacer> propertyReplacerSource = view.getPropertyReplacers();
+        if (propertyReplacerSource != null) {
+            for (PropertyReplacer replacer : propertyReplacerSource) {
+                String replacerPropertyName = replacer.getPropertyName();
+                Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(replacerPropertyName);
+
+                if (propertyReplacers == null) {
+                    viewPropertyReplacers.put(replacerPropertyName,
+                            propertyReplacers = new HashSet<PropertyReplacer>());
+                }
+
+                propertyReplacers.add(replacer);
+            }
+        }
+
+        Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(view.getClass(),
+                RequestParameter.class);
+
+        // for each request parameter allowed on the view, if the request contains a value use
+        // to set on View, and clear and conditional expressions or property replacers for that field
+        Map<String, String> viewRequestParameters = new HashMap<String, String>();
+        for (String fieldToPopulate : annotatedFields.keySet()) {
+            RequestParameter requestParameter = (RequestParameter) annotatedFields.get(fieldToPopulate);
+
+            // use specified parameter name if given, else use field name to retrieve parameter value
+            String requestParameterName = requestParameter.parameterName();
+            if (StringUtils.isBlank(requestParameterName)) {
+                requestParameterName = fieldToPopulate;
+            }
+
+            if (!parameters.containsKey(requestParameterName)) {
+                continue;
+            }
+
+            String fieldValue = parameters.get(requestParameterName);
+            if (StringUtils.isNotBlank(fieldValue)) {
+                viewRequestParameters.put(requestParameterName, fieldValue);
+                ObjectPropertyUtils.setPropertyValue(view, fieldToPopulate, fieldValue);
+
+                // remove any conditional configuration so value is not
+                // overridden later during the apply model phase
+                if (view.getPropertyExpressions().containsKey(fieldToPopulate)) {
+                    view.getPropertyExpressions().remove(fieldToPopulate);
+                }
+
+                if (viewPropertyReplacers.containsKey(fieldToPopulate)) {
+                    Set<PropertyReplacer> propertyReplacers = viewPropertyReplacers.get(fieldToPopulate);
+                    for (PropertyReplacer replacer : propertyReplacers) {
+                        view.getPropertyReplacers().remove(replacer);
+                    }
+                }
+            }
+        }
+
+        view.setViewRequestParameters(viewRequestParameters);
+    }
+
+    /**
+     * Builds JS script that will invoke the show growl method to display a growl message when the
+     * page is rendered
+     * 
+     * <p>
+     * A growl call will be created for any explicit growl messages added to the message map.
+     * </p>
+     * 
+     * <p>
+     * Growls are only generated if @{link
+     * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
+     * messages are set as info messages for the page
+     * </p>
+     * 
+     * @return JS script string for generated growl messages
+     */
+    @Override
+    public String buildGrowlScript() {
+        View view = ViewLifecycle.getView();
+        String growlScript = "";
+
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
+        MessageMap messageMap = GlobalVariables.getMessageMap();
+        for (GrowlMessage growl : messageMap.getGrowlMessages()) {
+            if (view.isGrowlMessagingEnabled()) {
+                String message = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                        growl.getMessageKey());
+
+                if (StringUtils.isNotBlank(message)) {
+                    if (growl.getMessageParameters() != null) {
+                        message = message.replace("'", "''");
+                        message = MessageFormat.format(message, (Object[]) growl.getMessageParameters());
+                    }
+
+                    // escape single quotes in message or title since that will cause problem with plugin
+                    message = message.replace("'", "\\'");
+
+                    String title = growl.getTitle();
+                    if (StringUtils.isNotBlank(growl.getTitleKey())) {
+                        title = messageService.getMessageText(growl.getNamespaceCode(), growl.getComponentCode(),
+                                growl.getTitleKey());
+                    }
+                    title = title.replace("'", "\\'");
+
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + title + "', '" + growl.getTheme() + "');";
+                }
+            } else {
+                ErrorMessage infoMessage = new ErrorMessage(growl.getMessageKey(), growl.getMessageParameters());
+                infoMessage.setNamespaceCode(growl.getNamespaceCode());
+                infoMessage.setComponentCode(growl.getComponentCode());
+
+                messageMap.putInfoForSectionId(KRADConstants.GLOBAL_INFO, infoMessage);
+            }
+        }
+
+        return growlScript;
+    }
+
+    /**
+     * Applies the default value configured for the given field (if any) to the line given object
+     * property that is determined by the given binding path
+     * 
+     * @param object object that should be populated
+     * @param dataField field to check for configured default value
+     * @param bindingPath path to the property on the object that should be populated
+     */
+    @Override
+    public void populateDefaultValueForField(Object object, DataField dataField, String bindingPath) {
+        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
+                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+            return;
+        }
+
+        Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
+
+        // Default value only applies when the value being set is null (has no value on the form)
+        if (currentValue != null) {
+            return;
+        }
+
+        Object defaultValue = getDefaultValueForField(object, dataField);
+
+        ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+    }
+
+    /**
+     * Retrieves the default value that is configured for the given data field
+     * 
+     * <p>
+     * The field's default value is determined in the following order:
+     * 
+     * <ol>
+     * <li>If default value on field is non-blank</li>
+     * <li>If expression is found for default value</li>
+     * <li>If default value finder class is configured for field</li>
+     * <li>If an expression is found for default values</li>
+     * <li>If default values on field is not null</li>
+     * </ol>
+     * </p>
+     * 
+     * @param object object that should be populated
+     * @param dataField field to retrieve default value for
+     * @return Object default value for field or null if value was not found
+     */
+    @Override
+    public Object getDefaultValueForField(Object object, DataField dataField) {
+        View view = ViewLifecycle.getView();
+        Object defaultValue = null;
+
+        if (StringUtils.isNotBlank(dataField.getDefaultValue())) {
+            defaultValue = dataField.getDefaultValue();
+        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
+                UifConstants.ComponentProperties.DEFAULT_VALUE)) {
+            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
+        } else if (dataField.getDefaultValueFinderClass() != null) {
+            ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+
+            defaultValue = defaultValueFinder.getValue();
+        } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
+                UifConstants.ComponentProperties.DEFAULT_VALUES)) {
+            defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUES);
+        } else if (dataField.getDefaultValues() != null) {
+            defaultValue = dataField.getDefaultValues();
+        }
+
+        ExpressionEvaluator expressionEvaluator = getExpressionEvaluator();
+
+        if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
+                .containsElPlaceholder((String) defaultValue)) {
+            Map<String, Object> context = view.getPreModelContext();
+            context.putAll(dataField.getContext());
+
+            defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, (String) defaultValue);
+            defaultValue = expressionEvaluator.evaluateExpressionTemplate(context, (String) defaultValue);
+        }
+
+        return defaultValue;
+    }
+
+    /**
+     * Perform a database or data dictionary based refresh of a specific property object
+     * 
+     * <p>
+     * The object needs to be of type PersistableBusinessObject.
+     * </p>
+     * 
+     * @param parentObject parent object that references the object to be refreshed
+     * @param referenceObjectName property name of the parent object to be refreshed
+     */
+    @Override
+    public void refreshReference(Object parentObject, String referenceObjectName) {
+        if (!(parentObject instanceof PersistableBusinessObject)) {
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                    .getName() + ". Class not of type PersistableBusinessObject");
+            return;
+        }
+
+        LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+        DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+
+        if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName)
+                || legacyDataAdapter.hasCollection(parentObject.getClass(), referenceObjectName)) {
+            // refresh via database mapping
+            legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
+        } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
+            // refresh via data dictionary mapping
+            Object referenceObject = DataObjectUtils.getPropertyValue(parentObject, referenceObjectName);
+            if (!(referenceObject instanceof PersistableBusinessObject)) {
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                        .getName() + ". Class not of type PersistableBusinessObject");
+                return;
+            }
+
+            referenceObject = legacyDataAdapter.retrieve((PersistableBusinessObject) referenceObject);
+            if (referenceObject == null) {
+                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                        .getName() + ".");
+                return;
+            }
+
+            try {
+                KRADUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
+            } catch (Exception e) {
+                LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                        .getMessage());
+                throw new RuntimeException(
+                        "Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                                .getMessage());
+            }
+        } else {
+            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                    .getName() + ".");
+        }
+    }
+
+    /**
+     * Update the reference objects listed in referencesToRefresh of the model
+     * 
+     * <p>
+     * The the individual references in the referencesToRefresh string are separated by
+     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
+     * </p>
+     * 
+     * @param referencesToRefresh list of references to refresh (
+     */
+    @Override
+    public void refreshReferences(String referencesToRefresh) {
+        Object model = ViewLifecycle.getModel();
+        for (String reference : StringUtils.split(referencesToRefresh, KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR)) {
+            if (StringUtils.isBlank(reference)) {
+                continue;
+            }
+
+            //ToDo: handle add line
+
+            if (DataObjectUtils.isNestedAttribute(reference)) {
+                String parentPath = DataObjectUtils.getNestedAttributePrefix(reference);
+                Object parentObject = ObjectPropertyUtils.getPropertyValue(model, parentPath);
+                String referenceObjectName = DataObjectUtils.getNestedAttributePrimitive(reference);
+
+                if (parentObject == null) {
+                    LOG.warn("Unable to refresh references for " + referencesToRefresh +
+                            ". Object not found in model. Nothing refreshed.");
+                    continue;
+                }
+
+                refreshReference(parentObject, referenceObjectName);
+            } else {
+                refreshReference(model, reference);
+            }
+        }
+    }
+
+
+    /**
+     * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
+     * the view to get the exported action flags and edit modes that can be used in conditional
+     * logic
+     */
+    @Override
+    public void retrieveEditModesAndActionFlags() {
+        View view = ViewLifecycle.getView();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
+
+        Set<String> actionFlags = presentationController.getActionFlags(view, model);
+        Set<String> editModes = presentationController.getEditModes(view, model);
+
+        // if user session is not established cannot invoke authorizer
+        if (GlobalVariables.getUserSession() != null) {
+            Person user = GlobalVariables.getUserSession().getPerson();
+
+            actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
+            editModes = authorizer.getEditModes(view, model, user, editModes);
+        }
+
+        view.setActionFlags(new BooleanMap(actionFlags));
+        view.setEditModes(new BooleanMap(editModes));
+    }
+
+    /**
+     * Sets up the view context which will be available to other components through their context
+     * for conditional logic evaluation.
+     */
+    @Override
+    public void setViewContext() {
+        View view = ViewLifecycle.getView();
+        view.pushAllToContext(view.getPreModelContext());
+
+        // evaluate view expressions for further context
+        for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
+            String variableName = variableExpression.getKey();
+            Object value = getExpressionEvaluator().evaluateExpression(view.getContext(),
+                    variableExpression.getValue());
+            view.pushObjectToContext(variableName, value);
+        }
+    }
+
 
     /**
      * Sets the expression evaluator service
      * 
-     * @param expressionEvaluator
+     * @param expressionEvaluator The expression evaluator.
      */
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator) {
         this.expressionEvaluator = expressionEvaluator;
@@ -726,7 +1178,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Sets the configuration service
      * 
-     * @param configurationService
+     * @param configurationService The configuration service.
      */
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
@@ -748,7 +1200,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Sets the data dictionary service
      * 
-     * @param dataDictionaryService
+     * @param dataDictionaryService The dictionary service.
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
         this.dataDictionaryService = dataDictionaryService;
@@ -769,12 +1221,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Sets the view dictionary service
      * 
-     * @param viewDictionaryService
+     * @param viewDictionaryService The view dictionary service.
      */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
     }
 
+    /**
+     * Get the legacy data adapter.
+     * 
+     * @return The legacy data adapter.
+     */
     protected LegacyDataAdapter getLegacyDataAdapter() {
         if (legacyDataAdapter == null) {
             return KRADServiceLocatorWeb.getLegacyDataAdapter();
@@ -782,6 +1239,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return legacyDataAdapter;
     }
 
+    /**
+     * Set the legacy data adapter.
+     * 
+     * @param legacyDataAdapter The legacy data adapter.
+     */
     public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
         this.legacyDataAdapter = legacyDataAdapter;
     }

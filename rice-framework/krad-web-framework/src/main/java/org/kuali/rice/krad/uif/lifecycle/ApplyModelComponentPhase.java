@@ -78,9 +78,10 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param component The component instance the model should be applied to
      * @param model Top level object containing the data
+     * @param index The position of this phase within the predecessor phase's successor queue.
      * @param parent The parent component.
+     * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
-     * @param parentPhase The apply model phase processed on the parent component.
      */
     protected void prepare(Component component, Object model, int index,
             Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
@@ -136,8 +137,8 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Gets global objects for the context map and pushes them to the context for the component
      * 
-     * @param view view instance for component
-     * @param component component instance to push context to
+     * @return The common context elements to use while applying model elements to the view.
+     * @see #prepare(Component, Object, int, Component, ViewLifecyclePhase, Set)
      */
     public Map<String, Object> getCommonContext() {
         return commonContext;
@@ -146,6 +147,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Visit a lifecycle element.
      * 
+     * @param element The lifecycle element (component or layout manager) to mark as visisted.
      * @return True if the element has been visited before, false if this was the first visit.
      */
     public boolean visit(LifecycleElement element) {
@@ -186,7 +188,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
+     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

@@ -48,10 +48,6 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
     /**
      * Invokes the finalize method for the component (if configured) and sets the render output for
      * the component to the returned method string (if method is not a void type)
-     * 
-     * @param view view instance that contains the component
-     * @param component component to run finalize method for
-     * @param model top level object containing the data
      */
     @Override
     protected void performLifecycleTask() {

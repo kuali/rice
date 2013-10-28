@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRefreshBuild;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.MessageView;
@@ -496,75 +497,9 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
-        View view = form.getPostedView();
-        
-        ViewLifecycle.encapsulateLifecycle(view, form, request, response, new Runnable(){
 
-            @Override
-            public void run() {
-                View view = ViewLifecycle.getView();
-                
-                String flashMapSelectedLineValues = "";
-                if (RequestContextUtils.getInputFlashMap(request) != null) {
-                    flashMapSelectedLineValues = (String) RequestContextUtils.getInputFlashMap(request).get(
-                            UifParameters.SELECTED_LINE_VALUES);
-                }
-
-                String refreshCallerType = "";
-                if (request.getParameterMap().containsKey(KRADConstants.REFRESH_CALLER_TYPE)) {
-                    refreshCallerType = request.getParameter(KRADConstants.REFRESH_CALLER_TYPE);
-                }
-
-                // process multi-value lookup returns
-                if (StringUtils.equals(refreshCallerType, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP)) {
-                    String lookupCollectionName = "";
-                    if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_NAME)) {
-                        lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
-                    }
-
-                    if (StringUtils.isBlank(lookupCollectionName)) {
-                        throw new RuntimeException(
-                                "Lookup collection name is required for processing multi-value lookup results");
-                    }
-
-                    String selectedLineValues = "";
-                    if (request.getParameterMap().containsKey(UifParameters.SELECTED_LINE_VALUES)) {
-                        selectedLineValues = request.getParameter(UifParameters.SELECTED_LINE_VALUES);
-                    }
-                    if (!StringUtils.isBlank(flashMapSelectedLineValues)) {
-                        selectedLineValues = flashMapSelectedLineValues;
-                    }
-
-                    // invoked view helper to populate the collection from lookup results
-                    ViewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
-                            lookupCollectionName, selectedLineValues);
-                }
-
-                // refresh references
-                if (request.getParameterMap().containsKey(KRADConstants.REFERENCES_TO_REFRESH)) {
-                    String referencesToRefresh = request.getParameter(KRADConstants.REFERENCES_TO_REFRESH);
-
-                    ViewLifecycle.getActiveLifecycle().refreshReferences(form, referencesToRefresh);
-                }
-
-                // set focus and jump position for returning from a quickfinder
-                if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
-                    String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
-
-                    String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                            UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
-                    if (StringUtils.isNotBlank(focusId)) {
-                        form.setFocusId(focusId);
-                    }
-
-                    String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                            UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
-                    if (StringUtils.isNotBlank(jumpToId)) {
-                        form.setJumpToId(jumpToId);
-                    }
-                }
-
-            }});
+        ViewLifecycle.encapsulateLifecycle(
+                form.getPostedView(), form, request, response, new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
     }

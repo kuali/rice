@@ -40,6 +40,7 @@ public final class LifecycleTaskFactory {
     /**
      * Get a task instance by class.
      * 
+     * @param <T> The lifecycle task type to return.
      * @param taskClass The task class.
      * @param phase The lifecycle phase.
      * @return A lifecycle processing task for the indicated phase, ready for processing.

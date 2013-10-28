@@ -63,6 +63,17 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
     /**
      * Prepare this phase for reuse.
+     * 
+     * @param component The component to be processed by this phase.
+     * @param model The model associated with the lifecycle at this phase.
+     * @param index The position within the predecessor phase's successor list of this phase.
+     * @param parent The parent component. For top-down phases, this component will be associated
+     *        with the predecssor phase. For bottom-up phases (rendering), this component will be
+     *        associated with a successor phases.
+     * @param nextPhase The lifecycle phase to queue directly upon completion of this phase, if
+     *        applicible.
+     *        
+     * @see LifecyclePhaseFactory
      */
     protected void prepare(Component component, Object model, int index,
             Component parent, ViewLifecyclePhase nextPhase) {
@@ -85,8 +96,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * Initialize queue of pending tasks phases.
      * 
      * <p>
-     * This method will be called before {@link #performLifecyclePhase()} while processing this
-     * phase.
+     * This method will be called before during processing to determine which tasks to perform at
+     * this phase.
      * </p>
      * 
      * @param tasks The queue of tasks to perform.
@@ -97,11 +108,13 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * Initialize queue of successor phases.
      * 
      * <p>
-     * This method will be called after {@link #performLifecyclePhase()} while processing this
-     * phase.
+     * This method will be called while processing this phase after all tasks have been performed,
+     * to determine phases to queue for successor processing. This phase will not be considered
+     * complete until all successors queued by this method, and all subsequent successor phases,
+     * have completed processing.
      * </p>
      * 
-     * @param tasks The queue of successor phases.
+     * @param successors The queue of successor phases.
      */
     protected abstract void initializeSuccessors(Queue<ViewLifecyclePhase> successors);
 
@@ -189,8 +202,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * Execute the lifecycle phase.
      * 
      * <p>
-     * This method performs state validation and updates component view status. Override
-     * {@link #performLifecyclePhase()} to provide phase-specific behavior.
+     * This method performs state validation and updates component view status. Use
+     * {@link #initializePendingTasks(Queue)} to provide phase-specific behavior.
      * </p>
      * 
      * @see java.lang.Runnable#run()

@@ -60,7 +60,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param component The component instance the model should be applied to
      * @param model Top level object containing the data
-     * @param parentPhase The finalize phase processed on the parent component.
+     * @param index The position of this phase within its predecessor phase's successor queue.
+     * @param parent The parent component.
      */
     protected void prepare(Component component, Object model, int index, Component parent) {
         super.prepare(component, model, index, parent, null);
@@ -118,7 +119,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializeSuccessors(java.util.List)
+     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

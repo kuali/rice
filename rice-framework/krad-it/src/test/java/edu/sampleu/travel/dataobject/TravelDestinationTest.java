@@ -35,7 +35,6 @@ import static org.junit.Assert.assertTrue;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class TravelDestinationTest extends KRADTestCase {
 
-    private static final String TYPE_CODE = TripType.OS.getCode();
     private static final String DESTINATION_NAME = PostalStateCode.PR.getLabel();
     private static final String COUNTRY_CODE = PostalCountryCode.US.getCode();
     private static final String STATE_CODE = PostalStateCode.PR.getCode();

@@ -52,7 +52,6 @@ public class TravelDestinationTest extends KRADTestCase {
 
         TravelDestination travelDestination = KRADServiceLocator.getDataObjectService().find(TravelDestination.class, id);
         assertNotNull("Travel Destination ID is null", travelDestination.getTravelDestinationId());
-        //assertEquals("Travel Destination type is incorrect", TYPE_CODE, travelDestination.getTravelTypeCode());
         assertEquals("Travel Destination name is incorrect", DESTINATION_NAME, travelDestination.getTravelDestinationName());
         assertEquals("Travel Destination country is incorrect", COUNTRY_CODE, travelDestination.getCountryCd());
         assertEquals("Travel Destination state is incorrect", STATE_CODE, travelDestination.getStateCd());
@@ -61,7 +60,6 @@ public class TravelDestinationTest extends KRADTestCase {
 
     private String createTravelDestination() {
         TravelDestination travelDestination = new TravelDestination();
-        //travelDestination.setTravelTypeCode(TYPE_CODE);
         travelDestination.setTravelDestinationName(DESTINATION_NAME);
         travelDestination.setCountryCd(COUNTRY_CODE);
         travelDestination.setStateCd(STATE_CODE);

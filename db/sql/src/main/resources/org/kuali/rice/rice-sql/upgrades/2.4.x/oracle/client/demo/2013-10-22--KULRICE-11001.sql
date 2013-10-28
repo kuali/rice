@@ -79,7 +79,7 @@ VALUES (10000, 'Value Rentals', sys_guid(), 1, 'Y')
 /
 
  -- Travel Authorization Table
- EXECUTE IMMEDIATE 'DROP TABLE TRVL_AUTH_DOC_T'
+DROP TABLE TRVL_AUTH_DOC_T
 /
 
 CREATE TABLE TRVL_AUTH_DOC_T (

@@ -59,7 +59,6 @@ VALUES (10000, 'DO', sys_guid(), 1,'Domestic', 30, 'Y')
 /
 
 -- Travel Expense Company Table
-
 CREATE TABLE TRVL_CO_T (
     CO_ID         VARCHAR2(40) NOT NULL,
     CO_NM         VARCHAR2(40) NOT NULL,
@@ -109,7 +108,6 @@ VALUES('10000','1','IS','2013-12-01 00:00:00','2013-12-04 00:00:00','10000',
 /
 
 -- Per Diem Table
-
 CREATE TABLE TRVL_PD_EXP_T  (
     PD_EXP_ID     VARCHAR2(40) NOT NULL,
     OBJ_ID      	VARCHAR2(36) NOT NULL,
@@ -142,7 +140,6 @@ VALUES (10000, sys_guid(), 1, 10000,10000, SYSDATE, 10.00, 10.00, 15.00, 20.00, 
 /
 
 -- Expense Item Table
-
 CREATE TABLE TRVL_EXP_ITM_T  (
     EXP_ITM_ID    VARCHAR2(40) NOT NULL,
     OBJ_ID        VARCHAR2(36) NOT NULL,

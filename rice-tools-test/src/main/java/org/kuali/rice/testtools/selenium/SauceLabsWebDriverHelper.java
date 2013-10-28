@@ -76,6 +76,7 @@ import java.util.Map;
  * </p><p>
  * In order to use {@link SauceOnDemandTestWatcher} the {@link SauceOnDemandSessionIdProvider} interface is implemented.
  * </p>
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider {
 

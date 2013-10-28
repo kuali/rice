@@ -22,6 +22,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
 
     /**

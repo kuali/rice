@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
  * Base class for Selenium Webdriver integration tests
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated
  */
 public abstract class WebDriverITBase implements Failable {
 

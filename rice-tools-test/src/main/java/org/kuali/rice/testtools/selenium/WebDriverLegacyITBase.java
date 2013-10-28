@@ -18,14 +18,12 @@ package org.kuali.rice.testtools.selenium;
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -66,7 +64,7 @@ import static org.junit.Assert.assertEquals;
  * <p>Calls to passed() probably don't belong in the methods reused here.</p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
 
     /**
      * Administration
@@ -382,7 +380,6 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
     protected WebDriver driver;
     protected String user = "admin";
     protected int waitSeconds;
-    protected boolean passed = false;
     protected String uiFramework = ITUtil.REMOTE_UIF_KNS;   // default to KNS
 
     public @Rule
@@ -471,11 +468,7 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
     @After
     public void tearDown() {
         try {
-            if (!passed) { // TODO move to Failable.fail impl to included error message, when it is promoted to this class
-                jGrowlSticky("FAILURE!");
-            }
-
-            WebDriverUtil.tearDown(passed, sessionId, this.toString().trim(), user);
+            WebDriverUtil.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
             t.printStackTrace();
@@ -494,7 +487,7 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
 
     private void closeAndQuitWebDriver() {
         if (driver != null) {
-            if (WebDriverUtil.dontTearDownPropertyNotSet() && WebDriverUtil.dontTearDownOnFailure(passed)) {
+            if (WebDriverUtil.dontTearDownPropertyNotSet() && WebDriverUtil.dontTearDownOnFailure(isPassed())) {
                 try {
                     driver.close();
                 } catch (NoSuchWindowException nswe) {
@@ -524,30 +517,9 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
     }
 
 
-    /**
-     * <p>
-     * Set passed to false, call jGrowlSticky with the given message, then fail using the Failable fail method.
-     * </p>
-     * @param message to display with failure
-     */
-    @Override
-    public void fail(String message) {
-        passed = false;
-        jGrowlSticky(message);
-        Assert.fail(message);
-    }
-
     @Override
     protected void navigate() throws Exception {
         // No-op for convenience
-    }
-
-    /**
-     * Set the test state to passed, this method is required to be called at the conclusion of a test for the saucelabs state of a test to be updated.
-     */
-    protected void passed() {
-        passed = true;
-        jGrowlSticky("Passed");
     }
 
     protected void agendaLookupAssertions() throws Exception {
@@ -615,14 +587,6 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
         assertElementPresentByName(BLANKET_APPROVE_NAME, "Blanket Approve button not present does " + user + " have permssion?");
         assertElementPresentByName("methodToCall.close");
         assertElementPresentByName(CANCEL_NAME);
-    }
-
-    protected void assertButtonDisabledByText(String buttonText) {
-        WebDriverUtil.assertButtonDisabledByText(driver, buttonText, this);
-    }
-
-    protected void assertButtonEnabledByText(String buttonText) {
-        WebDriverUtil.assertButtonEnabledByText(driver, buttonText, this);
     }
 
     protected void assertCancelConfirmation() throws InterruptedException {
@@ -1091,6 +1055,15 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
         waitNotVisibleByXpath(visibleLocator);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @return WebDriver
+     */
+    @Override
+    protected WebDriver getDriver() {
+        return driver;
+    }
 
     /**
      * {@link org.openqa.selenium.WebDriver#getWindowHandles()}
@@ -1308,10 +1281,6 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
         return WebDriverUtil.findButtonByText(driver, buttonText);
     }
 
-    protected WebElement findElement(By by) {
-        return WebDriverUtil.findElement(driver, by);
-    }
-
     protected WebElement findElement(By by, WebElement elementToFindOn) {
         try {
             WebElement found = elementToFindOn.findElement(by);
@@ -1523,68 +1492,6 @@ public abstract class WebDriverLegacyITBase extends AutomatedFunctionalTestBase 
      */
     protected void jGrowlSticky(String message) {
         WebDriverUtil.jGrowl(driver, jGrowlHeader, true, message);
-    }
-
-    private void jiraAwareFail(String message) {
-        JiraAwareFailureUtil.failOnMatchedJira(message, message, this);
-        // if there isn't a matched jira to fail on, then fail
-        checkForIncidentReport(message, message);
-        failableFail(message + " " + driver.getCurrentUrl());
-    }
-
-    private void jiraAwareFail(By by, String message, Throwable t) {
-        JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
-        // if there isn't a matched jira to fail on, then fail
-        checkForIncidentReport(by.toString(), message);
-        failableFail(t.getMessage() + "\n" + by.toString() + " " + message + " " + driver.getCurrentUrl());
-    }
-
-    protected void jiraAwareWaitAndClick(By by, String message) throws InterruptedException {
-        jiraAwareWaitAndClick(by, message, this);
-    }
-
-    protected void jiraAwareWaitAndClick(By by, String message, Failable failable) throws InterruptedException {
-        try {
-            jiraAwareWaitFor(by, message, failable);
-            WebElement element = findElement(by);
-            element.click();
-        } catch (Exception e) {
-            jiraAwareFail(by, message, e);
-        }
-    }
-
-    protected WebElement jiraAwareWaitFor(By by, String message) throws InterruptedException {
-        try {
-            return WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
-        } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
-        }
-        return null; // required, but the jiraAwareFail will will end test before this statement is reached
-    }
-
-    protected void jiraAwareWaitFors(By by, String message) throws InterruptedException {
-        try {
-            WebDriverUtil.waitFors(this.driver, this.waitSeconds, by, message);
-        } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
-        }
-    }
-
-    protected void jiraAwareWaitFor(By by, String message, Failable failable) throws InterruptedException {
-        try {
-            WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
-        } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
-        }
-    }
-    
-    protected WebElement jiraAwareWaitFor(By by, int seconds, String message) throws InterruptedException {
-        try {
-            return WebDriverUtil.waitFor(this.driver, seconds, by, message);
-        } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
-        }
-        return null; // required, but the jiraAwareFail will will end test before this statement is reached
     }
 
     protected String multiValueResultCount() throws InterruptedException {

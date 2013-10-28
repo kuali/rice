@@ -33,8 +33,7 @@ import java.util.Calendar;
  * <ol>
  *   <li>Keep WebDriver dependencies out of this class, those should be in {@link WebDriverUtil}</li>
  *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
- *   <li>Extract Hub specific logic?/li>
- *   <li>Rename to SmokeTestUtil or such</li>
+ *   <li>Rename to AutomatedFunctionalTestUtils or such</li>
  * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

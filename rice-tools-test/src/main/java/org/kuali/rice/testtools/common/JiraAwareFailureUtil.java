@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.testtools.common;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
@@ -121,6 +123,21 @@ public class JiraAwareFailureUtil {
      */
     public static void fail(String contents, String message, Failable failable) {
         failOnMatchedJira(contents, message, failable);
+        failable.fail(message);
+    }
+
+    /**
+     * <p>
+     * Calls {@see #failOnMatchedJira(String, String, Failable)} and calls fail on the {@see Failable#fail} fails if no matched jira failures.
+     * </p>
+     *
+     * @param contents to check for jira matches on
+     * @param message to pass to fail, also checked for jira matches
+     * @param failable {@see Failable#fail}
+     */
+    public static void fail(String contents, String message, Throwable throwable, Failable failable) {
+        failOnMatchedJira(contents, message, failable);
+        failOnMatchedJira(ExceptionUtils.getStackTrace(throwable), throwable.getMessage(), failable);
         failable.fail(message);
     }
 

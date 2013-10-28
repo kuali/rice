@@ -45,7 +45,6 @@
               <bean parent="Uif-InputField"
                     p:propertyName="travelDestinationId"
                     p:defaultValue="@{ #sequence('TRVL_DEST_ID_S') }" />
-              <bean parent="Uif-InputField" p:propertyName="travelTypeCode"/>
               <bean parent="Uif-InputField" p:propertyName="countryCd"/>
               <bean parent="Uif-InputField" p:propertyName="stateCd"/>
               <bean parent="Uif-InputField" p:propertyName="travelDestinationName" />

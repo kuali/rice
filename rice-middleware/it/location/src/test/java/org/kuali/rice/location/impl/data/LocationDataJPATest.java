@@ -66,9 +66,6 @@ public class LocationDataJPATest extends KRADTestCase {
     @Test
     public void testPostalCodeBoDataObject() throws Exception{
         assertTrue("PostalCodeBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(PostalCodeBo.class));
-        setupCountryBoDataObjectAndSave();
-        setupStateBoDataObjectAndSave();
-        setupCountyBoDataObjectAndSave();
         setupPostalCodeBoDataObjectAndSave();
 
         PostalCodeBo postalCodeBo = KRADServiceLocator.getDataObjectService().find(
@@ -85,8 +82,6 @@ public class LocationDataJPATest extends KRADTestCase {
     @Test
     public void testCountyBoDataObject() throws Exception{
         assertTrue("CountyBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(CountryBo.class));
-        setupCountryBoDataObjectAndSave();
-        setupStateBoDataObjectAndSave();
         setupCountyBoDataObjectAndSave();
 
         CountyBo countyBo = KRADServiceLocator.getDataObjectService().find(CountyBo.class,new CountyId("MON","US","IN"));
@@ -101,7 +96,6 @@ public class LocationDataJPATest extends KRADTestCase {
     @Test
     public void testStateBoDataObject() throws Exception{
         assertTrue("StateBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(StateBo.class));
-        setupCountryBoDataObjectAndSave();
         setupStateBoDataObjectAndSave();
 
         StateBo stateBo = KRADServiceLocator.getDataObjectService().find(StateBo.class,new StateId("US","IN"));
@@ -123,7 +117,6 @@ public class LocationDataJPATest extends KRADTestCase {
     @Test
     public void testCampusBoDataObject() throws Exception{
        assertTrue("CampusBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(CampusBo.class));
-       setupCampusTypeBoDataObjectAndSave();
        setupCampusBoDataObjectAndSave();
 
        CampusBo campusBo = KRADServiceLocator.getDataObjectService().find(CampusBo.class,"SE");
@@ -153,7 +146,6 @@ public class LocationDataJPATest extends KRADTestCase {
         List<Campus> activeCampuses = LocationApiServiceLocator.getCampusService().findAllCampuses();
         assertTrue("findAllCampuses returned result", activeCampuses.size() > 0);
 
-        setupCampusTypeBoDataObjectAndSave();
         CampusType campusType = LocationApiServiceLocator.getCampusService().getCampusType("C");
         assertTrue("getCampusType retrieved correctly",campusType != null
                    && StringUtils.equals(campusType.getName(), "Commuter"));
@@ -208,7 +200,6 @@ public class LocationDataJPATest extends KRADTestCase {
 
     @Test
     public void testStateServiceImplJPA() throws Exception{
-        setupCountryBoDataObjectAndSave();
         setupStateBoDataObjectAndSave();
 
         State state = LocationApiServiceLocator.getStateService().getState("US","IN");
@@ -239,6 +230,7 @@ public class LocationDataJPATest extends KRADTestCase {
     }
 
     private void setupPostalCodeBoDataObjectAndSave(){
+        setupCountyBoDataObjectAndSave();
         PostalCodeBo postalCodeBo = new PostalCodeBo();
         postalCodeBo.setActive(true);
         postalCodeBo.setCityName("Bloomington");
@@ -251,6 +243,7 @@ public class LocationDataJPATest extends KRADTestCase {
     }
 
     private void setupCountyBoDataObjectAndSave(){
+        setupStateBoDataObjectAndSave();
         CountyBo countyBo = new CountyBo();
         countyBo.setActive(true);
         countyBo.setCode("MON");
@@ -262,6 +255,7 @@ public class LocationDataJPATest extends KRADTestCase {
     }
 
     private void setupStateBoDataObjectAndSave(){
+        setupCountryBoDataObjectAndSave();
         StateBo stateBo = new StateBo();
         stateBo.setActive(true);
         stateBo.setCode("IN");
@@ -283,6 +277,7 @@ public class LocationDataJPATest extends KRADTestCase {
     }
 
     private void setupCampusBoDataObjectAndSave(){
+        setupCampusTypeBoDataObjectAndSave();
         CampusBo campusBo = new CampusBo();
         campusBo.setActive(true);
         campusBo.setCampusTypeCode("C");

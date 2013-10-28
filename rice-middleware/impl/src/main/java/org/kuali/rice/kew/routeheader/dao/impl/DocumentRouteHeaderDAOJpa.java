@@ -47,6 +47,24 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
     private static final String LOCK_TIMEOUT_HINT = "javax.persistence.lock.timeout";
     private static final Long DEFAULT_LOCK_TIMEOUT_SECONDS = Long.valueOf(60 * 60); // default to 1 hour
 
+    public static final String GET_APP_DOC_ID_NAME = "DocumentRouteHeaderValue.GetAppDocId";
+    public static final String GET_APP_DOC_ID_QUERY = "SELECT d.appDocId from DocumentRouteHeaderValue "
+            + "as d where d.documentId = :documentId";
+    public static final String GET_APP_DOC_STATUS_NAME = "DocumentRouteHeaderValue.GetAppDocStatus";
+    public static final String GET_APP_DOC_STATUS_QUERY = "SELECT d.appDocStatus from "
+            + "DocumentRouteHeaderValue as d where d.documentId = :documentId";
+    public static final String GET_DOCUMENT_HEADERS_NAME = "DocumentRouteHeaderValue.GetDocumentHeaders";
+    public static final String GET_DOCUMENT_HEADERS_QUERY = "SELECT d from DocumentRouteHeaderValue "
+            + "as d where d.documentId IN :documentIds";
+    public static final String GET_DOCUMENT_STATUS_NAME = "DocumentRouteHeaderValue.GetDocumentStatus";
+    public static final String GET_DOCUMENT_STATUS_QUERY = "SELECT d.docRouteStatus from "
+            + "DocumentRouteHeaderValue as d where d.documentId = :documentId";
+    public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME =
+            "DocumentRouteHeaderValue.GetDocumentIdByDocTypeAndAppId";
+    public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY = "SELECT "
+            + "DISTINCT(DH.documentId) FROM DocumentRouteHeaderValue DH, DocumentType DT "
+            + "WHERE DH.appDocId = :appDocId AND DH.documentTypeId = DT.documentTypeId  AND DT.name = :name";
+
 
 	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
@@ -60,7 +78,7 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
             return new ArrayList<DocumentRouteHeaderValue>();
         }
         TypedQuery<DocumentRouteHeaderValue> query = getEntityManager().
-                createNamedQuery("DocumentRouteHeaderValue.GetDocumentHeaders", DocumentRouteHeaderValue.class);
+                createNamedQuery(GET_DOCUMENT_HEADERS_NAME, DocumentRouteHeaderValue.class);
         query.setParameter("documentIds",documentIds);
         return query.getResultList();
     }
@@ -184,7 +202,7 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
     public String getDocumentStatus(String documentId) {
         String status = null;
 
-        Query query = getEntityManager().createNamedQuery("DocumentRouteHeaderValue.GetDocumentStatus");
+        Query query = getEntityManager().createNamedQuery(GET_DOCUMENT_STATUS_NAME);
         query.setParameter("documentId",documentId);
         if(query.getResultList() != null && !query.getResultList().isEmpty()){
             status = (String)query.getResultList().get(0);
@@ -198,12 +216,13 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
     }
 
     public String getAppDocId(String documentId) {
-        Query query = getEntityManager().createNamedQuery("DocumentRouteHeaderValue.GetAppDocId");
+        TypedQuery<String> query = getEntityManager().createNamedQuery(GET_APP_DOC_ID_NAME,String.class
+        );
         query.setParameter("documentId",documentId);
 
         String applicationDocId = null;
         if(query.getResultList() != null && !query.getResultList().isEmpty()){
-            applicationDocId = (String)query.getResultList().get(0);
+            applicationDocId = query.getResultList().get(0);
         }
         return applicationDocId;
 
@@ -216,10 +235,11 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
 
         String applicationId = null;
 
-        Query query = getEntityManager().createNamedQuery("DocumentType.GetAppIdByDocumentId");
+        TypedQuery<String> query = getEntityManager().createNamedQuery(
+                "DocumentType.GetAppIdByDocumentId",String.class);
         query.setParameter("documentId",documentId);
         if(query.getResultList() != null && !query.getResultList().isEmpty()){
-             applicationId = (String)query.getResultList().get(0);
+             applicationId = query.getResultList().get(0);
         }
         return applicationId;
 
@@ -228,17 +248,18 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
     public String getAppDocStatus(String documentId) {
         String applicationDocumentStatus = null;
 
-        Query query = getEntityManager().createNamedQuery("DocumentRouteHeaderValue.GetAppDocStatus");
+        TypedQuery<String> query = getEntityManager().createNamedQuery(GET_APP_DOC_STATUS_NAME,String.class);
         query.setParameter("documentId",documentId);
         if(query.getResultList() != null && !query.getResultList().isEmpty()){
-            applicationDocumentStatus = (String)query.getResultList().get(0);
+            applicationDocumentStatus = query.getResultList().get(0);
         }
         return applicationDocumentStatus;
     }
 
     public Collection findByDocTypeAndAppId(String documentTypeName,
             String appId) {
-        Query query = getEntityManager().createNamedQuery("DocumentRouteHeaderValue.GetDocumentIdByDocTypeAndAppId");
+        TypedQuery<String> query = getEntityManager().createNamedQuery(GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME,
+                String.class);
         query.setParameter("appDocId",appId);
         query.setParameter("name",documentTypeName);
         return query.getResultList();

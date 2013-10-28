@@ -75,7 +75,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         TravelDestination travelDestination = travelPerDiemExpense.getTravelDestination();
         assertNotNull("Travel Per Diem Expense destination is null", travelDestination);
         assertNotNull("Travel Destination ID is null", travelDestination.getTravelDestinationId());
-        assertEquals("Travel Destination type is incorrect", TYPE_CODE, travelDestination.getTravelTypeCode());
+        //assertEquals("Travel Destination type is incorrect", TYPE_CODE, travelDestination.getTravelTypeCode());
         assertEquals("Travel Destination name is incorrect", DESTINATION_NAME, travelDestination.getTravelDestinationName());
         assertEquals("Travel Destination country is incorrect", COUNTRY_CODE, travelDestination.getCountryCd());
         assertEquals("Travel Destination state is incorrect", STATE_CODE, travelDestination.getStateCd());
@@ -98,7 +98,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
 
     private String createTravelPerDiemExpense() throws ParseException {
         TravelDestination newTravelDestination = new TravelDestination();
-        newTravelDestination.setTravelTypeCode(TYPE_CODE);
+        //newTravelDestination.setTravelTypeCode(TYPE_CODE);
         newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
         newTravelDestination.setCountryCd(COUNTRY_CODE);
         newTravelDestination.setStateCd(STATE_CODE);

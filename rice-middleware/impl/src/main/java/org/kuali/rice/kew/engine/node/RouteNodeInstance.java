@@ -18,6 +18,7 @@ package org.kuali.rice.kew.engine.node;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOJpa;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
@@ -52,12 +53,8 @@ import java.util.Map;
 @Entity
 @Table(name="KREW_RTE_NODE_INSTN_T")
 @NamedQueries({
-	@NamedQuery(name="RouteNodeInstance.FindByRouteNodeInstanceId",query="select r from RouteNodeInstance r where r.routeNodeInstanceId = :routeNodeInstanceId"),
-	@NamedQuery(name="RouteNodeInstance.FindActiveNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = 1"),
-	@NamedQuery(name="RouteNodeInstance.FindTerminalNodeInstances",query="select r from RouteNodeInstance r where r.documentId = :documentId and r.active = 0 and r.complete = 1"),
-	@NamedQuery(name="RouteNodeInstance.FindInitialNodeInstances",query="select d.initialRouteNodeInstances from DocumentRouteHeaderValue d where d.documentId = :documentId"),
-	@NamedQuery(name="RouteNodeInstance.FindProcessNodeInstances", query="select r from RouteNodeInstance r where r.process.routeNodeInstanceId = :processId"),
-	@NamedQuery(name="RouteNodeInstance.FindRouteNodeInstances", query="select r from RouteNodeInstance r where r.documentId = :documentId")
+	@NamedQuery(name= RouteNodeDAOJpa.FIND_INITIAL_NODE_INSTANCES_NAME,
+            query=RouteNodeDAOJpa.FIND_INITIAL_NODE_INSTANCES_QUERY)
 })
 public class RouteNodeInstance implements Serializable {
     

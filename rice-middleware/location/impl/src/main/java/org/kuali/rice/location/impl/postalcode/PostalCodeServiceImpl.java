@@ -49,7 +49,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
         map.put("countryCode", countryCode);
         map.put("code", code);
 
-        return PostalCodeBo.to(dataObjectService.find(PostalCodeBo.class,new CompoundKey(map)));
+        return PostalCodeBo.to(getDataObjectService().find(PostalCodeBo.class,new CompoundKey(map)));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
         map.put("countryCode", countryCode);
         map.put("active", Boolean.TRUE);
 
-        QueryResults<PostalCodeBo> postalCodeBoQueryResults = dataObjectService.findMatching(PostalCodeBo.class,
+        QueryResults<PostalCodeBo> postalCodeBoQueryResults = getDataObjectService().findMatching(PostalCodeBo.class,
                     QueryByCriteria.Builder.andAttributes(map).build());
         if (postalCodeBoQueryResults == null) {
             return Collections.emptyList();
@@ -82,7 +82,7 @@ public class PostalCodeServiceImpl implements PostalCodeService {
     public PostalCodeQueryResults findPostalCodes(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        QueryResults<PostalCodeBo> results = dataObjectService.findMatching(PostalCodeBo.class, queryByCriteria);
+        QueryResults<PostalCodeBo> results = getDataObjectService().findMatching(PostalCodeBo.class, queryByCriteria);
 
         PostalCodeQueryResults.Builder builder = PostalCodeQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

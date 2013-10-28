@@ -264,7 +264,6 @@ public class RuleDAOJpa implements RuleDAO {
             predicates.add(cb.equal(root.get("id"),ruleId));
         }
         if (groupId != null) {
-            getRuleResponsibilitySubQuery(groupId,cq);
             predicates.add(cb.in(root.get("id")).value(getRuleResponsibilitySubQuery(
                     groupId, cq)));
         }

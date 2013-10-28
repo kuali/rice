@@ -55,7 +55,8 @@ public final class CountryServiceImpl implements CountryService {
         if (StringUtils.isBlank(alternateCode)) {
             throw new RiceIllegalArgumentException("alt code is blank");
         }
-        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode).build();
+        QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE,
+                alternateCode).build();
         QueryResults<CountryBo> countryBoQueryResults = getDataObjectService().findMatching(CountryBo.class,qbc);
         List<CountryBo> countryList = countryBoQueryResults.getResults();
         if (countryList == null || countryList.isEmpty()) {

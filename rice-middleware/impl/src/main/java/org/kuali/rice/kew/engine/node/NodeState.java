@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOJpa;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -40,10 +42,6 @@ import java.util.Map;
 @AttributeOverride(name="versionNumber", column=@Column(name="VER_NBR", updatable=false, insertable=false)),
 //HACK since this super attribute does not exist on the table
 @AttributeOverride(name="objectId", column=@Column(name="KEY_CD", updatable=false, insertable=false) )
-})
-        @NamedQueries({
-	@NamedQuery(name="NodeState.FindNodeState", query="select n from NodeState as n where n.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and n.key = :key"),
-	@NamedQuery(name="NodeState.FindNodeStateById", query="select n from NodeState as n where n.stateId = :nodeStateId")
 })
 public class NodeState extends State {
 

@@ -51,6 +51,8 @@ import org.kuali.rice.kew.mail.CustomEmailAttributeImpl;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpa;
+import org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpa;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.krad.bo.DataObjectBase;
@@ -119,21 +121,18 @@ import java.util.Map;
 @Entity
 @Table(name="KREW_DOC_HDR_T")
 @NamedQueries({
-    @NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query=
-            "SELECT d FROM DocumentRouteHeaderValue d WHERE d.initiatorWorkflowId = :initiatorWorkflowId AND "
-                    + "d.docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"
-                    + KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY d.createDate DESC"),
-    @NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue "
-            + "as d where d.documentId = :documentId"),
-    @NamedQuery(name="DocumentRouteHeaderValue.GetAppDocStatus", query="SELECT d.appDocStatus from "
-            + "DocumentRouteHeaderValue as d where d.documentId = :documentId"),
-    @NamedQuery(name="DocumentRouteHeaderValue.GetDocumentHeaders", query="SELECT d from DocumentRouteHeaderValue "
-            + "as d where d.documentId IN :documentIds"),
-    @NamedQuery(name="DocumentRouteHeaderValue.GetDocumentStatus", query="SELECT d.docRouteStatus from "
-            + "DocumentRouteHeaderValue as d where d.documentId = :documentId"),
-    @NamedQuery(name="DocumentRouteHeaderValue.GetDocumentIdByDocTypeAndAppId", query = "SELECT "
-            + "DISTINCT(DH.documentId) FROM DocumentRouteHeaderValue DH, DocumentType DT "
-            + "WHERE DH.appDocId = :appDocId AND DH.documentTypeId = DT.documentTypeId  AND DT.name = :name")
+    @NamedQuery(name=QuickLinksDAOJpa.FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_NAME,
+            query= QuickLinksDAOJpa.FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_QUERY),
+    @NamedQuery(name= DocumentRouteHeaderDAOJpa.GET_APP_DOC_ID_NAME, query=
+            DocumentRouteHeaderDAOJpa.GET_APP_DOC_ID_QUERY),
+    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_NAME, query=
+            DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_QUERY),
+    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_DOCUMENT_HEADERS_NAME, query=
+            DocumentRouteHeaderDAOJpa.GET_DOCUMENT_HEADERS_QUERY),
+    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_DOCUMENT_STATUS_NAME, query=
+            DocumentRouteHeaderDAOJpa.GET_DOCUMENT_STATUS_QUERY),
+    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME, query =
+            DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY)
 })
 @NamedEntityGraphs({
     @NamedEntityGraph(name="DocumentRouteHeaderValue.ActionListAttributesOnly"

@@ -15,22 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.sql.DataSource;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
-import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -43,12 +29,30 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
 public class RouteNodeDAOJpa implements RouteNodeDAO {
 
 	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
-	
+
+    public static final String FIND_INITIAL_NODE_INSTANCES_NAME = "RouteNodeInstance.FindInitialNodeInstances";
+    public static final String FIND_INITIAL_NODE_INSTANCES_QUERY = "select d.initialRouteNodeInstances from "
+            + "DocumentRouteHeaderValue d where d.documentId = :documentId";
+
     /**
 	 * @return the entityManager
 	 */
@@ -64,17 +68,26 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
 	}
 
     public RouteNodeInstance findRouteNodeInstanceById(String nodeInstanceId) {
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindByRouteNodeInstanceId");
-    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID, nodeInstanceId);
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID,nodeInstanceId)
+        );
 
-   	 	return (RouteNodeInstance) query.getSingleResult(); 		
+        List<RouteNodeInstance> routeNodeInstances = getDataObjectService().findMatching(
+                RouteNodeInstance.class,queryByCriteria.build()).getResults();
+        if(routeNodeInstances != null && routeNodeInstances.size() > 0){
+            return routeNodeInstances.get(0);
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     public List<RouteNodeInstance> getActiveNodeInstances(String documentId) {
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindActiveNodeInstances");
-    	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
-    	return (List<RouteNodeInstance>)query.getResultList();
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.DOCUMENT_ID,documentId),
+                equal(KEWPropertyConstants.ACTIVE,true)
+        );
+        return getDataObjectService().findMatching(RouteNodeInstance.class,
+                    queryByCriteria.build()).getResults();
     }
 
     private static final String CURRENT_ROUTE_NODE_NAMES_SQL = "SELECT rn.nm" +
@@ -154,12 +167,16 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
 
     @SuppressWarnings("unchecked")
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindTerminalNodeInstances");
-    	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.DOCUMENT_ID,documentId),
+                equal(KEWPropertyConstants.ACTIVE,true),
+                equal(KEWPropertyConstants.COMPLETE,true)
+        );
 		
 		//FIXME: Can we do this better using just the JPQL query?  
 		List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
-		List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) query.getResultList();
+		List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) getDataObjectService().
+                        findMatching(RouteNodeInstance.class,queryByCriteria.build());
 		for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 		    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
 		    	terminalNodes.add(routeNodeInstance);
@@ -213,42 +230,58 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
 
     public List getInitialNodeInstances(String documentId) {
     	//FIXME: Not sure this query is returning what it needs to     	                                              
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindInitialNodeInstances");
+    	Query query = entityManager.createNamedQuery(FIND_INITIAL_NODE_INSTANCES_NAME);
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		return (List)query.getResultList();
     }
 
     public NodeState findNodeState(Long nodeInstanceId, String key) {
-    	Query query = entityManager.createNamedQuery("NodeState.FindNodeState");
-    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID, nodeInstanceId.toString());
-    	query.setParameter(KEWPropertyConstants.KEY, key);
-		return (NodeState) query.getSingleResult();
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID,nodeInstanceId.toString()),
+                equal(KEWPropertyConstants.KEY,key)
+        );
+
+        List<NodeState> nodeStates = getDataObjectService().findMatching(
+                        NodeState.class,queryByCriteria.build()).getResults();
+        if(nodeStates != null && nodeStates.size() > 0){
+            return nodeStates.get(0);
+        }
+        return null;
     }
 
     public RouteNode findRouteNodeByName(String documentTypeId, String name) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindRouteNodeByName");
-    	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
-    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_NAME, name);
-		return (RouteNode)query.getSingleResult();    	
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.DOCUMENT_TYPE_ID,documentTypeId),
+                equal(KEWPropertyConstants.ROUTE_NODE_NAME,name)
+        );
+        List<RouteNode> routeNodes = getDataObjectService().findMatching(
+                        RouteNode.class,queryByCriteria.build()).getResults();
+        if(routeNodes != null && routeNodes.size() > 0){
+            return routeNodes.get(0);
+        }
+        return null;
     }
 
     public List<RouteNode> findFinalApprovalRouteNodes(String documentTypeId) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindApprovalRouteNodes");
-    	query.setParameter(KEWPropertyConstants.DOCUMENT_TYPE_ID, documentTypeId);
-    	query.setParameter(KEWPropertyConstants.FINAL_APPROVAL, Boolean.TRUE);
-    	return new ArrayList<RouteNode>(query.getResultList());
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.DOCUMENT_TYPE_ID,documentTypeId),
+                equal(KEWPropertyConstants.FINAL_APPROVAL,Boolean.TRUE)
+        );
+    	return getDataObjectService().findMatching(RouteNode.class,queryByCriteria.build()).getResults();
     }
 
     public List findProcessNodeInstances(RouteNodeInstance process) {
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindProcessNodeInstances");
-    	query.setParameter(KEWPropertyConstants.PROCESS_ID, process.getRouteNodeInstanceId());
-    	return (List) query.getResultList();
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.PROCESS_ID,process.getRouteNodeInstanceId())
+        );
+        return getDataObjectService().findMatching(RouteNodeInstance.class,queryByCriteria.build()).getResults();
     }
 
     public List findRouteNodeInstances(String documentId) {
-    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindRouteNodeInstances");
-    	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
-    	return (List) query.getResultList();
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.DOCUMENT_ID,documentId)
+        );
+        return getDataObjectService().findMatching(RouteNodeInstance.class,queryByCriteria.build()).getResults();
     }
 
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance) {
@@ -257,7 +290,7 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
 		    RouteNodeInstance preNodeInstance = (RouteNodeInstance) preNodeInstanceIter.next();
 		    List<RouteNodeInstance> nextInstances = preNodeInstance.getNextNodeInstances();
 		    nextInstances.remove(routeNodeInstance);
-		    entityManager.merge(preNodeInstance);
+		    getEntityManager().merge(preNodeInstance);
 		}
     }
 
@@ -267,10 +300,16 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
     }
 
     public void deleteNodeStateById(Long nodeStateId) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindNodeStateById");
-    	query.setParameter(KEWPropertyConstants.ROUTE_NODE_STATE_ID, nodeStateId);
-    	NodeState nodeState = (NodeState) query.getSingleResult();
-    	entityManager.remove(nodeState);
+        QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
+                equal(KEWPropertyConstants.ROUTE_NODE_STATE_ID,nodeStateId)
+        );
+        List<NodeState> nodeStates = getDataObjectService().findMatching(
+                                NodeState.class,queryByCriteria.build()).getResults();
+        NodeState nodeState = null;
+        if(nodeStates != null && nodeStates.size() > 0){
+            nodeState = nodeStates.get(0);
+        }
+    	getDataObjectService().delete(nodeState);
     }
 
     public void deleteNodeStates(List statesToBeDeleted) {

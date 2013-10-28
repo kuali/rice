@@ -45,6 +45,13 @@ public class QuickLinksDAOJpa implements QuickLinksDAO {
     @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
 
+    public static final String FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_NAME =
+            "DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId";
+    public static final String FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_QUERY = "SELECT d FROM "
+            + "DocumentRouteHeaderValue d WHERE d.initiatorWorkflowId = :initiatorWorkflowId AND "
+            + "d.docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"
+            + KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY d.createDate DESC";
+
     @Override
 	@SuppressWarnings("unchecked")
     public List<ActionListStats> getActionListStats(final String principalId) {
@@ -132,7 +139,7 @@ public class QuickLinksDAOJpa implements QuickLinksDAO {
     public List<WatchedDocument> getWatchedDocuments(final String principalId) {
         try {
             List<DocumentRouteHeaderValue> documentRouteHeaderValues =  getEntityManager().createNamedQuery(
-                    "DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId").
+                    QuickLinksDAOJpa.FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_NAME).
                     setParameter("initiatorWorkflowId", principalId).getResultList();
             List<WatchedDocument> watchedDocuments = new ArrayList<WatchedDocument>();
             for(DocumentRouteHeaderValue documentRouteHeader : documentRouteHeaderValues){

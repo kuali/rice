@@ -63,10 +63,6 @@ import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
  */
 @Entity
 @Table(name="KREW_RTE_NODE_T")
-@NamedQueries({
-	@NamedQuery(name="RouteNode.FindRouteNodeByName", query="select r from RouteNode as r where r.routeNodeName = :routeNodeName and r.documentTypeId = :documentTypeId"),
-	@NamedQuery(name="RouteNode.FindApprovalRouteNodes", query="select r from RouteNode as r where r.documentTypeId = :documentTypeId and r.finalApprovalInd = :finalApprovalInd")
-})
 public class RouteNode implements Serializable, RouteNodeContract {    
 
     private static final long serialVersionUID = 4891233177051752726L;

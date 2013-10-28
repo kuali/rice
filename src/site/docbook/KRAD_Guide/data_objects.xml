@@ -321,546 +321,241 @@
         </section>
     </section>
     <section>
-        <title>OJB Primer </title>
-        <para><link xlink:href="http://db.apache.org/ojb/">Apache ObJectRelationalBridge</link>
-            (OJB) is an Object/Relational mapping tool that allows transparent persistence for Java
-            Objects against relational databases. OJB takes care of building and executing all the
-            necessary database statements (SQL) for managing the persistence of an application's
-            data. This not only saves a lot of development time, but also allows for easier support
-            of multiple database vendors. This section will cover the basics of OJB necessary for
-            KRAD development. </para>
-        <tip><para>The OJB Project: OJB is a 'dead' project, meaning no active work is being done to enhance the
-                codebase. Rice is in the process of migrating from OJB to <link
-                    xlink:href="http://www.oracle.com/technetwork/articles/javaee/jpa-137156.html"
-                    >JPA</link> (Java Persistence Architecture) with a Hibernate backend. The
-                timeline for completion of that work is in 2013 with the release of Rice 2.3. It is
-                possible currently to use JPA in a Rice application, however some of the persistence
-                features provided need to be implemented by the application.</para></tip>
-        <para>We make use of OJB with XML that provides the mapping metadata. Generally each
-            application module has one or more files that contain this XML. These files are picked
-            up through the module configuration (see New Project Setup):
-            <programlisting linenumbering = "numbered">&lt;bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
-    ... 
-    &lt;property name="databaseRepositoryFilePaths">
-        &lt;list>
-            &lt;value>OJB-repository-sampleapp.xml&lt;/value>
-        &lt;/list>
-    &lt;/property>
-&lt;/bean>    </programlisting></para>
-        <section>
-            <title> OJB XML METADATA </title>
-            <para>All OJB files must begin with the standard XML declaration, and then the OJB
-                doctype tag (root element):
-                <programlisting linenumbering = "numbered">&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;descriptor-repository version="1.0">
-...
-&lt;/descriptor-repository>  </programlisting></para>
-            <para>Next, our OJB file must contain a jdbc-connection-descriptor which configures the
-                database connection OJB will use for the contained mappings:
-                <programlisting linenumbering = "numbered">&lt;jdbc-connection-descriptor
-    jcd-alias="dataSource"  default-connection="false"
-    jdbc-level="3.0" eager-release="false" batch-mode="false" useAutoCommit="0"
-    ignoreAutoCommitExceptions="false">  &lt;object-cache
-    class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />  
-    &lt;sequence-manager className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">
-        &lt;attribute attribute-name="property.prefix" attribute- value="datasource.ojb.sequenceManager" />
-    &lt;/sequence-manager>
-&lt;/jdbc-connection-descriptor>   </programlisting></para>
-            <para>Note that jcd-alias="dataSource" refers to the name of the data source configured
-                in spring bean XML. Also note the use of the Rice ConfigurableSequenceManager. This
-                allows configuration through the Rice configuration API of the sequence for a
-                property (such as starting sequence value). </para>
-        </section>
-        <section>
-            <title>CLASS DESCRIPTORS </title>
-            <para>New data object mappings are added to OJB by adding a class-descriptor tag. One or
-                more class descriptors can be added to an OJB file after the
-                jdbc-connection-descriptor. With the class descriptor, we must specify the fully
-                qualified java class for mapping with the class attribute and the database table
-                name with the table attribute:
-                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" table="TRV_ACCT">
-    ... 
-&lt;/class-descriptor>      </programlisting></para>
-        </section>
-        <section>
-            <title>FIELD DESCRIPTORS </title>
-            <para>Now that we have our object-table mapping with the class descriptor, we can start
-                mapping the primitive fields of our object using a field-descriptor tag. We place
-                the field descriptors inside our class descriptor, indicating they all belong to
-                that class. With the field descriptor we must specify the property name using the
-                name attribute, and the table column name using the column attribute. In addition,
-                we need to specify the JDBC type for the table column using the jdbc-type attribute.
-                This indicates to OJB how it should convert the value between the database and
-                object layers. </para>
-            <programlisting linenumbering = "numbered">&lt;field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" /&gt;     </programlisting>
-            <para> Some common jdbc types and their corresponding Java type are as follows: <table
-                frame="all" tabstyle="striped">
-                    <title>JDBC Types to Java Type</title>
-                    <tgroup cols="2">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <thead>
-                            <row>
-                                <entry>JDBC Type</entry>
-                                <entry>Java Type</entry>
-                            </row>
-                        </thead>
-                        <tbody>
-                            <row>
-                                <entry> VARCHAR </entry>
-                                <entry> String </entry>
-                            </row>
-                            <row>
-                                <entry> NUMERIC </entry>
-                                <entry> BigDecimal </entry>
-                            </row>
-                            <row>
-                                <entry> DECIMAL </entry>
-                                <entry> BigDecimal </entry>
-                            </row>
-                            <row>
-                                <entry> INTEGER </entry>
-                                <entry> int </entry>
-                            </row>
-                            <row>
-                                <entry> BIGINT </entry>
-                                <entry> long </entry>
-                            </row>
-                            <row>
-                                <entry> DOUBLE </entry>
-                                <entry> double </entry>
-                            </row>
-                            <row>
-                                <entry> DATE </entry>
-                                <entry> java.sql.Date </entry>
-                            </row>
-                            <row>
-                                <entry> TIMESTAMP </entry>
-                                <entry> java.sql.Timestamp </entry>
-                            </row>
-                            <row>
-                                <entry> CLOB </entry>
-                                <entry> clob </entry>
-                            </row>
-                        </tbody>
-                    </tgroup>
-                </table></para>
-        </section>
-        <section>
-            <title> DATATYPE CONVERSION </title>
-            <para>Based on the given jdbc type, OJB can then convert the database value to the
-                appropriate type for the base Java types. However, KRAD provides some additional
-                data types, and applications may develop their own as well. In these cases, OJB will
-                not be able to convert the value itself. However, OJB does provide a conversion
-                facility that we can hook into and perform the necessary conversion. </para>
-            <para>We must create a class that implements the OJB interface
-                org.apache.ojb.broker.accesslayer.conversions.FieldConversion. This requires us to
-                then implement two methods. The first is named javaToSql and is invoked to convert
-                the custom Java type to one of the Java types supported by OJB. The second method is
-                named sqlToJava and is invoked to convert the value coming from the database to our
-                custom type. In short, OJB will perform the standard conversion based on the table
-                above, then invoke our converter class to convert from the base Java type to the
-                custom type. </para>
-            <programlisting>public class OjbKualiDecimalFieldConversion implements FieldConversion {
-    private static final long serialVersionUID = 2450111778124335242L;  
-    /** 
-     * @see FieldConversion#javaToSql(Object) 
-     */  
+        <title>Java Persistence API and Kuali Rice</title>
+        <para>In JPA there are several ways to execute queries. The following are the best practices
+            that should be used when using JPA in Kuali applications. In general the order of
+            consideration for a query should go as the following:<orderedlist>
+                <listitem>
+                    <para>Use DataObjectService methods in service methods.</para>
+                </listitem>
+                <listitem>
+                    <para>Create custom DAOs method to use NamedQuery in JPA.</para>
+                </listitem>
+                <listitem>
+                    <para>Use Rice Criteria API if query is too complicated and would require
+                        dynamic generation(String concatenation).</para>
+                </listitem>
+                <listitem>
+                    <para>Use JPA Criteria API if query requires functions not supported in Rice
+                        Criteria API.</para>
+                </listitem>
+            </orderedlist><emphasis role="bold"> Simple DataObjectService fetch by Primary
+                Key</emphasis><programlisting>CountryBo countryBo = getDataObjectService().find(CountryBo.class,code);
 
-    public Object javaToSql(Object source) { 
-        Object converted = source;  
-        if (source instanceof KualiDecimal) { 
-            converted = ((KualiDecimal) source).bigDecimalValue();
-        }  
-        return converted; 
-    }
-                 
-    /** 
-      * @see FieldConversion#sqlToJava(Object) 
-      */ 
+//Fetch by Compound Primary Key
+final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
+map.put("countryCode", countryCode);
+map.put("code", code);
+StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));</programlisting>
+            <emphasis role="bold">DataObjectService query for matching results</emphasis>
+            <programlisting>//Fetch all matching results by countryCode and that have active equivalent to true
+final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
+map.put("countryCode", countryCode);
+map.put("active", Boolean.TRUE);
 
-    public Object sqlToJava(Object source) { 
-        Object converted = source;  
-        if (source instanceof BigDecimal) { 
-            converted = new KualiDecimal((BigDecimal) source);  
-        }  return converted; 
-    }
-}   </programlisting>
-            <para>This is an example of a converter provided by KRAD for the custom KualiDecimal
-                type. In the javaToSql method, we are converting the KualiDecimal to a BigDecimal,
-                which OJB can then convert to the JDBC type. In the sqlToJava method, we take the
-                BigDecimal value coming from the database and create a new KualiDecimal type. </para>
-            <para>Once we have a converter class (or one is provided), we need to tell OJB to use it
-                by specifying the full class name for the converter on the field descriptor using
-                the conversion attribute:
-                <programlisting linenumbering = "numbered"> &lt;field-descriptor name="price"
-        column="PRICE" jdbc-type="DECIMAL"
-        conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>  </programlisting></para>
-            <para> It is necessary to add the conversion attribute for each property that has a
-                custom type. </para>
-        </section>
-        <section>
-            <title>RICE CUSTOM DATATYPES </title>
-            <para> Rice provides the following custom data types and OJB converters: <table
-                frame="all" tabstyle="striped">
-                    <title>Custom Data Types and OJB Converters</title>
-                    <tgroup cols="3">
-                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                        <colspec colname="c2" colnum="2" colwidth="1.0*"/>
-                        <colspec colname="c3" colnum="3" colwidth="1.0*"/>
-                        <thead>
-                            <row>
-                                <entry> Datatype </entry>
-                                <entry> Purpose </entry>
-                                <entry> Converter </entry>
-                            </row>
-                        </thead>
-                        <tbody>
-                            <row>
-                                <entry> KualiDecimal </entry>
-                                <entry>
-                                    <para>Provides a standard paradigm for handling BigDecimal
-                                    </para>
-                                </entry>
-                                <entry>OjbKualiDecimalFieldConversion </entry>
-                            </row>
-                            <row>
-                                <entry> KualiInteger </entry>
-                                <entry>
-                                    <para>Provides a standard paradigm for handling BigInteger
-                                    </para>
-                                </entry>
-                                <entry> OjbKualiIntegerFieldConversion </entry>
-                            </row>
-                            <row>
-                                <entry> KualiPercent </entry>
-                                <entry>
-                                    <para>Essentially the same as KualiDecimal with the addition of
-                                        extra constructors </para>
-                                </entry>
-                                <entry> OjbKualiIntegerFieldConversion </entry>
-                            </row>
-                        </tbody>
-                    </tgroup>
-                </table></para>
-            <para>These three data types provide a standard way of handling scale and rounding. In
-                the case of KualiDecimal, the scale is set to 2, and the rounding behavior is 'Round
-                Half Up'. KualiInteger has a scale of 0, and uses 'Round Half Up' rounding as well
-                (for operations with decimal types). </para>
-            <tip><para><emphasis role="keyword">Round Half Up</emphasis>: Round Half Up is a common rounding strategy in
-                    particular within financial applications. To calculate the rounded value, we add
-                    0.5 to the value and then use the floor function (largest integer that does not
-                    exceed value). For example, 23.5 rounds to 24, 23.4 round to 23, -23.5 rounds to
-                    -23, -23.6 rounds to -24. </para></tip>
-            <para>In addition to the convertors provided by Rice for the custom data types, a few
-                additional special convertors are provided. </para>
-            <para>The first of these is OjbCharBooleanConversion. A typical practice in legacy
-                systems (before the introduction of database Boolean types) is to represent a
-                Boolean by a single character string. Some common mappings are 'T' for true : 'F'
-                for false, or 'Y' for true : 'N' for false. The Rice Boolean converter can be
-                specified for a field to convert these string values to the correct Boolean property
-                type. Other variations of the Boolean converter exist for other mapping strategies
-                such as '1' : '0', 'A' : 'I', 'true' : 'false', and 'yes' : 'no'. </para>
-            <para>Finally, Rice provides a converter for encrypting secure database contents. The
-                name of this converter is OjbKualiEncryptDecryptFieldConversion. This converter
-                relies on the EncryptionService implementation to perform the encryption. Values are
-                encrypted for storing in the database and then decrypted for object population. </para>
-        </section>
-        <section>
-            <title> OTHER FIELD DESCRIPTOR ATTRIBUTES </title>
-            <para>All field descriptors must have the name, column, and jdbc-type attributes. In
-                addition to these we can make use of other OJB attributes to provide further column
-                information. </para>
-            <para>Foremost among these is the primarykey attribute. This attribute simply takes a
-                Boolean value of true (by default false for all columns) to indicate the column for
-                the field descriptor is a primary key. All class descriptors must have at least one
-                field descriptor with the primarykey="true" attribute. OJB uses the primary key
-                information in many places, including determining whether to do an insert or update
-                statement (see 'The BusinessObjectService' for more information). In addition,
-                primary keys are used for linking relationships. </para>
-            <para>Compound keys are configured by adding the primarykey="true" attribute to more
-                than one field:
-                <programlisting linenumbering = "numbered">&lt;class-descriptor class="org.kuali.rice.kew.doctype.DocumentTypePolicy" table="KREW_DOC_TYP_PLCY_RELN_T">
-    &lt;field-descriptor name="documentTypeId" column="DOC_TYP_ID" jdbc-type="VARCHAR" primarykey="true"/>
-    &lt;field-descriptor name="policyName" column="DOC_PLCY_NM" jdbc-type="VARCHAR" primarykey="true"/>
-...          </programlisting></para>
-            <para>A single primary key field can also be a surrogate key for which a sequence is
-                used to generate the key values. We can indicate to OJB that the primary key is a
-                sequence using the autoincrement and sequence-name attributes:
-                <programlisting linenumbering = "numbered">&lt;class-descriptor class="edu.sampleu.bookstore.bo.Book" table="BK_BOOK_T">
-    &lt;field-descriptor name="id" column="BOOK_ID" jdbc-type="BIGINT" primarykey="true" autoincrement="true" 
-     sequence-name="BK_BOOK_ID_S" /> 
-...  </programlisting></para>
-            <para>In this class descriptor for Book, we have a primary key field named 'id'.
-                Furthermore, the values for the book id field are generated by a sequence named
-                'BK_BOOK_ID_S'. When OJB performs an insert on the BK_BOOK_T table, it will retrieve
-                the next value from the book id sequence and use it as the id for the new record. </para>
-            <tip><para><emphasis role="keyword">Sequence Name</emphasis>: Requiredness of the sequence-name attribute
-                    depends on the sequence manager being used (configured through the
-                    jdbc-connection-descriptor). OJB supports several sequence managers that have
-                    different strategies for generating the ID (some not requiring an actual
-                    database sequence). However, the recommendation is to use the provided Rice
-                    sequence manager which does rely on a database sequence. </para></tip>
-            <para>Now that we have our primary key fields set, recall the recommendation that all
-                persisted objects carry the version number and object id properties. We can map
-                these properties with the follow field descriptors:
-                <programlisting linenumbering = "numbered">&lt;field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-&lt;field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />   </programlisting></para>
-            <para>Note the locking and indexed attributes. The locking attribute tells OJB to use
-                this column to perform optimistic locking and only one field descriptor may have
-                this attribute set to true. The indexed attribute indicates to OJB that we have a
-                database index on this field. OJB can then use that information for optimizing
-                queries. </para>
-        </section>
-        <section>
-            <title> REFERENCE DESCRIPTORS </title>
-            <para>After mapping all of the class primitive fields using field descriptors, we must
-                then map our relationships to other data objects. In code, these relationships are
-                properties just like the primitive fields that persist to table columns. However,
-                the difference with these properties is their type is another data object (in the
-                case of 1-1) or a collection of other data objects (in the case of 1-many). </para>
-            <para>First, let's take the case of 1-1 relationships. To map these we use the
-                reference-descriptor tag. A class descriptor can contain one or more
-                reference-descriptor tags. When using a reference descriptor tag we must specify the
-                name attribute which holds the name of the property we are describing (similar to
-                the name attribute in a field descriptor). Then we must specify the class of the
-                related object using the class-ref attribute. </para>
-            <para>For example, suppose we had the following property in our Book data object that
-                references a BookType:
-                <programlisting>public class Book extends PersistableBusinessObjectBase {   
-...
-    private BookType bookType;       </programlisting></para>
-            <para> Our corresponding reference descriptor will then be:
-                <programlisting linenumbering = "numbered">&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType"/&gt;     </programlisting></para>
-            <para>We are not quite finished though with our reference descriptor. OJB can now
-                determine we have a foreign key relationship from Book to BookType, and it knows the
-                primary key fields for BookType, but which fields of Book are the actual foreign
-                keys? To fill in this information, within our reference descriptor we must add a
-                foreign key field for each primary key field of BookType. </para>
-            <programlisting linenumbering = "numbered">&lt;reference-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.BookType">
-    &lt;foreignkey field-ref="typeCode" />
-&lt;/reference-descriptor></programlisting>
-            <para>When using the foreignkey tag, we must specify the field-ref attribute whose value
-                is the name of the field in the class holding the relationship (in this case Book)
-                that is the foreign key. The number of foreignkey tags must match the number of
-                primary key fields in our class descriptor. Note also the order the foreign keys are
-                declared must match the order in which they join to the primary keys. For example,
-                if our reference target class has primary key fields code and subCode, and we have
-                foreign keys fkCode and fkSubCode, the following configuration would be incorrect:
-                <programlisting linenumbering = "numbered">&lt;reference-descriptor name="subCode" class-ref="edu.sampleu.SubCode">
-    &lt;foreignkey field-ref="fkSubCode"/>
-    &lt;foreignkey field-ref="fkCode" />
-&lt;/reference-descriptor></programlisting></para>
-            <para>Here the order of foreign keys is reversed which will cause OJB to join the
-                fkSubCode with code, and fkCode with subCode. </para>
-            <para>Similar to the field descriptor, OJB provides additional attributes we can specify
-                for a reference descriptor. Three of these attributes are prefixed with 'auto-' and
-                designate how OJB should handle the reference during retrieve, update (or insert),
-                and delete operations. The first of these is the auto-retrieve attribute, and
-                indicates whether the reference should be retrieved when the main (or parent) object
-                is retrieved. The attribute can be specified as 'false' (reference should not be
-                retrieved) or 'true' (reference will be retrieved). When auto-retrieve=false is
-                specified, the reference object will be null on the main object after retrieval. OJB
-                provides mechanisms for retrieving the reference through code, which will be
-                discussed in the upcoming section 'Reference Refreshing'. </para>
-            <para>The auto-update attribute specifies whether the reference object should be updated
-                when an update is done on the main object. This attribute can have a value of 'none'
-                – meaning no update should happen for the reference – and 'object' – meaning the
-                reference record should be updated with the main object. In addition, an option of
-                'link' can be specified, which is just relevant for one-to-many relationships. This
-                performs an update on the indirection table, but not the actual reference table. </para>
-            <para>The final auto attribute is auto-delete, which indicates whether the reference
-                object should be deleted when the main object is deleted. Similar to auto-update,
-                'none', 'link', or 'object' can be given for the value. </para>
-            <para>Care must be taken when setting the auto-retrieve attribute. Having the reference
-                ready without having to make an extra call is a great programming convenience.
-                However, performance can suffer due to the time required to initially load the
-                reference objects with the main object, in particular for objects with several
-                relationships. Furthermore, optimizing the auto-retrieve setting can be difficult,
-                due to it being a global setting, and the developer often not knowing when the
-                reference data will be needed. Don't worry though; OJB has another attribute we can
-                use! This attribute is named proxy and can have a value of 'true' or 'false' (the
-                default). Adding proxy=true to our reference descriptor allows OJB to use lazy
-                loading for our reference. Essentially, this allows us to use the reference when
-                needed without making an additional call, but the full record is not loaded
-                initially with the main object which will help performance. To make this work, OJB
-                will initially create a proxy object for the property value. When a method is
-                invoked on the proxy object (such as a getter or setter), OJB will fetch the record
-                and populate the reference object. </para>
-            <tip>    
-                <para><emphasis role="bold">Using Proxies</emphasis>: Note that using proxy=true
-                    changes when the reference object is loaded, and works best for cases where the
-                    reference record is often not needed. For cases where the reference record is
-                    usually needed, loading up front with the main object is a better choice. In
-                    particular, proxies can lead to issues with a large number of SQL calls being
-                    made when generating the UI. </para>
-                <para>Using the proxy attribute on a reference can also cause issues with code
-                    logic. Recall that OJB will not attempt to retrieve the reference upfront when
-                    proxy=true is given, and sets the value for our reference property to the proxy.
-                    One side effect of this is that doing a standard null check on a reference
-                    object can give us false information. </para>
-                <para>For example, suppose we do a null check on our bookType reference and if not
-                    null return the name of the book type:
-                    <programlisting>if ((book != null) &amp;&amp; (book.getBookType() != null)) { 
-    return book.getBookType().getName();  
-}   </programlisting></para>
-                <para>In this example, it is possible to get a NullPointerException on our return
-                    statement! This is because initially OJB has set the bookType property to the
-                    Proxy object, which is not null. When we invoke the getName() property, OJB will
-                    then attempt to execute the retrieval of the book type. Now it is possible that
-                    book type does not exist, which will cause the bookType object to be null. Then
-                    invoking getName() on a null will cause the NullPointerException.</para>
+QueryResults&lt;PostalCodeBo> postalCodeBoQueryResults = getDataObjectService().
+    findMatching(PostalCodeBo.class,QueryByCriteria.Builder.andAttributes(map).build());
+
+//Fetch all Countries that have alternateCountryCode equal to value passed in
+QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE,
+                alternateCode).build();
+QueryResults&lt;CountryBo> countryBoQueryResults = getDataObjectService().findMatching(CountryBo.class,qbc);
+List&lt;CountryBo> countryList = countryBoQueryResults.getResults();</programlisting><emphasis
+                role="bold"> DataObjectService query returning the count based on Criteria </emphasis><programlisting>//Fetch count based on document id and principal id and current indicator being true
+QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(
+                                       equal(DOCUMENT_ID, documentId),
+                   	                equal(PRINCIPAL_ID, principalId),
+                   	                equal(CURRENT_INDICATOR, Boolean.TRUE)
+                    	        );
+criteria.setCountFlag(CountFlag.ONLY);
+return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount();</programlisting>
+            <emphasis role="bold">Injecting the Shared Entity Manager</emphasis></para>
+        <programlisting>//Add the following to your Spring DAO implementation to assign the appropriate Persistence 
+//Unit to your DAO
+
+public class DocumentTypeDAOJpa implements DocumentTypeDAO {
+
+@PersistenceContext(unitName="kew")
+private EntityManager entityManager;
+
+}</programlisting>
+        <para>
+            <emphasis role="bold"> Simple example of Named Query in Rice</emphasis>
+            <programlisting>//Fetch Application Document ID by Document ID
+//Define constants for named query in DAO - In this case DocumentRouteHeaderDAOJpa
+//Name your queries such that they start with the Entity name 
+//like @NamedQuery(name="ParameterBo.findAll", query="SELECT p FROM ParameterBo")
+
+public static final String GET_APP_DOC_STATUS_NAME = "DocumentRouteHeaderValue.GetAppDocStatus";
+public static final String GET_APP_DOC_STATUS_QUERY = "SELECT d.appDocStatus from "
+            + "DocumentRouteHeaderValue as d where d.documentId = :documentId";
+
+//Definition of NamedQuery on Queried Entity(DocumentRouteHeaderValue)
+    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_NAME, query=
+            DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_QUERY)
+
+//Code to call NamedQuery
+TypedQuery&lt;String> query = getEntityManager().createNamedQuery(
+                            "DocumentRouteHeaderValue.GetAppDocId",String.class);
+query.setParameter("documentId",documentId);
+
+String applicationDocId = null;
+if(query.getResultList() != null &amp;&amp; !query.getResultList().isEmpty()){
+    applicationDocId = query.getResultList().get(0);
+}
+return applicationDocId;</programlisting>
+            <emphasis role="bold">More Complex example of NamedQuery </emphasis><programlisting>//Fetch all distinct document IDs by document type and application document ID
+public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME =
+            "DocumentRouteHeaderValue.GetDocumentIdByDocTypeAndAppId";
+public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY = "SELECT "
+            + "DISTINCT(DH.documentId) FROM DocumentRouteHeaderValue DH, DocumentType DT "
+            + "WHERE DH.appDocId = :appDocId AND DH.documentTypeId = DT.documentTypeId  AND DT.name = :name";
+
+@NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME, query =
+            DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY)
+
+TypedQuery&lt;String> query = getEntityManager().createNamedQuery(GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME,
+                String.class);
+query.setParameter("appDocId",appId);
+query.setParameter("name",documentTypeName);
+return query.getResultList();</programlisting>
+            <tip>
+                <para> When building named queries you must use an alias the object  "select
+                        <emphasis role="bold">r</emphasis> from KUL_RICE_T <emphasis role="bold"
+                        >r</emphasis>". If you get the below error you are probably missing an
+                    alias.
+                    <programlisting>Caused by: java.lang.ClassCastException: 
+                    org.eclipse.persistence.jpa.jpql.parser.NullExpression 
+                    cannot be cast to org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable
+                 </programlisting>
+                </para>
             </tip>
-        </section>
-        <section>
-            <title>Collection Descriptors</title>
-            <para>Similar to the reference descriptor, the collection descriptor maps a reference
-                (nested) data object in the database. However, collection descriptors are used for
-                one-to-many relationships where the property is a List type. </para>
-            <para>To map these we use the collection-descriptor tag. A class descriptor can contain
-                one or more collection-descriptor tags. When using a collection descriptor tag, we
-                must specify the name attribute which holds the name of the property we are
-                describing (similar to the name attribute n reference descriptor). Then we must
-                specify the class of the related object using the class-ref attribute (again similar
-                to reference descriptor). </para>
-            <para>For example, suppose we had the following property in our Book data object that
-                references a List of Authors:
-                <programlisting>public class Book extends PersistableBusinessObjectBase {  
-    ... 
-    private List&lt;Author> authors;   </programlisting></para>
-            <para> Our corresponding collection descriptor will then be:
-                <programlisting linenumbering = "numbered">&lt;collection-descriptor name="authors" class-ref="edu.sampleu.bookstore.bo.Author"/&gt;     </programlisting></para>
-            <para>When configuring a collection descriptor, the foreign key direction goes from the
-                target class to the source. That is, we need to specify the field in the target
-                class (in this case Author) that maps to the primary key of the source class (Book).
-                This is done using the inverse-foreignkey tag:
-                <programlisting linenumbering = "numbered">&lt;collection-descriptor name="bookType" class-ref="edu.sampleu.bookstore.bo.Author">
-    &lt;inverse-foreignkey field-ref="bookId" />  
-&lt;/collection-descriptor>        </programlisting></para>
-            <para>The collection descriptor supports the same auto-x attributes we saw in reference
-                descriptor. <xref linkend="fig5"/> gives a picture of the reference and collection descriptors </para>
-            <para><figure xml:id="fig5">
-                <title>Building Blocks</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRAD_Guide/OJB_descriptors.png"/>
-                    </imageobject>
-                </mediaobject></figure></para>
-        </section>
-        <section role="NotInToc">
-            <title>RECAP</title>
-            <itemizedlist>
-                <listitem>
-                    <para>OJB is an Object/Relational mapping tool that allows transparent
-                        persistence of Java objects. </para>
-                </listitem>
-                <listitem>
-                    <para>Because OJB is not active, the Rice project is converting to JPA. </para>
-                </listitem>
-                <listitem>
-                    <para>Object mappings are defined with XML in OJB files. </para>
-                </listitem>
-                <listitem>
-                    <para>These XML files are picked up through the module configuration. </para>
-                </listitem>
-                <listitem>
-                    <para>A class descriptor is a tag that maps a Java object to a database table. </para>
-                </listitem>
-                <listitem>
-                    <para>A OJB file can contain one or more class descriptors. </para>
-                </listitem>
-                <listitem>
-                    <para>A field descriptor is a tag nested within a class descriptor that maps a
-                        property of the object to a column. </para>
-                </listitem>
-                <listitem>
-                    <para>On the field descriptor we must specify the jdbc-type so OJB knows how to
-                        convert the data (both directions). </para>
-                </listitem>
-                <listitem>
-                    <para>OJB does not know how to convert custom data types such as KualiDecimal. </para>
-                </listitem>
-                <listitem>
-                    <para>In these cases, we need to implement a FieldConversion class that performs
-                        the conversion of data.</para>
-                </listitem>
-                <listitem>
-                    <para>Rice provides the following OJB field convertors: <itemizedlist>
-                            <listitem>
-                                <para>OjbKualiDecimalFieldConversion – used to convert between a
-                                    KualiDecimal and a Java BigDecimal.</para>
-                            </listitem>
-                            <listitem>
-                                <para>OjbKualiIntegerFieldConversion – used to convert between a
-                                    KualiInteger and a Java BigInteger.</para>
-                            </listitem>
-                            <listitem>
-                                <para>OjbKualiPercentFieldConversion – used to convert between a
-                                    KualiPercent and a Java BigDecimal.</para>
-                            </listitem>
-                            <listitem>
-                                <para>OjbCharBooleanConversion – used to convert between varchar
-                                    fields ('T-F', '1- 0', 'yes-no', 'true-false') and boolean
-                                    types.</para>
-                            </listitem>
-                            <listitem>
-                                <para>OjbKualiEncryptDecryptFieldConversion – used to
-                                    encrypt/decrypt the field value. </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </listitem>
-                <listitem>
-                    <para>On the field descriptor we can also specify the attributes: <itemizedlist>
-                            <listitem>
-                                <para>primarykey – indicates the field is a primary key. </para>
-                            </listitem>
-                            <listitem>
-                                <para>autoincrement, sequence-name – indicates the field value
-                                    should be auto- incremented using the given sequence name. </para>
-                            </listitem>
-                            <listitem>
-                                <para>indexed – indicates there is an index on the column. </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </listitem>
-                <listitem>
-                    <para>A reference descriptor is a tag within a class descriptor that maps a
-                        one-to-one relationship between the class and another mapped class. </para>
-                </listitem>
-                <listitem>
-                    <para>When configuring a reference descriptor we must specify the foreign key
-                        field(s). </para>
-                </listitem>
-                <listitem>
-                    <para>On the reference descriptor we can also specify the attributes: <itemizedlist>
-                            <listitem>
-                                <para>auto-retrieve – indicates whether the reference object should
-                                    be retrieved when the parent object is. </para>
-                            </listitem>
-                            <listitem>
-                                <para>auto-update – indicates whether the reference object should be
-                                    updated when the parent object is. </para>
-                            </listitem>
-                            <listitem>
-                                <para>auto-delete – indicates whether the reference object should be
-                                    deleted when the parent object is. </para>
-                            </listitem>
-                        </itemizedlist></para>
-                </listitem>
-                <listitem>
-                    <para>proxy – indicates the reference object should be proxied, meaning it will
-                        be fetched when needed (when a method is invoked). </para>
-                </listitem>
-                <listitem>
-                    <para>A collection descriptor is a tag within a class descriptor that maps a
-                        one-to-many relationship between the class and another mapped class. </para>
-                </listitem>
-                <listitem>
-                    <para>When configuring a reference descriptor we must specify the inverse
-                        foreign key field(s). </para>
-                </listitem>
-            </itemizedlist>
-        </section>
+            <emphasis role="bold">Using Rice Criteria API </emphasis>
+            <programlisting>//Example of Dynamic query, this query needs to add date checks dates 
+//if effectiveDate parameter is not null
+
+//This should be in a DAO class - RuleDAOJpa in this case
+
+public List&lt;RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
+       QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        List&lt;Predicate> predicates = new ArrayList&lt;Predicate>();
+        predicates.add(equal("ruleTemplateId",ruleTemplateId));
+        predicates.add(in("docTypeName", documentTypes));
+        predicates.add(equal("active", Boolean.TRUE));
+        predicates.add(equal("delegateRule",Boolean.FALSE));
+        predicates.add(equal("templateRuleInd",Boolean.FALSE));
+
+        if(effectiveDate != null){
+            predicates.add(lessThanOrEqual("activationDate",effectiveDate));
+            predicates.add(greaterThanOrEqual("deactivationDate", effectiveDate));
+        }
+        List&lt;Predicate> datePredicateList = generateFromToDatePredicate(new Date());
+        Predicate[] datePreds = generateFromToDatePredicate(new Date()).
+                toArray(new Predicate[datePredicateList.size()]);
+        predicates.add(and(datePreds));
+        Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
+        builder.setPredicates(preds);
+        QueryResults&lt;RuleBaseValues> results = getDataObjectService().findMatching(RuleBaseValues.class,
+                                            builder.build());
+        return results.getResults();
+	}
+
+    public List&lt;Predicate> generateFromToDatePredicate(Date date){
+        List&lt;Predicate> datePredicates = new ArrayList&lt;Predicate>();
+
+        Predicate orFromDateValue = or(lessThanOrEqual("fromDateValue",new Timestamp(date.getTime())),
+              isNull("fromDateValue"));
+        Predicate orToDateValue = or(greaterThanOrEqual("toDateValue",new Timestamp(date.getTime())),
+              isNull("toDateValue"));
+
+        datePredicates.add(orFromDateValue);
+        datePredicates.add(orToDateValue);
+
+        return datePredicates;
+    }
+            </programlisting>
+            <emphasis role="bold">Using JPA Criteria API </emphasis>
+            <programlisting>//Using JPA Criteria Builder
+
+	public List&lt;RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription,
+ String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery&lt;RuleBaseValues> cq = cb.createQuery(RuleBaseValues.class);
+        Root&lt;RuleBaseValues> root = cq.from(RuleBaseValues.class);
+        List&lt;javax.persistence.criteria.Predicate> predicates = getSearchCriteria(root,cq,docTypeName,
+ ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
+
+        if (ruleId != null) {
+            predicates.add(cb.equal(root.get("id"),ruleId));
+        }
+        if (groupId != null) {
+            predicates.add(cb.in(root.get("id")).value(getRuleResponsibilitySubQuery(
+                    groupId, cq)));
+        }
+        Collection&lt;String> kimGroupIds = new HashSet&lt;String>();
+        Boolean searchUser = Boolean.FALSE;
+        Boolean searchUserInWorkgroups = Boolean.FALSE;
+        
+        if ("group".equals(workflowIdDirective)) {
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else if (StringUtils.isBlank(workflowIdDirective)) {
+            searchUser = Boolean.TRUE;
+            searchUserInWorkgroups = Boolean.TRUE;
+        } else {
+            searchUser = Boolean.TRUE;
+        }
+        
+        if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) &amp;&amp; searchUserInWorkgroups) {
+            Principal principal = null;
+
+            principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+
+            if (principal == null)
+            {
+            	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
+            }
+            kimGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
+        }
+        Subquery&lt;RuleResponsibilityBo> subquery = addResponsibilityCriteria(cq,kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
+
+        if(subquery != null){
+            predicates.add(cb.in(root.get("id")).value(subquery));
+        }
+        cq.distinct(true);
+        javax.persistence.criteria.Predicate[] preds = predicates.toArray(
+                new javax.persistence.criteria.Predicate[predicates.size()]);
+        cq.where(preds);
+        TypedQuery&lt;RuleBaseValues> q = getEntityManager().createQuery(cq);
+
+        return q.getResultList();
+	}
+
+    private Subquery&lt;RuleResponsibilityBo> getRuleResponsibilitySubQuery(String ruleRespName,
+                        CriteriaQuery&lt;RuleBaseValues> query){
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        Subquery&lt;RuleResponsibilityBo> subquery = query.subquery(RuleResponsibilityBo.class);
+        Root fromResp = subquery.from(RuleResponsibilityBo.class);
+        subquery.where(cb.equal(fromResp.get("ruleResponsibilityName"),ruleRespName));
+        subquery.select(fromResp.get("ruleBaseValuesId"));
+
+        return subquery;
+    }
+        </programlisting>
+            <emphasis role="bold">Miscellaneous JPA information </emphasis><tip>
+                <para>
+                    <programlisting>//Relationship foreign key updating can go wrong if missing 
+//"nullable" on JoinColumn.  It can insert null into the column instead of
+//the actual value of the foreign entity key
+
+public class RouteNodeInstance implements Serializable {
+    @ManyToOne
+    @JoinColumn(name="RTE_NODE_ID", <emphasis role="bold">nullable = false</emphasis>)
+    private RouteNode routeNode;
+}
+                  </programlisting>
+                </para>
+            </tip>
+        </para>
     </section>
 <!-- TODO
     <section>

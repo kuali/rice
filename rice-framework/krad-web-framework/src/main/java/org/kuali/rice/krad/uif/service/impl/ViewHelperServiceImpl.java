@@ -1003,7 +1003,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
                 .containsElPlaceholder((String) defaultValue)) {
-            Map<String, Object> context = view.getPreModelContext();
+            Map<String, Object> context = new HashMap<String, Object>(view.getPreModelContext());
             context.putAll(dataField.getContext());
 
             defaultValue = expressionEvaluator.replaceBindingPrefixes(view, object, (String) defaultValue);

@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.util;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Test;
+import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.springframework.util.AutoPopulatingList;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Test retrieval of validation messages that have been added to a {@link MessageMap}
@@ -52,7 +53,7 @@ public class ValidationMessageRetrievalTest extends KRADTestCase {
     public void testRetrieveMessage_keyOnly() throws Exception {
         messageMap.putError("field1", "testErrorKey");
 
-        AutoPopulatingList<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
+        List<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
         assertEquals("Incorrect number of messages for field1", 1, fieldErrors.size());
 
         ErrorMessage message = fieldErrors.get(0);
@@ -72,7 +73,7 @@ public class ValidationMessageRetrievalTest extends KRADTestCase {
 
         messageMap.putError("field1", errorMessage);
 
-        AutoPopulatingList<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
+        List<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
         assertEquals("Incorrect number of messages for field1", 1, fieldErrors.size());
 
         ErrorMessage message = fieldErrors.get(0);
@@ -93,7 +94,7 @@ public class ValidationMessageRetrievalTest extends KRADTestCase {
 
         messageMap.putError("field1", errorMessage);
 
-        AutoPopulatingList<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
+        List<ErrorMessage> fieldErrors = messageMap.getErrorMessagesForProperty("field1");
         assertEquals("Incorrect number of messages for field1", 1, fieldErrors.size());
 
         ErrorMessage message = fieldErrors.get(0);

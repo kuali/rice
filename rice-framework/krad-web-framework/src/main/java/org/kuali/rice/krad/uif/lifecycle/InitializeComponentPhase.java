@@ -31,10 +31,24 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * Lifecycle phase processing task for initializing a component.
  * 
+ * <p>
+ * During the initialize phase each component of the tree is invoked to setup state based on the
+ * configuration and request options.
+ * </p>
+ * 
+ * <p>
+ * The initialize phase is only called once per <code>View</code> lifecycle
+ * </p>
+ * 
+ * <p>
+ * Note the <code>View</code> instance also contains the context Map that was created based on the
+ * parameters sent to the view service
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
-
+    
     /**
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
      */
@@ -102,14 +116,16 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
         int index = 0;
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null && !nestedComponent.isInitialized()) {
-                successors.offer(LifecyclePhaseFactory.initialize(nestedComponent, model, index++, this));
+                successors.offer(LifecyclePhaseFactory.initialize(
+                        nestedComponent, model, index++, null, null));
             }
         }
 
         // initialize component prototypes
         for (Component nestedComponent : component.getComponentPrototypes()) {
             if (nestedComponent != null) {
-                successors.add(LifecyclePhaseFactory.initialize(nestedComponent, model, index++, this));
+                successors.add(LifecyclePhaseFactory.initialize(
+                        nestedComponent, model, index++, null, null));
             }
         }
     }

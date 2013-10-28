@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ import org.springframework.util.MethodInvoker;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvokeFinalizerTask extends AbstractViewLifecycleTask {
+public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
     
     private final Logger LOG = LoggerFactory.getLogger(InvokeFinalizerTask.class);
 

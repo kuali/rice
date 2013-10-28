@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 
@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateComponentFromExpressionGraphTask extends AbstractViewLifecycleTask {
+public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class PopulateComponentFromExpressionGraphTask extends AbstractViewLifecy
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

@@ -21,11 +21,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Simple utility class for implementing an object recycling factory pattern.
@@ -43,12 +43,14 @@ public final class RecycleUtils {
     /**
      * Thread local reference to recycled objects.
      */
-    private final static ThreadLocal<Map<Class<?>, Reference<Queue<Object>>>> RECYCLE = new ThreadLocal<Map<Class<?>, Reference<Queue<Object>>>>();
+    private final static Map<Class<?>, Reference<Queue<Object>>> RECYCLE =
+            Collections.synchronizedMap(new WeakHashMap<Class<?>, Reference<Queue<Object>>>());
 
     /**
      * Field cache to reduce reflection overhead during clean operations.
      */
-    private final static Map<Class<?>, List<Field>> FIELD_CACHE = new WeakHashMap<Class<?>, List<Field>>();
+    private final static Map<Class<?>, List<Field>> FIELD_CACHE = 
+            Collections.synchronizedMap(new WeakHashMap<Class<?>, List<Field>>());
 
     /**
      * Get an instance of the given class that has previously been recycled on the same thread, if
@@ -188,20 +190,16 @@ public final class RecycleUtils {
      * @param c The class to get a recycle queue for.
      */
     private static Queue<Object> getRecycleQueue(Class<?> c) {
-        Map<Class<?>, Reference<Queue<Object>>> recycleMap = RECYCLE.get();
-        if (recycleMap == null) {
-            recycleMap = new WeakHashMap<Class<?>, Reference<Queue<Object>>>();
-            RECYCLE.set(recycleMap);
-        }
+        synchronized (RECYCLE) {
+            Reference<Queue<Object>> recycleQueueRef = RECYCLE.get(c);
+            Queue<Object> recycleQueue = recycleQueueRef == null ? null : recycleQueueRef.get();
+            if (recycleQueue == null) {
+                recycleQueue = new ConcurrentLinkedQueue<Object>();
+                RECYCLE.put(c, new WeakReference<Queue<Object>>(recycleQueue));
+            }
 
-        Reference<Queue<Object>> recycleQueueRef = recycleMap.get(c);
-        Queue<Object> recycleQueue = recycleQueueRef == null ? null : recycleQueueRef.get();
-        if (recycleQueue == null) {
-            recycleQueue = new LinkedList<Object>();
-            recycleMap.put(c, new WeakReference<Queue<Object>>(recycleQueue));
+            return recycleQueue;
         }
-
-        return recycleQueue;
     }
 
     /**

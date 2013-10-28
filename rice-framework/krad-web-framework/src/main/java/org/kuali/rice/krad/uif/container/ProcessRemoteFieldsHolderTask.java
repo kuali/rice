@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ProcessRemoteFieldsHolderTask extends AbstractViewLifecycleTask {
+public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -45,7 +45,7 @@ public class ProcessRemoteFieldsHolderTask extends AbstractViewLifecycleTask {
      * Invoke custom initialization based on the view helper.
      * 
      * @see ViewHelperService#
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

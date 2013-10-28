@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.modifier.ComponentModifier;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RunComponentModifiersTask extends AbstractViewLifecycleTask {
+public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ public class RunComponentModifiersTask extends AbstractViewLifecycleTask {
       * the <code>ComponentModifier</code> before running
       * </p>
       * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

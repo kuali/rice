@@ -18,11 +18,10 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -30,7 +29,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddViewTemplatesTask extends AbstractViewLifecycleTask {
+public class AddViewTemplatesTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -42,21 +41,17 @@ public class AddViewTemplatesTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {
         Component component = getPhase().getComponent();
         View view = ViewLifecycle.getView();
-        LifecycleRenderingContext renderingContext = ViewLifecycle.getRenderingContext();
 
         // add the components template to the views list of components
         if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate())) {
             String template = component.getTemplate();
             view.addViewTemplate(template);
-            if (renderingContext != null) {
-                renderingContext.importTemplate(template);
-            }
         }
 
         if (component instanceof Container) {
@@ -65,9 +60,6 @@ public class AddViewTemplatesTask extends AbstractViewLifecycleTask {
             if (layoutManager != null) {
                 String template = layoutManager.getTemplate();
                 view.addViewTemplate(template);
-                if (renderingContext != null) {
-                    renderingContext.importTemplate(template);
-                }
             }
         }
     }

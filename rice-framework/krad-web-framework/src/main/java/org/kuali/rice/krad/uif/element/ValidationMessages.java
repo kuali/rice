@@ -19,7 +19,6 @@ import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,6 @@ import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.springframework.util.AutoPopulatingList;
 
 /**
  * Field that displays error, warning, and info messages for the keys that are
@@ -193,7 +191,7 @@ public class ValidationMessages extends ContentElementBase {
      * @param lists
      * @return
      */
-    private List<String> getMessages(View view, String key, List<AutoPopulatingList<ErrorMessage>> lists) {
+    private List<String> getMessages(View view, String key, List<List<ErrorMessage>> lists) {
         List<String> result = new ArrayList<String>();
         for (List<ErrorMessage> errorList : lists) {
             if (errorList != null && StringUtils.isNotBlank(key)) {

@@ -21,7 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 
@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateComponentContextTask extends AbstractViewLifecycleTask {
+public class PopulateComponentContextTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class PopulateComponentContextTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
      */
     @Override
     public ApplyModelComponentPhase getPhase() {
@@ -50,7 +50,7 @@ public class PopulateComponentContextTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

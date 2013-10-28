@@ -15,17 +15,20 @@
  */
 package org.kuali.rice.krad.util;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.springframework.util.AutoPopulatingList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 
 /**
  * MessageMapTest tests the MessageMap methods
@@ -160,7 +163,7 @@ public class MessageMapTest {
 
         assertEquals(3, testMap.getErrorCount());
 
-        AutoPopulatingList errorMessages = testMap.getMessages("accountNbr");
+        List errorMessages = testMap.getMessages("accountNbr");
         assertEquals(2, errorMessages.size());
         checkMessageParemeters(errorMessages, 0, RiceKeyConstants.ERROR_INACTIVE, new String[] { "Account Number" });
         checkMessageParemeters(errorMessages, 1, RiceKeyConstants.ERROR_REQUIRED, new String[] { "Account Number" });
@@ -170,7 +173,7 @@ public class MessageMapTest {
         checkMessageParemeters(errorMessages, 0, RiceKeyConstants.ERROR_REQUIRED, new String[] { "Chart Code" });
     }
 
-    private void checkMessageParemeters(AutoPopulatingList errorMessages, int messageIndex, String expectedKeyConstant, String[] expectedParameters) {
+    private void checkMessageParemeters(List errorMessages, int messageIndex, String expectedKeyConstant, String[] expectedParameters) {
         ErrorMessage message1 = (ErrorMessage) errorMessages.get(messageIndex);
         assertEquals(expectedKeyConstant, message1.getErrorKey());
         assertTrue(Arrays.equals(message1.getMessageParameters(), expectedParameters));
@@ -200,7 +203,7 @@ public class MessageMapTest {
             Map.Entry entry = (Map.Entry) i.next();
 
             String propertyKey = (String) entry.getKey();
-            AutoPopulatingList messageList = (AutoPopulatingList) entry.getValue();
+            List messageList = (List) entry.getValue();
             for (Iterator j = messageList.iterator(); j.hasNext();) {
                 ErrorMessage message = (ErrorMessage) j.next();
 
@@ -315,7 +318,7 @@ public class MessageMapTest {
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        AutoPopulatingList preMessages = replaceMap.getMessages("accountNbr");
+        List preMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, preMessages.size());
 
         boolean replaced = replaceMap.replaceError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, RiceKeyConstants.ERROR_NOT_AMONG);
@@ -325,7 +328,7 @@ public class MessageMapTest {
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        AutoPopulatingList postMessages = replaceMap.getMessages("accountNbr");
+        List postMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, postMessages.size());
 
         int replacedCount = 0;
@@ -352,7 +355,7 @@ public class MessageMapTest {
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        AutoPopulatingList preMessages = replaceMap.getMessages("accountNbr");
+        List preMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, preMessages.size());
 
         boolean replaced = replaceMap.replaceError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, RiceKeyConstants.ERROR_NOT_AMONG, "zero", "one");
@@ -362,7 +365,7 @@ public class MessageMapTest {
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        AutoPopulatingList postMessages = replaceMap.getMessages("accountNbr");
+        List postMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, postMessages.size());
 
         int replacedCount = 0;

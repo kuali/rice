@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.model;
 
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 
@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentDefaultApplyModelTask extends AbstractViewLifecycleTask {
+public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
 
     /**
      * Create a task to assign component IDs during the apply model phase.
@@ -36,7 +36,7 @@ public class ComponentDefaultApplyModelTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
      */
     @Override
     public ApplyModelComponentPhase getPhase() {
@@ -44,7 +44,7 @@ public class ComponentDefaultApplyModelTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @SuppressWarnings("deprecation")
     @Override

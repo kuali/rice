@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.Map;
-import java.util.Queue;
 import java.util.WeakHashMap;
+
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
  * Responsible for creating lifecycle tasks.
@@ -35,7 +34,8 @@ import java.util.WeakHashMap;
  */
 public final class LifecycleTaskFactory {
 
-    private final static ThreadLocal<Map<Class<?>, Reference<Recycler<?>>>> RECYCLE = new ThreadLocal<Map<Class<?>, Reference<Recycler<?>>>>();
+    private final static Map<Class<?>, Constructor<?>> TASK_CONSTRUCTOR =
+            Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor<?>>());
 
     /**
      * Get a task instance by class.
@@ -44,8 +44,24 @@ public final class LifecycleTaskFactory {
      * @param phase The lifecycle phase.
      * @return A lifecycle processing task for the indicated phase, ready for processing.
      */
-    public static <T extends AbstractViewLifecycleTask> T getTask(Class<T> taskClass, ViewLifecyclePhase phase) {
-        return taskClass.cast(getRecycler(taskClass).getInstance(phase));
+    public static <T extends ViewLifecycleTaskBase> T getTask(Class<T> taskClass, ViewLifecyclePhase phase) {
+        T task = RecycleUtils.getRecycledInstance(taskClass);
+
+        if (task == null) {
+            try {
+                task = taskClass.cast(getConstructor(taskClass).newInstance(phase));
+            } catch (InstantiationException e) {
+                throw new IllegalStateException("Error creating lifecycle task", e);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException("Error creating lifecycle task", e);
+            } catch (InvocationTargetException e) {
+                throw new IllegalStateException("Error creating lifecycle task", e);
+            }
+        } else {
+            task.setPhase(phase);
+        }
+
+        return task;
     }
 
     /**
@@ -53,34 +69,22 @@ public final class LifecycleTaskFactory {
      * 
      * @param task The task to recycle.
      */
-    static void recycle(AbstractViewLifecycleTask task) {
-        getRecycler(task.getClass()).recycle(task);
+    static void recycle(ViewLifecycleTaskBase task) {
+        task.recycle();
+        RecycleUtils.recycle(task);
     }
 
-    @SuppressWarnings("unchecked")
-    private final static <T extends AbstractViewLifecycleTask> Recycler<T> getRecycler(Class<?> taskClass) {
-        Map<Class<?>, Reference<Recycler<?>>> recycleMap = RECYCLE.get();
-        if (recycleMap == null) {
-            recycleMap = new WeakHashMap<Class<?>, Reference<Recycler<?>>>();
-            RECYCLE.set(recycleMap);
-        }
+    /**
+     * Get a single-arg constructor on for the task class for creating new tasks based on a view.
+     * 
+     * @param taskClass The task class.
+     * @return A single-arg constructor on for the task class for creating new tasks based on a
+     *         view.
+     */
+    private final static Constructor<?> getConstructor(Class<?> taskClass) {
+        Constructor<?> constructor = TASK_CONSTRUCTOR.get(taskClass);
 
-        Reference<Recycler<?>> recyclerRef = recycleMap.get(taskClass);
-        Recycler<T> recycler = recyclerRef == null ? null : (Recycler<T>) recyclerRef.get();
-        if (recycler == null) {
-            recycler = new Recycler<T>((Class<T>) taskClass);
-            recycleMap.put(taskClass, new WeakReference<Recycler<?>>(recycler));
-        }
-
-        return recycler;
-    }
-
-    private final static class Recycler<T extends AbstractViewLifecycleTask> {
-
-        private final Queue<T> recycleQueue = new LinkedList<T>();
-        private final Constructor<T> constructor;
-
-        private Recycler(Class<T> taskClass) {
+        if (constructor == null) {
             try {
                 constructor = taskClass.getDeclaredConstructor(ViewLifecyclePhase.class);
             } catch (NoSuchMethodException e) {
@@ -91,32 +95,10 @@ public final class LifecycleTaskFactory {
                         + " doesn't define an available lifecycle phase constructor.", e);
             }
             constructor.setAccessible(true);
+            TASK_CONSTRUCTOR.put(taskClass, constructor);
         }
 
-        private void recycle(T task) {
-            task.recycle();
-            recycleQueue.offer(task);
-        }
-
-        private T getInstance(ViewLifecyclePhase phase) {
-            T task = recycleQueue.poll();
-
-            if (task == null) {
-                try {
-                    task = constructor.newInstance(phase);
-                } catch (InstantiationException e) {
-                    throw new IllegalStateException("Error creating lifecycle task", e);
-                } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Error creating lifecycle task", e);
-                } catch (InvocationTargetException e) {
-                    throw new IllegalStateException("Error creating lifecycle task", e);
-                }
-            } else {
-                task.setPhase(phase);
-            }
-
-            return task;
-        }
+        return constructor;
     }
 
 }

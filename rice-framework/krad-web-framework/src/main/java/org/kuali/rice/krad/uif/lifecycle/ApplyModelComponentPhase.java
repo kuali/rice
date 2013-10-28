@@ -36,11 +36,30 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * Lifecycle phase processing task for applying the model to a component.
  * 
+ * <p>
+ * During the apply model phase each component of the tree if invoked to setup any state based on
+ * the given model data
+ * </p>
+ * 
+ * <p>
+ * Part of the view lifecycle that applies the model data to the view. Should be called after the
+ * model has been populated before the view is rendered. The main things that occur during this
+ * phase are:
+ * <ul>
+ * <li>Generation of dynamic fields (such as collection rows)</li>
+ * <li>Execution of conditional logic (hidden, read-only, required settings based on model values)</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * The update phase can be called multiple times for the view's lifecycle (typically only once per
+ * request)
+ * </p>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
-    private Component parent;
     private Set<String> visitedIds;
     private Map<String, Object> commonContext;
 
@@ -50,7 +69,6 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void recycle() {
         super.recycle();
-        parent = null;
         visitedIds = null;
         commonContext = null;
     }
@@ -64,14 +82,11 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      * @param parentPhase The apply model phase processed on the parent component.
      */
-    protected void prepare(Component component, Object model, int index, Component parent,
-                Set<String> visitedIds, ApplyModelComponentPhase parentPhase) {
-        super.prepare(component, model, index, parentPhase == null ?
-                Collections.<ViewLifecyclePhase> emptyList() :
-                Collections.<ViewLifecyclePhase> singletonList(parentPhase));
-        this.parent = parent;
+    protected void prepare(Component component, Object model, int index,
+            Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
+        super.prepare(component, model, index, parent, nextPhase);
         this.visitedIds = visitedIds;
-        
+
         Map<String, Object> commonContext = new HashMap<String, Object>();
 
         View view = ViewLifecycle.getView();
@@ -95,7 +110,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getStartViewStatus()
+     * @see ViewLifecyclePhase#getStartViewStatus()
      */
     @Override
     public String getStartViewStatus() {
@@ -103,7 +118,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEndViewStatus()
+     * @see ViewLifecyclePhase#getEndViewStatus()
      */
     @Override
     public String getEndViewStatus() {
@@ -129,13 +144,6 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @return the parent
-     */
-    public Component getParent() {
-        return this.parent;
-    }
-    
-    /**
      * Visit a lifecycle element.
      * 
      * @return True if the element has been visited before, false if this was the first visit.
@@ -144,7 +152,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         if (visitedIds.contains(element.getId())) {
             return true;
         }
-        
+
         synchronized (visitedIds) {
             return !visitedIds.add(element.getId());
         }
@@ -153,11 +161,11 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Applies the model data to a component of the View instance
      * 
-     * <p> TODO: Revise -
-     * The component is invoked to to apply the model data. Here the component can generate any
-     * additional fields needed or alter the configured fields. After the component is invoked a
-     * hook for custom helper service processing is invoked. Finally the method is recursively
-     * called for all the component children
+     * <p>
+     * TODO: Revise - The component is invoked to to apply the model data. Here the component can
+     * generate any additional fields needed or alter the configured fields. After the component is
+     * invoked a hook for custom helper service processing is invoked. Finally the method is
+     * recursively called for all the component children
      * </p>
      * 
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
@@ -171,7 +179,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomApplyModelTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
-        
+
         getComponent().initializePendingTasks(this, tasks);
     }
 
@@ -190,7 +198,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 successors.offer(LifecyclePhaseFactory
-                        .applyModel(nestedComponent, model, index++, component, visitedIds, this));
+                        .applyModel(nestedComponent, model, index++, component, null, visitedIds));
             }
         }
     }

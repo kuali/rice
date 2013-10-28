@@ -225,7 +225,7 @@ public class View extends ContainerBase {
         dialogs = Collections.emptyList();
 
         items = Collections.emptyList();
-        viewTemplates = Collections.emptyList();
+        viewTemplates = new LifecycleAwareList<String>(this);
     }
 
     /**
@@ -466,11 +466,13 @@ public class View extends ContainerBase {
             }
         }
 
-        // do indexing                               
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("processing indexing for view: " + getId() + " after phase " + phase);
+        if (!isRendered()) {
+            // do indexing                               
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("processing indexing for view: " + getId() + " after phase " + phase);
+            }
+            index();
         }
-        index();
         
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
             ViewLifecycle.getHelper().performCustomViewFinalize(phase.getModel());
@@ -1131,10 +1133,6 @@ public class View extends ContainerBase {
      * @return list of template names that should be included for rendering the view
      */
     public List<String> getViewTemplates() {
-        if (viewTemplates == Collections.EMPTY_LIST && isMutable(true)) {
-            viewTemplates = new LifecycleAwareList<String>(this);
-        }
-        
         return viewTemplates;
     }
 
@@ -1147,13 +1145,11 @@ public class View extends ContainerBase {
         if (StringUtils.isEmpty(template)) {
             return;
         }
-        
-        if (viewTemplates.isEmpty()) {
-            setViewTemplates(new ArrayList<String>());
-        }
-        
+
         if (!viewTemplates.contains(template)) {
-            viewTemplates.add(template);
+            synchronized (viewTemplates) {
+                viewTemplates.add(template);
+            }
         }
     }
 
@@ -1166,7 +1162,7 @@ public class View extends ContainerBase {
         checkMutable(true);
         
         if (viewTemplates == null) {
-            this.viewTemplates = Collections.emptyList();
+            this.viewTemplates = new LifecycleAwareList<String>(this);
         } else {
             this.viewTemplates = new LifecycleAwareList<String>(this, viewTemplates);
         }
@@ -2289,7 +2285,9 @@ public class View extends ContainerBase {
         viewCopy.setPreLoadScript(this.preLoadScript);
 
         if (this.viewTemplates != null) {
-            viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+            synchronized (this.viewTemplates) {
+                viewCopy.setViewTemplates(new ArrayList<String>(this.viewTemplates));
+            }
         }
 
         if (this.viewHelperServiceClass != null) {

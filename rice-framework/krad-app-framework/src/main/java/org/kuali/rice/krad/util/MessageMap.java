@@ -24,6 +24,7 @@ import org.springframework.util.AutoPopulatingList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,18 +45,19 @@ import java.util.Set;
 public class MessageMap implements Serializable {
     private static final long serialVersionUID = -2328635367656516150L;
 
-    private List<String> errorPath = new ArrayList<String>();
+    private final List<String> errorPath;
 
-    private Map<String, AutoPopulatingList<ErrorMessage>> errorMessages =
-            new LinkedHashMap<String, AutoPopulatingList<ErrorMessage>>();
-    private Map<String, AutoPopulatingList<ErrorMessage>> warningMessages =
-            new LinkedHashMap<String, AutoPopulatingList<ErrorMessage>>();
-    private Map<String, AutoPopulatingList<ErrorMessage>> infoMessages =
-            new LinkedHashMap<String, AutoPopulatingList<ErrorMessage>>();
-    private AutoPopulatingList<GrowlMessage> growlMessages;
+    private final Map<String, List<ErrorMessage>> errorMessages;
+    private final Map<String, List<ErrorMessage>> warningMessages;
+    private final Map<String, List<ErrorMessage>> infoMessages;
+    private final List<GrowlMessage> growlMessages;
 
     public MessageMap() {
-        growlMessages = new AutoPopulatingList<GrowlMessage>(GrowlMessage.class);
+        errorPath = Collections.synchronizedList(new ArrayList<String>());
+        errorMessages = Collections.synchronizedMap(new LinkedHashMap<String, List<ErrorMessage>>());
+        warningMessages = Collections.synchronizedMap(new LinkedHashMap<String, List<ErrorMessage>>());
+        infoMessages = Collections.synchronizedMap(new LinkedHashMap<String, List<ErrorMessage>>());
+        growlMessages = Collections.synchronizedList(new AutoPopulatingList<GrowlMessage>(GrowlMessage.class));
     }
 
     public MessageMap(MessageMap messageMap) {
@@ -64,7 +66,7 @@ public class MessageMap implements Serializable {
         this.warningMessages = messageMap.warningMessages;
         this.infoMessages = messageMap.infoMessages;
 
-        growlMessages = new AutoPopulatingList<GrowlMessage>(GrowlMessage.class);
+        growlMessages = Collections.synchronizedList(new AutoPopulatingList<GrowlMessage>(GrowlMessage.class));
     }
 
     public void merge(MessageMap messageMap) {
@@ -90,15 +92,16 @@ public class MessageMap implements Serializable {
      *
      * @param messagesFrom
      * @param messagesTo
+     * TODO: This method is not thread-safe and should be private.
      */
-    public void merge(Map<String, AutoPopulatingList<ErrorMessage>> messagesFrom,
-            Map<String, AutoPopulatingList<ErrorMessage>> messagesTo) {
+    public void merge(Map<String, List<ErrorMessage>> messagesFrom,
+            Map<String, List<ErrorMessage>> messagesTo) {
         for (String key : messagesFrom.keySet()) {
 
             if (messagesTo.containsKey(key)) {
                 // now we need to merge the messages
-                AutoPopulatingList<ErrorMessage> tal = messagesFrom.get(key);
-                AutoPopulatingList<ErrorMessage> parentList = messagesTo.get(key);
+                List<ErrorMessage> tal = messagesFrom.get(key);
+                List<ErrorMessage> parentList = messagesTo.get(key);
 
                 for (Object o : tal) {
 
@@ -114,89 +117,89 @@ public class MessageMap implements Serializable {
         }
     }
 
-    public AutoPopulatingList<ErrorMessage> putError(String propertyName, String errorKey, String... errorParameters) {
+    public List<ErrorMessage> putError(String propertyName, String errorKey, String... errorParameters) {
         ErrorMessage message = new ErrorMessage(errorKey, errorParameters);
         return putMessageInMap(errorMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarning(String propertyName, String messageKey,
+    public List<ErrorMessage> putWarning(String propertyName, String messageKey,
             String... messageParameters) {
         ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
         return putMessageInMap(warningMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfo(String propertyName, String messageKey,
+    public List<ErrorMessage> putInfo(String propertyName, String messageKey,
             String... messageParameters) {
         ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
         return putMessageInMap(infoMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putError(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putError(String propertyName, ErrorMessage message) {
         return putMessageInMap(errorMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarning(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putWarning(String propertyName, ErrorMessage message) {
         return putMessageInMap(warningMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfo(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putInfo(String propertyName, ErrorMessage message) {
         return putMessageInMap(infoMessages, propertyName, message, true, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putErrorWithoutFullErrorPath(String propertyName, String errorKey,
+    public List<ErrorMessage> putErrorWithoutFullErrorPath(String propertyName, String errorKey,
             String... errorParameters) {
         ErrorMessage message = new ErrorMessage(errorKey, errorParameters);
         return putMessageInMap(errorMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarningWithoutFullErrorPath(String propertyName, String messageKey,
+    public List<ErrorMessage> putWarningWithoutFullErrorPath(String propertyName, String messageKey,
             String... messageParameters) {
         ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
         return putMessageInMap(warningMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfoWithoutFullErrorPath(String propertyName, String messageKey,
+    public List<ErrorMessage> putInfoWithoutFullErrorPath(String propertyName, String messageKey,
             String... messageParameters) {
         ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
         return putMessageInMap(infoMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putErrorWithoutFullErrorPath(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putErrorWithoutFullErrorPath(String propertyName, ErrorMessage message) {
         return putMessageInMap(errorMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarningWithoutFullErrorPath(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putWarningWithoutFullErrorPath(String propertyName, ErrorMessage message) {
         return putMessageInMap(warningMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfoWithoutFullErrorPath(String propertyName, ErrorMessage message) {
+    public List<ErrorMessage> putInfoWithoutFullErrorPath(String propertyName, ErrorMessage message) {
         return putMessageInMap(infoMessages, propertyName, message, false, true);
     }
 
-    public AutoPopulatingList<ErrorMessage> putErrorForSectionId(String sectionId, String errorKey,
+    public List<ErrorMessage> putErrorForSectionId(String sectionId, String errorKey,
             String... errorParameters) {
         return putErrorWithoutFullErrorPath(sectionId, errorKey, errorParameters);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarningForSectionId(String sectionId, String messageKey,
+    public List<ErrorMessage> putWarningForSectionId(String sectionId, String messageKey,
             String... messageParameters) {
         return putWarningWithoutFullErrorPath(sectionId, messageKey, messageParameters);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfoForSectionId(String sectionId, String messageKey,
+    public List<ErrorMessage> putInfoForSectionId(String sectionId, String messageKey,
             String... messageParameters) {
         return putInfoWithoutFullErrorPath(sectionId, messageKey, messageParameters);
     }
 
-    public AutoPopulatingList<ErrorMessage> putErrorForSectionId(String sectionId, ErrorMessage message) {
+    public List<ErrorMessage> putErrorForSectionId(String sectionId, ErrorMessage message) {
         return putErrorWithoutFullErrorPath(sectionId, message);
     }
 
-    public AutoPopulatingList<ErrorMessage> putWarningForSectionId(String sectionId, ErrorMessage message) {
+    public List<ErrorMessage> putWarningForSectionId(String sectionId, ErrorMessage message) {
         return putWarningWithoutFullErrorPath(sectionId, message);
     }
 
-    public AutoPopulatingList<ErrorMessage> putInfoForSectionId(String sectionId, ErrorMessage message) {
+    public List<ErrorMessage> putInfoForSectionId(String sectionId, ErrorMessage message) {
         return putInfoWithoutFullErrorPath(sectionId, message);
     }
 
@@ -237,7 +240,7 @@ public class MessageMap implements Serializable {
      * protection against XSS attacks
      * @return TypeArrayList
      */
-    protected AutoPopulatingList<ErrorMessage> putMessageInMap(Map<String, AutoPopulatingList<ErrorMessage>> messagesMap,
+    protected List<ErrorMessage> putMessageInMap(Map<String, List<ErrorMessage>> messagesMap,
             String propertyName, ErrorMessage errorMessage, boolean prependFullErrorPath,
             boolean escapeHtmlMessageParameters) {
         if (StringUtils.isBlank(propertyName)) {
@@ -248,12 +251,12 @@ public class MessageMap implements Serializable {
         }
 
         // check if we have previous errors for this property
-        AutoPopulatingList<ErrorMessage> errorList = null;
+        List<ErrorMessage> errorList = null;
         String propertyKey = getKeyPath(propertyName, prependFullErrorPath);
         if (messagesMap.containsKey(propertyKey)) {
             errorList = messagesMap.get(propertyKey);
         } else {
-            errorList = new AutoPopulatingList<ErrorMessage>(ErrorMessage.class);
+            errorList = Collections.synchronizedList(new AutoPopulatingList<ErrorMessage>(ErrorMessage.class));
         }
 
         if (escapeHtmlMessageParameters) {
@@ -354,7 +357,7 @@ public class MessageMap implements Serializable {
         }
 
         // check if we have previous errors for this property
-        AutoPopulatingList<ErrorMessage> errorList = null;
+        List<ErrorMessage> errorList = null;
         String propertyKey = getKeyPath(propertyName, withFullErrorPath);
         if (errorMessages.containsKey(propertyKey)) {
             errorList = errorMessages.get(propertyKey);
@@ -420,10 +423,10 @@ public class MessageMap implements Serializable {
         ErrorMessage foundMessage = null;
 
         if (!hasNoErrors()) {
-            for (Iterator<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> i =
+            for (Iterator<Map.Entry<String, List<ErrorMessage>>> i =
                          getAllPropertiesAndErrors().iterator(); (foundMessage == null) && i.hasNext(); ) {
-                Map.Entry<String, AutoPopulatingList<ErrorMessage>> e = i.next();
-                AutoPopulatingList<ErrorMessage> entryErrorList = e.getValue();
+                Map.Entry<String, List<ErrorMessage>> e = i.next();
+                List<ErrorMessage> entryErrorList = e.getValue();
                 for (Iterator<ErrorMessage> j = entryErrorList.iterator(); j.hasNext(); ) {
                     ErrorMessage em = j.next();
                     if (messageKey.equals(em.getErrorKey())) {
@@ -436,7 +439,7 @@ public class MessageMap implements Serializable {
         return (foundMessage != null);
     }
 
-    private int getMessageCount(Map<String, AutoPopulatingList<ErrorMessage>> messageMap) {
+    private int getMessageCount(Map<String, List<ErrorMessage>> messageMap) {
         int messageCount = 0;
         for (Iterator<String> iter = messageMap.keySet().iterator(); iter.hasNext(); ) {
             String errorKey = iter.next();
@@ -478,7 +481,7 @@ public class MessageMap implements Serializable {
      * @param path
      * @return Returns a List of ErrorMessages for the given path
      */
-    public AutoPopulatingList<ErrorMessage> getMessages(String path) {
+    public List<ErrorMessage> getMessages(String path) {
         return errorMessages.get(path);
     }
 
@@ -610,19 +613,19 @@ public class MessageMap implements Serializable {
         return false;
     }
 
-    public Set<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> getAllPropertiesAndErrors() {
+    public Set<Map.Entry<String, List<ErrorMessage>>> getAllPropertiesAndErrors() {
         return errorMessages.entrySet();
     }
 
-    public AutoPopulatingList<ErrorMessage> getErrorMessagesForProperty(String propertyName) {
+    public List<ErrorMessage> getErrorMessagesForProperty(String propertyName) {
         return errorMessages.get(propertyName);
     }
 
-    public AutoPopulatingList<ErrorMessage> getWarningMessagesForProperty(String propertyName) {
+    public List<ErrorMessage> getWarningMessagesForProperty(String propertyName) {
         return warningMessages.get(propertyName);
     }
 
-    public AutoPopulatingList<ErrorMessage> getInfoMessagesForProperty(String propertyName) {
+    public List<ErrorMessage> getInfoMessagesForProperty(String propertyName) {
         return infoMessages.get(propertyName);
     }
 
@@ -637,9 +640,9 @@ public class MessageMap implements Serializable {
      * @param allowWildcard
      * @return
      */
-    public List<AutoPopulatingList<ErrorMessage>> getErrorMessagesForProperty(String propertyName,
+    public List<List<ErrorMessage>> getErrorMessagesForProperty(String propertyName,
             boolean allowWildcard) {
-        List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+        List<List<ErrorMessage>> foundMessages = new ArrayList<List<ErrorMessage>>();
         if (allowWildcard) {
             boolean wildcard = false;
             if (propertyName.endsWith("*")) {
@@ -673,9 +676,9 @@ public class MessageMap implements Serializable {
      * @param allowWildcard
      * @return
      */
-    public List<AutoPopulatingList<ErrorMessage>> getWarningMessagesForProperty(String propertyName,
+    public List<List<ErrorMessage>> getWarningMessagesForProperty(String propertyName,
             boolean allowWildcard) {
-        List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+        List<List<ErrorMessage>> foundMessages = new ArrayList<List<ErrorMessage>>();
         if (allowWildcard) {
             boolean wildcard = false;
             if (propertyName.endsWith("*")) {
@@ -709,9 +712,9 @@ public class MessageMap implements Serializable {
      * @param allowWildcard
      * @return
      */
-    public List<AutoPopulatingList<ErrorMessage>> getInfoMessagesForProperty(String propertyName,
+    public List<List<ErrorMessage>> getInfoMessagesForProperty(String propertyName,
             boolean allowWildcard) {
-        List<AutoPopulatingList<ErrorMessage>> foundMessages = new ArrayList<AutoPopulatingList<ErrorMessage>>();
+        List<List<ErrorMessage>> foundMessages = new ArrayList<List<ErrorMessage>>();
         if (allowWildcard) {
             boolean wildcard = false;
             if (propertyName.endsWith("*")) {
@@ -784,15 +787,15 @@ public class MessageMap implements Serializable {
         return infoMessages.keySet();
     }
 
-    public AutoPopulatingList<ErrorMessage> removeAllErrorMessagesForProperty(String property) {
+    public List<ErrorMessage> removeAllErrorMessagesForProperty(String property) {
         return errorMessages.remove(property);
     }
 
-    public AutoPopulatingList<ErrorMessage> removeAllWarningMessagesForProperty(String property) {
+    public List<ErrorMessage> removeAllWarningMessagesForProperty(String property) {
         return warningMessages.remove(property);
     }
 
-    public AutoPopulatingList<ErrorMessage> removeAllInfoMessagesForProperty(String property) {
+    public List<ErrorMessage> removeAllInfoMessagesForProperty(String property) {
         return infoMessages.remove(property);
     }
 
@@ -800,15 +803,15 @@ public class MessageMap implements Serializable {
         return errorMessages.size();
     }
 
-    public Map<String, AutoPopulatingList<ErrorMessage>> getErrorMessages() {
+    public Map<String, List<ErrorMessage>> getErrorMessages() {
         return this.errorMessages;
     }
 
-    public Map<String, AutoPopulatingList<ErrorMessage>> getWarningMessages() {
+    public Map<String, List<ErrorMessage>> getWarningMessages() {
         return this.warningMessages;
     }
 
-    public Map<String, AutoPopulatingList<ErrorMessage>> getInfoMessages() {
+    public Map<String, List<ErrorMessage>> getInfoMessages() {
         return this.infoMessages;
     }
 

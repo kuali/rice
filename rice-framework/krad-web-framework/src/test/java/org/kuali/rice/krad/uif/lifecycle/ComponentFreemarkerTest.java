@@ -23,7 +23,6 @@ import static org.mockito.Mockito.mock;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -119,8 +118,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
-                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(
-                        msg, null, 0, null, null, Collections.<RenderComponentPhase> emptyList());
+                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, 0);
                 renderPhase.run();
 
                 assertTrue(msg.isSelfRendered());

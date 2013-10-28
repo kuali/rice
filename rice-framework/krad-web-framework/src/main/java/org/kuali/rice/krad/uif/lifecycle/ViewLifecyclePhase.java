@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.List;
-
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -42,6 +40,13 @@ public interface ViewLifecyclePhase extends Runnable {
      */
     Object getModel();
     
+    /**
+     * Get the parent component.
+     * 
+     * @return The parent component.
+     */
+    Component getParent();
+
     /**
      * Get the index within a parent phase's original list of successors of this phase.
      * 
@@ -94,38 +99,10 @@ public interface ViewLifecyclePhase extends Runnable {
     String getEndViewStatus();
     
     /**
-     * Add a lifecycle task to this phase's task queue.
+     * Get the lifecycle phase that directly precedes this phase..
      * 
-     * @param The task to add.
+     * @return The lifecycle phase that directly precedes this phase..
      */
-    void addTask(ViewLifecycleTask task);
-    
-    /**
-     * Get the task currently active on this lifecycle phase.
-     * 
-     * @return The task currently active on this lifecycle phase.
-     */
-    ViewLifecycleTask getActiveTask();
-    
-    /**
-     * Get a list of the pending tasks for this phase.
-     * 
-     * @return A list of the pending tasks for this phase.  These tasks have not yet been processed.
-     */
-    List<? extends ViewLifecycleTask> getPendingTasks();
+    ViewLifecyclePhase getPredecessor();
 
-    /**
-     * Get a list of child lifecycle phases to process before processing this phase.
-     * 
-     * @return A list of child lifecycle phases to process before processing this phase.
-     */
-    List<? extends ViewLifecyclePhase> getPredecessors();
-    
-    /**
-     * Get a list of child lifecycle phases to process after processing this phase.
-     * 
-     * @return A list of child lifecycle phases to process after processing this phase.
-     */
-    List<? extends ViewLifecyclePhase> getSuccessors();
-    
 }

@@ -39,18 +39,22 @@ public final class GlobalVariables {
         }
     };
 
-    private static GlobalVariables getCurrentGlobalVariables() {
+    public static GlobalVariables getCurrentGlobalVariables() {
         return GLOBAL_VARIABLES_STACK.get().getLast();
+    }
+
+    public static void injectGlobalVariables(GlobalVariables globalVariables) {
+        GLOBAL_VARIABLES_STACK.get().add(globalVariables);
+    }
+
+    public static GlobalVariables popGlobalVariables() {
+        return GLOBAL_VARIABLES_STACK.get().removeLast();
     }
 
     static GlobalVariables pushGlobalVariables() {
         GlobalVariables vars = new GlobalVariables();
         GLOBAL_VARIABLES_STACK.get().add(vars);
         return vars;
-    }
-
-    static GlobalVariables popGlobalVariables() {
-        return GLOBAL_VARIABLES_STACK.get().removeLast();
     }
 
     static void reset() {
@@ -133,7 +137,9 @@ public final class GlobalVariables {
 
     public static void setRequestCache(String cacheName, Object cacheObject) {
         GlobalVariables vars = getCurrentGlobalVariables();
-        vars.requestCache.put(cacheName, cacheObject);
+        synchronized (vars.requestCache) {
+            vars.requestCache.put(cacheName, cacheObject);
+        }
     }
 
     /**

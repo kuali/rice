@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SyncClientSideStateTask extends AbstractViewLifecycleTask {
+public class SyncClientSideStateTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ public class SyncClientSideStateTask extends AbstractViewLifecycleTask {
      * Updates the properties of the given component instance with the value found from the
      * corresponding map of client state (if found)
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

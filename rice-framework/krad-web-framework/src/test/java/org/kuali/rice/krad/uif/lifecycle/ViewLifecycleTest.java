@@ -143,8 +143,10 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ProcessLogger.trace("populate-request");
                 tform.setViewRequestParameters(view.getViewRequestParameters());
                 
-                ProcessLogger.trace("set-request");
-                viewLifecycle.performInitialization();
+                ViewLifecycle.getHelper().performCustomViewInitialization(tform);
+
+                ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform));
                 
                 ProcessLogger.trace("end-init");
             }});

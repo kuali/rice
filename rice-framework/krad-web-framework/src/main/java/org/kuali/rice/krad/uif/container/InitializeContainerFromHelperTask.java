@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 
@@ -24,7 +24,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InitializeContainerFromHelperTask extends AbstractViewLifecycleTask {
+public class InitializeContainerFromHelperTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -39,7 +39,7 @@ public class InitializeContainerFromHelperTask extends AbstractViewLifecycleTask
      * Invoke custom initialization based on the view helper.
      * 
      * @see ViewHelperService#
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

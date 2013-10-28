@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -33,7 +33,7 @@ import org.kuali.rice.krad.util.KRADConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FinalizeViewTask extends AbstractViewLifecycleTask {
+public class FinalizeViewTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -45,7 +45,7 @@ public class FinalizeViewTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
      */
     @Override
     public FinalizeComponentPhase getPhase() {
@@ -53,7 +53,7 @@ public class FinalizeViewTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

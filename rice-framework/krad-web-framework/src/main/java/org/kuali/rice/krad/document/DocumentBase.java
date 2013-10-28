@@ -20,13 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PostRemove;
 import javax.persistence.PrePersist;
@@ -73,7 +69,6 @@ import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvalua
 import org.kuali.rice.krad.workflow.DocumentInitiator;
 import org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.krad.workflow.KualiTransactionalDocumentInformation;
-import org.springframework.util.AutoPopulatingList;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -519,15 +514,15 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         if (LOG.isInfoEnabled()) {
             if (GlobalVariables.getMessageMap().hasErrors()) {
 
-                for (Iterator<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> i =
+                for (Iterator<Map.Entry<String, List<ErrorMessage>>> i =
                              GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext(); ) {
-                    Map.Entry<String, AutoPopulatingList<ErrorMessage>> e = i.next();
+                    Map.Entry<String, List<ErrorMessage>> e = i.next();
 
                     StringBuffer logMessage = new StringBuffer();
                     logMessage.append("[" + e.getKey() + "] ");
                     boolean first = true;
 
-                    AutoPopulatingList<ErrorMessage> errorList = e.getValue();
+                    List<ErrorMessage> errorList = e.getValue();
                     for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext(); ) {
                         ErrorMessage em = j.next();
 

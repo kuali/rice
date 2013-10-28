@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.view.ViewIndex;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AssignIdsTask extends AbstractViewLifecycleTask {
+public class AssignIdsTask extends ViewLifecycleTaskBase {
 
     /**
      * Reusable linked queue for walking the lifecycle phase tree while generating an ID, without
@@ -116,8 +116,11 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
                 // list of the predecessor phase that defined it.
                 hash = prime * hash + phase.getIndex();
 
-                // Include all predecessors in the hash.
-                phaseQueue.addAll(phase.getPredecessors());
+                // Include the predecessors in the hash.
+                ViewLifecyclePhase predecessor = phase.getPredecessor();
+                if (predecessor != null) {
+                    phaseQueue.add(predecessor);
+                }
             }
         } finally {
             // Ensure that the recursion queue is clear to prevent
@@ -144,7 +147,7 @@ public class AssignIdsTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

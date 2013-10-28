@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateReplacersAndModifiersFromExpressionGraphTask extends AbstractViewLifecycleTask {
+public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends Abstra
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

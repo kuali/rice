@@ -23,7 +23,7 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -38,7 +38,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InitializeDataFieldFromDictionaryTask extends AbstractViewLifecycleTask {
+public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -53,7 +53,7 @@ public class InitializeDataFieldFromDictionaryTask extends AbstractViewLifecycle
      * Sets properties of the <code>InputField</code> (if blank) to the corresponding attribute
      * entry in the data dictionary
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {

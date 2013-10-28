@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -30,13 +28,22 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
 
 /**
- * Lifecycle phase processing task for applying the model to a component.
+ * Lifecycle phase processing task for finalizing a component.
+ * 
+ * <p>
+ * The finalize phase is the last phase before the view is rendered. Here final preparations can be
+ * made based on the updated view state.
+ * </p>
+ * 
+ * <p>
+ * The finalize phase runs after the apply model phase and can be called multiple times for the
+ * view's lifecylce (however typically only once per request)
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
-    private Component parent;
     private RenderComponentPhase renderPhase;
 
     /**
@@ -45,7 +52,6 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void recycle() {
         super.recycle();
-        parent = null;
         renderPhase = null;
     }
 
@@ -56,19 +62,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * @param model Top level object containing the data
      * @param parentPhase The finalize phase processed on the parent component.
      */
-    protected void prepare(Component component, Object model, int index,
-            Component parent, FinalizeComponentPhase parentPhase) {
-        super.prepare(component, model, index, parentPhase == null ?
-                Collections.<ViewLifecyclePhase> emptyList() :
-                Collections.<ViewLifecyclePhase> singletonList(parentPhase));
-        this.parent = parent;
-
-        if (ViewLifecycle.isRenderInLifecycle()) {
-            ArrayList<RenderComponentPhase> topList = new ArrayList<RenderComponentPhase>(1);
-            this.renderPhase = LifecyclePhaseFactory.render(
-                    component, model, index, this, null, Collections.unmodifiableList(topList));
-            topList.add(this.renderPhase);
-        }
+    protected void prepare(Component component, Object model, int index, Component parent) {
+        super.prepare(component, model, index, parent, null);
     }
 
     /**
@@ -104,32 +99,6 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#notifyCompleted()
-     */
-    @Override
-    protected void notifyCompleted() {
-        super.notifyCompleted();        
-        assert renderPhase == null || renderPhase.isComplete();
-        renderPhase = null;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#isComplete()
-     */
-    @Override
-    public boolean isComplete() {
-        return super.isComplete() &&
-                (renderPhase == null || renderPhase.isComplete());
-    }
-
-    /**
-     * @return the parent
-     */
-    public Component getParent() {
-        return this.parent;
-    }
-
-    /**
      * Update state of the component and perform final preparation for rendering.
      * 
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
@@ -142,7 +111,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
-        
+
         getComponent().initializePendingTasks(this, tasks);
     }
 
@@ -157,31 +126,27 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         Object model = getModel();
 
         List<Component> nestedComponents = component.getComponentsForLifecycle();
-        List<RenderComponentPhase> renderPhases = null;
-
-        if (ViewLifecycle.isRenderInLifecycle()) {
-            renderPhases = new ArrayList<RenderComponentPhase>(nestedComponents.size());
-        }
-
+        
         // initialize nested components
         int index = 0;
         for (Component nestedComponent : nestedComponents) {
             if (nestedComponent != null) {
                 FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedComponent, model, index, component, this);
-
-                if (ViewLifecycle.isRenderInLifecycle()) {
-                    RenderComponentPhase nestedRenderPhase = LifecyclePhaseFactory.render(
-                            nestedComponent, model, index, nestedFinalizePhase, this.renderPhase,
-                            renderPhases);
-                    renderPhases.add(nestedRenderPhase);
-                    nestedFinalizePhase.renderPhase = nestedRenderPhase;
-                }
-
+                        nestedComponent, model, index, component);
                 successors.add(nestedFinalizePhase);
-                
                 index++;
             }
+        }
+
+        if (ViewLifecycle.isRenderInLifecycle()) {
+            RenderComponentPhase parentRenderPhase = null;
+            
+            ViewLifecyclePhase predecessor = getPredecessor();
+            if (predecessor instanceof FinalizeComponentPhase) {
+                parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
+            }
+            
+            renderPhase = LifecyclePhaseFactory.render(this, parentRenderPhase, index);
         }
 
         if (successors.isEmpty() && renderPhase != null) {

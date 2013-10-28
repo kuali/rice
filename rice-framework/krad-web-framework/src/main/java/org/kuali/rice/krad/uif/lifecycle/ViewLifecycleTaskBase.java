@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AbstractViewLifecycleTask implements ViewLifecycleTask {
+public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
 
-    private final Logger LOG = LoggerFactory.getLogger(AbstractViewLifecycleTask.class);
+    private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
     private ViewLifecyclePhase phase;
 
@@ -35,7 +35,7 @@ public abstract class AbstractViewLifecycleTask implements ViewLifecycleTask {
      * 
      * @param phase The phase this task is a part of.
      */
-    protected AbstractViewLifecycleTask(ViewLifecyclePhase phase) {
+    protected ViewLifecycleTaskBase(ViewLifecyclePhase phase) {
         this.phase = phase;
     }
 

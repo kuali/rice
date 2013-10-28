@@ -19,15 +19,12 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,10 +93,7 @@ public class ViewLifecycle implements Serializable {
 
     private static final long serialVersionUID = -4767600614111642241L;
 
-    /**
-     * Thread local view context reference.
-     */
-    private static ThreadLocal<ViewLifecycle> TL_VIEW_LIFECYCLE = new ThreadLocal<ViewLifecycle>();
+    private static final ThreadLocal<ViewLifecycleProcessor> PROCESSOR = new ThreadLocal<ViewLifecycleProcessor>();
 
     /**
      * Enumerates potential lifecycle events.
@@ -110,6 +104,8 @@ public class ViewLifecycle implements Serializable {
 
     private static Boolean strict;
     private static Boolean renderInLifecycle;
+    private static Boolean asynchronousLifecycle;
+    private static Boolean trace;
 
     /**
      * Registration of an event.
@@ -196,7 +192,7 @@ public class ViewLifecycle implements Serializable {
             this.eventListener = eventListener;
         }
     }
-    
+
     /**
      * Determine whether or not the lifecycle is operating in strict mode. In general, strict mode
      * is preferred and should be used in development. However, due to it's recent addition several
@@ -240,6 +236,46 @@ public class ViewLifecycle implements Serializable {
         }
 
         return renderInLifecycle;
+    }
+
+    /**
+     * Determine whether or not to processing view lifecycle phases asynchronously.
+     * 
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.asynchronous&quot;.
+     * </p>
+     * 
+     * @return True if view lifecycle phases should be performed asynchronously, false for
+     *         synchronous operation.
+     */
+    public static boolean isAsynchronousLifecycle() {
+        if (asynchronousLifecycle == null) {
+            asynchronousLifecycle = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
+        }
+
+        return asynchronousLifecycle;
+    }
+
+    /**
+     * Determine whether or not to log trace details at the info level for troubleshooting lifecycle
+     * phases.
+     * 
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.trace&quot;.
+     * </p>
+     * 
+     * @return True if view lifecycle phases processing information should be logged at the info level.
+     */
+    public static boolean isTrace() {
+        if (trace == null) {
+            trace = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
+        }
+
+        return trace;
     }
 
     /**
@@ -291,29 +327,24 @@ public class ViewLifecycle implements Serializable {
     private final ViewHelperService helper;
 
     /**
-     * The model involved in the current view lifecycle.
-     */
-    private final Object model;
-    
-    /**
-     * The rendering context.
-     */
-    private final LifecycleRenderingContext renderingContext;
-
-    /**
      * The view being processed by this lifecycle.
      */
-    private View view;
+    private final View view;
 
     /**
-     * The phase currently active on this lifecycle.
+     * The model involved in the current view lifecycle.
      */
-    private ViewLifecyclePhase activePhase;
+    final Object model;
 
     /**
-     * Pending lifecycle phases.
+     * The active servlet request for this lifecycle.
      */
-    private final Deque<ViewLifecyclePhase> pendingPhases;
+    final HttpServletRequest request;
+
+    /**
+     * The active servlet response for this lifecycle.
+     */
+    final HttpServletResponse response;
 
     /**
      * Private constructor, for spawning a lifecycle context.
@@ -321,51 +352,13 @@ public class ViewLifecycle implements Serializable {
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
     private ViewLifecycle(View view, Object model,
-            HttpServletRequest request, HttpServletResponse response, boolean copy) {
+            HttpServletRequest request, HttpServletResponse response) {
+        this.view = view;
         this.model = model;
-        this.renderingContext = model != null && request != null && response != null && 
-                isRenderInLifecycle() ? new LifecycleRenderingContext(model, request, response) : null;
+        this.request = request;
+        this.response = response;
         this.helper = view.getViewHelperService();
-        this.eventRegistrations = new ArrayList<EventRegistration>();
-        this.pendingPhases = new LinkedList<ViewLifecyclePhase>();
-    }
-
-    /**
-     * Report a phase as active on this lifecycle thread.
-     * 
-     * <p>
-     * Since each {@link ViewLifecycle} instance is specific to a thread, only one phase may be
-     * active at a time.
-     * </p>
-     * 
-     * @param phase The phase to report as activate. Set as null to when the phase has been
-     *        completed to indicate that no phase is active.
-     */
-    void setActivePhase(ViewLifecyclePhase phase) {
-        if (activePhase != null && phase != null) {
-            throw new IllegalStateException("Another phase is already active on this lifecycle thread " + activePhase);
-        }
-
-        activePhase = phase;
-    }
-
-    /**
-     * Push a pending phase, to be executed directly after the completion of the active phase.
-     * 
-     * @param pendingPhase The pending phase.
-     */
-    public void pushPendingPhase(ViewLifecyclePhase pendingPhase) {
-        pendingPhases.push(pendingPhase);
-    }
-
-    /**
-     * Offer a pending phase, to be executed after the completion of the active phase and all
-     * currently pending phases.
-     * 
-     * @param pendingPhase The pending phase.
-     */
-    public void offerPendingPhase(ViewLifecyclePhase pendingPhase) {
-        pendingPhases.offer(pendingPhase);
+        this.eventRegistrations = Collections.synchronizedList(new ArrayList<EventRegistration>());
     }
 
     /**
@@ -383,101 +376,6 @@ public class ViewLifecycle implements Serializable {
                 registration.getEventListener().processEvent(event, view, model, eventComponent);
             }
         }
-    }
-
-    /**
-     * Executes the ApplyModel phase. During this phase each component of the tree if invoked to
-     * setup any state based on the given model data
-     * 
-     * <p>
-     * Part of the view lifecycle that applies the model data to the view. Should be called after
-     * the model has been populated before the view is rendered. The main things that occur during
-     * this phase are:
-     * <ul>
-     * <li>Generation of dynamic fields (such as collection rows)</li>
-     * <li>Execution of conditional logic (hidden, read-only, required settings based on model
-     * values)</li>
-     * </ul>
-     * </p>
-     * 
-     * <p>
-     * The update phase can be called multiple times for the view's lifecycle (typically only once
-     * per request)
-     * </p>
-     * 
-     * @param view View instance that the model should be applied to
-     * @param model Top level object containing the data (could be the form or a top level business
-     *        object, dto)
-     */
-    public void performApplyModel() {
-        ProcessLogger.trace("apply-model:" + view.getId());
-
-        // apply default values if they have not been applied yet
-        if (!((ViewModel) model).isDefaultsApplied()) {
-            applyDefaultValues(view, view, model);
-            ((ViewModel) model).setDefaultsApplied(true);
-        }
-
-        // get action flag and edit modes from authorizer/presentation controller
-        retrieveEditModesAndActionFlags(view, (UifFormBase) model);
-
-        // set view context for conditional expressions
-        setViewContext();
-
-        ProcessLogger.trace("apply-comp-model:" + view.getId());
-
-        offerPendingPhase(LifecyclePhaseFactory.applyModel(view, model));
-        performPendingPhases();
-
-        ProcessLogger.trace("apply-model-end:" + view.getId());
-    }
-
-    /**
-     * The last phase before the view is rendered. Here final preparations can be made based on the
-     * updated view state
-     * 
-     * <p>
-     * The finalize phase runs after the apply model phase and can be called multiple times for the
-     * view's lifecylce (however typically only once per request)
-     * </p>
-     * 
-     * @param view view instance that should be finalized for rendering
-     * @param model top level object containing the data public void performFinalize(Object model);
-     */
-    /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
-     */
-    public void performFinalize() {
-        // get script for generating growl messages
-        String growlScript = buildGrowlScript();
-        ((ViewModel) model).setGrowlScript(growlScript);
-
-        offerPendingPhase(LifecyclePhaseFactory.finalize(view, model));
-        performPendingPhases();
-    }
-
-    /**
-     * Performs the Initialization phase for the <code>View</code>. During this phase each component
-     * of the tree is invoked to setup state based on the configuration and request options.
-     * 
-     * <p>
-     * The initialize phase is only called once per <code>View</code> lifecycle
-     * </p>
-     * 
-     * <p>
-     * Note the <code>View</code> instance also contains the context Map that was created based on
-     * the parameters sent to the view service
-     * </p>
-     * 
-     * @param view View instance that should be initialized
-     * @param model object instance containing the view data
-     */
-    public void performInitialization() {
-        helper.performCustomViewInitialization(model);
-
-        offerPendingPhase(LifecyclePhaseFactory.initialize(view, model));
-        performPendingPhases();
     }
 
     /**
@@ -666,7 +564,7 @@ public class ViewLifecycle implements Serializable {
 
         if (StringUtils.isBlank(startPhase)) {
             String compStatus = component.getViewStatus();
-            
+
             if (UifConstants.ViewStatus.CREATED.equals(compStatus)) {
                 startPhase = UifConstants.ViewPhases.INITIALIZE;
             } else if (UifConstants.ViewStatus.INITIALIZED.equals(compStatus)) {
@@ -677,7 +575,7 @@ public class ViewLifecycle implements Serializable {
                 reportIllegalState("View lifecycle has already been applied to "
                         + component.getClass().getName() + " " + component.getId());
             }
-            
+
         } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
                 .equals(startPhase) && !UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
             throw new RuntimeException("Invalid start phase given: " + startPhase);
@@ -685,11 +583,20 @@ public class ViewLifecycle implements Serializable {
 
         if (StringUtils.isBlank(endPhase)) {
             ViewLifecyclePhase activePhase = ViewLifecycle.getPhase();
-            
+
             if (activePhase != null && UifConstants.ViewPhases.APPLY_MODEL.equals(activePhase.getViewPhase())) {
+                if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
+                    return;
+                }
                 endPhase = UifConstants.ViewPhases.INITIALIZE;
+
             } else if (activePhase != null && UifConstants.ViewPhases.FINALIZE.equals(activePhase.getViewPhase())) {
+                if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase)
+                        && !UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+                    return;
+                }
                 endPhase = UifConstants.ViewPhases.APPLY_MODEL;
+
             } else {
                 endPhase = UifConstants.ViewPhases.FINALIZE;
             }
@@ -701,39 +608,47 @@ public class ViewLifecycle implements Serializable {
 
         // Push sub-lifecycle phases in reverse order.  These will be processed immediately after
         // the active phase ends, starting with the last phase pushed.
-        ViewLifecycle active = getActiveLifecycle();
+        ViewLifecycleProcessor processor = getProcessor();
 
         if (asynchronous) {
-            // Queue sub-lifecycle to be performed by the next available worker
+
+            // Perform sub-lifecycle immediately in the same thread
+            FinalizeComponentPhase finalPhase = null;
             if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
-                active.pushPendingPhase(LifecyclePhaseFactory.finalize(component, model, parent));
+                finalPhase = LifecyclePhaseFactory.finalize(component, model, 0, parent);
             }
 
             if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
+                processor.pushPendingPhase(finalPhase);
                 return;
             }
 
+            ApplyModelComponentPhase applyModelPhase = null;
             if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
                     UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
-                active.pushPendingPhase(LifecyclePhaseFactory.applyModel(component, model, parent));
+                applyModelPhase = LifecyclePhaseFactory.applyModel(
+                        component, model, 0, parent, finalPhase, new HashSet<String>());
             }
 
             if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+                processor.pushPendingPhase(applyModelPhase);
                 return;
             }
 
-            active.pushPendingPhase(LifecyclePhaseFactory.initialize(component, model));
+            InitializeComponentPhase initializePhase = 
+                    LifecyclePhaseFactory.initialize(component, model, 0, parent, applyModelPhase);
+            processor.pushPendingPhase(initializePhase);
+
         } else {
-            Queue<ViewLifecyclePhase> phaseQueue = new LinkedList<ViewLifecyclePhase>();
-            ViewLifecyclePhase pushPhase = active.activePhase;
-            
+
+            ViewLifecycleProcessor synchProcessor =
+                    new SynchronousViewLifecycleProcessor(processor.getLifecycle());
             try {
-                active.activePhase = null;
-                
+                PROCESSOR.set(synchProcessor);
+
                 // Perform sub-lifecycle immediately in the same thread
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-                    phaseQueue.offer(LifecyclePhaseFactory.initialize(component, model));
-                    performPendingPhases(phaseQueue);
+                    synchProcessor.performPhase(LifecyclePhaseFactory.initialize(component, model, 0, parent, null));
                 }
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
@@ -742,19 +657,17 @@ public class ViewLifecycle implements Serializable {
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
                         UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                    phaseQueue.offer(LifecyclePhaseFactory.applyModel(component, model, parent));
-                    performPendingPhases(phaseQueue);
+                    synchProcessor.performPhase(LifecyclePhaseFactory.applyModel(component, model, 0, parent, null, new HashSet<String>()));
                 }
 
                 if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
                     return;
                 }
 
-                phaseQueue.offer(LifecyclePhaseFactory.finalize(component, model, parent));
-                performPendingPhases(phaseQueue);
+                synchProcessor.performPhase(LifecyclePhaseFactory.finalize(component, model, 0, parent));
 
             } finally {
-                active.activePhase = pushPhase;
+                PROCESSOR.set(processor);
             }
         }
     }
@@ -767,20 +680,22 @@ public class ViewLifecycle implements Serializable {
      */
     public static void encapsulateLifecycle(View view, Object model,
             HttpServletRequest request, HttpServletResponse response, Runnable lifecycleProcess) {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        if (viewLifecycle != null) {
-            throw new IllegalStateException("Another view context already active on this thread");
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+        if (processor != null) {
+            throw new IllegalStateException("Another lifecycle is already active on this thread");
         }
 
         try {
-            viewLifecycle = new ViewLifecycle(view, model, request, response, false);
-            TL_VIEW_LIFECYCLE.set(viewLifecycle);
-            viewLifecycle.view = view;
+            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, request, response);
+            processor = isAsynchronousLifecycle()
+                    ? new AsynchronousViewLifecycleProcessor(viewLifecycle)
+                    : new SynchronousViewLifecycleProcessor(viewLifecycle);
+            PROCESSOR.set(processor);
 
             lifecycleProcess.run();
-            
+
         } finally {
-            TL_VIEW_LIFECYCLE.remove();
+            PROCESSOR.remove();
         }
     }
 
@@ -791,7 +706,7 @@ public class ViewLifecycle implements Serializable {
      */
     public static ViewHelperService getHelper() {
         ViewLifecycle active = getActiveLifecycle();
-        
+
         if (active.helper == null) {
             throw new IllegalStateException("Context view helper is not available");
         }
@@ -810,7 +725,7 @@ public class ViewLifecycle implements Serializable {
      */
     public static View getView() {
         ViewLifecycle active = getActiveLifecycle();
-        
+
         if (active.view == null) {
             throw new IllegalStateException("Context view is not available");
         }
@@ -825,7 +740,7 @@ public class ViewLifecycle implements Serializable {
      */
     public static Object getModel() {
         ViewLifecycle active = getActiveLifecycle();
-        
+
         if (active.model == null) {
             throw new IllegalStateException("Model is not available");
         }
@@ -839,17 +754,59 @@ public class ViewLifecycle implements Serializable {
      * @return The current phase of the active lifecycle, or null if no phase is currently active.
      */
     public static ViewLifecyclePhase getPhase() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-        return viewLifecycle == null ? null : viewLifecycle.activePhase;
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+        return processor == null ? null : processor.getActivePhase();
     }
-    
+
     /**
      * Get the rendering context for this lifecycle.
      * 
      * @return The rendering context for this lifecycle.
      */
     public static LifecycleRenderingContext getRenderingContext() {
-        return getActiveLifecycle().renderingContext;
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+        return processor == null ? null : processor.getRenderingContext();
+    }
+
+    /**
+     * Get the lifecycle processor active on the current thread.
+     * 
+     * @return The lifecycle processor active on the current thread.
+     */
+    public static ViewLifecycleProcessor getProcessor() {
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+
+        if (processor == null) {
+            throw new IllegalStateException("No view lifecycle is active on this thread");
+        }
+
+        return processor;
+    }
+
+    /**
+     * Note a processor as active on the current thread.
+     * 
+     * <p>
+     * This method is intended only for use by {@link AsynchronousLifecycleWorker} in setting the
+     * context for worker threads. Use
+     * {@link #encapsulateLifecycle(View, Object, HttpServletRequest, HttpServletResponse, Runnable)}
+     * to populate an appropriate processor for for web request and other transaction threads.
+     * </p>
+     * 
+     * @param processor The processor to activate on the current thread.
+     */
+    static void setProcessor(ViewLifecycleProcessor processor) {
+        ViewLifecycleProcessor active = PROCESSOR.get();
+
+        if (active != null && processor != null) {
+            throw new IllegalStateException("Another lifecycle processor is already active on this thread");
+        }
+
+        if (processor == null) {
+            PROCESSOR.remove();
+        } else {
+            PROCESSOR.set(processor);
+        }
     }
 
     /**
@@ -858,22 +815,16 @@ public class ViewLifecycle implements Serializable {
      * @return The view context active on the current thread.
      */
     public static ViewLifecycle getActiveLifecycle() {
-        ViewLifecycle viewLifecycle = TL_VIEW_LIFECYCLE.get();
-
-        if (viewLifecycle == null) {
-            throw new IllegalStateException("No view lifecycle is active on this thread");
-        }
-
-        return viewLifecycle;
+        return getProcessor().getLifecycle();
     }
 
     /**
-     * Determine any view context is active on the current thread.
+     * Determine if a lifecycle processor is active on the current thread.
      * 
-     * @return True if a view context is active on the current thread.
+     * @return True if a lifecycle processor is active on the current thread.
      */
     public static boolean isActive() {
-        return TL_VIEW_LIFECYCLE.get() != null;
+        return PROCESSOR.get() != null;
     }
 
     /**
@@ -906,36 +857,73 @@ public class ViewLifecycle implements Serializable {
         ViewLifecycle.encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+                ViewLifecycleProcessor processor = getProcessor();
+                ViewLifecycle viewLifecycle = processor.getLifecycle();
                 View view = ViewLifecycle.getView();
-                Object model = ViewLifecycle.getModel();
+                ViewHelperService helper = ViewLifecycle.getHelper();
+                UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
 
+                if (isTrace()) {
+                    ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
+                }
+                
                 // populate view from request parameters
                 viewLifecycle.populateViewFromRequestParameters(parameters);
 
                 // backup view request parameters on form for recreating lost
                 // views (session timeout)
-                ((UifFormBase) model).setViewRequestParameters(view
-                        .getViewRequestParameters());
+                model.setViewRequestParameters(view.getViewRequestParameters());
 
                 // invoke initialize phase on the views helper service
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing initialize phase for view: " + view.getId());
                 }
-                viewLifecycle.performInitialization();
 
+                helper.performCustomViewInitialization(model);
+
+                processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null));
+
+                if (isTrace()) {
+                    ProcessLogger.trace("initialize:" + view.getId());
+                }
+                
                 // Apply Model Phase
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing apply model phase for view: " + view.getId());
                 }
-                viewLifecycle.performApplyModel();
+                
+                // apply default values if they have not been applied yet
+                if (!model.isDefaultsApplied()) {
+                    viewLifecycle.applyDefaultValues(view, view, model);
+                    model.setDefaultsApplied(true);
+                }
+
+                // get action flag and edit modes from authorizer/presentation controller
+                viewLifecycle.retrieveEditModesAndActionFlags(view, (UifFormBase) model);
+
+                // set view context for conditional expressions
+                viewLifecycle.setViewContext();
+
+                processor.performPhase(LifecyclePhaseFactory.applyModel(view, model));
+
+                if (isTrace()) {
+                    ProcessLogger.trace("apply-model:" + view.getId());
+                }
 
                 // Finalize Phase
                 if (LOG.isInfoEnabled()) {
                     LOG.info("performing finalize phase for view: " + view.getId());
                 }
-                viewLifecycle.performFinalize();
 
+                // get script for generating growl messages
+                String growlScript = viewLifecycle.buildGrowlScript();
+                ((ViewModel) model).setGrowlScript(growlScript);
+
+                processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null));
+                
+                if (isTrace()) {
+                    ProcessLogger.trace("finalize:" + view.getId());
+                }
             }
         });
 
@@ -982,9 +970,13 @@ public class ViewLifecycle implements Serializable {
         encapsulateLifecycle(view, model, request, response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle viewLifecycle = getActiveLifecycle();
+                ViewLifecycleProcessor processor = getProcessor();
                 View view = ViewLifecycle.getView();
                 Object model = ViewLifecycle.getModel();
+
+                if (isTrace()) {
+                    ProcessLogger.trace("begin-component-lifecycle:" + component.getId());
+                }
                 
                 Component newComponent = component;
                 Component origComponent = view.getViewIndex().getComponentById(origId);
@@ -994,7 +986,7 @@ public class ViewLifecycle implements Serializable {
                 List<String> origCss = origComponent.getCssClasses();
                 if (origCss != null && (model instanceof UifFormBase)
                         && ((UifFormBase) model).isUpdateComponentRequest()) {
-                    
+
                     if (origCss.contains(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS)) {
                         component.addStyleClass(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS);
                     } else if (origCss.contains(UifConstants.BOX_LAYOUT_VERTICAL_ITEM_CSS)) {
@@ -1058,9 +1050,16 @@ public class ViewLifecycle implements Serializable {
                                 ((DataField) newComponent).getBindingInfo().getBindingPath());
                     }
                 }
+                
+                if (isTrace()) {
+                    ProcessLogger.trace("ready:" + newComponent.getId());
+                }
+                
+                processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model));
 
-                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.initialize(newComponent, model));
-                viewLifecycle.performPendingPhases();
+                if (isTrace()) {
+                    ProcessLogger.trace("initialize:" + newComponent.getId());
+                }
 
                 // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
                 String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
@@ -1117,8 +1116,11 @@ public class ViewLifecycle implements Serializable {
                     ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
                 }
 
-                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
-                viewLifecycle.performPendingPhases();
+                processor.performPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
+
+                if (isTrace()) {
+                    ProcessLogger.trace("apply-model:" + newComponent.getId());
+                }
 
                 // adjust nestedLevel property on some specific collection cases
                 if (newComponent instanceof Container) {
@@ -1127,8 +1129,11 @@ public class ViewLifecycle implements Serializable {
                     ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
                 }
 
-                viewLifecycle.offerPendingPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
-                viewLifecycle.performPendingPhases();
+                processor.performPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
+
+                if (isTrace()) {
+                    ProcessLogger.trace("finalize:" + newComponent.getId());
+                }
 
                 // make sure id, binding, and label settings stay the same as initial
                 if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
@@ -1164,15 +1169,18 @@ public class ViewLifecycle implements Serializable {
                 }
 
                 // get script for generating growl messages
-                String growlScript = viewLifecycle.buildGrowlScript();
+                String growlScript = processor.getLifecycle().buildGrowlScript();
                 ((ViewModel) model).setGrowlScript(growlScript);
 
                 view.getViewIndex().indexComponent(newComponent);
-                
+
                 PageGroup page = view.getCurrentPage();
                 // regenerate server message content for page
                 page.getValidationMessages().generateMessages(false, view, model, page);
 
+                if (isTrace()) {
+                    ProcessLogger.trace("end-component-lifecycle:" + newComponent.getId());
+                }
             }
         });
     }
@@ -1295,7 +1303,7 @@ public class ViewLifecycle implements Serializable {
     /**
      * Applies the default value configured for the given field (if any) to the line given object
      * property that is determined by the given binding path
-     *
+     * 
      * @param view view instance the field belongs to
      * @param object object that should be populated
      * @param dataField field to check for configured default value
@@ -1303,7 +1311,7 @@ public class ViewLifecycle implements Serializable {
      */
     public void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
         if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
-                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)){
+                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
             return;
         }
 
@@ -1321,19 +1329,19 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Retrieves the default value that is configured for the given data field
-     *
+     * 
      * <p>
      * The field's default value is determined in the following order:
-     *
+     * 
      * <ol>
-     *     <li>If default value on field is non-blank</li>
-     *     <li>If expression is found for default value</li>
-     *     <li>If default value finder class is configured for field</li>
-     *     <li>If an expression is found for default values</li>
-     *     <li>If default values on field is not null</li>
+     * <li>If default value on field is non-blank</li>
+     * <li>If expression is found for default value</li>
+     * <li>If default value finder class is configured for field</li>
+     * <li>If an expression is found for default values</li>
+     * <li>If default values on field is not null</li>
      * </ol>
      * </p>
-     *
+     * 
      * @param view view instance the field belongs to
      * @param object object that should be populated
      * @param dataField field to retrieve default value for
@@ -1467,36 +1475,6 @@ public class ViewLifecycle implements Serializable {
             Object value = helper.getExpressionEvaluator().evaluateExpression(view.getContext(),
                     variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
-        }
-    }
-
-    /**
-     * Execute all pending lifecycle phases.
-     */
-    protected void performPendingPhases() {
-        performPendingPhases(pendingPhases);
-    }
-    
-    /**
-     * Execute all pending lifecycle phases.
-     */
-    protected static void performPendingPhases(Queue<ViewLifecyclePhase> phaseQueue) {
-        Queue<ViewLifecyclePhase> initialPhases = new LinkedList<ViewLifecyclePhase>(phaseQueue);
-
-        while (!phaseQueue.isEmpty()) {
-            ViewLifecyclePhase phase = phaseQueue.poll();
-            
-            phase.run();
-
-            phaseQueue.addAll(phase.getSuccessors());
-        }
-
-        Iterator<ViewLifecyclePhase> initialPhaseIterator = initialPhases.iterator();
-        while (initialPhaseIterator.hasNext()) {
-            ViewLifecyclePhase top = initialPhaseIterator.next();
-
-            assert top.isComplete() : top;
-            getView().getViewIndex().indexComponent(top.getComponent());
         }
     }
 

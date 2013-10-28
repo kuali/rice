@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 import freemarker.core.Environment;
 import freemarker.core.Macro;
@@ -33,7 +35,7 @@ import freemarker.template.TemplateModel;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RenderComponentTask extends AbstractViewLifecycleTask {
+public class RenderComponentTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
@@ -45,7 +47,7 @@ public class RenderComponentTask extends AbstractViewLifecycleTask {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.AbstractViewLifecycleTask#performLifecycleTask()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {
@@ -53,6 +55,16 @@ public class RenderComponentTask extends AbstractViewLifecycleTask {
         LifecycleRenderingContext renderingContext = ViewLifecycle.getRenderingContext();
         renderingContext.clearRenderingBuffer();
 
+        renderingContext.importTemplate(component.getTemplate());
+        
+        if (component instanceof Container) {
+            LayoutManager manager = ((Container) component).getLayoutManager();
+            
+            if (manager != null && manager.getTemplate() != null) {
+                renderingContext.importTemplate(manager.getTemplate());
+            }
+        }
+        
         try {
             Environment env = renderingContext.getEnvironment();
 

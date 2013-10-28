@@ -21,7 +21,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 
-
   <!-- Maintenance View -->
 
   <bean id="TravelMileageRateMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
@@ -36,18 +35,17 @@
 
   <bean id="TravelMileageRate-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="headerText" value="Travel Mileage Rate Maintenance"/>
-    <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelMileageRate"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelMileageRate"/>
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">
           <property name="headerText" value="Mileage Rate Information"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="mileageRateId"/>
+              <bean parent="Uif-InputField" p:propertyName="mileageRateId" p:defaultValue="@{ #sequence('TRVL_MLG_RT_ID_S') }" />
               <bean parent="Uif-InputField" p:propertyName="mileageRateCd"/>
               <bean parent="Uif-InputField" p:propertyName="mileageRateName"/>
               <bean parent="Uif-InputField" p:propertyName="mileageRate"/>
-              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

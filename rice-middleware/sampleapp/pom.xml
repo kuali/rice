@@ -30,6 +30,8 @@
   <properties>
     <web.launch.context.path>/sample-app</web.launch.context.path>
     <bootstrap.spring.file>classpath:SampleAppBeans.xml</bootstrap.spring.file>
+    <!-- don't generate edu.sampleu javadocs -->
+    <maven.javadoc.skip>true</maven.javadoc.skip>
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>

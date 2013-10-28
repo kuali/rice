@@ -175,8 +175,8 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
 		
 		//FIXME: Can we do this better using just the JPQL query?  
 		List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
-		List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) getDataObjectService().
-                        findMatching(RouteNodeInstance.class,queryByCriteria.build());
+		List<RouteNodeInstance> routeNodeInstances = getDataObjectService().
+                        findMatching(RouteNodeInstance.class,queryByCriteria.build()).getResults();
 		for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 		    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
 		    	terminalNodes.add(routeNodeInstance);

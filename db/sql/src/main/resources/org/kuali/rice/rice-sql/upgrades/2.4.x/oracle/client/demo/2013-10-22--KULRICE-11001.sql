@@ -108,8 +108,6 @@ TO_DATE('2013/12/01 00:00:00', 'yyyy/mm/dd hh24:mi:ss'),'10000',
 '1000.00','Kuali Days Conference','1234567', sys_guid(),'1')
 /
 
-20131201000000
-201312-04 00:00:00
 -- Per Diem Table
 CREATE TABLE TRVL_PD_EXP_T  (
     PD_EXP_ID     VARCHAR2(40) NOT NULL,

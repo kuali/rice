@@ -63,6 +63,15 @@ public class TravelDestination extends DataObjectBase implements Serializable {
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelDestinationId;
 
+    @Column(name = "TRVL_TYP_CD", length = 40)
+    @Label("Travel type code")
+    @Description("Trip Type")
+    @KeyValuesFinderClass(TripTypeKeyValuesFinder.class)
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.DROPDOWN),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
+    private String travelTypeCode;
+
     @Column(name = "DEST_NM", length = 40)
     @Label("Destination name")
     @Description("Name of location")
@@ -88,6 +97,14 @@ public class TravelDestination extends DataObjectBase implements Serializable {
 
     public void setTravelDestinationId(String travelDestinationId) {
         this.travelDestinationId = travelDestinationId;
+    }
+
+    public String getTravelTypeCode() {
+        return travelTypeCode;
+    }
+
+    public void setTravelTypeCode(String travelTypeCode) {
+        this.travelTypeCode = travelTypeCode;
     }
 
     public String getTravelDestinationName() {

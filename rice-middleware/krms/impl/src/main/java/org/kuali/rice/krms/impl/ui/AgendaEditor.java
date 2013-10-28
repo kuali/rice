@@ -332,7 +332,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     // Need to override this method since the actual persistable BO is wrapped inside dataObject.
     @Override
     public void refreshNonUpdateableReferences() {
-        throw new UnsupportedOperationException("refreshNonUpdateableReferences is not supported");
+        // throw new UnsupportedOperationException("refreshNonUpdateableReferences is not supported");
         //getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
     }
 

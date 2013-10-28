@@ -521,9 +521,9 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     public void verifyVersionNumber(Object dataObject) {
         DataObjectMetadata metadata = metadataRepository.getMetadata(dataObject.getClass());
         if (metadata == null) {
-            throw new IllegalArgumentException("Given data object class could not be loaded from metadata repository: "
-                + dataObject.getClass());
+            return;
         }
+
         if (metadata.isSupportsOptimisticLocking()) {
             if (dataObject instanceof Versioned) {
                 Map<String, ?> keyPropertyValues = dataObjectService.wrap(dataObject).getPrimaryKeyValues();

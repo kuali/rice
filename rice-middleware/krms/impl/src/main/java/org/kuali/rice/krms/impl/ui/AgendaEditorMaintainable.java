@@ -338,8 +338,11 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         Map<String, String> primaryKeys = new HashMap<String, String>();
         primaryKeys.put("id", agendaBo.getId());
         AgendaBo blah = getLegacyDataAdapter().findByPrimaryKey(AgendaBo.class, primaryKeys);
-        getLegacyDataAdapter().delete(blah);
-            flushCacheBeforeSave();
+        if (blah != null) {
+            getLegacyDataAdapter().delete(blah);
+        }
+
+        flushCacheBeforeSave();
 
         getLegacyDataAdapter().linkAndSave(agendaBo);
     }

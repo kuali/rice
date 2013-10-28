@@ -2377,6 +2377,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         // waitAndCreateNew();
         // waitForPageToLoad();
         jGrowl("Create New");
+        checkForIncidentReport();
         waitAndClickByLinkText("Create New");
         
         //jiraAwareWaitAndClick(By.linkText("Create New"));
@@ -3050,6 +3051,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickByName("methodToCall.createDelegateRule");
         waitForPageToLoad();
         Thread.sleep(3000);
+        checkForIncidentReport();
         waitAndClickCancel();
         waitForPageToLoad();
         waitAndClickByName("methodToCall.processAnswer.button0");
@@ -3086,11 +3088,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitForPageToLoad();
         SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
+        Thread.sleep(3000);
+        checkForIncidentReport();
         waitAndClickSearch();
         waitAndClickEdit();
         waitForPageToLoad();
         selectFrameIframePortlet();
         Thread.sleep(3000);
+        checkForIncidentReport();
         waitAndClickCancel();
         waitForPageToLoad();
         Thread.sleep(3000);

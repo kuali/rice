@@ -16,25 +16,34 @@
 package org.kuali.rice.krad.demo.travel.authorization;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
+import edu.sampleu.travel.dataobject.TravelDestination;
+import edu.sampleu.travel.dataobject.TravelExpenseItem;
+import edu.sampleu.travel.dataobject.TravelPerDiemExpense;
+import edu.sampleu.travel.options.TripTypeKeyValuesFinder;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
-import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
-import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
@@ -52,83 +61,73 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
 @Entity
 @Table(name = "TRVL_AUTH_DOC_T")
 @AttributeOverrides({
-    @AttributeOverride(name="documentNumber", column=@Column(name="FDOC_NBR",insertable=true,updatable=true,length=14))
+    @AttributeOverride(name="documentNumber", column=@Column(name="TRVL_AUTH_DOC_ID",insertable=true,updatable=true,length=14))
 })
 @AssociationOverrides({
 	@AssociationOverride(name="pessimisticLocks",joinColumns= {@JoinColumn(
-            name = "FDOC_NBR", insertable = false, updatable = false)})
+            name = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)})
 })
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 	private static final long serialVersionUID = -6609385831976630737L;
 
-	@Column(name="TRVL_ID",length=19)
-	@Label("TEM Doc #")
-    private String travelDocumentIdentifier;
-
-	@Column(name="TRIP_BGN_DT")
-	@Temporal(TemporalType.DATE)
+    // trip begin date
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name="TRVL_BGN_DT")
+    @Label("Trip Begin Date")
     private Date tripBegin;
 
-	@Column(name="TRIP_END_DT")
-	@Temporal(TemporalType.DATE)
+    // trip end date
+    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name="TRVL_END_DT")
+    @Label("Trip End Date")
     private Date tripEnd;
 
-	@Column(name="TRIP_DESC",length=255)
+    // travel description
+	@Column(name="TRVL_DESC",length=255)
 	@Label("Business Purpose")
 	private String tripDescription;
-    @Column(name="TRIP_TYP_CD",length=3)
-    private String tripTypeCode;
 
-    // Traveler section
+    // travel destination
+    @Column(name="TRVL_DEST_ID",length=40)
+    private String tripDestinationId;
+    @Transient
+    private TravelDestination travelDestination;
+
+    // traveler
 	@Column(name="TRAVELER_DTL_ID",length=19,precision=0)
     private Integer travelerDetailId;
 	@Transient
     private TravelerDetail travelerDetail;
 
-    // Special Circumstances
+    // travel type code
+    @Column(name = "TRVL_TYP_CD", length = 40)
+    @Label("Travel type code")
+    @Description("Trip Type")
+    @KeyValuesFinderClass(TripTypeKeyValuesFinder.class)
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.DROPDOWN),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
+    private String travelTypeCode;
+
+    // expense limit
 	@Column(name="EXP_LMT",length=19,precision=2)
-	@Label("If there is an expense limit imposed by department or grant or some other budgetary restrictions on this trip, please enter the expense limit here $")
+	@Label("Expense Limit")
 	@Description("Expense limit imposed by department or grant or some other budgetary restrictions on trip.")
     private KualiDecimal expenseLimit;
-	@Column(name="DELINQUENT_TR_EXCEPTION",length=1)
-	@Label("Why oh Why?")
-    private Boolean questionForTaWhy;
-	@Transient
-	@NonPersistentProperty
-	@Label("Question for TA - is anyone traveling with you?")
-	@Size(max=255)
-    private String questionForTa;
-	@Transient
-	@NonPersistentProperty
-	@Label("Question for TA documents - not free form: Carrying Fruit?")
-    private Boolean questionForTaDocWhy;
-	@Transient
-	@NonPersistentProperty
-	@Label("Do you have large pets traveling with you?")
-	@Size(max=255)
-    private String questionForTaDoc;
 
-    // Emergency Contact
+    // contact number
 	@Column(name="CELL_PH_NUM",length=20)
-	@Label("Traveler's Cell or Other Contact Number During Trip")
+	@Label("Contact Number")
+    @Description("This is the contact phone number during the trip.")
     private String cellPhoneNumber;
-	@Column(name="RGN_FAMIL",length=255)
-    private String regionFamiliarity;
-	@Column(name="CTZN_CNTRY_CD",length=2)
-    private String citizenshipCountryCode;
-	@Transient
-	@NonPersistentProperty
-	@Label("Modes of Transportation while out-of-country")
-	@ShortLabel("Transportation Modes")
-    private String transportationModeCode;
 
-    public String getTravelDocumentIdentifier() {
-        return travelDocumentIdentifier;
-    }
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
+    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false, insertable=false, updatable=false)
+    protected List<TravelPerDiemExpense> dailyExpenseEstimates;
 
-    public void setTravelDocumentIdentifier(String travelDocumentIdentifier) {
-        this.travelDocumentIdentifier = travelDocumentIdentifier;
-    }
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
+    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false, insertable=false, updatable=false)
+    protected List<TravelExpenseItem> actualExpenseItems;
 
     public Date getTripBegin() {
         return tripBegin;
@@ -153,17 +152,6 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     public void setTripDescription(String tripDescription) {
         this.tripDescription = tripDescription;
     }
-
-
-    public void setTripTypeCode(String tripTypeCode) {
-        this.tripTypeCode = tripTypeCode;
-    }
-
-
-    public String getTripTypeCode() {
-        return tripTypeCode;
-    }
-
 
     public Integer getTravelerDetailId() {
         return travelerDetailId;
@@ -190,88 +178,55 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     }
 
 
-    public void setTravelerDetailId(String cellPhoneNumber) {
+    public void setCellPhoneNumber(String cellPhoneNumber) {
         this.cellPhoneNumber = cellPhoneNumber;
     }
-
-
-    public String getRegionFamiliarity() {
-        return regionFamiliarity;
-    }
-
-
-    public void setRegionFamiliarity(String regionFamiliarity) {
-        this.regionFamiliarity = regionFamiliarity;
-    }
-
-
-    public String getCitizenshipCountryCode() {
-        return citizenshipCountryCode;
-    }
-
-
-    public void setCitizenshipCountryCode(String citizenshipCountryCode) {
-        this.citizenshipCountryCode = citizenshipCountryCode;
-    }
-
-
-    public String getTransportationModeCode() {
-        return transportationModeCode;
-    }
-
-
-    public void setTransportationModeCode(String transportationModeCode) {
-        this.transportationModeCode = transportationModeCode;
-    }
-
 
     public KualiDecimal getExpenseLimit() {
         return expenseLimit;
     }
 
-
     public void setExpenseLimit(KualiDecimal expenseLimit) {
         this.expenseLimit = expenseLimit;
     }
 
-
-    public Boolean getQuestionForTaWhy() {
-        return questionForTaWhy;
+    public String getTripDestinationId() {
+        return tripDestinationId;
     }
 
-
-    public void setQuestionForTaWhy(Boolean questionForTaWhy) {
-        this.questionForTaWhy = questionForTaWhy;
+    public void setTripDestinationId(String tripDestinationId) {
+        this.tripDestinationId = tripDestinationId;
     }
 
-
-    public String getQuestionForTa() {
-        return questionForTa;
+    public TravelDestination getTravelDestination() {
+        return travelDestination;
     }
 
-
-    public void setQuestionForTa(String questionForTa) {
-        this.questionForTa = questionForTa;
+    public void setTravelDestination(TravelDestination travelDestination) {
+        this.travelDestination = travelDestination;
     }
 
-
-    public Boolean getQuestionForTaDocWhy() {
-        return questionForTaDocWhy;
+    public List<TravelPerDiemExpense> getDailyExpenseEstimates() {
+        return dailyExpenseEstimates;
     }
 
-
-    public void setQuestionForTaDocWhy(Boolean questionForTaDocWhy) {
-        this.questionForTaDocWhy = questionForTaDocWhy;
+    public void setDailyExpenseEstimates(List<TravelPerDiemExpense> dailyExpenseEstimates) {
+        this.dailyExpenseEstimates = dailyExpenseEstimates;
     }
 
-
-    public String getQuestionForTaDoc() {
-        return questionForTaDoc;
+    public List<TravelExpenseItem> getActualExpenseItems() {
+        return actualExpenseItems;
     }
 
-
-    public void setQuestionForTaDoc(String questionForTaDoc) {
-        this.questionForTaDoc = questionForTaDoc;
+    public void setActualExpenseItems(List<TravelExpenseItem> actualExpenseItems) {
+        this.actualExpenseItems = actualExpenseItems;
     }
 
+    public String getTravelTypeCode() {
+        return travelTypeCode;
+    }
+
+    public void setTravelTypeCode(String travelTypeCode) {
+        this.travelTypeCode = travelTypeCode;
+    }
 }

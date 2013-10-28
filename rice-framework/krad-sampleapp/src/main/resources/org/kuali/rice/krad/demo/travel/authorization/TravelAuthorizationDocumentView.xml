@@ -37,8 +37,8 @@
     <property name="items">
       <list merge="true">
         <bean parent="TravelAuthorization-TripOverview"/>
-        <bean parent="TravelAuthorization-EmergencyContactInformation"/>
-        <bean parent="TravelAuthorization-SpecialCircumstances"/>
+        <bean parent="TravelAuthorization-ActualExpenses"/>
+        <bean parent="TravelAuthorization-DailyCostEstimates"/>
       </list>
     </property>
   </bean>
@@ -54,30 +54,64 @@
   </bean>
 
   <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Traveler Section"
+                 p:layoutManager.numberOfColumns="4">
+  <property name="items">
+    <list>
+      <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
+        <property name="id" value="travelerQuickfinder"/>
+        <property name="quickfinder">
+          <bean parent="Uif-QuickFinder"
+                p:dataObjectClassName="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail">
+            <property name="fieldConversions">
+              <map>
+                <entry key="id" value="travelerDetailId"/>
+                <entry key="firstName" value="travelerDetail.firstName"/>
+                <entry key="lastName" value="travelerDetail.lastName"/>
+                <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
+                <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
+                <entry key="cityName" value="travelerDetail.cityName"/>
+                <entry key="stateCode" value="travelerDetail.stateCode"/>
+                <entry key="countryCode" value="travelerDetail.countryCode"/>
+                <entry key="zipCode" value="travelerDetail.zipCode"/>
+                <entry key="emailAddress" value="travelerDetail.emailAddress"/>
+                <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
+                <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
+                <entry key="citizenship" value="travelerDetail.citizenship"/>
+              </map>
+            </property>
+          </bean>
+        </property>
+        <property name="control">
+          <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
+        </property>
+      </bean>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine2"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.cityName"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.stateCode"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.countryCode"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
+      <bean parent="Uif-InputField" p:required="true" p:colSpan="3" p:propertyName="cellPhoneNumber"/>
+    </list>
+  </property>
+</bean>
+
+  <bean id="TravelAuthorization-TripOverview-TripInformationSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Trip Information Section"
         p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
-          <property name="id" value="quickfinder"/>
+        <bean parent="Uif-InputField" p:label="Primary Destination Id" p:colSpan="1" p:propertyName="tripDestinationId">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
-                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail">
+                  p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelDestination">
               <property name="fieldConversions">
                 <map>
-                  <entry key="id" value="travelerDetailId"/>
-                  <entry key="principalId" value="travelerDetail.principalId"/>
-                  <entry key="firstName" value="travelerDetail.firstName"/>
-                  <entry key="lastName" value="travelerDetail.lastName"/>
-                  <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
-                  <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
-                  <entry key="cityName" value="travelerDetail.cityName"/>
-                  <entry key="stateCode" value="travelerDetail.stateCode"/>
-                  <entry key="countryCode" value="travelerDetail.countryCode"/>
-                  <entry key="zipCode" value="travelerDetail.zipCode"/>
-                  <entry key="emailAddress" value="travelerDetail.emailAddress"/>
-                  <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
-                  <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
-                  <entry key="citizenship" value="travelerDetail.citizenship"/>
+                  <entry key="travelDestinationId" value="tripDestinationId"/>
+                  <entry key="travelDestinationName" value="travelDestination.travelDestinationName"/>
                 </map>
               </property>
             </bean>
@@ -86,90 +120,72 @@
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
           </property>
         </bean>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.person.principalName"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine2"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.cityName"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.stateCode"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.countryCode"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
-        <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="TravelAuthorization-TripOverview-TripInformationSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Trip Information Section"
-        p:layoutManager.numberOfColumns="4">
-    <property name="items">
-      <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:fieldLabel.requiredMessagePlacement="LEFT"/>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:fieldLabel.requiredMessagePlacement="LEFT"/>
-<!--  p:constraintText="mm/dd/yyyy"
-        <bean parent="Uif-InputField" p:label="Primary Destination Lookup" p:required="true" p:propertyName="primaryDestinationId" p:colSpan="3">
-          <property name="id" value="quickfinder"/>
-          <property name="quickfinder.dataObjectClassName" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.PrimaryDestination"/>
-          <property name="quickfinder.fieldConversions">
-            <map>
-              <entry key="id" value="primaryDestinationId"/>
-              <entry key="primaryDestinationName" value="primaryDestination.primaryDestinationName"/>
-              <entry key="county" value="primaryDestination.county"/>
-              <entry key="countryStateName" value="primaryDestination.countryStateName"/>
-              <entry key="tripTypeCode" value="primaryDestination.tripTypeCode"/>
-            </map>
-          </property>
+        <bean parent="Uif-DataField" p:propertyName="travelDestination.travelDestinationName"/>
+        <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="travelTypeCode"/>
+        <bean parent="Uif-InputField" p:propertyName="tripBegin">
           <property name="control">
-            <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
+            <bean parent="Uif-TextControl" p:size="10">
+              <property name="datePicker">
+                <bean parent="Uif-DatePicker" />
+              </property>
+            </bean>
           </property>
         </bean>
-        <bean parent="Uif-DataField" p:propertyName="primaryDestination.primaryDestinationName"/>
-        <bean parent="Uif-DataField" p:propertyName="primaryDestination.tripTypeCode"/>
-        <bean parent="Uif-DataField" p:propertyName="primaryDestination.countryStateName"/>
-        <bean parent="Uif-DataField" p:propertyName="primaryDestination.county"/>
-        <bean parent="Uif-InputField" p:propertyName="tripDescription" p:colSpan="3"/>
--->
-      </list>
-    </property>
-  </bean>
-
-  <!-- Emergency Contact Information -->
-  <bean id="TravelAuthorization-EmergencyContactInformation"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Emergency Contact Information">
-    <property name="items">
-      <list>
-        <bean id="TravelAuthorization-EmergencyContactInformation-EmergencyContactInformation" parent="Uif-Disclosure-GridSubSection" p:headerText="Emergency Contact Information"
-              p:layoutManager.numberOfColumns="4">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:required="true" p:colSpan="3" p:propertyName="cellPhoneNumber"/>
-              <bean parent="Uif-DataField" p:propertyName="travelerDetail.citizenship" p:colSpan="3"/>
-              <bean parent="Uif-InputField" p:propertyName="transportationModeCode" p:width="auto" p:colSpan="3"/>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="regionFamiliarity" p:width="auto" p:colSpan="3"/>
-            </list>
+        <bean parent="Uif-InputField" p:propertyName="tripEnd">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="10">
+              <property name="datePicker">
+                <bean parent="Uif-DatePicker" />
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="expenseLimit">
+          <property name="validCharactersConstraint">
+            <bean parent="NumericPatternConstraint" />
           </property>
         </bean>
       </list>
     </property>
   </bean>
 
-
-  <!-- Special Circumstances -->
-  <bean id="TravelAuthorization-SpecialCircumstances"  parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Special Circumstances">
-    <property name="items">
-      <list>
-        <bean id="TravelAuthorization-SpecialCircumstances-SpecialCircumstances" parent="Uif-Disclosure-GridSubSection" p:headerText="Special Circumstances"
-              p:layoutManager.numberOfColumns="4">
+  <!-- Actual Expenses -->
+  <bean id="TravelAuthorization-DailyCostEstimates" parent="Uif-Disclosure-TableCollectionSection">
+          <property name="headerText" value="Daily Cost Estimate" />
+          <property name="collectionObjectClass"
+                    value="edu.sampleu.travel.dataobject.TravelPerDiemExpense" />
+          <property name="propertyName" value="actualExpenseCollection" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+          <property name="layoutManager.richTable.render" value="true" />
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="expenseLimit"/>
-              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaWhy"/>
-              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTa"/>
-              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaDocWhy"/>
-              <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="questionForTaDoc"/>
+              <bean parent="Uif-InputField" p:propertyName="perDiemDate"/>
+              <bean parent="Uif-InputField" p:propertyName="breakfastValue"/>
+              <bean parent="Uif-InputField" p:propertyName="lunchValue"/>
+              <bean parent="Uif-InputField" p:propertyName="dinnerValue"/>
+              <bean parent="Uif-InputField" p:propertyName="incidentalsValue"/>
+              <bean parent="Uif-InputField" p:propertyName="mileageRateId"/>
+              <bean parent="Uif-InputField" p:propertyName="estimatedMileage"/>
             </list>
           </property>
         </bean>
+
+  <!-- Actual Expenses  -->
+  <bean id="TravelAuthorization-ActualExpenses" parent="Uif-Disclosure-TableCollectionSection">
+    <property name="headerText" value="Actual Expenses" />
+    <property name="collectionObjectClass"
+              value="edu.sampleu.travel.dataobject.TravelExpenseItem" />
+    <property name="propertyName" value="collection1" />
+    <property name="layoutManager.generateAutoSequence" value="true" />
+    <property name="layoutManager.richTable.render" value="true" />
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd"/>
+        <bean parent="Uif-InputField" p:propertyName="expenseDesc"/>
+        <bean parent="Uif-InputField" p:propertyName="expenseDate"/>
+        <bean parent="Uif-InputField" p:propertyName="expenseAmount"/>
+        <bean parent="Uif-InputField" p:propertyName="reimbursable"/>
+        <bean parent="Uif-InputField" p:propertyName="taxable"/>
       </list>
     </property>
   </bean>

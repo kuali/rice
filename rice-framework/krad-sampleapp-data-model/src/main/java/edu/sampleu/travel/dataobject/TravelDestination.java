@@ -31,12 +31,17 @@ import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This class provides travel destination record for TEM sample
@@ -57,15 +62,6 @@ public class TravelDestination extends DataObjectBase implements Serializable {
     @Description("Unique identifier for destination item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelDestinationId;
-
-    @Column(name = "TRVL_TYP_CD", length = 40)
-    @Label("Travel type code")
-    @Description("Trip Type")
-    @KeyValuesFinderClass(TripTypeKeyValuesFinder.class)
-    @UifDisplayHints({
-            @UifDisplayHint(UifDisplayHintType.DROPDOWN),
-            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
-    private String travelTypeCode;
 
     @Column(name = "DEST_NM", length = 40)
     @Label("Destination name")
@@ -92,14 +88,6 @@ public class TravelDestination extends DataObjectBase implements Serializable {
 
     public void setTravelDestinationId(String travelDestinationId) {
         this.travelDestinationId = travelDestinationId;
-    }
-
-    public String getTravelTypeCode() {
-        return travelTypeCode;
-    }
-
-    public void setTravelTypeCode(String travelTypeCode) {
-        this.travelTypeCode = travelTypeCode;
     }
 
     public String getTravelDestinationName() {

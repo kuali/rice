@@ -88,6 +88,9 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)
     private TravelDestination travelDestination;
 
+    @Column(name = "TRVL_AUTH_DOC_ID")
+    @Label("Travel Authorization Id")
+    private String travelAuthorizationId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "PD_DT")
@@ -221,4 +224,11 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
         this.estimatedMileage = estimatedMileage;
     }
 
+    public String getTravelAuthorizationId() {
+        return travelAuthorizationId;
+    }
+
+    public void setTravelAuthorizationId(String travelAuthorizationId) {
+        this.travelAuthorizationId = travelAuthorizationId;
+    }
 }

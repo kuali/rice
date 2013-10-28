@@ -26,32 +26,7 @@
 		<property name="documentTypeName" value="TravelAuthorization" />
 		<property name="documentClass" value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationDocument" />
 		<property name="businessRulesClass" value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationDocumentRule" />
-		<property name="attributes">
-			<bean parent="TravelAuthorizationDocument-transportationModeCode" />
-		</property>
 	</bean>
 
-	<bean id="TravelAuthorizationDocument-transportationModeCode" parent="AttributeDefinition">
-		<property name="name" value="transportationModeCode" />
-
-		<property name="controlField">
-			<bean parent="Uif-VerticalCheckboxesControl">
-				<property name="options">
-					<list>
-						<bean parent="Uif-KeyLabelPair" p:key="P" p:value="Personal Vehicle" />
-						<bean parent="Uif-KeyLabelPair" p:key="W" p:value="Walking/Hiking" />
-						<bean parent="Uif-KeyLabelPair" p:key="B" p:value="Bus" />
-						<bean parent="Uif-KeyLabelPair" p:key="R" p:value="Rental Vehicle" />
-						<bean parent="Uif-KeyLabelPair" p:key="S" p:value="Ship/Ferry/Boat" />
-						<bean parent="Uif-KeyLabelPair" p:key="T" p:value="Train" />
-						<bean parent="Uif-KeyLabelPair" p:key="D" p:value="Rental Vehicle w/Driver" />
-						<bean parent="Uif-KeyLabelPair" p:key="O" p:value="Other" />
-						<bean parent="Uif-KeyLabelPair" p:key="H" p:value="Host Vehicle" />
-						<bean parent="Uif-KeyLabelPair" p:key="A" p:value="Airplane" />
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
 
 </beans>

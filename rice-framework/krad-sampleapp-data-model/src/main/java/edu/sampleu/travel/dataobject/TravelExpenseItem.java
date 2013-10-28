@@ -74,7 +74,7 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     private Date expenseDate;
 
     @Column(name = "EXP_AMT", length = 10)
-    @Label("Expense Description")
+    @Label("Expense Amount")
     @Description("amount of expense")
     private BigDecimal expenseAmount;
 

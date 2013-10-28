@@ -18,8 +18,8 @@
 
 -- fixes config parameter for kitchen sink help test
 INSERT INTO KRCR_CMPNT_T (NMSPC_CD, CMPNT_CD, OBJ_ID, VER_NBR, NM, ACTV_IND)
-VALUES ('KR-SAP', 'TestComponent', '69A9BABE4A0FBD56E0404F8189D82B0A', 1, 'Test Component','Y')
+VALUES ('KR-SAP', 'TestComponent', '69A9BABE4A0FBD56E0404F8189D82512', 1, 'Test Component','Y')
 /
-update KRCR_PARM_T set CMPNT_CD='TestComponent',  VAL='http://site.kuali.org/rice/latest/reference/html/help.html#document_type'
+update KRCR_PARM_T set CMPNT_CD='TestComponent',  VAL='http://site.kuali.org/rice/latest/reference/html/Help.html#document_type'
 where NMSPC_CD='KR-SAP' AND PARM_NM='TEST_PARAM'
 /

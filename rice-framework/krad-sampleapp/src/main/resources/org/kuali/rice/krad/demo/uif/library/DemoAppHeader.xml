@@ -125,13 +125,13 @@
   </bean>
 
   <!-- ex:Demo-AppHeader-Example1 start-->
-  <bean id="Demo-Menu-ResearcherC1" parent="Uif-BasicGroup">
-     <property name="items">
-       <list>
+  <!--<bean id="Demo-Menu-ResearcherC1" parent="Uif-SimpleGroup">-->
+     <!--<property name="items">-->
+       <!--<list>-->
 
-       </list>
-     </property>
-  </bean>
+       <!--</list>-->
+     <!--</property>-->
+  <!--</bean>-->
   <!-- ex:Demo-AppHeader-Example1 end-->
 
 </beans>

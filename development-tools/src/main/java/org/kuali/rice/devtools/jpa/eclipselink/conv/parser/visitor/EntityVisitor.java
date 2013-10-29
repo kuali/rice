@@ -34,14 +34,6 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Versi
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
-
- @IdClass
-
- dont forget extents class
- *
- */
-
 public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
     private static final Log LOG = LogFactory.getLog(OjbDescriptorRepositoryAwareVisitor.class);
 

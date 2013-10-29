@@ -88,7 +88,7 @@ public class AnnotationHelper extends OjbDescriptorRepositoryAwareVisitorHelper 
                 //3 add annotation if it doesn't already exist and the annotation resolves (meaning the resolver
                 // determines if should be added by returning a non-null value)
                 if (!foundfullyQualifiedAnn && !foundSimpleAnn) {
-                    NodeData nodes = resolver.resolve(getDescriptorRepositories(), n, arg);
+                    NodeData nodes = resolver.resolve(n, arg);
                     if (nodes != null && nodes.annotation != null) {
                         LOG.info("adding " + nodes.annotation + " to " + getNameFormMessage(n) + ".");
                         annotations.add(nodes.annotation);

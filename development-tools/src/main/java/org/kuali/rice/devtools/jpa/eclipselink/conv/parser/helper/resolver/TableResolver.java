@@ -44,7 +44,7 @@ public class TableResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Collection<DescriptorRepository> drs, Node node, Object arg) {
+    public NodeData resolve(Node node, Object arg) {
         if (!(node instanceof ClassOrInterfaceDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on ClassOrInterfaceDeclaration");
         }

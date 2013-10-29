@@ -22,7 +22,7 @@ public abstract class AbstractGeneratedResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Collection<DescriptorRepository> drs, Node node, Object arg) {
+    public NodeData resolve(Node node, Object arg) {
         if (!(node instanceof FieldDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on FieldDeclaration");
         }

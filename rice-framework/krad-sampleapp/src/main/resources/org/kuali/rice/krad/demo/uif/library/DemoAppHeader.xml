@@ -48,13 +48,24 @@
     <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
     <property name="applicationHeader">
       <bean parent="Uif-ApplicationHeaderBase">
-        <property name="applicationLogo">
+        <property name="applicationNavigation.brandImage">
           <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/images/logo.png"/>
         </property>
 
         <property name="applicationNavigation.items">
           <list>
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="RESEARCHER" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="RESEARCHER" p:renderToggleCaret="false">
+              <property name="menuGroup">
+                <bean parent="Uif-CssGridGroup">
+                  <property name="items">
+                    <list>
+
+                    </list>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="UNIT" p:renderToggleCaret="false"/>
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="CENTRAL ADMIN" p:renderToggleCaret="false"/>
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="MAINTENANCE" p:renderToggleCaret="false"/>
@@ -112,5 +123,15 @@
       </list>
     </property>
   </bean>
+
+  <!-- ex:Demo-AppHeader-Example1 start-->
+  <bean id="Demo-Menu-ResearcherC1" parent="Uif-BasicGroup">
+     <property name="items">
+       <list>
+
+       </list>
+     </property>
+  </bean>
+  <!-- ex:Demo-AppHeader-Example1 end-->
 
 </beans>

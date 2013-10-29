@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -240,6 +242,87 @@ public class LookupController extends UifControllerBase {
     }
 
     /**
+     * Invoked from the UI to mark values from all pages as selected. Copies the value from the lookupResults to
+     * selectedLookupResultsCache
+     *
+     * @param lookupForm lookup form instance containing the selected results and lookup configuration
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=selectAllPages")
+    public ModelAndView selectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
+            HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+
+        List<? extends Object> lookupResults = (List<? extends Object>) lookupForm.getLookupResults();
+
+        Map<String, String> fieldConversions = lookupForm.getFieldConversions();
+        List<String> fromFieldNames = new ArrayList<String>(fieldConversions.keySet());
+
+        // Loop through  the lookup results and store identifiers for all items in the set
+        Set<String> selectedValues = new HashSet<String>();
+        for(Object lineItem : lookupResults) {
+            String lineIdentifier = LookupUtils.generateMultiValueKey(lineItem, fromFieldNames);
+            selectedValues.add(lineIdentifier);
+        }
+
+        lookupForm.setSelectedLookupResultsCache(selectedValues);
+
+        return getUIFModelAndView(lookupForm);
+    }
+
+    /**
+     * Invoked from the UI to mark values from all pages as deselected. Clears the selectedLookupResultsCache
+     *
+     * @param lookupForm lookup form instance containing the selected results and lookup configuration
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deselectAllPages")
+    public ModelAndView deselectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
+            HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+
+        lookupForm.getSelectedLookupResultsCache().clear();
+        Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.LOOKUP_RESULTS);
+        if (selectedLines != null) {
+            selectedLines.clear();
+        }
+
+        return getUIFModelAndView(lookupForm);
+    }
+
+
+    /**
+     * Retrieve a page defined by the page number parameter for a collection
+     *
+     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
+     * render
+     * the UI
+     * @param result -   represents binding results
+     * @param request - http servlet request data
+     * @param response - http servlet response object
+     * @return the  ModelAndView object
+     * @throws Exception
+     */
+    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
+    @Override
+    public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        LookupUtils.refreshLookupResultSelections((LookupForm) form);
+        return super.retrieveCollectionPage(form,result,request,response);
+    }
+
+
+    /**
+     * Get method for getting aaData for jquery datatables which are using sAjaxSource option.
+     *
+     * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
+     * request parameters.</p>
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
+    public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        LookupUtils.refreshLookupResultSelections((LookupForm) form);
+        return super.tableJsonRetrieval(form, result, request, response);
+    }
+
+    /**
      * Invoked from the UI to return the selected lookup results lines, parameters are collected to build a URL to
      * the caller and then a redirect is performed.
      *
@@ -248,6 +331,9 @@ public class LookupController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
     public String returnSelected(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
             HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+
+        LookupUtils.refreshLookupResultSelections((LookupForm) lookupForm);
+
         // build string of select line identifiers
         String selectedLineValues = "";
 

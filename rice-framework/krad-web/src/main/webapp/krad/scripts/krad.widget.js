@@ -994,7 +994,7 @@ function toggleRowDetails(actionComponent) {
  */
 function selectAllLines(collectionId) {
     jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', true);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
 
 }
 
@@ -1006,36 +1006,9 @@ function selectAllLines(collectionId) {
  */
 function deselectAllLines(collectionId) {
     jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', false);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
 }
 
-/**
- * Select all checkboxes within the datatable (all pages) that are marked with class 'uif-select-line' (used
- * for multi-value select collections)
- *
- * @param collectionId - id for the collection to select checkboxes for
- */
-function selectAllPagesLines(collectionId) {
-    // get a handle on the datatables plugin object for the results collection
-    var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
-    jQuery(query, oTable.fnGetNodes()).prop('checked', true);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
-}
-
-/**
- * Deselects all checkboxes within the datatable (all pages) that are marked with class 'uif-select-line' (used
- * for multi-value select collections)
- *
- * @param collectionId - id for the collection to deselect checkboxes for
- */
-function deselectAllPagesLines(collectionId) {
-    // get a handle on the datatables plugin object for the results collection
-    var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
-    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
-    jQuery(query, oTable.fnGetNodes()).prop('checked', false);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS));
-}
 
 /**
  * Uses jQuery jsTree plug-in to decorate a div with tree functionality. The

@@ -254,6 +254,7 @@ public class UifConstants {
         public static final String AA_DATA = "aaData";
         public static final String DEFER_RENDER = "bDeferRender";
         public static final String SDOWNLOAD_SOURCE = "sDownloadSource";
+        public static final String SERVER_PARAMS = "fnServerParams";
     }
 
     public static class TableToolsValues {

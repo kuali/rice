@@ -119,6 +119,8 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<UITestObject> doubleGroupedCollection = new ArrayList<UITestObject>();
 
     private List<UITestObject> emptyCollection = new ArrayList<UITestObject>();
+    private List<UITestObject> emptyCollection1 = new ArrayList<UITestObject>();
+    private List<UITestObject> emptyCollection2 = new ArrayList<UITestObject>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
@@ -871,6 +873,22 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setEmptyCollection(List<UITestObject> emptyCollection) {
         this.emptyCollection = emptyCollection;
+    }
+
+    public List<UITestObject> getEmptyCollection1() {
+        return emptyCollection1;
+    }
+
+    public void setEmptyCollection1(List<UITestObject> emptyCollection1) {
+        this.emptyCollection1 = emptyCollection1;
+    }
+
+    public List<UITestObject> getEmptyCollection2() {
+        return emptyCollection2;
+    }
+
+    public void setEmptyCollection2(List<UITestObject> emptyCollection2) {
+        this.emptyCollection2 = emptyCollection2;
     }
 
     public String getFakeTotal() {

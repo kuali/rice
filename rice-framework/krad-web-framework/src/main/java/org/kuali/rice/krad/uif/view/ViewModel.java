@@ -256,7 +256,8 @@ public interface ViewModel extends Serializable {
     public Map<String, Object> getClientStateForSyncing();
 
     /**
-     * Holds Set of String identifiers for lines that were selected in a collection
+     * Holds Set of String identifiers for lines that were selected in a collection from a single page.
+     * selectedCollectionLines are request level values and get reset with every page request
      *
      * <p>
      * When the select field is enabled for a <code>CollectionGroup</code>, the framework will be

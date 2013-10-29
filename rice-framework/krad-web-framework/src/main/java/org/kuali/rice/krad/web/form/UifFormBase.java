@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.form;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -114,6 +115,9 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
 
+    protected Set<String> selectedLookupResultsCache;
+
+
     protected List<Object> addedCollectionItems;
 
     @SessionTransient
@@ -157,6 +161,7 @@ public class UifFormBase implements ViewModel {
         actionParameters = new HashMap<String, String>();
         clientStateForSyncing = new HashMap<String, Object>();
         selectedCollectionLines = new HashMap<String, Set<String>>();
+        selectedLookupResultsCache = new HashSet<String>();
         addedCollectionItems = new ArrayList();
         dialogManager = new DialogManager();
         extensionData = new HashMap<String, Object>();
@@ -633,6 +638,25 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
         this.selectedCollectionLines = selectedCollectionLines;
+    }
+
+    /**
+     * Holds Set of String identifiers for lines that were selected in a lookup collection results
+     * across multiple pages.
+     * The value in the cache is preserved in the session across multiple requests. This allows for the
+     * server side paging of results to retain the user choices as they move through the pages.
+     */
+    public Set<String> getSelectedLookupResultsCache() {
+        return selectedLookupResultsCache;
+    }
+
+    /**
+     * Sets the lookup result selection cache values
+     *
+     * @param selectedLookupResultsCache
+     */
+    public void setSelectedLookupResultsCache(Set<String> selectedLookupResultsCache) {
+        this.selectedLookupResultsCache = selectedLookupResultsCache;
     }
 
     /**

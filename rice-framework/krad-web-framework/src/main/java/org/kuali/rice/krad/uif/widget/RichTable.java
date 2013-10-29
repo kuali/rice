@@ -213,6 +213,20 @@ public class RichTable extends WidgetBase {
                     + "="
                     + "true");
 
+
+            //TODO: Figure out where to move this script file constant?
+            String pushLookupSelect = "function (aoData) { " +
+                "if(jQuery('table.dataTable').length > 0) {    "  +
+                "    var table = jQuery('table.dataTable');    " +
+                "    jQuery( table.find(':input:checked')).each( function (index) {     " +
+                "        aoData.push({'name': (jQuery(this)).attr('name'),'value': (jQuery(this)).attr('value')});  " +
+                    "    console.log(jQuery(this).attr('name') + ':' + jQuery(this).attr('value')); "   +
+                "    });  " +
+                "}  " +
+            "}";
+
+            templateOptions.put(UifConstants.TableToolsKeys.SERVER_PARAMS,pushLookupSelect);
+
             // store col defs so columns can be built on paging request
             ViewLifecycle.getActiveLifecycle().getView().getViewIndex()
                 .addPostContextEntry(component.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,

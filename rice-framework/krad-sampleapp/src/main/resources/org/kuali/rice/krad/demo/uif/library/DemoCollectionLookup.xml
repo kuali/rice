@@ -29,6 +29,8 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionLookup-Example1"/>
+        <ref bean="Demo-CollectionLookup-Example2"/>
+        <ref bean="Demo-CollectionLookup-Example3"/>
       </list>
     </property>
   </bean>
@@ -49,7 +51,8 @@
           <property name="collectionLookup">
             <bean parent="Uif-CollectionQuickFinder"
                   p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"/>
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"
+                  p:viewName="Demo-MultipleValuesSelectView1"/>
           </property>
           <property name="items">
             <list>
@@ -65,4 +68,186 @@
     </property>
   </bean>
 
+
+  <!-- Active Filter -->
+  <bean id="Demo-CollectionLookup-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionLookup-Example2 start-->
+        <bean parent="Uif-TableCollectionSection">
+          <property name="headerText" value="Collection Multi-Value Lookup with Server Paging" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="emptyCollection1" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+
+          <!-- here is the configuration for the lookup -->
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"
+                  p:viewName="Demo-MultipleValuesSelectView2"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionLookup-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Active Filter -->
+  <bean id="Demo-CollectionLookup-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionLookup-Example3 start-->
+        <bean parent="Uif-TableCollectionSection">
+          <property name="headerText" value="Collection Lookup with Server Paging and rich table " />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="emptyCollection2" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+
+          <!-- here is the configuration for the lookup -->
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field1,name:field2,accountTypeCode:field3"
+                  p:viewName="Demo-MultipleValuesSelectView3"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionLookup-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-MultipleValuesSelectView1" parent="Uif-LookupView">
+    <property name="viewName" value="Demo-MultipleValuesSelectView1"/>
+    <property name="headerText" value="Lookup Sample - Multiple Value Select with data table custom paging"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+        <!--<bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />-->
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
+        <bean parent="Uif-DataField" p:propertyName="createDate" />
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName" />
+      </list>
+    </property>
+    <property name="multipleValuesSelect" value="true"/>
+    <property name="resultsGroup.layoutManager.richTable.render" value="true"/>
+    <property name="resultsGroup.layoutManager.richTable.templateOptions">
+      <map>
+        <entry key="bAutoWidth" value="false"/>
+        <entry key="sDom" value="fTlrtip"/>
+        <entry key="bRetrieve" value="true"/>
+        <entry key="sPaginationType" value="full_numbers"/>
+        <entry key="oTableTools"
+               value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ]}"/>
+        <entry key="aLengthMenu" value="[5, 10, 25, 50]"/>
+        <entry key="iDisplayLength" value="5"/>
+      </map>
+    </property>
+  </bean>
+
+
+  <bean id="Demo-MultipleValuesSelectView2" parent="Uif-LookupView">
+    <property name="viewName" value="Demo-MultipleValuesSelectView2"/>
+    <property name="headerText" value="Lookup Sample With server side paging non data table"/>
+
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+        <!--<bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />-->
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
+        <bean parent="Uif-DataField" p:propertyName="createDate" />
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName" />
+      </list>
+    </property>
+    <property name="multipleValuesSelect" value="true"/>
+    <property name="resultsGroup.useServerPaging" value="true"/>
+    <property name="resultsGroup.renderLineActions" value="false"/>
+    <property name="resultsGroup.displayLength" value="5"/>
+    <property name="resultsGroup.layoutManager.richTable.render" value="false"/>
+
+  </bean>
+
+  <bean id="Demo-MultipleValuesSelectView3" parent="Uif-LookupView">
+    <property name="viewName" value="Demo-MultipleValuesSelectView3"/>
+    <property name="headerText" value="Lookup sample With server side paging and rich table"/>
+
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+        <!--<bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" />-->
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="accountTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
+        <bean parent="Uif-DataField" p:propertyName="createDate" />
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName" />
+      </list>
+    </property>
+    <property name="multipleValuesSelect" value="true"/>
+    <property name="resultsGroup.layoutManager.richTable.render" value="true"/>
+    <property name="resultsGroup.layoutManager.numberOfColumns" value="7"/>
+    <property name="resultsGroup.useServerPaging" value="true"/>
+    <property name="resultsGroup.displayLength" value="5"/>
+    <property name="resultsGroup.renderLineActions" value="false"/>
+    <property name="resultsGroup.layoutManager.richTable.templateOptions">
+      <map>
+        <entry key="bAutoWidth" value="false"/>
+        <entry key="sDom" value="fTlrtip"/>
+        <entry key="bRetrieve" value="true"/>
+        <entry key="sPaginationType" value="full_numbers"/>
+        <entry key="oTableTools"
+               value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ]}"/>
+        <entry key="aLengthMenu" value="[5, 10, 25, 50]"/>
+        <entry key="iDisplayLength" value="5"/>
+      </map>
+    </property>
+  </bean>
 </beans>

@@ -22,10 +22,24 @@
 
 var returnByScriptHidden = "returnByScript";
 
+/*
+    There is an issue with jQuery re-running document ready twice. This happens when the innerHTML gets
+    updated. Ref: http://shout.setfive.com/2010/02/22/javascript-document-ready-getting-called-twice-heres-why/
+
+    This variable is a local solution within krad.lookup to prevent the updateSelectLineCount to be called only
+    once onChange, as enabling/disabling 'return selected' depends on increment/decrement of a counter in its logic that
+     gets corrupted by multiple calls for the same event.
+ */
+var _DONE = false;
+
 jQuery(document).ready(function () {
+    if(_DONE === true) { return;}
+
+       _DONE = true;
+
     // multi value select handler to enable/disable return selected button for checkboxes with uif-select-line
-    jQuery(document).on("change", "table.dataTable input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS, function (e) {
-        setMultivalueLookupReturnButton(this);
+    jQuery(document).on("change", "#" + kradVariables.LOOKUP_COLLECTION_ID + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS, function (e) {
+       updateSelectLineCount(this);
     });
 
     // event handler for return links on lookups
@@ -45,21 +59,37 @@ jQuery(document).ready(function () {
 });
 
 /**
+ * Registers the onChange event on the input element inside of the lookup results collection
+ * by updating the selection count depending on whether the checkbox has been checked or not
+ *
+ * @param selectControl  select control the change event occurred on
+ */
+function updateSelectLineCount(selectControl) {
+    input = jQuery(selectControl);
+
+    // Fetch current selectLineCount
+    var lookupResultsDiv = jQuery("#" + kradVariables.LOOKUP_COLLECTION_ID);
+    var selectlinecount = lookupResultsDiv.data('selectedlinecount');
+
+    if(input.attr('checked')) {
+        lookupResultsDiv.data('selectedlinecount', selectlinecount + 1);
+    }  else if(selectlinecount > 0) {
+        lookupResultsDiv.data('selectedlinecount', selectlinecount - 1);
+    }
+
+    setMultivalueLookupReturnButton("#" + kradVariables.LOOKUP_COLLECTION_ID);
+}
+
+/**
  * Enables the return selected button on the multi value lookup when at least one item is selected.
  *
  * @param selectControl select control the change event occurred on
  */
 function setMultivalueLookupReturnButton(selectControl) {
-    refreshDatatableCellRedraw(selectControl);
 
-    var oTable = getDataTableHandle(getParentRichTableId(selectControl));
+    var lookupResultsDiv = jQuery(selectControl);
 
-    var checked = false;
-    jQuery.each(getDataTablesColumnData(0, oTable), function (index, value) {
-        if (jQuery(':input:checked', value).length) {
-            checked = true;
-        }
-    });
+    var checked = lookupResultsDiv.data('selectedlinecount') > 0;
 
     if (checked) {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).removeAttr('disabled');
@@ -67,6 +97,63 @@ function setMultivalueLookupReturnButton(selectControl) {
     } else {
         jQuery(':button.' + kradVariables.RETURN_SELECTED_ACTION_CLASS).attr('disabled', 'disabled');
     }
+}
+/**
+ * Select all checkboxes within the datatable/non datatable (all pages) that are marked with class 'uif-select-line'
+ * (used for multi-value select collections)
+ *
+ * @param collectionId - id for the collection to select checkboxes for
+ */
+function selectAllPagesLines(collectionId) {
+
+    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
+    var lookupCollectionDiv = jQuery("#" + collectionId);
+
+    // If results are displayed using dataTable
+    if(jQuery('table.dataTable').length > 0) {
+
+        // get a handle on the datatables plugin object for the results collection
+        var oTable = getDataTableHandle(lookupCollectionDiv.find("table").attr('id'));
+
+        jQuery(query, oTable.fnGetNodes()).each(function( index ) {
+            this.checked = true;
+        });
+    }  else {
+        jQuery( lookupCollectionDiv.find(query)).each( function (index) {
+            if (jQuery(this).length) {
+                jQuery(this).attr('checked',true);
+            }
+        });
+    }
+
+    // Reset data attribute selectedlinecount to number of results in the lookup
+    var lookupResultCount = lookupCollectionDiv.data('lookupresultscount');
+    lookupCollectionDiv.data('selectedlinecount', lookupResultCount);
+
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
+}
+
+/**
+ * Deselects all checkboxes within the datatable/non datatable (all pages) that are marked with class 'uif-select-line'
+ * (used for multi-value select collections)
+ *
+ * @param collectionId - id for the collection to deselect checkboxes for
+ */
+function deselectAllPagesLines(collectionId) {
+
+    // get a handle on the datatables plugin object for the results collection
+    var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
+    var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
+
+    if(jQuery('table.dataTable').length > 0) {
+        jQuery(query, oTable.fnGetNodes()).prop('checked', false);
+    }
+
+    // reset selectedlinecount to 0
+    var lookupCollectionDiv = jQuery('#' + collectionId);
+    lookupCollectionDiv.data('selectedlinecount', 0);
+
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
 }
 
 /**
@@ -152,6 +239,24 @@ function setupMultiValueReturn() {
         jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
     }
 
+    // Data table only retains elements on the visible page within the DOM.
+    // To be able to preserve selections from hidden pages, we need to extract
+    // those elements from the datatable and re-insert them back into the form
+    if(jQuery('table.dataTable').length > 0) {
+        // Find all the input type: hidden elements in the data table
+        var oTable = jQuery('.dataTable').dataTable();
+        var sData = jQuery('input:hidden', oTable.fnGetNodes()).serializeArray();
+
+        // For each hidden element insert it back to the form
+        jQuery.each(sData, function(i, field){
+
+            jQuery('<input>').attr({
+                type: 'hidden',
+                id: field.id,
+                name: field.name,
+                value: field.value
+            }).appendTo('#'+kradVariables.KUALI_FORM);    });
+    }
     closeLightbox();
 }
 

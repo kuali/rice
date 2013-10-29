@@ -137,6 +137,12 @@
         <bean parent="Uif-Lookup-MaintenanceReturnLink"/>
       </list>
     </property>
+    <property name="dataAttributes">
+      <map merge="true">
+        <entry key="lookupresultscount" value="@{#form.lookupResults ne null ? #form.lookupResults.size() : 0}"/>
+        <entry key="selectedlinecount" value="@{#form.selectedLookupResultsCache.size()}"/>
+      </map>
+    </property>
     <property name="validationMessages.additionalKeysToMatch">
       <list merge="true">
         <value>LookupResultMessages</value>
@@ -218,8 +224,25 @@
   <bean id="Uif-LookupResultsFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
+        <!-- Select / Deselect All pages -->
+        <!-- With server side paging -->
+        <bean p:render="@{#collectionGroup.useServerPaging}" parent="Uif-PrimaryActionButton" p:methodToCall="selectAllPages" p:actionLabel="select all from all pages"
+              p:preSubmitCall="selectAllPagesLines('@{#collectionGroup.id}');return true; "/>
+        <!-- Without server side paging -->
+        <bean p:render="@{!#collectionGroup.useServerPaging}" parent="Uif-PrimaryActionButton" p:methodToCall="" p:actionLabel="select all from all pages"
+              p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');return true;"/>
+
+              <!--p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');"/>-->
+        <bean p:render="@{#collectionGroup.useServerPaging}" parent="Uif-PrimaryActionButton" p:methodToCall="deselectAllPages"
+              p:actionLabel="deselect all from all pages"
+              p:preSubmitCall="deselectAllPagesLines('@{#collectionGroup.id}');return true;"/>
+
+        <bean p:render="@{!#collectionGroup.useServerPaging}" parent="Uif-PrimaryActionButton" p:methodToCall=""
+              p:actionLabel="deselect all from all pages"
+              p:actionScript="deselectAllPagesLines('@{#collectionGroup.id}');return true;"/>
+
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="returnSelected" p:actionLabel="return selected"
-              p:preSubmitCall="setupMultiValueReturn();return true;" p:disabled="true" p:ajaxSubmit="false">
+              p:preSubmitCall="setupMultiValueReturn();return true;" p:disabled="@{#form.selectedLookupResultsCache.size() == 0}" p:ajaxSubmit="false">
           <property name="cssClasses">
             <list merge="true">
               <value>uif-returnSelectedAction</value>

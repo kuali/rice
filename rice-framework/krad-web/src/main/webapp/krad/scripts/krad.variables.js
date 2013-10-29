@@ -132,6 +132,7 @@ JavascriptKradVariables.prototype = {
     REQUIRED_MESSAGE_CLASS: "uif-requiredMessage",
     SAVE_LINE_ACTION_CLASS: "uif-saveLineAction",
     SELECT_FIELD_STYLE_CLASS: "uif-select-line",
+    LOOKUP_COLLECTION_ID: "uLookupResults",
     SELF: "SELF",
     SERVER_MESSAGE_ITEMS_CLASS: "uif-serverMessageItems",
     SESSION_TIMEOUT_WARNING_DIALOG: "Uif-SessionTimeoutWarning-DialogGroup",

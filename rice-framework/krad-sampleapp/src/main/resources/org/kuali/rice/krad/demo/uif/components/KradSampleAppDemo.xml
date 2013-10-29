@@ -753,6 +753,7 @@
       <list>
         <bean id="KradSampleAppTravelDemo-Row5-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppTravelDemo-Row5-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppTravelDemo-Row5-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>

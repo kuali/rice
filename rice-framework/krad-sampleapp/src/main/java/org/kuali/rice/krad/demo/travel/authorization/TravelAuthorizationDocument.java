@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.authorization;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -38,6 +40,7 @@ import edu.sampleu.travel.dataobject.TravelExpenseItem;
 import edu.sampleu.travel.dataobject.TravelPerDiemExpense;
 import edu.sampleu.travel.options.TripTypeKeyValuesFinder;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
@@ -71,13 +74,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 	private static final long serialVersionUID = -6609385831976630737L;
 
     // trip begin date
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
 	@Column(name="TRVL_BGN_DT")
     @Label("Trip Begin Date")
     private Date tripBegin;
 
     // trip end date
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
 	@Column(name="TRVL_END_DT")
     @Label("Trip End Date")
     private Date tripEnd;
@@ -112,6 +115,7 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     // expense limit
 	@Column(name="EXP_LMT",length=19,precision=2)
 	@Label("Expense Limit")
+    @Convert(converter=KualiDecimalConverter.class)
 	@Description("Expense limit imposed by department or grant or some other budgetary restrictions on trip.")
     private KualiDecimal expenseLimit;
 
@@ -121,13 +125,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     @Description("This is the contact phone number during the trip.")
     private String cellPhoneNumber;
 
-    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
-    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false, insertable=false, updatable=false)
-    protected List<TravelPerDiemExpense> dailyExpenseEstimates;
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
+    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false)
+    protected List<TravelPerDiemExpense> dailyExpenseEstimates = new ArrayList<TravelPerDiemExpense>();
 
-    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL} )
-    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false, insertable=false, updatable=false)
-    protected List<TravelExpenseItem> actualExpenseItems;
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
+    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false)
+    protected List<TravelExpenseItem> actualExpenseItems = new ArrayList<TravelExpenseItem>();
 
     public Date getTripBegin() {
         return tripBegin;
@@ -157,17 +161,13 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
         return travelerDetailId;
     }
 
-
     public void setTravelerDetailId(Integer travelerDetailId) {
         this.travelerDetailId = travelerDetailId;
     }
 
-
-
     public TravelerDetail getTravelerDetail() {
         return travelerDetail;
     }
-
 
     public void setTravelerDetail(TravelerDetail travelerDetail) {
         this.travelerDetail = travelerDetail;
@@ -176,7 +176,6 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     public String getCellPhoneNumber() {
         return cellPhoneNumber;
     }
-
 
     public void setCellPhoneNumber(String cellPhoneNumber) {
         this.cellPhoneNumber = cellPhoneNumber;

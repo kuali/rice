@@ -95,7 +95,7 @@
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
-      <bean parent="Uif-InputField" p:required="true" p:colSpan="3" p:propertyName="cellPhoneNumber"/>
+      <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:required="true" p:colSpan="3" />
     </list>
   </property>
 </bean>
@@ -104,7 +104,7 @@
         p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Primary Destination Id" p:colSpan="1" p:propertyName="tripDestinationId">
+        <bean parent="Uif-InputField" p:propertyName="tripDestinationId" p:label="Primary Destination Id" p:required="true" p:colSpan="1">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
                   p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelDestination">
@@ -141,8 +141,8 @@
           </property>
         </bean>
         <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="expenseLimit">
-          <property name="validCharactersConstraint">
-            <bean parent="NumericPatternConstraint" />
+          <property name="control">
+            <bean parent="Uif-CurrencyTextControl" p:maxLength="19" p:size="10"/>
           </property>
         </bean>
       </list>
@@ -154,7 +154,7 @@
           <property name="headerText" value="Daily Cost Estimate" />
           <property name="collectionObjectClass"
                     value="edu.sampleu.travel.dataobject.TravelPerDiemExpense" />
-          <property name="propertyName" value="actualExpenseCollection" />
+          <property name="propertyName" value="dailyExpenseEstimates" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="items">
@@ -175,12 +175,19 @@
     <property name="headerText" value="Actual Expenses" />
     <property name="collectionObjectClass"
               value="edu.sampleu.travel.dataobject.TravelExpenseItem" />
-    <property name="propertyName" value="collection1" />
+    <property name="propertyName" value="actualExpenseItems" />
     <property name="layoutManager.generateAutoSequence" value="true" />
     <property name="layoutManager.richTable.render" value="true" />
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd"/>
+        <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.options.ExpenseTypeKeyValuesFinder"/>
+          </property>
+        </bean>
         <bean parent="Uif-InputField" p:propertyName="expenseDesc"/>
         <bean parent="Uif-InputField" p:propertyName="expenseDate"/>
         <bean parent="Uif-InputField" p:propertyName="expenseAmount"/>

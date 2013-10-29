@@ -48,7 +48,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * This class provides the per diem expenses
+ * This class provides the per diem expenses.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -63,12 +63,17 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @Column(name = "PD_EXP_ID", length = 10)
     @GeneratedValue(generator = "TRVL_PD_EXP_ID_S")
     @PortableSequenceGenerator(name = "TRVL_PD_EXP_ID_S")
-    @Label("id")
+    @Label("ID")
     @Description("Unique identifier for per diem expense item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelPerDiemExpenseId;
 
-    @Column(name="TRVL_DEST_ID",length=40)
+    @Column(name = "TRVL_AUTH_DOC_ID")
+    @Label("Travel Authorization Document ID")
+    @Description("Identifier for the parent Travel Authorization Document")
+    private String travelAuthorizationDocumentId;
+
+    @Column(name="TRVL_DEST_ID", length=40)
     @Label("Primary Destination")
     @Description("Primary Destination related to per diem expense")
     @KeyValuesFinderClass(TravelDestinationKeyValues.class)
@@ -87,10 +92,6 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
                     displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
     @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)
     private TravelDestination travelDestination;
-
-    @Column(name = "TRVL_AUTH_DOC_ID")
-    @Label("Travel Authorization Id")
-    private String travelAuthorizationId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "PD_DT")
@@ -113,7 +114,7 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @Label("Amount estimated for incidentals")
     private BigDecimal incidentalsValue;
 
-    @Column(name="MLG_RT_ID",length=40)
+    @Column(name="MLG_RT_ID", length=40)
     @Label("Mileage Rate")
     @Description("Mileage Rate Code Used")
     @KeyValuesFinderClass(MileageRateKeyValues.class)
@@ -132,14 +133,6 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
                     displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
     private TravelMileageRate mileageRate;
 
-    public TravelMileageRate getMileageRate() {
-        return mileageRate;
-    }
-
-    public void setMileageRate(TravelMileageRate mileageRate) {
-        this.mileageRate = mileageRate;
-    }
-
     @Column(name = "MLG_EST")
     @Label("Number of estimated miles")
     private BigDecimal estimatedMileage;
@@ -150,6 +143,14 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
 
     public void setTravelPerDiemExpenseId(String travelPerDiemExpenseId) {
         this.travelPerDiemExpenseId = travelPerDiemExpenseId;
+    }
+
+    public String getTravelAuthorizationDocumentId() {
+        return travelAuthorizationDocumentId;
+    }
+
+    public void setTravelAuthorizationDocumentId(String travelAuthorizationDocumentId) {
+        this.travelAuthorizationDocumentId = travelAuthorizationDocumentId;
     }
 
     public Date getPerDiemDate() {
@@ -216,19 +217,19 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
         this.mileageRateId = mileageRateId;
     }
 
+    public TravelMileageRate getMileageRate() {
+        return mileageRate;
+    }
+
+    public void setMileageRate(TravelMileageRate mileageRate) {
+        this.mileageRate = mileageRate;
+    }
+
     public BigDecimal getEstimatedMileage() {
         return estimatedMileage;
     }
 
     public void setEstimatedMileage(BigDecimal estimatedMileage) {
         this.estimatedMileage = estimatedMileage;
-    }
-
-    public String getTravelAuthorizationId() {
-        return travelAuthorizationId;
-    }
-
-    public void setTravelAuthorizationId(String travelAuthorizationId) {
-        this.travelAuthorizationId = travelAuthorizationId;
     }
 }

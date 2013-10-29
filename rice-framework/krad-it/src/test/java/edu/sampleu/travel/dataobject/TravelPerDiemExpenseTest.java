@@ -17,7 +17,6 @@ package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.PostalCountryCode;
 import edu.sampleu.travel.options.PostalStateCode;
-import edu.sampleu.travel.options.TripType;
 import org.junit.Test;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
@@ -41,7 +40,6 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
-    private static final String TYPE_CODE = TripType.OS.getCode();
     private static final String DESTINATION_NAME = PostalStateCode.CA.getLabel();
     private static final String COUNTRY_CODE = PostalCountryCode.US.getCode();
     private static final String STATE_CODE = PostalStateCode.CA.getCode();
@@ -50,6 +48,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
     private static final String MILEAGE_RATE_NAME = "Domestic";
     private static final BigDecimal MILEAGE_RATE = new BigDecimal("30");
 
+    private static final String TRAVEL_AUTHORIZATION_DOCUMENT_ID = "10000";
     private static final String PER_DIEM_DATE = "2010-01-01";
     private static final BigDecimal BREAKFAST_VALUE = new BigDecimal("15.00");
     private static final BigDecimal LUNCH_VALUE = new BigDecimal("30.00");
@@ -75,11 +74,11 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         TravelDestination travelDestination = travelPerDiemExpense.getTravelDestination();
         assertNotNull("Travel Per Diem Expense destination is null", travelDestination);
         assertNotNull("Travel Destination ID is null", travelDestination.getTravelDestinationId());
-        //assertEquals("Travel Destination type is incorrect", TYPE_CODE, travelDestination.getTravelTypeCode());
         assertEquals("Travel Destination name is incorrect", DESTINATION_NAME, travelDestination.getTravelDestinationName());
         assertEquals("Travel Destination country is incorrect", COUNTRY_CODE, travelDestination.getCountryCd());
         assertEquals("Travel Destination state is incorrect", STATE_CODE, travelDestination.getStateCd());
 
+        assertEquals("Travel Per Diem Expense document ID is incorrect", TRAVEL_AUTHORIZATION_DOCUMENT_ID, travelPerDiemExpense.getTravelAuthorizationDocumentId());
         assertEquals("Travel Per Diem Expense date is incorrect", DATE_FORMAT.parse(PER_DIEM_DATE), travelPerDiemExpense.getPerDiemDate());
         assertEquals("Travel Per Diem Expense breakfast value is incorrect", BREAKFAST_VALUE, travelPerDiemExpense.getBreakfastValue());
         assertEquals("Travel Per Diem Expense lunch value is incorrect", LUNCH_VALUE, travelPerDiemExpense.getLunchValue());
@@ -98,7 +97,6 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
 
     private String createTravelPerDiemExpense() throws ParseException {
         TravelDestination newTravelDestination = new TravelDestination();
-        //newTravelDestination.setTravelTypeCode(TYPE_CODE);
         newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
         newTravelDestination.setCountryCd(COUNTRY_CODE);
         newTravelDestination.setStateCd(STATE_CODE);
@@ -111,6 +109,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         TravelMileageRate travelMileageRate = KRADServiceLocator.getDataObjectService().save(newTravelMileageRate);
 
         TravelPerDiemExpense travelPerDiemExpense = new TravelPerDiemExpense();
+        travelPerDiemExpense.setTravelAuthorizationDocumentId(TRAVEL_AUTHORIZATION_DOCUMENT_ID);
         travelPerDiemExpense.setTravelDestinationId(travelDestination.getTravelDestinationId());
         travelPerDiemExpense.setPerDiemDate(DATE_FORMAT.parse(PER_DIEM_DATE));
         travelPerDiemExpense.setBreakfastValue(BREAKFAST_VALUE);

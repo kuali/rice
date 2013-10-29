@@ -40,6 +40,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
+    private static final String TRAVEL_AUTHORIZATION_DOCUMENT_ID = "10000";
     private static final String EXPENSE_TYPE = ExpenseType.A.getCode();
     private static final String EXPENSE_DESCRIPTION = ExpenseType.A.getLabel();
     private static final String EXPENSE_DATE = "2010-01-01";
@@ -59,6 +60,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
 
         TravelExpenseItem travelExpenseItem = KRADServiceLocator.getDataObjectService().find(TravelExpenseItem.class, id);
         assertNotNull("Travel Expense Item ID is null", travelExpenseItem.getTravelExpenseItemId());
+        assertEquals("Travel Expense Item document ID is incorrect", TRAVEL_AUTHORIZATION_DOCUMENT_ID, travelExpenseItem.getTravelAuthorizationDocumentId());
         assertEquals("Travel Expense Item type is incorrect", EXPENSE_TYPE, travelExpenseItem.getTravelExpenseTypeCd());
         assertEquals("Travel Expense Item description is incorrect", EXPENSE_DESCRIPTION, travelExpenseItem.getExpenseDesc());
         assertEquals("Travel Expense Item date is incorrect", DATE_FORMAT.parse(EXPENSE_DATE), travelExpenseItem.getExpenseDate());
@@ -69,6 +71,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
 
     private String createTravelExpenseItem() throws ParseException {
         TravelExpenseItem travelExpenseItem = new TravelExpenseItem();
+        travelExpenseItem.setTravelAuthorizationDocumentId(TRAVEL_AUTHORIZATION_DOCUMENT_ID);
         travelExpenseItem.setTravelExpenseTypeCd(EXPENSE_TYPE);
         travelExpenseItem.setExpenseDesc(EXPENSE_DESCRIPTION);
         travelExpenseItem.setExpenseDate(DATE_FORMAT.parse(EXPENSE_DATE));

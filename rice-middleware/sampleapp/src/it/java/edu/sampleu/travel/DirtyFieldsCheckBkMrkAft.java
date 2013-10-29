@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckBkMrkAft extends DirtyFieldsCheckSTJUnitBase {
+public class DirtyFieldsCheckBkMrkAft extends DirtyFieldsAftBase {
 
     @Test
     public void testDirtyFieldsCheckBookmark() throws Exception {

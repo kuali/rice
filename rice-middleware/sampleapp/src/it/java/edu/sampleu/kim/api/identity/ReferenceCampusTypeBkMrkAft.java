@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBkMrkAft extends ReferenceCampusTypeSTJUnitBase {
+public class ReferenceCampusTypeBkMrkAft extends ReferenceCampusTypeAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityGroupBlanketAppNavAft extends IdentityGroupBlanketAppSTJUnitBase {
+public class IdentityGroupBlanketAppNavAft extends IdentityGroupBlanketAppAftBase {
 
     @Test
     public void testIdentityGroupBlanketAppNav() throws Exception {

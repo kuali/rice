@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceExpandCollapseNavAft extends MaintenanceExpandCollapseSTJUnitBase {
+public class MaintenanceExpandCollapseNavAft extends MaintenanceExpandCollapseAftBase {
 
     @Ignore // link removed
     @Test

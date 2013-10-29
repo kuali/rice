@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ServerErrorsNavAft extends ServerErrorsSTJUnitBase {
+public class ServerErrorsNavAft extends ServerErrorsAftBase {
 
     @Ignore // lots of selector updates needed.
     @Test

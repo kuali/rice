@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceSubsidizedPercentWatermarkBkMrkAft extends MaintenanceSubsidizedPercentWatermarkSTJUnitBase {
+public class MaintenanceSubsidizedPercentWatermarkBkMrkAft extends MaintenanceSubsidizedPercentWatermarkAftBase {
 
     @Override
     public String getBookmarkUrl() {

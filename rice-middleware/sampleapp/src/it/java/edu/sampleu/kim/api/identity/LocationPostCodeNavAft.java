@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationPostCodeNavAft extends LocationPostCodeSTJUnitBase {
+public class LocationPostCodeNavAft extends LocationPostCodeAftBase {
 
     @Test
     public void testLocationPostCodeNav() throws Exception {

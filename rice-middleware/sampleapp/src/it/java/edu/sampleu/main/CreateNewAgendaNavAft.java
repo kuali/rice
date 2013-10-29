@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaNavAft extends CreateNewAgendaSTJUnitBase {
+public class CreateNewAgendaNavAft extends CreateNewAgendaAftBase {
 
     @Ignore // TODO fix
     @Test

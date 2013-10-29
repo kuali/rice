@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigViewConfiguredPropertiesNavAft extends ConfigViewConfiguredPropertiesSTJUnitBase {
+public class ConfigViewConfiguredPropertiesNavAft extends ConfigViewConfiguredPropertiesAftBase {
 
     @Test
     public void testConfigViewConfiguredPropertiesNav() throws Exception {

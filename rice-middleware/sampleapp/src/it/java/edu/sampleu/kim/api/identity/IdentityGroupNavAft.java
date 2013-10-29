@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityGroupNavAft extends IdentityGroupSTJUnitBase {
+public class IdentityGroupNavAft extends IdentityGroupAftBase {
 
     @Test
     public void testIdentityGroupNav() throws Exception {

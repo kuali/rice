@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelpBkMrkAft extends HelpSTJUnitBase {
+public class HelpBkMrkAft extends HelpAftBase {
 
     @Ignore // TODO fix
     @Test

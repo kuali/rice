@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaLookUpNavAft extends AgendaLookUpSTJUnitBase {
+public class AgendaLookUpNavAft extends AgendaLookUpAftBase {
 
     @Test
     public void testAgendaLookUpNav() throws Exception {

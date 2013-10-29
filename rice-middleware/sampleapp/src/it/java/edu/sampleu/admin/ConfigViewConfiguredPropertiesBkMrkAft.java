@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigViewConfiguredPropertiesBkMrkAft extends ConfigViewConfiguredPropertiesSTJUnitBase {
+public class ConfigViewConfiguredPropertiesBkMrkAft extends ConfigViewConfiguredPropertiesAftBase {
 
     @Override
     public String getBookmarkUrl() {

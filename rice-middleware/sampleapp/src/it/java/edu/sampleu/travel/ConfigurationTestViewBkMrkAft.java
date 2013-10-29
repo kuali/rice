@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigurationTestViewBkMrkAft extends ConfigurationTestViewSTJUnitBase {
+public class ConfigurationTestViewBkMrkAft extends ConfigurationTestViewAftBase {
 
     @Ignore // TODO fix
     @Test

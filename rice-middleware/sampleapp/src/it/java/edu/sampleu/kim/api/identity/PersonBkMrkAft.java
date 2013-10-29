@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PersonBkMrkAft extends PersonSTJUnitBase {
+public class PersonBkMrkAft extends PersonAftBase {
 
     @Override
     public String getBookmarkUrl() {

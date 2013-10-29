@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesBlanketAppNavAft extends WorkFlowRouteRulesBlanketAppSTJUnitBase {
+public class WorkFlowRouteRulesBlanketAppNavAft extends WorkFlowRouteRulesBlanketAppAftBase {
 
     @Test
     public void testWorkFlowRouteRulesBlanketAppNav() throws Exception {

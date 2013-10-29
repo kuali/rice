@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TravelAccountLookupBkMrkAft extends TravelAccountLookupSTJUnitBase {
+public class TravelAccountLookupBkMrkAft extends TravelAccountLookupAftBase {
 
     @Test
     public void testTravelAccountLookupBookmark() throws Exception {

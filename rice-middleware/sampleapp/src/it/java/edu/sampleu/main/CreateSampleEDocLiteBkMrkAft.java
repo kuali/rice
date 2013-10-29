@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateSampleEDocLiteBkMrkAft extends CreateSampleEDocLiteSTJUnitBase {
+public class CreateSampleEDocLiteBkMrkAft extends CreateSampleEdocLiteAftBase {
 
     @Override
     public String getBookmarkUrl() {

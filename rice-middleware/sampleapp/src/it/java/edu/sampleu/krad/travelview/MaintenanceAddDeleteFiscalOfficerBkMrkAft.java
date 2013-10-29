@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteFiscalOfficerBkMrkAft extends MaintenanceAddDeleteFiscalOfficerSTJUnitBase {
+public class MaintenanceAddDeleteFiscalOfficerBkMrkAft extends MaintenanceAddDeleteFiscalOfficerAftBase {
 
     @Override
     public String getBookmarkUrl() {

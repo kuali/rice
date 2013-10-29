@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParentLineBkMrkAft extends ParentLineSTJUnitBase {
+public class ParentLineBkMrkAft extends ParentLineAftBase {
 
     @Ignore // TODO fix
     @Test

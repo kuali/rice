@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 
 /**
- * JUnit implementation of XMLIngesterSTJUnitBase that navigates through the UI to the page under test.  In the future
+ * JUnit implementation of XMLIngesterAftBase that navigates through the UI to the page under test.  In the future
  * the idea is to generate this class using the test methods from XmlIngesterAftBase and following the simple pattern of
  * <pre>super.testMethodNav(this);</pre>
  *
@@ -27,7 +27,7 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlIngesterKradBkMrkAft extends XmlIngesterSTJUnitBase {
+public class XmlIngesterKradBkMrkAft extends XmlIngesterAftBase {
 
     public XmlIngesterKradBkMrkAft(){
         super();

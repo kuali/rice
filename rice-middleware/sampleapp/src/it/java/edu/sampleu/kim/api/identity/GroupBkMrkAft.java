@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupBkMrkAft extends GroupSTJUnitBase {
+public class GroupBkMrkAft extends GroupAftBase {
 
     @Override
     public String getBookmarkUrl() {

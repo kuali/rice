@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesDelegationNavAft extends WorkFlowRouteRulesDelegationSTJUnitBase {
+public class WorkFlowRouteRulesDelegationNavAft extends WorkFlowRouteRulesDelegationAftBase {
 
     @Test
     public void testWorkFlowRouteRulesDelegationNav() throws Exception {

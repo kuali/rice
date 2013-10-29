@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceLookupAddMultipleLinesBkMrkAft extends MaintenanceLookupAddMultipleLinesSTJUnitBase {
+public class MaintenanceLookupAddMultipleLinesBkMrkAft extends MaintenanceLookupAddMultipleLinesAftBase {
 
     @Override
     public String getBookmarkUrl() {

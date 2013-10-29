@@ -22,7 +22,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateDocTypeNavAft extends CreateDocTypeSTJUnitBase {
+public class CreateDocTypeNavAft extends CreateDocTypeAftBase {
 
     @Test
     public void testCreateDocTypeNav() throws Exception {

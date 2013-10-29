@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceRouteLogNavAft extends MaintenanceRouteLogSTJUnitBase {
+public class MaintenanceRouteLogNavAft extends MaintenanceRouteLogAftBase {
 
     @Ignore // link removed
     @Test

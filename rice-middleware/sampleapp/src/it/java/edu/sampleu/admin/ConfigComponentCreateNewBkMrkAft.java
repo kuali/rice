@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigComponentCreateNewBkMrkAft extends ConfigComponentCreateNewSTJUnitBase {
+public class ConfigComponentCreateNewBkMrkAft extends ConfigComponentCreateNewAftBase {
 
     @Override
     public String getBookmarkUrl() {

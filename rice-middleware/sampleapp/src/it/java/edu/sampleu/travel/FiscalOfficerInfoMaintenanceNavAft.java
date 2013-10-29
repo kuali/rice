@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerInfoMaintenanceNavAft extends FiscalOfficerInfoMaintenanceSTJUnitBase {
+public class FiscalOfficerInfoMaintenanceNavAft extends FiscalOfficerInfoMaintenanceAftBase {
 
     @Ignore // link removed
     @Test

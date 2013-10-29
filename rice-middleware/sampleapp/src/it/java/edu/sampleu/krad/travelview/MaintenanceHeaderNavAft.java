@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceHeaderNavAft extends MaintenanceHeaderSTJUnitBase {
+public class MaintenanceHeaderNavAft extends MaintenanceHeaderAftBase {
 
     @Ignore // link removed
     @Test

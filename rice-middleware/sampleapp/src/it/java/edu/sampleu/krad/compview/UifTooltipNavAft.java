@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifTooltipNavAft extends UifTooltipSTJUnitBase {
+public class UifTooltipNavAft extends UifTooltipAftBase {
 
     @Ignore // TODO fix
     @Test

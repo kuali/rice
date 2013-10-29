@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceConstraintTextNavAft extends MaintenanceConstraintTextSTJUnitBase {
+public class MaintenanceConstraintTextNavAft extends MaintenanceConstraintTextAftBase {
 
     @Ignore // link remove
     @Test

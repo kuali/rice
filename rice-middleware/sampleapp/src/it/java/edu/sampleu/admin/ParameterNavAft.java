@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParameterNavAft extends ParameterSTJUnitBase {
+public class ParameterNavAft extends ParameterAftBase {
 
     @Test
     public void testParameterNav() throws Exception {

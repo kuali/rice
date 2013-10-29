@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceQuickfinderIconsBkMrkAft extends MaintenanceQuickfinderIconsSTJUnitBase {
+public class MaintenanceQuickfinderIconsBkMrkAft extends MaintenanceQuickfinderIconsAftBase {
 
     @Override
     public String getBookmarkUrl() {

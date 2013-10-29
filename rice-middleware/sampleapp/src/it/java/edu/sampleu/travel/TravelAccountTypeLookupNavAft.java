@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TravelAccountTypeLookupNavAft extends TravelAccountTypeLookupSTJUnitBase {
+public class TravelAccountTypeLookupNavAft extends TravelAccountTypeLookupAftBase {
 
     @Ignore // link removed
     @Test

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeNavAft extends ConfigParameterTypeSTJUnitBase {
+public class ConfigParameterTypeNavAft extends ConfigParameterTypeAftBase {
 
     @Test
     public void testConfigParameterTypeNav() throws Exception {

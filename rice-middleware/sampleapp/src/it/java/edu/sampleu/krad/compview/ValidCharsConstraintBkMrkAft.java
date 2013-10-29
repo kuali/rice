@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ValidCharsConstraintBkMrkAft extends ValidCharsConstraintSTJUnitBase {
+public class ValidCharsConstraintBkMrkAft extends ValidCharsConstraintAftBase {
 
     @Ignore // TODO fix
     @Test

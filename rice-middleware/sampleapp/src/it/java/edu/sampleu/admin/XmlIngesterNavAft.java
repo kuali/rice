@@ -18,7 +18,7 @@ package edu.sampleu.admin;
 import org.junit.Test;
 
 /**
- * JUnit implementation of XMLIngesterSTJUnitBase that navigates through the UI to the page under test.  In the future
+ * JUnit implementation of XmlIngesterAftBase that navigates through the UI to the page under test.  In the future
  * the idea is to generate this class using the test methods from XmlIngesterAftBase and following the simple pattern of
  * <pre>super.testMethodNav(this);</pre>
  *
@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlIngesterNavAft extends XmlIngesterSTJUnitBase {
+public class XmlIngesterNavAft extends XmlIngesterAftBase {
 
     /**
      * @link XmlIngesterAftBase#testIngestionNav

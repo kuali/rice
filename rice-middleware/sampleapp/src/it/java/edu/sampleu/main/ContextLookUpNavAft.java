@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpNavAft extends ContextLookUpSTJUnitBase {
+public class ContextLookUpNavAft extends ContextLookUpAftBase {
 
     @Test
     public void testContextLookUpNav() throws Exception {

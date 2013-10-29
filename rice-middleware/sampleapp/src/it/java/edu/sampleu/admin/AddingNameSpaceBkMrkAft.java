@@ -22,7 +22,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceBkMrkAft extends AddingNameSpaceSTJUnitBase {
+public class AddingNameSpaceBkMrkAft extends AddingNameSpacesAftBase {
 
     /**
      * Noop navigation not used by Bookmark tests.

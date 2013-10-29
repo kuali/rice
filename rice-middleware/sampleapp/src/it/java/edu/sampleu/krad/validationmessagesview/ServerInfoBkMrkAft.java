@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ServerInfoBkMrkAft extends ServerInfoSTJUnitBase {
+public class ServerInfoBkMrkAft extends ServerInfoAftBase {
 
     @Ignore // TODO fix
     @Test

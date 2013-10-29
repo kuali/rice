@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifComponentValidationRegexPatternBkMrkAft extends UIFComponentValidationRegexPatternSTJUnitBase {
+public class UifComponentValidationRegexPatternBkMrkAft extends UifComponentValidationRegexPatternAftBase {
 
     @Ignore // lots of selector updates needed.
     @Test

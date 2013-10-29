@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityRoleBkMrkAft extends IdentityRoleSTJUnitBase {
+public class IdentityRoleBkMrkAft extends IdentityRoleAftBase {
 
     @Override
     public String getBookmarkUrl() {

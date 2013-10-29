@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeNavAft extends ReferenceCampusTypeSTJUnitBase {
+public class ReferenceCampusTypeNavAft extends ReferenceCampusTypeAftBase {
 
     @Test
     public void testReferenceCampusTypeNav() throws Exception {

@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceQuickfinderIconsNavAft extends MaintenanceQuickfinderIconsSTJUnitBase {
+public class MaintenanceQuickfinderIconsNavAft extends MaintenanceQuickfinderIconsAftBase {
 
     @Ignore // link removed
     @Test

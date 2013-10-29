@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DeleteSubCollectionLineBkMrkAft extends DeleteSubCollectionLineSTJUnitBase {
+public class DeleteSubCollectionLineBkMrkAft extends DeleteSubCollectionLineAftBase {
 
     @Test
     public void testDeleteSubCollectionLineBookmark() throws Exception {

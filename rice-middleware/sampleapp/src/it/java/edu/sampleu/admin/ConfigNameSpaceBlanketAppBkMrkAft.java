@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNameSpaceBlanketAppBkMrkAft extends ConfigNameSpaceBlanketAppSTJUnitBase {
+public class ConfigNameSpaceBlanketAppBkMrkAft extends ConfigNameSpaceBlanketAppAftBase {
 
     @Override
     public String getBookmarkUrl() {

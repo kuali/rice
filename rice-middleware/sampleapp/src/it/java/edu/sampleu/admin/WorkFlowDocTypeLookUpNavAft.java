@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeLookUpNavAft extends WorkFlowDocTypeLookUpSTJUnitBase {
+public class WorkFlowDocTypeLookUpNavAft extends WorkFlowDocTypeLookUpAftBase {
 
     @Test
     public void testWorkFlowDocTypeLookUpNav() throws Exception {

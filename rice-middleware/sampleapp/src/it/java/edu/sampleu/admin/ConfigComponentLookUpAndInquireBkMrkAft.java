@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigComponentLookUpAndInquireBkMrkAft extends ConfigComponentLookUpAndInquireSTJUnitBase {
+public class ConfigComponentLookUpAndInquireBkMrkAft extends ConfigComponentLookUpAndInquireAftBase {
 
     @Override
     public String getBookmarkUrl() {

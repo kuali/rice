@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceButtonsNavAft extends MaintenanceButtonsSTJUnitBase {
+public class MaintenanceButtonsNavAft extends MaintenanceButtonsAftBase {
 
     @Ignore // link removed
     @Test

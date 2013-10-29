@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeDefinitionLookUpBkMrkAft extends AttributeDefinitionLookUpSTJUnitBase {
+public class AttributeDefinitionLookUpBkMrkAft extends AttributeDefinitionLookUpAftBase {
 
     @Override
     public String getBookmarkUrl() {

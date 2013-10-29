@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpBkMrkAft extends TermLookUpSTJUnitBase {
+public class TermLookUpBkMrkAft extends TermLookUpAftBase {
 
     @Override
     public String getBookmarkUrl() {

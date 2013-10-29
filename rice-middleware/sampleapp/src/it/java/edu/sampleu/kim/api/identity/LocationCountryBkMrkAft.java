@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryBkMrkAft extends LocationCountrySTJUnitBase {
+public class LocationCountryBkMrkAft extends LocationCountryAftBase {
 
     @Override
     public String getBookmarkUrl() {

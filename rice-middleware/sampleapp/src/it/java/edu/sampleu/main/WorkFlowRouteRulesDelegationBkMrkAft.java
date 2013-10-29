@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesDelegationBkMrkAft extends WorkFlowRouteRulesDelegationSTJUnitBase {
+public class WorkFlowRouteRulesDelegationBkMrkAft extends WorkFlowRouteRulesDelegationAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterLookUpAndInquireNavAft extends ConfigParameterLookUpAndInquireSTJUnitBase {
+public class ConfigParameterLookUpAndInquireNavAft extends ConfigParameterLookUpAndInquireAftBase {
 
     @Test
     public void testConfigParameterLookUpAndInquireNav() throws Exception {

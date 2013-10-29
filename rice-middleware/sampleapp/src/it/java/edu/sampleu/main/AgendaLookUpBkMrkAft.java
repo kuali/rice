@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AgendaLookUpBkMrkAft extends AgendaLookUpSTJUnitBase {
+public class AgendaLookUpBkMrkAft extends AgendaLookUpAftBase {
 
     @Override
     public String getBookmarkUrl() {

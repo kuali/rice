@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ServerWarningsNavAft extends ServerWarningsSTJUnitBase {
+public class ServerWarningsNavAft extends ServerWarningsAftBase {
 
     @Ignore // TODO selector updates
     @Test

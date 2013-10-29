@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateSampleEDocLiteNavAft extends CreateSampleEDocLiteSTJUnitBase {
+public class CreateSampleEDocLiteNavAft extends CreateSampleEdocLiteAftBase {
 
     @Test
     public void testCreateSampleEDocLiteNav() throws Exception {

@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RichMessagesNavAft extends RichMessagesSTJUnitBase {
+public class RichMessagesNavAft extends RichMessagesAftBase {
 
     @Ignore // TODO fix
     @Test

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PermissionNavAft extends PermissionSTJUnitBase {
+public class PermissionNavAft extends PermissionAftBase {
 
     @Test
     public void testPermissionNav() throws Exception {

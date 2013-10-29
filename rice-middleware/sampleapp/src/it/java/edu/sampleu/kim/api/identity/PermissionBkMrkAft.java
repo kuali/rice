@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PermissionBkMrkAft extends PermissionSTJUnitBase {
+public class PermissionBkMrkAft extends PermissionAftBase {
 
     @Override
     public String getBookmarkUrl() {

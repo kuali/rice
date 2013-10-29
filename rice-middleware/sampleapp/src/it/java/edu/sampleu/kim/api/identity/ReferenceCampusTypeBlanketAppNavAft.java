@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReferenceCampusTypeBlanketAppNavAft extends ReferenceCampusTypeBlanketAppSTJUnitBase {
+public class ReferenceCampusTypeBlanketAppNavAft extends ReferenceCampusTypeBlanketAppAftBase {
 
     @Test
     public void testReferenceCampusTypeBlanketAppNav() throws Exception {

@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientErrorsNavAft extends ClientErrorsSTJUnitBase {
+public class ClientErrorsNavAft extends ClientErrorsAftBase {
 
     @Test
     public void testClientErrorsNav() throws Exception {

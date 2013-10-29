@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPermissionNavAft extends IdentityPermissionSTJUnitBase {
+public class IdentityPermissionNavAft extends IdentityPermissionAftBase {
 
     @Test
     public void testIdentityPermissionNav() throws Exception {

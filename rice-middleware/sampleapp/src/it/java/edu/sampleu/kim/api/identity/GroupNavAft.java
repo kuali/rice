@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupNavAft extends GroupSTJUnitBase {
+public class GroupNavAft extends GroupAftBase {
 
     @Test
     public void testGroupNav() throws Exception {

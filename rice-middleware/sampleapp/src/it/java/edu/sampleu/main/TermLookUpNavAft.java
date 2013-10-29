@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TermLookUpNavAft extends TermLookUpSTJUnitBase {
+public class TermLookUpNavAft extends TermLookUpAftBase {
 
     @Test
     public void testTermLookUpNav() throws Exception {

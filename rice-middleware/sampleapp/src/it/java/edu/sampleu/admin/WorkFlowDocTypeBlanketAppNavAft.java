@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowDocTypeBlanketAppNavAft extends WorkFlowDocTypeBlanketAppSTJUnitBase {
+public class WorkFlowDocTypeBlanketAppNavAft extends WorkFlowDocTypeBlanketAppAftBase {
 
     @Test
     public void testWorkFlowDocTypeBlanketAppNav() throws Exception {

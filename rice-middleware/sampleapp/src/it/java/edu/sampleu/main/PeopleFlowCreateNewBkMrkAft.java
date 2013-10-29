@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PeopleFlowCreateNewBkMrkAft extends PeopleFlowCreateNewSTJUnitBase {
+public class PeopleFlowCreateNewBkMrkAft extends PeopleFlowCreateNewAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateDocTypeBkMrkAft extends CreateDocTypeSTJUnitBase {
+public class CreateDocTypeBkMrkAft extends CreateDocTypeAftBase {
 
     @Override
     public String getBookmarkUrl() {

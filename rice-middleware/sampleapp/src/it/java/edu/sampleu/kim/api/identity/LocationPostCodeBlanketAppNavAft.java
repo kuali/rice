@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationPostCodeBlanketAppNavAft extends LocationPostCodeBlanketAppSTJUnitBase {
+public class LocationPostCodeBlanketAppNavAft extends LocationPostCodeBlanketAppAftBase {
 
     @Test
     public void testLocationPostCodeBlanketAppNav() throws Exception {

@@ -22,7 +22,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNameSpaceBlanketAppNavAft extends ConfigNameSpaceBlanketAppSTJUnitBase {
+public class ConfigNameSpaceBlanketAppNavAft extends ConfigNameSpaceBlanketAppAftBase {
 
     @Test
     public void testConfigNamespaceBlanketApproveNav() throws Exception {

@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceDocumentOverviewNavAft extends MaintenanceDocumentOverviewSTJUnitBase {
+public class MaintenanceDocumentOverviewNavAft extends MaintenanceDocumentOverviewAftBase {
 
     @Ignore // link removed
     @Test

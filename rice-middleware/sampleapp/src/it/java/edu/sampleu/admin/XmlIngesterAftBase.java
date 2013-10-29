@@ -16,6 +16,8 @@
 package edu.sampleu.admin;
 
 import edu.sampleu.common.FreemarkerAftBase;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
@@ -51,13 +53,12 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     private static final String TMPL_USER_CONTENT = "SimpleUserContent.ftl";
     private static final String TMPL_GROUP_CONTENT = "SimpleGroupContent.ftl";
 
-    /**
-     *
-     * @param name of temp file to create
-     * @return tempFile
-     * @throws IOException
-     */
-    protected abstract File newTempFile(String name) throws IOException;
+    @Rule
+    public TemporaryFolder folder= new TemporaryFolder();
+
+    protected File newTempFile(String name) throws IOException {
+        return folder.newFile(name);
+    }
 
     /**
      * {@inheritDoc}

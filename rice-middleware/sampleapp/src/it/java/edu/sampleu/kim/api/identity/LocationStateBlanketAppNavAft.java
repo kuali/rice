@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationStateBlanketAppNavAft extends LocationStateBlanketAppSTJUnitBase {
+public class LocationStateBlanketAppNavAft extends LocationStateBlanketAppAftBase {
 
     @Test
     public void testLocationStateBlanketAppNav() throws Exception {

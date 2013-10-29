@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationCountryNavAft extends LocationCountrySTJUnitBase {
+public class LocationCountryNavAft extends LocationCountryAftBase {
 
     @Test
     public void testLocationCountryNav() throws Exception {

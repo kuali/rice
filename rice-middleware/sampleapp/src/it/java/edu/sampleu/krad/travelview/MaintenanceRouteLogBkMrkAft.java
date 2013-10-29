@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceRouteLogBkMrkAft extends MaintenanceRouteLogSTJUnitBase {
+public class MaintenanceRouteLogBkMrkAft extends MaintenanceRouteLogAftBase {
 
     @Override
     public String getBookmarkUrl() {

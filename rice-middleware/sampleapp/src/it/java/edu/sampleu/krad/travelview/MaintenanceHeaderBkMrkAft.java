@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceHeaderBkMrkAft extends MaintenanceHeaderSTJUnitBase {
+public class MaintenanceHeaderBkMrkAft extends MaintenanceHeaderAftBase {
 
     @Override
     public String getBookmarkUrl() {

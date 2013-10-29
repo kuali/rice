@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextLookUpBkMrkAft extends ContextLookUpSTJUnitBase {
+public class ContextLookUpBkMrkAft extends ContextLookUpAftBase {
 
     @Override
     public String getBookmarkUrl() {

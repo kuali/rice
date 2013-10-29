@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteBkMrkAft extends MaintenanceAddDeleteNoteSTJUnitBase {
+public class MaintenanceAddDeleteNoteBkMrkAft extends MaintenanceAddDeleteNoteAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClearIndividualCashesNavAft extends ClearIndividualCashesSTJUnitBase {
+public class ClearIndividualCashesNavAft extends ClearIndividualCashesAftBase {
 
     @Test
     public void testClearIndividualCashesNav() throws Exception {

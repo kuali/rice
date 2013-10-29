@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceLookupAddMultipleLinesNavAft extends MaintenanceLookupAddMultipleLinesSTJUnitBase {
+public class MaintenanceLookupAddMultipleLinesNavAft extends MaintenanceLookupAddMultipleLinesAftBase {
 
     @Ignore // link removed
     @Test

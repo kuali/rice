@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonLookUpEditNavAft extends IdentityPersonLookUpEditSTJUnitBase {
+public class IdentityPersonLookUpEditNavAft extends IdentityPersonLookUpEditAftBase {
 
     @Test
     public void testIdentityPersonLookUpEditNav() throws Exception {

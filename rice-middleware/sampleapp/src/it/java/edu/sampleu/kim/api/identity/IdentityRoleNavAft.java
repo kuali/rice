@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityRoleNavAft extends IdentityRoleSTJUnitBase {
+public class IdentityRoleNavAft extends IdentityRoleAftBase {
 
     @Ignore // TODO fix
     @Test

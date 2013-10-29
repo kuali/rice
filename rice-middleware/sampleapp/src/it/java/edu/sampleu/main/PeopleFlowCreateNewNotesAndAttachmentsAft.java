@@ -30,7 +30,7 @@ import java.io.File;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateNewSTJUnitBase {
+public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateNewAftBase {
 
     /**
      * Provider of the temporary folder.

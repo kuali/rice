@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNamespaceLookUpAndEditNavAft extends ConfigNamespaceLookUpAndEditSTJUnitBase {
+public class ConfigNamespaceLookUpAndEditNavAft extends ConfigNamespaceLookUpAndEditAftBase {
 
     @Test
     public void testConfigNamespaceLookUpAndEditNav() throws Exception {

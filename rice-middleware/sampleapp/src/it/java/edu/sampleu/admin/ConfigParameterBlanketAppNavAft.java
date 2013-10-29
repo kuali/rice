@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterBlanketAppNavAft extends ConfigParameterBlanketAppSTJUnitBase {
+public class ConfigParameterBlanketAppNavAft extends ConfigParameterBlanketAppAftBase {
 
     @Test
     public void testConfigParameterBlanketAppNav() throws Exception {

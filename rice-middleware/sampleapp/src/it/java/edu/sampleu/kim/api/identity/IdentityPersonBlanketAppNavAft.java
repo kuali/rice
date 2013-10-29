@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonBlanketAppNavAft extends IdentityPersonBlanketAppSTJUnitBase {
+public class IdentityPersonBlanketAppNavAft extends IdentityPersonBlanketAppAftBase {
 
     @Test
     public void testIdentityPersonBlanketAppNav() throws Exception {

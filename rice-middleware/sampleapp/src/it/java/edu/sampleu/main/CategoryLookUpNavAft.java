@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CategoryLookUpNavAft extends CategoryLookUpSTJUnitBase {
+public class CategoryLookUpNavAft extends CategoryLookUpAftBase {
 
     @Test
     public void testCategoryLookUpNav() throws Exception {

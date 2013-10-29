@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigNamespaceLookUpAndCopyBkMrkAft extends ConfigNamespaceLookUpAndCopySTJUnitBase {
+public class ConfigNamespaceLookUpAndCopyBkMrkAft extends ConfigNamespaceLookUpAndCopyAftBase {
 
     @Override
     public String getBookmarkUrl() {

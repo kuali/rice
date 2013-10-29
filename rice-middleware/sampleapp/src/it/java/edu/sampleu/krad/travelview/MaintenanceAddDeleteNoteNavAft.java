@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceAddDeleteNoteNavAft extends MaintenanceAddDeleteNoteSTJUnitBase {
+public class MaintenanceAddDeleteNoteNavAft extends MaintenanceAddDeleteNoteAftBase {
 
     @Ignore // link removed
     @Test

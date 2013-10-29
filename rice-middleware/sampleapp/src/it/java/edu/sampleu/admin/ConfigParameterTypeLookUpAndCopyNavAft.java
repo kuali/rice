@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeLookUpAndCopyNavAft extends ConfigParameterTypeLookUpAndCopySTJUnitBase {
+public class ConfigParameterTypeLookUpAndCopyNavAft extends ConfigParameterTypeLookUpAndCopyAftBase {
 
     @Test
     public void testConfigParameterTypeLookUpAndCopyNav() throws Exception {

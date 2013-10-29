@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClearIndividualCashesBkMrkAft extends ClearIndividualCashesSTJUnitBase {
+public class ClearIndividualCashesBkMrkAft extends ClearIndividualCashesAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceFieldsBkMrkAft extends MaintenanceFieldsSTJUnitBase {
+public class MaintenanceFieldsBkMrkAft extends MaintenanceFieldsAftBase {
 
     @Override
     public String getBookmarkUrl() {

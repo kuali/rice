@@ -22,7 +22,7 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddingNameSpaceNavAft extends AddingNameSpaceSTJUnitBase {
+public class AddingNameSpaceNavAft extends AddingNameSpacesAftBase {
 
     @Test
     public void testAddingNamespaceNav() throws Exception {

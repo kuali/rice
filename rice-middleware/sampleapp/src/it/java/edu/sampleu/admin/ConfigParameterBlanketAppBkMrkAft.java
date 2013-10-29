@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterBlanketAppBkMrkAft extends ConfigParameterBlanketAppSTJUnitBase {
+public class ConfigParameterBlanketAppBkMrkAft extends ConfigParameterBlanketAppAftBase {
 
     @Override
     public String getBookmarkUrl() {

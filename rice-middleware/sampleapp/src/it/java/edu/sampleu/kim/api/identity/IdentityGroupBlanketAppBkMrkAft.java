@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityGroupBlanketAppBkMrkAft extends IdentityGroupBlanketAppSTJUnitBase {
+public class IdentityGroupBlanketAppBkMrkAft extends IdentityGroupBlanketAppAftBase {
 
     @Override
     public String getBookmarkUrl() {

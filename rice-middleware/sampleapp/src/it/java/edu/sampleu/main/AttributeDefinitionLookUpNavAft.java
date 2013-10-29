@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeDefinitionLookUpNavAft extends AttributeDefinitionLookUpSTJUnitBase {
+public class AttributeDefinitionLookUpNavAft extends AttributeDefinitionLookUpAftBase {
 
     @Test
     public void testAttributeDefinitionLookUpNav() throws Exception {

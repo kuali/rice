@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeBkMrkAft extends ConfigParameterTypeSTJUnitBase {
+public class ConfigParameterTypeBkMrkAft extends ConfigParameterTypeAftBase {
 
     @Override
     public String getBookmarkUrl() {

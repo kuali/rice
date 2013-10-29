@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonBkMrkAft extends IdentityPersonSTJUnitBase {
+public class IdentityPersonBkMrkAft extends IdentityPersonAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigComponentLookUpAndCopyNavAft extends ConfigComponentLookUpAndCopySTJUnitBase {
+public class ConfigComponentLookUpAndCopyNavAft extends ConfigComponentLookUpAndCopyAftBase {
 
     @Test
     public void testConfigComponentLookUpAndCopyNav() throws Exception {

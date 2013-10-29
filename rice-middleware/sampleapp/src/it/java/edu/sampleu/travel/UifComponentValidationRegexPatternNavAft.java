@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifComponentValidationRegexPatternNavAft extends UIFComponentValidationRegexPatternSTJUnitBase {
+public class UifComponentValidationRegexPatternNavAft extends UifComponentValidationRegexPatternAftBase {
 
     @Ignore // lots of selector updates needed.
     @Test

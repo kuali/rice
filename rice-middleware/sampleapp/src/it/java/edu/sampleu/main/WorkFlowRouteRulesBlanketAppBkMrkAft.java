@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesBlanketAppBkMrkAft extends WorkFlowRouteRulesBlanketAppSTJUnitBase {
+public class WorkFlowRouteRulesBlanketAppBkMrkAft extends WorkFlowRouteRulesBlanketAppAftBase {
 
     @Override
     public String getBookmarkUrl() {

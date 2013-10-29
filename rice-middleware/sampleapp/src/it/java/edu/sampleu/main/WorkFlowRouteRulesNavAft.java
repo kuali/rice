@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkFlowRouteRulesNavAft extends WorkFlowRouteRulesSTJUnitBase {
+public class WorkFlowRouteRulesNavAft extends WorkFlowRouteRulesAftBase {
 
     @Test
     public void testWorkFlowRouteRulesNav() throws Exception {

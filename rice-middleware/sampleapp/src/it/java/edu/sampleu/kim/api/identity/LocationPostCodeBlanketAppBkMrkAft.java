@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LocationPostCodeBlanketAppBkMrkAft extends LocationPostCodeBlanketAppSTJUnitBase {
+public class LocationPostCodeBlanketAppBkMrkAft extends LocationPostCodeBlanketAppAftBase {
 
     @Override
     public String getBookmarkUrl() {

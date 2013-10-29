@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClientErrorsBkMrkAft extends ClientErrorsSTJUnitBase {
+public class ClientErrorsBkMrkAft extends ClientErrorsAftBase {
 
     @Test
     public void testClientErrorsBookmark() throws Exception {

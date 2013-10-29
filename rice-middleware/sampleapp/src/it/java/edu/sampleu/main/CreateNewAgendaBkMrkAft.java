@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CreateNewAgendaBkMrkAft extends CreateNewAgendaSTJUnitBase {
+public class CreateNewAgendaBkMrkAft extends CreateNewAgendaAftBase {
 
     @Override
     public String getBookmarkUrl() {

@@ -169,14 +169,14 @@ public class RouteNodeDAOJpa implements RouteNodeDAO {
     public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
         QueryByCriteria.Builder queryByCriteria = QueryByCriteria.Builder.create().setPredicates(
                 equal(KEWPropertyConstants.DOCUMENT_ID,documentId),
-                equal(KEWPropertyConstants.ACTIVE,true),
+                equal(KEWPropertyConstants.ACTIVE,false),
                 equal(KEWPropertyConstants.COMPLETE,true)
         );
-		
-		//FIXME: Can we do this better using just the JPQL query?  
-		List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
-		List<RouteNodeInstance> routeNodeInstances = getDataObjectService().
-                        findMatching(RouteNodeInstance.class,queryByCriteria.build()).getResults();
+
+        //FIXME: Can we do this better using just the JPQL query?
+        List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
+        List<RouteNodeInstance> routeNodeInstances = getDataObjectService().
+                findMatching(RouteNodeInstance.class,queryByCriteria.build()).getResults();
 		for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 		    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
 		    	terminalNodes.add(routeNodeInstance);

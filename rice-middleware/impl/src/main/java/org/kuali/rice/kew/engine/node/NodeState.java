@@ -47,6 +47,9 @@ public class NodeState extends State {
 
     private static final long serialVersionUID = -4382379569851955918L;
 
+    @Column(name= "RTE_NODE_INSTN_ID", insertable = false, updatable = false)
+    private String routeNodeInstanceId;
+
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
@@ -99,5 +102,10 @@ public class NodeState extends State {
         }
         return copy;
     }
+
+    public String getRouteNodeInstanceId() {
+        return getNodeInstance() != null ? getNodeInstance().getRouteNodeInstanceId() : null;
+    }
+
 
 }

@@ -1,5 +1,14 @@
+dryRun = false
+
 project {
+    // This is the base directory for the project.  All other paths will be relative to this one
     homeDirectory = "/Users/jonathan/dev/projects/rice-20"
+    // Directories which will be added to the classpath for the purpose of finding the OJB-mapped classes 
+    classpathDirectories = []
+    // Directories which contain jar files.  Each jar file will be added to the classpath
+    classpathJarDirectories = []
+    // Project source directories.  These directories will be scanned in order to find the source
+    // files for the classes which need JPA annotation
     sourceDirectories = [
           "rice-framework/krad-app-framework/src/main/java"
         , "rice-framework/krad-data/src/main/java"
@@ -63,18 +72,23 @@ ojb {
         , "rice-middleware/location/impl/src/main/resources/org/kuali/rice/location/config/OJB-repository-location.xml"
 //        , "rice-middleware/sampleapp/src/main/resources/OJB-repository-sampleapp.xml"        
         ]
+    // Mappings between OJB and JPA Type converters.  This contains the base ones known to the project teams.
+    // If you have any additional ones you want auto-converted, add them to this map.
+    // If the JPS converter value is blank, no converter will be added.  This assumes that there is
+    // a default converter in place.
+    converterMappings = [
+          "OjbCharBooleanConversion" : ""
+        , "OjbCharBooleanConversionTF" : "org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter"
+        , "OjbKualiDecimalFieldConversion" : ""
+        , "OjbKualiEncryptDecryptFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.EncryptionConverter"
+        , "OjbKualiHashFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.HashConverter"
+        , "OjbKualiIntegerFieldConversion" : ""
+        , "OjbKualiPercentFieldConversion" : ""
+        , "OjbAccountActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
+        , "OjbPendingBCAppointmentFundingActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
+        , "OjbCharBooleanFieldInverseConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
+        , "OjbBCPositionActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.BooleanAIConverter"
+        , "OjbCharBooleanFieldAIConversion" : "org.kuali.rice.krad.data.jpa.converters.BooleanAIConverter"
+
+        ]
 }
-converterMappings = [
-      "OjbCharBooleanConversion" : ""
-    , "OjbCharBooleanConversionTF" : "org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter"
-    , "OjbKualiDecimalFieldConversion" : ""
-    , "OjbKualiEncryptDecryptFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.EncryptionConverter"
-    , "OjbKualiHashFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.HashConverter"
-    , "OjbKualiIntegerFieldConversion" : ""
-    , "OjbKualiPercentFieldConversion" : ""
-    , "OjbAccountActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
-    , "OjbPendingBCAppointmentFundingActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
-    , "OjbCharBooleanFieldInverseConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
-    , "OjbBCPositionActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.BooleanAIConverter"
-    , "OjbCharBooleanFieldAIConversion" : "org.kuali.rice.krad.data.jpa.converters.BooleanAIConverter"
-]

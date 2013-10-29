@@ -4,6 +4,11 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -31,15 +36,12 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Tempo
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TransientResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.VersionResolver;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
     private static final Log LOG = LogFactory.getLog(OjbDescriptorRepositoryAwareVisitor.class);
 
     private final VoidVisitorHelper<Object> annotationHelper;
 
-    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories) {
+    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings ) {
         super(descriptorRepositories);
 
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();
@@ -57,7 +59,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new JoinTableResolver(getDescriptorRepositories()));
         annotations.add(new OrderByResolver(getDescriptorRepositories()));
         annotations.add(new ColumnResolver(getDescriptorRepositories()));
-        annotations.add(new ConvertResolver(getDescriptorRepositories()));
+        annotations.add(new ConvertResolver(getDescriptorRepositories(),converterMappings));
         annotations.add(new VersionResolver(getDescriptorRepositories()));
         annotations.add(new TemporalResolver(getDescriptorRepositories()));
         annotations.add(new LobResolver(getDescriptorRepositories()));

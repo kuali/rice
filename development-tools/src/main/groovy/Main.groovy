@@ -30,10 +30,17 @@ def mappedJavaFiles = convertClassesToJavaFiles(ojbMappedClasses)
 
 println "\n\nJava Files: \n${mappedJavaFiles.join( '\n' )}"
 
-for (String ojbMappedFile : mappedJavaFiles) {
-	final CompilationUnit unit = JavaParser.parse(new File(ojbMappedFile))
-	new EntityVisitor(drs).visit(unit, null)
-	println unit.toString()
+for (File ojbMappedFile : mappedJavaFiles) {
+    println "Processing File: $ojbMappedFile"
+	final CompilationUnit unit = JavaParser.parse(ojbMappedFile)
+	def entityVisitor = new EntityVisitor(drs, config.converterMappings )
+    entityVisitor.visit(unit, null)
+    if ( config.dryRun ) {
+        println unit.toString()
+    } else {
+        ojbMappedFile.delete()
+        ojbMappedFile << unit.toString()
+    }
 }
 
 //2: handle all the classes that are super classes of ojb mapped files but not residing in rice
@@ -48,8 +55,8 @@ for (String ojbMappedFile : mappedJavaFiles) {
 //}
 
 
-def Collection<String> convertClassesToJavaFiles(Collection<String> mappedClasses) {
-    def javaFileNames = []
+def Collection<File> convertClassesToJavaFiles(Collection<String> mappedClasses) {
+    def javaFiles = []
     for ( className in mappedClasses ) {
         println "Looking for source file for $className"
         for ( String dir in fullSourcePaths ) {
@@ -58,11 +65,11 @@ def Collection<String> convertClassesToJavaFiles(Collection<String> mappedClasse
             //println "Looking for: $javaFile.canonicalPath"
             if ( javaFile.exists() ) {
                 println "Found: $javaFile.canonicalPath"
-                javaFileNames += javaFile.canonicalPath
+                javaFiles += javaFile
                 break
             }
         }
     }
-    return javaFileNames
+    return javaFiles
 }
 

@@ -28,6 +28,9 @@
   <!-- Indicates whether KRAD should run in dev mode, impacts things like using full script/css files instead of minified -->
   <param name="rice.krad.dev.mode" override="false">false</param>
 
+  <!-- Indicates whether Less files should be included instead of CSS files. Only applies if rice.krad.dev.mode is true -->
+  <param name="rice.krad.include.less" override="false">false</param>
+
   <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
   <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 

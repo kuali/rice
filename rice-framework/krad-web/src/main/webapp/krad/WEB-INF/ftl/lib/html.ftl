@@ -31,21 +31,30 @@
     </title>
 
     <#list view.theme.cssFiles as cssFile>
+        <#local relation="stylesheet"/>
+        <#if cssFile?ends_with('.less')>
+            <#local relation="stylesheet/less"/>
+        </#if>
+
         <#if cssFile?starts_with('http')>
-            <link href="${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${cssFile}" rel="${relation}" type="text/css"/>
         <#else>
-            <link href="${request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${request.contextPath}/${cssFile}" rel="${relation}" type="text/css"/>
         </#if>
     </#list>
 
     <#list view.additionalCssFiles as cssFile>
+        <#local relation="stylesheet"/>
+        <#if cssFile?ends_with('.less')>
+            <#local relation="stylesheet/less"/>
+        </#if>
+
         <#if cssFile?starts_with('http')>
-            <link href="${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${cssFile}" rel="${relation}" type="text/css"/>
         <#else>
-            <link href="${request.contextPath}/${cssFile}" rel="stylesheet" type="text/css"/>
+            <link href="${request.contextPath}/${cssFile}" rel="${relation}" type="text/css"/>
         </#if>
     </#list>
-
 
 </head>
 

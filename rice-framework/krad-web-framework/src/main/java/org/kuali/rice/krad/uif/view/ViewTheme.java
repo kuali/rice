@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -171,7 +172,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      * @return String path to theme directory relative to the web root
      */
     public String getThemeDirectory() {
-        String themeDirectory = "";
+        String themeDirectory;
 
         if (StringUtils.isNotBlank(this.directory)) {
             if (this.directory.startsWith("/")) {
@@ -188,7 +189,11 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
 
     /**
      * Sets the {@link #getMinScriptSourceFiles()} and {@link #getMinCssSourceFiles()} lists from the
-     * corresponding properties in the theme properties file
+     * corresponding properties in the theme properties file.
+     *
+     * <p>In dev mode, any css files that were generate from Less files are replaced with an include for
+     * the Less file. This is so the less files can be modified directly (without running the theme builder. For
+     * more information see <a href="http://lesscss.org/#usage">Less Usage</a></p>
      */
     protected void setMinFileLists() {
         Properties themeProperties = null;
@@ -205,10 +210,12 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
         }
 
         String[] cssFiles = getPropertyValue(themeProperties, UifConstants.THEME_CSS_FILES);
+        String[] lessFiles = getPropertyValue(themeProperties, UifConstants.THEME_LESS_FILES);
 
         if (cssFiles != null) {
             for (String cssFile : cssFiles) {
-                this.minCssSourceFiles.add(cssFile);
+                String includeFile = replaceIncludeWithLessFile(cssFile, lessFiles);
+                this.minCssSourceFiles.add(includeFile);
             }
         }
 
@@ -216,6 +223,14 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
 
         if (jsFiles != null) {
             for (String jsFile : jsFiles) {
+                this.minScriptSourceFiles.add(jsFile);
+            }
+        }
+
+        String[] devJSFiles = getPropertyValue(themeProperties, UifConstants.THEME_DEV_JS_FILES);
+
+        if (devJSFiles != null) {
+            for (String jsFile : devJSFiles) {
                 this.minScriptSourceFiles.add(jsFile);
             }
         }
@@ -278,12 +293,47 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
+     * Attempts to find a Less file match for the given css file, and if found returns the corresponding Less
+     * file path, otherwise the css path is returned unmodified.
+     *
+     * @param cssFilePath path to css file to find Less files for
+     * @param lessFileNames array of less files names that are available for the theme
+     * @return String path to less file include, or original css file include
+     */
+    protected String replaceIncludeWithLessFile(String cssFilePath, String[] lessFileNames) {
+        if (lessFileNames == null || !includeLess()) {
+            return cssFilePath;
+        }
+
+        for (String lessFileName : lessFileNames) {
+            String lessFileMatch = StringUtils.replace(lessFileName, UifConstants.FileExtensions.LESS,
+                    UifConstants.FileExtensions.CSS);
+
+            if (StringUtils.substringAfterLast(cssFilePath, "/").equals(lessFileMatch)) {
+                return StringUtils.replace(cssFilePath, UifConstants.FileExtensions.CSS,
+                        UifConstants.FileExtensions.LESS);
+            }
+        }
+
+        return cssFilePath;
+    }
+
+    /**
      * Indicates whether operation is in development mode by checking the KRAD configuration parameter
      *
      * @return true if in dev mode, false if not
      */
     protected boolean inDevMode() {
         return getConfigurationService().getPropertyValueAsBoolean(KRADConstants.ConfigParameters.KRAD_DEV_MODE);
+    }
+
+    /**
+     * Indicates whether Less files should be included instead of Css files when running in dev mode.
+     *
+     * @return true if less files should be subsituted, false if not
+     */
+    protected boolean includeLess() {
+        return getConfigurationService().getPropertyValueAsBoolean(KRADConstants.ConfigParameters.KRAD_INCLUDE_LESS);
     }
 
     /**

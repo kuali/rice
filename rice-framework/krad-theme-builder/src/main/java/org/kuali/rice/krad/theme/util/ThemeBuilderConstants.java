@@ -58,6 +58,7 @@ public class ThemeBuilderConstants {
     public static class ThemeConfiguration {
         public static final String CSS_EXCLUDES = "cssExcludes";
         public static final String JS_EXCLUDES = "jsExcludes";
+        public static final String DEV_JS_INCLUDES = "devJsIncludes";
         public static final String LESS_INCLUDES = "lessIncludes";
         public static final String LESS_EXCLUDES = "lessExcludes";
         public static final String PARENT = "parent";

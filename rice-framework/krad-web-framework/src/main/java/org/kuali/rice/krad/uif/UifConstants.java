@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif;
 
-import org.apache.commons.lang.StringUtils;
 
 /**
  * General constants used within the User Interface Framework.
@@ -36,6 +35,8 @@ public class UifConstants {
     public static final String THEME_DERIVED_PROPERTY_FILE = "theme-derived.properties";
     public static final String THEME_CSS_FILES = "themeCssFiles";
     public static final String THEME_JS_FILES = "themeJsFiles";
+    public static final String THEME_DEV_JS_FILES = "devJsIncludes";
+    public static final String THEME_LESS_FILES = "themeLessFiles";
 
     // uncomment for freemarker testing
     public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
@@ -458,6 +459,7 @@ public class UifConstants {
         public static final String CSS = ".css";
         public static final String JS = ".js";
         public static final String MIN = ".min";
+        public static final String LESS = ".less";
     }
 
     public static final class PostContextKeys {

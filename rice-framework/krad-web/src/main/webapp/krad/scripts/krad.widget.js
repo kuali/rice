@@ -987,30 +987,6 @@ function toggleRowDetails(actionComponent) {
 }
 
 /**
- * Select all checkboxes within the collection div that are marked with class 'uif-select-line' (used
- * for multi-value select collections)
- *
- * @param collectionId - id for the collection to select checkboxes for
- */
-function selectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', true);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
-
-}
-
-/**
- * Deselects all checkboxes within the collection div that are marked with class 'uif-select-line' (used
- * for multi-value select collections)
- *
- * @param collectionId - id for the collection to deselect checkboxes for
- */
-function deselectAllLines(collectionId) {
-    jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', false);
-    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
-}
-
-
-/**
  * Uses jQuery jsTree plug-in to decorate a div with tree functionality. The
  * second argument is a Map of options that are available
  * for the plug-in. See <link>http://www.jstree.com/documentation/</link> for

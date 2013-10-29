@@ -104,7 +104,7 @@ function setMultivalueLookupReturnButton(selectControl) {
  *
  * @param collectionId - id for the collection to select checkboxes for
  */
-function selectAllPagesLines(collectionId) {
+function selectAllLines(collectionId) {
 
     var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
     var lookupCollectionDiv = jQuery("#" + collectionId);
@@ -119,10 +119,8 @@ function selectAllPagesLines(collectionId) {
             this.checked = true;
         });
     }  else {
-        jQuery( lookupCollectionDiv.find(query)).each( function (index) {
-            if (jQuery(this).length) {
-                jQuery(this).attr('checked',true);
-            }
+        jQuery(lookupCollectionDiv.find(query)).each(function (index) {
+            jQuery(this).attr('checked', true);
         });
     }
 
@@ -139,7 +137,7 @@ function selectAllPagesLines(collectionId) {
  *
  * @param collectionId - id for the collection to deselect checkboxes for
  */
-function deselectAllPagesLines(collectionId) {
+function deselectAllLines(collectionId) {
 
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
@@ -153,6 +151,47 @@ function deselectAllPagesLines(collectionId) {
     var lookupCollectionDiv = jQuery('#' + collectionId);
     lookupCollectionDiv.data('selectedlinecount', 0);
 
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
+}
+
+/**
+ * Select all checkboxes within the collection div that are marked with class 'uif-select-line' (used
+ * for multi-value select collections) on the current page and updates the selectedlinecount
+ *
+ * @param collectionId - id for the collection to select checkboxes for
+ */
+function selectAllPageLines(collectionId) {
+   // jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', true);
+    var selectedLineCount = 0;
+    jQuery( "#" + collectionId ).find("input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).each( function (index) {
+        if (jQuery(this).attr('checked') != true) {
+            jQuery(this).attr('checked',true);
+            selectedLineCount = selectedLineCount+1;
+        }
+    });
+    var lookupCollectionDiv = jQuery('#' + collectionId);
+    lookupCollectionDiv.data('selectedlinecount', selectedLineCount);
+
+    setMultivalueLookupReturnButton(jQuery("#" + collectionId));
+
+}
+
+/**
+ * Deselects all checkboxes within the collection div that are marked with class 'uif-select-line' (used
+ * for multi-value select collections) on the current page and updates the selectedlinecount
+ *
+ * @param collectionId - id for the collection to deselect checkboxes for
+ */
+function deselectAllPageLines(collectionId) {
+    var selectedLineCount = jQuery('#' + collectionId).data('selectedlinecount');
+    jQuery("#" + collectionId).find("input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).each(function (index) {
+        jQuery(this).attr('checked', false);
+        if (selectedLineCount > 0) {
+            selectedLineCount = selectedLineCount - 1;
+        }
+    });
+
+    jQuery('#' + collectionId).data('selectedlineCount',selectedLineCount);
     setMultivalueLookupReturnButton(jQuery("#" + collectionId));
 }
 

@@ -341,17 +341,27 @@
         p:renderToggleButton="true">
     <property name="menuActions">
       <list>
+        <!-- Select / Deselect All pages -->
+
         <bean parent="Uif-MenuAction" p:actionLabel="select all items on this page"
-              p:actionScript="selectAllLines('@{#collectionGroup.id}');"/>
+              p:actionScript="selectAllPageLines('@{#collectionGroup.id}');"/>
+        <!-- With server side paging -->
+        <bean parent="Uif-MenuAction" p:render="@{#collectionGroup.useServerPaging}" p:methodToCall="selectAllPages" p:actionLabel="select all items"
+              p:preSubmitCall="selectAllLines('@{#collectionGroup.id}');return true; "/>
+        <!-- Without server side paging -->
+        <bean parent="Uif-MenuAction" p:render="@{!#collectionGroup.useServerPaging}" p:methodToCall="" p:actionLabel="select all items"
+              p:actionScript="selectAllLines('@{#collectionGroup.id}');return true; "/>
 
         <bean parent="Uif-MenuAction" p:actionLabel="deselect all items on this page"
-              p:actionScript="deselectAllLines('@{#collectionGroup.id}');"/>
-
-        <bean parent="Uif-MenuAction" p:actionLabel="select all items"
-              p:actionScript="selectAllPagesLines('@{#collectionGroup.id}');"/>
-
-        <bean parent="Uif-MenuAction" p:actionLabel="deselect all items"
-              p:actionScript="deselectAllPagesLines('@{#collectionGroup.id}');"/>
+              p:actionScript="deselectAllPageLines('@{#collectionGroup.id}');"/>
+        <!-- With server side paging -->
+        <bean p:render="@{#collectionGroup.useServerPaging}" parent="Uif-MenuAction" p:methodToCall="deselectAllPages"
+              p:actionLabel="deselect all items"
+              p:preSubmitCall="deselectAllLines('@{#collectionGroup.id}');return true;"/>
+        <!-- Without server side paging -->
+        <bean p:render="@{!#collectionGroup.useServerPaging}" parent="Uif-MenuAction" p:methodToCall=""
+              p:actionLabel="deselect all items"
+              p:actionScript="deselectAllLines('@{#collectionGroup.id}');return true;"/>
       </list>
     </property>
   </bean>

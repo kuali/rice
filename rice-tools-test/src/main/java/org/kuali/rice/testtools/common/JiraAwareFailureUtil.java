@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * The more failures the more useful it is to not have to keep tracking down the same Jiras.
  * </p><p>
  * Set -Djira.aware.regex.failures.location and -Djira.aware.contains.failures.location to define file locations, else
- * JiraAwareRegexFailures.properties and JiraAwareContainsFailures.properties will be read as a resource stream.  To
+ * @{code JiraAwareRegexFailures.properties} and {@code JiraAwareContainsFailures.properties} will be read as a resource stream.  To
  * override the Jira browse url set -Djira.aware.browse.url
  * </p><p>
  * To make use of JiraAwareFailureUtil implement {@see Failable} and call {@code JiraAwareFailureUtil.fail(contents, message, failable);} instead of

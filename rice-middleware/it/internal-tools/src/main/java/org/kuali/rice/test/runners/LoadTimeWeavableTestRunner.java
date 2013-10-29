@@ -1,3 +1,19 @@
+/*
+ * Copyright 2006-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.kuali.rice.test.runners;
 
 import org.apache.commons.beanutils.MethodUtils;
@@ -21,12 +37,15 @@ import org.junit.internal.runners.statements.RunBefores;
 import org.junit.rules.RunRules;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.Filterable;
 import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runner.manipulation.Sortable;
 import org.junit.runner.manipulation.Sorter;
+import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runner.notification.StoppedByUserException;
 import org.junit.runners.model.FrameworkMethod;
@@ -39,8 +58,6 @@ import org.kuali.rice.test.MethodAware;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,7 +80,8 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
 
     private static final String[] JUNIT_CLASSLOADER_EXCLUDES = { "org.junit.", "junit.framework." };
 
-    private final TestClass fTestClass;
+    private final TestClass originalTestClass;
+    private TestClass fTestClass;
     private Method currentMethod;
 
     // static because we only need one custom loader per JVM in which the tests are running, otherwise the memory
@@ -72,7 +90,15 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
 
     private Sorter fSorter = Sorter.NULL;
 
-    private List<FrameworkMethod> fFilteredChildren = null;
+    private List<FrameworkMethod> originalFilteredChildren = null;
+    private List<FrameworkMethod> filteredChildren = null;
+
+    private static final ThreadLocal<Boolean> runningBootstrapTest = new ThreadLocal<Boolean>() {
+        @Override
+        protected Boolean initialValue() {
+            return Boolean.FALSE;
+        }
+    };
 
     private RunnerScheduler fScheduler = new RunnerScheduler() {
         public void schedule(Runnable childStatement) {
@@ -87,24 +113,23 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      * Constructs a new {@code ParentRunner} that will run {@code @TestClass}
      */
     public LoadTimeWeavableTestRunner(Class<?> testClass) throws InitializationError {
+        this.originalTestClass = new TestClass(testClass);
         if (LoadTimeWeavableTestRunner.customLoader == null) {
-            URL[] parentUrls = ((URLClassLoader)testClass.getClassLoader()).getURLs();
             LoadTimeWeavableTestRunner.customLoader =
                     new ShadowingInstrumentableClassLoader(testClass.getClassLoader(), JUNIT_CLASSLOADER_EXCLUDES);
         }
-        this.fTestClass = getCustomTestClass(testClass, customLoader);
         validate();
     }
 
-    private TestClass getCustomTestClass(Class<?> originalTestClass, ClassLoader customLoader) throws InitializationError {
+    private TestClass getCustomTestClass(Class<?> originalTestClass, ClassLoader customLoader) {
         try {
             Class<?> newTestClass = customLoader.loadClass(originalTestClass.getName());
             if (newTestClass == originalTestClass) {
-                throw new RuntimeException(newTestClass.getName() + " loaded from custom class loader should have been a different instance but was the same!");
+                throw new IllegalStateException(newTestClass.getName() + " loaded from custom class loader should have been a different instance but was the same!");
             }
             return new TestClass(newTestClass);
         } catch (ClassNotFoundException e) {
-            throw new InitializationError(e);
+            throw new IllegalStateException("Failed to load test class from custom classloader: " + originalTestClass.getName());
         }
     }
 
@@ -124,7 +149,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      */
     protected void validatePublicVoidNoArgMethods(Class<? extends Annotation> annotation,
             boolean isStatic, List<Throwable> errors) {
-        List<FrameworkMethod> methods = getTestClass().getAnnotatedMethods(annotation);
+        List<FrameworkMethod> methods = getOriginalTestClass().getAnnotatedMethods(annotation);
 
         for (FrameworkMethod eachTestMethod : methods) {
             eachTestMethod.validatePublicVoidNoArg(isStatic, errors);
@@ -132,15 +157,15 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     private void validateClassRules(List<Throwable> errors) {
-        CLASS_RULE_VALIDATOR.validate(getTestClass(), errors);
-        CLASS_RULE_METHOD_VALIDATOR.validate(getTestClass(), errors);
+        CLASS_RULE_VALIDATOR.validate(getOriginalTestClass(), errors);
+        CLASS_RULE_METHOD_VALIDATOR.validate(getOriginalTestClass(), errors);
     }
 
     /**
      * Constructs a {@code Statement} to run all of the tests in the test class. Override to add pre-/post-processing.
      * Here is an outline of the implementation:
      * <ul>
-     * <li>Call {@link #runChild(FrameworkMethod, RunNotifier)} on each object returned by {@link #getChildren()} (subject to any imposed filter and sort).</li>
+     * <li>Call {@link #runChild(org.junit.runners.model.FrameworkMethod, org.junit.runner.notification.RunNotifier)} on each object returned by {@link #getChildren()} (subject to any imposed filter and sort).</li>
      * <li>ALWAYS run all non-overridden {@code @BeforeClass} methods on this class
      * and superclasses before the previous step; if any throws an
      * Exception, stop execution and pass the exception on.
@@ -162,33 +187,33 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Statement}: run all non-overridden {@code @BeforeClass} methods on this class
+     * Returns a {@link org.junit.runners.model.Statement}: run all non-overridden {@code @BeforeClass} methods on this class
      * and superclasses before executing {@code statement}; if any throws an
      * Exception, stop execution and pass the exception on.
      */
     protected Statement withBeforeClasses(Statement statement) {
-        List<FrameworkMethod> befores = fTestClass
+        List<FrameworkMethod> befores = getTestClass()
                 .getAnnotatedMethods(BeforeClass.class);
         return befores.isEmpty() ? statement :
                 new RunBefores(statement, befores, null);
     }
 
     /**
-     * Returns a {@link Statement}: run all non-overridden {@code @AfterClass} methods on this class
+     * Returns a {@link org.junit.runners.model.Statement}: run all non-overridden {@code @AfterClass} methods on this class
      * and superclasses before executing {@code statement}; all AfterClass methods are
      * always executed: exceptions thrown by previous steps are combined, if
      * necessary, with exceptions from AfterClass methods into a
      * {@link org.junit.runners.model.MultipleFailureException}.
      */
     protected Statement withAfterClasses(Statement statement) {
-        List<FrameworkMethod> afters = fTestClass
+        List<FrameworkMethod> afters = getTestClass()
                 .getAnnotatedMethods(AfterClass.class);
         return afters.isEmpty() ? statement :
                 new RunAfters(statement, afters, null);
     }
 
     /**
-     * Returns a {@link Statement}: apply all
+     * Returns a {@link org.junit.runners.model.Statement}: apply all
      * static fields assignable to {@link org.junit.rules.TestRule}
      * annotated with {@link org.junit.ClassRule}.
      *
@@ -207,15 +232,15 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      *         each method in the tested class.
      */
     protected List<TestRule> classRules() {
-        List<TestRule> result = fTestClass.getAnnotatedMethodValues(null, ClassRule.class, TestRule.class);
+        List<TestRule> result = getTestClass().getAnnotatedMethodValues(null, ClassRule.class, TestRule.class);
 
-        result.addAll(fTestClass.getAnnotatedFieldValues(null, ClassRule.class, TestRule.class));
+        result.addAll(getTestClass().getAnnotatedFieldValues(null, ClassRule.class, TestRule.class));
 
         return result;
     }
 
     /**
-     * Returns a {@link Statement}: Call {@link #runChild(FrameworkMethod, RunNotifier)}
+     * Returns a {@link org.junit.runners.model.Statement}: Call {@link #runChild(org.junit.runners.model.FrameworkMethod, org.junit.runner.notification.RunNotifier)}
      * on each object returned by {@link #getChildren()} (subject to any imposed
      * filter and sort)
      */
@@ -243,18 +268,28 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      * Returns a name used to describe this Runner
      */
     protected String getName() {
-        return fTestClass.getName();
+        return getOriginalTestClass().getName();
     }
 
     /**
-     * Returns a {@link TestClass} object wrapping the class to be executed.
+     * Returns a {@link org.junit.runners.model.TestClass} object wrapping the class to be executed.
      */
     public final TestClass getTestClass() {
+        if (fTestClass == null) {
+            throw new IllegalStateException("Attempted to access test class but it has not yet been initialized!");
+        }
         return fTestClass;
     }
 
     /**
-     * Runs a {@link Statement} that represents a leaf (aka atomic) test.
+     * Returns the original test class that was passed to this test runner.
+     */
+    public final TestClass getOriginalTestClass() {
+        return originalTestClass;
+    }
+
+    /**
+     * Runs a {@link org.junit.runners.model.Statement} that represents a leaf (aka atomic) test.
      */
     protected final void runLeaf(Statement statement, Description description,
             RunNotifier notifier) {
@@ -276,7 +311,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      *         description.
      */
     protected Annotation[] getRunnerAnnotations() {
-        return fTestClass.getAnnotations();
+        return getOriginalTestClass().getAnnotations();
     }
 
     //
@@ -287,8 +322,8 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     public Description getDescription() {
         Description description = Description.createSuiteDescription(getName(),
                 getRunnerAnnotations());
-        for (FrameworkMethod child : getFilteredChildren()) {
-            description.addChild(describeChild(child));
+        for (FrameworkMethod child : getOriginalFilteredChildren()) {
+            description.addChild(describeOriginalChild(child));
         }
         return description;
     }
@@ -296,22 +331,57 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     @Override
     public void run(final RunNotifier notifier) {
         ClassLoader currentContextClassLoader = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(customLoader);
         try {
-            Thread.currentThread().setContextClassLoader(customLoader);
-            EachTestNotifier testNotifier = new EachTestNotifier(notifier,
-                    getDescription());
-            try {
-                Statement statement = classBlock(notifier);
-                statement.evaluate();
-            } catch (AssumptionViolatedException e) {
-                testNotifier.fireTestIgnored();
-            } catch (StoppedByUserException e) {
-                throw e;
-            } catch (Throwable e) {
-                testNotifier.addFailure(e);
+            if (runBootstrapTest(notifier, getOriginalTestClass())) {
+                this.fTestClass = getCustomTestClass(getOriginalTestClass().getJavaClass(), customLoader);
+                EachTestNotifier testNotifier = new EachTestNotifier(notifier, getDescription());
+                try {
+                    Statement statement = classBlock(notifier);
+                    statement.evaluate();
+                } catch (AssumptionViolatedException e) {
+                    testNotifier.fireTestIgnored();
+                } catch (StoppedByUserException e) {
+                    throw e;
+                } catch (Throwable e) {
+                    testNotifier.addFailure(e);
+                }
             }
         } finally {
             Thread.currentThread().setContextClassLoader(currentContextClassLoader);
+        }
+    }
+
+    protected boolean runBootstrapTest(RunNotifier notifier, TestClass testClass) {
+        if (!runningBootstrapTest.get().booleanValue()) {
+            runningBootstrapTest.set(Boolean.TRUE);
+            try {
+                BootstrapTest bootstrapTest = getBootstrapTestAnnotation(testClass.getJavaClass());
+                if (bootstrapTest != null) {
+                    Result result = JUnitCore.runClasses(bootstrapTest.value());
+                    List<Failure> failures = result.getFailures();
+                    for (Failure failure : failures) {
+                        notifier.fireTestFailure(failure);
+                    }
+                    return result.getFailureCount() == 0;
+                } else {
+                    throw new IllegalStateException("LoadTimeWeavableTestRunner, must be coupled with an @BootstrapTest annotation to define the bootstrap test to execute.");
+                }
+            } finally {
+                runningBootstrapTest.set(Boolean.FALSE);
+            }
+        }
+        return true;
+    }
+
+    private BootstrapTest getBootstrapTestAnnotation(Class<?> testClass) {
+        BootstrapTest bootstrapTest = testClass.getAnnotation(BootstrapTest.class);
+        if (bootstrapTest != null) {
+            return bootstrapTest;
+        } else if (testClass.getSuperclass() != null) {
+            return getBootstrapTestAnnotation(testClass.getSuperclass());
+        } else {
+            return null;
         }
     }
 
@@ -320,7 +390,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     //
 
     public void filter(Filter filter) throws NoTestsRemainException {
-        for (Iterator<FrameworkMethod> iter = getFilteredChildren().iterator(); iter.hasNext(); ) {
+        for (Iterator<FrameworkMethod> iter = getOriginalFilteredChildren().iterator(); iter.hasNext(); ) {
             FrameworkMethod each = iter.next();
             if (shouldRun(filter, each)) {
                 try {
@@ -332,17 +402,17 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
                 iter.remove();
             }
         }
-        if (getFilteredChildren().isEmpty()) {
+        if (getOriginalFilteredChildren().isEmpty()) {
             throw new NoTestsRemainException();
         }
     }
 
     public void sort(Sorter sorter) {
         fSorter = sorter;
-        for (FrameworkMethod each : getFilteredChildren()) {
+        for (FrameworkMethod each : getOriginalFilteredChildren()) {
             sortChild(each);
         }
-        Collections.sort(getFilteredChildren(), comparator());
+        Collections.sort(getOriginalFilteredChildren(), comparator());
     }
 
     //
@@ -357,11 +427,29 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
         }
     }
 
-    private List<FrameworkMethod> getFilteredChildren() {
-        if (fFilteredChildren == null) {
-            fFilteredChildren = new ArrayList<FrameworkMethod>(getChildren());
+    private List<FrameworkMethod> getOriginalFilteredChildren() {
+        if (originalFilteredChildren == null) {
+            originalFilteredChildren = new ArrayList<FrameworkMethod>(getOriginalChildren());
         }
-        return fFilteredChildren;
+        return originalFilteredChildren;
+    }
+
+    private List<FrameworkMethod> getFilteredChildren() {
+        if (getOriginalFilteredChildren() == null) {
+            throw new IllegalStateException("Attempted to get filtered children before original filtered children were initialized.");
+        }
+        if (filteredChildren == null) {
+            filteredChildren = new ArrayList<FrameworkMethod>();
+            List<FrameworkMethod> testMethods = computeTestMethods();
+            for (FrameworkMethod originalMethod : getOriginalFilteredChildren()) {
+                for (FrameworkMethod testMethod : testMethods) {
+                    if (originalMethod.isShadowedBy(testMethod)) {
+                        filteredChildren.add(testMethod);
+                    }
+                }
+            }
+        }
+        return filteredChildren;
     }
 
     private void sortChild(FrameworkMethod child) {
@@ -369,7 +457,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     private boolean shouldRun(Filter filter, FrameworkMethod each) {
-        return filter.shouldRun(describeChild(each));
+        return filter.shouldRun(describeOriginalChild(each));
     }
 
     private Comparator<? super FrameworkMethod> comparator() {
@@ -380,21 +468,13 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
         };
     }
 
-    /**
-     * Sets a scheduler that determines the order and parallelization
-     * of children.  Highly experimental feature that may change.
-     */
-    public void setScheduler(RunnerScheduler scheduler) {
-        this.fScheduler = scheduler;
-    }
-
     //
     // Implementation of ParentRunner
     //
 
     /**
      * Runs the test corresponding to {@code child}, which can be assumed to be
-     * an element of the list returned by {@link LoadTimeWeavableTestRunner#getChildren()}.
+     * an element of the list returned by {@link #getChildren()}.
      * Subclasses are responsible for making sure that relevant test events are
      * reported through {@code notifier}
      */
@@ -413,11 +493,16 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Description} for {@code child}, which can be assumed to
-     * be an element of the list returned by {@link LoadTimeWeavableTestRunner#getChildren()}
+     * Returns a {@link org.junit.runner.Description} for {@code child}, which can be assumed to
+     * be an element of the list returned by {@link #getChildren()}
      */
     protected Description describeChild(FrameworkMethod method) {
         return Description.createTestDescription(getTestClass().getJavaClass(),
+                testName(method), method.getAnnotations());
+    }
+
+    protected Description describeOriginalChild(FrameworkMethod method) {
+        return Description.createTestDescription(getOriginalTestClass().getJavaClass(),
                 testName(method), method.getAnnotations());
     }
 
@@ -426,6 +511,10 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      */
     protected List<FrameworkMethod> getChildren() {
         return computeTestMethods();
+    }
+
+    protected List<FrameworkMethod> getOriginalChildren() {
+        return computeOriginalTestMethods();
     }
 
     //
@@ -439,6 +528,10 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      */
     protected List<FrameworkMethod> computeTestMethods() {
         return getTestClass().getAnnotatedMethods(Test.class);
+    }
+
+    protected List<FrameworkMethod> computeOriginalTestMethods() {
+        return getOriginalTestClass().getAnnotatedMethods(Test.class);
     }
 
     /**
@@ -459,8 +552,8 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     protected void validateNoNonStaticInnerClass(List<Throwable> errors) {
-        if (getTestClass().isANonStaticInnerClass()) {
-            String gripe = "The inner class " + getTestClass().getName()
+        if (getOriginalTestClass().isANonStaticInnerClass()) {
+            String gripe = "The inner class " + getOriginalTestClass().getName()
                     + " is not static.";
             errors.add(new Exception(gripe));
         }
@@ -492,16 +585,16 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      * parameters (do not override)
      */
     protected void validateZeroArgConstructor(List<Throwable> errors) {
-        if (!getTestClass().isANonStaticInnerClass()
+        if (!getOriginalTestClass().isANonStaticInnerClass()
                 && hasOneConstructor()
-                && (getTestClass().getOnlyConstructor().getParameterTypes().length != 0)) {
+                && (getOriginalTestClass().getOnlyConstructor().getParameterTypes().length != 0)) {
             String gripe = "Test class should have exactly one public zero-argument constructor";
             errors.add(new Exception(gripe));
         }
     }
 
     private boolean hasOneConstructor() {
-        return getTestClass().getJavaClass().getConstructors().length == 1;
+        return getOriginalTestClass().getJavaClass().getConstructors().length == 1;
     }
 
     /**
@@ -517,17 +610,17 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
         validatePublicVoidNoArgMethods(Before.class, false, errors);
         validateTestMethods(errors);
 
-        if (computeTestMethods().size() == 0) {
+        if (computeOriginalTestMethods().size() == 0) {
             errors.add(new Exception("No runnable methods"));
         }
     }
 
     protected void validateFields(List<Throwable> errors) {
-        RULE_VALIDATOR.validate(getTestClass(), errors);
+        RULE_VALIDATOR.validate(getOriginalTestClass(), errors);
     }
 
     private void validateMethods(List<Throwable> errors) {
-        RULE_METHOD_VALIDATOR.validate(getTestClass(), errors);
+        RULE_METHOD_VALIDATOR.validate(getOriginalTestClass(), errors);
     }
 
     /**
@@ -573,7 +666,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns the name that describes {@code method} for {@link Description}s.
+     * Returns the name that describes {@code method} for {@link org.junit.runner.Description}s.
      * Default implementation is the method's name
      */
     protected String testName(FrameworkMethod method) {
@@ -606,7 +699,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
      * <li>ALWAYS allow {@code @Rule} fields to modify the execution of the
      * above steps. A {@code Rule} may prevent all execution of the above steps,
      * or add additional behavior before and after, or modify thrown exceptions.
-     * For more information, see {@link TestRule}
+     * For more information, see {@link org.junit.rules.TestRule}
      * </ul>
      *
      * This can be overridden in subclasses, either by overriding this method,
@@ -639,14 +732,14 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     //
 
     /**
-     * Returns a {@link Statement} that invokes {@code method} on {@code test}
+     * Returns a {@link org.junit.runners.model.Statement} that invokes {@code method} on {@code test}
      */
     protected Statement methodInvoker(FrameworkMethod method, Object test) {
         return new InvokeMethod(method, test);
     }
 
     /**
-     * Returns a {@link Statement}: if {@code method}'s {@code @Test} annotation
+     * Returns a {@link org.junit.runners.model.Statement}: if {@code method}'s {@code @Test} annotation
      * has the {@code expecting} attribute, return normally only if {@code next}
      * throws an exception of the correct type, and throw an exception
      * otherwise.
@@ -662,7 +755,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Statement}: if {@code method}'s {@code @Test} annotation
+     * Returns a {@link org.junit.runners.model.Statement}: if {@code method}'s {@code @Test} annotation
      * has the {@code timeout} attribute, throw an exception if {@code next}
      * takes more than the specified number of milliseconds.
      *
@@ -676,7 +769,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Statement}: run all non-overridden {@code @Before}
+     * Returns a {@link org.junit.runners.model.Statement}: run all non-overridden {@code @Before}
      * methods on this class and superclasses before running {@code next}; if
      * any throws an Exception, stop execution and pass the exception on.
      *
@@ -691,7 +784,7 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Statement}: run all non-overridden {@code @After}
+     * Returns a {@link org.junit.runners.model.Statement}: run all non-overridden {@code @After}
      * methods on this class and superclasses before running {@code next}; all
      * After methods are always executed: exceptions thrown by previous steps
      * are combined, if necessary, with exceptions from After methods into a
@@ -742,11 +835,11 @@ public class LoadTimeWeavableTestRunner extends Runner implements Filterable, So
     }
 
     /**
-     * Returns a {@link Statement}: apply all non-static value fields
-     * annotated with {@link Rule}.
+     * Returns a {@link org.junit.runners.model.Statement}: apply all non-static value fields
+     * annotated with {@link org.junit.Rule}.
      *
      * @param statement The base statement
-     * @return a RunRules statement if any class-level {@link Rule}s are
+     * @return a RunRules statement if any class-level {@link org.junit.Rule}s are
      *         found, or the base statement
      */
     private Statement withTestRules(FrameworkMethod method, List<TestRule> testRules,

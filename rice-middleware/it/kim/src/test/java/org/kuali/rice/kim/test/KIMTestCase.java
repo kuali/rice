@@ -15,31 +15,24 @@
  */
 package org.kuali.rice.kim.test;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.test.runners.BootstrapTest;
 import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.fail;
 
 /**
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base
@@ -49,6 +42,7 @@ import static org.junit.Assert.fail;
  */
 @BaselineMode(Mode.ROLLBACK_CLEAR_DB)
 @RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(KIMTestCase.BootstrapTest.class)
 public abstract class KIMTestCase extends BaselineTestCase {
 
 	private static final String KIM_MODULE_NAME = "kim";
@@ -122,4 +116,10 @@ public abstract class KIMTestCase extends BaselineTestCase {
     protected String getNextSequenceStringValue(String sequenceName) {
         return MaxValueIncrementerFactory.getIncrementer(TestHarnessServiceLocator.getDataSource(), sequenceName).nextStringValue();
     }
+
+    public static final class BootstrapTest extends KIMTestCase {
+        @Test
+        public void bootstrapTest() {};
+    }
+
 }

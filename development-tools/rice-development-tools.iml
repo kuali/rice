@@ -165,6 +165,7 @@
     <orderEntry type="library" name="Maven: com.sun.codemodel:codemodel:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.24" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.javaparser:javaparser:1.0.9" level="project" />
   </component>
 </module>
 

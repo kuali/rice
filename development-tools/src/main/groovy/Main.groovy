@@ -10,7 +10,7 @@ import groovy.util.ConfigSlurper
 
 println "Looking for config.groovy at ${this.class.classLoader.getResource("config.groovy")}"
 
-config = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"))
+def config = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"))
 
 println config
 

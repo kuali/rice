@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.test;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
@@ -33,6 +34,7 @@ import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.kuali.rice.test.runners.BootstrapTest;
 import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 import org.springframework.cache.CacheManager;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -51,6 +53,7 @@ import java.util.List;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 @RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(KEWTestCase.BootstrapTest.class)
 public abstract class KEWTestCase extends BaselineTestCase {
 
     private static final String SQL_FILE = "classpath:org/kuali/rice/kew/test/DefaultSuiteTestData.sql";
@@ -247,4 +250,10 @@ public abstract class KEWTestCase extends BaselineTestCase {
         Role role = KimApiServiceLocator.getRoleService().getRoleByNamespaceCodeAndName(namespace, roleName);
         return (role == null) ? null : role.getId();
     }
+
+    public static final class BootstrapTest extends KEWTestCase {
+        @Test
+        public void bootstrapTest() {};
+    }
+
 }

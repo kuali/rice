@@ -520,6 +520,8 @@
       <list>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View"/>
+        <bean parent="Uif-Link" p:linkText="Application Header"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AppHeader-View"/>
       </list>
     </property>
   </bean>

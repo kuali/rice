@@ -35,9 +35,9 @@
 
 
     <div id="${manager.id}_cssGridLayout" ${style!} ${styleClass!}>
-
         <#local rowIndex = 0/>
         <#local cellIndex = 0/>
+
         <#list manager.rows as rowItems>
             <div class="${manager.rowCssClassAttributes[rowIndex]}">
                 <#list rowItems as item>
@@ -47,8 +47,8 @@
                     <#local cellIndex = cellIndex + 1/>
                 </#list>
             </div>
+
             <#local rowIndex = rowIndex + 1/>
         </#list>
-
     </div>
 </#macro>

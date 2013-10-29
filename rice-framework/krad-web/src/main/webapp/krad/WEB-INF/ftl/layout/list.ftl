@@ -32,7 +32,31 @@
 
     <${listType!} id="${manager.id}" ${style!} ${styleClass!}>
         <#list items as item>
-            <li>
+            <#local evenOdd="odd"/>
+            <#if (item_index % 2) == 0>
+                <#local evenOdd="even"/>
+            </#if>
+
+            <#local itemCssClass=""/>
+            <#if manager.itemCssClasses??>
+                <#if manager.itemCssClasses["all"]??>
+                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses['all']}"/>
+                </#if>
+
+                <#if manager.itemCssClasses[evenOdd]??>
+                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses[evenOdd]}"/>
+                </#if>
+
+                <#if manager.itemCssClasses[item_index?string]??>
+                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses[item_index?string]}"/>
+                </#if>
+            </#if>
+
+            <#if itemCssClass?has_content>
+                <#local itemCssClass="class=\"${itemCssClass}\""/>
+            </#if>
+
+            <li ${itemCssClass}>
                 <@krad.template component=item/>
             </li>
         </#list>

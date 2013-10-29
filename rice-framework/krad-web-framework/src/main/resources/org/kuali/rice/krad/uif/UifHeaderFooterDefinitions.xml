@@ -22,9 +22,36 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Overrideable global application header and footer -->
+  <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>
+  <bean id="Uif-ApplicationHeaderBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.ApplicationHeader"
+        parent="Uif-ContentElementBase" scope="prototype" p:render="@{!renderedInLightBox}">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/appHeader.ftl"/>
+    <property name="templateName" value="uif_appHeader"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-applicationHeader</value>
+      </list>
+    </property>
+
+    <property name="applicationNavigation">
+       <bean parent="Uif-NavigationBar"/>
+    </property>
+
+    <property name="applicationToolbar">
+      <bean parent="Uif-CssGridGroup" p:layoutManager.additionalCssClasses="container-fluid">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>toolbar</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"/>
-  <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-HeaderBase"
-        p:render="false"/>
+  <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-ApplicationHeaderBase"
+        scope="prototype"/>
 
   <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"/>
   <bean id="Uif-GlobalApplicationFooter-parentBean" abstract="true" parent="Uif-GroupBase"

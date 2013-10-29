@@ -15,14 +15,19 @@
     limitations under the License.
 
 -->
-<#macro div component renderAs='div'>
-	<#-- NOTICE: By KULRICE-10353 this method is duplicated, but not replaced, by
-			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderOpenDiv() and
-			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderCloseDiv().
-			When updating this template, also update those methods. -->
+<#--
+    Standard Application Header
 
-  <${renderAs} id="${component.id!}" ${krad.attrBuild(component)} ${component.simpleDataAttributes}>
-    <#nested/>
-  </${renderAs}>
+ -->
+
+<#macro uif_appHeader element>
+
+    <@krad.div component=element renderAs="header">
+
+       <@krad.template component=element.applicationNavigation/>
+
+       <@krad.template component=element.applicationToolbar/>
+
+    </@krad.div>
 
 </#macro>

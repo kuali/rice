@@ -511,4 +511,34 @@
     </property>
   </bean>
 
+  <bean id="Uif-NavigationBar" parent="Uif-NavigationBar-parentBean"/>
+  <bean id="Uif-NavigationBar-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.NavigationBar"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/navigationBar.ftl"/>
+    <property name="templateName" value="uif_navigationBar"/>
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>navbar</value>
+      </list>
+    </property>
+    <property name="navigationBarGroup">
+      <bean parent="Uif-ListGroup">
+        <property name="libraryCssClasses">
+          <list merge="true">
+            <value>collapse</value>
+            <value>navbar-collapse</value>
+            <value>navbar-ex1-collapse</value>
+          </list>
+        </property>
+        <property name="layoutManager.libraryCssClasses">
+          <list merge="true">
+            <value>nav</value>
+            <value>navbar-nav</value>
+            <value>navbar-right</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
 </beans>

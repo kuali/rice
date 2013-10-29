@@ -1,0 +1,116 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- AppHeader demo -->
+  <bean id="Demo-AppHeader-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAppHeader.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.ApplicationHeader"/>
+    <property name="docBookAnchor" value="d6813e6638"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-AppHeader-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-AppHeader-Example1" parent="Uif-VerticalBoxSection" p:headerText="Default">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Default Application Header"
+              p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Demo-AppHeader-View1"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-AppHeader-View1" parent="Uif-FormView">
+    <property name="headerText" value="Default Application Header"/>
+    <!-- ex:Demo-AppHeader-Example1 start-->
+    <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
+    <property name="applicationHeader">
+      <bean parent="Uif-ApplicationHeaderBase">
+        <property name="applicationLogo">
+          <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/images/logo.png"/>
+        </property>
+
+        <property name="applicationNavigation.items">
+          <list>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="RESEARCHER" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="UNIT" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="CENTRAL ADMIN" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="MAINTENANCE" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="SYSTEM ADMIN" p:renderToggleCaret="false"/>
+          </list>
+        </property>
+
+        <property name="applicationToolbar.items">
+          <list>
+            <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right"
+                  p:layoutManager.itemCssClasses="all:dropdown pull-right">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action list">
+                    <property name="menuActions">
+                      <list>
+                        <bean parent="Uif-MenuAction"
+                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                              p:actionLabel="Approve: Doc #5547"/>
+
+                        <bean parent="Uif-MenuAction"
+                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                              p:actionLabel="Approve: Doc #5548"/>
+                      </list>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Doc Search" p:renderToggleCaret="false"/>
+
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
+                    <property name="menuActions">
+                      <list>
+                        <bean parent="Uif-MenuAction"
+                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                              p:actionLabel="Preferences"/>
+
+                        <bean parent="Uif-MenuAction"
+                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                              p:actionLabel="Logout"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <!-- ex:Demo-AppHeader-Example1 end-->
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

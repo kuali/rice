@@ -18,20 +18,52 @@ package org.kuali.rice.krad.uif.layout;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ListAware;
+import org.kuali.rice.krad.uif.container.Group;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * List layout manager is a layout manager for group types to output their items as either ordered or
- * unordered lists
+ * unordered lists.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "listLayout-bean", parent = "Uif-ListLayout"),
         @BeanTag(name = "orderedListLayout-bean", parent = "Uif-OrderedListLayout")})
 public class ListLayoutManager extends LayoutManagerBase {
-
     private static final long serialVersionUID = -8611267646944565117L;
-    private boolean orderedList = false;
+
+    private boolean orderedList;
+
+    private Map<String, String> itemCssClasses;
+
+    public ListLayoutManager() {
+        super();
+    }
 
     /**
-     * If true, this list layout is an ordered list (ol).  Otherwise, the the layout is an unordered list (ul)
+     * Iterates through the groups items and sets the rendered in list boolean.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void performApplyModel(Object model, Component component) {
+        super.performApplyModel(model, component);
+
+        Group parentGroup = (Group) component;
+
+        for (Component item : parentGroup.getItems()) {
+            if (ListAware.class.isAssignableFrom(item.getClass())) {
+                ((ListAware) item).setRenderedInList(true);
+            }
+        }
+    }
+
+    /**
+     * If true, this list layout is an ordered list (ol).  Otherwise, the the layout is an unordered list (ul).
      *
      * @return true if orderedList, false if unordered
      */
@@ -41,12 +73,18 @@ public class ListLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * Set whether or not this is an orderedList
-     *
-     * @param orderedList
+     * @see ListLayoutManager#isOrderedList()
      */
     public void setOrderedList(boolean orderedList) {
         this.orderedList = orderedList;
+    }
+
+    public Map<String, String> getItemCssClasses() {
+        return itemCssClasses;
+    }
+
+    public void setItemCssClasses(Map<String, String> itemCssClasses) {
+        this.itemCssClasses = itemCssClasses;
     }
 
     /**
@@ -59,5 +97,9 @@ public class ListLayoutManager extends LayoutManagerBase {
         ListLayoutManager listLayoutManagerCopy = (ListLayoutManager) listLayoutManager;
 
         listLayoutManagerCopy.setOrderedList(this.orderedList);
+
+        if (this.itemCssClasses != null) {
+            listLayoutManagerCopy.setItemCssClasses(new HashMap<String, String>(this.itemCssClasses));
+        }
     }
 }

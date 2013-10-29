@@ -22,31 +22,33 @@
 
 <#macro uif_dropdownMenu element>
 
-    <#if element.dropdownToggle.render || element.renderToggleButton>
+    <#if !element.renderedInList>
         <div id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes}>
-
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <@krad.template component=element.dropdownToggle/>
-
-            <#if element.renderToggleCaret || element.renderToggleButton>
-                <#local caretClass="caret"/>
-                <#if element.renderToggleButton>
-                    <#-- tmp until styling is fixed -->
-                    <#--<#local caretClass="${caretClass} btn btn-xs"/>-->
-                </#if>
-
-                <b class="${caretClass}"></b>
-            </#if>
-        </a>
     </#if>
 
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <@krad.template component=element.dropdownToggle/>
+
+        <#if element.renderToggleCaret || element.renderToggleButton>
+            <#local caretClass="caret"/>
+            <#if element.renderToggleButton>
+                <#-- tmp until styling is fixed -->
+                <#--<#local caretClass="${caretClass} btn btn-xs"/>-->
+            </#if>
+
+            <span class="${caretClass}"></span>
+        </#if>
+    </a>
+
     <ul class="dropdown-menu">
-        <#list element.menuActions as menuAction>
-            <@krad.template component=menuAction/>
-        </#list>
+        <#if element.menuActions??>
+           <#list element.menuActions as menuAction>
+              <@krad.template component=menuAction/>
+            </#list>
+        </#if>
     </ul>
 
-    <#if element.dropdownToggle.render || element.renderToggleButton>
+    <#if !element.renderedInList>
         </div>
     </#if>
 

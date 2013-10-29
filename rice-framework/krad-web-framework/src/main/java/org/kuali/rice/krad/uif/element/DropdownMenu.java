@@ -20,19 +20,18 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ListAware;
 
 /**
- * Renders a dropdown menu (context menu) of actions
+ * Renders a dropdown menu (context menu) of actions.
  *
- * <p>
- * The dropdown menu component can be used to build context menus or full application menus. Essentially the
+ * <p>The dropdown menu component can be used to build context menus or full application menus. Essentially the
  * component is configured by first setting the text that will appear as a link (optionally with a caret). When the
- * user clicks the link, the dropdown of actions ({@link #getMenuActions()} will be presented.
- * </p>
+ * user clicks the link, the dropdown of actions ({@link #getMenuActions()} will be presented.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DropdownMenu extends ContentElementBase {
+public class DropdownMenu extends ContentElementBase implements ListAware {
     private static final long serialVersionUID = -1759659012620124641L;
 
     private String dropdownToggleText;
@@ -40,6 +39,7 @@ public class DropdownMenu extends ContentElementBase {
 
     private boolean renderToggleCaret;
     private boolean renderToggleButton;
+    private boolean renderedInList;
 
     private List<MenuAction> menuActions;
 
@@ -50,7 +50,7 @@ public class DropdownMenu extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
@@ -70,7 +70,10 @@ public class DropdownMenu extends ContentElementBase {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(dropdownToggle);
-        components.addAll(menuActions);
+
+        if (menuActions != null) {
+            components.addAll(menuActions);
+        }
 
         return components;
     }
@@ -147,6 +150,20 @@ public class DropdownMenu extends ContentElementBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.ListAware#setRenderedInList(boolean)
+     */
+    public boolean isRenderedInList() {
+        return renderedInList;
+    }
+
+    /**
+     * @see DropdownMenu#isRenderedInList()
+     */
+    public void setRenderedInList(boolean renderedInList) {
+        this.renderedInList = renderedInList;
+    }
+
+    /**
      * List of {@link MenuAction} instances that should be rendered for the dropdown
      *
      * <p>
@@ -183,6 +200,7 @@ public class DropdownMenu extends ContentElementBase {
 
         dropdownCopy.setRenderToggleCaret(this.renderToggleCaret);
         dropdownCopy.setRenderToggleButton(this.renderToggleButton);
+        dropdownCopy.setRenderedInList(this.renderedInList);
 
         if (this.menuActions != null) {
             List<MenuAction> optionsCopy = new ArrayList<MenuAction>();

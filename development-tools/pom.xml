@@ -41,6 +41,8 @@
   </profiles>
   <properties>
     <generateReports>false</generateReports>
+    <codemodel.version>2.4.1</codemodel.version>
+    <javaparser.version>1.0.9</javaparser.version>
   </properties>
   <dependencies>
     <dependency>
@@ -51,6 +53,16 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-impl</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-framework</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-data</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -76,7 +88,7 @@
     <dependency>
       <groupId>com.sun.codemodel</groupId>
       <artifactId>codemodel</artifactId>
-      <version>2.4.1</version>
+      <version>${codemodel.version}</version>
     </dependency>
     <dependency>
       <groupId>no.geosoft</groupId>
@@ -90,6 +102,12 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.javaparser</groupId>
+      <artifactId>javaparser</artifactId>
+      <version>${javaparser.version}</version>
     </dependency>
 
   </dependencies>

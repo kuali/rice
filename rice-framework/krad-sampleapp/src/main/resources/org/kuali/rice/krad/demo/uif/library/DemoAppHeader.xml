@@ -55,15 +55,15 @@
         <property name="applicationNavigation.items">
           <list>
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="RESEARCHER" p:renderToggleCaret="false">
-              <property name="menuGroup">
-                <bean parent="Uif-CssGridGroup">
-                  <property name="items">
-                    <list>
+              <!--<property name="menuGroup">-->
+                <!--<bean parent="Uif-CssGridGroup">-->
+                  <!--<property name="items">-->
+                    <!--<list>-->
 
-                    </list>
-                  </property>
-                </bean>
-              </property>
+                    <!--</list>-->
+                  <!--</property>-->
+                <!--</bean>-->
+              <!--</property>-->
             </bean>
 
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="UNIT" p:renderToggleCaret="false"/>

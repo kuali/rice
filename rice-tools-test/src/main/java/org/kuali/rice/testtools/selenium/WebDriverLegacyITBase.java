@@ -1278,7 +1278,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @param message to display with failure
      */
     public void failableFail(String message) {
-        fail(message); // Failable.fail in AutomatedFunctionalTestBase sets passed to false, calls jGrowlSticky with the given message
+        jiraAwareFail(message); // Failable.fail in AutomatedFunctionalTestBase sets passed to false, calls jGrowlSticky with the given message
     }
 
     protected WebElement findButtonByText(String buttonText) {

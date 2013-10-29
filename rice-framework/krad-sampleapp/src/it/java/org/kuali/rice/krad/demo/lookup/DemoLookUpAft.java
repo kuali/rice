@@ -63,7 +63,7 @@ public class DemoLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a2')]");
+        assertElementPresentByXpath("//a[contains(text(), 'a6')]");
     }
 
     @Test

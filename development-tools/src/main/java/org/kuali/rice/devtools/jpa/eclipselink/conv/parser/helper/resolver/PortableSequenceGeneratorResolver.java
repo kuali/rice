@@ -12,12 +12,11 @@ import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
-import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.Level;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
 import java.util.Collection;
 
-public class PortableSequenceGeneratorResolver extends AbstractGeneratedResolver {
+public class PortableSequenceGeneratorResolver extends AbstractMappedFieldResolver {
     private static final Log LOG = LogFactory.getLog(PortableSequenceGeneratorResolver.class);
 
     public static final String PACKAGE = "org.kuali.rice.krad.data.jpa.eclipselink";
@@ -33,15 +32,10 @@ public class PortableSequenceGeneratorResolver extends AbstractGeneratedResolver
     }
 
     @Override
-    public Level getLevel() {
-        return Level.FIELD;
-    }
-
     protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final ClassDescriptor cd = OjbUtil.findClassDescriptor(clazz, descriptorRepositories);
-        if (cd != null) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
 
-            FieldDescriptor fd = cd.getFieldDescriptorByName(fieldName);
+        if (fd != null) {
             final boolean autoInc = fd.isAutoIncrement();
             final String seqName = fd.getSequenceName();
             if (autoInc && StringUtils.isBlank(seqName)) {

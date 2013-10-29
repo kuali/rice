@@ -19,7 +19,6 @@ import japa.parser.ast.expr.BooleanLiteralExpr;
 import japa.parser.ast.expr.Expression;
 import japa.parser.ast.expr.FieldAccessExpr;
 import japa.parser.ast.expr.IntegerLiteralExpr;
-import japa.parser.ast.expr.LiteralExpr;
 import japa.parser.ast.expr.MarkerAnnotationExpr;
 import japa.parser.ast.expr.MethodCallExpr;
 import japa.parser.ast.expr.NameExpr;
@@ -35,7 +34,6 @@ import japa.parser.ast.stmt.ReturnStmt;
 import japa.parser.ast.stmt.Statement;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.type.PrimitiveType;
-import japa.parser.ast.type.Type;
 import japa.parser.ast.type.VoidType;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -89,7 +87,7 @@ public class IdClassResolver implements AnnotationResolver {
         if (primaryKeyDescriptors != null && primaryKeyDescriptors.size() > 1) {
             final NodeAndImports<ClassOrInterfaceDeclaration> primaryKeyClass = createPrimaryKeyClass(name, primaryKeyDescriptors);
             final String pkClassName = primaryKeyClass.node.getName();
-            return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(name + "." + pkClassName)),
+            return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(name + "." + pkClassName + ".class")),
                     new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false), primaryKeyClass.imprts, primaryKeyClass.node);
 
         }

@@ -4,12 +4,10 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.Node;
 import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.ModifierSet;
 import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.expr.MarkerAnnotationExpr;
 import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.ParserUtil;
@@ -48,7 +46,7 @@ public class TransientResolver implements AnnotationResolver {
 
         final FieldDeclaration field = (FieldDeclaration) node;
 
-        if (canBeAnnotated(field)) {
+        if (ResolverUtil.canFieldBeAnnotated(field)) {
             final TypeDeclaration dclr = (TypeDeclaration) node.getParentNode();
             if (!(dclr.getParentNode() instanceof CompilationUnit)) {
                 //handling nested classes
@@ -57,26 +55,13 @@ public class TransientResolver implements AnnotationResolver {
             final String name = dclr.getName();
             final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
             final String fullyQualifiedClass = pckg + "." + name;
-            final boolean mappedColumn = isMappedColumn(fullyQualifiedClass, ParserUtil.getFieldName(field));
+            final boolean mappedColumn = OjbUtil.isMappedColumn(fullyQualifiedClass, ParserUtil.getFieldName(field),
+                    descriptorRepositories);
             if (!mappedColumn) {
                 return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
                         new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
             }
         }
         return null;
-    }
-
-    private boolean canBeAnnotated(FieldDeclaration node) {
-        return !ModifierSet.isStatic(node.getModifiers());
-    }
-
-    private boolean isMappedColumn(String clazz, String fieldName) {
-        final ClassDescriptor cd = OjbUtil.findClassDescriptor(clazz, descriptorRepositories);
-        if (cd != null) {
-            return cd.getFieldDescriptorByName(fieldName) != null ||
-                    cd.getCollectionDescriptorByName(fieldName) != null ||
-                    cd.getObjectReferenceDescriptorByName(fieldName) != null;
-        }
-        return false;
     }
 }

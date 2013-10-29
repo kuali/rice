@@ -3,10 +3,13 @@ package org.kuali.rice.devtools.jpa.eclipselink.conv.ojb;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
+import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.ConnectionDescriptorXmlHandler;
 import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
+import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.MetadataException;
+import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.RepositoryXmlHandler;
 import org.apache.ojb.broker.util.ClassHelper;
 import org.xml.sax.InputSource;
@@ -36,6 +39,16 @@ public final class OjbUtil {
         throw new UnsupportedOperationException("do not call");
     }
 
+    public static boolean isMappedColumn(String clazz, String fieldName, Collection<DescriptorRepository> descriptorRepositories) {
+        final ClassDescriptor cd = findClassDescriptor(clazz, descriptorRepositories);
+        if (cd != null) {
+            return cd.getFieldDescriptorByName(fieldName) != null ||
+                    cd.getObjectReferenceDescriptorByName(fieldName) != null ||
+                    cd.getCollectionDescriptorByName(fieldName) != null;
+        }
+        return false;
+    }
+
     public static Collection<DescriptorRepository> getDescriptorRepositories(Collection<String> ojbFiles) throws Exception {
         final Collection<DescriptorRepository> drs = new ArrayList<DescriptorRepository>();
 
@@ -55,6 +68,30 @@ public final class OjbUtil {
             }
         }
         return null;
+    }
+
+    public static FieldDescriptor findFieldDescriptor(String clazz, String fieldName, Collection<DescriptorRepository> descriptorRepositories) {
+        final ClassDescriptor cd = findClassDescriptor(clazz, descriptorRepositories);
+        return cd != null ? cd.getFieldDescriptorByName(fieldName) : null;
+    }
+
+    public static ObjectReferenceDescriptor findObjectReferenceDescriptor(String clazz, String fieldName, Collection<DescriptorRepository> descriptorRepositories) {
+        final ClassDescriptor cd = findClassDescriptor(clazz, descriptorRepositories);
+        return cd != null ? cd.getObjectReferenceDescriptorByName(fieldName) : null;
+    }
+
+    public static CollectionDescriptor findCollectionDescriptor(String clazz, String fieldName, Collection<DescriptorRepository> descriptorRepositories) {
+        final ClassDescriptor cd = findClassDescriptor(clazz, descriptorRepositories);
+        return cd != null ? cd.getCollectionDescriptorByName(fieldName) : null;
+    }
+
+    public static Collection<String> getPrimaryKeyNames(String clazz, Collection<DescriptorRepository> descriptorRepositories) {
+        final Collection<String> pks = new ArrayList<String>();
+        final ClassDescriptor cd = OjbUtil.findClassDescriptor(clazz, descriptorRepositories);
+        for(FieldDescriptor pk : cd.getPkFields()) {
+            pks.add(pk.getAttributeName());
+        }
+        return pks;
     }
 
     /**

@@ -22,7 +22,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
 
 /**
- * tests creating and cancelling new and edit Role maintenance screens
+ * Sets up Person Roles for load-testing
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -50,7 +50,7 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + String.format(format, i);
             open(EDIT_URL.replace("LTID", id));
-            checkForIncidentReport();
+            checkForIncidentReport("edit id " + id);
             waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
             selectByName("newAffln.affiliationTypeCode", "Affiliate");

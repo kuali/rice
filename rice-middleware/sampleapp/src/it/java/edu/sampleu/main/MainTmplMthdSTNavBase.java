@@ -57,6 +57,7 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodAftBase {
         waitAndClickSearch3();
         waitForElementPresentByClassName(DATA_TABLES_INFO, "Problem with second search");
         back();
+        acceptAlertIfPresent();
         waitForElementsPresentByClassName(DATA_TABLES_INFO, "Going back from Search to Search results not available");
         assertTextPresent("https://jira.kuali.org/browse/KULRICE-9710 Search Search back does not display first search results in Firefox", pageBannerText);
     }

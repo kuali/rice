@@ -4,7 +4,9 @@ project {
     // This is the base directory for the project.  All other paths will be relative to this one
     homeDirectory = "/Users/jonathan/dev/projects/rice-20"
     // Directories which will be added to the classpath for the purpose of finding the OJB-mapped classes 
-    classpathDirectories = []
+    classpathDirectories = [
+        "rice-middleware/krms/impl/target/classes"
+        ]
     // Directories which contain jar files.  Each jar file will be added to the classpath
     classpathJarDirectories = []
     // Project source directories.  These directories will be scanned in order to find the source

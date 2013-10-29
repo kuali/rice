@@ -14,6 +14,19 @@ config = new ConfigSlurper().parse(this.class.classLoader.getResource("config.gr
 
 println config
 
+def rootLoader = this.class.classLoader.getRootLoader()
+if ( !rootLoader ) {
+    println "ERROR!  RootLoader is null - unable to add additional classes to the classpath.  This happens when running Groovy from within Eclipse."
+}
+//println rootLoader
+// add additional items to the classpath
+//for ( classpathDir in config.project.classpathDirectories ) {
+//    def classpathUrl = new URL("file://"+new File( config.project.homeDirectory + "/" + classpathDir ).canonicalPath)
+//    println "Adding Classpath URL: $classpathUrl"
+//    rootLoader.addURL( classpathUrl )
+//}
+//def jars   = jardir.listFiles().findAll { it.name.endsWith('.jar') } 
+//jars.each { loader.addURL(it.toURI().toURL()) }
 fullSourcePaths = config.project.sourceDirectories.collect { config.project.homeDirectory + "/" + it }
 fullOjbPaths = config.ojb.repositoryFiles.collect { config.project.homeDirectory + "/" + it }
 

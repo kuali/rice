@@ -15,7 +15,6 @@
  */
 package edu.sampleu.kim.api.identity;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -38,11 +37,6 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
     private String idBase = System.getProperty("test.role.user.base", "lt");
     public static final String ADMIN_ROLE_ID = "63";
     public static final String KRMS_ADMIN_ROLE_ID = "98";
-
-    @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
 
     @Override
     protected String getBookmarkUrl() {

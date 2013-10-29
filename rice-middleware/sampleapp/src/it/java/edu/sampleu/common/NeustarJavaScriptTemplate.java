@@ -29,11 +29,6 @@ import java.util.Properties;
 public class NeustarJavaScriptTemplate extends FreemarkerAftBase {
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return null;
     }

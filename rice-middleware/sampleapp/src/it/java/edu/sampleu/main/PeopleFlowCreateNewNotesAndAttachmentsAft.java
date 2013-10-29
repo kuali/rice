@@ -56,7 +56,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      * @throws Exception when an error is encountered in the test
      */
     @Test
-    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultAttachment() throws Exception {
+    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultAttachmentNav() throws Exception {
         navigateToPeopleFlowNotesAndAttachments();
 
         waitAndTypeByName(NOTES_AND_ATTACHMENTS_PREFIX + "." + KRADConstants.NOTE_TEXT_PROPERTY_NAME,
@@ -77,7 +77,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      * @throws Exception when an error is encountered in the test
      */
     @Test
-    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultNoAttachment() throws Exception {
+    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultNoAttachmentNav() throws Exception {
         navigateToPeopleFlowNotesAndAttachments();
 
         waitAndTypeByName(NOTES_AND_ATTACHMENTS_PREFIX + "." + KRADConstants.NOTE_TEXT_PROPERTY_NAME,
@@ -96,7 +96,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      * @throws Exception when an error is encountered in the test
      */
     @Test
-    public void testPeopleFlowCreateNewNotesAndAttachments_NoNoteText() throws Exception {
+    public void testPeopleFlowCreateNewNotesAndAttachments_NoNoteTextNav() throws Exception {
         navigateToPeopleFlowNotesAndAttachments();
 
         waitAndAddAttachment("attachment.txt", "Testing123");

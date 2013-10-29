@@ -28,11 +28,6 @@ public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
     public static final String LOGIN_INFO_STRONG_2_XPATH = "//div[@id='login-info']/strong[2]";
 
     @Override
-    public void fail(String message) {
-        SeleneseTestBase.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return AutomatedFunctionalTestUtils.PORTAL;
     }

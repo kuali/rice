@@ -73,11 +73,6 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
     public void testEditCancel() throws Exception {}
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return null; // no bookmark test yet
     }

@@ -17,11 +17,9 @@ package edu.sampleu.travel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -38,11 +36,6 @@ import static org.junit.Assert.*;
 public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
 
     public static String BOOKMARK_URL = WebDriverUtil.getBaseUrlString()+ "/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start";
-
-    @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
 
     @Override
     protected String getBookmarkUrl() {
@@ -135,7 +128,7 @@ public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
      */
     @Ignore // This test fails, but what is it testing doing?
     @Test
-    public void testDataAttributesPresentInControls () throws Exception{
+    public void testDataAttributesPresentInControlsNav() throws Exception{
         assertEquals("Kuali Portal Index", getTitle());
         open(getBookmarkUrl());
         waitForPageToLoad(); // if this times out make a special one that 50000

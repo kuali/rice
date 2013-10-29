@@ -15,7 +15,6 @@
  */
 package edu.sampleu.admin;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -28,11 +27,6 @@ public class ConfigParameterNavIT extends AdminTmplMthdAftNavBase {
     @Override
     protected String getBookmarkUrl() {
         return null; // no bookmark test yet
-    }
-
-    @Override
-    public void fail(String message) {
-        Assert.fail(message);
     }
 
     @Override

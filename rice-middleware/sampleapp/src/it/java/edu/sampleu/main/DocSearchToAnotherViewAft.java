@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.sampleu.main;
 
 import junit.framework.Assert;
@@ -16,11 +31,6 @@ import org.openqa.selenium.Alert;
 public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
 
     @Override
-    public void fail(String message) {
-        org.junit.Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Document%20Search&channelUrl=" + WebDriverUtil.getBaseUrlString()
                 + "/kew/DocumentSearch.do?docFormKey=88888888&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
@@ -31,7 +41,7 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
      * test that after doc search, navigating to people flow maintenance view does not cause Javascript errors
      * and therefore interfere with JS functionality like validation
      */
-	public void testDocSearchToAnotherView() throws Exception {
+	public void testDocSearchToAnotherViewBookmark() throws Exception {
 		waitAndClick("img[alt=\"doc search\"]");
 		waitForPageToLoad();
 		selectFrame("iframeportlet");

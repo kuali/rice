@@ -31,11 +31,6 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
     protected List<File> fileUploadList;
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return null; // no bookmark test yet
     }

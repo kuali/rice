@@ -42,11 +42,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     String parentName;
 
     @Override
-    public void fail(String message) {
-        Assert.fail(message);
-    }
-
-    @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }

@@ -58,6 +58,20 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
+  <section>
+    <title>Upgrade Guide</title>
+    <para>Below is information on how to upgrade your database to Rice ${project.version} from the
+      previous version. If you are upgrading from another previous version, you may want to
+      reference <link
+        xlink:href="https://wiki.kuali.org/display/KULRICE/Upgrade+Troubleshooting#UpgradeTroubleshooting-DatabaseUpgradePaths"
+        >Database Upgrade Paths</link>.</para>
+    <section>
+      <title>Oracle</title>
+    </section>
+    <section>
+      <title>MySQL</title>
+    </section>
+  </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
       

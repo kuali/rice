@@ -831,8 +831,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     private void blanketApproveAssert() throws InterruptedException {
         checkForDocError();
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH, this,
-                "Blanket Approve failure");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH,
+                "Blanket Approve failure", this);
         waitAndClickDocSearch();
         waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
         SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
@@ -841,7 +841,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, "", this);
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -855,7 +855,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @throws InterruptedException
      */
     protected void blanketApproveTest() throws InterruptedException {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, this, "");
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, "", this);
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -967,11 +967,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     protected void checkForIncidentReport(String locator, String message) {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, this, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, this);
     }
 
+    /**
+     * @deprecated {@see #checkForIncidentReport(String, String)}
+     */
     protected void checkForIncidentReport(String locator, Failable failable, String message) {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }
 
     protected void clearText(By by) throws InterruptedException {

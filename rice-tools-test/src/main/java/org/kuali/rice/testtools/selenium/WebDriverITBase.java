@@ -446,7 +446,7 @@ public abstract class WebDriverITBase implements Failable {
     }
     
     protected void checkForIncidentReport(String locator, Failable failable, String message) {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }
 
 

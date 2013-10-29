@@ -162,7 +162,7 @@ public class AutomatedFunctionalTestUtils {
         return dtsTwo;
     }
 
-    protected static void checkForIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+    protected static void checkForIncidentReport(String contents, String linkLocator, String message, Failable failable) {
         if (contents == null) { //guard clause
             return;
         }

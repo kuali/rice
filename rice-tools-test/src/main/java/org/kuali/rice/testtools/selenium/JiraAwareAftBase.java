@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.testtools.selenium;
 
 import org.junit.Assert;
@@ -26,6 +41,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * Test state, used for Saucelabs REST API call to set test state via @{see SauceLabsWebDriverHelper#tearDown}.
      */
     private boolean passed = false;
+
+    /**
+     * Implement to check for Incident Report or other on screen errors, should call {@see Failable#fail} to fail, without
+     * calling any of the jiraAwareFail methods to avoid an infinite loop.
+     *
+     * @param locator used in failure message if there is an incident report can be blank
+     * @param message used in failure message if there is an incident report can be blank
+     */
+    protected abstract void checkForIncidentReport(String locator, String message);
 
     /**
      * WebDriver used in fail and pass to display jGrowl messages.
@@ -76,37 +100,53 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
-     * {@see JiraAwareFailureUtil#fail}
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param message to check for a Jira match and fail with.
      */
     protected void jiraAwareFail(String message) {
+        checkForIncidentReport("", message);
         JiraAwareFailureUtil.fail(message, this);
     }
 
     /**
-     * {@see JiraAwareFailureUtil#fail}
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param contents to check for a Jira match
      * @param message to check for a Jira match and fail with.
      */
     protected void jiraAwareFail(String contents, String message) {
+        checkForIncidentReport(contents, message);
         JiraAwareFailureUtil.fail(contents, message, this);
     }
 
     /**
-     * {@see JiraAwareFailureUtil#fail}
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param by to check for a Jira match
      * @param message to check for a Jira match and fail with.
      * @param throwable to check for a Jira match
      */
     protected void jiraAwareFail(By by, String message, Throwable throwable) {
+        checkForIncidentReport(by.toString(), message);
         JiraAwareFailureUtil.fail(by.toString(), message, throwable, this);
     }
 
     /**
-     * {@see #jiraAwareWaitAndClick(By, String Failable}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     *
+     * @param contents to check for a Jira match
+     * @param message to check for a Jira match and fail with.
+     * @param throwable to check for a Jira match
+     * @param failable to call fail on
+     */
+    protected void jiraAwareFail(String contents, String message, Throwable throwable, Failable failable) {
+        checkForIncidentReport(contents, message);
+        JiraAwareFailureUtil.fail(contents, message, throwable, failable);
+    }
+
+    /**
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param by to click on
      * @param message on failure
@@ -178,7 +218,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             WebDriverUtil.waitFor(getDriver(), WebDriverUtil.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
-            JiraAwareFailureUtil.fail(by.toString(), message, t, failable);
+            jiraAwareFail(by.toString(), message, t, failable);
         }
     }
 

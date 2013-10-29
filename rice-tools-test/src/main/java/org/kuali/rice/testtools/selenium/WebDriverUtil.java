@@ -432,7 +432,7 @@ public class WebDriverUtil {
      * @param message to display and be matched against in the event of a failure
      */
     public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable, String message) {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, failable, message);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }
 
     /**
@@ -858,8 +858,8 @@ public class WebDriverUtil {
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login", failable,
-                    "Krad Login failure");
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login",
+                    "Krad Login failure", failable);
     }
 
     /**
@@ -879,8 +879,8 @@ public class WebDriverUtil {
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login", failable,
-                    "KNS Login failure");
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login",
+                    "KNS Login failure", failable);
     }
 
     /**

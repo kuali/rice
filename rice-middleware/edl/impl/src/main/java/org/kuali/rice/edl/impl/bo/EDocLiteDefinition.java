@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.edl.impl.bo;
 
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,55 +37,96 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KREW_EDL_DEF_T")
-//@Sequence(name="KREW_EDL_S", property="eDocLiteDefId")
-public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
+public class EDocLiteDefinition extends PersistableBusinessObjectBase {
+
     private static final long serialVersionUID = 6230450806784021509L;
     /**
      * edoclt_def_id
      */
     @Id
     @GeneratedValue(generator="KREW_EDL_S")
-    @Column(name = "EDOCLT_DEF_ID")
-	private Long eDocLiteDefId;
+    @PortableSequenceGenerator(name = "KREW_EDL_S")
+    @Column(name = "EDOCLT_DEF_ID", nullable = false)
+    private Long id;
     /**
      * edoclt_def_nm
      */
-    @Column(name="NM")
-	private String name;
+    @Column(name="NM", nullable = false)
+    private String name;
     /**
      * edoclt_def_xml
      */
     @Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(name="XML")
-	private String xmlContent;
+    @Basic(fetch=FetchType.LAZY)
+    @Column(name="XML", nullable = false)
+    private String xmlContent;
     /**
      * edoclt_def_actv_ind
      */
-    @Column(name="ACTV_IND")
-	private Boolean activeInd;
+    @Convert(converter=Boolean01Converter.class)
+    @Column(name="ACTV_IND", nullable = false)
+    private Boolean activeInd;
 
-    public Long getEDocLiteDefId() {
-        return eDocLiteDefId;
+    /**
+     * Returns the edoc lite definition id.
+     * @return the definition id
+     */
+    public Long getId() {
+        return id;
     }
-    public void setEDocLiteDefId(Long eDocLiteDefId) {
-        this.eDocLiteDefId = eDocLiteDefId;
+
+    /**
+     *
+     * @see #getId()
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    /**
+     * Returns the name.
+     * @return the name
+     */
     public String getName() {
         return name;
     }
+
+    /**
+     *
+     * @see #getName()
+     */
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Returns the xml content.
+     * @return the xml content
+     */
     public String getXmlContent() {
         return xmlContent;
     }
+
+    /**
+     *
+     * @see #getXmlContent()
+     */
     public void setXmlContent(String xmlContent) {
         this.xmlContent = xmlContent;
     }
+
+    /**
+     * Returns true if the record is active, false otherwise.
+     * @return TRUE if the record is active, FALSE otherwise
+     */
     public Boolean getActiveInd() {
         return activeInd;
     }
+
+    /**
+     *
+     * @see #getActiveInd()
+     */
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
     }

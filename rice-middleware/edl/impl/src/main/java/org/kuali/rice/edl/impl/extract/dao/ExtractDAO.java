@@ -22,17 +22,41 @@ import org.kuali.rice.edl.impl.extract.Fields;
 
 
 public interface ExtractDAO {
-	
+
+    /**
+     * Returns a {@link Dump} for the given document id
+     * @param documentId the document id
+     * @return a {@link Dump}
+     */
     public Dump getDumpByDocumentId(String documentId);
 
-    public List getFieldsByDocumentId(String documentId);
-    
-    public void saveDump(Dump dump);
-    
+    /**
+     * Returns all {@link Fields} with the given document id.
+     * @param documentId the document id.
+     * @return a {@link List} of {@link Fields}
+     */
+    public List<Fields> getFieldsByDocumentId(String documentId);
+
+    /**
+     * Persists the given item to the underlying datasource.
+     * @param dump the item to save
+     * @return the saved {@link Dump}
+     */
+    public Dump saveDump(Dump dump);
+
+    /**
+     * Removes a {@link Dump} from the underlying datasource for the given document id.
+     * @param documentId the document id
+     */
     public void deleteDump(String documentId);
 
-	public void saveField(Fields field);
-    
+    /**
+     * Persists the given item to the underlying datasource.
+     * @param field the item to save
+     * @return the saved {@link Fields}
+     */
+    public Fields saveField(Fields field);
+
 
 
 }

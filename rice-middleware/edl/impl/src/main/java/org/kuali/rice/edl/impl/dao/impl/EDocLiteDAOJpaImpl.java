@@ -18,15 +18,15 @@ package org.kuali.rice.edl.impl.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * JPA implementation of the EDOcLiteDAO
@@ -36,137 +36,142 @@ import org.kuali.rice.edl.impl.dao.EDocLiteDAO;
 public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EDocLiteDAOJpaImpl.class);
 
+    /** static value for active indicator */
     private static final String ACTIVE_IND_CRITERIA = "activeInd";
+
+    /** static value for name */
     private static final String NAME_CRITERIA = "name";
 
-    @PersistenceContext(unitName = "kew-unit")
-    private EntityManager entityManager;
+    /** Service that persists data to and from the underlying datasource. */
+    private DataObjectService dataObjectService;
 
-    /**
-     * Save a EDocLiteDefinition
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#saveEDocLiteDefinition(org.kuali.rice.edl.impl.bo.EDocLiteDefinition)
-     */
-    public void saveEDocLiteDefinition(final EDocLiteDefinition edocLiteData) {
-        if (edocLiteData.getEDocLiteDefId() == null) {
-            entityManager.persist(edocLiteData);
-        } else {
-            OrmUtils.merge(entityManager, edocLiteData);
-        }
+    public EDocLiteDAOJpaImpl () {
+        System.out.println("Hello");
     }
 
     /**
-     * Save a EDocLiteAssocitaion
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#saveEDocLiteAssociation(org.kuali.rice.edl.impl.bo.EDocLiteAssociation)
+     * Returns the data object service.
+     * @return the {@link DataObjectService}
      */
-    public void saveEDocLiteAssociation(final EDocLiteAssociation assoc) {
-        if (assoc.getEdocLiteAssocId() == null) {
-            entityManager.persist(assoc);
-        } else {
-            OrmUtils.merge(entityManager, assoc);
-        }
+    public DataObjectService getDataObjectService() {
+        return this.dataObjectService;
     }
 
     /**
-     * Get a EDocLiteDefinition
      *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteDefinition(java.lang.String)
+     * @see #getDataObjectService()
      */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EDocLiteDefinition saveEDocLiteDefinition(final EDocLiteDefinition edocLiteData) {
+        return this.dataObjectService.save(edocLiteData, PersistenceOption.FLUSH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EDocLiteAssociation saveEDocLiteAssociation(final EDocLiteAssociation assoc) {
+        return this.dataObjectService.save(assoc, PersistenceOption.FLUSH);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public EDocLiteDefinition getEDocLiteDefinition(final String defName) {
-        final Criteria crit = new Criteria(EDocLiteDefinition.class.getName());
-        crit.eq(NAME_CRITERIA, defName);
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        List<EDocLiteDefinition> edls = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-        if (edls.isEmpty()) {
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NAME_CRITERIA, defName), equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
+        List<EDocLiteDefinition> edls = this.dataObjectService.findMatching(EDocLiteDefinition.class,
+                criteria.build()).getResults();
+        if (null != edls && !edls.isEmpty()) {
+            return edls.get(0);
+        } else {
             return null;
         }
-        return edls.get(0);
     }
 
     /**
-     * Get a EDocLiteAssociation
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteAssociation(java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public EDocLiteAssociation getEDocLiteAssociation(final String docTypeName) {
-        final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
-        crit.eq("edlName", docTypeName);
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        List<EDocLiteAssociation> edls = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-        if (edls.isEmpty()) {
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("edlName", docTypeName), equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
+        List<EDocLiteAssociation> edls = this.dataObjectService.findMatching(EDocLiteAssociation.class,
+                criteria.build()).getResults();
+
+        if (null != edls && !edls.isEmpty()) {
+            return edls.get(0);
+        } else {
             return null;
         }
-        return edls.get(0);
     }
 
     /**
-     * Returns the names of all active Definitions
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteDefinitions()
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public List<String> getEDocLiteDefinitions() {
-        final Criteria crit = new Criteria(EDocLiteDefinition.class.getName());
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-
-        final List<EDocLiteDefinition> defs = (List<EDocLiteDefinition>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-        final ArrayList<String> names = new ArrayList<String>(defs.size());
-        for (EDocLiteDefinition def : defs) {
-            names.add(def.getName());
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
+        List<EDocLiteDefinition> defs = this.dataObjectService.findMatching(EDocLiteDefinition.class,
+                criteria.build()).getResults();
+        ArrayList<String> names = new ArrayList<String>(defs.size());
+        if (!defs.isEmpty()) {
+            for (EDocLiteDefinition def : defs) {
+                names.add(def.getName());
+            }
         }
+
         return names;
     }
 
     /**
-     * Returns all active Definitions
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteAssociations()
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public List<EDocLiteAssociation> getEDocLiteAssociations() {
-        final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
-        crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        return (List<EDocLiteAssociation>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
+        return this.dataObjectService.findMatching(EDocLiteAssociation.class, criteria.build()).getResults();
     }
 
     /**
-     * Finds matching Associations
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#search(org.kuali.rice.edl.impl.bo.EDocLiteAssociation)
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public List<EDocLiteAssociation> search(final EDocLiteAssociation edocLite) {
-        final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
+        List<Predicate> predicates = new ArrayList<Predicate>();
         if (edocLite.getActiveInd() != null) {
-            crit.eq(ACTIVE_IND_CRITERIA, edocLite.getActiveInd());
+            predicates.add(equal(ACTIVE_IND_CRITERIA, edocLite.getActiveInd()));
         }
         if (edocLite.getDefinition() != null) {
-            crit.like("UPPER(definition)", "%" + edocLite.getDefinition().toUpperCase() + "%");
+            predicates.add(like("UPPER(definition)", "%" + edocLite.getDefinition().toUpperCase() + "%"));
         }
         if (edocLite.getEdlName() != null) {
-            crit.like("UPPER(edlName)", "%" + edocLite.getEdlName().toUpperCase() + "%");
+            predicates.add(like("UPPER(edlName)", "%" + edocLite.getEdlName().toUpperCase() + "%"));
         }
         if (edocLite.getStyle() != null) {
-            crit.like("UPPER(style)", "%" + edocLite.getStyle().toUpperCase() + "%");
+            predicates.add(like("UPPER(style)", "%" + edocLite.getStyle().toUpperCase() + "%"));
         }
-        return (List<EDocLiteAssociation>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+        return this.dataObjectService.findMatching(EDocLiteAssociation.class, builder.build()).getResults();
+
     }
 
     /**
-     * Returns a specific Association
-     *
-     * @see org.kuali.rice.edl.impl.dao.EDocLiteDAO#getEDocLiteAssociation(java.lang.Long)
+     * {@inheritDoc}
      */
+    @Override
     public EDocLiteAssociation getEDocLiteAssociation(final Long associationId) {
-        return entityManager.find(EDocLiteAssociation.class, associationId);
-    }
-
-    public EntityManager getEntityManager() {
-        return this.entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        return dataObjectService.find(EDocLiteAssociation.class, associationId);
     }
 }

@@ -25,8 +25,11 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
   <import resource="classpath:org/kuali/rice/edl/impl/config/_EDLCommonSpringBeans.xml" />
+  <!--<import resource="classpath:org/kuali/rice/edl/impl/config/_EDLDataSourceSpringBeans.xml"/>-->
   <import resource="classpath:org/kuali/rice/edl/impl/config/_EDLOjbSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/edl/impl/config/_EDLJpaSpringBeans.xml"/>
 
   <bean id="kualiModuleService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiModuleService" />
@@ -103,6 +106,13 @@
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
     <property name="persistenceService" ref="persistenceServiceOjb"/>
+    <property name="entityManager" ref="sharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
+    </property>
     <property name="dataDictionaryPackages">
       <list>
         <value>classpath:org/kuali/rice/edl/impl/bo/datadictionary/EDocLiteAssociation.xml</value>

@@ -26,9 +26,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+
+import java.io.Serializable;
 
 /**
  *
@@ -39,92 +40,163 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
  */
 @Entity
 @Table(name="KREW_EDL_FLD_DMP_T")
-//@Sequence(name="KREW_EDL_FLD_DMP_S", property="fieldId")
-public class Fields {
+public class Fields implements Serializable {
 
-	private static final long serialVersionUID = -6136544551121011531L;
+    //	private static final long serialVersionUID = -6136544551121011531L;
 
     @Id
     @GeneratedValue(generator="KREW_EDL_FLD_DMP_S")
-	@Column(name="EDL_FIELD_DMP_ID")
-	private Long fieldId;
+    @PortableSequenceGenerator(name = "KREW_EDL_FLD_DMP_S")
+    @Column(name="EDL_FIELD_DMP_ID")
+    private Long fieldId;
+
     @Column(name="DOC_HDR_ID")
-	private String docId;
+    private String docId;
+
     @Column(name="FLD_NM")
-	private String fieldName;
+    private String fieldName;
+
     @Column(name="FLD_VAL")
-	private String fieldValue;
+    private String fieldValue;
+
     @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+    @Column(name="VER_NBR")
+    private Integer lockVerNbr;
 
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-	private Dump dump;
+    @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
+    private Dump dump;
 
-    //@PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KRADServiceLocator.getEntityManagerFactory().createEntityManager());
+    /**
+     * Returns the field id.
+     * @return the field id
+     */
+    public Long getFieldId() {
+        return fieldId;
     }
 
+    /**
+     *
+     * @see #getFieldId()
+     */
+    public void setFieldId(Long fieldId) {
+        this.fieldId = fieldId;
+    }
 
-	public Long getFieldId() {
-		return fieldId;
-	}
-	public String getDocId() {
-		return docId;
-	}
-	public void setDocId(final String docId) {
-		this.docId = docId;
-	}
-	public String getFieldValue() {
-		return fieldValue;
-	}
-	public void setFieldValue(final String fieldValue) {
-		this.fieldValue = fieldValue;
-	}
-	public String getFiledName() {
-		return fieldName;
-	}
-	public void setFieldName(final String filedName) {
-		this.fieldName = filedName;
-	}
-	public Integer getLockVerNbr() {
-		return lockVerNbr;
-	}
-	public void setLockVerNbr(final Integer lockVerNbr) {
-		this.lockVerNbr = lockVerNbr;
-	}
-	public Dump getDump() {
-		return dump;
-	}
-	public void setDump(final Dump dump) {
-		this.dump = dump;
-	}
-	
-	public static FieldDTO to(Fields field) {
-		if (field == null) {
-			return null;
-		}
-		FieldDTO fieldDTO = new FieldDTO();
-		fieldDTO.setDocId(field.getDocId());
-		fieldDTO.setFieldName(field.getFiledName());
-		fieldDTO.setFieldValue(field.getFieldValue());
-		fieldDTO.setLockVerNbr(field.getLockVerNbr());
-		return fieldDTO;
-	}
-	
-	public static Fields from(FieldDTO fieldDTO, Dump dump) {
-		if (fieldDTO == null) {
-			return null;
-		}
-		Fields fields = new Fields();
-		fields.setDump(dump);
-		fields.setDocId(fieldDTO.getDocId());
-		fields.setFieldName(fieldDTO.getFiledName());
-		fields.setFieldValue(fieldDTO.getFieldValue());
-		fields.setLockVerNbr(fieldDTO.getLockVerNbr());
-		return fields;
-	}
+    /**
+     * Returns the doc id.
+     * @return the doc id
+     */
+    public String getDocId() {
+        return docId;
+    }
+
+    /**
+     *
+     * @see #getDocId()
+     */
+    public void setDocId(final String docId) {
+        this.docId = docId;
+    }
+
+    /**
+     * Returns the field value.
+     * @return the field value
+     */
+    public String getFieldValue() {
+        return fieldValue;
+    }
+
+    /**
+     *
+     * @see #getFieldValue()
+     */
+    public void setFieldValue(final String fieldValue) {
+        this.fieldValue = fieldValue;
+    }
+
+    /**
+     * Returns the field name.
+     * @return the field name
+     */
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    /**
+     *
+     * @see #getFieldName()
+     */
+    public void setFieldName(final String filedName) {
+        this.fieldName = filedName;
+    }
+
+    /**
+     * Returns the lock version number.
+     * @return the lock version number
+     */
+    public Integer getLockVerNbr() {
+        return lockVerNbr;
+    }
+
+    /**
+     *
+     * @see #getLockVerNbr()
+     */
+    public void setLockVerNbr(final Integer lockVerNbr) {
+        this.lockVerNbr = lockVerNbr;
+    }
+
+    /**
+     * Returns a {@link Dump}
+     * @return a {@link Dump}
+     */
+    public Dump getDump() {
+        return dump;
+    }
+
+    /**
+     *
+     * @see #getDump()
+     */
+    public void setDump(final Dump dump) {
+        this.dump = dump;
+    }
+
+    /**
+     * Converts a {@link Fields} to a {@link FieldDTO}.
+     * @param field the {@link Fields} to convert.
+     * @return a {@link Fields}
+     */
+    public static FieldDTO to(Fields field) {
+        if (field == null) {
+            return null;
+        }
+        FieldDTO fieldDTO = new FieldDTO();
+        fieldDTO.setDocId(field.getDocId());
+        fieldDTO.setFieldName(field.getFieldName());
+        fieldDTO.setFieldValue(field.getFieldValue());
+        fieldDTO.setLockVerNbr(field.getLockVerNbr());
+        return fieldDTO;
+    }
+
+    /**
+     * Converts a {@link FieldDTO} to a {@link Fields}
+     * @param fieldDTO the {@link FieldDTO} to convert.
+     * @param dump a {@link Dump}
+     * @return a {@link Fields}
+     */
+    public static Fields from(FieldDTO fieldDTO, Dump dump) {
+        if (fieldDTO == null) {
+            return null;
+        }
+        Fields fields = new Fields();
+        fields.setDump(dump);
+        fields.setDocId(fieldDTO.getDocId());
+        fields.setFieldName(fieldDTO.getFiledName());
+        fields.setFieldValue(fieldDTO.getFieldValue());
+        fields.setLockVerNbr(fieldDTO.getLockVerNbr());
+        return fields;
+    }
 }
 

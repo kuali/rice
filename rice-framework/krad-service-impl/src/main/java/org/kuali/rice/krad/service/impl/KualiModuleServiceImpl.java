@@ -200,10 +200,9 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
             return documentClass.getAnnotation(ParameterConstants.COMPONENT.class).component();
         } else if (TransactionalDocument.class.isAssignableFrom(documentClass)) {
             return documentClass.getSimpleName().replace("Document", "");
-        } else if (BusinessObject.class.isAssignableFrom(documentClass)) {
+        } else {
             return documentClass.getSimpleName();
         }
-        throw new IllegalArgumentException("Unable to determine the component code for documentClass " + documentClass.getName());
     }
 
 }

@@ -15,15 +15,20 @@
  */
 package org.kuali.rice.edl.impl.bo;
 
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
+
 
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
@@ -32,76 +37,134 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")
-//@Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
-public class EDocLiteAssociation  extends PersistableBusinessObjectBase implements Serializable{
+public class EDocLiteAssociation  extends PersistableBusinessObjectBase {
 
-	private static final long serialVersionUID = 7300251507982374010L;
-	/**
+    private static final long serialVersionUID = 7300251507982374010L;
+    /**
      * edoclt_assoc_id
      */
     @Id
     @GeneratedValue(generator="KREW_EDL_S")
-	@Column(name="EDOCLT_ASSOC_ID")
-	private Long edocLiteAssocId;
+    @PortableSequenceGenerator(name = "KREW_EDL_S")
+    @Column(name="EDOCLT_ASSOC_ID", nullable = false)
+    private Long edocLiteAssocId;
     /**
      * edoclt_assoc_doctype_nm
      */
-    @Column(name="DOC_TYP_NM")
-	private String edlName;
+    @Column(name="DOC_TYP_NM", nullable = false)
+    private String edlName;
     /**
      * edoclt_assoc_def_nm
      */
     @Column(name="EDL_DEF_NM")
-	private String definition;
+    private String definition;
     /**
      * edoclt_assoc_style_nm
      */
     @Column(name="STYLE_NM")
-	private String style;
+    private String style;
     /**
      * edoclt_assoc_actv_ind
      */
-    @Column(name="ACTV_IND")
-	private Boolean activeInd;
+    @Convert(converter=Boolean01Converter.class)
+    @Column(name="ACTV_IND", nullable = false)
+    private Boolean activeInd;
 
     @Transient
     private String actionsUrl;//for quickfinder
 
+    /**
+     * Returns the edoc lite association id
+     * @return the association id
+     */
     public Long getEdocLiteAssocId() {
         return edocLiteAssocId;
     }
+
+    /**
+     *
+     * @see #getEdocLiteAssocId()
+     */
     public void setEdocLiteAssocId(Long edocLiteAssocId) {
         this.edocLiteAssocId = edocLiteAssocId;
     }
+
+    /**
+     * Returns the edoc lite name
+     * @return the edoc lite name
+     */
     public String getEdlName() {
         return edlName;
     }
+
+    /**
+     * @see #getEdlName()
+     */
     public void setEdlName(String edlName) {
         this.edlName = edlName;
     }
+
+    /**
+     * Returns the definition
+     * @return the definition
+     */
     public String getDefinition() {
         return definition;
     }
+
+    /**
+     *
+     * @see #getDefinition()
+     */
     public void setDefinition(String definition) {
         this.definition = definition;
     }
+
+    /**
+     * Returns the style.
+     * @return the style
+     */
     public String getStyle() {
         return style;
     }
+
+    /**
+     *
+     * @see #getStyle()
+     */
     public void setStyle(String style) {
         this.style = style;
     }
+
+    /**
+     * Returns the records activity.
+     * @return TRUE if the record is active, FALSE otherwise.
+     */
     public Boolean getActiveInd() {
         return activeInd;
     }
+
+    /**
+     *
+     * @see #getActiveInd()
+     */
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
     }
 
-	public String getActionsUrl() {
-		return actionsUrl;
-	}
-	public void setActionsUrl(String actionsUrl) {
-		this.actionsUrl = actionsUrl;
-	}
+    /**
+     * Returns actions url
+     * @return the actions url
+     */
+    public String getActionsUrl() {
+        return actionsUrl;
+    }
+
+    /**
+     *
+     * @see #getActionsUrl()
+     */
+    public void setActionsUrl(String actionsUrl) {
+        this.actionsUrl = actionsUrl;
+    }
 }

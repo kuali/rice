@@ -17,39 +17,51 @@ package org.kuali.rice.edl.impl.extract.dao.impl;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.edl.impl.extract.Dump;
 import org.kuali.rice.edl.impl.extract.Fields;
 import org.kuali.rice.edl.impl.extract.dao.ExtractDAO;
 import org.kuali.rice.kew.notes.Note;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class ExtractDAOJpaImpl implements ExtractDAO {
 
+    /** Logger for this class. */
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExtractDAOJpaImpl.class);
 
-    @PersistenceContext(unitName = "kew-unit")
-    private EntityManager entityManager;
+    /** Service that persists data to and from the underlying datasource. */
+    private DataObjectService dataObjectService;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dump getDumpByDocumentId(String docId) {
         LOG.debug("finding Document Extract by documentId " + docId);
-        return entityManager.find(Dump.class, docId);
+        return this.dataObjectService.find(Dump.class, docId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Fields> getFieldsByDocumentId(String docId) {
         LOG.debug("finding Extract Fileds by documentId " + docId);
-        Criteria crit = new Criteria(Fields.class.getName());
-        crit.eq("documentId", docId);
-        crit.orderBy("docId", true);
 
-        return (List<Fields>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("documentId", docId)).setOrderByAscending("docId");
+
+        return this.dataObjectService.findMatching(Fields.class, criteria.build()).getResults();
     }
 
-    public void saveDump(Dump dump) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dump saveDump(Dump dump) {
         LOG.debug("check for null values in Extract document");
         checkNull(dump.getDocId(), "Document ID");
         checkNull(dump.getDocCreationDate(), "Creation Date");
@@ -59,43 +71,58 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
         checkNull(dump.getDocInitiatorId(), "Initiator ID");
         checkNull(dump.getDocTypeName(), "Doc Type Name");
         LOG.debug("saving EDocLite document: routeHeader " + dump.getDocId());
-        if (dump.getDocId() == null) {
-            entityManager.persist(dump);
-        } else {
-            OrmUtils.merge(entityManager, dump);
-        }
+
+        return this.dataObjectService.save(dump, PersistenceOption.FLUSH);
     }
 
-    public void saveField(Fields field) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Fields saveField(Fields field) {
         LOG.debug("saving EDocLite Extract fields");
         checkNull(field.getDocId(), "Document ID");
         checkNull(field.getFieldValue(), "Field Value");
-        checkNull(field.getFiledName(), "Field Name");
+        checkNull(field.getFieldName(), "Field Name");
         LOG.debug("saving Fields: routeHeader " + field.getFieldId());
 
-        if (field.getFieldId() == null) {
-            entityManager.persist(field);
-        } else {
-            OrmUtils.merge(entityManager, field);
-        }
+        return this.dataObjectService.save(field, PersistenceOption.FLUSH);
     }
 
+    /**
+     * Determines if the given value is null and throws a {@link RuntimeException}
+     * @param value the value to check if null
+     * @param valueName the value name to display in the {@link RuntimeException} message.
+     * @throws RuntimeException if the supplied value is null
+     */
     private void checkNull(Object value, String valueName) throws RuntimeException {
         if (value == null) {
             throw new RuntimeException("Null value for " + valueName);
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void deleteDump(String documentId) {
         LOG.debug("deleting record form Extract Dump table");
-        entityManager.remove(entityManager.find(Note.class, documentId));
+        this.dataObjectService.delete(this.dataObjectService.find(Note.class, documentId));
     }
 
-    public EntityManager getEntityManager() {
-        return this.entityManager;
+    /**
+     * Returns the {@link DataObjectService}
+     * @return the {@link DataObjectService}
+     */
+    public DataObjectService getDataObjectService() {
+        return this.dataObjectService;
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    /**
+     *
+     * @see #getDataObjectService()
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

@@ -39,7 +39,12 @@ public abstract class PersonAftBase extends AdminTmplMthdAftNavBase {
 
     private String docId;
     private String personName;
-    
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Person

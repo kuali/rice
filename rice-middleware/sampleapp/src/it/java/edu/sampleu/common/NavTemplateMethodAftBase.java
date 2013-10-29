@@ -23,16 +23,6 @@ import org.openqa.selenium.By;
  */
 public abstract class NavTemplateMethodAftBase extends WebDriverLegacyITBase {
 
-    @Override
-    protected String getBookmarkUrl() {
-        return testUrl;
-    }
-
-    @Override
-    protected String getTestUrl() {
-        return testUrl;
-    }
-
     /**
      * TODO when the UpgradedSelenium tests have been converted over, rename this to getMenuLinkText
      * Override to return menu click selector (e.g. "Main Menu")

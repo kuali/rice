@@ -76,16 +76,6 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     }
 
     /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link XmlIngesterAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
-    /**
      * "admin" xml ingestion requires admin permissions.
      * {@inheritDoc}
      * @return

@@ -30,7 +30,12 @@ public abstract class ClearIndividualCashesAftBase extends AdminTmplMthdAftNavBa
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start";
-         
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Cache Admin

@@ -43,8 +43,8 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
         super.testSetUp();
     }
 
-    @Test
-    public void testAdStarUserName() throws InterruptedException {
+    @Test(expected = AssertionError.class)
+    public void testAdStarUserNameBookmark() throws InterruptedException {
         System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
         WebDriverUtil.loginKradOrKns(driver, "ad*", this);
         waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
@@ -56,7 +56,7 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
      * @throws InterruptedException
      */
     @Test
-    public void testInvalidUserName() throws InterruptedException {
+    public void testInvalidUserNameBookmark() throws InterruptedException {
         try {
             System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
             WebDriverUtil.loginKradOrKns(driver, AutomatedFunctionalTestUtils.DTS_TWO, this);

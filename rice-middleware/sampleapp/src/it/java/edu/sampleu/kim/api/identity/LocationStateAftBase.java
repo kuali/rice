@@ -35,6 +35,11 @@ public abstract class LocationStateAftBase extends AdminTmplMthdAftNavBase {
             "org.kuali.rice.location.impl.state.StateBo&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * State

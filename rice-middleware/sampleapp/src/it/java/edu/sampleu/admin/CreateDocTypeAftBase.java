@@ -34,6 +34,11 @@ public abstract class CreateDocTypeAftBase extends AdminTmplMthdAftNavBase {
             + "org.kuali.rice.kew.doctype.bo.DocumentType&docFormKey=88888888&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Namespace

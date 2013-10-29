@@ -36,6 +36,12 @@ public class TermSpecificationLookUpAftBase extends MainTmplMthdSTNavBase{
             + "org.kuali.rice.krms.impl.repository.TermSpecificationBo"
             + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Term Specification Lookup

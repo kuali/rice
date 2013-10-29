@@ -49,11 +49,6 @@ public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     private  Log log = LogFactory.getLog(getClass());
 
     /**

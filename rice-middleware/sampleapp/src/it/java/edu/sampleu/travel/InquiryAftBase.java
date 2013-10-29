@@ -59,16 +59,6 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
      */
     public static final String FANCYBOX_IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */    
-    @Override
-    public String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws Exception {
         waitAndClickKRAD();
         //waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);

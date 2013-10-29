@@ -38,16 +38,6 @@ public class NeustarJavaScriptTemplate extends FreemarkerAftBase {
         return null;
     }
 
-    /**
-     * This is ugly, I'm doing it to remove the loading property duplication, we should probably turn this class into a
-     * command line tool and do extractions to support that, but isn't the current focus...
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return null;
-    }
-
     // File generation
     private String PROPS_LOCATION = System.getProperty("neustarJS.props.location", null);
     private String DEFAULT_PROPS_LOCATION = "NeustarJSTemplate/neustarJS.properties";

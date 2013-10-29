@@ -39,7 +39,12 @@ public abstract class PermissionAftBase extends AdminTmplMthdAftNavBase {
 
     private String docId;
     private String permissionName;
-    
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Permission

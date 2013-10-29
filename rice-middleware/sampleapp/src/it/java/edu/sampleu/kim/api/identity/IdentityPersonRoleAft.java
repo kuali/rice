@@ -50,7 +50,7 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
     }
 
     @Test
-    public void testPersonRole() throws InterruptedException {
+    public void testPersonRoleBookmark() throws InterruptedException {
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {

@@ -32,6 +32,12 @@ public abstract class MaintenanceAdHocRecipientsAftBase extends KradTmplMthdSTNa
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtil
             .getBaseUrlString() +"/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Travel Account Maintenance (New)

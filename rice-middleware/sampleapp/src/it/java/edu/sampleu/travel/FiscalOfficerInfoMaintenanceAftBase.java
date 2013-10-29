@@ -45,17 +45,6 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
-     * Bookmark Tests should override and return {@link edu.sampleu.travel.krad.test.CollectionTotallingAbstractSmokeTestBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByXpath(FISCAL_OFFICER_INFO_MAINTENANCE_NEW_XPATH);

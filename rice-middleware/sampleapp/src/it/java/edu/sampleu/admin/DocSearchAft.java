@@ -51,12 +51,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    @Override
-    protected String getTestUrl(){
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-    
-    public void createAndSaveDoc() throws Exception{
+   public void createAndSaveDoc() throws Exception{
         waitForTitleToEqualKualiPortalIndex();
         waitAndClickByLinkText("Administration");
         waitForTitleToEqualKualiPortalIndex();

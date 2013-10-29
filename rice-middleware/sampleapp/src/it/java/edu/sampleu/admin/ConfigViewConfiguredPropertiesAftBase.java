@@ -30,7 +30,12 @@ public abstract class ConfigViewConfiguredPropertiesAftBase extends AdminTmplMth
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/ksb/ConfigViewer.do";
-            
+
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
 
     /**
      * {@inheritDoc}

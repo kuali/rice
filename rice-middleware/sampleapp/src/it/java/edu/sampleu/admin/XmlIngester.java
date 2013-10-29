@@ -78,6 +78,11 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
     }
 
     @Override
+    protected String getBookmarkUrl() {
+        return null; // no bookmark test yet
+    }
+
+    @Override
     protected String getLinkLocator() {
         return "XML Ingester";
     }

@@ -35,15 +35,6 @@ public abstract class RichMessagesAftBase extends WebDriverLegacyITBase {
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link RichMessagesAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */    
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();

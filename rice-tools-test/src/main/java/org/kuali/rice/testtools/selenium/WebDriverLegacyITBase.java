@@ -4391,12 +4391,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         try {
-            jiraAwareWaitFor(by, "");
+            jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
             WebDriverUtil.highlightElement(driver, element);
             element.sendKeys(text);
         } catch (Exception e) {
-            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), this);
+            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
             failableFail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
                     + " current url " + driver.getCurrentUrl()
                     + "\n" + AutomatedFunctionalTestUtils.deLinespace(driver.getPageSource()));

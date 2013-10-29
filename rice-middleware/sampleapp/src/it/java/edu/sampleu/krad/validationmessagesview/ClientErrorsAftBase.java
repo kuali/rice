@@ -39,17 +39,6 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
     }
 
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
-     * Bookmark Tests should override and return {@link ClientErrorsAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    public String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByXpath(VALIDATION_FRAMEWORK_DEMO_XPATH);

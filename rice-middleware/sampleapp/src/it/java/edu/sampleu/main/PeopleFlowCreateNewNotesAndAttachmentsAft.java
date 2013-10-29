@@ -50,11 +50,6 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         return BOOKMARK_URL;
     }
 
-    @Override
-    public String getTestUrl() {
-        return BOOKMARK_URL;
-    }
-
     /**
      * Tests adding both the required note and an optional attachment.
      *

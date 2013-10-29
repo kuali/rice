@@ -36,16 +36,6 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link ValidCharsConstraintAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */    
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws Exception {
         waitAndClickKRAD();
         waitAndClickByXpath(KITCHEN_SINK_XPATH);

@@ -30,6 +30,11 @@ public abstract class AddingNameSpacesAftBase extends AdminTmplMthdAftNavBase {
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtil
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+ AutomatedFunctionalTestUtils.PORTAL_URL+"&hideReturnLink=true";
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Namespace

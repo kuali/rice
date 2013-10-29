@@ -34,6 +34,11 @@ public abstract class WorkFlowDocTypeLookUpAftBase extends AdminTmplMthdAftNavBa
             "org.kuali.rice.kew.doctype.bo.DocumentType&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + AutomatedFunctionalTestUtils.DOC_FORM_KEY+ "88888888";
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Document Type

@@ -83,7 +83,7 @@ public abstract class AutomatedFunctionalTestBase {
     /**
      * @return testUrl
      */
-    protected String getTestUrl() {
+    protected final String getTestUrl() {
         return testUrl;
     }
 

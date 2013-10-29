@@ -45,16 +45,6 @@ public abstract class TravelAccountTypeLookupAftBase extends WebDriverLegacyITBa
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link TravelAccountTypeLookupAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws Exception {
         waitAndClickByLinkText("KRAD");
         waitAndClickByLinkText("Travel Account Type Lookup");

@@ -43,17 +43,6 @@ public abstract class TravelAccountLookupAftBase extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
-     * Bookmark Tests should override and return {@link TravelAccountLookupAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);

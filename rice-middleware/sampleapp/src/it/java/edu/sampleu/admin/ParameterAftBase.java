@@ -38,7 +38,12 @@ public abstract class ParameterAftBase extends AdminTmplMthdAftNavBase {
 
     private String docId;
     private String parameterName;
-    
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Parameter

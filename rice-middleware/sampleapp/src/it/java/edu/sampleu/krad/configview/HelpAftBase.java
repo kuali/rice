@@ -34,16 +34,6 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.  Bookmark Tests should override and return {@link HelpAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws Exception {
         waitAndClickKRAD();
         waitAndClickByXpath(CONFIGURATION_VIEW_XPATH);

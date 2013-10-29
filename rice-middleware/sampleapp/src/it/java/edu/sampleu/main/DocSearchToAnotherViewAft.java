@@ -26,11 +26,6 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
                 + "/kew/DocumentSearch.do?docFormKey=88888888&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
     }
 
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
 	@Test
     /**
      * test that after doc search, navigating to people flow maintenance view does not cause Javascript errors

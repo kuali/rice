@@ -44,11 +44,6 @@ public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
     }
 
     @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
-    @Override
     public String getUserName() {
         return "admin";
     }

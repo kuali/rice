@@ -36,6 +36,12 @@ public class AgendaLookUpAftBase extends MainTmplMthdSTNavBase{
             + "org.kuali.rice.krms.impl.repository.AgendaBo"
             + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * AGENDA_LOOKUP_LINK_TEXT

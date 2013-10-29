@@ -32,6 +32,12 @@ public class WorkFlowRouteRulesBlanketAppAftBase extends MainTmplMthdSTNavBase{
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Routing%20Rules&channelUrl=" + WebDriverUtil.getBaseUrlString() +
             "/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleBaseValues&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK+ "&showMaintenanceLinks=true";
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Routing Rules

@@ -32,6 +32,12 @@ public class WorkFlowRouteRulesDelegationAftBase extends MainTmplMthdSTNavBase{
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Routing%20Rules%20Delegation&channelUrl=" + WebDriverUtil.getBaseUrlString() +
             "/kr/lookup.do?businessObjectClassName=org.kuali.rice.kew.rule.RuleDelegationBo&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + "&showMaintenanceLinks=true";
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Routing Rules Delegation

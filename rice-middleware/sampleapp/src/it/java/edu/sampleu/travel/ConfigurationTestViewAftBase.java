@@ -43,17 +43,6 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
-     * Bookmark Tests should override and return {@link ConfigurationTestViewAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByXpath("(//a[text()='Configuration Test View'])");

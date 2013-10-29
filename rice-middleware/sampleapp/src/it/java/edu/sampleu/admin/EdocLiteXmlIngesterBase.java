@@ -35,6 +35,11 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         Assert.fail(message);
     }
 
+    @Override
+    protected String getBookmarkUrl() {
+        return null; // no bookmark test yet
+    }
+
     /**
      * This overridden method ...
      *

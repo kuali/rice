@@ -37,17 +37,6 @@ public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    /**
-     * Nav tests start at {@link org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils#PORTAL}.
-     * Bookmark Tests should override and return {@link DirtyFieldsAftBase#BOOKMARK_URL}
-     * {@inheritDoc}
-     * @return
-     */
-    @Override
-    protected String getTestUrl() {
-        return AutomatedFunctionalTestUtils.PORTAL;
-    }
-
     protected void navigation() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByLinkText(UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);

@@ -35,6 +35,11 @@ public abstract class IdentityRoleBlanketAppAftBase extends AdminTmplMthdAftNavB
             "org.kuali.rice.kim.impl.role.RoleBo&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK_FALSE + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
 
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * Role

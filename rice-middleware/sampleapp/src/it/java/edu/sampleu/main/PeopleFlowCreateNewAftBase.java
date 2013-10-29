@@ -34,6 +34,12 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
             + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
             + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
+
+    @Override
+    protected String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     /**
      * {@inheritDoc}
      * People Flow

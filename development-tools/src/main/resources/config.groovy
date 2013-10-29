@@ -76,7 +76,7 @@ ojb {
         ]
     // Mappings between OJB and JPA Type converters.  This contains the base ones known to the project teams.
     // If you have any additional ones you want auto-converted, add them to this map.
-    // If the JPS converter value is blank, no converter will be added.  This assumes that there is
+    // If the JPA converter value is blank, no converter will be added.  This assumes that there is
     // a default converter in place.
     converterMappings = [
           "OjbCharBooleanConversion" : ""

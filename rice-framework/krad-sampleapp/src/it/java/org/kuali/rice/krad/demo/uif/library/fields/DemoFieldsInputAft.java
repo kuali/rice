@@ -183,6 +183,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
+        acceptAlertIfPresent();
         selectTopFrame();
 
         assertIsVisible("#" + controlId);

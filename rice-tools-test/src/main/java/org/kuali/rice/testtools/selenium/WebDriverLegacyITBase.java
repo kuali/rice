@@ -795,7 +795,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     /**
-     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
      * @param text
      */
     protected void assertTextPresent(String text, String cssSelector, String message){
@@ -822,6 +821,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void assertTextNotPresent(String text, String message) {
         if (driver.getPageSource().contains(text)) {
             failableFail(text + " is present and should not be " + message);
+        }
+    }
+
+    /**
+     * @param text
+     */
+    protected void assertTextNotPresent(String text, String cssSelector, String message){
+        WebElement element = findElement(By.cssSelector(cssSelector));
+        if (element.getText().contains(text)){
+            failableFail(text + " for " + cssSelector + " is present and shouldn't be " + message);
         }
     }
 

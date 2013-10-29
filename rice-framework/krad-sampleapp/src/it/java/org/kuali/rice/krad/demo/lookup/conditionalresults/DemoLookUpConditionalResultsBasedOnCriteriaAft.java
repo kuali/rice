@@ -77,7 +77,7 @@ public class DemoLookUpConditionalResultsBasedOnCriteriaAft extends WebDriverLeg
         waitAndTypeByName(LOOKUP_CRITERIA_TYPE_CODE,"P");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        Assert.assertEquals(1, getCssCount("div#uLookupResults thead th"));
+        Assert.assertEquals(2, getCssCount("div#uLookupResults thead th"));
         assertElementPresent("div#uLookupResults thead th:nth-child(1)");
         assertTextPresent(PRINCIPAL_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
                 "Principal Name column not present");
@@ -86,7 +86,7 @@ public class DemoLookUpConditionalResultsBasedOnCriteriaAft extends WebDriverLeg
         waitAndTypeByName(LOOKUP_CRITERIA_TYPE_CODE, "G");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        Assert.assertEquals(2, getCssCount("div#uLookupResults thead th"));
+        Assert.assertEquals(3, getCssCount("div#uLookupResults thead th"));
         assertElementPresent("div#uLookupResults thead th:nth-child(1)");
         assertTextPresent(GROUP_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
                 "Group Name column not present");

@@ -77,6 +77,17 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
+     * If booleanToAssertTrue is false call {@see jiraAwareFail}.
+     *
+     * @param booleanToAssertTrue
+     */
+    protected void assertTrue(boolean booleanToAssertTrue) {
+        if (!booleanToAssertTrue) {
+            jiraAwareFail("expected true, but was false");
+        }
+    }
+
+    /**
      * <p>
      * Set passed to false, call jGrowl sticky with the given message, then fails using  {@see Failable#fail}.
      * </p>

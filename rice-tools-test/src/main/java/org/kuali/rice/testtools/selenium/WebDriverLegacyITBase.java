@@ -767,12 +767,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void assertTableLayout() {
         String pageSource = driver.getPageSource();
-        SeleneseTestBase.assertTrue(pageSource.contains("Table Layout"));
-        SeleneseTestBase.assertTrue(pageSource.contains("Field 1"));
-        SeleneseTestBase.assertTrue(pageSource.contains("Field 2"));
-        SeleneseTestBase.assertTrue(pageSource.contains("Field 3"));
-        SeleneseTestBase.assertTrue(pageSource.contains("Field 4"));
-        SeleneseTestBase.assertTrue(pageSource.contains("Actions"));
+        assertTrue(pageSource.contains("Table Layout"));
+        assertTrue(pageSource.contains("Field 1"));
+        assertTrue(pageSource.contains("Field 2"));
+        assertTrue(pageSource.contains("Field 3"));
+        assertTrue(pageSource.contains("Field 4"));
+        assertTrue(pageSource.contains("Actions"));
     }
 
     /**

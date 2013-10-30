@@ -103,7 +103,7 @@ entityVisitor = new EntityVisitor(drs, c.converterMappings, c.project.removeExis
 
 for (String className : mappedJavaFiles.keySet()) {
     File ojbMappedFile = mappedJavaFiles[className]
-	processJavaFile(ojbMappedFile)
+	processJavaFile(ojbMappedFile, className)
     
     Collection<String> superClasses = OjbUtil.getSuperClasses(className, "org.kuali.rice");
     for (String superClass : superClasses) {
@@ -112,7 +112,7 @@ for (String className : mappedJavaFiles.keySet()) {
 
 }
 
-def void processJavaFile( File ojbMappedFile, String subclassName = null ) {
+def void processJavaFile( File ojbMappedFile, String subclassName ) {
     println "Processing File: $ojbMappedFile"
     if ( ojbMappedFile == null ) return;
     

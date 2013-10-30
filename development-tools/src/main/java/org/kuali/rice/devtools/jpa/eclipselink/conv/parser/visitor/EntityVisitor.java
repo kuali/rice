@@ -59,7 +59,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
 
     private final VoidVisitorHelper<String> annotationHelper;
 
-    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings ) {
+    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings, boolean removeExisting) {
         super(descriptorRepositories);
 
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();
@@ -84,7 +84,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new LobResolver(getDescriptorRepositories()));
         annotations.add(new IdClassResolver(getDescriptorRepositories()));
 
-        annotationHelper = new AnnotationHelper(annotations);
+        annotationHelper = new AnnotationHelper(annotations, removeExisting);
     }
 
     @Override

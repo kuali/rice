@@ -74,12 +74,12 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
             } else {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field column is blank");
             }
-
+            /*  don't bother with column type attribute...this is mostly taken care of automatically by JPA
             final String columnType = fd.getColumnType();
             if (StringUtils.isNotBlank(columnType)) {
                 LOG.error(enclosingClass + "." + fieldName + " for the mapped class " + mappedClass + " field column type is " + columnType + ", unsupported conversion to @Column attributes");
             }
-
+            */
             final boolean required = fd.isRequired();
             if (required) {
                 pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));

@@ -40,9 +40,11 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
     private static final Log LOG = LogFactory.getLog(AnnotationHelper.class);
 
     private final Collection<AnnotationResolver> resolvers;
+    private final boolean removeExisting;
 
-    public AnnotationHelper(Collection<AnnotationResolver> resolvers) {
+    public AnnotationHelper(Collection<AnnotationResolver> resolvers, boolean removeExisting) {
         this.resolvers = resolvers;
+        this.removeExisting = removeExisting;
     }
 
     @Override
@@ -77,43 +79,36 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 final List<ImportDeclaration> imports = unit.getImports() != null ? unit.getImports() : new ArrayList<ImportDeclaration>();
                 final boolean foundAnnImport = imported(imports, fullyQualifiedName);
 
+                //2 check if annotation already exists...
+                final AnnotationExpr existingAnnotation = findAnnotation(n, fullyQualifiedName, foundAnnImport);
 
-                //2 check if annotation already exists...if so don't add it.
-                boolean foundfullyQualifiedAnn = false;
-                boolean foundSimpleAnn = false;
-                final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
-
-                for (AnnotationExpr ae : annotations) {
-                    final String name = ae.getName().toString();
-                    if ((simpleName.equals(name) && foundAnnImport)) {
-                        LOG.info("found " + ae + " on " + getNameFormMessage(n) + " ignoring.");
-                        foundSimpleAnn = true;
-                        break;
-                    }
-
-                    if (fullyQualifiedName.equals(name)) {
-                        foundfullyQualifiedAnn = true;
-                        LOG.info("found " + ae + " on " + getNameFormMessage(n) + " ignoring.");
-                        break;
-                    }
+                //3 if removeExisting annotation is set and the annotation exists, then remove the annotation prior to calling the resolver
+                //Note: cannot remove the import without much more complex logic because the annotation may exist on other nodes in the CompilationUnit
+                //Could traverse the entire CompilationUnit searching for the annotation if we wanted to determine whether we can safely remove an import
+                if (removeExisting && existingAnnotation != null) {
+                    LOG.info("removing existing " + existingAnnotation + " from " + getNameFormMessage(n) + ".");
+                    final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
+                    annotations.remove(existingAnnotation);
+                    n.setAnnotations(annotations);
                 }
 
-                //3 add annotation if it doesn't already exist and the annotation resolves (meaning the resolver
-                // determines if should be added by returning a non-null value)
-                if (!foundfullyQualifiedAnn && !foundSimpleAnn) {
+                //4 add annotation if it doesn't already exist or if replaceExisting is set
+                // and the annotation resolves (meaning the resolver determines if should be added by returning a non-null value)
+                if (existingAnnotation == null || (existingAnnotation != null && removeExisting)) {
                     NodeData nodes = resolver.resolve(n, mappedClass);
                     if (nodes != null && nodes.annotation != null) {
                         LOG.info("adding " + nodes.annotation + " to " + getNameFormMessage(n) + ".");
+                        final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
                         annotations.add(nodes.annotation);
                         n.setAnnotations(annotations);
 
-                        //4 add import for annotation
+                        //5 add import for annotation
                         if (!foundAnnImport) {
-                            LOG.info("adding import " + fullyQualifiedName + " to " + unit.getTypes().get(0).getName() + ".");
+                            LOG.info("adding import " + fullyQualifiedName + " to " + getNameFormMessage(n) + ".");
                             imports.add(nodes.annotationImport);
                         }
 
-                        //5 add additional imports if they are needed
+                        //6 add additional imports if they are needed
                         if (nodes.additionalImports != null) {
                             for (ImportDeclaration aImport : nodes.additionalImports) {
                                 if (aImport.isStatic() || aImport.isAsterisk()) {
@@ -121,6 +116,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                                 }
                                 final boolean imported = imported(imports, aImport.getName().toString());
                                 if (!imported) {
+                                    LOG.info("adding import " + aImport.getName().toString() + " to " + getNameFormMessage(n) + ".");
                                     imports.add(aImport);
                                 }
                             }
@@ -128,15 +124,37 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
 
                         unit.setImports(imports);
 
-                        //6 add nested class if does not exist
+                        //7 add nested class if does not exist
                         if (nodes.nestedDeclaration != null) {
                             nodes.nestedDeclaration.setParentNode(unit.getTypes().get(0));
-                            unit.getTypes().get(0).getMembers().add(nodes.nestedDeclaration);
+                            LOG.info("adding nested declaration " + nodes.nestedDeclaration.getName() + " to " + getNameFormMessage(n) + ".");
+                            final List<BodyDeclaration> members = unit.getTypes().get(0).getMembers() != null ? unit.getTypes().get(0).getMembers() : new ArrayList<BodyDeclaration>();
+                            members.add(nodes.nestedDeclaration);
+                            unit.getTypes().get(0).setMembers(members);
                         }
                     }
                 }
             }
         }
+    }
+
+    private AnnotationExpr findAnnotation(final BodyDeclaration n, String fullyQualifiedName, boolean foundAnnImport) {
+        final String simpleName = ClassUtils.getShortClassName(fullyQualifiedName);
+        final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
+
+        for (AnnotationExpr ae : annotations) {
+            final String name = ae.getName().toString();
+            if ((simpleName.equals(name) && foundAnnImport)) {
+                LOG.info("found " + ae + " on " + getNameFormMessage(n) + ".");
+                return ae;
+            }
+
+            if (fullyQualifiedName.equals(name)) {
+                LOG.info("found " + ae + " on " + getNameFormMessage(n) + ".");
+                return ae;
+            }
+        }
+        return null;
     }
 
     private boolean imported(List<ImportDeclaration> imports, String fullyQualifiedName) {

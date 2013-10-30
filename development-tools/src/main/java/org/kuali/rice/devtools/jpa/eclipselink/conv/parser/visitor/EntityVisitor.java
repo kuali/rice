@@ -19,6 +19,7 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -62,6 +63,10 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
     public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings, boolean removeExisting) {
         super(descriptorRepositories);
 
+        if (converterMappings == null) {
+            throw new IllegalArgumentException("converterMappings cannot be null");
+        }
+
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();
         annotations.add(new EntityResolver(getDescriptorRepositories()));
         annotations.add(new MappedSuperClassResolver(getDescriptorRepositories()));
@@ -89,6 +94,10 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
 
     @Override
     public void visit(final CompilationUnit n, final String mappedClass) {
+        if (StringUtils.isBlank(mappedClass)) {
+            throw new IllegalArgumentException("mappedClass cannot be blank");
+        }
+
         super.visit(n, mappedClass);
         ParserUtil.sortImports(n.getImports());
     }

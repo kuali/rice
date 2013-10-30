@@ -43,6 +43,7 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneTo
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneToOneResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OrderByResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.PortableSequenceGeneratorResolver;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.ResolverUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TableResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TemporalResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TransientResolver;
@@ -50,13 +51,17 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Versi
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * For visiting ojb mapped entities and their super classes.
  */
 public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
-    private static final Log LOG = LogFactory.getLog(OjbDescriptorRepositoryAwareVisitor.class);
+    private static final Log LOG = LogFactory.getLog(EntityVisitor.class);
+
+    //warning this can grow rather large and is never cleared out
+    private static final Map<String, Map<String, CompilationUnit>> PROCESSED_CACHE = new HashMap<String, Map<String, CompilationUnit>>();
 
     private final VoidVisitorHelper<String> annotationHelper;
 
@@ -100,6 +105,8 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
 
         super.visit(n, mappedClass);
         ParserUtil.sortImports(n.getImports());
+
+        processedCache(n, mappedClass, PROCESSED_CACHE);
     }
 
     @Override
@@ -124,5 +131,43 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         //insert logic here if needed
 
         annotationHelper.visitPost(n, mappedClass);
+    }
+
+    /**
+     * When there is a common super class with multiple subclasses there is a potential for different mapping configurations
+     * on the super class.  This is because the subclass's mapping metadata is used to determine how to map the super class.
+     *
+     * This method is designed to log a message when these types on conflicts are detected during conversion.  The differences
+     * are not log and must be manually evaluated on a case by case basis.
+     * @param n the compilation unit, already modified by the visitor
+     * @param mappedClass the mapped class who's metadata was used to annotate the compilation unit
+     * @param cache the cache that stores compilation unit information
+     */
+    private void processedCache(CompilationUnit n, String mappedClass, Map<String, Map<String, CompilationUnit>> cache) {
+        final String enclosingName = n.getPackage().getName() + "." + n.getTypes().get(0).getName();
+
+        if (!enclosingName.equals(mappedClass)) {
+            Map<String, CompilationUnit> entries = cache.get(enclosingName);
+            if (entries == null) {
+                entries = new HashMap<String, CompilationUnit>();
+                entries.put(mappedClass, n);
+                cache.put(enclosingName, entries);
+            } else {
+                boolean equalsAny = false;
+                for (Map.Entry<String, CompilationUnit> entry : entries.entrySet()) {
+                    if (!entry.getValue().equals(n)) {
+                        LOG.error(ResolverUtil.logMsgForClass(enclosingName, mappedClass) + " does not equal modified AST for " + ResolverUtil.logMsgForClass(enclosingName, entry.getKey()) +
+                                ". This likely means that a super class fields have different mapping configurations across mapped subclasses.");
+                    } else {
+                        equalsAny = true;
+                    }
+                }
+                if (!equalsAny) {
+                    //put this unique version of the AST in the cache... don't bother storing equal versions
+                    entries.put(mappedClass, n);
+                    cache.put(enclosingName, entries);
+                }
+            }
+        }
     }
 }

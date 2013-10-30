@@ -144,7 +144,7 @@ public class IdClassResolver implements AnnotationResolver {
         dclr.setInterface(false);
         final List<ClassOrInterfaceType> implmnts = new ArrayList<ClassOrInterfaceType>();
         implmnts.add(new ClassOrInterfaceType("Serializable"));
-        ClassOrInterfaceType comparableImplmnts = new ClassOrInterfaceType("Comparable");
+        final ClassOrInterfaceType comparableImplmnts = new ClassOrInterfaceType("Comparable");
         comparableImplmnts.setTypeArgs(Collections.<Type>singletonList(new ClassOrInterfaceType(newName)));
         implmnts.add(comparableImplmnts);
 
@@ -226,7 +226,7 @@ public class IdClassResolver implements AnnotationResolver {
     }
 
     private NodeAndImports<MethodDeclaration> createPrimaryKeyEquals(Collection<FieldDescriptor> primaryKeyDescriptors, String enclosingClassName) {
-        MethodDeclaration equals = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Boolean), "equals",
+        final MethodDeclaration equals = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Boolean), "equals",
                 Collections.singletonList(new Parameter(new ClassOrInterfaceType("Object"), new VariableDeclaratorId("other"))));
         equals.setAnnotations(Collections.<AnnotationExpr>singletonList(new MarkerAnnotationExpr(new NameExpr("Override"))));
 
@@ -248,7 +248,7 @@ public class IdClassResolver implements AnnotationResolver {
         }
 
         equalsBuilderExpr = new MethodCallExpr(equalsBuilderExpr, "isEquals");
-        List<Statement> statements = new ArrayList<Statement>();
+        final List<Statement> statements = new ArrayList<Statement>();
         statements.add(ifEqualNullStmt);
         statements.add(ifEqualThisStmt);
         statements.add(ifEqualClassStmt);
@@ -262,7 +262,7 @@ public class IdClassResolver implements AnnotationResolver {
     }
 
     private NodeAndImports<MethodDeclaration> createPrimaryKeyHashCode(Collection<FieldDescriptor> primaryKeyDescriptors) {
-        MethodDeclaration hashCode = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Int), "hashCode");
+        final MethodDeclaration hashCode = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Int), "hashCode");
         hashCode.setAnnotations(Collections.<AnnotationExpr>singletonList(new MarkerAnnotationExpr(new NameExpr("Override"))));
         final List<Expression> ctorArgs = new ArrayList<Expression>();
         ctorArgs.add(new IntegerLiteralExpr("17"));
@@ -284,7 +284,7 @@ public class IdClassResolver implements AnnotationResolver {
     }
 
     private NodeAndImports<MethodDeclaration> createPrimaryKeyCompareTo(Collection<FieldDescriptor> primaryKeyDescriptors, String enclosingClassName) {
-        MethodDeclaration compareTo = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Int), "compareTo",
+        final MethodDeclaration compareTo = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Int), "compareTo",
                 Collections.singletonList(new Parameter(new ClassOrInterfaceType(enclosingClassName), new VariableDeclaratorId("other"))));
         compareTo.setAnnotations(Collections.<AnnotationExpr>singletonList(new MarkerAnnotationExpr(new NameExpr("Override"))));
 
@@ -298,7 +298,7 @@ public class IdClassResolver implements AnnotationResolver {
         }
 
         compareToBuilderExpr = new MethodCallExpr(compareToBuilderExpr, "toComparison");
-        List<Statement> statements = new ArrayList<Statement>();
+        final List<Statement> statements = new ArrayList<Statement>();
         statements.add(new ReturnStmt(compareToBuilderExpr));
         final BlockStmt equalsBody = new BlockStmt(statements);
         compareTo.setBody(equalsBody);

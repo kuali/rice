@@ -260,35 +260,6 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		return docNames;
 	}
 
-    protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityAddress> entityAddresses, boolean suppressDisplay ) {
-		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
-		if(KRADUtils.isNotNull(entityAddresses)){
-			for (EntityAddress address: entityAddresses) {
-				if(address.isActive()){
-					PersonDocumentAddress docAddress = new PersonDocumentAddress();
-					docAddress.setEntityTypeCode(address.getEntityTypeCode());
-					docAddress.setAddressTypeCode(address.getAddressType().getCode());
-
-					//We do not need to check the privacy setting here - The UI should care of it
-					docAddress.setLine1(address.getLine1Unmasked());
-					docAddress.setLine2(address.getLine2Unmasked());
-					docAddress.setLine3(address.getLine3Unmasked());
-					docAddress.setStateProvinceCode(address.getStateProvinceCodeUnmasked());
-					docAddress.setPostalCode(address.getPostalCodeUnmasked());
-					docAddress.setCountryCode(address.getCountryCodeUnmasked());
-					docAddress.setCity(address.getCityUnmasked());
-
-					docAddress.setActive(address.isActive());
-					docAddress.setDflt(address.isDefaultValue());
-					docAddress.setEntityAddressId(address.getId());
-					docAddress.setEdit(true);
-					docAddresses.add(docAddress);
-				}
-			}
-		}
-		return docAddresses;
-	}
-
     protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityEmail> entityEmails, boolean suppressDisplay ) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
 		if(KRADUtils.isNotNull(entityEmails)){

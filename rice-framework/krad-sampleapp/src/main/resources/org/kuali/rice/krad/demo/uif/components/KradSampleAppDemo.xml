@@ -680,7 +680,6 @@
         <ref bean="KradSampleAppTravelDemo-Row4"/>
         <ref bean="KradSampleAppTravelDemo-Row5"/>
         <ref bean="KradSampleAppTravelDemo-Row6"/>
-        <ref bean="KradSampleAppTravelDemo-Row7"/>
       </list>
     </property>
   </bean>

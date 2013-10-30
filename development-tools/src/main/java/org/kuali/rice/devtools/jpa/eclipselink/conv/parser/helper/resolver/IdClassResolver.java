@@ -31,17 +31,20 @@ import japa.parser.ast.expr.AnnotationExpr;
 import japa.parser.ast.expr.AssignExpr;
 import japa.parser.ast.expr.BinaryExpr;
 import japa.parser.ast.expr.BooleanLiteralExpr;
+import japa.parser.ast.expr.CastExpr;
 import japa.parser.ast.expr.Expression;
 import japa.parser.ast.expr.FieldAccessExpr;
 import japa.parser.ast.expr.IntegerLiteralExpr;
 import japa.parser.ast.expr.MarkerAnnotationExpr;
 import japa.parser.ast.expr.MethodCallExpr;
 import japa.parser.ast.expr.NameExpr;
+import japa.parser.ast.expr.NullLiteralExpr;
 import japa.parser.ast.expr.ObjectCreationExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
 import japa.parser.ast.expr.SingleMemberAnnotationExpr;
 import japa.parser.ast.expr.StringLiteralExpr;
 import japa.parser.ast.expr.ThisExpr;
+import japa.parser.ast.expr.VariableDeclarationExpr;
 import japa.parser.ast.stmt.BlockStmt;
 import japa.parser.ast.stmt.ExpressionStmt;
 import japa.parser.ast.stmt.IfStmt;
@@ -49,6 +52,7 @@ import japa.parser.ast.stmt.ReturnStmt;
 import japa.parser.ast.stmt.Statement;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.type.PrimitiveType;
+import japa.parser.ast.type.Type;
 import japa.parser.ast.type.VoidType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -134,13 +138,19 @@ public class IdClassResolver implements AnnotationResolver {
     }
 
     private NodeAndImports<ClassOrInterfaceDeclaration> createPrimaryKeyClass(String parentName, Collection<FieldDescriptor> primaryKeyDescriptors) {
-
-        Collection<ImportDeclaration> requiredImports = new ArrayList<ImportDeclaration>();
-        ClassOrInterfaceDeclaration dclr = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC | ModifierSet.STATIC | ModifierSet.FINAL, false, parentName + "Id");
+        final String newName = parentName + "Id";
+        final Collection<ImportDeclaration> requiredImports = new ArrayList<ImportDeclaration>();
+        final ClassOrInterfaceDeclaration dclr = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC | ModifierSet.STATIC | ModifierSet.FINAL, false, newName);
         dclr.setInterface(false);
-        dclr.setImplements(Collections.singletonList(new ClassOrInterfaceType("Serializable")));
+        final List<ClassOrInterfaceType> implmnts = new ArrayList<ClassOrInterfaceType>();
+        implmnts.add(new ClassOrInterfaceType("Serializable"));
+        ClassOrInterfaceType comparableImplmnts = new ClassOrInterfaceType("Comparable");
+        comparableImplmnts.setTypeArgs(Collections.<Type>singletonList(new ClassOrInterfaceType(newName)));
+        implmnts.add(comparableImplmnts);
+
+        dclr.setImplements(implmnts);
         requiredImports.add(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("java.io"), "Serializable"), false, false));
-        List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
+        final List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
 
         for (FieldDescriptor fd : primaryKeyDescriptors) {
             final String simpleTypeName = ResolverUtil.getType(fd.getClassDescriptor().getClassNameOfObject(),
@@ -155,24 +165,26 @@ public class IdClassResolver implements AnnotationResolver {
                     fd.getAttributeName()).getSimpleName();
             final String attrName = fd.getAttributeName();
             final MethodDeclaration getter = new MethodDeclaration(ModifierSet.PUBLIC, new ClassOrInterfaceType(simpleTypeName), "get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1));
-            getter.setBody(new BlockStmt(Collections.<Statement>singletonList(new ReturnStmt(new FieldAccessExpr(new NameExpr("this"), attrName)))));
+            getter.setBody(new BlockStmt(Collections.<Statement>singletonList(new ReturnStmt(new FieldAccessExpr(new ThisExpr(), attrName)))));
             members.add(getter);
 
             final MethodDeclaration setter = new MethodDeclaration(ModifierSet.PUBLIC, new VoidType(), "set" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1),
                     Collections.singletonList(new Parameter(new ClassOrInterfaceType(simpleTypeName), new VariableDeclaratorId(attrName))));
 
             setter.setBody(new BlockStmt(Collections.<Statement>singletonList(new ExpressionStmt(
-                    new AssignExpr(new FieldAccessExpr(new NameExpr("this"), attrName), new NameExpr(attrName), AssignExpr.Operator.assign)))));
+                    new AssignExpr(new FieldAccessExpr(new ThisExpr(), attrName), new NameExpr(attrName), AssignExpr.Operator.assign)))));
             members.add(setter);
         }
 
         final NodeAndImports<MethodDeclaration> toString = createPrimaryKeyToString(primaryKeyDescriptors);
-        final NodeAndImports<MethodDeclaration> equals = createPrimaryKeyEquals(primaryKeyDescriptors);
+        final NodeAndImports<MethodDeclaration> equals = createPrimaryKeyEquals(primaryKeyDescriptors, newName);
         final NodeAndImports<MethodDeclaration> hashCode = createPrimaryKeyHashCode(primaryKeyDescriptors);
+        final NodeAndImports<MethodDeclaration> compareTo = createPrimaryKeyCompareTo(primaryKeyDescriptors, newName);
 
         members.add(toString.node);
         members.add(equals.node);
         members.add(hashCode.node);
+        members.add(compareTo.node);
 
         if (toString.imprts != null) {
             requiredImports.addAll(toString.imprts);
@@ -184,6 +196,10 @@ public class IdClassResolver implements AnnotationResolver {
 
         if (hashCode.imprts != null) {
             requiredImports.addAll(hashCode.imprts);
+        }
+
+        if (compareTo.imprts != null) {
+            requiredImports.addAll(compareTo.imprts);
         }
 
         dclr.setMembers(members);
@@ -198,7 +214,7 @@ public class IdClassResolver implements AnnotationResolver {
         for (FieldDescriptor f : primaryKeyDescriptors) {
             final List<Expression> args = new ArrayList<Expression>();
             args.add(new StringLiteralExpr(f.getAttributeName()));
-            args.add(new NameExpr(f.getAttributeName()));
+            args.add(new FieldAccessExpr(new ThisExpr(), f.getAttributeName()));
             toStringBuilderExpr = new MethodCallExpr(toStringBuilderExpr, "append", args);
         }
         toStringBuilderExpr = new MethodCallExpr(toStringBuilderExpr, "toString");
@@ -209,21 +225,25 @@ public class IdClassResolver implements AnnotationResolver {
                 Collections.singleton(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("org.apache.commons.lang.builder"), "ToStrigBuilder"), false, false)));
     }
 
-    private NodeAndImports<MethodDeclaration> createPrimaryKeyEquals(Collection<FieldDescriptor> primaryKeyDescriptors) {
+    private NodeAndImports<MethodDeclaration> createPrimaryKeyEquals(Collection<FieldDescriptor> primaryKeyDescriptors, String enclosingClassName) {
         MethodDeclaration equals = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Boolean), "equals",
                 Collections.singletonList(new Parameter(new ClassOrInterfaceType("Object"), new VariableDeclaratorId("other"))));
         equals.setAnnotations(Collections.<AnnotationExpr>singletonList(new MarkerAnnotationExpr(new NameExpr("Override"))));
 
-        final Statement ifEqualNullStmt = new IfStmt(new BinaryExpr(new NameExpr("other"), new NameExpr("null"), BinaryExpr.Operator.equals), new ReturnStmt(new BooleanLiteralExpr(false)), null);
-        final Statement ifEqualThisStmt = new IfStmt(new BinaryExpr(new NameExpr("other"), new NameExpr("this"), BinaryExpr.Operator.equals), new ReturnStmt(new BooleanLiteralExpr(true)), null);
-        final Statement ifEqualClassStmt = new IfStmt(new BinaryExpr(new MethodCallExpr(new NameExpr("other"), "getClass"), new MethodCallExpr(null, "getClass"), BinaryExpr.Operator.notEquals), new ReturnStmt(new BooleanLiteralExpr(false)), null);
+        final Statement ifEqualNullStmt = new IfStmt(new BinaryExpr(new NameExpr("other"), new NullLiteralExpr(), BinaryExpr.Operator.equals), new ReturnStmt(new BooleanLiteralExpr(false)), null);
+        final Statement ifEqualThisStmt = new IfStmt(new BinaryExpr(new NameExpr("other"), new ThisExpr(), BinaryExpr.Operator.equals), new ReturnStmt(new BooleanLiteralExpr(true)), null);
+        final Statement ifEqualClassStmt = new IfStmt(new BinaryExpr(new MethodCallExpr(new NameExpr("other"), "getClass"), new MethodCallExpr(new ThisExpr(), "getClass"), BinaryExpr.Operator.notEquals), new ReturnStmt(new BooleanLiteralExpr(false)), null);
+        final Statement rhsStmt = new ExpressionStmt(new VariableDeclarationExpr(ModifierSet.FINAL,
+                new ClassOrInterfaceType(enclosingClassName), Collections.singletonList(new VariableDeclarator(
+                new VariableDeclaratorId("rhs"),
+                new CastExpr(new ClassOrInterfaceType(enclosingClassName), new NameExpr("other"))))));
 
         Expression equalsBuilderExpr = new ObjectCreationExpr(null, new ClassOrInterfaceType("EqualsBuilder"), Collections.<Expression>emptyList());
 
         for (FieldDescriptor f : primaryKeyDescriptors) {
             final List<Expression> args = new ArrayList<Expression>();
-            args.add(new NameExpr(f.getAttributeName()));
-            args.add(new FieldAccessExpr(new NameExpr("other"), f.getAttributeName()));
+            args.add(new FieldAccessExpr(new ThisExpr(), f.getAttributeName()));
+            args.add(new FieldAccessExpr(new NameExpr("rhs"), f.getAttributeName()));
             equalsBuilderExpr = new MethodCallExpr(equalsBuilderExpr, "append", args);
         }
 
@@ -232,6 +252,7 @@ public class IdClassResolver implements AnnotationResolver {
         statements.add(ifEqualNullStmt);
         statements.add(ifEqualThisStmt);
         statements.add(ifEqualClassStmt);
+        statements.add(rhsStmt);
         statements.add(new ReturnStmt(equalsBuilderExpr));
         final BlockStmt equalsBody = new BlockStmt(statements);
         equals.setBody(equalsBody);
@@ -250,7 +271,7 @@ public class IdClassResolver implements AnnotationResolver {
 
         for (FieldDescriptor f : primaryKeyDescriptors) {
             final List<Expression> args = new ArrayList<Expression>();
-            args.add(new NameExpr(f.getAttributeName()));
+            args.add(new FieldAccessExpr(new ThisExpr(), f.getAttributeName()));
             hashCodeExpr = new MethodCallExpr(hashCodeExpr, "append", args);
         }
 
@@ -260,6 +281,30 @@ public class IdClassResolver implements AnnotationResolver {
 
         return new NodeAndImports<MethodDeclaration>(hashCode,
                 Collections.singleton(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("org.apache.commons.lang.builder"), "HashCodeBuilder"), false, false)));
+    }
+
+    private NodeAndImports<MethodDeclaration> createPrimaryKeyCompareTo(Collection<FieldDescriptor> primaryKeyDescriptors, String enclosingClassName) {
+        MethodDeclaration compareTo = new MethodDeclaration(ModifierSet.PUBLIC, new PrimitiveType(PrimitiveType.Primitive.Int), "compareTo",
+                Collections.singletonList(new Parameter(new ClassOrInterfaceType(enclosingClassName), new VariableDeclaratorId("other"))));
+        compareTo.setAnnotations(Collections.<AnnotationExpr>singletonList(new MarkerAnnotationExpr(new NameExpr("Override"))));
+
+        Expression compareToBuilderExpr = new ObjectCreationExpr(null, new ClassOrInterfaceType("CompareToBuilder"), Collections.<Expression>emptyList());
+
+        for (FieldDescriptor f : primaryKeyDescriptors) {
+            final List<Expression> args = new ArrayList<Expression>();
+            args.add(new FieldAccessExpr(new ThisExpr(), f.getAttributeName()));
+            args.add(new FieldAccessExpr(new NameExpr("other"), f.getAttributeName()));
+            compareToBuilderExpr = new MethodCallExpr(compareToBuilderExpr, "append", args);
+        }
+
+        compareToBuilderExpr = new MethodCallExpr(compareToBuilderExpr, "toComparison");
+        List<Statement> statements = new ArrayList<Statement>();
+        statements.add(new ReturnStmt(compareToBuilderExpr));
+        final BlockStmt equalsBody = new BlockStmt(statements);
+        compareTo.setBody(equalsBody);
+
+        return new NodeAndImports<MethodDeclaration>(compareTo,
+                Collections.singleton(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("org.apache.commons.lang.builder"), "CompareToBuilder"), false, false)));
     }
 
     private class NodeAndImports<T extends Node> {

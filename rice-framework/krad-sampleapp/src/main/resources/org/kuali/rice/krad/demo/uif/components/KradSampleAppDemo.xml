@@ -482,6 +482,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View"/>
         <bean parent="Uif-Link" p:linkText="Stacked Layout"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManager-View"/>
+        <bean parent="Uif-Link" p:linkText="Table Layout"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutManager-View"/>
       </list>
     </property>
   </bean>

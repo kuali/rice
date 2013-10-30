@@ -20,8 +20,6 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
-import static com.thoughtworks.selenium.SeleneseTestBase.assertTrue;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

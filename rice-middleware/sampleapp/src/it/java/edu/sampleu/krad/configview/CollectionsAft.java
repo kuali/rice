@@ -122,7 +122,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         SeleneseTestBase.assertEquals("asdf2", waitAndGetAttributeByName("list1[0].field2", "value"));
         SeleneseTestBase.assertEquals("asdf3", waitAndGetAttributeByName("list1[0].field3", "value"));
         SeleneseTestBase.assertEquals("asdf4", waitAndGetAttributeByName("list1[0].field4", "value"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
     }
     /**
      * Test adding a column of values to the Add Blank Line Tests Table Layout
@@ -166,7 +166,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
         //jiraAwareWaitAndClick("css=div.jGrowl-close");
         // check if actions column RIGHT by default
-        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
+        //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 failableFail(TIMEOUT_MESSAGE);
@@ -176,10 +176,10 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
+        assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"));
 
         // check if actions column is LEFT
-        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
+        //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 failableFail(TIMEOUT_MESSAGE);
@@ -189,10 +189,10 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
+        assertTrue(isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"));
 
         // check if actions column is 3rd in a sub collection
-        //SeleneseTestBase.assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
+        //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 failableFail(TIMEOUT_MESSAGE);
@@ -202,7 +202,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
+        assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"));
     }
 
     protected void testAddViaLightbox() throws Exception {
@@ -233,7 +233,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         testIfRowHasBeenAdded();
 
         //Check for the added if delete is present or not
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
     }
 
     protected void testSequencerow() throws Exception {
@@ -250,8 +250,8 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         testIfRowHasBeenAdded();
 
         //Check for the added if delete is present or not
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
-        //        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        //        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
     }
 
     protected void testIfRowHasBeenAdded() throws Exception {

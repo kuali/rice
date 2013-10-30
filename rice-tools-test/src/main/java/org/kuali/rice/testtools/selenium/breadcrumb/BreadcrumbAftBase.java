@@ -54,13 +54,13 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
         //         Other Fields
         // </a></li>
         // etc.
-        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
+        assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         // The second ▼
         waitAndClickByXpath(getTriangleXpath());
         Thread.sleep(100);
-        SeleneseTestBase.assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
+        assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         waitAndClickByXpath(getTriangleXpath());
-        SeleneseTestBase.assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
+        assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         waitAndClickByXpath(getTriangleXpath());
 
         // The Second selection of the second ▼

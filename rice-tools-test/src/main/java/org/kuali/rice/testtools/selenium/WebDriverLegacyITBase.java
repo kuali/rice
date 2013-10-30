@@ -568,16 +568,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
-        SeleneseTestBase.assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        SeleneseTestBase.assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not",
+        assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not",
                 attribute.matches(regex));
     }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
-        SeleneseTestBase.assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        SeleneseTestBase.assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
+        assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
+        assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
                 regex));
     }
 
@@ -2054,7 +2054,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickEdit();
         waitForPageToLoad();
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isElementPresentByName(CANCEL_NAME));
+        assertTrue(isElementPresentByName(CANCEL_NAME));
         waitAndClickCancel();
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -2674,25 +2674,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
         
-        // SeleneseTestBase.assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        // assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
         SeleneseTestBase.assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
                 "td.jquerybubblepopup-innerHtml"));
 
         // check if tooltip closed on blur
         fireEvent(NAME_FIELD_1, "blur");
-        SeleneseTestBase.assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible(
+        assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible(
                 "td.jquerybubblepopup-innerHtml"));
         Thread.sleep(5000);
         fireEvent("field119", "focus");
         
         // check if tooltip opens on mouse over
         fireMouseOverEventByName(NAME_FIELD_2);        
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check if tooltip closed on mouse out
         waitAndTypeByName(NAME_FIELD_2, "a");
         Thread.sleep(5000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath(
+        assertFalse(isVisibleByXpath(
                 "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check that default tooltip does not display when there are an error message on the field
@@ -2700,7 +2700,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         fireEvent(NAME_FIELD_1, "blur");
         fireMouseOverEventByName(NAME_FIELD_1);
         Thread.sleep(10000);
-        SeleneseTestBase.assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
+        assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
                         isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
                                 !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
        
@@ -2775,7 +2775,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
                 "style");
         
         // log.info("styleValue is " + styleValue);
-        SeleneseTestBase.assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
+        assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
         
         // get current list of options
         String refreshTextSelectLocator = "//select[@id='" + idPrefix + "RefreshTextField_control']";
@@ -2788,8 +2788,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
         
         //verify that the change has occurred
-        SeleneseTestBase.assertFalse(
-                "Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
+        assertFalse("Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
                 options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
         
         //confirm that control gets disabled
@@ -2806,7 +2805,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         for (String id : addLineIds) {
             String tagId = "//*[@id='" + idPrefix + id + addLineIdSuffix + "']";
-            SeleneseTestBase.assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
+            assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
         }
     }
 
@@ -2824,7 +2823,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         Thread.sleep(5000); //allow for line to be added
         
         //confirm that line has been added
-        SeleneseTestBase.assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
+        assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
                         isElementPresentByXpath("//input[@value='7:06']"));
     }
 
@@ -2988,7 +2987,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickByName("methodToCall.createRule");
         waitForPageToLoad();
         String docId = waitForDocId();
-        SeleneseTestBase.assertTrue(isElementPresentByName(CANCEL_NAME));
+        assertTrue(isElementPresentByName(CANCEL_NAME));
        
         // type in the Document Overview Description the text Test Routing Rule
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule " + random);
@@ -3256,120 +3255,120 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void testTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
         }
        
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         
         // verify that no external help exist
-        SeleneseTestBase.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
+        assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
     
         // test tooltip help of field with label to the left
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[1].style.display='none'"; 
         Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript(javascript);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
 
         // verify that standalone help with tooltip is not rendered
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
+        assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
 
         // test tooltip help when it overrides a tooltip
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }        
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);                
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);    
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
     }
 
     /**
@@ -3378,24 +3377,24 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      protected void testDisplayOnlyTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
-            SeleneseTestBase.assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
+            assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
         }
         
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
-            SeleneseTestBase.assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
+            assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
         }
 
         // test tooltip help of sub-section header
         fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
         String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
-        SeleneseTestBase.assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
 
         // test tooltip help of display only data field
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
                 "element[0].style.display='none'"; 
         ((JavascriptExecutor) driver).executeScript(javascript);
@@ -3406,20 +3405,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      */
     protected void testMissingTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
 
         // verify that no external help exist
-        SeleneseTestBase.assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
+        assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
        
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
 
         // test tooltip help of field
         fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
     }
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
@@ -3545,19 +3544,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void testMissingExternalHelp2() throws Exception {
         // test external help of section is not rendered
-        SeleneseTestBase.assertFalse(isElementPresent(By.cssSelector("input[title=\"Help for Missing External Help\"]")));
+        assertFalse(isElementPresent(By.cssSelector("input[title=\"Help for Missing External Help\"]")));
 
         // test external help of field with blank externalHelpURL is not rendered
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-externalHelpUrl-empty']/*[@class='uif-helpImage']"));
+        assertFalse(isElementPresentByXpath("//div[@id='external-help-externalHelpUrl-empty']/*[@class='uif-helpImage']"));
 
         // test external help of field with empty helpDefinition is not rendered
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-helpdefinition-empty']/*[@class='uif-helpImage']"));
+        assertFalse(isElementPresentByXpath("//div[@id='external-help-helpdefinition-empty']/*[@class='uif-helpImage']"));
 
         // test external help of field with missing system parameter is not rendered
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='external-help-system-parm-missing']/*[@class='uif-helpImage']"));
+        assertFalse(isElementPresentByXpath("//div[@id='external-help-system-parm-missing']/*[@class='uif-helpImage']"));
 
         // test external help of standalone help widget is not rendered
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
+        assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
     
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
@@ -3625,19 +3624,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
 
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
-        SeleneseTestBase.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
     }
 
     protected void testServerInfoIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
         waitIsVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']");
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
-        SeleneseTestBase.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
-        SeleneseTestBase.assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        SeleneseTestBase.assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
+        assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
+        assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+        assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
+        assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
+        assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
-        SeleneseTestBase.assertTrue(isElementPresent(".uif-infoHighlight"));
+        assertTrue(isElementPresent(".uif-infoHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
 
         for (int second = 0;; second++) {
@@ -3650,8 +3649,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
+        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
@@ -3666,7 +3665,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 failableFail(TIMEOUT_MESSAGE);
@@ -3677,7 +3676,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
@@ -3694,76 +3693,65 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         fireEvent("field1", "blur");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-        SeleneseTestBase.assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
         fireEvent("field1", "focus");
         clearTextByName("field1");
         fireEvent("field1", "blur");
-        SeleneseTestBase.assertTrue(isElementPresent("div.uif-hasError"));
-        SeleneseTestBase.assertTrue(isElementPresent("img[src*=\"error.png\"]"));
+        assertTrue(isElementPresent("div.uif-hasError"));
+        assertTrue(isElementPresent("img[src*=\"error.png\"]"));
     }
 
     protected void testServerWarningsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Warning Messages')]");
         waitForPageToLoad();
         Thread.sleep(3000);
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
+        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
                 isVisible("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                "div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
+        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
                 isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", isVisible(
+        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", isVisible(
                 "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
+        assertTrue(
                 "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem not present",
                 isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                "div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
+        assertTrue("div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
                 "div[data-role=\"InputField\"] img[alt=\"Warning\"]"));
         fireMouseOverEvent(By.xpath("//a[contains(.,'Field 1')]"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
+        assertTrue(".uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
                 isElementPresent(".uif-warningHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         waitForElementVisible(".jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
                 ".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
         waitForElementVisible(".jquerybubblepopup-innerHtml",
                 " not visible after typing nothing in name=field1 then firing blur and focus events");
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-clientMessageItems",
                 " not visible after typing nothing in name=field1 then firing blur and focus events");
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
         waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-serverMessageItems", "");
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
+        assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
                 !isElementPresent(
                         ".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
         clearTextByName("field1");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                ".uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
+        assertTrue(".uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
                 isElementPresent(".uif-hasError"));
-        com.thoughtworks.selenium.SeleneseTestBase.assertTrue(
-                "img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
+        assertTrue("img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
                 isElementPresent("img[src*=\"error.png\"]"));
         passed();
     }
@@ -3790,13 +3778,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void testViewHelp2() throws Exception {
         // test tooltip help
         if (isElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']")) {
-            SeleneseTestBase.assertFalse(findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
+            assertFalse(findElement(By.cssSelector("td.jquerybubblepopup-innerHtml")).isDisplayed());
         }
 
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
         Thread.sleep(2000);
-        SeleneseTestBase.assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'View help')]"));
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Configuration Test View\"]"), "HelpWindow", "http://www.kuali.org/");
     }
 
@@ -4071,9 +4059,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
 
         if (validateVisible) {
-            SeleneseTestBase.assertTrue("valid = " + valid + " when validateVisible is " + validateVisible, valid);
+            assertTrue("valid = " + valid + " when validateVisible is " + validateVisible, valid);
         } else {
-            SeleneseTestBase.assertFalse("valid = " + valid + " when validateVisible is " + validateVisible, valid);
+            assertFalse("valid = " + valid + " when validateVisible is " + validateVisible, valid);
         }
 
         return valid;
@@ -4099,46 +4087,46 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception
     {
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field1']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//a[contains(text(), 'Kuali')]"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='field2']"));
+        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field1']"));
+        assertTrue(isElementPresentByXpath("//a[contains(text(), 'Kuali')]"));
+        assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='field2']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationAdvancedFunctionality() throws Exception
     {
         //Color Options
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@style='color: green;']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
+        assertTrue(isElementPresentByXpath("//span[@style='color: green;']"));
+        assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
 
         //Css class
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
+        assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
 
         //Combinations
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//select[@name='field4']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//button[contains(text(), 'Action Button')]"));
+        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));
+        assertTrue(isElementPresentByXpath("//select[@name='field4']"));
+        assertTrue(isElementPresentByXpath("//button[contains(text(), 'Action Button')]"));
 
         //Rich Message Field
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
+        assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/span[contains(., 'Color')]"));
+        assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/i/b[contains(., 'Html')]"));
+        assertTrue(isElementPresentByXpath("//label[contains(., 'Label With')]/img[@class='uif-image inlineBlock']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationLettersNumbersValidation() throws Exception
     {
         //For letters only Validation
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
+        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
         waitAndTypeByXpath(
                 "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
                 "abc");
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath(
                 "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
         waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc12");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         Thread.sleep(3000);
         clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
         waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']","abc");
@@ -4146,38 +4134,38 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         //For numbers only validation
         waitAndTypeByXpath("//input[@name= 'field6']", "123");
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath("//input[@name= 'field6']");
         waitAndTypeByXpath("//input[@name= 'field6']", "123ab");
         fireEvent("field6", "blur");
         Thread.sleep(5000);
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         Thread.sleep(3000);
     }
 
     protected void verifyRichMessagesValidationRadioAndCheckBoxGroupFunctionality() throws Exception
     {
         //Radio Group
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='1']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='1']"));
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='2']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='3']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalRadioFieldset']/span/input[@type='radio' and @name='field24' and @value='4']"));
 
         //Checkbox Group
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='1']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='3']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/label/div/select[@name='field4']"));
 
         //Checkbox Control
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
+        assertTrue(isElementPresentByXpath("//input[@type='checkbox' and @name='bField1']"));
+        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field103']"));
     }
 
     protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
@@ -4191,19 +4179,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         //Testing methodToCall Action
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath(
+        assertTrue(isElementPresentByXpath(
                 "//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
 
         //Testing methodToCall action (no client validation check)
         waitAndClickByXpath("//div[contains(., 'Testing methodToCall action (no client validation check)')]/a");
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        SeleneseTestBase.assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
         Thread.sleep(3000);
     }
 

@@ -16,7 +16,6 @@
 
 package edu.sampleu.admin;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
@@ -28,7 +27,6 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

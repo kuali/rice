@@ -77,6 +77,29 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
+     * If booleanToAssertFalse is true call {@see jiraAwareFail}.
+     *
+     * @param booleanToAssertFalse
+     */
+    protected void assertFalse(boolean booleanToAssertFalse) {
+        if (booleanToAssertFalse) {
+            jiraAwareFail("expected false, but was true");
+        }
+    }
+
+    /**
+     * If booleanToAssertFalse is true call {@see jiraAwareFail}.
+     *
+     * @param message to include if booleanToAssertTrue is false
+     * @param booleanToAssertFalse
+     */
+    protected void assertFalse(String message, boolean booleanToAssertFalse) {
+        if (booleanToAssertFalse) {
+            jiraAwareFail(message + " expected false, but was true");
+        }
+    }
+
+    /**
      * If booleanToAssertTrue is false call {@see jiraAwareFail}.
      *
      * @param booleanToAssertTrue
@@ -90,8 +113,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     /**
      * If booleanToAssertTrue is false call {@see jiraAwareFail}.
      *
-     * @param booleanToAssertTrue
      * @param message to include if booleanToAssertTrue is false
+     * @param booleanToAssertTrue
      */
     protected void assertTrue(String message, boolean booleanToAssertTrue) {
         if (!booleanToAssertTrue) {

@@ -63,7 +63,7 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         fireMouseOverEventByName("field1");
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field1", "aria-invalid"));
         assertAttributeClassRegexMatches("field1", REGEX_ERROR);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireMouseOverEventByName("field1");
 
@@ -81,7 +81,7 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
 
         waitAndTypeByName("field1", "a");
         fireEvent("field1", "blur");
@@ -101,14 +101,14 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertFalse(isVisibleByXpath(
+        assertFalse(isVisibleByXpath(
                 "//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
 
         fireEvent("field1", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
         assertAttributeClassRegexMatches("field1", REGEX_VALID);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field2", "focus");
         fireEvent("field2", "blur");
@@ -117,15 +117,15 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         //        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-invalid"));
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-required"));
         assertAttributeClassRegexMatches("field2", REGEX_ERROR);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field2", "focus");
         waitAndTypeByName("field2", "a");
         fireEvent("field2", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
         assertAttributeClassRegexMatches("field2", REGEX_VALID);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
+        assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
 
         fireEvent("field3", "focus");
         fireEvent("field3", "blur");
@@ -133,15 +133,15 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         Thread.sleep(500);
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field3", "aria-invalid"));
         assertAttributeClassRegexMatches("field3", REGEX_ERROR);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field3", "focus");
         selectByName("field3", "Option 1");
         fireEvent("field3", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
         assertAttributeClassRegexMatches("field3", REGEX_VALID);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
+        assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
 
         fireEvent("field114", "focus");
         fireMouseOverEventByName("field114");
@@ -150,15 +150,15 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         Thread.sleep(500);
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field114", "aria-invalid"));
         assertAttributeClassRegexMatches("field114", REGEX_ERROR);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field114", "focus");
         selectByName("field114", "Option 1");
         fireEvent("field114", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
         assertAttributeClassRegexMatches("field114", REGEX_VALID);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
+        assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
 
         fireEvent("field117", "3", "focus");
         uncheckByXpath("//*[@name='field117' and @value='3']");
@@ -181,9 +181,9 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
 
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']",
                 "aria-invalid"));
-        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
+        assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
                 REGEX_ERROR));
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field117", "3", "focus");
         checkByXpath("//*[@name='field117' and @value='3']");
@@ -203,9 +203,9 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
-        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(REGEX_VALID));
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
+        assertFalse(isElementPresentByXpath("//*[@name='field117' and @value='3' and @aria-invalid]"));
+        assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='3']", "class").matches(REGEX_VALID));
+        assertFalse(isElementPresentByXpath("//input[@name='field117']/../../../img[@alt='Error']"));
 
         fireEvent("bField1", "focus");
         uncheckByName("bField1");
@@ -214,15 +214,15 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         Thread.sleep(500);
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("bField1", "aria-invalid"));
         assertAttributeClassRegexMatches("bField1", REGEX_ERROR);
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("bField1", "focus");
         checkByName("bField1");
         fireEvent("bField1", "blur");
         Thread.sleep(500);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//*[@name='bField1' and @aria-invalid]"));
         assertAttributeClassRegexMatches("bField1", REGEX_VALID);
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
+        assertFalse(isElementPresentByXpath("//input[@name='bField1' and following-sibling::img[@alt='Error']]"));
 
         fireEvent("field115", "3", "focus");
         uncheckByXpath("//*[@name='field115' and @value='3']");
@@ -246,8 +246,8 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
 
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']",
                 "aria-invalid"));
-        SeleneseTestBase.assertTrue(waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(REGEX_ERROR));
-        SeleneseTestBase.assertTrue(isTextPresent("Required"));
+        assertTrue(waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(REGEX_ERROR));
+        assertTrue(isTextPresent("Required"));
 
         fireEvent("field115", "3", "focus");
         checkByXpath("//*[@name='field115' and @value='3']");
@@ -268,7 +268,7 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
-        SeleneseTestBase.assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
+        assertFalse(isElementPresentByXpath("//*[@name='field115' and @value='3' and @aria-invalid]"));
+        assertFalse(isElementPresentByXpath("//input[@name='field115']/../../../img[@alt='Error']"));
     }
 }

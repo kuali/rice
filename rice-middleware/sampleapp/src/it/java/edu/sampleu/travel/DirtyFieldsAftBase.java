@@ -75,7 +75,7 @@ public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
 
         // //Asserting text-field style to uppercase. This style would display
         // input text in uppercase.
-        SeleneseTestBase.assertTrue(waitAndGetAttributeByName("field112", "style").contains("text-transform: uppercase;"));
+        assertTrue(waitAndGetAttributeByName("field112", "style").contains("text-transform: uppercase;"));
         assertCancelConfirmation();
         waitForElementPresentByName("field101");
         SeleneseTestBase.assertEquals("val", waitAndGetAttributeByName("field101", "value"));

@@ -15,7 +15,6 @@
  */
 package edu.sampleu.main;
 
-import junit.framework.Assert;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -66,7 +65,7 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
 		Thread.sleep(5000);
 		final String text = "Form has unsaved data. Do you want to leave anyway?";
 		Alert a=driver.switchTo().alert();
-		Assert.assertTrue(a.getText().equals(text));
+		assertTrue(a.getText().equals(text));
 		a.dismiss();
         passed();
 	}

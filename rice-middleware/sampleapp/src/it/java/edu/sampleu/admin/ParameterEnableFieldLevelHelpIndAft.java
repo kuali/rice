@@ -20,9 +20,6 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 /**
  * Tests whether the ENABLE_FIELD_LEVEL_HELP_IND parameter is being considered and loaded on each request.
  *

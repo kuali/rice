@@ -50,15 +50,25 @@ println "RootLoader: $rootLoader"
 
 // add additional items to the classpath
 for ( classpathDir in config.project.classpathDirectories ) {
+    // NOTE: That trailing slash is absolutely required.  Otherwise it just adds the directory to the path as if it's a file and does not scan inside
     def classpathUrl = new URL("file://"+new File( config.project.homeDirectory + "/" + classpathDir ).canonicalPath + "/")
     println "Adding Classpath URL: $classpathUrl"
     rootLoader.addURL( classpathUrl )
 }
 
+for ( jarDir in config.project.classpathJarDirectories ) {
+    def jars   = jarDir.listFiles().findAll { it.name.endsWith('.jar') } 
+    jars.each { 
+        println "Adding Classpath URL: ${it.toURI().toURL()}"
+        rootLoader.addURL(it.toURI().toURL()) 
+    }
+    rootLoader.addURL( classpathUrl )
+}
+
+
 println rootLoader.getURLs()
 
-//def jars   = jardir.listFiles().findAll { it.name.endsWith('.jar') } 
-//jars.each { loader.addURL(it.toURI().toURL()) }
+
 fullSourcePaths = config.project.sourceDirectories.collect { config.project.homeDirectory + "/" + it }
 fullOjbPaths = config.ojb.repositoryFiles.collect { config.project.homeDirectory + "/" + it }
 

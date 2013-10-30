@@ -152,67 +152,7 @@ public class RoleNode extends RequestsNode {
 		return null;
 	}
 
-	/**
-	 * Activates the action requests that are pending at this routelevel of the
-	 * document. The requests are processed by priority and then request ID. It
-	 * is implicit in the access that the requests are activated according to
-	 * the route level above all.
-	 * <p>
-	 * FYI and acknowledgment requests do not cause the processing to stop. Only
-	 * action requests for approval or completion cause the processing to stop
-	 * and then only for route level with a serialized activation policy. Only
-	 * requests at the current document's current route level are activated.
-	 * Inactive requests at a lower level cause a routing exception.
-	 * <p>
-	 * Exception routing and adhoc routing are processed slightly differently.
-	 * 
-	 * @return True if the any approval actions were activated.
-	 * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
-	 * @throws WorkflowException
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
-			RouteNodeInstance nodeInstance) throws WorkflowException {
-		MDC.put( "docId", document.getDocumentId() );
-		PerformanceLogger performanceLogger = new PerformanceLogger( document.getDocumentId() );
-		List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
-		List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
-		if ( context.isSimulation() ) {
-			for ( ActionRequestValue ar : context.getDocument().getActionRequests() ) {
-				// logic check below duplicates behavior of the
-				// ActionRequestService.findPendingRootRequestsByDocIdAtRouteNode(documentId,
-				// routeNodeInstanceId) method
-				if ( ar.getCurrentIndicator()
-						&& (ActionRequestStatus.INITIALIZED.getCode().equals( ar.getStatus() ) || ActionRequestStatus.ACTIVATED.getCode()
-								.equals( ar.getStatus() ))
-						&& ar.getNodeInstance().getRouteNodeInstanceId().equals(
-								nodeInstance.getRouteNodeInstanceId() )
-						&& ar.getParentActionRequest() == null ) {
-					requests.add( ar );
-				}
-			}
-			requests.addAll( context.getEngineState().getGeneratedRequests() );
-		} else {
-			requests = KEWServiceLocator.getActionRequestService()
-					.findPendingRootRequestsByDocIdAtRouteNode( document.getDocumentId(),
-							nodeInstance.getRouteNodeInstanceId() );
-		}
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Pending Root Requests " + requests.size() );
-		}
-		boolean requestActivated = activateRequestsCustom( context, requests, generatedActionItems,
-				document, nodeInstance );
-		// now let's send notifications, since this code needs to be able to
-		// activate each request individually, we need
-		// to collection all action items and then notify after all have been
-		// generated
-        notify(context, generatedActionItems, nodeInstance);
-
-        performanceLogger.log( "Time to activate requests." );
-		return requestActivated;
-	}
-	
-    protected static class RoleRequestSorter implements Comparator<ActionRequestValue> {
+	 protected static class RoleRequestSorter implements Comparator<ActionRequestValue> {
         public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
         	int result = 0;
         	// compare descriptions (only if both not null)

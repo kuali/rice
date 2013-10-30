@@ -89,19 +89,22 @@ public class RequestActivationNode extends RequestActivationNodeBase {
     }
 
     /**
-     * Activates the action requests that are pending at this routelevel of the document. The requests are processed by
-     * priority and then request ID. It is implicit in the access that the requests are activated according to the
-     * route
-     * level above all.
+     * Activates the action requests that are pending at this routelevel of the
+     * document. The requests are processed by priority and then request ID. It
+     * is implicit in the access that the requests are activated according to
+     * the route level above all.
+     * <p>
+     * FYI and acknowledgment requests do not cause the processing to stop. Only
+     * action requests for approval or completion cause the processing to stop
+     * and then only for route level with a serialized activation policy. Only
+     * requests at the current document's current route level are activated.
+     * Inactive requests at a lower level cause a routing exception.
+     * <p>
+     * Exception routing and adhoc routing are processed slightly differently.
      *
-     * <p>FYI and acknowledement requests do not cause the processing to stop. Only action requests for approval or
-     * completion cause the processing to stop and then only for route level with a serialized or priority-parallel
-     * activation policy. Only requests at the current document's current route level are activated. Inactive requests
-     * at a lower level cause a routing exception.</p>
-     *
-     * <p>Exception routing and adhoc routing are processed slightly differently.</p>
-     *
-     * @return true if the any approval actions were activated.
+     * @return True if the any approval actions were activated.
+     * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
+     * @throws WorkflowException
      */
     public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document,
             RouteNodeInstance nodeInstance) throws WorkflowException {

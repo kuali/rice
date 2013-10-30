@@ -135,10 +135,22 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
 
     /**
      * When there is a common super class with multiple subclasses there is a potential for different mapping configurations
-     * on the super class.  This is because the subclass's mapping metadata is used to determine how to map the super class.
+     * on the super class's fields (attributes, references, collections).  This is because the subclass's mapping metadata is
+     * used to determine how to map the super class.
      *
      * This method is designed to log a message when these types on conflicts are detected during conversion.  The differences
-     * are not log and must be manually evaluated on a case by case basis.
+     * are not logged and must be manually evaluated on a case by case basis.
+     *
+     * This is an error situation that must be resolved in order to properly map and entity.  You cannot have
+     * one attribute in a superclass as @Transient for one subclass while mapped to a @Column for another subclass.
+     *
+     * When this cases arise you will likely need do one of the following:
+     *
+     * 1) use the @AssociationOverride and/or @AttributeOverride in a subclass
+     * 2) modify the database table structure to make a uniform mapping possible, modify the ojb mapping to
+     * 3) move certain fields out of the superclass into subclasses
+     * 4) create new superclasses to make it possible to have correct mapping
+     *
      * @param n the compilation unit, already modified by the visitor
      * @param mappedClass the mapped class who's metadata was used to annotate the compilation unit
      * @param cache the cache that stores compilation unit information

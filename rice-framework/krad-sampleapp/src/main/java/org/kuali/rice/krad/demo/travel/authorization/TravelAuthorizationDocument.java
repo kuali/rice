@@ -38,6 +38,7 @@ import javax.persistence.Transient;
 import edu.sampleu.travel.dataobject.TravelDestination;
 import edu.sampleu.travel.dataobject.TravelExpenseItem;
 import edu.sampleu.travel.dataobject.TravelPerDiemExpense;
+import edu.sampleu.travel.dataobject.TravelerDetail;
 import edu.sampleu.travel.options.TripTypeKeyValuesFinder;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter;
@@ -47,7 +48,6 @@ import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
-import org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 
@@ -64,11 +64,12 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
 @Entity
 @Table(name = "TRVL_AUTH_DOC_T")
 @AttributeOverrides({
-    @AttributeOverride(name="documentNumber", column=@Column(name="TRVL_AUTH_DOC_ID",insertable=true,updatable=true,length=14))
+    @AttributeOverride(name="documentNumber",
+                       column=@Column(name="TRVL_AUTH_DOC_ID",insertable=true,updatable=true,length=14))
 })
 @AssociationOverrides({
-	@AssociationOverride(name="pessimisticLocks",joinColumns= {@JoinColumn(
-            name = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)})
+	@AssociationOverride(name="pessimisticLocks",
+                         joinColumns= {@JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)})
 })
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 	private static final long serialVersionUID = -6609385831976630737L;
@@ -126,12 +127,12 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private String cellPhoneNumber;
 
     @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
-    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false)
-    protected List<TravelPerDiemExpense> dailyExpenseEstimates = new ArrayList<TravelPerDiemExpense>();
+    @JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = true, updatable = true)
+    private List<TravelPerDiemExpense> dailyExpenseEstimates = new ArrayList<TravelPerDiemExpense>();
 
     @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
-    @JoinColumn(name="TRVL_AUTH_DOC_ID", nullable=false)
-    protected List<TravelExpenseItem> actualExpenseItems = new ArrayList<TravelExpenseItem>();
+    @JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = true, updatable = true)
+    private List<TravelExpenseItem> actualExpenseItems = new ArrayList<TravelExpenseItem>();
 
     public Date getTripBegin() {
         return tripBegin;

@@ -69,8 +69,6 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     private String travelPerDiemExpenseId;
 
     @Column(name = "TRVL_AUTH_DOC_ID")
-    @Label("Travel Authorization Document ID")
-    @Description("Identifier for the parent Travel Authorization Document")
     private String travelAuthorizationDocumentId;
 
     @Column(name="TRVL_DEST_ID", length=40)

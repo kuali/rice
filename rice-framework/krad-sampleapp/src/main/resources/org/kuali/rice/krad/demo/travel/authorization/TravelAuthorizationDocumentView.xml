@@ -53,8 +53,8 @@
     </property>
   </bean>
 
-  <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Traveler Section"
-                 p:layoutManager.numberOfColumns="4">
+  <bean id="TravelAuthorization-TripOverview-TravelerSection" parent="Uif-Disclosure-GridSubSection"
+        p:headerText="Traveler Section" p:layoutManager.numberOfColumns="4">
   <property name="items">
     <list>
       <bean parent="Uif-InputField" p:label="Traveler Lookup" p:colSpan="3" p:propertyName="travelerDetailId">
@@ -100,14 +100,14 @@
   </property>
 </bean>
 
-  <bean id="TravelAuthorization-TripOverview-TripInformationSection" parent="Uif-Disclosure-GridSubSection" p:headerText="Trip Information Section"
-        p:layoutManager.numberOfColumns="4">
+  <bean id="TravelAuthorization-TripOverview-TripInformationSection" parent="Uif-Disclosure-GridSubSection"
+        p:headerText="Trip Information Section" p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="tripDestinationId" p:label="Primary Destination Id" p:required="true" p:colSpan="1">
+        <bean parent="Uif-InputField" p:propertyName="tripDestinationId" p:label="Primary Destination Id"
+              p:required="true" p:colSpan="1">
           <property name="quickfinder">
-            <bean parent="Uif-QuickFinder"
-                  p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelDestination">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelDestination">
               <property name="fieldConversions">
                 <map>
                   <entry key="travelDestinationId" value="tripDestinationId"/>
@@ -121,23 +121,15 @@
           </property>
         </bean>
         <bean parent="Uif-DataField" p:propertyName="travelDestination.travelDestinationName"/>
-        <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="travelTypeCode"/>
+        <bean parent="Uif-InputField" p:propertyName="travelTypeCode" p:colSpan="3"/>
         <bean parent="Uif-InputField" p:propertyName="tripBegin">
           <property name="control">
-            <bean parent="Uif-TextControl" p:size="10">
-              <property name="datePicker">
-                <bean parent="Uif-DatePicker" />
-              </property>
-            </bean>
+            <bean parent="Uif-DateControl" p:size="10"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="tripEnd">
           <property name="control">
-            <bean parent="Uif-TextControl" p:size="10">
-              <property name="datePicker">
-                <bean parent="Uif-DatePicker" />
-              </property>
-            </bean>
+            <bean parent="Uif-DateControl" p:size="10"/>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:colSpan="3" p:propertyName="expenseLimit">
@@ -149,38 +141,16 @@
     </property>
   </bean>
 
-  <!-- Actual Expenses -->
-  <bean id="TravelAuthorization-DailyCostEstimates" parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Daily Cost Estimate" />
-          <property name="collectionObjectClass"
-                    value="edu.sampleu.travel.dataobject.TravelPerDiemExpense" />
-          <property name="propertyName" value="dailyExpenseEstimates" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:propertyName="perDiemDate"/>
-              <bean parent="Uif-InputField" p:propertyName="breakfastValue"/>
-              <bean parent="Uif-InputField" p:propertyName="lunchValue"/>
-              <bean parent="Uif-InputField" p:propertyName="dinnerValue"/>
-              <bean parent="Uif-InputField" p:propertyName="incidentalsValue"/>
-              <bean parent="Uif-InputField" p:propertyName="mileageRateId"/>
-              <bean parent="Uif-InputField" p:propertyName="estimatedMileage"/>
-            </list>
-          </property>
-        </bean>
-
   <!-- Actual Expenses  -->
   <bean id="TravelAuthorization-ActualExpenses" parent="Uif-Disclosure-TableCollectionSection">
-    <property name="headerText" value="Actual Expenses" />
-    <property name="collectionObjectClass"
-              value="edu.sampleu.travel.dataobject.TravelExpenseItem" />
-    <property name="propertyName" value="actualExpenseItems" />
-    <property name="layoutManager.generateAutoSequence" value="true" />
-    <property name="layoutManager.richTable.render" value="true" />
+    <property name="headerText" value="Actual Expenses"/>
+    <property name="collectionObjectClass" value="edu.sampleu.travel.dataobject.TravelExpenseItem"/>
+    <property name="propertyName" value="actualExpenseItems"/>
+    <property name="layoutManager.generateAutoSequence" value="true"/>
+    <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd">
+        <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd" p:required="true">
           <property name="control">
             <bean parent="Uif-DropdownControl"/>
           </property>
@@ -188,11 +158,32 @@
             <bean class="edu.sampleu.travel.options.ExpenseTypeKeyValuesFinder"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="expenseDesc"/>
+        <bean parent="Uif-InputField" p:propertyName="expenseDesc" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="expenseDate"/>
-        <bean parent="Uif-InputField" p:propertyName="expenseAmount"/>
+        <bean parent="Uif-InputField" p:propertyName="expenseAmount" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="reimbursable"/>
         <bean parent="Uif-InputField" p:propertyName="taxable"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Daily Cost Estimates -->
+  <bean id="TravelAuthorization-DailyCostEstimates" parent="Uif-Disclosure-TableCollectionSection">
+    <property name="headerText" value="Daily Cost Estimate"/>
+    <property name="collectionObjectClass" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+    <property name="propertyName" value="dailyExpenseEstimates"/>
+    <property name="layoutManager.generateAutoSequence" value="true"/>
+    <property name="layoutManager.richTable.render" value="true"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="perDiemDate"/>
+        <bean parent="Uif-InputField" p:propertyName="travelDestinationId" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="breakfastValue" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="lunchValue" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="dinnerValue" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="incidentalsValue" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="mileageRateId" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="estimatedMileage" p:required="true"/>
       </list>
     </property>
   </bean>

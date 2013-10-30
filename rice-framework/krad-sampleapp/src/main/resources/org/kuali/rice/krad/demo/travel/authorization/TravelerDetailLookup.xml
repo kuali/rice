@@ -21,7 +21,7 @@
 
 <bean id="TravelerDetail-LookupView" parent="Uif-LookupView">
   <property name="headerText" value="Travel Account Lookup" />
-  <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail" />
+  <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelerDetail" />
   <property name="criteriaFields">
     <list>
       <bean parent="Uif-LookupCriteriaInputField" p:propertyName="person.principalName" />

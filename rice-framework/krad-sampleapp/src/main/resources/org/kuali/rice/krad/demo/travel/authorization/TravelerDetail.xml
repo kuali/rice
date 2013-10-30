@@ -22,7 +22,7 @@
 
   <bean id="TravelerDetail" parent="TravelerDetail-parentBean" />
   <bean id="TravelerDetail-parentBean" abstract="true" parent="DataObjectEntry">
-    <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail" />
+    <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelerDetail" />
     <property name="titleAttribute" value="id" />
     <property name="objectLabel" value="Traveler Detail" />
     <property name="attributes">

@@ -1,23 +1,19 @@
 package org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver;
 
 import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.expr.MemberValuePair;
 import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
 import japa.parser.ast.expr.SingleMemberAnnotationExpr;
 import japa.parser.ast.expr.StringLiteralExpr;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldHelper;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class OrderByResolver extends AbstractMappedFieldResolver {
     private static final Log LOG = LogFactory.getLog(OrderByResolver.class);

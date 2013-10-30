@@ -1,10 +1,8 @@
 package org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver;
 
-import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.Node;
 import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.expr.MarkerAnnotationExpr;
 import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;

@@ -4,11 +4,6 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -36,6 +31,10 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Table
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TemporalResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TransientResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.VersionResolver;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * For visiting ojb mapped entities and their super classes.

@@ -45,7 +45,6 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.AnnotationReso
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.Level;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -129,14 +128,16 @@ public class IdClassResolver implements AnnotationResolver {
         List<BodyDeclaration> members = new ArrayList<BodyDeclaration>();
 
         for (FieldDescriptor fd : primaryKeyDescriptors) {
-            final String simpleTypeName = ResolverUtil.getType(fd.getClassDescriptor().getClassNameOfObject(), fd.getAttributeName()).getSimpleName();
+            final String simpleTypeName = ResolverUtil.getType(fd.getClassDescriptor().getClassNameOfObject(),
+                    fd.getAttributeName()).getSimpleName();
             final String attrName = fd.getAttributeName();
 
             members.add(new FieldDeclaration(ModifierSet.PRIVATE, new ClassOrInterfaceType(simpleTypeName), new VariableDeclarator(new VariableDeclaratorId(attrName))));
         }
 
         for (FieldDescriptor fd : primaryKeyDescriptors) {
-            final String simpleTypeName = ResolverUtil.getType(fd.getClassDescriptor().getClassNameOfObject(), fd.getAttributeName()).getSimpleName();
+            final String simpleTypeName = ResolverUtil.getType(fd.getClassDescriptor().getClassNameOfObject(),
+                    fd.getAttributeName()).getSimpleName();
             final String attrName = fd.getAttributeName();
             final MethodDeclaration getter = new MethodDeclaration(ModifierSet.PUBLIC, new ClassOrInterfaceType(simpleTypeName), "get" + attrName.substring(0, 1).toUpperCase() + attrName.substring(1));
             getter.setBody(new BlockStmt(Collections.<Statement>singletonList(new ReturnStmt(new FieldAccessExpr(new NameExpr("this"), attrName)))));

@@ -7,7 +7,6 @@ import japa.parser.ast.expr.QualifiedNameExpr;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;

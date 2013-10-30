@@ -6,13 +6,11 @@ import japa.parser.ast.expr.QualifiedNameExpr;
 import japa.parser.ast.expr.SingleMemberAnnotationExpr;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
-import java.lang.reflect.Field;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;

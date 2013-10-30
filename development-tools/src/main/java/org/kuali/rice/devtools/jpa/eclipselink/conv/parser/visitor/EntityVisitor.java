@@ -168,8 +168,8 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
                 boolean equalsAny = false;
                 for (Map.Entry<String, CompilationUnit> entry : entries.entrySet()) {
                     if (!entry.getValue().equals(n)) {
-                        LOG.error(ResolverUtil.logMsgForClass(enclosingName, mappedClass) + " does not equal modified AST for " + ResolverUtil.logMsgForClass(enclosingName, entry.getKey()) +
-                                ". This likely means that a super class fields have different mapping configurations across mapped subclasses.");
+                        LOG.error(ResolverUtil.logMsgForClass(enclosingName, mappedClass) + " does not equal the modified AST for " + ResolverUtil.logMsgForClass(enclosingName, entry.getKey()) +
+                                ". This likely means that a super class' fields have different mapping configurations across mapped subclasses.");
                     } else {
                         equalsAny = true;
                     }

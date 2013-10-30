@@ -42,12 +42,20 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     /** static value for name */
     private static final String NAME_CRITERIA = "name";
 
+    //** static value for edl name */
+    private static final String EDL_NAME = "edlName";
+
+    /** static value for UPPER */
+    private static final String UPPER = "UPPER";
+
+    /** static value for definition */
+    private static final String DEFINITION = "definition";
+
+    /** static value for style */
+    private static final String STYLE = "style";
+
     /** Service that persists data to and from the underlying datasource. */
     private DataObjectService dataObjectService;
-
-    public EDocLiteDAOJpaImpl () {
-        System.out.println("Hello");
-    }
 
     /**
      * Returns the data object service.
@@ -103,7 +111,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     @Override
     public EDocLiteAssociation getEDocLiteAssociation(final String docTypeName) {
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
-        criteria.setPredicates(equal("edlName", docTypeName), equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
+        criteria.setPredicates(equal(EDL_NAME, docTypeName), equal(ACTIVE_IND_CRITERIA, Boolean.TRUE));
         List<EDocLiteAssociation> edls = this.dataObjectService.findMatching(EDocLiteAssociation.class,
                 criteria.build()).getResults();
 
@@ -153,13 +161,13 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
             predicates.add(equal(ACTIVE_IND_CRITERIA, edocLite.getActiveInd()));
         }
         if (edocLite.getDefinition() != null) {
-            predicates.add(like("UPPER(definition)", "%" + edocLite.getDefinition().toUpperCase() + "%"));
+            predicates.add(like(UPPER + "(" + DEFINITION + ")", "%" + edocLite.getDefinition().toUpperCase() + "%"));
         }
         if (edocLite.getEdlName() != null) {
-            predicates.add(like("UPPER(edlName)", "%" + edocLite.getEdlName().toUpperCase() + "%"));
+            predicates.add(like(UPPER + "(" + EDL_NAME + ")", "%" + edocLite.getEdlName().toUpperCase() + "%"));
         }
         if (edocLite.getStyle() != null) {
-            predicates.add(like("UPPER(style)", "%" + edocLite.getStyle().toUpperCase() + "%"));
+            predicates.add(like(UPPER + "(" + STYLE + ")", "%" + edocLite.getStyle().toUpperCase() + "%"));
         }
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(predicates.toArray(new Predicate[predicates.size()]));

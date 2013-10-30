@@ -38,9 +38,6 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- *
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -79,7 +76,7 @@ public class Dump implements Serializable {
     @Column(name="VER_NBR", nullable = false)
     private Integer lockVerNbr;
 
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},mappedBy="dump")
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL},mappedBy="dump")
     private List<Fields> fields = new ArrayList<Fields>();
 
     /**

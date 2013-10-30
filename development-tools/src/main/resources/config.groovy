@@ -13,17 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-dryRun = false
 
 project {
     // This is the base directory for the project.  All other paths will be relative to this one
-    homeDirectory = "/Users/jonathan/dev/projects/rice-20"
+    homeDirectory = "/Users/kellerj/dev/projects/rice-20"
     // Directories which will be added to the classpath for the purpose of finding the OJB-mapped classes 
     classpathDirectories = [
-        "rice-middleware/krms/impl/target/classes"
+          "rice-framework/krad-app-framework/target/classes/"
+        , "rice-framework/krad-data/target/classes/"
+        , "rice-framework/krad-development-tools/target/classes/"
+        , "rice-framework/krad-it/target/classes/"
+        , "rice-framework/krad-sampleapp/target/classes/"
+        , "rice-framework/krad-sampleapp-data-model/target/classes/"
+        , "rice-framework/krad-service-impl/target/classes/"
+        , "rice-framework/krad-theme-builder/target/classes/"
+        , "rice-framework/krad-web/target/classes/"
+        , "rice-framework/krad-web-framework/target/classes/"
+        , "rice-middleware/client-contrib/target/classes/"
+        , "rice-middleware/core/api/target/classes/"
+        , "rice-middleware/core/framework/target/classes/"
+        , "rice-middleware/core/impl/target/classes/"
+        , "rice-middleware/core/web/target/classes/"
+        , "rice-middleware/core-service/api/target/classes/"
+        , "rice-middleware/core-service/framework/target/classes/"
+        , "rice-middleware/core-service/impl/target/classes/"
+        , "rice-middleware/core-service/web/target/classes/"
+        , "rice-middleware/edl/framework/target/classes/"
+        , "rice-middleware/edl/impl/target/classes/"
+        , "rice-middleware/impl/target/classes/"
+        , "rice-middleware/ken/api/target/classes/"
+        , "rice-middleware/kew/api/target/classes/"
+        , "rice-middleware/kew/framework/target/classes/"
+        , "rice-middleware/kew/impl/target/classes/"
+        , "rice-middleware/kim/kim-api/target/classes/"
+        , "rice-middleware/kim/kim-framework/target/classes/"
+        , "rice-middleware/kim/kim-impl/target/classes/"
+        , "rice-middleware/kim/kim-ldap/target/classes/"
+        , "rice-middleware/kns/target/classes/"
+        , "rice-middleware/krms/api/target/classes/"
+        , "rice-middleware/krms/framework/target/classes/"
+        , "rice-middleware/krms/gen/target/classes/"
+        , "rice-middleware/krms/impl/target/classes/"
+        , "rice-middleware/ksb/api/target/classes/"
+        , "rice-middleware/ksb/client-impl/target/classes/"
+        , "rice-middleware/ksb/server-impl/target/classes/"
+        , "rice-middleware/ksb/web/target/classes/"
+        , "rice-middleware/location/api/target/classes/"
+        , "rice-middleware/location/framework/target/classes/"
+        , "rice-middleware/location/impl/target/classes/"
+        , "rice-middleware/location/web/target/classes/"
+        , "rice-middleware/sampleapp/target/classes/"
+        , "rice-middleware/serviceregistry/target/classes/"
+        , "rice-middleware/standalone/target/classes/"
+        , "rice-middleware/web/target/classes/"
         ]
     // Directories which contain jar files.  Each jar file will be added to the classpath
     classpathJarDirectories = []
+
+    // Set this to true to make the application dump the resulting class files to the console instead of updating the existing files
+    dryRun = false    
+        
+    // Set this property to true if you want to wipe out all existing JPA annotations on target classes
+    removeExistingAnnotations = false
+    
     // Project source directories.  These directories will be scanned in order to find the source
     // files for the classes which need JPA annotation
     sourceDirectories = [
@@ -82,7 +134,7 @@ ojb {
 //        , "rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml"
 //        , "rice-middleware/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/OJB-repository-kim-hist.xml"
 //        , "rice-middleware/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/OJB-repository-kim.xml"
-//        , "rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/config/OJB-repository-krms.xml"
+        , "rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/config/OJB-repository-krms.xml"
 //        , "rice-middleware/ksb/client-impl/src/main/resources/org/kuali/rice/ksb/config/OJB-repository-ksb-bam.xml"
 //        , "rice-middleware/ksb/client-impl/src/main/resources/org/kuali/rice/ksb/config/OJB-repository-ksb-message.xml"
 //        , "rice-middleware/ksb/server-impl/src/main/resources/org/kuali/rice/ksb/config/OJB-repository-ksb-registry.xml"

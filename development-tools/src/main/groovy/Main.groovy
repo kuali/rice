@@ -17,6 +17,9 @@
 import japa.parser.JavaParser
 import japa.parser.ast.CompilationUnit
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.ojb.broker.metadata.DescriptorRepository
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.visitor.EntityVisitor
@@ -29,24 +32,52 @@ def config = new ConfigSlurper().parse(this.class.classLoader.getResource("confi
 
 println config
 
+BasicConfigurator.configure()
+
+/*
+ * NOTE: When running from within Eclipse/IDE, you need to add groovy to the --classpath of the script being run so that
+ * Groovy can install its RootLoader classloader - needed for the URL additions below.
+ * 
+ * In Eclipse (and Groovy 2.1.5), this will be: ${groovy_home}/lib/groovy-all-2.1.5.jar
+ */
 def rootLoader = this.class.classLoader.getRootLoader()
 if ( !rootLoader ) {
     println "ERROR!  RootLoader is null - unable to add additional classes to the classpath.  This happens when running Groovy from within Eclipse."
+} else {
+    //Thread.currentThread().setContextClassLoader(rootLoader);
 }
-//println rootLoader
+println "RootLoader: $rootLoader"
+
 // add additional items to the classpath
-//for ( classpathDir in config.project.classpathDirectories ) {
-//    def classpathUrl = new URL("file://"+new File( config.project.homeDirectory + "/" + classpathDir ).canonicalPath)
-//    println "Adding Classpath URL: $classpathUrl"
-//    rootLoader.addURL( classpathUrl )
-//}
+for ( classpathDir in config.project.classpathDirectories ) {
+    def classpathUrl = new URL("file://"+new File( config.project.homeDirectory + "/" + classpathDir ).canonicalPath + "/")
+    println "Adding Classpath URL: $classpathUrl"
+    rootLoader.addURL( classpathUrl )
+}
+
+println rootLoader.getURLs()
+
 //def jars   = jardir.listFiles().findAll { it.name.endsWith('.jar') } 
 //jars.each { loader.addURL(it.toURI().toURL()) }
 fullSourcePaths = config.project.sourceDirectories.collect { config.project.homeDirectory + "/" + it }
 fullOjbPaths = config.ojb.repositoryFiles.collect { config.project.homeDirectory + "/" + it }
 
 println "\n\nSource Directories: \n${fullSourcePaths.join( '\n' )}"
+
+fullSourcePaths.each {
+    if ( !new File( it ).exists() ) {
+        throw new RuntimeException( "ERROR: $it does not exist.  Aborting.")
+    }
+}
+
 println "\n\nScanning OJB Files: \n${fullOjbPaths.join( '\n' )}"
+
+fullOjbPaths.each {
+    if ( !new File( it ).exists() ) {
+        throw new RuntimeException( "ERROR: $it does not exist.  Aborting.")
+    }
+}
+
 
 Collection<DescriptorRepository> drs = OjbUtil.getDescriptorRepositories( fullOjbPaths );
 Collection<String> ojbMappedClasses = OjbUtil.mappedClasses(drs);
@@ -61,9 +92,9 @@ println "\n\nJava Files: \n${mappedJavaFiles.join( '\n' )}"
 for (File ojbMappedFile : mappedJavaFiles) {
     println "Processing File: $ojbMappedFile"
 	final CompilationUnit unit = JavaParser.parse(ojbMappedFile)
-	def entityVisitor = new EntityVisitor(drs, config.converterMappings )
+	def entityVisitor = new EntityVisitor(drs, config.converterMappings, config.project.removeExistingAnnotations )
     entityVisitor.visit(unit, null)
-    if ( config.dryRun ) {
+    if ( config.project.dryRun ) {
         println unit.toString()
     } else {
         ojbMappedFile.delete()

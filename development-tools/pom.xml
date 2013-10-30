@@ -43,6 +43,7 @@
     <generateReports>false</generateReports>
     <codemodel.version>2.4.1</codemodel.version>
     <javaparser.version>1.0.9</javaparser.version>
+    <groovy.version>2.1.5</groovy.version>
   </properties>
   <dependencies>
     <dependency>
@@ -108,6 +109,11 @@
       <groupId>com.google.code.javaparser</groupId>
       <artifactId>javaparser</artifactId>
       <version>${javaparser.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${groovy.version}</version><!--$NO-MVN-MAN-VER$-->
     </dependency>
 
   </dependencies>

@@ -69,7 +69,10 @@ public final class OjbUtil {
 
         //first parse & get all of the mapped classes
         for (String file : ojbFiles) {
-            drs.add(OjbUtil.readDescriptorRepository(file));
+            DescriptorRepository repository = OjbUtil.readDescriptorRepository(file);
+            if ( repository != null ) {
+                drs.add(repository);
+            }
         }
 
         return drs;
@@ -115,10 +118,13 @@ public final class OjbUtil {
      * @return a DescriptorRepository or null
      */
     public static DescriptorRepository readDescriptorRepository(String filename) {
+        LOG.info( "Processing Repository: " + filename);
         try {
             return (DescriptorRepository) buildRepository(filename, DescriptorRepository.class);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            LOG.error("Unable to process descriptor repository: " + filename);
+            LOG.error( e.getMessage() );
+            // Explicitly not logging the exception - it has already been dumped by earlier logging 
         }
         return null;
     }

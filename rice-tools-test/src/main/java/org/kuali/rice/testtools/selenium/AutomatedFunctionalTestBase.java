@@ -34,7 +34,8 @@ import org.junit.runner.RunWith;
 public abstract class AutomatedFunctionalTestBase {
 
     /**
-     * testUrl set by {@see #enableBookmarkMode} and {@see #enableNavigationMode}.
+     * testUrl set by {@see #enableBookmarkMode} and {@see #enableNavigationMode}, if there are test methods that
+     * do not end with Bookmark or Nav then testUrl must be defined in the test.
      */
     protected String testUrl;
 

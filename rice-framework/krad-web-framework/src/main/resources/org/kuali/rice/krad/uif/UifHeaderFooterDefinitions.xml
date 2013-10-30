@@ -23,7 +23,7 @@
 
   <!-- Overrideable global application header and footer -->
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"/>
-  <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-ApplicationHeaderBase"
+  <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-GroupBase"
         scope="prototype"/>
 
   <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"/>

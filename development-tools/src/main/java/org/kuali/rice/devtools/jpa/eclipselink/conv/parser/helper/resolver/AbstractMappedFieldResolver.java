@@ -26,7 +26,7 @@ public abstract class AbstractMappedFieldResolver implements AnnotationResolver 
     }
 
     @Override
-    public final NodeData resolve(Node node, Object arg) {
+    public final NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof FieldDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on FieldDeclaration");
         }
@@ -39,10 +39,10 @@ public abstract class AbstractMappedFieldResolver implements AnnotationResolver 
             final String name = dclr.getName();
             final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
             final String fullyQualifiedClass = pckg + "." + name;
-            final boolean mappedColumn = OjbUtil.isMappedColumn(fullyQualifiedClass, ParserUtil.getFieldName(field),
+            final boolean mappedColumn = OjbUtil.isMappedColumn(mappedClass, ParserUtil.getFieldName(field),
                     descriptorRepositories);
             if (mappedColumn) {
-                return getAnnotationNodes(fullyQualifiedClass, ParserUtil.getFieldName(field));
+                return getAnnotationNodes(fullyQualifiedClass, ParserUtil.getFieldName(field), mappedClass);
             }
         }
         return null;
@@ -51,9 +51,10 @@ public abstract class AbstractMappedFieldResolver implements AnnotationResolver 
     /**
      * Override this method to resolve the annotation data by executing annotation specific rules.
      *
-     * @param clazz the parent class name
+     * @param enclosingClass the class containing the field
      * @param fieldName the field name
+     * @param mappedClass the napped class name
      * @return annotation node data or null if the annotation should not be created.
      */
-    protected abstract NodeData getAnnotationNodes(String clazz, String fieldName);
+    protected abstract NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass);
 }

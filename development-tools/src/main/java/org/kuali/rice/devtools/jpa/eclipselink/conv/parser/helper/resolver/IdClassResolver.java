@@ -69,7 +69,7 @@ public class IdClassResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Node node, Object arg) {
+    public NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof ClassOrInterfaceDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on ClassOrInterfaceDeclaration");
         }

@@ -50,23 +50,23 @@ public class ConvertResolver extends AbstractMappedFieldResolver {
     
     /** gets the annotation but also adds an import in the process if a Convert annotation is required. */
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
             final FieldConversion fc = fd.getFieldConversion();
             //in ojb all columns have at least the default field conversion
             if (fc != null && FieldConversionDefaultImpl.class != fc.getClass()) {
-                LOG.info(clazz + "." + fieldName + " field has a converter " + fc.getClass().getName());
+                LOG.info(enclosingClass + "." + fieldName + " for the mapped class " + mappedClass + " field has a converter " + fc.getClass().getName());
 
                 final String jpaConverter = getJpaConverterForOjbClass(fc.getClass().getName());
                 if (jpaConverter == null) {
-                    LOG.error(clazz + "." + fieldName + " field has a converter " + fc.getClass().getName()
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a converter " + fc.getClass().getName()
                         + " but a replacement converter was not configured, unable to set Convert class");
                     return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(null)),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
                 } else if ( StringUtils.isBlank(jpaConverter) ) {
-                    LOG.info( clazz + "." + fieldName + " field has a converter " + fc.getClass().getName() 
+                    LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a converter " + fc.getClass().getName()
                             + " But no converter definition is needed due to default converter configuration." );
                 } else {
                     final String shortClassName = ClassUtils.getShortClassName(jpaConverter);

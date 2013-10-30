@@ -39,7 +39,7 @@ public class TransientResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Node node, Object arg) {
+    public NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof FieldDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on FieldDeclaration");
         }
@@ -47,15 +47,7 @@ public class TransientResolver implements AnnotationResolver {
         final FieldDeclaration field = (FieldDeclaration) node;
 
         if (ResolverUtil.canFieldBeAnnotated(field)) {
-            final TypeDeclaration dclr = (TypeDeclaration) node.getParentNode();
-            if (!(dclr.getParentNode() instanceof CompilationUnit)) {
-                //handling nested classes
-                return null;
-            }
-            final String name = dclr.getName();
-            final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
-            final String fullyQualifiedClass = pckg + "." + name;
-            final boolean mappedColumn = OjbUtil.isMappedColumn(fullyQualifiedClass, ParserUtil.getFieldName(field),
+            final boolean mappedColumn = OjbUtil.isMappedColumn(mappedClass, ParserUtil.getFieldName(field),
                     descriptorRepositories);
             if (!mappedColumn) {
                 return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),

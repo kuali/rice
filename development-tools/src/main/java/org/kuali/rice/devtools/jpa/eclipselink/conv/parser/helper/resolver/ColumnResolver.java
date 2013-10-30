@@ -37,8 +37,8 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
             List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
@@ -47,51 +47,51 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
                 pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
                 pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
             } else if ("readwrite".equals(access)) {
-                LOG.info(clazz + "." + fieldName + " field access is readwrite keeping @Column attributes (insertable, updatable) at defaults");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is readwrite keeping @Column attributes (insertable, updatable) at defaults");
             } else if (access == null) {
-                LOG.info(clazz + "." +  fieldName + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
             } else {
-                LOG.error(clazz + "." + fieldName + " field access is " + access + ", unsupported conversion to @Column attributes");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is " + access + ", unsupported conversion to @Column attributes");
             }
 
             final String columnName = fd.getColumnName();
             if (StringUtils.isNotBlank(columnName)) {
                 pairs.add(new MemberValuePair("name", new StringLiteralExpr(columnName)));
             } else {
-                LOG.error(clazz + "." + fieldName + " field column is blank");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field column is blank");
             }
 
             final String columnType = fd.getColumnType();
             if (StringUtils.isNotBlank(columnType)) {
-                LOG.error(clazz + "." + fieldName + " field column type is " + columnType + ", unsupported conversion to @Column attributes");
+                LOG.error(enclosingClass + "." + fieldName + " for the mapped class " + mappedClass + " field column type is " + columnType + ", unsupported conversion to @Column attributes");
             }
 
             final boolean required = fd.isRequired();
             if (required) {
                 pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
             } else {
-                LOG.info(clazz + "." + fieldName + " field is nullable keeping @Column attribute (nullable) at default");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field is nullable keeping @Column attribute (nullable) at default");
             }
 
             final int length = fd.getLength();
             if (length > 0) {
                 pairs.add(new MemberValuePair("length", new IntegerLiteralExpr(String.valueOf(length))));
             } else {
-                LOG.info(clazz + "." + fieldName + " field length is not set keeping @Column attribute (length) at default");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field length is not set keeping @Column attribute (length) at default");
             }
 
             final int precision = fd.getPrecision();
             if (precision > 0) {
                 pairs.add(new MemberValuePair("precision", new IntegerLiteralExpr(String.valueOf(precision))));
             } else {
-                LOG.info(clazz + "." + fieldName + " field precision is not set keeping @Column attribute (precision) at default");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field precision is not set keeping @Column attribute (precision) at default");
             }
 
             final int scale = fd.getScale();
             if (scale > 0) {
                 pairs.add(new MemberValuePair("scale", new IntegerLiteralExpr(String.valueOf(scale))));
             } else {
-                LOG.info(clazz + "." + fieldName + " field scale is not set keeping @Column attribute (scale) at default");
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field scale is not set keeping @Column attribute (scale) at default");
             }
             return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs),
                     new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));

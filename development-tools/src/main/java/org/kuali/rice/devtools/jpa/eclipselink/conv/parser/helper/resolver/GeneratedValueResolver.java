@@ -31,18 +31,18 @@ public class GeneratedValueResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
             final boolean autoInc = fd.isAutoIncrement();
             final String seqName = fd.getSequenceName();
             if (autoInc && StringUtils.isBlank(seqName)) {
-                LOG.error(clazz + "." + fieldName + " field has autoincrement set to true but sequenceName is blank.");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has autoincrement set to true but sequenceName is blank.");
             }
 
             if (!autoInc && StringUtils.isNotBlank(seqName)) {
-                LOG.error(clazz + "." + fieldName + " field has autoincrement set to false but sequenceName is " + seqName + ".");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has autoincrement set to false but sequenceName is " + seqName + ".");
             }
             if (autoInc || StringUtils.isNotBlank(seqName)) {
                 return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),

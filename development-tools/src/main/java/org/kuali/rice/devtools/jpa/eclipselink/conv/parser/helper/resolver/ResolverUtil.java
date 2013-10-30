@@ -19,4 +19,12 @@ public final class ResolverUtil {
         }
         return false;
     }
+
+    public static String logMsgForField(String enclosingClass, String fieldName, String mappedClass) {
+        return enclosingClass + "." + fieldName + " for the mapped class " + mappedClass;
+    }
+
+    public static String logMsgForClass(String enclosingClass, String mappedClass) {
+        return enclosingClass + " for the mapped class " + mappedClass;
+    }
 }

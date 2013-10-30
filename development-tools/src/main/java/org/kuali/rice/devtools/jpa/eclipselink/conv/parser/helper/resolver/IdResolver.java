@@ -27,8 +27,8 @@ public class IdResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final boolean pk = isPrimaryKeyColumn(clazz, fieldName);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final boolean pk = isPrimaryKeyColumn(mappedClass, fieldName);
         if (pk) {
             return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
                     new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));

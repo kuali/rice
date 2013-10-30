@@ -80,794 +80,794 @@ import japa.parser.ast.type.ReferenceType;
 import japa.parser.ast.type.VoidType;
 import japa.parser.ast.type.WildcardType;
 
-public class VoidVisitorHelperBase implements VoidVisitorHelper<Object>{
+public class VoidVisitorHelperBase<A> implements VoidVisitorHelper<A> {
     @Override
-    public void visitPre(CompilationUnit n, Object arg) {
+    public void visitPre(CompilationUnit n, A arg) {
         
     }
 
     @Override
-    public void visitPre(PackageDeclaration n, Object arg) {
+    public void visitPre(PackageDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ImportDeclaration n, Object arg) {
+    public void visitPre(ImportDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(TypeParameter n, Object arg) {
+    public void visitPre(TypeParameter n, A arg) {
         
     }
 
     @Override
-    public void visitPre(LineComment n, Object arg) {
+    public void visitPre(LineComment n, A arg) {
         
     }
 
     @Override
-    public void visitPre(BlockComment n, Object arg) {
+    public void visitPre(BlockComment n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ClassOrInterfaceDeclaration n, Object arg) {
+    public void visitPre(ClassOrInterfaceDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EnumDeclaration n, Object arg) {
+    public void visitPre(EnumDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EmptyTypeDeclaration n, Object arg) {
+    public void visitPre(EmptyTypeDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EnumConstantDeclaration n, Object arg) {
+    public void visitPre(EnumConstantDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(AnnotationDeclaration n, Object arg) {
+    public void visitPre(AnnotationDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(AnnotationMemberDeclaration n, Object arg) {
+    public void visitPre(AnnotationMemberDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(FieldDeclaration n, Object arg) {
+    public void visitPre(FieldDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(VariableDeclarator n, Object arg) {
+    public void visitPre(VariableDeclarator n, A arg) {
         
     }
 
     @Override
-    public void visitPre(VariableDeclaratorId n, Object arg) {
+    public void visitPre(VariableDeclaratorId n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ConstructorDeclaration n, Object arg) {
+    public void visitPre(ConstructorDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(MethodDeclaration n, Object arg) {
+    public void visitPre(MethodDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(Parameter n, Object arg) {
+    public void visitPre(Parameter n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EmptyMemberDeclaration n, Object arg) {
+    public void visitPre(EmptyMemberDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(InitializerDeclaration n, Object arg) {
+    public void visitPre(InitializerDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPre(JavadocComment n, Object arg) {
+    public void visitPre(JavadocComment n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ClassOrInterfaceType n, Object arg) {
+    public void visitPre(ClassOrInterfaceType n, A arg) {
         
     }
 
     @Override
-    public void visitPre(PrimitiveType n, Object arg) {
+    public void visitPre(PrimitiveType n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ReferenceType n, Object arg) {
+    public void visitPre(ReferenceType n, A arg) {
         
     }
 
     @Override
-    public void visitPre(VoidType n, Object arg) {
+    public void visitPre(VoidType n, A arg) {
         
     }
 
     @Override
-    public void visitPre(WildcardType n, Object arg) {
+    public void visitPre(WildcardType n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ArrayAccessExpr n, Object arg) {
+    public void visitPre(ArrayAccessExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ArrayCreationExpr n, Object arg) {
+    public void visitPre(ArrayCreationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ArrayInitializerExpr n, Object arg) {
+    public void visitPre(ArrayInitializerExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(AssignExpr n, Object arg) {
+    public void visitPre(AssignExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(BinaryExpr n, Object arg) {
+    public void visitPre(BinaryExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(CastExpr n, Object arg) {
+    public void visitPre(CastExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ClassExpr n, Object arg) {
+    public void visitPre(ClassExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ConditionalExpr n, Object arg) {
+    public void visitPre(ConditionalExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EnclosedExpr n, Object arg) {
+    public void visitPre(EnclosedExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(FieldAccessExpr n, Object arg) {
+    public void visitPre(FieldAccessExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(InstanceOfExpr n, Object arg) {
+    public void visitPre(InstanceOfExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(StringLiteralExpr n, Object arg) {
+    public void visitPre(StringLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(IntegerLiteralExpr n, Object arg) {
+    public void visitPre(IntegerLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(LongLiteralExpr n, Object arg) {
+    public void visitPre(LongLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(IntegerLiteralMinValueExpr n, Object arg) {
+    public void visitPre(IntegerLiteralMinValueExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(LongLiteralMinValueExpr n, Object arg) {
+    public void visitPre(LongLiteralMinValueExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(CharLiteralExpr n, Object arg) {
+    public void visitPre(CharLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(DoubleLiteralExpr n, Object arg) {
+    public void visitPre(DoubleLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(BooleanLiteralExpr n, Object arg) {
+    public void visitPre(BooleanLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(NullLiteralExpr n, Object arg) {
+    public void visitPre(NullLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(MethodCallExpr n, Object arg) {
+    public void visitPre(MethodCallExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(NameExpr n, Object arg) {
+    public void visitPre(NameExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ObjectCreationExpr n, Object arg) {
+    public void visitPre(ObjectCreationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(QualifiedNameExpr n, Object arg) {
+    public void visitPre(QualifiedNameExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ThisExpr n, Object arg) {
+    public void visitPre(ThisExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(SuperExpr n, Object arg) {
+    public void visitPre(SuperExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(UnaryExpr n, Object arg) {
+    public void visitPre(UnaryExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(VariableDeclarationExpr n, Object arg) {
+    public void visitPre(VariableDeclarationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(MarkerAnnotationExpr n, Object arg) {
+    public void visitPre(MarkerAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(SingleMemberAnnotationExpr n, Object arg) {
+    public void visitPre(SingleMemberAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(NormalAnnotationExpr n, Object arg) {
+    public void visitPre(NormalAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPre(MemberValuePair n, Object arg) {
+    public void visitPre(MemberValuePair n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ExplicitConstructorInvocationStmt n, Object arg) {
+    public void visitPre(ExplicitConstructorInvocationStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(TypeDeclarationStmt n, Object arg) {
+    public void visitPre(TypeDeclarationStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(AssertStmt n, Object arg) {
+    public void visitPre(AssertStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(BlockStmt n, Object arg) {
+    public void visitPre(BlockStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(LabeledStmt n, Object arg) {
+    public void visitPre(LabeledStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(EmptyStmt n, Object arg) {
+    public void visitPre(EmptyStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ExpressionStmt n, Object arg) {
+    public void visitPre(ExpressionStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(SwitchStmt n, Object arg) {
+    public void visitPre(SwitchStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(SwitchEntryStmt n, Object arg) {
+    public void visitPre(SwitchEntryStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(BreakStmt n, Object arg) {
+    public void visitPre(BreakStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ReturnStmt n, Object arg) {
+    public void visitPre(ReturnStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(IfStmt n, Object arg) {
+    public void visitPre(IfStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(WhileStmt n, Object arg) {
+    public void visitPre(WhileStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ContinueStmt n, Object arg) {
+    public void visitPre(ContinueStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(DoStmt n, Object arg) {
+    public void visitPre(DoStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ForeachStmt n, Object arg) {
+    public void visitPre(ForeachStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ForStmt n, Object arg) {
+    public void visitPre(ForStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(ThrowStmt n, Object arg) {
+    public void visitPre(ThrowStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(SynchronizedStmt n, Object arg) {
+    public void visitPre(SynchronizedStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(TryStmt n, Object arg) {
+    public void visitPre(TryStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPre(CatchClause n, Object arg) {
+    public void visitPre(CatchClause n, A arg) {
         
     }
 
     @Override
-    public void visitPost(CompilationUnit n, Object arg) {
+    public void visitPost(CompilationUnit n, A arg) {
         
     }
 
     @Override
-    public void visitPost(PackageDeclaration n, Object arg) {
+    public void visitPost(PackageDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ImportDeclaration n, Object arg) {
+    public void visitPost(ImportDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(TypeParameter n, Object arg) {
+    public void visitPost(TypeParameter n, A arg) {
         
     }
 
     @Override
-    public void visitPost(LineComment n, Object arg) {
+    public void visitPost(LineComment n, A arg) {
         
     }
 
     @Override
-    public void visitPost(BlockComment n, Object arg) {
+    public void visitPost(BlockComment n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ClassOrInterfaceDeclaration n, Object arg) {
+    public void visitPost(ClassOrInterfaceDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EnumDeclaration n, Object arg) {
+    public void visitPost(EnumDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EmptyTypeDeclaration n, Object arg) {
+    public void visitPost(EmptyTypeDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EnumConstantDeclaration n, Object arg) {
+    public void visitPost(EnumConstantDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(AnnotationDeclaration n, Object arg) {
+    public void visitPost(AnnotationDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(AnnotationMemberDeclaration n, Object arg) {
+    public void visitPost(AnnotationMemberDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(FieldDeclaration n, Object arg) {
+    public void visitPost(FieldDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(VariableDeclarator n, Object arg) {
+    public void visitPost(VariableDeclarator n, A arg) {
         
     }
 
     @Override
-    public void visitPost(VariableDeclaratorId n, Object arg) {
+    public void visitPost(VariableDeclaratorId n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ConstructorDeclaration n, Object arg) {
+    public void visitPost(ConstructorDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(MethodDeclaration n, Object arg) {
+    public void visitPost(MethodDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(Parameter n, Object arg) {
+    public void visitPost(Parameter n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EmptyMemberDeclaration n, Object arg) {
+    public void visitPost(EmptyMemberDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(InitializerDeclaration n, Object arg) {
+    public void visitPost(InitializerDeclaration n, A arg) {
         
     }
 
     @Override
-    public void visitPost(JavadocComment n, Object arg) {
+    public void visitPost(JavadocComment n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ClassOrInterfaceType n, Object arg) {
+    public void visitPost(ClassOrInterfaceType n, A arg) {
         
     }
 
     @Override
-    public void visitPost(PrimitiveType n, Object arg) {
+    public void visitPost(PrimitiveType n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ReferenceType n, Object arg) {
+    public void visitPost(ReferenceType n, A arg) {
         
     }
 
     @Override
-    public void visitPost(VoidType n, Object arg) {
+    public void visitPost(VoidType n, A arg) {
         
     }
 
     @Override
-    public void visitPost(WildcardType n, Object arg) {
+    public void visitPost(WildcardType n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ArrayAccessExpr n, Object arg) {
+    public void visitPost(ArrayAccessExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ArrayCreationExpr n, Object arg) {
+    public void visitPost(ArrayCreationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ArrayInitializerExpr n, Object arg) {
+    public void visitPost(ArrayInitializerExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(AssignExpr n, Object arg) {
+    public void visitPost(AssignExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(BinaryExpr n, Object arg) {
+    public void visitPost(BinaryExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(CastExpr n, Object arg) {
+    public void visitPost(CastExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ClassExpr n, Object arg) {
+    public void visitPost(ClassExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ConditionalExpr n, Object arg) {
+    public void visitPost(ConditionalExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EnclosedExpr n, Object arg) {
+    public void visitPost(EnclosedExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(FieldAccessExpr n, Object arg) {
+    public void visitPost(FieldAccessExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(InstanceOfExpr n, Object arg) {
+    public void visitPost(InstanceOfExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(StringLiteralExpr n, Object arg) {
+    public void visitPost(StringLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(IntegerLiteralExpr n, Object arg) {
+    public void visitPost(IntegerLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(LongLiteralExpr n, Object arg) {
+    public void visitPost(LongLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(IntegerLiteralMinValueExpr n, Object arg) {
+    public void visitPost(IntegerLiteralMinValueExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(LongLiteralMinValueExpr n, Object arg) {
+    public void visitPost(LongLiteralMinValueExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(CharLiteralExpr n, Object arg) {
+    public void visitPost(CharLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(DoubleLiteralExpr n, Object arg) {
+    public void visitPost(DoubleLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(BooleanLiteralExpr n, Object arg) {
+    public void visitPost(BooleanLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(NullLiteralExpr n, Object arg) {
+    public void visitPost(NullLiteralExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(MethodCallExpr n, Object arg) {
+    public void visitPost(MethodCallExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(NameExpr n, Object arg) {
+    public void visitPost(NameExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ObjectCreationExpr n, Object arg) {
+    public void visitPost(ObjectCreationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(QualifiedNameExpr n, Object arg) {
+    public void visitPost(QualifiedNameExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ThisExpr n, Object arg) {
+    public void visitPost(ThisExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(SuperExpr n, Object arg) {
+    public void visitPost(SuperExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(UnaryExpr n, Object arg) {
+    public void visitPost(UnaryExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(VariableDeclarationExpr n, Object arg) {
+    public void visitPost(VariableDeclarationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(MarkerAnnotationExpr n, Object arg) {
+    public void visitPost(MarkerAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(SingleMemberAnnotationExpr n, Object arg) {
+    public void visitPost(SingleMemberAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(NormalAnnotationExpr n, Object arg) {
+    public void visitPost(NormalAnnotationExpr n, A arg) {
         
     }
 
     @Override
-    public void visitPost(MemberValuePair n, Object arg) {
+    public void visitPost(MemberValuePair n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ExplicitConstructorInvocationStmt n, Object arg) {
+    public void visitPost(ExplicitConstructorInvocationStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(TypeDeclarationStmt n, Object arg) {
+    public void visitPost(TypeDeclarationStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(AssertStmt n, Object arg) {
+    public void visitPost(AssertStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(BlockStmt n, Object arg) {
+    public void visitPost(BlockStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(LabeledStmt n, Object arg) {
+    public void visitPost(LabeledStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(EmptyStmt n, Object arg) {
+    public void visitPost(EmptyStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ExpressionStmt n, Object arg) {
+    public void visitPost(ExpressionStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(SwitchStmt n, Object arg) {
+    public void visitPost(SwitchStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(SwitchEntryStmt n, Object arg) {
+    public void visitPost(SwitchEntryStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(BreakStmt n, Object arg) {
+    public void visitPost(BreakStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ReturnStmt n, Object arg) {
+    public void visitPost(ReturnStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(IfStmt n, Object arg) {
+    public void visitPost(IfStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(WhileStmt n, Object arg) {
+    public void visitPost(WhileStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ContinueStmt n, Object arg) {
+    public void visitPost(ContinueStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(DoStmt n, Object arg) {
+    public void visitPost(DoStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ForeachStmt n, Object arg) {
+    public void visitPost(ForeachStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ForStmt n, Object arg) {
+    public void visitPost(ForStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(ThrowStmt n, Object arg) {
+    public void visitPost(ThrowStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(SynchronizedStmt n, Object arg) {
+    public void visitPost(SynchronizedStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(TryStmt n, Object arg) {
+    public void visitPost(TryStmt n, A arg) {
         
     }
 
     @Override
-    public void visitPost(CatchClause n, Object arg) {
+    public void visitPost(CatchClause n, A arg) {
         
     }
 }

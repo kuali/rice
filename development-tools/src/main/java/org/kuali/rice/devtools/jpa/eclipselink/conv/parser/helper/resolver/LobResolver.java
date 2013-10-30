@@ -22,10 +22,10 @@ public class LobResolver extends AbstractMappedFieldResolver {
 
     public static final String PACKAGE = "javax.persistence";
     public static final String SIMPLE_NAME = "Lob";
-    private static final Collection<Class> VALID_TYPES;
+    private static final Collection<Class<?>> VALID_TYPES;
     private static final Collection<String> VALID_TYPES_STR;
     static {
-        Collection<Class> tempClass = new ArrayList<Class>();
+        Collection<Class<?>> tempClass = new ArrayList<Class<?>>();
         tempClass.add(String.class);
         tempClass.add(byte[].class);
         tempClass.add(Byte[].class);
@@ -51,18 +51,18 @@ public class LobResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
-            final Class<?> fc = getType(clazz, fieldName);
+            final Class<?> fc = getType(enclosingClass, fieldName);
             final String columnType = fd.getColumnType();
             if (isLob(columnType)) {
                 if (isValidFieldType(fc)) {
                     return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
                 } else {
-                    LOG.error(clazz + "." + fieldName + " is not a valid field type for the @Lob annotation, must be one of " + VALID_TYPES_STR);
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " is not a valid field type for the @Lob annotation, must be one of " + VALID_TYPES_STR);
                 }
             }
 
@@ -86,7 +86,7 @@ public class LobResolver extends AbstractMappedFieldResolver {
         return null;
     }
 
-    private boolean isValidFieldType(Class type) {
+    private boolean isValidFieldType(Class<?> type) {
         for (Class<?> c : VALID_TYPES) {
             if (c.isAssignableFrom(type)) {
                 return true;

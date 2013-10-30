@@ -123,16 +123,14 @@ public final class OjbUtil {
     /**
      * Gets all the super classes & stopping when the super class matches a package prefix
      */
-    public static Set<String> getSuperClasses(Collection<String> classes, String packagePrefixToStop) throws Exception {
+    public static Set<String> getSuperClasses(String clazzName, String packagePrefixToStop) throws Exception {
 
-        Set<String> superClasses = new HashSet<String>();
-        for (String clazzName : classes) {
-            Class<?> clazz = Class.forName(clazzName);
-            for (Class<?> sc = clazz.getSuperclass(); sc != null && sc != Object.class && !sc.getName().startsWith(packagePrefixToStop);) {
-                superClasses.add(sc.getName());
-                sc = sc.getSuperclass();
-            }
+        final Set<String> superClasses = new HashSet<String>();
 
+        Class<?> clazz = Class.forName(clazzName);
+        for (Class<?> sc = clazz.getSuperclass(); sc != null && sc != Object.class && !sc.getName().startsWith(packagePrefixToStop);) {
+            superClasses.add(sc.getName());
+            sc = sc.getSuperclass();
         }
 
         return superClasses;

@@ -8,5 +8,5 @@ import java.util.Collection;
 public interface AnnotationResolver {
     String getFullyQualifiedName();
     Level getLevel();
-    NodeData resolve(Node node, Object arg);
+    NodeData resolve(Node node, String arg);
 }

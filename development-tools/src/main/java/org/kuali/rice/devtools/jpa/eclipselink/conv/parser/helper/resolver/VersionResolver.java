@@ -30,8 +30,8 @@ public class VersionResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
             if (fd.isLocking()) {

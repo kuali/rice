@@ -11,7 +11,6 @@ import japa.parser.ast.expr.AnnotationExpr;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.DescriptorRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,25 +20,24 @@ import java.util.List;
  * This is a sort of visitor "helper" class that looks to see if a particular annotation is on a class and if not
  * places it on the class.
  */
-public class AnnotationHelper extends OjbDescriptorRepositoryAwareVisitorHelper {
+public class AnnotationHelper extends VoidVisitorHelperBase<String> {
 
     private static final Log LOG = LogFactory.getLog(AnnotationHelper.class);
 
     private final Collection<AnnotationResolver> resolvers;
 
-    public AnnotationHelper(Collection<DescriptorRepository> descriptorRepositories, Collection<AnnotationResolver> resolvers) {
-        super(descriptorRepositories);
+    public AnnotationHelper(Collection<AnnotationResolver> resolvers) {
         this.resolvers = resolvers;
     }
 
     @Override
-    public void visitPre(final ClassOrInterfaceDeclaration n, final Object arg) {
-        addAnnotation(n ,arg, Level.CLASS);
+    public void visitPre(final ClassOrInterfaceDeclaration n, final String mappedClass) {
+        addAnnotation(n, mappedClass, Level.CLASS);
     }
 
     @Override
-    public void visitPre(final FieldDeclaration n, final Object arg) {
-        addAnnotation(n ,arg, Level.FIELD);
+    public void visitPre(final FieldDeclaration n, final String mappedClass) {
+        addAnnotation(n, mappedClass, Level.FIELD);
     }
 
     /** walks up the tree until reaching the CompilationUnit. */
@@ -51,7 +49,7 @@ public class AnnotationHelper extends OjbDescriptorRepositoryAwareVisitorHelper 
         return (CompilationUnit) unit;
     }
 
-    private void addAnnotation(final BodyDeclaration n, final Object arg, Level level) {
+    private void addAnnotation(final BodyDeclaration n, final String mappedClass, Level level) {
         for (AnnotationResolver resolver : resolvers) {
             if (resolver.getLevel() == level) {
                 LOG.info("Evaluating resolver " + ClassUtils.getShortClassName(resolver.getClass()));
@@ -88,7 +86,7 @@ public class AnnotationHelper extends OjbDescriptorRepositoryAwareVisitorHelper 
                 //3 add annotation if it doesn't already exist and the annotation resolves (meaning the resolver
                 // determines if should be added by returning a non-null value)
                 if (!foundfullyQualifiedAnn && !foundSimpleAnn) {
-                    NodeData nodes = resolver.resolve(n, arg);
+                    NodeData nodes = resolver.resolve(n, mappedClass);
                     if (nodes != null && nodes.annotation != null) {
                         LOG.info("adding " + nodes.annotation + " to " + getNameFormMessage(n) + ".");
                         annotations.add(nodes.annotation);

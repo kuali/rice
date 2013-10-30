@@ -8,13 +8,22 @@ import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.expr.MarkerAnnotationExpr;
 import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
+import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.AnnotationResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.Level;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
+import java.util.Collection;
+
 public class MappedSuperClassResolver implements AnnotationResolver {
     public static final String PACKAGE = "javax.persistence";
     public static final String SIMPLE_NAME = "MappedSuperclass";
+
+    private final Collection<DescriptorRepository> descriptorRepositories;
+
+    public MappedSuperClassResolver(Collection<DescriptorRepository> descriptorRepositories) {
+        this.descriptorRepositories = descriptorRepositories;
+    }
 
     @Override
     public String getFullyQualifiedName() {
@@ -27,7 +36,7 @@ public class MappedSuperClassResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Node node, Object arg) {
+    public NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof ClassOrInterfaceDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on ClassOrInterfaceDeclaration");
         }
@@ -38,7 +47,13 @@ public class MappedSuperClassResolver implements AnnotationResolver {
             return null;
         }
 
-        return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
+        final String name = dclr.getName();
+        final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
+        final String enclosingClass = pckg + "." + name;
+        if (!enclosingClass.equals(mappedClass)) {
+            return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
                 new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
+        }
+        return null;
     }
 }

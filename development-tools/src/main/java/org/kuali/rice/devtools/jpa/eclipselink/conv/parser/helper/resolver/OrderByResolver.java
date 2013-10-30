@@ -35,8 +35,8 @@ public class OrderByResolver extends AbstractMappedFieldResolver {
 
     /** gets the annotation but also adds an import in the process if a Convert annotation is required. */
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final CollectionDescriptor cld = OjbUtil.findCollectionDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final CollectionDescriptor cld = OjbUtil.findCollectionDescriptor(mappedClass, fieldName, descriptorRepositories);
         if (cld != null) {
             Collection<FieldHelper> orderBy = cld.getOrderBy();
             if (orderBy != null && !orderBy.isEmpty()) {

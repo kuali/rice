@@ -12,9 +12,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
-import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
@@ -39,25 +37,25 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
 
     /** gets the annotation but also adds an import in the process if a Convert annotation is required. */
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final ObjectReferenceDescriptor ord = OjbUtil.findObjectReferenceDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final ObjectReferenceDescriptor ord = OjbUtil.findObjectReferenceDescriptor(mappedClass, fieldName, descriptorRepositories);
         if (ord != null) {
             final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
             final Collection<ImportDeclaration> additionalImports = new ArrayList<ImportDeclaration>();
 
             final Collection<String> fks = ord.getForeignKeyFields();
             if (fks == null || fks.isEmpty()) {
-                LOG.error(clazz + "." + fieldName + " field has a reference descriptor for " + fieldName
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
                         + " but does not have any foreign keys configured");
                 return null;
             }
 
-            final Collection<String> pks = OjbUtil.getPrimaryKeyNames(clazz, descriptorRepositories);
+            final Collection<String> pks = OjbUtil.getPrimaryKeyNames(mappedClass, descriptorRepositories);
 
             if (pks.size() == fks.size() && pks.containsAll(fks)) {
                 final String className = ord.getItemClassName();
                 if (StringUtils.isBlank(className)) {
-                    LOG.error(clazz + "." + fieldName + " field has a reference descriptor for " + fieldName
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
                             + " but does not class name attribute");
                 } else {
                     final String shortClassName = ClassUtils.getShortClassName(className);
@@ -74,12 +72,12 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
 
                 final int proxyPfl = ord.getProxyPrefetchingLimit();
                 if (proxyPfl > 0) {
-                    LOG.error(clazz + "." + fieldName + " field has a proxy prefetch limit of " + proxyPfl + ", unsupported conversion to @OneToOne attributes");
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a proxy prefetch limit of " + proxyPfl + ", unsupported conversion to @OneToOne attributes");
                 }
 
                 final boolean refresh = ord.isRefresh();
                 if (refresh) {
-                    LOG.error(clazz + "." + fieldName + " field has refresh set to " + refresh + ", unsupported conversion to @OneToOne attributes");
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has refresh set to " + refresh + ", unsupported conversion to @OneToOne attributes");
                 }
 
                 final List<Expression> cascadeTypes = new ArrayList<Expression>();
@@ -87,29 +85,29 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
                 if (autoRetrieve) {
                     cascadeTypes.add(new NameExpr("CascadeType.REFRESH"));
                 } else {
-                    LOG.warn(clazz + "." + fieldName + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
+                    LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
                 }
 
                 final int autoDelete = ord.getCascadingDelete();
                 if (autoDelete == ObjectReferenceDescriptor.CASCADE_NONE) {
-                    LOG.warn(clazz + "." + fieldName + " field has auto-delete set to none, unsupported conversion to CascadeType");
+                    LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to none, unsupported conversion to CascadeType");
                 } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_LINK) {
-                    LOG.warn(clazz + "." + fieldName + " field has auto-delete set to link, unsupported conversion to CascadeType");
+                    LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to link, unsupported conversion to CascadeType");
                 } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_OBJECT) {
                     cascadeTypes.add(new NameExpr("CascadeType.REMOVE"));
                 } else {
-                    LOG.error(clazz + "." + fieldName + " field has auto-delete set to an invalid value");
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to an invalid value");
                 }
 
                 final int autoUpdate = ord.getCascadingStore();
                 if (autoUpdate == ObjectReferenceDescriptor.CASCADE_NONE) {
-                    LOG.warn(clazz + "." + fieldName + " field has auto-update set to none, unsupported conversion to CascadeType");
+                    LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to none, unsupported conversion to CascadeType");
                 } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_LINK) {
-                    LOG.warn(clazz + "." + fieldName + " field has auto-update set to link, unsupported conversion to CascadeType");
+                    LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to link, unsupported conversion to CascadeType");
                 } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_OBJECT) {
                     cascadeTypes.add(new NameExpr("CascadeType.PERSIST"));
                 } else {
-                    LOG.error(clazz + "." + fieldName + " field has auto-update set to an invalid value");
+                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to an invalid value");
                 }
 
                 if (!cascadeTypes.isEmpty()) {

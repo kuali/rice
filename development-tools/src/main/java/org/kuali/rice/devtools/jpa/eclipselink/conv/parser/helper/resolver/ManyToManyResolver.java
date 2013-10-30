@@ -12,7 +12,6 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
@@ -39,8 +38,8 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
 
     /** gets the annotation but also adds an import in the process if a Convert annotation is required. */
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final CollectionDescriptor cld = OjbUtil.findCollectionDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final CollectionDescriptor cld = OjbUtil.findCollectionDescriptor(mappedClass, fieldName, descriptorRepositories);
         if (cld != null) {
             final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
             final Collection<ImportDeclaration> additionalImports = new ArrayList<ImportDeclaration>();
@@ -53,14 +52,14 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
 
             final String[] fkToItemClass = getFksToItemClass(cld);
             if (fkToItemClass == null || fkToItemClass.length == 0) {
-                LOG.error(clazz + "." + fieldName + " field has a collection descriptor for " + fieldName
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a M:N relationship but does not have any fk-pointing-to-element-class configured");
                 error = true;
             }
 
             final String[] fkToThisClass = getFksToThisClass(cld);
             if (fkToThisClass == null || fkToThisClass.length == 0) {
-                LOG.error(clazz + "." + fieldName + " field has a collection descriptor for " + fieldName
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a M:N relationship but does not have any fk-pointing-to-this-class configured");
                 error = true;
             }
@@ -71,14 +70,14 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
 
             final Collection<String> fks = cld.getForeignKeyFields();
             if (fks != null || !fks.isEmpty()) {
-                LOG.warn(clazz + "." + fieldName + " field has a collection descriptor for " + fieldName
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a M:N relationship but has the inverse-foreignkey configured as opposed to "
                         + "fk-pointing-to-this-class and fk-pointing-to-element-class");
             }
 
             final String className = cld.getItemClassName();
             if (StringUtils.isBlank(className)) {
-                LOG.error(clazz + "." + fieldName + " field has a reference descriptor for " + fieldName
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
                         + " but does not class name attribute");
             } else {
                 final String shortClassName = ClassUtils.getShortClassName(className);
@@ -95,12 +94,12 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
 
             final int proxyPfl = cld.getProxyPrefetchingLimit();
             if (proxyPfl > 0) {
-                LOG.error(clazz + "." + fieldName + " field has a proxy prefetch limit of " + proxyPfl + ", unsupported conversion to @OneToOne attributes");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a proxy prefetch limit of " + proxyPfl + ", unsupported conversion to @OneToOne attributes");
             }
 
             final boolean refresh = cld.isRefresh();
             if (refresh) {
-                LOG.error(clazz + "." + fieldName + " field has refresh set to " + refresh + ", unsupported conversion to @OneToOne attributes");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has refresh set to " + refresh + ", unsupported conversion to @OneToOne attributes");
             }
 
             final List<Expression> cascadeTypes = new ArrayList<Expression>();
@@ -108,29 +107,29 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
             if (autoRetrieve) {
                 cascadeTypes.add(new NameExpr("CascadeType.REFRESH"));
             } else {
-                LOG.warn(clazz + "." + fieldName + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
             }
 
             final int autoDelete = cld.getCascadingDelete();
             if (autoDelete == ObjectReferenceDescriptor.CASCADE_NONE) {
-                LOG.warn(clazz + "." + fieldName + " field has auto-delete set to none, unsupported conversion to CascadeType");
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to none, unsupported conversion to CascadeType");
             } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_LINK) {
-                LOG.warn(clazz + "." + fieldName + " field has auto-delete set to link, unsupported conversion to CascadeType");
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to link, unsupported conversion to CascadeType");
             } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_OBJECT) {
                 cascadeTypes.add(new NameExpr("CascadeType.REMOVE"));
             } else {
-                LOG.error(clazz + "." + fieldName + " field has auto-delete set to an invalid value");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to an invalid value");
             }
 
             final int autoUpdate = cld.getCascadingStore();
             if (autoUpdate == ObjectReferenceDescriptor.CASCADE_NONE) {
-                LOG.warn(clazz + "." + fieldName + " field has auto-update set to none, unsupported conversion to CascadeType");
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to none, unsupported conversion to CascadeType");
             } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_LINK) {
-                LOG.warn(clazz + "." + fieldName + " field has auto-update set to link, unsupported conversion to CascadeType");
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to link, unsupported conversion to CascadeType");
             } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_OBJECT) {
                 cascadeTypes.add(new NameExpr("CascadeType.PERSIST"));
             } else {
-                LOG.error(clazz + "." + fieldName + " field has auto-update set to an invalid value");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to an invalid value");
             }
 
             if (!cascadeTypes.isEmpty()) {

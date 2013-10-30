@@ -27,6 +27,7 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.JoinT
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.LobResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.ManyToManyResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.ManyToOneResolver;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.MappedSuperClassResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneToManyResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneToOneResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OrderByResolver;
@@ -36,16 +37,20 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Tempo
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TransientResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.VersionResolver;
 
+/**
+ * For visiting ojb mapped entities and their super classes.
+ */
 public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
     private static final Log LOG = LogFactory.getLog(OjbDescriptorRepositoryAwareVisitor.class);
 
-    private final VoidVisitorHelper<Object> annotationHelper;
+    private final VoidVisitorHelper<String> annotationHelper;
 
     public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings ) {
         super(descriptorRepositories);
 
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();
-        annotations.add(new EntityResolver());
+        annotations.add(new EntityResolver(getDescriptorRepositories()));
+        annotations.add(new MappedSuperClassResolver(getDescriptorRepositories()));
         annotations.add(new TableResolver(getDescriptorRepositories()));
         annotations.add(new CustomizerResolver(getDescriptorRepositories()));
         annotations.add(new TransientResolver(getDescriptorRepositories()));
@@ -65,36 +70,36 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new LobResolver(getDescriptorRepositories()));
         annotations.add(new IdClassResolver(getDescriptorRepositories()));
 
-        annotationHelper = new AnnotationHelper(descriptorRepositories, annotations);
+        annotationHelper = new AnnotationHelper(annotations);
     }
 
     @Override
-    public void visit(final CompilationUnit n, final Object arg) {
-        super.visit(n, arg);
+    public void visit(final CompilationUnit n, final String mappedClass) {
+        super.visit(n, mappedClass);
         ParserUtil.sortImports(n.getImports());
     }
 
     @Override
-    public void visit(final ClassOrInterfaceDeclaration n, final Object arg) {
-        annotationHelper.visitPre(n, arg);
+    public void visit(final ClassOrInterfaceDeclaration n, final String mappedClass) {
+        annotationHelper.visitPre(n, mappedClass);
 
         ParserUtil.deconstructMultiDeclarations(ParserUtil.getFieldMembers(n.getMembers()));
 
         if (n.getMembers() != null) {
             for (final BodyDeclaration member : n.getMembers()) {
-                member.accept(this, arg);
+                member.accept(this, mappedClass);
             }
         }
 
-        annotationHelper.visitPost(n, arg);
+        annotationHelper.visitPost(n, mappedClass);
     }
 
     @Override
-    public void visit(final FieldDeclaration n, final Object arg) {
-        annotationHelper.visitPre(n, arg);
+    public void visit(final FieldDeclaration n, final String mappedClass) {
+        annotationHelper.visitPre(n, mappedClass);
 
         //insert logic here if needed
 
-        annotationHelper.visitPost(n, arg);
+        annotationHelper.visitPost(n, mappedClass);
     }
 }

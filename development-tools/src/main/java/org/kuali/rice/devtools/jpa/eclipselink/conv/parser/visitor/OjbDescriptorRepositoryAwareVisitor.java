@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public abstract class OjbDescriptorRepositoryAwareVisitor extends VoidVisitorAdapter implements OjbDescriptorRepositoryAware {
+public abstract class OjbDescriptorRepositoryAwareVisitor extends VoidVisitorAdapter<String> implements OjbDescriptorRepositoryAware {
 
     private final Collection<DescriptorRepository> descriptorRepositories;
 

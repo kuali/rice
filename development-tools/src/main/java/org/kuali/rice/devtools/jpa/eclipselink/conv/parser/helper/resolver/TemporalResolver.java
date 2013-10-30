@@ -38,18 +38,18 @@ public class TemporalResolver extends AbstractMappedFieldResolver {
     }
 
     @Override
-    protected NodeData getAnnotationNodes(String clazz, String fieldName) {
-        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(clazz, fieldName, descriptorRepositories);
+    protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
+        final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
-            final Class<?> fc = getType(clazz, fieldName);
+            final Class<?> fc = getType(enclosingClass, fieldName);
             final String columnType = fd.getColumnType();
             if (isJavaSqlDate(fc)) {
-                LOG.warn(clazz + "." + fieldName + " is a java.sql.Date. " + getWarnMessageFragment(columnType));
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " is a java.sql.Date. " + getWarnMessageFragment(columnType));
             } else if (isJavaSqlTimestamp(fc)) {
-                LOG.warn(clazz + "." + fieldName + " is a java.sql.Timestamp. " + getWarnMessageFragment(columnType));
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " is a java.sql.Timestamp. " + getWarnMessageFragment(columnType));
             } else if (isJavaSqlTime(fc)) {
-                LOG.warn(clazz + "." + fieldName + " is a java.sql.Time. " + getWarnMessageFragment(columnType));
+                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " is a java.sql.Time. " + getWarnMessageFragment(columnType));
             } else if (isJavaUtilDate(fc) || isJavaUtilCalendar(fc)) {
                 if (DATE.equals(columnType)) {
                     return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr("TemporalType.DATE")),
@@ -65,7 +65,7 @@ public class TemporalResolver extends AbstractMappedFieldResolver {
                             Collections.singletonList(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), "TemporalType"), false, false)));
                 }
 
-                LOG.error(clazz + "." + fieldName + " is a java.sql.Date or java.util.Calendar but the column type " + columnType + " is unknown.  Unable to add @Temporal annotation");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " is a java.sql.Date or java.util.Calendar but the column type " + columnType + " is unknown.  Unable to add @Temporal annotation");
             }
 
             return null;

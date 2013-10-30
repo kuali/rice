@@ -4,6 +4,7 @@ import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.Node;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
+import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
 import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
@@ -14,6 +15,7 @@ import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.ParserUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.AnnotationResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.Level;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
@@ -44,7 +46,7 @@ public class CustomizerResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Node node, Object arg) {
+    public NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof ClassOrInterfaceDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on ClassOrInterfaceDeclaration");
         }
@@ -56,13 +58,13 @@ public class CustomizerResolver implements AnnotationResolver {
         }
         final String name = dclr.getName();
         final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
-        final String fullyQualifiedClass = pckg + "." + name;
-        final Collection<String> customizedFields = getCustomizedFields(fullyQualifiedClass);
-        if (customizedFields == null || customizedFields.isEmpty()) {
-            LOG.info("Table has no customized fields for mapped class " + fullyQualifiedClass);
+        final String enclosingClass = pckg + "." + name;
+        final Collection<String> customizedFieldsOnNode = getFieldsOnNode(dclr, getCustomizedFields(mappedClass));
+        if (customizedFieldsOnNode == null || customizedFieldsOnNode.isEmpty()) {
+            LOG.info(ResolverUtil.logMsgForClass(enclosingClass, mappedClass) + " has no customized fields");
             return null;
         }
-        return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr("CreateCustomizerFor" + customizedFields.toString())),
+        return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr("CreateCustomizerFor" + customizedFieldsOnNode.toString())),
                 new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
     }
 
@@ -78,5 +80,21 @@ public class CustomizerResolver implements AnnotationResolver {
             return customizedFields;
         }
         return Collections.emptySet();
+    }
+
+    private Collection<String> getFieldsOnNode(TypeDeclaration node, Collection<String> fields) {
+        final Collection<String> fieldsOnNode = new ArrayList<String>();
+
+        final Collection<FieldDeclaration> fds = ParserUtil.getFieldMembers(node.getMembers());
+        if (fields != null) {
+            for (FieldDeclaration f : fds) {
+                final String name = ParserUtil.getFieldName(f);
+                if (fields.contains(name)) {
+                    fieldsOnNode.add(name);
+                }
+            }
+        }
+
+        return fieldsOnNode;
     }
 }

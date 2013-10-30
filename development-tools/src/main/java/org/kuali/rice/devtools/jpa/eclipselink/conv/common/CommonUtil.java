@@ -12,15 +12,15 @@ public final class CommonUtil {
         throw new UnsupportedOperationException("do not call");
     }
 
-    private static String getJavaSourceFilePath(String clazz, String projectDir, String sourceDir) {
-        return projectDir + sourceDir + "/" + clazz.replace('.', '/') + ".java";
+    public static String toFilePath(String className, String projectDir, String sourceDir) {
+        return projectDir + sourceDir + "/" + className.replace('.', '/') + ".java";
     }
 
     public static Collection<String> toFilePaths(Collection<String> classNames, String projectDir, String sourceDir) {
         Set<String> filePaths = new HashSet<String>();
 
         for (String clazz : classNames) {
-            filePaths.add(getJavaSourceFilePath(clazz, projectDir, sourceDir));
+            filePaths.add(toFilePath(clazz, projectDir, sourceDir));
         }
 
         return filePaths;

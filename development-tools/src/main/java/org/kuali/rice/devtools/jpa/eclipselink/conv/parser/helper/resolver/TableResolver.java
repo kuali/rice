@@ -44,7 +44,7 @@ public class TableResolver implements AnnotationResolver {
     }
 
     @Override
-    public NodeData resolve(Node node, Object arg) {
+    public NodeData resolve(Node node, String mappedClass) {
         if (!(node instanceof ClassOrInterfaceDeclaration)) {
             throw new IllegalArgumentException("this annotation belongs only on ClassOrInterfaceDeclaration");
         }
@@ -56,14 +56,20 @@ public class TableResolver implements AnnotationResolver {
         }
         final String name = dclr.getName();
         final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
-        final String fullyQualifiedClass = pckg + "." + name;
-        final String tableName = getMappedTable(fullyQualifiedClass);
-        if (tableName == null) {
-            LOG.error("Table could not be found for mapped class " + fullyQualifiedClass);
-            return null;
+        final String enclosingClass = pckg + "." + name;
+
+        final ClassDescriptor cd = OjbUtil.findClassDescriptor(enclosingClass, descriptorRepositories);
+        if (cd != null) {
+            final String tableName = getMappedTable(enclosingClass);
+            if (tableName == null) {
+                LOG.error(ResolverUtil.logMsgForClass(enclosingClass, mappedClass) + " table could not be found");
+                return null;
+            }
+
+            return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new StringLiteralExpr(tableName)),
+                    new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
         }
-        return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new StringLiteralExpr(tableName)),
-                new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
+        return null;
     }
 
     private String getMappedTable(String clazz) {

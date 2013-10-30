@@ -55,6 +55,6 @@ public class LabsLookupDefaultSortAft extends DemoLabsLookupBase {
         Thread.sleep(3000);
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td/div/span/a[contains(text(), 'a9')]");
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]/td/div/span/a[contains(text(), 'a8')]");
-        assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]/td/div/span/a[contains(text(), 'a6')]");
+        assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[4]/td/div/span/a[contains(text(), 'a6')]");
     }
 }

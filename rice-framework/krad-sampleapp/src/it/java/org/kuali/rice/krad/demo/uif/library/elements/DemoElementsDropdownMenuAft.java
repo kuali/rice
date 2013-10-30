@@ -75,9 +75,10 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
     
     protected void testLibraryElementsDropdownWithToggleButton() throws Exception {
         waitAndClickByLinkText("Dropdown with Toggle Button");
-        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/a/b[@class='caret']");
+        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/a/span[@class='caret']");
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
     }
+
     @Test
     public void testLibraryElementsDropdownBookmark() throws Exception {
         testLibraryElementsDropdownBasic();

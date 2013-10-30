@@ -22,6 +22,7 @@ import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
+import japa.parser.ast.body.VariableDeclarator;
 import japa.parser.ast.expr.AnnotationExpr;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.logging.Log;
@@ -69,10 +70,9 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
     private void addAnnotation(final BodyDeclaration n, final String mappedClass, Level level) {
         for (AnnotationResolver resolver : resolvers) {
             if (resolver.getLevel() == level) {
-                LOG.info("Evaluating resolver " + ClassUtils.getShortClassName(resolver.getClass()));
+                LOG.info("Evaluating resolver " + ClassUtils.getShortClassName(resolver.getClass()) + " for " + getTypeOrFieldNameForMsg(n) + ".");
 
                 final String fullyQualifiedName = resolver.getFullyQualifiedName();
-                final String simpleName = ClassUtils.getShortClassName(fullyQualifiedName);
 
                 //1 figure out if annotation is already imported either via star import or single import.
                 final CompilationUnit unit = getCompilationUnit(n);
@@ -86,7 +86,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 //Note: cannot remove the import without much more complex logic because the annotation may exist on other nodes in the CompilationUnit
                 //Could traverse the entire CompilationUnit searching for the annotation if we wanted to determine whether we can safely remove an import
                 if (removeExisting && existingAnnotation != null) {
-                    LOG.info("removing existing " + existingAnnotation + " from " + getNameFormMessage(n) + ".");
+                    LOG.info("removing existing " + existingAnnotation + " from " + getTypeOrFieldNameForMsg(n) + ".");
                     final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
                     annotations.remove(existingAnnotation);
                     n.setAnnotations(annotations);
@@ -97,14 +97,14 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 if (existingAnnotation == null || (existingAnnotation != null && removeExisting)) {
                     NodeData nodes = resolver.resolve(n, mappedClass);
                     if (nodes != null && nodes.annotation != null) {
-                        LOG.info("adding " + nodes.annotation + " to " + getNameFormMessage(n) + ".");
+                        LOG.info("adding " + nodes.annotation + " to " + getTypeOrFieldNameForMsg(n) + ".");
                         final List<AnnotationExpr> annotations = n.getAnnotations() != null ? n.getAnnotations() : new ArrayList<AnnotationExpr>();
                         annotations.add(nodes.annotation);
                         n.setAnnotations(annotations);
 
                         //5 add import for annotation
                         if (!foundAnnImport) {
-                            LOG.info("adding import " + fullyQualifiedName + " to " + getNameFormMessage(n) + ".");
+                            LOG.info("adding import " + fullyQualifiedName + " to " + getTypeNameForMsg(n) + ".");
                             imports.add(nodes.annotationImport);
                         }
 
@@ -116,8 +116,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                                 }
                                 final boolean imported = imported(imports, aImport.getName().toString());
                                 if (!imported) {
-                                    LOG.info("adding import " + aImport.getName().toString() + " to " + getNameFormMessage(
-                                            n) + ".");
+                                    LOG.info("adding import " + aImport.getName().toString() + " to " + getTypeNameForMsg(n) + ".");
                                     imports.add(aImport);
                                 }
                             }
@@ -134,7 +133,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                             //7 if removeExisting is set and the nested declaration exists, then remove the nested declaration
                             if (removeExisting) {
                                 if (existingNestedDeclaration != null) {
-                                    LOG.info("removing existing nested declaration " + existingNestedDeclaration.getName() + " from " + getNameFormMessage(n) + ".");
+                                    LOG.info("removing existing nested declaration " + existingNestedDeclaration.getName() + " from " + getTypeOrFieldNameForMsg(n) + ".");
                                     members.remove(existingNestedDeclaration);
                                 }
                             }
@@ -142,7 +141,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                             //8 add nested class
                             if (existingNestedDeclaration == null || (existingNestedDeclaration != null && removeExisting)) {
                                 nodes.nestedDeclaration.setParentNode(parent);
-                                LOG.info("adding nested declaration " + nodes.nestedDeclaration.getName() + " to " + getNameFormMessage(n) + ".");
+                                LOG.info("adding nested declaration " + nodes.nestedDeclaration.getName() + " to " + getTypeOrFieldNameForMsg(n) + ".");
                                 members.add(nodes.nestedDeclaration);
                             }
                             parent.setMembers(members);
@@ -160,12 +159,12 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
         for (AnnotationExpr ae : annotations) {
             final String name = ae.getName().toString();
             if ((simpleName.equals(name) && foundAnnImport)) {
-                LOG.info("found " + ae + " on " + getNameFormMessage(n) + ".");
+                LOG.info("found " + ae + " on " + getTypeOrFieldNameForMsg(n) + ".");
                 return ae;
             }
 
             if (fullyQualifiedName.equals(name)) {
-                LOG.info("found " + ae + " on " + getNameFormMessage(n) + ".");
+                LOG.info("found " + ae + " on " + getTypeOrFieldNameForMsg(n) + ".");
                 return ae;
             }
         }
@@ -193,14 +192,12 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 final String importName = i.getName().toString();
                 if (i.isAsterisk()) {
                     if (packageName.equals(importName)) {
-                        final CompilationUnit unit = getCompilationUnit(i);
-                        LOG.info("found import " + packageName + ".* on " + unit.getTypes().get(0).getName() + ".");
+                        LOG.info("found import " + packageName + ".* on " + getTypeNameForMsg(i) + ".");
                         return true;
                     }
                 } else {
                     if (fullyQualifiedName.equals(importName)) {
-                        final CompilationUnit unit = getCompilationUnit(i);
-                        LOG.info("found import " + fullyQualifiedName + " on " + unit.getTypes().get(0).getName() + ".");
+                        LOG.info("found import " + fullyQualifiedName + " on " + getTypeNameForMsg(i) + ".");
                         return true;
                     }
                 }
@@ -209,14 +206,31 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
         return false;
     }
 
-    private String getNameFormMessage(final BodyDeclaration n) {
+    private String getTypeOrFieldNameForMsg(final BodyDeclaration n) {
         if (n instanceof TypeDeclaration) {
             return ((TypeDeclaration) n).getName();
         } else if (n instanceof FieldDeclaration) {
-            return ((FieldDeclaration) n).getVariables().toString();
+            final FieldDeclaration fd = (FieldDeclaration) n;
+            //this wont work for nested classes but we should be in nexted classes at this point
+            final CompilationUnit unit = getCompilationUnit(n);
+            final TypeDeclaration parent = unit.getTypes().get(0);
+            Collection<String> variableNames = new ArrayList<String>();
+            if (fd.getVariables() != null) {
+                for (VariableDeclarator vd : fd.getVariables()) {
+                    variableNames.add(vd.getId().getName());
+                }
+            }
+            return variableNames.size() == 1 ?
+                    parent.getName() + "." + variableNames.iterator().next() :
+                    parent.getName() + "." + variableNames.toString();
+
         }
         return null;
     }
 
-
+    private String getTypeNameForMsg(final Node n) {
+        final CompilationUnit unit = getCompilationUnit(n);
+        final TypeDeclaration parent = unit.getTypes().get(0);
+        return parent.getName();
+    }
 }

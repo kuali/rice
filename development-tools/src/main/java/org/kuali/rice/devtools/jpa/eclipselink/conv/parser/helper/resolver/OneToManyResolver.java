@@ -99,11 +99,6 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
                 additionalImports.add(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), "FetchType"), false, false));
             }
 
-            final int proxyPfl = cld.getProxyPrefetchingLimit();
-            if (proxyPfl > 0) {
-                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a proxy prefetch limit of " + proxyPfl + ", unsupported conversion to @OneToOne attributes");
-            }
-
             final boolean refresh = cld.isRefresh();
             if (refresh) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has refresh set to " + refresh + ", unsupported conversion to @OneToOne attributes");

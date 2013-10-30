@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -184,7 +185,7 @@ public class UifControllerHelper {
         Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
         modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
 
-        //modelAndView.addObject(UifParameters.STRING_RENDER_CONTEXT, new StringRenderContext());
+        modelAndView.addObject(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
     }
 
     /**

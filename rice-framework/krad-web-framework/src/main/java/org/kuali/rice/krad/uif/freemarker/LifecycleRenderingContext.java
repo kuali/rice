@@ -37,6 +37,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.web.servlet.support.RequestContext;
@@ -88,7 +89,7 @@ public class LifecycleRenderingContext {
      * Create FreeMarker environment for rendering within the view lifecycle.
      * 
      * @param request The active servlet request.
-     * @param response The active servlet response.
+     * @param rawresponse The active servlet response.
      */
     public LifecycleRenderingContext(Object model, HttpServletRequest request, HttpServletResponse rawresponse) {
         try {
@@ -100,6 +101,8 @@ public class LifecycleRenderingContext {
             request.setAttribute(UifConstants.DEFAULT_MODEL_NAME, model);
             request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
             modelAttrs.put(UifParameters.REQUEST, request);
+
+            modelAttrs.put(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             writer = new PrintWriter(new OutputStreamWriter(out, "UTF-8"));

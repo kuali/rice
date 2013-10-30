@@ -54,6 +54,7 @@ public class UifParameters {
     public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
     public static final String REDIRECTED_LOOKUP = "redirectedLookup";
 	public static final String REFERENCES_TO_REFRESH = "referencesToRefresh";
+    public static final String RENDER_HELPER_METHODS = "HelperMethods";
     public static final String RETURN_BY_SCRIPT = "returnByScript";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";

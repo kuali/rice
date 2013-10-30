@@ -65,6 +65,7 @@ public class Header extends ContentElementBase {
 
     private String headerTagStyle;
     private List<String> headerTagCssClasses;
+    private boolean headerTagOnly;
 
     private Message richHeaderMessage;
     private List<Component> inlineComponents;
@@ -265,6 +266,14 @@ public class Header extends ContentElementBase {
         this.headerTagStyle = headerTagStyle;
     }
 
+    public boolean isHeaderTagOnly() {
+        return headerTagOnly;
+    }
+
+    public void setHeaderTagOnly(boolean headerTagOnly) {
+        this.headerTagOnly = headerTagOnly;
+    }
+
     /**
      * Nested group instance that can be used to render contents above the header text
      *
@@ -431,6 +440,7 @@ public class Header extends ContentElementBase {
 
         headerCopy.setHeaderTagStyle(this.headerTagStyle);
         headerCopy.setHeaderText(this.headerText);
+        headerCopy.setHeaderTagOnly(this.headerTagOnly);
 
         if(inlineComponents != null) {
             List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);

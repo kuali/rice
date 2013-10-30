@@ -22,9 +22,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
 import org.kuali.rice.krad.uif.container.Group;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * List layout manager is a layout manager for group types to output their items as either ordered or
  * unordered lists.
@@ -37,8 +34,6 @@ public class ListLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = -8611267646944565117L;
 
     private boolean orderedList;
-
-    private Map<String, String> itemCssClasses;
 
     public ListLayoutManager() {
         super();
@@ -79,14 +74,6 @@ public class ListLayoutManager extends LayoutManagerBase {
         this.orderedList = orderedList;
     }
 
-    public Map<String, String> getItemCssClasses() {
-        return itemCssClasses;
-    }
-
-    public void setItemCssClasses(Map<String, String> itemCssClasses) {
-        this.itemCssClasses = itemCssClasses;
-    }
-
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
@@ -97,9 +84,5 @@ public class ListLayoutManager extends LayoutManagerBase {
         ListLayoutManager listLayoutManagerCopy = (ListLayoutManager) listLayoutManager;
 
         listLayoutManagerCopy.setOrderedList(this.orderedList);
-
-        if (this.itemCssClasses != null) {
-            listLayoutManagerCopy.setItemCssClasses(new HashMap<String, String>(this.itemCssClasses));
-        }
     }
 }

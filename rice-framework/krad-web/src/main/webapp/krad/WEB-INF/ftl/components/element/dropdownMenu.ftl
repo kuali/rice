@@ -40,13 +40,7 @@
         </#if>
     </a>
 
-    <ul class="dropdown-menu">
-        <#if element.menuActions??>
-           <#list element.menuActions as menuAction>
-              <@krad.template component=menuAction/>
-            </#list>
-        </#if>
-    </ul>
+    <@krad.template component=element.menuGroup/>
 
     <#if !element.renderedInList>
         </div>

@@ -24,25 +24,30 @@
 
     <div class="container-fluid">
 
-    <nav id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes} role="navigation">
+        <nav id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes} role="navigation">
 
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <div class="logoBrand">
-              <h1>
-                  <#if element.brandImage?? && element.brandImage.render>
-                      <@krad.template component=element.brandImage/>
-                  <#else>
-                      ${element.brandText!}
-                  </#if>
-              </h1>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-reorder"></span>
+                </button>
+
+                <a class="navbar-brand" href="#">
+                    <div class="logoBrand">
+                        <h1>
+                            <#if element.brandImage?? && element.brandImage.render>
+                          <@krad.template component=element.brandImage/>
+                      <#else>
+                            ${element.brandText!}
+                            </#if>
+                        </h1>
+                    </div>
+                </a>
             </div>
-           </a>
-        </div>
 
-        <@krad.template component=element.navigationBarGroup/>
+            <@krad.template component=element.navigationBarGroup/>
 
-     </nav>
+        </nav>
 
     </div>
 

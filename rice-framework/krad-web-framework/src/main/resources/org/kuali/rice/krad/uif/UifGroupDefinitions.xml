@@ -38,13 +38,22 @@
       <bean parent="Uif-GroupValidationMessages"/>
     </property>
     <property name="disclosure">
-      <bean parent="Uif-Disclosure" p:render="false"/>
+      <bean parent="Uif-Disclosure" p:render="false">
+        <property name="collapseImageSrc"
+                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+        <property name="expandImageSrc"
+                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+      </bean>
     </property>
-    <property name="disclosure.collapseImageSrc"
-              value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-    <property name="disclosure.expandImageSrc"
-              value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
     <property name="readOnly" value="@{#parent.readOnly}"/>
+  </bean>
+
+  <!-- group with no layout manager -->
+  <bean id="Uif-SimpleGroup" parent="Uif-SimpleGroup-parentBean"/>
+  <bean id="Uif-SimpleGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/simpleGroup.ftl"/>
+    <property name="templateName" value="uif_simpleGroup"/>
   </bean>
 
   <!--BoxLayout Group & Sections -->
@@ -312,6 +321,17 @@
         <value>uif-listGroup</value>
       </list>
     </property>
+    <property name="layoutManager">
+      <bean parent="Uif-ListLayout"/>
+    </property>
+  </bean>
+
+  <!-- list group that only invokes layout manager (no header, footer) -->
+  <bean id="Uif-SimpleListGroup" parent="Uif-SimpleListGroup-parentBean"/>
+  <bean id="Uif-SimpleListGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/simpleListGroup.ftl"/>
+    <property name="templateName" value="uif_simpleListGroup"/>
     <property name="layoutManager">
       <bean parent="Uif-ListLayout"/>
     </property>

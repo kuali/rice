@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="Uif-DropdownMenu" parent="Uif-DropdownMenu-parentBean"/>
+  <bean id="Uif-DropdownMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DropdownMenu"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/dropdownMenu.ftl"/>
+    <property name="templateName" value="uif_dropdownMenu"/>
+    <property name="dropdownToggle">
+      <bean parent="Uif-Message" p:generateSpan="false"/>
+    </property>
+    <property name="libraryCssClasses">
+      <list>
+        <value>dropdown</value>
+      </list>
+    </property>
+    <property name="menuGroup">
+      <bean parent="Uif-SimpleListGroup" p:layoutManager.libraryCssClasses="dropdown-menu"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MenuAction" parent="Uif-MenuAction-parentBean"/>
+  <bean id="Uif-MenuAction-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MenuAction"
+        parent="Uif-ActionLink" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/menuAction.ftl"/>
+    <property name="templateName" value="uif_menuAction"/>
+    <property name="actionUrl">
+      <bean parent="Uif-Url"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>
+  <bean id="Uif-ApplicationHeaderBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.ApplicationHeader"
+        parent="Uif-ContentElementBase" scope="prototype" p:render="@{!renderedInLightBox}">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/appHeader.ftl"/>
+    <property name="templateName" value="uif_appHeader"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-applicationHeader</value>
+      </list>
+    </property>
+
+    <property name="applicationNavigation">
+      <bean parent="Uif-NavigationBar"/>
+    </property>
+
+    <property name="applicationToolbar">
+      <bean parent="Uif-CssGridGroup" p:layoutManager.additionalCssClasses="container-fluid">
+        <property name="cssClasses">
+          <list merge="true">
+            <value>toolbar</value>
+          </list>
+        </property>
+        <property name="validationMessages">
+          <null/>
+        </property>
+        <property name="disclosure">
+          <null/>
+        </property>
+        <property name="help">
+          <null/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Uif-NavigationBar" parent="Uif-NavigationBar-parentBean"/>
+  <bean id="Uif-NavigationBar-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.NavigationBar"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/navigationBar.ftl"/>
+    <property name="templateName" value="uif_navigationBar"/>
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>navbar</value>
+      </list>
+    </property>
+    <property name="navigationBarGroup">
+      <bean parent="Uif-ListGroup">
+        <property name="libraryCssClasses">
+          <list merge="true">
+            <value>collapse</value>
+            <value>navbar-collapse</value>
+            <value>navbar-ex1-collapse</value>
+          </list>
+        </property>
+        <property name="layoutManager.libraryCssClasses">
+          <list merge="true">
+            <value>nav</value>
+            <value>navbar-nav</value>
+            <value>navbar-right</value>
+          </list>
+        </property>
+        <property name="validationMessages">
+          <null/>
+        </property>
+        <property name="disclosure">
+          <null/>
+        </property>
+        <property name="help">
+          <null/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Uif-AppMenuGroup" parent="Uif-AppMenuGroup-parentBean"/>
+  <bean id="Uif-AppMenuGroup-parentBean" abstract="true" parent="Uif-CssGridGroup" scope="prototype">
+    <property name="libraryCssClasses">
+      <list merge="true">
+        <value>dropdown-menu</value>
+      </list>
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-appMenuGroup</value>
+      </list>
+    </property>
+    <property name="validationMessages">
+      <null/>
+    </property>
+    <property name="disclosure">
+      <null/>
+    </property>
+    <property name="help">
+      <null/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MenuList" parent="Uif-MenuList-parentBean"/>
+  <bean id="Uif-MenuList-parentBean" abstract="true" parent="Uif-ListGroup" scope="prototype">
+    <property name="header">
+      <bean parent="Uif-SectionHeader" p:headerTagOnly="true"/>
+    </property>
+    <property name="validationMessages">
+      <null/>
+    </property>
+    <property name="disclosure">
+      <null/>
+    </property>
+    <property name="help">
+      <null/>
+    </property>
+  </bean>
+
+
+</beans>

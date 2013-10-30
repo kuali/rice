@@ -22,12 +22,10 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 
 /**
- * A special action component that is used within a {@link DropdownMenu}
+ * A special action component that is used within a {@link DropdownMenu}.
  *
- * <p>
- * An action that adds an option to behave as a standard link (using {@link #getActionUrl()}, and options for
- * menu divders and headers
- * </p>
+ * <p>An action that adds an option to behave as a standard link (using {@link #getActionUrl()}, and options for
+ * menu divders and headers</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -46,8 +44,7 @@ public class MenuAction extends Action {
     /**
      * If the {@link #getActionUrl()} is configured, sets up the action script to open the configured URL
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -55,6 +52,14 @@ public class MenuAction extends Action {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
 
             setActionScript(actionScript);
+        }
+
+        if (menuHeader) {
+            getCssClasses().add("dropdown-header");
+        } else if (menuDivider) {
+            getCssClasses().add("divider");
+        } else if (isDisabled()) {
+            getCssClasses().add("disabled");
         }
 
         super.performFinalize(model, parent);

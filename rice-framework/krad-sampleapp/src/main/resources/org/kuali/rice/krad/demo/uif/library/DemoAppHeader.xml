@@ -55,15 +55,16 @@
         <property name="applicationNavigation.items">
           <list>
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="RESEARCHER" p:renderToggleCaret="false">
-              <!--<property name="menuGroup">-->
-                <!--<bean parent="Uif-CssGridGroup">-->
-                  <!--<property name="items">-->
-                    <!--<list>-->
-
-                    <!--</list>-->
-                  <!--</property>-->
-                <!--</bean>-->
-              <!--</property>-->
+              <property name="menuGroup">
+                <bean parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="6">
+                  <property name="items">
+                    <list>
+                       <bean parent="Demo-Menu-ResearcherC1"/>
+                       <bean parent="Demo-Menu-ResearcherC2"/>
+                    </list>
+                  </property>
+                </bean>
+              </property>
             </bean>
 
             <bean parent="Uif-DropdownMenu" p:dropdownToggleText="UNIT" p:renderToggleCaret="false"/>
@@ -75,11 +76,11 @@
 
         <property name="applicationToolbar.items">
           <list>
-            <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right"
-                  p:layoutManager.itemCssClasses="all:dropdown pull-right">
+            <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
               <property name="items">
                 <list>
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action list">
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action list"
+                        p:additionalCssClasses="pull-right">
                     <property name="menuActions">
                       <list>
                         <bean parent="Uif-MenuAction"
@@ -93,9 +94,11 @@
                     </property>
                   </bean>
 
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Doc Search" p:renderToggleCaret="false"/>
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Doc Search" p:renderToggleCaret="false"
+                        p:additionalCssClasses="pull-right"/>
 
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
+                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark"
+                        p:additionalCssClasses="pull-right">
                     <property name="menuActions">
                       <list>
                         <bean parent="Uif-MenuAction"
@@ -125,13 +128,41 @@
   </bean>
 
   <!-- ex:Demo-AppHeader-Example1 start-->
-  <!--<bean id="Demo-Menu-ResearcherC1" parent="Uif-SimpleGroup">-->
-     <!--<property name="items">-->
-       <!--<list>-->
+  <bean id="Demo-Menu-ResearcherC1" parent="Uif-SimpleGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuList" p:headerText="Proposals">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Create Proposal"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Proposals Enroute"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="All My Proposals"/>
+              <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Search Proposals"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
-       <!--</list>-->
-     <!--</property>-->
-  <!--</bean>-->
+  <bean id="Demo-Menu-ResearcherC2" parent="Uif-SimpleGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuList" p:headerText="IRB Protocols">
+          <property name="items">
+            <list>
+              <bean parent="Uif-SimpleHeaderFour" p:headerText="Actions"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Create IRB Protocol"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Amend or Renew IRB Protocol"/>
+              <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
+              <bean parent="Uif-Link" p:href="#" p:linkText="Pending Protocols"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
   <!-- ex:Demo-AppHeader-Example1 end-->
 
 </beans>

@@ -30,7 +30,17 @@
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
-    <div class="clearfix uif-header-contentWrapper">
+    <#if element.headerTagOnly>
+        ${headerOpenTag}
+            <#if element.richHeaderMessage?has_content>
+                 <@krad.template component=element.richHeaderMessage/>
+            <#else>
+                 ${element.headerText!}
+            </#if>
+        ${headerCloseTag}
+    <#else>
+
+      <div class="clearfix uif-header-contentWrapper">
 
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
@@ -66,6 +76,8 @@
         <#-- lower group -->
         <@krad.template component=element.lowerGroup/>
 
-    </div>
+      </div>
+
+    </#if>
 
 </#macro>

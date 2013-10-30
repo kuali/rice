@@ -30,36 +30,42 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <${listType!} id="${manager.id}" ${style!} ${styleClass!}>
-        <#list items as item>
-            <#local evenOdd="odd"/>
-            <#if (item_index % 2) == 0>
-                <#local evenOdd="even"/>
+    <#local inList=false/>
+
+    <#list items as item>
+        <#-- if the item is a header, render outside the list -->
+        <#if HelperMethods.isHeader(item.getClass())>
+            <#if inList>
+                </${listType}>
+                <#local inList=false/>
             </#if>
 
-            <#local itemCssClass=""/>
-            <#if manager.itemCssClasses??>
-                <#if manager.itemCssClasses["all"]??>
-                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses['all']}"/>
+            <@krad.template component=item/>
+        <#else>
+            <#if !inList>
+                <${listType} ${style!} ${styleClass!}>
+                <#local inList=true/>
+            </#if>
+
+            <#-- if item is list aware, pull its classes and style to the list element -->
+            <#if HelperMethods.isListAware(item.getClass())>
+                <#if item.styleClassesAsString?has_content>
+                     <#local itemStyleClass="class=\"${item.styleClassesAsString}\""/>
                 </#if>
 
-                <#if manager.itemCssClasses[evenOdd]??>
-                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses[evenOdd]}"/>
-                </#if>
-
-                <#if manager.itemCssClasses[item_index?string]??>
-                    <#local itemCssClass="${itemCssClass} ${manager.itemCssClasses[item_index?string]}"/>
+                <#if item.style?has_content>
+                    <#local itemStyle="style=\"${item.style}\""/>
                 </#if>
             </#if>
 
-            <#if itemCssClass?has_content>
-                <#local itemCssClass="class=\"${itemCssClass}\""/>
-            </#if>
-
-            <li ${itemCssClass}>
+            <li ${itemStyle!} ${itemStyleClass!}>
                 <@krad.template component=item/>
             </li>
-        </#list>
-    </${listType!}>
+        </#if>
+    </#list>
+
+    <#if inList>
+        </${listType}>
+    </#if>
 
 </#macro>

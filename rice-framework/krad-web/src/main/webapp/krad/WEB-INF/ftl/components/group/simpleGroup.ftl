@@ -15,19 +15,10 @@
     limitations under the License.
 
 -->
-<#--
-    Renders a menu action item
+<#macro uif_simpleGroup group>
 
- -->
-
-<#include "actionLink.ftl" parse=true/>
-
-<#macro uif_menuAction element>
-
-    <#if element.menuHeader>
-        ${element.actionLabel?html}
-    <#elseif !element.menuDivider>
-        <@uif_actionLink element=element/>
-    </#if>
+    <#list group.items as item>
+        <@krad.template component=item/>
+    </#list>
 
 </#macro>

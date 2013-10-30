@@ -22,33 +22,6 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Overrideable global application header and footer -->
-  <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>
-  <bean id="Uif-ApplicationHeaderBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.element.ApplicationHeader"
-        parent="Uif-ContentElementBase" scope="prototype" p:render="@{!renderedInLightBox}">
-    <property name="template" value="/krad/WEB-INF/ftl/components/element/appHeader.ftl"/>
-    <property name="templateName" value="uif_appHeader"/>
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-applicationHeader</value>
-      </list>
-    </property>
-
-    <property name="applicationNavigation">
-       <bean parent="Uif-NavigationBar"/>
-    </property>
-
-    <property name="applicationToolbar">
-      <bean parent="Uif-CssGridGroup" p:layoutManager.additionalCssClasses="container-fluid">
-        <property name="cssClasses">
-          <list merge="true">
-            <value>toolbar</value>
-          </list>
-        </property>
-      </bean>
-    </property>
-  </bean>
-
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"/>
   <bean id="Uif-GlobalApplicationHeader-parentBean" abstract="true" parent="Uif-ApplicationHeaderBase"
         scope="prototype"/>
@@ -120,6 +93,13 @@
   <bean id="Uif-HeaderSix-parentBean" abstract="true" parent="Uif-HeaderBase">
     <property name="headerLevel" value="h6"/>
   </bean>
+
+  <bean id="Uif-SimpleHeaderOne" parent="Uif-HeaderOne" p:headerTagOnly="true"/>
+  <bean id="Uif-SimpleHeaderTwo" parent="Uif-HeaderTwo" p:headerTagOnly="true"/>
+  <bean id="Uif-SimpleHeaderThree" parent="Uif-HeaderThree" p:headerTagOnly="true"/>
+  <bean id="Uif-SimpleHeaderFour" parent="Uif-HeaderFour" p:headerTagOnly="true"/>
+  <bean id="Uif-SimpleHeaderFive" parent="Uif-HeaderFive" p:headerTagOnly="true"/>
+  <bean id="Uif-SimpleHeaderSix" parent="Uif-HeaderSix" p:headerTagOnly="true"/>
 
   <bean id="Uif-ViewHeader" parent="Uif-ViewHeader-parentBean"/>
   <bean id="Uif-ViewHeader-parentBean" abstract="true" parent="Uif-HeaderOne"

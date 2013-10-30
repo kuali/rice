@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
+import org.kuali.rice.krad.uif.container.Group;
 
 /**
  * Renders a dropdown menu (context menu) of actions.
@@ -42,6 +43,7 @@ public class DropdownMenu extends ContentElementBase implements ListAware {
     private boolean renderedInList;
 
     private List<MenuAction> menuActions;
+    private Group menuGroup;
 
     public DropdownMenu() {
         super();
@@ -50,8 +52,19 @@ public class DropdownMenu extends ContentElementBase implements ListAware {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
+     */
+    @Override
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
+
+        if ((this.menuActions != null) && !this.menuActions.isEmpty()) {
+            this.menuGroup.setItems(menuActions);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -71,8 +84,8 @@ public class DropdownMenu extends ContentElementBase implements ListAware {
 
         components.add(dropdownToggle);
 
-        if (menuActions != null) {
-            components.addAll(menuActions);
+        if (menuGroup != null) {
+            components.add(menuGroup);
         }
 
         return components;
@@ -185,6 +198,26 @@ public class DropdownMenu extends ContentElementBase implements ListAware {
     }
 
     /**
+     * Group instance that is rendered when the dropdown is toggled.
+     *
+     * <p>Note in most cases this group will be a simple list group. The component allows for the list group
+     * to be initialized in a base bean, then child beans can simply define the actions using
+     * {@link DropdownMenu#getMenuActions()}</p>
+     *
+     * @return Group instance
+     */
+    public Group getMenuGroup() {
+        return menuGroup;
+    }
+
+    /**
+     * @see DropdownMenu#getMenuGroup()
+     */
+    public void setMenuGroup(Group menuGroup) {
+        this.menuGroup = menuGroup;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
     @Override
@@ -209,6 +242,10 @@ public class DropdownMenu extends ContentElementBase implements ListAware {
                 optionsCopy.add((MenuAction) action.copy());
             }
             dropdownCopy.setMenuActions(optionsCopy);
+        }
+
+        if (this.menuGroup != null) {
+            dropdownCopy.setMenuGroup((Group) menuGroup.copy());
         }
     }
 }

@@ -28,9 +28,9 @@ import groovy.util.ConfigSlurper
 
 println "Looking for config.groovy at ${this.class.classLoader.getResource("config.groovy")}"
 
-def config = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"))
+c = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"))
 
-println config
+println c
 
 BasicConfigurator.configure()
 
@@ -49,14 +49,14 @@ if ( !rootLoader ) {
 println "RootLoader: $rootLoader"
 
 // add additional items to the classpath
-for ( classpathDir in config.project.classpathDirectories ) {
+for ( classpathDir in c.project.classpathDirectories ) {
     // NOTE: That trailing slash is absolutely required.  Otherwise it just adds the directory to the path as if it's a file and does not scan inside
-    def classpathUrl = new URL("file://"+new File( config.project.homeDirectory + "/" + classpathDir ).canonicalPath + "/")
+    def classpathUrl = new URL("file://"+new File( c.project.homeDirectory + "/" + classpathDir ).canonicalPath + "/")
     println "Adding Classpath URL: $classpathUrl"
     rootLoader.addURL( classpathUrl )
 }
 
-for ( jarDir in config.project.classpathJarDirectories ) {
+for ( jarDir in c.project.classpathJarDirectories ) {
     def jars   = jarDir.listFiles().findAll { it.name.endsWith('.jar') } 
     jars.each { 
         println "Adding Classpath URL: ${it.toURI().toURL()}"
@@ -69,8 +69,8 @@ for ( jarDir in config.project.classpathJarDirectories ) {
 println rootLoader.getURLs()
 
 
-fullSourcePaths = config.project.sourceDirectories.collect { config.project.homeDirectory + "/" + it }
-fullOjbPaths = config.ojb.repositoryFiles.collect { config.project.homeDirectory + "/" + it }
+fullSourcePaths = c.project.sourceDirectories.collect { c.project.homeDirectory + "/" + it }
+fullOjbPaths = c.ojb.repositoryFiles.collect { c.project.homeDirectory + "/" + it }
 
 println "\n\nSource Directories: \n${fullSourcePaths.join( '\n' )}"
 
@@ -97,14 +97,29 @@ println "\n\n"
 
 def mappedJavaFiles = convertClassesToJavaFiles(ojbMappedClasses)
 
-println "\n\nJava Files: \n${mappedJavaFiles.join( '\n' )}"
+println "\n\nJava Files: \n${mappedJavaFiles.values().join( '\n' )}"
 
-for (File ojbMappedFile : mappedJavaFiles) {
+entityVisitor = new EntityVisitor(drs, c.converterMappings, c.project.removeExistingAnnotations )
+
+for (String className : mappedJavaFiles.keySet()) {
+    File ojbMappedFile = mappedJavaFiles[className]
+	processJavaFile(ojbMappedFile)
+    
+    Collection<String> superClasses = OjbUtil.getSuperClasses(className, "org.kuali.rice");
+    for (String superClass : superClasses) {
+        processJavaFile(convertClassToFile(superClass), className)
+    }
+
+}
+
+def void processJavaFile( File ojbMappedFile, String subclassName = null ) {
     println "Processing File: $ojbMappedFile"
-	final CompilationUnit unit = JavaParser.parse(ojbMappedFile)
-	def entityVisitor = new EntityVisitor(drs, config.converterMappings, config.project.removeExistingAnnotations )
-    entityVisitor.visit(unit, null)
-    if ( config.project.dryRun ) {
+    if ( ojbMappedFile == null ) return;
+    
+    def unit = JavaParser.parse(ojbMappedFile)
+    entityVisitor.visit(unit, subclassName)
+
+    if ( c.project.dryRun ) {
         println unit.toString()
     } else {
         ojbMappedFile.delete()
@@ -112,31 +127,27 @@ for (File ojbMappedFile : mappedJavaFiles) {
     }
 }
 
-//2: handle all the classes that are super classes of ojb mapped files but not residing in rice
-//final Collection<String> superClasses = OjbUtil.getSuperClasses(ojbMappedClasses, "org.kuali.rice");
-//
-//for (String superClassFile : toFilePaths(ConversionConfig.getInstance(), superClasses)) {
-//	if (superClassFile.endsWith("KraPersistableBusinessObjectBase.java")) {
-//		final CompilationUnit unit = JavaParser.parse(new File(superClassFile));
-//		new MappedSuperClassVisitor(drs).visit(unit, null);
-//		//LOG.info(unit.toString());
-//	}
-//}
+def File convertClassToFile( String className ) {
+    println "Looking for source file for $className"
+    for ( String dir in fullSourcePaths ) {
+        def fileNameWithinSource = className.replace('.', '/') + ".java"
+        def javaFile = new File( dir + "/" + fileNameWithinSource)
+        //println "Looking for: $javaFile.canonicalPath"
+        if ( javaFile.exists() ) {
+            println "Found: $javaFile.canonicalPath"
+            return javaFile
+        }
+    }
+    println "No source file found.  Ignoring."
+    return null
+}
 
-
-def Collection<File> convertClassesToJavaFiles(Collection<String> mappedClasses) {
-    def javaFiles = []
+def Map<String,File> convertClassesToJavaFiles(Collection<String> mappedClasses) {
+    def javaFiles = [:]
     for ( className in mappedClasses ) {
-        println "Looking for source file for $className"
-        for ( String dir in fullSourcePaths ) {
-            def fileNameWithinSource = className.replace('.', '/') + ".java"
-            def javaFile = new File( dir + "/" + fileNameWithinSource)
-            //println "Looking for: $javaFile.canonicalPath"
-            if ( javaFile.exists() ) {
-                println "Found: $javaFile.canonicalPath"
-                javaFiles += javaFile
-                break
-            }
+        def javaFile = convertClassToFile(className)
+        if ( javaFile != null ) {
+            javaFiles[className] = javaFile
         }
     }
     return javaFiles

@@ -55,7 +55,7 @@ public class LobResolver extends AbstractMappedFieldResolver {
         final FieldDescriptor fd = OjbUtil.findFieldDescriptor(mappedClass, fieldName, descriptorRepositories);
 
         if (fd != null) {
-            final Class<?> fc = getType(enclosingClass, fieldName);
+            final Class<?> fc = ResolverUtil.getType(enclosingClass, fieldName);
             final String columnType = fd.getColumnType();
             if (isLob(columnType)) {
                 if (isValidFieldType(fc)) {
@@ -73,17 +73,6 @@ public class LobResolver extends AbstractMappedFieldResolver {
 
     private boolean isLob(String columnType) {
         return "BLOB".equals(columnType) || "CLOB".equals(columnType);
-    }
-
-    private Class<?> getType(String clazz, String fieldName) {
-        try {
-            final Class<?> c = Class.forName(clazz);
-            final Field f = c.getDeclaredField(fieldName);
-            return f.getType();
-        } catch (Exception e) {
-            LOG.error("Cannot get type from " + clazz + "." + fieldName, e);
-        }
-        return null;
     }
 
     private boolean isValidFieldType(Class<?> type) {

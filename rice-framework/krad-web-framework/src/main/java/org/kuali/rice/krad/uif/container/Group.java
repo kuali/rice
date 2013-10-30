@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -35,6 +29,12 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
@@ -72,12 +72,15 @@ import org.kuali.rice.krad.uif.widget.Scrollpane;
         @BeanTag(name = "gridSection-bean", parent = "Uif-GridSection"),
         @BeanTag(name = "gridSubSection-bean", parent = "Uif-GridSubSection"),
         @BeanTag(name = "disclosure-gridSection-bean", parent = "Uif-Disclosure-GridSection"),
-        @BeanTag(name = "fixedCssGridGroup-bean", parent = "Uif-FixedCssGridGroup"),
-        @BeanTag(name = "fixedCssGridSection-bean", parent = "Uif-FixedCssGridSection"),
-        @BeanTag(name = "fixedCssGridSubSection-bean", parent = "Uif-FixedCssGridSubSection"),
-        @BeanTag(name = "fluidCssGridGroup-bean", parent = "Uif-FluidCssGridGroup"),
-        @BeanTag(name = "fluidCssGridSection-bean", parent = "Uif-FluidCssGridSection"),
-        @BeanTag(name = "fluidCssGridSubSection-bean", parent = "Uif-FluidCssGridSubSection"),
+        @BeanTag(name = "cssGridGroup-bean", parent = "Uif-CssGridGroup"),
+        @BeanTag(name = "cssGridSection-bean", parent = "Uif-CssGridSection"),
+        @BeanTag(name = "cssGridSubSection-bean", parent = "Uif-CssGridSubSection"),
+        @BeanTag(name = "cssGridSection-1FieldLabelColumn-bean", parent = "Uif-CssGridSection-1FieldLabelColumn"),
+        @BeanTag(name = "cssGridSection-2FieldLabelColumn-bean", parent = "Uif-CssGridSection-2FieldLabelColumn"),
+        @BeanTag(name = "cssGridSection-3FieldLabelColumn-bean", parent = "Uif-CssGridSection-3FieldLabelColumn"),
+        @BeanTag(name = "cssGridSubSection-1FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-1FieldLabelColumn"),
+        @BeanTag(name = "cssGridSubSection-2FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-2FieldLabelColumn"),
+        @BeanTag(name = "cssGridSubSection-3FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-3FieldLabelColumn"),
         @BeanTag(name = "listGroup-bean", parent = "Uif-ListGroup"),
         @BeanTag(name = "listSection-bean", parent = "Uif-ListSection"),
         @BeanTag(name = "listSubSection-bean", parent = "Uif-ListSubSection"),
@@ -117,8 +120,7 @@ import org.kuali.rice.krad.uif.widget.Scrollpane;
         @BeanTag(name = "maintenanceHorizontalBoxSection-bean", parent = "Uif-MaintenanceHorizontalBoxSection"),
         @BeanTag(name = "maintenanceVerticalBoxSection-bean", parent = "Uif-MaintenanceVerticalBoxSection"),
         @BeanTag(name = "maintenanceHorizontalBoxSubSection-bean", parent = "Uif-MaintenanceHorizontalBoxSubSection"),
-        @BeanTag(name = "maintenanceVerticalBoxSubSection-bean", parent = "Uif-MaintenanceVerticalBoxSubSection")
-})
+        @BeanTag(name = "maintenanceVerticalBoxSubSection-bean", parent = "Uif-MaintenanceVerticalBoxSubSection")})
 public class Group extends ContainerBase {
     private static final long serialVersionUID = 7953641325356535509L;
 
@@ -343,7 +345,7 @@ public class Group extends ContainerBase {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
             items = new LifecycleAwareList<Component>(this);
         }
-        
+
         return this.items;
     }
 
@@ -419,12 +421,12 @@ public class Group extends ContainerBase {
 
     /**
      * Determine the group should be rendered on initial load, or if a loading message should be rendered instead.
-     * 
+     *
      * @return True if a loading message should be rendered, false if the group should be rendered now.
      */
     public boolean isRenderLoading() {
-        return disclosure != null && disclosure.isAjaxRetrievalWhenOpened()
-                && (!disclosure.isRender() || !disclosure.isDefaultOpen());
+        return disclosure != null && disclosure.isAjaxRetrievalWhenOpened() && (!disclosure.isRender() || !disclosure
+                .isDefaultOpen());
     }
 
 }

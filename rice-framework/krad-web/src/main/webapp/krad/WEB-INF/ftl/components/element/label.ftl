@@ -17,37 +17,38 @@
 -->
 <#macro uif_label element>
 
-    <#local label="${element.labelText}"/>
-    <#local colon=""/>
+    <#if element.labelText?has_content>
+        <#local label="${element.labelText}"/>
+        <#local colon=""/>
 
-    <#if element.renderColon>
-        <#local colon=":"/>
+        <#if element.renderColon>
+            <#local colon=":"/>
+        </#if>
+
+        <#if element.title?has_content>
+            <#local title="title=\"${element.title}\""/>
+        </#if>
+
+        <@krad.span component=element>
+
+        <#-- required message left -->
+            <#if element.requiredMessagePlacement == 'LEFT'>
+                <@krad.template component=element.requiredMessage/>
+            </#if>
+
+        <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
+            <#if element.richLabelMessage?has_content>
+                <@krad.template component=element.richLabelMessage/>${colon}
+            <#else>
+                ${label}${colon}
+            </#if>
+        </label>
+
+        <#-- required message right -->
+            <#if element.requiredMessagePlacement == 'RIGHT'>
+                <@krad.template component=element.requiredMessage/>
+            </#if>
+
+        </@krad.span>
     </#if>
-
-    <#if element.title?has_content>
-        <#local title="title=\"${element.title}\""/>
-    </#if>
-
-    <@krad.span component=element>
-
-    <#-- required message left -->
-        <#if element.requiredMessagePlacement == 'LEFT'>
-            <@krad.template component=element.requiredMessage/>
-        </#if>
-
-    <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
-        <#if element.richLabelMessage?has_content>
-            <@krad.template component=element.richLabelMessage/>${colon}
-        <#else>
-            ${label}${colon}
-        </#if>
-    </label>
-
-    <#-- required message right -->
-        <#if element.requiredMessagePlacement == 'RIGHT'>
-            <@krad.template component=element.requiredMessage/>
-        </#if>
-
-    </@krad.span>
-
 </#macro>

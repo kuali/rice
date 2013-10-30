@@ -15,63 +15,56 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.util.KRADUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a
- * table look by using div elements for its items. Items are added into rows based on their colSpan
+ * table look by using div elements for its items.
+ *
+ * <p>
+ * Items are added into rows based on their colSpan
  * setting, while each row has a max size of 12 columns. By default, if colSpan is not set on an
  * item, that item will take a full row.
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "cssGridLayout-bean", parent = "Uif-CssGridLayoutBase"),
-        @BeanTag(name = "fixedCssGridLayout-bean", parent = "Uif-FixedCssGridLayout"),
-        @BeanTag(name = "fluidCssGridLayout-bean", parent = "Uif-FluidCssGridLayout")})
-public class CssGridLayoutManager extends LayoutManagerBase {
+@BeanTag(name = "cssGridLayout-bean", parent = "Uif-CssGridLayout")
+public class CssGridLayoutManager extends CssGridLayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 
-    private static final int NUMBER_OF_COLUMNS = 12;
-    private static final String BOOTSTRAP_SPAN_PREFIX = "col-md-";
-
-    private Map<String, String> conditionalRowCssClasses;
-    private String rowLayoutCssClass;
     private int defaultItemColSpan;
-
-    // non-settable
-    protected List<List<Component>> rows;
-    protected List<String> rowCssClassAttributes;
-    protected List<String> cellCssClassAttributes;
-
-    public CssGridLayoutManager() {
-        rows = new ArrayList<List<Component>>();
-        conditionalRowCssClasses = new HashMap<String, String>();
-        cellCssClassAttributes = new ArrayList<String>();
-        rowCssClassAttributes = new ArrayList<String>();
-    }
 
     /**
      * CssGridLayoutManager's performFinalize method calculates and separates the items into rows
      * based on their colSpan settings and the defaultItemColSpan setting
-     * 
+     *
      * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
     public void performFinalize(Object model, Component component) {
         super.performFinalize(model, component);
-        
-        Container container = (Container) component;
 
+        Container container = (Container) component;
+        processNormalLayout(container);
+
+    }
+
+    /**
+     * Separates the container's items into the appropriate number of rows and div "cells" based on
+     * the defaultColSpan property settings and colSpan settings of the items
+     *
+     * @param container the container using this layout manager
+     */
+    private void processNormalLayout(Container container) {
         int rowSpaceLeft = NUMBER_OF_COLUMNS;
         int rowIndex = 0;
         boolean isOdd = true;
@@ -93,7 +86,8 @@ public class CssGridLayoutManager extends LayoutManagerBase {
             // determine "cell" div css
             List<String> cellCssClasses = item.getCellCssClasses();
             if (cellCssClasses == null) {
-                item.setCellCssClasses(cellCssClasses = new ArrayList<String>());
+                item.setCellCssClasses(new ArrayList<String>());
+                cellCssClasses = item.getCellCssClasses();
             }
             cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + colSpan);
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));
@@ -146,47 +140,6 @@ public class CssGridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
-     * delimiter
-     * 
-     * @return class attribute string
-     */
-    private String getCellStyleClassesAsString(List<String> cellCssClasses) {
-        if (cellCssClasses != null) {
-            return StringUtils.join(cellCssClasses, " ");
-        }
-
-        return "";
-    }
-
-    /**
-     * Get the rows (which are a list of components each)
-     * 
-     * @return the List of Lists of Components which represents rows for this layout
-     */
-    public List<List<Component>> getRows() {
-        return rows;
-    }
-
-    /**
-     * List of css class HTML attribute values ordered by index of row
-     * 
-     * @return the list of css class HTML attributes for rows
-     */
-    public List<String> getRowCssClassAttributes() {
-        return rowCssClassAttributes;
-    }
-
-    /**
-     * List of css class HTML attribute values ordered by the order in which the cell appears
-     * 
-     * @return the list of css class HTML attributes for cells
-     */
-    public List<String> getCellCssClassAttributes() {
-        return cellCssClassAttributes;
-    }
-
-    /**
      * The default cell colSpan to use for this layout (max setting, and the bean default, is 12)
      *
      * @return int representing the default colSpan for cells in this layout
@@ -198,55 +151,11 @@ public class CssGridLayoutManager extends LayoutManagerBase {
 
     /**
      * Set the default colSpan for this layout's items
-     * 
+     *
      * @param defaultItemColSpan
      */
     public void setDefaultItemColSpan(int defaultItemColSpan) {
         this.defaultItemColSpan = defaultItemColSpan;
-    }
-
-    /**
-     * The row css classes for the rows of this layout
-     * 
-     * <p>
-     * To set a css class on all rows, use "all" as a key. To set a class for even rows, use "even"
-     * as a key, for odd rows, use "odd". Use a one-based index to target a specific row by index.
-     * </p>
-     * 
-     * @return a map which represents the css classes of the rows of this layout
-     */
-    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
-    public Map<String, String> getConditionalRowCssClasses() {
-        return conditionalRowCssClasses;
-    }
-
-    /**
-     * Set conditionalRowCssClasses
-     * 
-     * @param conditionalRowCssClasses
-     */
-    public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
-        this.conditionalRowCssClasses = conditionalRowCssClasses;
-    }
-
-    /**
-     * The layout css class used by the framework to represent the row as a row visually (currently
-     * using a bootstrap class), which should not be manually reset in most situations
-     * 
-     * @return the css structure class for the rows of this layout
-     */
-    @BeanTagAttribute(name = "rowLayoutCssClass")
-    public String getRowLayoutCssClass() {
-        return rowLayoutCssClass;
-    }
-
-    /**
-     * Set the rowLayoutCssClass
-     * 
-     * @param rowLayoutCssClass
-     */
-    public void setRowLayoutCssClass(String rowLayoutCssClass) {
-        this.rowLayoutCssClass = rowLayoutCssClass;
     }
 
     /**
@@ -258,45 +167,6 @@ public class CssGridLayoutManager extends LayoutManagerBase {
 
         CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
 
-        if (this.rowLayoutCssClass != null) {
-            cssGridLayoutManagerCopy.setRowLayoutCssClass(this.rowLayoutCssClass);
-        }
-
         cssGridLayoutManagerCopy.setDefaultItemColSpan(this.defaultItemColSpan);
-
-        if (this.conditionalRowCssClasses != null) {
-            cssGridLayoutManagerCopy.setConditionalRowCssClasses(new HashMap<String, String>(
-                    this.conditionalRowCssClasses));
-        }
-
-        if (this.cellCssClassAttributes != null) {
-            cssGridLayoutManagerCopy.cellCssClassAttributes = new ArrayList<String>(this.cellCssClassAttributes);
-        }
-
-        if (this.rowCssClassAttributes != null) {
-            cssGridLayoutManagerCopy.rowCssClassAttributes = new ArrayList<String>(this.rowCssClassAttributes);
-        }
-
-        if (this.rows != null) {
-            cssGridLayoutManagerCopy.rows = new ArrayList<List<Component>>();
-            for (List<Component> row : this.rows) {
-                List<Component> rowCopy = new ArrayList<Component>();
-
-                if (row == null) {
-                    cssGridLayoutManagerCopy.rows.add(row);
-                    continue;
-                }
-
-                for (Component cellComp : row) {
-                    if (cellComp == null) {
-                        rowCopy.add(cellComp);
-                        continue;
-                    }
-                    rowCopy.add((Component) cellComp.copy());
-                }
-
-                cssGridLayoutManagerCopy.rows.add(rowCopy);
-            }
-        }
     }
 }

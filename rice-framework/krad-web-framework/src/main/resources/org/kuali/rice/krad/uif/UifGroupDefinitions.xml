@@ -241,6 +241,54 @@
     </property>
   </bean>
 
+  <bean id="Uif-CssGridSection-1FieldLabelColumn" parent="Uif-CssGridSection-1FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSection-1FieldLabelColumn-parentBean" abstract="true" parent="Uif-CssGridSection"
+        scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="1"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSection-2FieldLabelColumn" parent="Uif-CssGridSection-2FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSection-2FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSection-1FieldLabelColumn" scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="2"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSection-3FieldLabelColumn" parent="Uif-CssGridSection-3FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSection-3FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSection-1FieldLabelColumn" scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="3"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSubSection-1FieldLabelColumn" parent="Uif-CssGridSubSection-1FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSubSection-1FieldLabelColumn-parentBean" abstract="true" parent="Uif-CssGridSubSection"
+        scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="1"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSubSection-2FieldLabelColumn" parent="Uif-CssGridSubSection-2FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSubSection-2FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSubSection-1FieldLabelColumn" scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="2"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSubSection-3FieldLabelColumn" parent="Uif-CssGridSubSection-3FieldLabelColumn-parentBean"/>
+  <bean id="Uif-CssGridSubSection-3FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSubSection-1FieldLabelColumn" scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="3"/>
+    </property>
+  </bean>
+
   <!--GridLayout Group & Sections -->
 
   <bean id="Uif-GridGroup" parent="Uif-GridGroup-parentBean"/>

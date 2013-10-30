@@ -298,8 +298,7 @@
   </bean>
 
   <bean id="Uif-VerticalFieldGroup" parent="Uif-VerticalFieldGroup-parentBean"/>
-  <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
-        p:group.layoutManager.orientation="VERTICAL">
+  <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase">
     <property name="cssClasses">
       <list>
         <value>uif-verticalFieldGroup</value>
@@ -308,8 +307,7 @@
   </bean>
 
   <bean id="Uif-HorizontalFieldGroup" parent="Uif-HorizontalFieldGroup-parentBean"/>
-  <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase"
-        p:group.layoutManager.orientation="HORIZONTAL">
+  <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase">
     <property name="cssClasses">
       <list>
         <value>uif-horizontalFieldGroup</value>

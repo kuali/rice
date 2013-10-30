@@ -58,9 +58,9 @@
 
   <!--Css Grid Layout Managers (div based)-->
 
-  <bean id="Uif-CssGridLayout" abstract="true" parent="Uif-CssGridLayout-parentBean"/>
-  <bean id="Uif-CssGridLayout-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"
+  <bean id="Uif-CssGridLayoutBase" abstract="true" parent="Uif-CssGridLayoutBase-parentBean"/>
+  <bean id="Uif-CssGridLayoutBase-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.layout.CssGridLayoutManagerBase"
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/cssGrid.ftl"/>
     <property name="templateName" value="uif_cssGrid"/>
@@ -69,9 +69,24 @@
         <value>uif-cssGridLayout</value>
       </list>
     </property>
+    <property name="rowLayoutCssClass" value="row"/>
+  </bean>
+
+  <bean id="Uif-CssGridLayout" abstract="true" parent="Uif-CssGridLayout-parentBean"/>
+  <bean id="Uif-CssGridLayout-parentBean" abstract="true"
+        parent="Uif-CssGridLayoutBase"
+        class="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"
+        scope="prototype">
     <!-- this means items which don't define their colSpan will take up a whole "row" -->
     <property name="defaultItemColSpan" value="12"/>
-    <property name="rowLayoutCssClass" value="row"/>
+  </bean>
+
+  <bean id="Uif-CssGridLabelColumnLayout" abstract="true" parent="Uif-CssGridLabelColumnLayout-parentBean"/>
+  <bean id="Uif-CssGridLabelColumnLayout-parentBean" abstract="true"
+        parent="Uif-CssGridLayoutBase"
+        class="org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager"
+        scope="prototype">
+    <property name="numberOfLabelColumns" value="1"/>
   </bean>
 
   <!--Grid Layout Managers-->

@@ -23,6 +23,7 @@
     this layout, either a fluid version (stretches and reacts to resizing the window) or fixed (does not change
     the size of the "cells").
  -->
+<#include "../components/element/label.ftl"/>
 
 <#macro uif_cssGrid items manager container>
     <#if manager.styleClassesAsString?has_content>

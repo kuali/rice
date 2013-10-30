@@ -16,9 +16,10 @@
 package org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver;
 
 import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.expr.MemberValuePair;
 import japa.parser.ast.expr.NameExpr;
+import japa.parser.ast.expr.NormalAnnotationExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
-import japa.parser.ast.expr.SingleMemberAnnotationExpr;
 import japa.parser.ast.expr.StringLiteralExpr;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -29,6 +30,7 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class PortableSequenceGeneratorResolver extends AbstractMappedFieldResolver {
     private static final Log LOG = LogFactory.getLog(PortableSequenceGeneratorResolver.class);
@@ -60,7 +62,7 @@ public class PortableSequenceGeneratorResolver extends AbstractMappedFieldResolv
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has autoincrement set to false but sequenceName is " + seqName + ".");
             }
             if (autoInc || StringUtils.isNotBlank(seqName)) {
-                return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new StringLiteralExpr(seqName)),
+                return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("name", new StringLiteralExpr(seqName)))),
                         new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
             }
         }

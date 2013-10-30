@@ -16,9 +16,10 @@
 package org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver;
 
 import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.expr.MemberValuePair;
 import japa.parser.ast.expr.NameExpr;
+import japa.parser.ast.expr.NormalAnnotationExpr;
 import japa.parser.ast.expr.QualifiedNameExpr;
-import japa.parser.ast.expr.SingleMemberAnnotationExpr;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -77,7 +78,7 @@ public class ConvertResolver extends AbstractMappedFieldResolver {
                 if (jpaConverter == null) {
                     LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a converter " + fc.getClass().getName()
                         + " but a replacement converter was not configured, unable to set Convert class");
-                    return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(null)),
+                    return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("converter", new NameExpr(null)))),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
                 } else if ( StringUtils.isBlank(jpaConverter) ) {
                     LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a converter " + fc.getClass().getName()
@@ -85,7 +86,7 @@ public class ConvertResolver extends AbstractMappedFieldResolver {
                 } else {
                     final String shortClassName = ClassUtils.getShortClassName(jpaConverter);
                     final String packageName = ClassUtils.getPackageName(jpaConverter);
-                    return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(shortClassName + ".class")),
+                    return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME),  Collections.singletonList(new MemberValuePair("converter", new NameExpr(shortClassName + ".class")))),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
                             Collections.singletonList(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(packageName), shortClassName), false, false)));
                 }

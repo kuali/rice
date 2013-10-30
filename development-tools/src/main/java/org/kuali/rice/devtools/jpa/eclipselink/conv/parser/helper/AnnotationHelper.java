@@ -125,9 +125,6 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
 
                         unit.setImports(imports);
 
-
-
-
                         if (nodes.nestedDeclaration != null) {
                             final TypeDeclaration parent = unit.getTypes().get(0);
 

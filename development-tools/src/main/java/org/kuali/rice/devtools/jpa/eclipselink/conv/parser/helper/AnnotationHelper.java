@@ -82,7 +82,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 //2 check if annotation already exists...
                 final AnnotationExpr existingAnnotation = findAnnotation(n, fullyQualifiedName, foundAnnImport);
 
-                //3 if removeExisting annotation is set and the annotation exists, then remove the annotation prior to calling the resolver
+                //3 if removeExisting is set and the annotation exists, then remove the annotation prior to calling the resolver
                 //Note: cannot remove the import without much more complex logic because the annotation may exist on other nodes in the CompilationUnit
                 //Could traverse the entire CompilationUnit searching for the annotation if we wanted to determine whether we can safely remove an import
                 if (removeExisting && existingAnnotation != null) {
@@ -116,7 +116,8 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                                 }
                                 final boolean imported = imported(imports, aImport.getName().toString());
                                 if (!imported) {
-                                    LOG.info("adding import " + aImport.getName().toString() + " to " + getNameFormMessage(n) + ".");
+                                    LOG.info("adding import " + aImport.getName().toString() + " to " + getNameFormMessage(
+                                            n) + ".");
                                     imports.add(aImport);
                                 }
                             }
@@ -124,13 +125,30 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
 
                         unit.setImports(imports);
 
-                        //7 add nested class if does not exist
+
+
+
                         if (nodes.nestedDeclaration != null) {
-                            nodes.nestedDeclaration.setParentNode(unit.getTypes().get(0));
-                            LOG.info("adding nested declaration " + nodes.nestedDeclaration.getName() + " to " + getNameFormMessage(n) + ".");
-                            final List<BodyDeclaration> members = unit.getTypes().get(0).getMembers() != null ? unit.getTypes().get(0).getMembers() : new ArrayList<BodyDeclaration>();
-                            members.add(nodes.nestedDeclaration);
-                            unit.getTypes().get(0).setMembers(members);
+                            final TypeDeclaration parent = unit.getTypes().get(0);
+
+                            final List<BodyDeclaration> members = parent.getMembers() != null ? parent.getMembers() : new ArrayList<BodyDeclaration>();
+                            final TypeDeclaration existingNestedDeclaration = findTypeDeclaration(members, nodes.nestedDeclaration.getName());
+
+                            //7 if removeExisting is set and the nested declaration exists, then remove the nested declaration
+                            if (removeExisting) {
+                                if (existingNestedDeclaration != null) {
+                                    LOG.info("removing existing nested declaration " + existingNestedDeclaration.getName() + " from " + getNameFormMessage(n) + ".");
+                                    members.remove(existingNestedDeclaration);
+                                }
+                            }
+
+                            //8 add nested class
+                            if (existingNestedDeclaration == null || (existingNestedDeclaration != null && removeExisting)) {
+                                nodes.nestedDeclaration.setParentNode(parent);
+                                LOG.info("adding nested declaration " + nodes.nestedDeclaration.getName() + " to " + getNameFormMessage(n) + ".");
+                                members.add(nodes.nestedDeclaration);
+                            }
+                            parent.setMembers(members);
                         }
                     }
                 }
@@ -157,6 +175,19 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
         return null;
     }
 
+    private TypeDeclaration findTypeDeclaration(List<BodyDeclaration> members, String name) {
+        if (members != null) {
+            for (BodyDeclaration bd : members) {
+                if (bd instanceof TypeDeclaration) {
+                    if (((TypeDeclaration) bd).getName().equals(name)) {
+                        return (TypeDeclaration) bd;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private boolean imported(List<ImportDeclaration> imports, String fullyQualifiedName) {
         final String packageName = ClassUtils.getPackageName(fullyQualifiedName);
 
@@ -166,13 +197,13 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 if (i.isAsterisk()) {
                     if (packageName.equals(importName)) {
                         final CompilationUnit unit = getCompilationUnit(i);
-                        LOG.info("found import " + packageName + ".* on " + unit.getTypes().get(0).getName() + " ignoring.");
+                        LOG.info("found import " + packageName + ".* on " + unit.getTypes().get(0).getName() + ".");
                         return true;
                     }
                 } else {
                     if (fullyQualifiedName.equals(importName)) {
                         final CompilationUnit unit = getCompilationUnit(i);
-                        LOG.info("found import " + fullyQualifiedName + " on " + unit.getTypes().get(0).getName() + " ignoring.");
+                        LOG.info("found import " + fullyQualifiedName + " on " + unit.getTypes().get(0).getName() + ".");
                         return true;
                     }
                 }

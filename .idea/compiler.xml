@@ -76,8 +76,9 @@
         <module name="rice-krad-app-framework" />
         <module name="rice-krad-data" />
         <module name="rice-krad-development-tools" />
-        <module name="rice-krad-sampleapp" />
         <module name="rice-krad-sampleapp-data-model" />
+        <module name="rice-krad-sampleapp-impl" />
+        <module name="rice-krad-sampleapp-web" />
         <module name="rice-krad-service-impl" />
         <module name="rice-krad-theme-builder" />
         <module name="rice-krad-theme-builder-test" />
@@ -154,6 +155,8 @@
       <module name="rice-krad-development-tools" target="1.6" />
       <module name="rice-krad-sampleapp" target="1.6" />
       <module name="rice-krad-sampleapp-data-model" target="1.6" />
+      <module name="rice-krad-sampleapp-impl" target="1.6" />
+      <module name="rice-krad-sampleapp-web" target="1.6" />
       <module name="rice-krad-service-impl" target="1.6" />
       <module name="rice-krad-theme-builder" target="1.6" />
       <module name="rice-krad-theme-builder-test" target="1.6" />

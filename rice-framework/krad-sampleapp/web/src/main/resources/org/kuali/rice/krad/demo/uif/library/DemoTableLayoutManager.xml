@@ -1,0 +1,156 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- TableLayoutManager demo -->
+  <bean id="Demo-TableLayoutManager-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutManager.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.TableLayoutManager"/>
+    <property name="docBookAnchor" value=""/>
+    <property name="exampleSize" value="XLARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-TableLayoutManager-Example1"/>
+        <ref bean="Demo-TableLayoutManager-Example2"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example1" parent="Uif-VerticalBoxSection" p:headerText="CollectionGroupTableLayout Example">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example1 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.sequenceFieldPrototype">
+            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+          </property>
+          <property name="layoutManager.richTable.render" value="false"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:required="false" p:label="Field 2" p:constraintText="Requires Field 1 be filled out">
+                <property name="dependencyConstraints">
+                  <list>
+                    <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="@{1 == 1}" p:label="Field 3"/>
+              <bean parent="Uif-InputField" p:propertyName="bfield" p:required="true" p:label="SubField 4">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl">
+                    <property name="onChangeScript" value="alert('checkbox clicked')"/>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-DataField" p:propertyName="stringList"  p:label="Read-only Sublist"
+                    p:readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example2" parent="Uif-VerticalBoxSection" p:headerText="CollectionGroupTableLayout with jQuery table features on">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example2 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection2" />
+          <property name="layoutManager.sequencePropertyName" value="field1" />
+          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.sequenceFieldPrototype">
+            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+          </property>
+          <property name="layoutManager.sequenceFieldPrototype.width" value="10%" />
+          <property name="layoutManager.actionFieldPrototype.width" value="10%" />
+          <property name="layoutManager.actionColumnPlacement" value="LEFT" />
+          <property name="collectionLookup">
+            <bean parent="Uif-CollectionQuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
+          </property>
+          <property name="lineActions">
+            <list>
+              <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="customLineAction" p:actionLabel="custom"
+                    p:actionParameters="field1:@{#line.field1},field2:@{#line.field2}"/>
+            </list>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:width="20%" p:render="@{false}" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:cellCssClasses="hello" p:required="true" p:readOnly="true" p:width="20%" p:label="Field 2"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:width="20%" p:label="Field 3"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" p:width="20%" p:label="Field 4" p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+                <property name="mustOccurConstraints">
+                  <list>
+                    <bean parent="MustOccurConstraint">
+                      <property name="min" value="1" />
+                      <property name="max" value="2" />
+                      <property name="prerequisiteConstraints">
+                        <list>
+                          <bean parent="PrerequisiteConstraint" p:propertyName="field1" />
+                        </list>
+                      </property>
+                      <!-- essentially an OR'ed list: each MustOccur constraint in this
+            list essentially counts towards the min max totals set at the top level,
+            they are equivalent to having a PrerequisiteConstraint satisfied at the top
+            level (count as one towards the total) so this constraint is saying you can
+            fill out just field11 or you can fill out both field12 and field13, in addition
+            filling out all 3 fields is fine in this context -->
+                      <property name="mustOccurConstraints">
+                        <list>
+                          <bean parent="MustOccurConstraint">
+                            <property name="min" value="2" />
+                            <property name="max" value="2" />
+                            <property name="prerequisiteConstraints">
+                              <list>
+                                <bean parent="PrerequisiteConstraint" p:propertyName="field2" />
+                                <bean parent="PrerequisiteConstraint" p:propertyName="field3" />
+                              </list>
+                            </property>
+                          </bean>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="filters">
+            <list>
+              <bean parent="Uif-ConditionalCollectionFilter" p:expression="#line.field1 ne '1'"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example2 end-->
+      </list>
+    </property>
+  </bean>
+</beans>

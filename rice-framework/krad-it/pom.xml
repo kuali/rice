@@ -141,8 +141,9 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krad-sampleapp-data-model</artifactId>
+      <artifactId>rice-krad-sampleapp-impl</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- HACK!! this dependency should not be here -->

@@ -4,7 +4,7 @@
     <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:KradSampleAppBeans.xml -Dremote.public.url -Dspring.profiles.active=&quot;dev&quot;" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="rice-krad-sampleapp:war exploded">
+      <artifact name="rice-krad-sampleapp-web:war exploded">
         <settings>
           <option name="CONTEXT_PATH" value="/krad-dev" />
         </settings>
@@ -69,7 +69,7 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="rice-krad-sampleapp:war exploded" />
+        <artifact name="rice-krad-sampleapp-web:war exploded" />
       </option>
     </method>
   </configuration>

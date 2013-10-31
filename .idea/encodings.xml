@@ -25,7 +25,8 @@
     <file url="file://$PROJECT_DIR$/rice-framework/krad-development-tools" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-framework/krad-it" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp-data-model" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp/impl" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rice-framework/krad-sampleapp/web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-framework/krad-service-impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-framework/krad-theme-builder" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-framework/krad-theme-builder/src/test/builder" charset="UTF-8" />

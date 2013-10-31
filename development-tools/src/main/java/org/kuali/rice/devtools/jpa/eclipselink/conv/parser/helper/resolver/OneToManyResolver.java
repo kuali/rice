@@ -148,7 +148,7 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
                 BidirectionalOwnerRegistry registry = BidirectionalOwnerRegistry.getInstance();
                 if (registry.isOwnerItemClassManyToOne(mappedClass, itemClassName)) {
                     nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME),
-                            Collections.singletonList(new MemberValuePair("mappedBy", new NameExpr(getMappedBy(
+                            Collections.singletonList(new MemberValuePair("mappedBy", new StringLiteralExpr(getMappedBy(
                                     mappedClass, itemClassName))))),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
                             additionalImports);
@@ -156,7 +156,7 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
                     registry.assignItemClassAsOwnerManyToOne(mappedClass, itemClassName);
 
                     nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME),
-                            Collections.singletonList(new MemberValuePair("mappedBy", new NameExpr(getMappedBy(
+                            Collections.singletonList(new MemberValuePair("mappedBy", new StringLiteralExpr(getMappedBy(
                                     mappedClass, itemClassName))))),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
                             additionalImports);

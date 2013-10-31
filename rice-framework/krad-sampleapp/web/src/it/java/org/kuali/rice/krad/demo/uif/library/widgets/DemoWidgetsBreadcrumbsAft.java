@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.demo.uif.library.widgets;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 
@@ -106,7 +104,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         waitAndClickByLinkText("Path-based Breadcrumbs");
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
+        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
         waitAndClickByLinkText("Page 2");
         assertElementPresentByName("inputField9");
         driver.close();
@@ -128,7 +126,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     private void assertNewWindow(String urlNumber) throws InterruptedException {
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
-        SeleneseTestBase.assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
+        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
         driver.close();
         switchToWindow(START_PAGE_TITLE);

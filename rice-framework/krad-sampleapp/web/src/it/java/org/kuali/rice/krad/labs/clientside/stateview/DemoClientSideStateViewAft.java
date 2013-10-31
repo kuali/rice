@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.clientside.stateview;
 
 import org.junit.Test;
-import org.junit.Assert;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -76,11 +75,11 @@ public class DemoClientSideStateViewAft extends WebDriverLegacyITBase {
         waitAndClickByName(ACTIVE_COMPONENT2_NAME);
         waitAndClickByXpath(AJAX_BUTTON_XPATH);
         Thread.sleep(5000);
-        Assert.assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
-        Assert.assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
+        assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
+        assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
         waitAndClickByXpath(SUBMIT_BUTTON_XPATH);
         Thread.sleep(5000);
-        Assert.assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
-        Assert.assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
+        assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
+        assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
     }
 }

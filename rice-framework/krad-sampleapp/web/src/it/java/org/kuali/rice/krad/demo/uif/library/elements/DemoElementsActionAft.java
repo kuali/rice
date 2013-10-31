@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.krad.demo.uif.library.elements;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,7 +44,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
     protected void testActionDefault() throws Exception {
         waitForElementPresentByClassName("uif-headerText-span");
         assertTextPresent("Default");
-        SeleneseTestBase.assertTrue(getTextByClassName("uif-instructionalMessage").contains(
+        assertTrue(getTextByClassName("uif-instructionalMessage").contains(
                 "Action with action script"));
         assertElementPresentByLinkText("Action Link");
     }

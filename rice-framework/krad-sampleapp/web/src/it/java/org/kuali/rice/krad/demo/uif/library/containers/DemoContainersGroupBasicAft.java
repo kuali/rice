@@ -69,7 +69,7 @@ public class DemoContainersGroupBasicAft extends DemoLibraryBase {
         element.findElement(By.className("uif-instructionalMessage"));
 
         List<WebElement> inputFields = element.findElements(By.className("uif-inputField"));
-        SeleneseTestBase.assertTrue("group does not contain correct number of items", inputFields.size() == 4);
+        assertTrue("group does not contain correct number of items", inputFields.size() == 4);
         passed();
     }
 }

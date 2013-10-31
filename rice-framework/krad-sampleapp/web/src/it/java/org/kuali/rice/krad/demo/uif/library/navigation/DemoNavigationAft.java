@@ -47,7 +47,7 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
             fail("Expected another window to be opened " + t.getCause());
         }
         waitForElementPresentByClassName("uif-headerText-span");
-        SeleneseTestBase.assertTrue(driver.getTitle().contains("Kuali :: Navigation View"));
+        assertTrue(driver.getTitle().contains("Kuali :: Navigation View"));
         assertTextPresent("Navigation View");
     }
 

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.demo.uif.library.controls;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
@@ -46,11 +45,11 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         waitForElementPresentById("ST-DemoCheckboxControlExample1-Input1_control");
         assertTextPresent("Default Checkbox Control");
         assertLabelFor("ST-DemoCheckboxControlExample1-Input1_control", "Add me to your mailing list");
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample1-Input1_control"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample1-Input1_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample1-Input1_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample1-Input1_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample1-Input1_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample1-Input1_control"));
         checkById("ST-DemoCheckboxControlExample1-Input1_control");
-        SeleneseTestBase.assertTrue(isCheckedById("ST-DemoCheckboxControlExample1-Input1_control"));
+        assertTrue(isCheckedById("ST-DemoCheckboxControlExample1-Input1_control"));
     }
 
 
@@ -83,31 +82,31 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_4", "Option 5");
 
         // check that checkbox controls are enabled and visible but not selected
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_1"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_2"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_3"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_4"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_1"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_2"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_3"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_4"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_0"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_1"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_2"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_3"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample2-Input1_control_4"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_0"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_1"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_2"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_3"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_4"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
 
         // set check mark on second checkbox control
        checkById("ST-DemoCheckboxControlExample2-Input1_control_1");
 
         // check that only second checkbox controls is selected
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
+        assertTrue(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
     }
 
 
@@ -136,22 +135,22 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
 
         // check that fieldset is vertical
         WebElement we = driver.findElement(By.id("ST-DemoCheckboxControlExample3-Input1_fieldset"));
-        SeleneseTestBase.assertTrue(we.getAttribute("class").matches(".*\\buif-verticalCheckboxesFieldset\\b.*"));
+        assertTrue(we.getAttribute("class").matches(".*\\buif-verticalCheckboxesFieldset\\b.*"));
 
         // check that checkbox controls are enabled and visible but not selected
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample3-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample3-Input1_control_1"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample3-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample3-Input1_control_1"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_0"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_1"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample3-Input1_control_0"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample3-Input1_control_1"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample3-Input1_control_0"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample3-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_0"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_1"));
 
         // set check mark on second checkbox control
         checkById("ST-DemoCheckboxControlExample3-Input1_control_1");
 
         // check that only second checkbox controls is selected
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_0"));
+        assertTrue(isCheckedById("ST-DemoCheckboxControlExample3-Input1_control_1"));
     }
 
 
@@ -176,9 +175,9 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertLabelFor("ST-DemoCheckboxControlExample4-Input1_control", "Add me to your mailing list");
 
         // check that checkbox controls is visible, not selected and disabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample4-Input1_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample4-Input1_control"));
-        SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample4-Input1_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample4-Input1_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample4-Input1_control"));
+        assertFalse(isEnabledById("ST-DemoCheckboxControlExample4-Input1_control"));
     }
 
 
@@ -206,22 +205,22 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
 
         // check that fieldset is horizonal
         WebElement we = driver.findElement(By.id("ST-DemoCheckboxControlExample6-Input1_fieldset"));
-        SeleneseTestBase.assertTrue(we.getAttribute("class").matches(".*\\buif-horizontalCheckboxesFieldset\\b.*"));
+        assertTrue(we.getAttribute("class").matches(".*\\buif-horizontalCheckboxesFieldset\\b.*"));
 
         // check that checkbox controls are enabled and visible but not selected
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample6-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample6-Input1_control_1"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample6-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample6-Input1_control_1"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_0"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_1"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample6-Input1_control_0"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample6-Input1_control_1"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample6-Input1_control_0"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample6-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_0"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_1"));
 
         // set check mark on second checkbox control
         checkById("ST-DemoCheckboxControlExample6-Input1_control_1");
 
         // check that only second checkbox controls is selected
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_0"));
-        SeleneseTestBase.assertTrue(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_1"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_0"));
+        assertTrue(isCheckedById("ST-DemoCheckboxControlExample6-Input1_control_1"));
     }
 
     @Test
@@ -245,17 +244,17 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertTextPresent("Evaluate the disable condition on controls which disable it on each key up event");
 
         // check that checkbox controls is visible, not selected and enabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
 
         // backspace input1
         driver.findElement(By.id("ST-DemoCheckboxControlExample7-Input1_control")).sendKeys(Keys.BACK_SPACE);
 
         // check that checkbox controls is visible, not selected and disabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
-        SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertFalse(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
     }
 
 
@@ -280,27 +279,27 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertTextPresent("Specifies the property names of fields that when changed, will enable this component");
 
         // check that checkbox controls is visible, not selected and disabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertFalse(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
 
         // backspace input1 and remove focus from input1 (by doing an arrow down on the div)
         driver.findElement(By.id("ST-DemoCheckboxControlExample8-Input1_control")).sendKeys(Keys.BACK_SPACE);
         driver.findElement(By.id("Demo-CheckboxControl-Example8")).sendKeys(Keys.ARROW_DOWN);
 
         // check that checkbox controls is visible, not selected and disabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertFalse(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
 
         // type "Hello" in input1 and remove focus from input1 (by doing an arrow down on the div)
         driver.findElement(By.id("ST-DemoCheckboxControlExample8-Input1_control")).sendKeys("Hello");
         driver.findElement(By.id("Demo-CheckboxControl-Example8")).sendKeys(Keys.ARROW_DOWN);
 
         // check that checkbox controls is visible, not selected and enabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample8-Input2_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample8-Input2_control"));
     }
 
     @Test
@@ -324,27 +323,27 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertTextPresent("Specifies the property names of fields that when changed, will disable this component");
 
         // check that checkbox controls is visible, not selected and enabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
 
         // backspace input1 and remove focus from input1 (by doing an arrow down on the checkbox)
         driver.findElement(By.id("ST-DemoCheckboxControlExample9-Input1_control")).sendKeys(Keys.BACK_SPACE);
         driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
 
         // check that checkbox controls is visible, not selected and enabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertTrue(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
 
         // type "Hello" in input1 and remove focus from input1 (by doing an arrow down on the checkbox)
         driver.findElement(By.id("ST-DemoCheckboxControlExample9-Input1_control")).sendKeys("Hello");
         driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
 
         // check that checkbox controls is visible, not selected and disabled
-        SeleneseTestBase.assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
-        SeleneseTestBase.assertFalse(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample9-Input2_control"));
+        assertFalse(isEnabledById("ST-DemoCheckboxControlExample9-Input2_control"));
     }
 
     @Test

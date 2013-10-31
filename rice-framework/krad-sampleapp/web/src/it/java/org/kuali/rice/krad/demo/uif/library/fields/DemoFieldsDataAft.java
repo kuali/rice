@@ -123,7 +123,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 
     protected void testDataFieldAppendProperty() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example5", "DataField 1");
-        Assert.assertTrue(valueText.endsWith("ID Val"));
+        assertTrue(valueText.endsWith("ID Val"));
     }
 
     protected void testDataFieldReplaceProperty() throws Exception {

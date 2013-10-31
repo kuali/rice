@@ -72,7 +72,6 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
             beanNode.replaceNode {
                 addCommentIfNotExists(beanNode.parent(),"Lookup View");
                 bean(beanAttributes) {
-                    addViewNameProperty(delegate, lookupTitle)
                     if (objClassName) {
                         property(name: "dataObjectClassName", value: objClassName)
                     }

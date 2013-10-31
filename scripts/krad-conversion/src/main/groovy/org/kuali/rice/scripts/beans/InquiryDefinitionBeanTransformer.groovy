@@ -72,7 +72,6 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
             beanNode.replaceNode {
                 addCommentIfNotExists(beanNode.parent(), "Inquiry View")
                 bean(beanAttributes) {
-                    addViewNameProperty(delegate, inquiryTitle)
                     if (inquiryTitle) {
                         property(name: "headerText", value: inquiryTitle)
                     }

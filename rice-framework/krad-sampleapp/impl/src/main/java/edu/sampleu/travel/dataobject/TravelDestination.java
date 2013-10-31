@@ -17,6 +17,7 @@ package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.PostalCountryCodeKeyValuesFinder;
 import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
@@ -25,19 +26,12 @@ import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
-import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
-import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
-import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -49,7 +43,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "TRVL_DEST_T")
 @UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
-public class TravelDestination extends DataObjectBase implements Serializable {
+public class TravelDestination extends DataObjectBase implements MutableInactivatable, Serializable {
 
     private static final long serialVersionUID = 8448891916448081149L;
 

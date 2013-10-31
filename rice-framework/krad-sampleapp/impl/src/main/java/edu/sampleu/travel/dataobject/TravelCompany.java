@@ -15,6 +15,7 @@
  */
 package edu.sampleu.travel.dataobject;
 
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
@@ -39,7 +40,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "TRVL_CO_T")
 @UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
-public class TravelCompany extends DataObjectBase implements Serializable {
+public class TravelCompany extends DataObjectBase implements MutableInactivatable, Serializable {
 
     private static final long serialVersionUID = 6853317217732768445L;
 

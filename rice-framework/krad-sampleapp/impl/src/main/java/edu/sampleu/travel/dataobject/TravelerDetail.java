@@ -15,7 +15,14 @@
  */
 package edu.sampleu.travel.dataobject;
 
-import java.util.Date;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.Relationship;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,19 +33,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
-import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
-import org.kuali.rice.krad.data.provider.annotation.Label;
-import org.kuali.rice.krad.data.provider.annotation.Relationship;
+import java.util.Date;
 
 
 @Entity
 @Table(name="TRVL_TRAVELER_DTL_T")
-public class TravelerDetail extends DataObjectBase {
+public class TravelerDetail extends DataObjectBase implements MutableInactivatable {
 	private static final long serialVersionUID = -7169083136626617130L;
 
     @Id

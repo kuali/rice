@@ -325,6 +325,11 @@ class SpringBeanTransformer {
     }
 
     def valueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
+        def value = attributes["value"];
+        builderDelegate.createNode("value", null, value);
+    }
+
+    def propertyNameValueFieldTransform = { NodeBuilder builderDelegate, Map attributes ->
         def value = attributes["p:propertyName"];
         builderDelegate.createNode("value", null, value);
     }
@@ -567,7 +572,7 @@ class SpringBeanTransformer {
      * @param beanNode
      */
     def transformSummaryFieldsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["summaryFields": "layoutManager.summaryFields"], gatherAttributeNameAttribute, valueFieldTransform);
+        transformPropertyBeanList(builder, beanNode, ["summaryFields": "layoutManager.summaryFields"], gatherAttributeNameAttribute, propertyNameValueFieldTransform);
     }
 
     /**

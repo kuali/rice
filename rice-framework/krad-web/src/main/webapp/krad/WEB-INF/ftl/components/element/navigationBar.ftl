@@ -22,7 +22,7 @@
 
 <#macro uif_navigationBar element>
 
-    <div class="container-fluid">
+    <div class="${view.contentContainerClassesAsString}">
 
         <nav id="${element.id!}" ${krad.attrBuild(element)} ${element.simpleDataAttributes} role="navigation">
 
@@ -36,9 +36,9 @@
                     <div class="logoBrand">
                         <h1>
                             <#if element.brandImage?? && element.brandImage.render>
-                          <@krad.template component=element.brandImage/>
-                      <#else>
-                            ${element.brandText!}
+                                <@krad.template component=element.brandImage/>
+                            <#else>
+                                ${element.brandText!}
                             </#if>
                         </h1>
                     </div>

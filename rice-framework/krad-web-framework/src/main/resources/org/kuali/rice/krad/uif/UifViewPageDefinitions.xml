@@ -49,6 +49,11 @@
         <value>uif-view</value>
       </list>
     </property>
+    <property name="contentContainerCssClasses">
+      <list>
+        <value>container-fluid</value>
+      </list>
+    </property>
     <property name="useLibraryCssClasses" value="true"/>
     <property name="viewTypeName" value="DEFAULT"/>
     <property name="viewName" value="default"/>

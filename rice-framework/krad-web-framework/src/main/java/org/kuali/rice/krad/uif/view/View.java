@@ -101,9 +101,7 @@ import org.slf4j.LoggerFactory;
 @BeanTags({@BeanTag(name = "view-bean", parent = "Uif-View"),
         @BeanTag(name = "view-knsTheme-bean", parent = "Uif-View-KnsTheme")})
 public class View extends ContainerBase {
-    
     private static final long serialVersionUID = -1220009725554576953L;
-    
     private static final Logger LOG = LoggerFactory.getLogger(ContainerBase.class);
 
     private String namespaceCode;
@@ -130,6 +128,8 @@ public class View extends ContainerBase {
     private boolean stickyApplicationHeader;
     private boolean stickyFooter;
     private boolean stickyApplicationFooter;
+
+    private List<String> contentContainerCssClasses;
 
     // Breadcrumbs
     private Breadcrumbs breadcrumbs;
@@ -847,6 +847,43 @@ public class View extends ContainerBase {
     public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
         checkMutable(true);
         this.stickyApplicationFooter = stickyApplicationFooter;
+    }
+
+    /**
+     * List of CSS style classes that will be applied to a div that wraps the content.
+     *
+     * <p>Wrapping the content gives the ability to move between a fluid width container or a fixed width
+     * container. The div is also wraps content inside sticky elements (header and footer), so visual treatment
+     * can be given to the full width of the screen while restricting the area of the content.</p>
+     *
+     * <p>In Bootstrap, use 'container-fluid' for a fluid width container, and 'container' for a fixed width
+     * container.</p>
+     *
+     * @return List of css classes to apply to content wrapper div
+     */
+    public List<String> getContentContainerCssClasses() {
+        return contentContainerCssClasses;
+    }
+
+    /**
+     * @see View#getContentContainerCssClasses()
+     */
+    public void setContentContainerCssClasses(List<String> contentContainerCssClasses) {
+        this.contentContainerCssClasses = contentContainerCssClasses;
+    }
+
+    /**
+     * Returns the list of {@link View#getContentContainerCssClasses()} as a concatenated string (each class
+     * is separated by a space).
+     *
+     * @return String of content css classes
+     */
+    public String getContentContainerClassesAsString() {
+        if (contentContainerCssClasses != null) {
+            return StringUtils.join(contentContainerCssClasses, " ");
+        }
+
+        return "";
     }
 
     /**
@@ -2170,6 +2207,10 @@ public class View extends ContainerBase {
         viewCopy.setStickyFooter(this.stickyFooter);
         viewCopy.setStickyHeader(this.stickyHeader);
         viewCopy.setStickyTopGroup(this.stickyTopGroup);
+
+        if (this.contentContainerCssClasses != null) {
+            viewCopy.setContentContainerCssClasses(new ArrayList<String>(this.contentContainerCssClasses));
+        }
 
         if (this.breadcrumbItem != null) {
             viewCopy.setBreadcrumbItem((BreadcrumbItem) this.breadcrumbItem.copy());

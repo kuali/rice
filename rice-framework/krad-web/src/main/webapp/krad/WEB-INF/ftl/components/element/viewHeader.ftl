@@ -37,6 +37,10 @@
 
     <div class="uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
 
+        <#if element.sticky>
+            <div class="${view.contentContainerClassesAsString}">
+        </#if>
+
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
 
@@ -85,6 +89,10 @@
 
         <#-- lower group -->
         <@krad.template component=element.lowerGroup/>
+
+        <#if element.sticky>
+            </div>
+        </#if>
 
     </div>
 

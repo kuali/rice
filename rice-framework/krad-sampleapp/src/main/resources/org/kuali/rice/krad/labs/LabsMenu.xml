@@ -64,6 +64,10 @@
                               p:href="@{#ConfigProperties['krad.url']}/transaction?viewId=TransactionView"/>
                         <bean parent="Uif-Link" p:linkText="Parameter Updater" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/parameter?viewId=LabsParameterView"/>
+                        <bean parent="Uif-Link" p:linkText="View Fluid Container" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFluid"/>
+                        <bean parent="Uif-Link" p:linkText="View Fixed Container" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
                       </list>
                   </property>
               </bean>

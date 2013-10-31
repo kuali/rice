@@ -32,6 +32,10 @@ import org.kuali.rice.krad.uif.util.UrlInfo;
 public class MenuAction extends Action {
     private static final long serialVersionUID = 143935176537425843L;
 
+    protected static final String HEADER_STYLE_CLASS = "dropdown-header";
+    protected static final String DIVIDER_STYLE_CLASS = "divider";
+    protected static final String DISABLED_STYLE_CLASS = "disabled";
+
     private UrlInfo actionUrl;
 
     private boolean menuDivider;
@@ -55,11 +59,11 @@ public class MenuAction extends Action {
         }
 
         if (menuHeader) {
-            getCssClasses().add("dropdown-header");
+            getCssClasses().add(HEADER_STYLE_CLASS);
         } else if (menuDivider) {
-            getCssClasses().add("divider");
+            getCssClasses().add(DIVIDER_STYLE_CLASS);
         } else if (isDisabled()) {
-            getCssClasses().add("disabled");
+            getCssClasses().add(DISABLED_STYLE_CLASS);
         }
 
         super.performFinalize(model, parent);

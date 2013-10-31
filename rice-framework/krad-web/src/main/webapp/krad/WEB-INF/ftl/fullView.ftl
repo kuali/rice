@@ -80,7 +80,9 @@
             </#if>
         </#if>
 
-        <@krad.template component=view/>
+        <div class="${view.contentContainerClassesAsString}">
+            <@krad.template component=view/>
+        </div>
     </@krad.form>
 
     <@krad.script value="${KualiForm.lightboxScript!}"/>
@@ -102,9 +104,17 @@
             <#assign stickyFooterDataAttribute="data-sticky_footer='true'"/>
         </#if>
 
-    <div id="Uif-ApplicationFooter-Wrapper" ${stickyFooterDataAttribute}>
-        <@krad.template component=view.applicationFooter/>
-    </div>
+        <div id="Uif-ApplicationFooter-Wrapper" ${stickyFooterDataAttribute}>
+            <#if view.stickyApplicationFooter>
+                <div class="${view.contentContainerClassesAsString}">
+            </#if>
+
+            <@krad.template component=view.applicationFooter/>
+
+            <#if view.stickyApplicationFooter>
+                </div>
+            </#if>
+        </div>
     </#if>
 
 </@krad.html>

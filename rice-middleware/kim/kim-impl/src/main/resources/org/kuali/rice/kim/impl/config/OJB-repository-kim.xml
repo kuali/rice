@@ -500,9 +500,11 @@
     <!--<collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.impl.group.GroupMemberBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="groupId" target-field-ref="id" />
     </collection-descriptor>-->
+    <!-- Commenting out until the desciptor below is functional - the object as mapped references properties not on the java class
     <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeHistoryBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToHistoryId" target-field-ref="historyId" />
     </collection-descriptor>
+     -->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupMemberBo" table="KRIM_GRP_MBR_T">
@@ -528,7 +530,7 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupAttributeHistoryBo" table="KRIM_HIST_GRP_ATTR_DATA_T">
     <field-descriptor name="historyId" column="HIST_ID" jdbc-type="BIGINT" primarykey="true"  autoincrement="true" sequence-name="KRIM_HIST_GRP_ATTR_ID_S" />
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" />
@@ -543,7 +545,7 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-
+ -->
 
   <!-- ******************************************************************* -->
   <!-- Role Tables -->

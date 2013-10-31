@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
@@ -37,9 +34,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -59,7 +53,7 @@ import java.util.regex.Pattern;
 @AttributeOverrides({
         @AttributeOverride(name="searchableAttributeValueId", column=@Column(name="DOC_HDR_EXT_FLT_ID"))
 })
-public class SearchableAttributeFloatValue extends SearchableAttributeBase implements SearchableAttributeValue, Serializable {
+public class SearchableAttributeFloatValue extends SearchableAttributeNumericBase implements SearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = -6682101853805320760L;
 
@@ -67,9 +61,11 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
-    private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "[-+]?[0-9]*\\.?[0-9]+";
     private static final String ATTRIBUTE_XML_REPRESENTATION = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
     private static final String DEFAULT_FORMAT_PATTERN = "";
+
+    private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "[-+]?[0-9]*\\.?[0-9]+";
+    private static final Pattern defaultValidationPattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
 
     @Column(name="VAL")
 	private BigDecimal searchableAttributeValue;
@@ -134,56 +130,6 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
 	}
 
     @Override
-    public boolean isPassesDefaultValidation(String valueEntered) {
-
-    	boolean bRet = true;
-    	boolean bSplit = false;
-
-		if (StringUtils.contains(valueEntered, SearchOperator.BETWEEN.op())) {
-			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
-			for(String value : l){
-				bSplit = true;
-				if(!isPassesDefaultValidation(value)){
-					bRet = false;
-				}
-			}
-		}
-		if (StringUtils.contains(valueEntered, SearchOperator.OR.op())) {
-			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.OR_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.OR.op()));
-			for(String value : l){
-				bSplit = true;
-				if(!isPassesDefaultValidation(value)){
-					bRet = false;
-				}
-			}
-		}
-		if (StringUtils.contains(valueEntered, SearchOperator.AND.op())) {
-			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.AND.op()));
-			for(String value : l){
-				bSplit = true;
-				if(!isPassesDefaultValidation(value)){
-					bRet = false;
-				}
-			}
-		}
-
-		if(bSplit){
-			return bRet;
-		}
-
-		Pattern pattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
-		Matcher matcher = pattern.matcher(SQLUtils.cleanNumericOfValidOperators(valueEntered).trim()); 
-		if(!matcher.matches()){
-			bRet = false;
-		}
-
-		return bRet;
-
-    }
-
-    @Override
     public Boolean isRangeValid(String lowerValue, String upperValue) {
         if (allowsRangeSearches()) {
             BigDecimal lower = null;
@@ -227,5 +173,9 @@ public class SearchableAttributeFloatValue extends SearchableAttributeBase imple
         return DocumentAttributeFactory.createDecimalAttribute(getSearchableAttributeKey(), getSearchableAttributeValue());
     }
 
+    @Override
+    protected Pattern getDefaultValidationPattern() {
+        return defaultValidationPattern;
+    }
 }
 

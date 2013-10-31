@@ -39,6 +39,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
 import org.junit.runner.manipulation.Filterable;
@@ -68,8 +69,18 @@ import static org.junit.internal.runners.rules.RuleFieldValidator.*;
 
 /**
  * A JUnit test {@link org.junit.runner.Runner} which uses a custom classloader with a copy of the classpath and allows
- * for transformers to be added to the ClassLoader for load-time weaving. Useful when writing tests that use JPA with
- * EclipseLink since it depends upon load-time weaving.
+ * for transformers to be added to the ClassLoader for load-time weaving.
+ *
+ * <p>Useful when writing tests that use JPA with EclipseLink since it depends upon load-time weaving.</p>
+ *
+ * <p>In order to use this class, you must have a {@link BootstrapTest} annotation available somewhere in the hierarchy
+ * of your test class (usually on the same class where the {@link RunWith} annotation is specified which references this
+ * runner class). This informs the runner about a test that it can run to execute any one-time initialization for
+ * the test suite. Ideally, this bootstrap test will execute code which loads JPA persistence units and any associated
+ * ClassFileTransformers for load-time weaving. This is necessary because it is common for an integration test to have
+ * references in the test class itself to JPA entities which need to be weaved. When this occurs, if the persistence
+ * units and ClassFileTransformers are not properly loaded before the entity classes are loaded by the classloader, then
+ * instrumentation will (silently!) fail to occur.</p>
  *
  * <p>Much of the code in this class was copied from the JUnit ParentRunner, BlockJUnit4ClassRunner, and
  * TomcatInstrumentableClassLoader.</p>

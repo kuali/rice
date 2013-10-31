@@ -71,6 +71,7 @@
 		<value>classpath:/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifLookupDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifMenuDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>

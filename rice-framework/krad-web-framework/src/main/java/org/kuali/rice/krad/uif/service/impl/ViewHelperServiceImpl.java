@@ -59,7 +59,6 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
@@ -88,7 +87,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     
     private transient ConfigurationService configurationService;
     private transient DataDictionaryService dataDictionaryService;
-    private transient ExpressionEvaluator expressionEvaluator;
     private transient LegacyDataAdapter legacyDataAdapter;
 
     private transient ViewDictionaryService viewDictionaryService;
@@ -230,19 +228,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Gets the expression evaluator service
-     * 
-     * @return expression evaluator service
-     */
-    public ExpressionEvaluator getExpressionEvaluator() {
-        if (this.expressionEvaluator == null) {
-            this.expressionEvaluator = new DefaultExpressionEvaluator();
-        }
-
-        return this.expressionEvaluator;
-    }
-
-    /**
      * Hook for service overrides to perform custom apply model logic on the component
      * 
      * @param component component instance to apply model to
@@ -251,7 +236,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performCustomApplyModel(Component component, Object model) {
-
+        
     }
 
     /**
@@ -263,7 +248,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performCustomFinalize(Component component, Object model, Component parent) {
-
+        
     }
 
     /**
@@ -273,7 +258,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performCustomInitialization(Component component) {
-
+        
     }
 
     /**
@@ -283,7 +268,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performCustomViewFinalize(Object model) {
-        setExpressionEvaluator(null);
+        
     }
 
     /**
@@ -309,7 +294,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
             boolean isValidLine) {
-
+        
     }
 
     /**
@@ -999,7 +984,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             defaultValue = dataField.getDefaultValues();
         }
 
-        ExpressionEvaluator expressionEvaluator = getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
                 .containsElPlaceholder((String) defaultValue)) {
@@ -1147,20 +1132,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // evaluate view expressions for further context
         for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
             String variableName = variableExpression.getKey();
-            Object value = getExpressionEvaluator().evaluateExpression(view.getContext(),
-                    variableExpression.getValue());
+            Object value = ViewLifecycle.getExpressionEvaluator().evaluateExpression(
+                    view.getContext(), variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
         }
-    }
-
-
-    /**
-     * Sets the expression evaluator service
-     * 
-     * @param expressionEvaluator The expression evaluator.
-     */
-    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator) {
-        this.expressionEvaluator = expressionEvaluator;
     }
 
     /**

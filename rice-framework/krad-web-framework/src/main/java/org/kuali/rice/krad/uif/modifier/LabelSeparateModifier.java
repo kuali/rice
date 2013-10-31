@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 
 /**
@@ -69,22 +70,23 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 				Field field = (Field) item;
 
 				// pull out label field
-				if (field.getFieldLabel() != null && field.getFieldLabel().isRender()) {
-				    field.getFieldLabel().addStyleClass("displayWith-" + field.getId());
+				Label label = field.getFieldLabel();
+				if (label != null && label.isRender()) {
+				    label.addStyleClass("displayWith-" + field.getId());
                     if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
-                       field.getFieldLabel().setRender(false);
+                       label.setRender(false);
                     }
                     else if(!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())){
-                       field.getFieldLabel().setRender(true);
+                       label.setRender(true);
                        String prefixStyle = "";
-                       if(StringUtils.isNotBlank(field.getFieldLabel().getStyle())){
-                           prefixStyle = field.getFieldLabel().getStyle();
+                       if(StringUtils.isNotBlank(label.getStyle())){
+                           prefixStyle = label.getStyle();
                        }
-                       field.getFieldLabel().setStyle(prefixStyle + ";" + "display: none;");
+                       label.setStyle(prefixStyle + ";" + "display: none;");
                     }
 
-					groupFields.add(field.getFieldLabel());
-
+					groupFields.add(label);
+					
 					// set boolean to indicate label field should not be
 					// rendered with the attribute
 					field.setLabelRendered(true);

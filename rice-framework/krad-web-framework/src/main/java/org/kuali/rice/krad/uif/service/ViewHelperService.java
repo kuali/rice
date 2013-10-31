@@ -39,20 +39,6 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 public interface ViewHelperService {
 
     /**
-     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
-     * expressions
-     * contained on the view
-     *
-     * <p>
-     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
-     * constructed for the view lifecycle and made available to all components/helpers through this method
-     * </p>
-     *
-     * @return instance of ExpressionEvaluator
-     */
-    ExpressionEvaluator getExpressionEvaluator();
-
-    /**
      * Hook for service overrides to perform custom initialization prior to view initialization.
      * 
      * @param model The model.

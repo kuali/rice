@@ -74,8 +74,8 @@ public class Suggest extends WidgetBase {
         super.performApplyModel(model, parent);
 
         if (suggestQuery != null) {
-            ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator().evaluateExpressionsOnConfigurable(
-                    ViewLifecycle.getActiveLifecycle().getView(), suggestQuery, getContext());
+            ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(
+                    ViewLifecycle.getView(), suggestQuery, getContext());
         }
     }
 

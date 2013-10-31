@@ -53,7 +53,7 @@ public class BreadcrumbItem extends ContentElementBase {
     public void performApplyModel(Object model, Component parent) {
         super.performApplyModel(model, parent);
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         if (url != null) {
             Map<String, Object> context = new HashMap<String, Object>();
 
@@ -63,8 +63,8 @@ public class BreadcrumbItem extends ContentElementBase {
             }
 
             ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
-            view.getViewHelperService().getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, url,
-                    context);
+            ViewLifecycle.getExpressionEvaluator()
+                    .evaluateExpressionsOnConfigurable(view, url, context);
         }
     }
 

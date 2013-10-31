@@ -158,11 +158,10 @@ public class Action extends ContentElementBase {
 
         disabledExpression = this.getPropertyExpression("disabled");
         if (disabledExpression != null) {
-            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-            ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluator.replaceBindingPrefixes(viewLifecycle.getView(), this,
-                    disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(
+                    ViewLifecycle.getView(), this, disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -186,10 +185,8 @@ public class Action extends ContentElementBase {
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
 
-        ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-        View view = viewLifecycle.getView();
-
-        ExpressionEvaluator expressionEvaluator = viewLifecycle.getHelper().getExpressionEvaluator();
+        View view = ViewLifecycle.getView();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         if (StringUtils.isNotEmpty(disabledExpression)
                 && !disabledExpression.equalsIgnoreCase("true")

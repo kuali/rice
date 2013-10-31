@@ -75,11 +75,10 @@ public abstract class ControlBase extends ContentElementBase implements Control 
 
         disabledExpression = this.getPropertyExpression("disabled");
         if(disabledExpression != null){
-            ExpressionEvaluator expressionEvaluator =
-                    ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
             disabledExpression = expressionEvaluator.replaceBindingPrefixes(
-                    ViewLifecycle.getActiveLifecycle().getView(), this, disabledExpression);
+                    ViewLifecycle.getView(), this, disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -95,8 +94,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
 
-        ExpressionEvaluator expressionEvaluator =
-                ViewLifecycle.getActiveLifecycle().getHelper().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         if (StringUtils.isNotEmpty(disabledExpression) && !disabledExpression.equalsIgnoreCase("true")
                 && !disabledExpression.equalsIgnoreCase("false")) {
@@ -105,7 +103,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
                     disabledConditionControlNames);
         }
         
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         List<String> adjustedDisablePropertyNames = new ArrayList<String>();
         for (String propertyName : disabledWhenChangedPropertyNames) {
             adjustedDisablePropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,

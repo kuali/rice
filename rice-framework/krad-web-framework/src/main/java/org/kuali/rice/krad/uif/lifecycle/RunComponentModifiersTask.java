@@ -77,7 +77,7 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
                     context.put(UifConstants.ContextVariableNames.COMPONENT, component);
                     context.put(UifConstants.ContextVariableNames.VIEW, ViewLifecycle.getView());
 
-                    String conditionEvaluation = ViewLifecycle.getHelper().getExpressionEvaluator()
+                    String conditionEvaluation = ViewLifecycle.getExpressionEvaluator()
                             .evaluateExpressionTemplate(context, modifier.getRunCondition());
                     runModifier = Boolean.parseBoolean(conditionEvaluation);
                 }

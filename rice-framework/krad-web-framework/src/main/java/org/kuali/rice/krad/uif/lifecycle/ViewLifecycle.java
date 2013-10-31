@@ -36,6 +36,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -301,7 +303,7 @@ public class ViewLifecycle implements Serializable {
      * The view being processed by this lifecycle.
      */
     private final View view;
-
+    
     /**
      * The model involved in the current view lifecycle.
      */
@@ -411,7 +413,9 @@ public class ViewLifecycle implements Serializable {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Spawning sub-lifecycle for component: " + component.getId());
+            LOG.debug("Spawning sub-lifecycle for component: "
+                    + component.getClass() + " " + component.getId()
+                    + (parent == null ? "" : " " + parent.getClass() + " " + parent.getId()));
         }
 
         if (StringUtils.isBlank(startPhase)) {
@@ -498,6 +502,8 @@ public class ViewLifecycle implements Serializable {
             try {
                 PROCESSOR.set(synchProcessor);
 
+                synchProcessor.getExpressionEvaluator().initializeEvaluationContext(model);
+                
                 // Perform sub-lifecycle immediately in the same thread
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
                     synchProcessor.performPhase(LifecyclePhaseFactory.initialize(component, model, 0, parent, null));
@@ -586,6 +592,28 @@ public class ViewLifecycle implements Serializable {
         }
 
         return active.view;
+    }
+
+    /**
+     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
+     * expressions
+     * contained on the view
+     *
+     * <p>
+     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
+     * constructed for the view lifecycle and made available to all components/helpers through this method
+     * </p>
+     *
+     * @return instance of ExpressionEvaluator
+     */
+    public static ExpressionEvaluator getExpressionEvaluator() {
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+
+        if (processor == null) {
+            return new DefaultExpressionEvaluator();
+        }
+        
+        return processor.getExpressionEvaluator();
     }
 
     /**

@@ -316,7 +316,7 @@ public class View extends ContainerBase {
 
         View view = ViewLifecycle.getView();
         if (theme != null) {
-            ViewLifecycle.getHelper().getExpressionEvaluator()
+            ViewLifecycle.getExpressionEvaluator()
                 .evaluateExpressionsOnConfigurable(view, theme, getContext());
 
             theme.configureThemeDefaults();
@@ -454,7 +454,7 @@ public class View extends ContainerBase {
 
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
             // initialize the expression evaluator impl
-            viewHelperService.getExpressionEvaluator().initializeEvaluationContext(phase.getModel());
+            ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(phase.getModel());
 
             // get the list of dialogs from the view and then set the refreshedByAction on the
             // dialog to true.

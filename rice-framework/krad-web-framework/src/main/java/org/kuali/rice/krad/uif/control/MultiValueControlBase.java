@@ -89,7 +89,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
         super.performFinalize(model, parent);
 
         View view = ViewLifecycle.getView();
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         if (options != null && !options.isEmpty()) {
             for (KeyValue option : options) {

@@ -110,7 +110,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
         newComponent.setDataAttributes(origComponent.getDataAttributes());
 
         // initialize the expression evaluator
-        view.getViewHelperService().getExpressionEvaluator().initializeEvaluationContext(model);
+        ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(model);
 
         // the expression graph for refreshed components is captured in the view index (initially it might expressions
         // might have come from a parent), after getting the expression graph then we need to populate the expressions

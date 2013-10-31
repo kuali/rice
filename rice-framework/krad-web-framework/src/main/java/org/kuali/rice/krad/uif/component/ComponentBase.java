@@ -364,7 +364,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
-            ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
             String adjustedProgressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this,
                     progressiveRender);
@@ -393,7 +393,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
             View view = ViewLifecycle.getView();
-            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
             progressiveRender = expressionEvaluator.replaceBindingPrefixes(view, this, progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
@@ -403,7 +403,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // conditional refresh expression setup
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
             View view = ViewLifecycle.getView();
-            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
             conditionalRefresh = expressionEvaluator.replaceBindingPrefixes(view, this, conditionalRefresh);
             conditionalRefreshControlNames = new ArrayList<String>();
             conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
@@ -412,7 +412,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         if (refreshWhenChangedPropertyNames != null) {
             View view = ViewLifecycle.getView();
-            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
             List<String> adjustedRefreshPropertyNames = new ArrayList<String>(refreshWhenChangedPropertyNames.size());
             for (String refreshPropertyName : refreshWhenChangedPropertyNames) {
                 adjustedRefreshPropertyNames.add(expressionEvaluator.replaceBindingPrefixes(view, this,

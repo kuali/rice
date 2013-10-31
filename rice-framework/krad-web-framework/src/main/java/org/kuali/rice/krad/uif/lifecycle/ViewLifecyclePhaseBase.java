@@ -306,7 +306,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         doNotifyCompleted();
 
         if (nextPhase != null) {
-            ViewLifecycle.getProcessor().offerPendingPhase(nextPhase);
+            ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
         }
         
         synchronized (this) {
@@ -386,7 +386,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     private void trace(String step) {
-        if (LOG.isDebugEnabled()) {
+        if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
             String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " +
                     (component == null ? "(recycled)" : component.getClass() + " " + component.getId());
             LOG.debug(msg);

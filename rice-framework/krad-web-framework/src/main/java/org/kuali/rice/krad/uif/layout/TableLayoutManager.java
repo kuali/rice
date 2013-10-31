@@ -301,8 +301,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             groupingMessageField.addDataAttribute(UifConstants.DataAttributes.ROLE,
                     UifConstants.RoleTypes.ROW_GROUPING);
 
-//            ViewLifecycle.spawnSubLifecyle(model, groupingMessageField, collectionGroup);
-
             List<Component> theItems = new ArrayList<Component>();
             theItems.add(groupingMessageField);
             theItems.addAll(collectionGroup.getItems());
@@ -358,7 +356,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = cInfo.getPageTotalField().copy();
-                setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), this.getPageTotalLabel(),
+                setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), getPageTotalLabel(),
                         "pageTotal", leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
             }
@@ -366,7 +364,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = cInfo.getTotalField().copy();
-                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(), this.getTotalLabel(), "total",
+                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(), getTotalLabel(), "total",
                         leftLabelColumnIndex);
 
                 if (!cInfo.isRecalculateTotalClientSide()) {
@@ -379,8 +377,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             //setup total field and add it to footer's group for this column
             //do not generate group total rows if group totals are not being shown
             if (cInfo.isShowGroupTotal()) {
-                Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype();
-                setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), this.getGroupTotalLabelPrototype(),
+                Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype().copy();
+                setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), getGroupTotalLabelPrototype(),
                         "groupTotal", leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
@@ -494,7 +492,25 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         } else if (cInfo.getColumnNumber() == leftLabelColumnIndex && this.isRenderOnlyLeftTotalLabels()) {
             //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
             //manager settings directly into the field
-            totalDataField.setFieldLabel(leftLabel);
+            Label label = leftLabel.copy();
+
+            // The label will have just been created, or copied from a prototype, and will be
+            // processed as a child of the field. Spawn a sub-lifecycle phase to bring it up
+            // to the same status as the field prior to processing the field.
+            String fieldState = totalDataField.getViewStatus();
+            String labelPhase = null;
+            if (UifConstants.ViewStatus.INITIALIZED.equals(fieldState)) {
+                labelPhase = UifConstants.ViewPhases.INITIALIZE;
+            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(fieldState)) {
+                labelPhase = UifConstants.ViewPhases.APPLY_MODEL;
+            }
+
+            if (labelPhase != null) {
+                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField,
+                        null, labelPhase, true);
+            }
+            
+            totalDataField.setFieldLabel(label);
         }
 
         if (this.isRenderOnlyLeftTotalLabels()) {
@@ -523,7 +539,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         for (Field lineField : lineFields) {
             lineField.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             lineField.pushAllToContext(view.getContext());

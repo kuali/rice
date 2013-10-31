@@ -547,7 +547,7 @@ public class CollectionGroupBuilder implements Serializable {
             List<Field> lineFields, Object currentLine, int lineIndex) {
         List<Field> fields = new ArrayList<Field>();
 
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         for (Field lineField : lineFields) {
             String conditionalRender = lineField.getPropertyExpression("render");
@@ -654,7 +654,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         for (Field lineField : lineFields) {
             String propertyName = null;
@@ -762,7 +762,7 @@ public class CollectionGroupBuilder implements Serializable {
             context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
             context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
 
-            Boolean render = (Boolean) view.getViewHelperService().getExpressionEvaluator().evaluateExpression(context,
+            Boolean render = (Boolean) ViewLifecycle.getExpressionEvaluator().evaluateExpression(context,
                     conditionalRender);
             subCollectionGroup.setRender(render);
         }

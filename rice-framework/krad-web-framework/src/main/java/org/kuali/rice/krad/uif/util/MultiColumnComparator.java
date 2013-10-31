@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import com.google.common.collect.Maps;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -27,6 +28,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -269,7 +271,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
         if (cachedValue == null) {
             Object collectionElement = modelCollection.get(collectionIndex);
-            ExpressionEvaluator expressionEvaluator = view.getViewHelperService().getExpressionEvaluator();
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
             // set up expression context
             Map<String, Object> viewContext = view.getContext();

@@ -136,8 +136,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
-        ExpressionEvaluator expressionEvaluator =
-                view.getViewHelperService().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         for (ComparableInfo comparable : groupComparables) {
             expressionEvaluator.evaluateExpressionsOnConfigurable(view, comparable, context);

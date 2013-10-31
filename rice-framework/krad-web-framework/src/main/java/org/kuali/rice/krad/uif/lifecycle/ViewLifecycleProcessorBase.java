@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+
 /**
  * Abstract base lifecycle processor implementation.
  * 
@@ -26,6 +29,11 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
      * The view lifecycle to be processed.
      */
     private final ViewLifecycle lifecycle;
+
+    /**
+     * The expression evaluator to use with this lifecycle.
+     */
+    private final ExpressionEvaluator expressionEvaluator = new DefaultExpressionEvaluator();
 
     /**
      * Create a new synchronous processor for a lifecycle.
@@ -42,6 +50,14 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     @Override
     public ViewLifecycle getLifecycle() {
         return lifecycle;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        return this.expressionEvaluator;
     }
 
     /**

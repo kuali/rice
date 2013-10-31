@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 
 /**
  * Interface for controlling the execution of the view lifecycle.
@@ -78,5 +79,19 @@ public interface ViewLifecycleProcessor {
      * @param phase The phase to be processed within the lifecycle associated with this processor.
      */
     void offerPendingPhase(ViewLifecyclePhase phase);
+
+    /**
+     * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be
+     * used for evaluating expressions contained on the view
+     * 
+     * <p>
+     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One
+     * instance is constructed for the view lifecycle and made available to all components/helpers
+     * through this method
+     * </p>
+     * 
+     * @return instance of ExpressionEvaluator
+     */
+    ExpressionEvaluator getExpressionEvaluator();
 
 }

@@ -255,7 +255,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      */
     protected String buildLineHeaderText(Object line, Group lineGroup) {
         // check for expression on summary title
-        if (ViewLifecycle.getHelper().getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
+        if (ViewLifecycle.getExpressionEvaluator().containsElPlaceholder(summaryTitle)) {
             lineGroup.getPropertyExpressions().put(UifPropertyPaths.HEADER_TEXT, summaryTitle);
             return null;
         }

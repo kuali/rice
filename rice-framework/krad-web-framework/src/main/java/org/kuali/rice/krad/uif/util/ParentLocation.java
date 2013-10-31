@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -73,8 +74,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
         }
 
         //evaluate expressions on relevant content before comparisons
-        this.handleExpressions(view, currentModel, currentContext,
-                view.getViewHelperService().getExpressionEvaluator());
+        this.handleExpressions(view, currentModel, currentContext, ViewLifecycle.getExpressionEvaluator());
 
         //set url values into breadcrumb objects
         if (StringUtils.isNotBlank(parentViewUrl.getOriginalHref()) || (StringUtils.isNotBlank(
@@ -146,8 +146,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                             currentModel, currentContext));
         }
 
-        handleLabelExpressions(parentView, currentModel, currentContext,
-                currentView.getViewHelperService().getExpressionEvaluator());
+        handleLabelExpressions(parentView, currentModel, currentContext, ViewLifecycle.getExpressionEvaluator());
 
         //label automation, if parent has a label for its breadcrumb and one is not set here use that value
         //it is assumed that if the label contains a SpringEL expression, those properties are available on the

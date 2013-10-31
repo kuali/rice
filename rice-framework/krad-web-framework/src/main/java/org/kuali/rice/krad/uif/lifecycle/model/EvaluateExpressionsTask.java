@@ -75,7 +75,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluator();
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         View view = ViewLifecycle.getView();
         Component component = getPhase().getComponent();
 

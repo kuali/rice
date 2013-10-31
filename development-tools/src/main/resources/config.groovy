@@ -133,7 +133,7 @@ ojb {
 //        , "rice-middleware/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml"
 //        , "rice-middleware/kew/impl/src/main/resources/org/kuali/rice/kew/impl/config/OJB-repository-kew.xml"
 //        , "rice-middleware/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/OJB-repository-kim-hist.xml"
-//        , "rice-middleware/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/OJB-repository-kim.xml"
+        , "rice-middleware/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/OJB-repository-kim.xml"
 //        , "rice-middleware/krms/impl/src/main/resources/org/kuali/rice/krms/config/OJB-repository-krms.xml"
 //        , "rice-middleware/ksb/client-impl/src/main/resources/org/kuali/rice/ksb/config/OJB-repository-ksb-bam.xml"
 //        , "rice-middleware/ksb/client-impl/src/main/resources/org/kuali/rice/ksb/config/OJB-repository-ksb-message.xml"

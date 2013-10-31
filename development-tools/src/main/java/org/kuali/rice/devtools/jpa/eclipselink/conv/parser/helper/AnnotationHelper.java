@@ -192,12 +192,16 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
                 final String importName = i.getName().toString();
                 if (i.isAsterisk()) {
                     if (packageName.equals(importName)) {
-                        LOG.info("found import " + packageName + ".* on " + getTypeNameForMsg(i) + ".");
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug("found import " + packageName + ".* on " + getTypeNameForMsg(i) + ".");
+                        }
                         return true;
                     }
                 } else {
                     if (fullyQualifiedName.equals(importName)) {
-                        LOG.info("found import " + fullyQualifiedName + " on " + getTypeNameForMsg(i) + ".");
+                        if ( LOG.isDebugEnabled() ) {
+                            LOG.debug("found import " + fullyQualifiedName + " on " + getTypeNameForMsg(i) + ".");
+                        }
                         return true;
                     }
                 }

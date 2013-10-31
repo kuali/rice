@@ -120,12 +120,18 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
             if (autoRetrieve) {
                 cascadeTypes.add(new NameExpr("CascadeType.REFRESH"));
             } else {
-                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
+                // updated default logging - false would result no additional annotations
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-retrieve set to " + autoRetrieve + ", unsupported conversion to CascadeType");
+                }
             }
 
             final int autoDelete = cld.getCascadingDelete();
             if (autoDelete == ObjectReferenceDescriptor.CASCADE_NONE) {
-                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to none, unsupported conversion to CascadeType");
+                // updated default logging - none would result no additional annotations
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to none, unsupported conversion to CascadeType");
+                }
             } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_LINK) {
                 LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to link, unsupported conversion to CascadeType");
             } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_OBJECT) {
@@ -136,7 +142,10 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
 
             final int autoUpdate = cld.getCascadingStore();
             if (autoUpdate == ObjectReferenceDescriptor.CASCADE_NONE) {
-                LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to none, unsupported conversion to CascadeType");
+                // updated default logging - none would result no additional annotations
+                if ( LOG.isDebugEnabled() ) {
+                    LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to none, unsupported conversion to CascadeType");
+                }
             } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_LINK) {
                 LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-update set to link, unsupported conversion to CascadeType");
             } else if (autoUpdate == ObjectReferenceDescriptor.CASCADE_OBJECT) {

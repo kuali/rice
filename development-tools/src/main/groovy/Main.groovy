@@ -32,7 +32,7 @@ c = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"
 
 println c
 
-BasicConfigurator.configure()
+//BasicConfigurator.configure()
 
 /*
  * NOTE: When running from within Eclipse/IDE, you need to add groovy to the --classpath of the script being run so that
@@ -98,6 +98,10 @@ println "\n\n"
 def mappedJavaFiles = convertClassesToJavaFiles(ojbMappedClasses)
 
 println "\n\nJava Files: \n${mappedJavaFiles.values().join( '\n' )}"
+
+println "\n\n************************************************************"
+println "*** Starting Conversion"
+println "************************************************************\n\n"
 
 entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.removeExistingAnnotations )
 

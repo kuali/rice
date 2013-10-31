@@ -222,7 +222,7 @@ public class IdClassResolver implements AnnotationResolver {
         toString.setBody(toStringBody);
 
         return new NodeAndImports<MethodDeclaration>(toString,
-                Collections.singleton(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("org.apache.commons.lang.builder"), "ToStrigBuilder"), false, false)));
+                Collections.singleton(new ImportDeclaration(new QualifiedNameExpr(new NameExpr("org.apache.commons.lang.builder"), "ToStringBuilder"), false, false)));
     }
 
     private NodeAndImports<MethodDeclaration> createPrimaryKeyEquals(Collection<FieldDescriptor> primaryKeyDescriptors, String enclosingClassName) {

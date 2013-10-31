@@ -99,7 +99,7 @@ def mappedJavaFiles = convertClassesToJavaFiles(ojbMappedClasses)
 
 println "\n\nJava Files: \n${mappedJavaFiles.values().join( '\n' )}"
 
-entityVisitor = new EntityVisitor(drs, c.converterMappings, c.project.removeExistingAnnotations )
+entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.removeExistingAnnotations )
 
 for (String className : mappedJavaFiles.keySet()) {
     File ojbMappedFile = mappedJavaFiles[className]

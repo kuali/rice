@@ -68,8 +68,8 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
     public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings, boolean removeExisting) {
         super(descriptorRepositories);
 
-        if (converterMappings == null) {
-            throw new IllegalArgumentException("converterMappings cannot be null");
+        if (converterMappings == null || converterMappings.isEmpty()) {
+            throw new IllegalArgumentException("converterMappings cannot be null or empty");
         }
 
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();

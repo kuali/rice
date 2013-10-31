@@ -60,11 +60,11 @@ public class JoinTableResolver extends AbstractMappedFieldResolver {
             final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
             final Collection<ImportDeclaration> additionalImports = new ArrayList<ImportDeclaration>();
 
-            boolean error = false;
             if (!cld.isMtoNRelation()) {
-                error = true;
+                return null;
             }
 
+            boolean error = false;
             final String joinTable = cld.getIndirectionTable();
             if (StringUtils.isBlank(joinTable)) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName

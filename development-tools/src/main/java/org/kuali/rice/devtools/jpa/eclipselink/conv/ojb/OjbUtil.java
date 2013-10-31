@@ -130,7 +130,7 @@ public final class OjbUtil {
     }
 
     /**
-     * Gets all the mapped classes & their super classes stopping when the super class matches a package prefix
+     * Gets all the mapped classes
      */
     public static Set<String> mappedClasses(Collection<DescriptorRepository> descriptors) throws Exception {
         Set<String> mappedClasses = new HashSet<String>();

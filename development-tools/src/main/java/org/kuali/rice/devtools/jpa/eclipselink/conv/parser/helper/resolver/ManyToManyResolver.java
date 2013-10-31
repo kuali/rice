@@ -27,6 +27,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.CollectionDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
@@ -35,7 +36,10 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ManyToManyResolver extends AbstractMappedFieldResolver {
     private static final Log LOG = LogFactory.getLog(ManyToManyResolver.class);
@@ -59,27 +63,26 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
             final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
             final Collection<ImportDeclaration> additionalImports = new ArrayList<ImportDeclaration>();
 
-            boolean error = false;
-
             if (!cld.isMtoNRelation()) {
-                error = true;
+                return null;
             }
 
+            boolean fkError = false;
             final String[] fkToItemClass = getFksToItemClass(cld);
             if (fkToItemClass == null || fkToItemClass.length == 0) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a M:N relationship but does not have any fk-pointing-to-element-class configured");
-                error = true;
+                fkError = true;
             }
 
             final String[] fkToThisClass = getFksToThisClass(cld);
             if (fkToThisClass == null || fkToThisClass.length == 0) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a M:N relationship but does not have any fk-pointing-to-this-class configured");
-                error = true;
+                fkError = true;
             }
 
-            if (error) {
+            if (fkError) {
                 return null;
             }
 
@@ -90,13 +93,13 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
                         + "fk-pointing-to-this-class and fk-pointing-to-element-class");
             }
 
-            final String className = cld.getItemClassName();
-            if (StringUtils.isBlank(className)) {
+            final String itemClassName = cld.getItemClassName();
+            if (StringUtils.isBlank(itemClassName)) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
                         + " but does not class name attribute");
             } else {
-                final String shortClassName = ClassUtils.getShortClassName(className);
-                final String packageName = ClassUtils.getPackageName(className);
+                final String shortClassName = ClassUtils.getShortClassName(itemClassName);
+                final String packageName = ClassUtils.getPackageName(itemClassName);
                 pairs.add(new MemberValuePair("targetEntity", new NameExpr(shortClassName + ".class")));
                 additionalImports.add(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(packageName), shortClassName), false, false));
             }
@@ -147,9 +150,34 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
                 additionalImports.add(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), "CascadeType"), false, false));
             }
 
-            return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs),
-                    new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
-                    additionalImports);
+            final NodeData nodeData;
+            if (isBidirectional(mappedClass, itemClassName)) {
+                LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " bi-directional ManyToMany relationship detected");
+
+                BidirectionalOwnerRegistry registry = BidirectionalOwnerRegistry.getInstance();
+                if (registry.isOwnerThisClassManyToMany(mappedClass, itemClassName)) {
+                    nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs),
+                            new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
+                            additionalImports);
+                } else if (registry.isOwnerItemClassManyToMany(mappedClass, itemClassName)) {
+                    nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME),
+                            Collections.singletonList(new MemberValuePair("mappedBy", new NameExpr(getMappedBy(mappedClass, itemClassName))))),
+                            new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
+                            additionalImports);
+                } else {
+                    registry.assignThisClassAsOwnerManyToMany(mappedClass, itemClassName);
+
+                    nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs),
+                            new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
+                            additionalImports);
+                }
+            } else {
+                nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs),
+                        new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
+                        additionalImports);
+            }
+
+            return nodeData;
         }
         return null;
     }
@@ -168,5 +196,31 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
         } catch (NullPointerException e) {
             return new String[] {};
         }
+    }
+
+    private boolean isBidirectional(String thisClass, String itemClass) {
+        final ClassDescriptor cd = OjbUtil.findClassDescriptor(itemClass, descriptorRepositories);
+        Collection<CollectionDescriptor> clds = cd.getCollectionDescriptors();
+        if (clds != null) {
+            for (CollectionDescriptor cld : clds) {
+                if (cld.getItemClassName().equals(thisClass)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private String getMappedBy(String thisClass, String itemClass) {
+        final ClassDescriptor cd = OjbUtil.findClassDescriptor(itemClass, descriptorRepositories);
+        Collection<CollectionDescriptor> clds = cd.getCollectionDescriptors();
+        if (clds != null) {
+            for (CollectionDescriptor cld : clds) {
+                if (cld.getItemClassName().equals(thisClass)) {
+                    return cld.getAttributeName();
+                }
+            }
+        }
+        return null;
     }
 }

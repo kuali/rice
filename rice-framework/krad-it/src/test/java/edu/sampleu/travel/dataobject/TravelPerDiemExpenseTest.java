@@ -18,8 +18,13 @@ package edu.sampleu.travel.dataobject;
 import edu.sampleu.travel.options.PostalCountryCode;
 import edu.sampleu.travel.options.PostalStateCode;
 import org.junit.Test;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.math.BigDecimal;
@@ -35,7 +40,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class TravelPerDiemExpenseTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
@@ -48,7 +53,6 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
     private static final String MILEAGE_RATE_NAME = "Domestic";
     private static final BigDecimal MILEAGE_RATE = new BigDecimal("30");
 
-    private static final String TRAVEL_AUTHORIZATION_DOCUMENT_ID = "10000";
     private static final String PER_DIEM_DATE = "2010-01-01";
     private static final BigDecimal BREAKFAST_VALUE = new BigDecimal("15.00");
     private static final BigDecimal LUNCH_VALUE = new BigDecimal("30.00");
@@ -56,13 +60,27 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
     private static final BigDecimal INCIDENTALS_VALUE = new BigDecimal("15.00");
     private static final BigDecimal ESTIMATED_MILEAGE = new BigDecimal("50");
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        GlobalVariables.setMessageMap(new MessageMap());
+        GlobalVariables.setUserSession(new UserSession("admin"));
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        GlobalVariables.setMessageMap(new MessageMap());
+        GlobalVariables.setUserSession(null);
+        super.tearDown();
+    }
+
     /**
      * Tests basic {@code TravelPerDiemExpense} persistence by saving it, reloading it, and checking the data.
      *
-     * @throws java.text.ParseException when the date fails to parse
+     * @throws java.lang.Exception for any exceptions occurring during creation
      */
     @Test
-    public void testTravelPerDiemExpense() throws ParseException {
+    public void testTravelPerDiemExpense() throws Exception {
         assertTrue(TravelPerDiemExpense.class.getName() + " is not mapped in JPA",
                 KRADServiceLocator.getDataObjectService().supports(TravelPerDiemExpense.class));
 
@@ -78,7 +96,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         assertEquals("Travel Destination country is incorrect", COUNTRY_CODE, travelDestination.getCountryCd());
         assertEquals("Travel Destination state is incorrect", STATE_CODE, travelDestination.getStateCd());
 
-        assertEquals("Travel Per Diem Expense document ID is incorrect", TRAVEL_AUTHORIZATION_DOCUMENT_ID, travelPerDiemExpense.getTravelAuthorizationDocumentId());
+        assertNotNull("Travel Per Diem Expense document ID is null", travelPerDiemExpense.getTravelAuthorizationDocumentId());
         assertEquals("Travel Per Diem Expense date is incorrect", DATE_FORMAT.parse(PER_DIEM_DATE), travelPerDiemExpense.getPerDiemDate());
         assertEquals("Travel Per Diem Expense breakfast value is incorrect", BREAKFAST_VALUE, travelPerDiemExpense.getBreakfastValue());
         assertEquals("Travel Per Diem Expense lunch value is incorrect", LUNCH_VALUE, travelPerDiemExpense.getLunchValue());
@@ -95,7 +113,7 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         assertEquals("Travel Per Diem Expense estimated mileage is incorrect", ESTIMATED_MILEAGE, travelPerDiemExpense.getEstimatedMileage());
     }
 
-    private String createTravelPerDiemExpense() throws ParseException {
+    private String createTravelPerDiemExpense() throws Exception {
         TravelDestination newTravelDestination = new TravelDestination();
         newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
         newTravelDestination.setCountryCd(COUNTRY_CODE);
@@ -108,8 +126,10 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         newTravelMileageRate.setMileageRate(MILEAGE_RATE);
         TravelMileageRate travelMileageRate = KRADServiceLocator.getDataObjectService().save(newTravelMileageRate);
 
+        Document document = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+
         TravelPerDiemExpense travelPerDiemExpense = new TravelPerDiemExpense();
-        travelPerDiemExpense.setTravelAuthorizationDocumentId(TRAVEL_AUTHORIZATION_DOCUMENT_ID);
+        travelPerDiemExpense.setTravelAuthorizationDocumentId(document.getDocumentNumber());
         travelPerDiemExpense.setTravelDestinationId(travelDestination.getTravelDestinationId());
         travelPerDiemExpense.setPerDiemDate(DATE_FORMAT.parse(PER_DIEM_DATE));
         travelPerDiemExpense.setBreakfastValue(BREAKFAST_VALUE);

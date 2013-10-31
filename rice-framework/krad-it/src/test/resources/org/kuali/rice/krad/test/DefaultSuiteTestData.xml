@@ -458,39 +458,71 @@
     </documentType>
     <documentType>
       <name>TravelAccountMaintenanceDocument</name>
-  <parent>RiceDocument</parent>
-  <description>Create a New Travel Account Maintenance Document</description>
-  <label>Travel Account Maintenance Document</label>
-  <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-  <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
-  <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
-  <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
-  <docHandler>${kr.krad.url}/maintenance?methodToCall=docHandler</docHandler>
-  <active>true</active>
-  <attributes>
-    <attribute>
-      <name>TravelAccountDocumentAccountNumberAttribute</name>
-    </attribute>
-  </attributes>
-  <routingVersion>2</routingVersion>
-  <routePaths>
-    <routePath>
-      <start name="Initiated" nextNode="PeopleFlows"/>
-      <requests name="PeopleFlows"/>
-    </routePath>
-  </routePaths>
-  <routeNodes>
-    <start name="Initiated">
-      <activationType>P</activationType>
-      <mandatoryRoute>false</mandatoryRoute>
-      <finalApproval>false</finalApproval>
-    </start>
-    <requests name="PeopleFlows">
-      <activationType>R</activationType>
-      <rulesEngine executorClass="edu.sampleu.travel.workflow.TravelAccountRulesEngineExecutor"/>
-    </requests>
-  </routeNodes>
-</documentType>
+      <parent>RiceDocument</parent>
+      <description>Create a New Travel Account Maintenance Document</description>
+      <label>Travel Account Maintenance Document</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>${kr.krad.url}/maintenance?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <attributes>
+        <attribute>
+          <name>TravelAccountDocumentAccountNumberAttribute</name>
+        </attribute>
+      </attributes>
+      <routingVersion>2</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Initiated" nextNode="PeopleFlows"/>
+          <requests name="PeopleFlows"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Initiated">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="PeopleFlows">
+          <activationType>R</activationType>
+          <rulesEngine executorClass="edu.sampleu.travel.workflow.TravelAccountRulesEngineExecutor"/>
+        </requests>
+      </routeNodes>
+    </documentType>
+    <documentType>
+      <name>TravelAuthorization</name>
+      <parent>RiceDocument</parent>
+      <description>Create a New Travel Authorization Document</description>
+      <label>Travel Authorization Document</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>${application.url}/kr-krad/approval?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Initiated" nextNode="TravelApproval"/>
+          <role name="TravelApproval"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Initiated">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <role name="TravelApproval">
+          <qualiferResolver>org.kuali.rice.kew.role.NullQualifierResolver</qualiferResolver>
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </role>
+      </routeNodes>
+    </documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>

@@ -24,8 +24,7 @@
 
 	<bean id="TravelAuthorizationDocument" parent="uifTransactionalDocumentEntry">
 		<property name="documentTypeName" value="TravelAuthorization" />
-		<property name="documentClass" value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationDocument" />
-		<property name="businessRulesClass" value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationDocumentRule" />
+		<property name="documentClass" value="edu.sampleu.travel.dataobject.TravelAuthorizationDocument" />
 	</bean>
 
 

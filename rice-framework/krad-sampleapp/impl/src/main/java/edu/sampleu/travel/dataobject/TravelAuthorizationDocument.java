@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.travel.authorization;
+package edu.sampleu.travel.dataobject;
 
 import java.util.ArrayList;
 import java.util.Date;

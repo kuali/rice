@@ -17,8 +17,13 @@ package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.ExpenseType;
 import org.junit.Test;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.math.BigDecimal;
@@ -35,24 +40,37 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class TravelExpenseItemTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
-    private static final String TRAVEL_AUTHORIZATION_DOCUMENT_ID = "10000";
     private static final String EXPENSE_TYPE = ExpenseType.A.getCode();
     private static final String EXPENSE_DESCRIPTION = ExpenseType.A.getLabel();
     private static final String EXPENSE_DATE = "2010-01-01";
     private static final BigDecimal EXPENSE_AMOUNT = new BigDecimal("1236.49");
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        GlobalVariables.setMessageMap(new MessageMap());
+        GlobalVariables.setUserSession(new UserSession("admin"));
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        GlobalVariables.setMessageMap(new MessageMap());
+        GlobalVariables.setUserSession(null);
+        super.tearDown();
+    }
+
     /**
      * Tests basic {@code TravelExpenseItem} persistence by saving it, reloading it, and checking the data.
      *
-     * @throws java.text.ParseException when the date fails to parse
+     * @throws java.lang.Exception for any exceptions occurring during creation
      */
     @Test
-    public void testTravelExpenseItem() throws ParseException {
+    public void testTravelExpenseItem() throws Exception {
         assertTrue(TravelExpenseItem.class.getName() + " is not mapped in JPA",
                 KRADServiceLocator.getDataObjectService().supports(TravelExpenseItem.class));
 
@@ -60,7 +78,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
 
         TravelExpenseItem travelExpenseItem = KRADServiceLocator.getDataObjectService().find(TravelExpenseItem.class, id);
         assertNotNull("Travel Expense Item ID is null", travelExpenseItem.getTravelExpenseItemId());
-        assertEquals("Travel Expense Item document ID is incorrect", TRAVEL_AUTHORIZATION_DOCUMENT_ID, travelExpenseItem.getTravelAuthorizationDocumentId());
+        assertNotNull("Travel Expense Item document ID is null", travelExpenseItem.getTravelAuthorizationDocumentId());
         assertEquals("Travel Expense Item type is incorrect", EXPENSE_TYPE, travelExpenseItem.getTravelExpenseTypeCd());
         assertEquals("Travel Expense Item description is incorrect", EXPENSE_DESCRIPTION, travelExpenseItem.getExpenseDesc());
         assertEquals("Travel Expense Item date is incorrect", DATE_FORMAT.parse(EXPENSE_DATE), travelExpenseItem.getExpenseDate());
@@ -69,9 +87,11 @@ public class TravelExpenseItemTest extends KRADTestCase {
         assertFalse("Travel Expense Item is taxable", travelExpenseItem.isTaxable());
     }
 
-    private String createTravelExpenseItem() throws ParseException {
+    private String createTravelExpenseItem() throws Exception {
+        Document document = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+
         TravelExpenseItem travelExpenseItem = new TravelExpenseItem();
-        travelExpenseItem.setTravelAuthorizationDocumentId(TRAVEL_AUTHORIZATION_DOCUMENT_ID);
+        travelExpenseItem.setTravelAuthorizationDocumentId(document.getDocumentNumber());
         travelExpenseItem.setTravelExpenseTypeCd(EXPENSE_TYPE);
         travelExpenseItem.setExpenseDesc(EXPENSE_DESCRIPTION);
         travelExpenseItem.setExpenseDate(DATE_FORMAT.parse(EXPENSE_DATE));

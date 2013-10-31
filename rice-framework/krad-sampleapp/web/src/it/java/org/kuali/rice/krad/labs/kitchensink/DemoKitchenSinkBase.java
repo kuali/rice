@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

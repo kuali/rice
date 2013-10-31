@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.authorization;
 
+import edu.sampleu.travel.TravelAuthorizationForm;
 import org.kuali.rice.krad.web.controller.TransactionalDocumentControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

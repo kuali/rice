@@ -84,6 +84,9 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-digester:commons-digester:2.0" level="project" />
     <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.glassfish:javax.json:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" level="project" />
+    <orderEntry type="library" name="Maven: commons-transaction:commons-transaction:1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />
   </component>
 </module>
 

@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class TravelDestinationTest extends KRADTestCase {
 
     private static final String DESTINATION_NAME = PostalStateCode.PR.getLabel();

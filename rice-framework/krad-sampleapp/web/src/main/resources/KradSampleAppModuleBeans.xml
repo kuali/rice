@@ -50,9 +50,9 @@
     </property>
     <property name="packagePrefixes">
       <list>
+        <value>edu.sampleu.travel</value>
         <value>org.kuali.rice.krad.demo</value>
         <value>org.kuali.rice.krad.labs</value>
-        <value>edu.sampleu.travel.dataobject</value>
       </list>
     </property>
     <property name="resourceBundleNames">

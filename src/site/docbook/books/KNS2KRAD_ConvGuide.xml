@@ -2508,7 +2508,7 @@
               With KRAD the forms are specified as a property of the view.
               <programlisting>&lt;bean parent="Uif-TransactionalDocumentView">
     &lt;property name="formClass" 
-              value="org.kuali.rice.krad.demo.travel.authorization.TravelAuthorizationForm"/>
+              value="edu.sampleu.travel.TravelAuthorizationForm"/>
     ...
 &lt;/bean></programlisting>
             </para>

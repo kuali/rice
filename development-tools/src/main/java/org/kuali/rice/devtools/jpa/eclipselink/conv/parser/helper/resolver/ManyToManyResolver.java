@@ -170,7 +170,7 @@ public class ManyToManyResolver extends AbstractMappedFieldResolver {
                             additionalImports);
                 } else if (registry.isOwnerItemClassManyToMany(mappedClass, itemClassName)) {
                     nodeData =  new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME),
-                            Collections.singletonList(new MemberValuePair("mappedBy", new NameExpr(getMappedBy(mappedClass, itemClassName))))),
+                            Collections.singletonList(new MemberValuePair("mappedBy", new StringLiteralExpr(getMappedBy(mappedClass, itemClassName))))),
                             new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
                             additionalImports);
                 } else {

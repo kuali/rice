@@ -97,10 +97,14 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     def transformMenubarProperty(NodeBuilder builder, Node node) {
         def menubarPropertyNode = node.property.find { it.@name == "menubar" };
         if (menubarPropertyNode != null) {
-            builder.property(name: "page.header.lowerGroup.items") {
-                list(merge: "true") {
-                    bean(parent: "Uif-Message") {
-                        property(name: "messageText", value: "[" + menubarPropertyNode.@value + "]");
+            builder.property(name: "page.header.lowerGroup") {
+                bean(parent: "Uif-HeaderLowerGroup") {
+                    property(name: "items"){
+                        list(merge: "true") {
+                            bean(parent: "Uif-Message") {
+                                property(name: "messageText", value: "[" + menubarPropertyNode.@value + "]");
+                            }
+                        }
                     }
                 }
             }

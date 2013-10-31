@@ -32,7 +32,7 @@ public class DemoAuthorizationAft extends DemoKitchenSinkBase {
     private static final String SECURE_LINE_EDIT_ASSERT_MSG="Line Editing Fields is present restricted access !";
     private static final String SECURE_LINE_FIELDS_ASSERT_MSG="Line Fields is present restricted access !";
     private static final String SECURE_LINE_ACTION_ASSERT_MSG="Line Action Button is present restricted access !";
-    
+     
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;

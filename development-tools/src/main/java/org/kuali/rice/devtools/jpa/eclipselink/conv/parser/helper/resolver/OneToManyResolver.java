@@ -64,7 +64,7 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
             if (cld.isMtoNRelation()) {
                 return null;
             }
-
+            /*  I don't think this is correct.
             final String[] fkToItemClass = getFksToItemClass(cld);
             if (fkToItemClass != null || fkToItemClass.length != 0) {
                 LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
@@ -76,7 +76,7 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
                 LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
                         + " for a 1:M relationship but has fk-pointing-to-this-class configured");
             }
-
+            */
             final Collection<String> fks = cld.getForeignKeyFields();
             if (fks == null || fks.isEmpty()) {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName

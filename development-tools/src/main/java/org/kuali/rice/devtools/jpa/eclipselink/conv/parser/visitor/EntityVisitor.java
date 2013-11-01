@@ -31,6 +31,7 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Colum
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.ConvertResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.CustomizerResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.EntityResolver;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.EnumeratedResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.GeneratedValueResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.IdClassResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.IdResolver;
@@ -92,6 +93,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new VersionResolver(getDescriptorRepositories()));
         annotations.add(new TemporalResolver(getDescriptorRepositories()));
         annotations.add(new LobResolver(getDescriptorRepositories()));
+        annotations.add(new EnumeratedResolver(getDescriptorRepositories()));
         annotations.add(new IdClassResolver(getDescriptorRepositories()));
 
         annotationHelper = new AnnotationHelper(annotations, removeExisting);

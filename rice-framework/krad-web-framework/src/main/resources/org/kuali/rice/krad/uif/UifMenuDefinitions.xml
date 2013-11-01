@@ -133,7 +133,7 @@
         <value>dropdown-menu</value>
       </list>
     </property>
-    <property name="cssClasses">
+    <property name="layoutManager.cssClasses">
       <list merge="true">
         <value>uif-appMenuGroup</value>
       </list>
@@ -165,5 +165,35 @@
     </property>
   </bean>
 
+  <bean id="Uif-DropdownTable" parent="Uif-GridGroup" p:libraryCssClasses="dropdown-menu"
+        p:layoutManager.cssClasses="">
+    <property name="header">
+      <bean parent="Uif-SimpleHeaderFour"/>
+    </property>
+    <property name="validationMessages">
+      <null/>
+    </property>
+    <property name="disclosure">
+      <null/>
+    </property>
+    <property name="help">
+      <null/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ActionBar" parent="Uif-ListGroup" p:cssClasses="uif-actionBar" p:layoutManager.cssClasses="">
+    <property name="header">
+      <null/>
+    </property>
+    <property name="validationMessages">
+      <null/>
+    </property>
+    <property name="disclosure">
+      <null/>
+    </property>
+    <property name="help">
+      <null/>
+    </property>
+  </bean>
 
 </beans>

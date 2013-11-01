@@ -80,9 +80,7 @@
             </#if>
         </#if>
 
-        <div class="${view.contentContainerClassesAsString}">
-            <@krad.template component=view/>
-        </div>
+        <@krad.template component=view/>
     </@krad.form>
 
     <@krad.script value="${KualiForm.lightboxScript!}"/>

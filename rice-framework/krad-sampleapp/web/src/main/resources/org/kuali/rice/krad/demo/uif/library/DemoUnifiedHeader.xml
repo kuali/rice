@@ -38,7 +38,7 @@
   <bean id="Demo-UnifiedHeader-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Unified exampl"
+        <bean parent="Uif-Link" p:linkText="Unified example"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View1&amp;methodToCall=start"
               p:target="_blank"/>
       </list>

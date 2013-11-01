@@ -34,6 +34,7 @@
         <ref bean="Demo-DropdownMenu-Example4"/>
         <ref bean="Demo-DropdownMenu-Example5"/>
         <ref bean="Demo-DropdownMenu-Example6"/>
+        <ref bean="Demo-DropdownMenu-Example7"/>
       </list>
     </property>
   </bean>
@@ -172,6 +173,34 @@
           </property>
         </bean>
         <!-- ex:Demo-DropdownMenu-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DropdownMenu-Example7" parent="Uif-VerticalBoxSection" p:headerText="Dropdown with Table"
+        p:instructionalText="Example of a dropdown with a table" p:style="min-height: 400px;">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DropdownMenu-Example7 start-->
+        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="more..." p:renderToggleCaret="false">
+          <property name="menuGroup">
+            <bean parent="Uif-DropdownTable">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-MessageField" p:label="Doc Nbr" p:messageText="2743"/>
+                  <bean parent="Uif-LinkField" p:href="#" p:label="Initiator" p:linkText="thrclark"/>
+                  <bean parent="Uif-MessageField" p:label="Status" p:messageText="In Progress"/>
+                  <bean parent="Uif-MessageField" p:label="PI" p:messageText="Ken Graves"/>
+                  <bean parent="Uif-MessageField" p:label="Created" p:messageText="04:27pm 07/09/2013"/>
+                  <bean parent="Uif-MessageField" p:label="Updated" p:messageText="12:22pm 07/12/2013"/>
+                  <bean parent="Uif-MessageField" p:label="Proposal Nbr" p:messageText="#23533"/>
+                  <bean parent="Uif-MessageField" p:label="Sponsor Name" p:messageText="NIH"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-DropdownMenu-Example7 end-->
       </list>
     </property>
   </bean>

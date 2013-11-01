@@ -27,6 +27,12 @@
   <bean id="Uif-ControlBase" abstract="true" parent="Uif-ControlBase-parentBean"/>
   <bean id="Uif-ControlBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.ControlBase"
         parent="Uif-ComponentBase">
+    <property name="libraryCssClasses">
+      <list>
+        <value>form-control</value>
+        <value>input-sm</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-control</value>

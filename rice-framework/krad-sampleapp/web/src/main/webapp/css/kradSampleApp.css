@@ -285,7 +285,7 @@
     margin-bottom: 10px;
 }
 
-.demo-componentLibView > .uif-viewContentWrapper > .uif-pageContentWrapper {
+.demo-componentLibView .uif-viewContentWrapper .uif-pageContentWrapper {
     float: left;
     margin-left: 256px;
     width: 700px;
@@ -449,7 +449,7 @@
     margin-left: -20px;
 }
 
-.demo-componentLibView > .uif-viewContentWrapper > #Uif-Navigation {
+.demo-componentLibView .uif-viewContentWrapper #Uif-Navigation {
     float: left;
     margin-left: 20px;
     width: 220px;
@@ -1065,4 +1065,10 @@ table.dataTable tr.demo-rowCondition {
     font-style: italic;
 }
 
+.container-fluid {
+padding-left: 0px;
+padding-right: 0px;
+margin-left: auto;
+margin-right: auto;
+}
 

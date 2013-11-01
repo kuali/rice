@@ -68,6 +68,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFluid"/>
                         <bean parent="Uif-Link" p:linkText="View Fixed Container" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
+                        <bean parent="Uif-Link" p:linkText="Document Unified Header" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsDocumentUnifiedHeader"/>
                       </list>
                   </property>
               </bean>

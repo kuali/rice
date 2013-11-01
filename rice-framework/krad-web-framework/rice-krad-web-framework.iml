@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset" name="Spring Application Context" removed="false">
+        <fileset id="fileset" name="KRAD Application Context" removed="false">
           <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoCheckboxGroupControl.xml</file>
           <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoCollectionLookup.xml</file>
           <file>file://$MODULE_DIR$/src/test/resources/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoDisable.xml</file>

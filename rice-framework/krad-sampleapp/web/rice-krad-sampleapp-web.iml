@@ -1,10 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="KRAD Sampleapp Web Context" removed="false">
+          <dependency>fileset==rice-krad-web-framework</dependency>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAccordion.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAccordionGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAction.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoActionField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAjaxFieldQuery.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAlphaNumericPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAlphaPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAnyCharacterPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoAppHeader.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoBoxLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoBreadcrumbs.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCaseConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCharsetPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCheckboxControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCheckboxGroupControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionActionPlacement.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionAddLine.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionInactiveFilter.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionLookup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionSelectLine.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionSequence.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCollectionServerPaging.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoConditionalRefresh.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoConfigurationBasedRegexPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoCssGridLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDataField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDatePatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDatePicker.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDialogGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDisable.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoDropdownMenu.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoEvents.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFieldGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFixedPointPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoFloatingPointPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoGridLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoGrowls.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoHeader.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoHelp.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoIframe.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoImage.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoImageField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoInputField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoInquiry.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/DemoInquiryViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoIntegerPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoKIMGroupControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoKIMUserControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLabel.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLightTable.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLink.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLinkField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoListLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/DemoLookupViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoMessage.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoMessageField.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoMustOccurConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoNumericPatternConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoOptionListControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoPageGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoPasswordControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoPrerequisiteConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoProgressiveDisclosure.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoQuickFinder.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoRichMessages.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSimpleConstraint.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSpace.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSpinnerControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoStickyFooter.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoStickyHeader.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSuggest.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoSyntaxHighlighter.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutGrouping.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutManager.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutRowCss.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTextControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTooltip.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoTreeGroup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/library/DemoUnifiedHeader.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/KradSampleAppBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/components/KradSampleAppDemo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/KradSampleAppModuleBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/KradSampleAppStandaloneBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsAppContainer.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsClientSideState.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsEncryption.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsFileUploads.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsGroupControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsInquiryPages.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsInquiryViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsKsaTransactionTest.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsKsaTransactionTest2.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsLookupViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsMenu.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsMenuInquiry.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsMenuLookup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsNativeAutocomplete.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsParameter.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsPerformance.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsRoleMember.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsSessionPolicy.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsStickyHeaderFooter.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsUserControl.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccount.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelAccountType.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelAuthorizationDocument.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/TravelAuthorizationDocumentView.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelBo.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelCompanyMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelDestinationMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelMileageRateMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/travel/account/TravelSubAccount.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/dataobject/TravelerDetail.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/edu/sampleu/travel/TravelerDetailLookup.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/demo/uif/form/UIRoleMember.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsView.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP2.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP3.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP4.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP5.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP6.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP7.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP8.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP9.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewPx10.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewPx11.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/XmlIngester.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/_KradSampleAppJpaSpringBeans.xml</file>
+          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/krad-servlet.xml</file>
+          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/kradguest-servlet.xml</file>
+          <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/login-servlet.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/src/main/webapp/META-INF/context.xml" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
@@ -135,12 +288,12 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.cxf:cxf-rt-databinding-jaxb:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-bindings-xml:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-simple:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-addr:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-policy:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi:neethi:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxrs:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0-m10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-ws-security:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.6.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.5.2" level="project" />

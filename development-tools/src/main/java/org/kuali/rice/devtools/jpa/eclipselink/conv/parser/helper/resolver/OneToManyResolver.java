@@ -74,7 +74,7 @@ public class OneToManyResolver extends AbstractMappedFieldResolver {
             final String[] fkToThisClass = getFksToThisClass(cld);
             if (fkToThisClass != null || fkToThisClass.length != 0) {
                 LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
-                        + " for a 1:N relationship but does not have any fk-pointing-to-this-class configured");
+                        + " for a 1:M relationship but has fk-pointing-to-this-class configured");
             }
 
             final Collection<String> fks = cld.getForeignKeyFields();

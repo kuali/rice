@@ -48,4 +48,20 @@
     <property name="headerText" value="Inquiry Sample"/>
   </bean>
 
+  <bean id="LabsInquiry-Dynamic" parent="LabsInquiry-DefaultView">
+    <property name="viewName" value="LabsInquiry-DynamicView"/>
+    <property name="headerText" value="Inquiry Dynamic Sections Sample"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.labs.inquiry.LabsInquiryDynamicSectionsInquirable"/>
+  </bean>
+
+  <bean id="LabsInquiry-CustomHeader" parent="LabsInquiry-DefaultView">
+    <property name="viewName" value="LabsInquiry-CustomHeaderView"/>
+    <property name="headerText" value="Inquiry Custom Header Sample"/>
+    <property name="page.header.lowerGroup.items">
+      <list merge="true">
+        <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Site"/>
+      </list>
+    </property>
+  </bean>
+
 </beans>

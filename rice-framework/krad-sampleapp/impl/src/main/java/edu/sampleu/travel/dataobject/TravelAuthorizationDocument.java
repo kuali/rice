@@ -95,7 +95,7 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     @Column(name="TRVL_DEST_ID",length=40)
     private String tripDestinationId;
     @Transient
-    private TravelDestination travelDestination;
+    private TravelDestination tripDestination;
 
     // traveler
 	@Column(name="TRAVELER_DTL_ID",length=19,precision=0)
@@ -198,12 +198,12 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
         this.tripDestinationId = tripDestinationId;
     }
 
-    public TravelDestination getTravelDestination() {
-        return travelDestination;
+    public TravelDestination getTripDestination() {
+        return tripDestination;
     }
 
-    public void setTravelDestination(TravelDestination travelDestination) {
-        this.travelDestination = travelDestination;
+    public void setTripDestination(TravelDestination tripDestination) {
+        this.tripDestination = tripDestination;
     }
 
     public List<TravelPerDiemExpense> getDailyExpenseEstimates() {

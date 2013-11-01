@@ -111,7 +111,7 @@
               <property name="fieldConversions">
                 <map>
                   <entry key="travelDestinationId" value="tripDestinationId"/>
-                  <entry key="travelDestinationName" value="travelDestination.travelDestinationName"/>
+                  <entry key="travelDestinationName" value="tripDestination.travelDestinationName"/>
                 </map>
               </property>
             </bean>
@@ -120,7 +120,7 @@
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
           </property>
         </bean>
-        <bean parent="Uif-DataField" p:propertyName="travelDestination.travelDestinationName"/>
+        <bean parent="Uif-DataField" p:propertyName="tripDestination.travelDestinationName"/>
         <bean parent="Uif-InputField" p:propertyName="travelTypeCode" p:colSpan="3"/>
         <bean parent="Uif-InputField" p:propertyName="tripBegin">
           <property name="control">

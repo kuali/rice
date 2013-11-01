@@ -16,8 +16,11 @@
 package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.ExpenseType;
+import edu.sampleu.travel.options.PostalCountryCode;
+import edu.sampleu.travel.options.PostalStateCode;
 import org.junit.Test;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -27,7 +30,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
@@ -43,7 +45,16 @@ import static org.junit.Assert.assertTrue;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class TravelExpenseItemTest extends KRADTestCase {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static String DOCUMENT_NUMBER;
+    private static final String DOCUMENT_DESCRIPTION = "Test Travel Authorization Document";
+    private static final String CELL_PHONE_NUMBER = "555-555-5555";
+
+    private static String TRAVEL_DESTINATION_ID;
+    private static final String DESTINATION_NAME = PostalStateCode.CA.getLabel();
+    private static final String COUNTRY_CODE = PostalCountryCode.US.getCode();
+    private static final String STATE_CODE = PostalStateCode.CA.getCode();
 
     private static final String EXPENSE_TYPE = ExpenseType.A.getCode();
     private static final String EXPENSE_DESCRIPTION = ExpenseType.A.getLabel();
@@ -55,6 +66,21 @@ public class TravelExpenseItemTest extends KRADTestCase {
         super.setUp();
         GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(new UserSession("admin"));
+
+        TravelDestination newTravelDestination = new TravelDestination();
+        newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
+        newTravelDestination.setCountryCd(COUNTRY_CODE);
+        newTravelDestination.setStateCd(STATE_CODE);
+        TRAVEL_DESTINATION_ID = KRADServiceLocator.getDataObjectService().save(
+                newTravelDestination, PersistenceOption.FLUSH).getTravelDestinationId();
+
+        Document newDocument = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+        newDocument.getDocumentHeader().setDocumentDescription(DOCUMENT_DESCRIPTION);
+        TravelAuthorizationDocument newTravelAuthorizationDocument = (TravelAuthorizationDocument) newDocument;
+        newTravelAuthorizationDocument.setCellPhoneNumber(CELL_PHONE_NUMBER);
+        newTravelAuthorizationDocument.setTripDestinationId(TRAVEL_DESTINATION_ID);
+        DOCUMENT_NUMBER = KRADServiceLocatorWeb.getDocumentService().saveDocument(
+                newTravelAuthorizationDocument).getDocumentNumber();
     }
 
     @Override
@@ -78,7 +104,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
 
         TravelExpenseItem travelExpenseItem = KRADServiceLocator.getDataObjectService().find(TravelExpenseItem.class, id);
         assertNotNull("Travel Expense Item ID is null", travelExpenseItem.getTravelExpenseItemId());
-        assertNotNull("Travel Expense Item document ID is null", travelExpenseItem.getTravelAuthorizationDocumentId());
+        assertEquals("Travel Expense Item document ID is incorrect", DOCUMENT_NUMBER, travelExpenseItem.getTravelAuthorizationDocumentId());
         assertEquals("Travel Expense Item type is incorrect", EXPENSE_TYPE, travelExpenseItem.getTravelExpenseTypeCd());
         assertEquals("Travel Expense Item description is incorrect", EXPENSE_DESCRIPTION, travelExpenseItem.getExpenseDesc());
         assertEquals("Travel Expense Item date is incorrect", DATE_FORMAT.parse(EXPENSE_DATE), travelExpenseItem.getExpenseDate());
@@ -88,10 +114,8 @@ public class TravelExpenseItemTest extends KRADTestCase {
     }
 
     private String createTravelExpenseItem() throws Exception {
-        Document document = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
-
         TravelExpenseItem travelExpenseItem = new TravelExpenseItem();
-        travelExpenseItem.setTravelAuthorizationDocumentId(document.getDocumentNumber());
+        travelExpenseItem.setTravelAuthorizationDocumentId(DOCUMENT_NUMBER);
         travelExpenseItem.setTravelExpenseTypeCd(EXPENSE_TYPE);
         travelExpenseItem.setExpenseDesc(EXPENSE_DESCRIPTION);
         travelExpenseItem.setExpenseDate(DATE_FORMAT.parse(EXPENSE_DATE));
@@ -99,6 +123,6 @@ public class TravelExpenseItemTest extends KRADTestCase {
         travelExpenseItem.setReimbursable(true);
         travelExpenseItem.setTaxable(false);
 
-        return KRADServiceLocator.getDataObjectService().save(travelExpenseItem).getTravelExpenseItemId();
+        return KRADServiceLocator.getDataObjectService().save(travelExpenseItem, PersistenceOption.FLUSH).getTravelExpenseItemId();
     }
 }

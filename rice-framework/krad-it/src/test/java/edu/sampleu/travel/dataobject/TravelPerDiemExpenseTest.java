@@ -19,6 +19,7 @@ import edu.sampleu.travel.options.PostalCountryCode;
 import edu.sampleu.travel.options.PostalStateCode;
 import org.junit.Test;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -28,7 +29,6 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
@@ -43,12 +43,18 @@ import static org.junit.Assert.assertTrue;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class TravelPerDiemExpenseTest extends KRADTestCase {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static String DOCUMENT_NUMBER;
+    private static final String DOCUMENT_DESCRIPTION = "Test Travel Authorization Document";
+    private static final String CELL_PHONE_NUMBER = "555-555-5555";
+
+    private static String TRAVEL_DESTINATION_ID;
     private static final String DESTINATION_NAME = PostalStateCode.CA.getLabel();
     private static final String COUNTRY_CODE = PostalCountryCode.US.getCode();
     private static final String STATE_CODE = PostalStateCode.CA.getCode();
 
+    private static String MILEAGE_RATE_ID;
     private static final String MILEAGE_RATE_CODE = "DO";
     private static final String MILEAGE_RATE_NAME = "Domestic";
     private static final BigDecimal MILEAGE_RATE = new BigDecimal("30");
@@ -65,6 +71,28 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         super.setUp();
         GlobalVariables.setMessageMap(new MessageMap());
         GlobalVariables.setUserSession(new UserSession("admin"));
+
+        TravelDestination newTravelDestination = new TravelDestination();
+        newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
+        newTravelDestination.setCountryCd(COUNTRY_CODE);
+        newTravelDestination.setStateCd(STATE_CODE);
+        TRAVEL_DESTINATION_ID = KRADServiceLocator.getDataObjectService().save(
+                newTravelDestination, PersistenceOption.FLUSH).getTravelDestinationId();
+
+        TravelMileageRate newTravelMileageRate = new TravelMileageRate();
+        newTravelMileageRate.setMileageRateCd(MILEAGE_RATE_CODE);
+        newTravelMileageRate.setMileageRateName(MILEAGE_RATE_NAME);
+        newTravelMileageRate.setMileageRate(MILEAGE_RATE);
+        MILEAGE_RATE_ID = KRADServiceLocator.getDataObjectService().save(
+                newTravelMileageRate, PersistenceOption.FLUSH).getMileageRateId();
+
+        Document newDocument = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+        newDocument.getDocumentHeader().setDocumentDescription(DOCUMENT_DESCRIPTION);
+        TravelAuthorizationDocument newTravelAuthorizationDocument = (TravelAuthorizationDocument) newDocument;
+        newTravelAuthorizationDocument.setCellPhoneNumber(CELL_PHONE_NUMBER);
+        newTravelAuthorizationDocument.setTripDestinationId(TRAVEL_DESTINATION_ID);
+        DOCUMENT_NUMBER = KRADServiceLocatorWeb.getDocumentService().saveDocument(
+                newTravelAuthorizationDocument).getDocumentNumber();
     }
 
     @Override
@@ -87,58 +115,31 @@ public class TravelPerDiemExpenseTest extends KRADTestCase {
         String id = createTravelPerDiemExpense();
 
         TravelPerDiemExpense travelPerDiemExpense = KRADServiceLocator.getDataObjectService().find(TravelPerDiemExpense.class, id);
+
         assertNotNull("Travel Per Diem Expense ID is null", travelPerDiemExpense.getTravelPerDiemExpenseId());
-
-        TravelDestination travelDestination = travelPerDiemExpense.getTravelDestination();
-        assertNotNull("Travel Per Diem Expense destination is null", travelDestination);
-        assertNotNull("Travel Destination ID is null", travelDestination.getTravelDestinationId());
-        assertEquals("Travel Destination name is incorrect", DESTINATION_NAME, travelDestination.getTravelDestinationName());
-        assertEquals("Travel Destination country is incorrect", COUNTRY_CODE, travelDestination.getCountryCd());
-        assertEquals("Travel Destination state is incorrect", STATE_CODE, travelDestination.getStateCd());
-
-        assertNotNull("Travel Per Diem Expense document ID is null", travelPerDiemExpense.getTravelAuthorizationDocumentId());
+        assertEquals("Travel Per Diem Expense document ID is incorrect", DOCUMENT_NUMBER, travelPerDiemExpense.getTravelAuthorizationDocumentId());
+        assertEquals("Travel Per Diem Expense destination ID is incorrect", TRAVEL_DESTINATION_ID, travelPerDiemExpense.getTravelDestinationId());
         assertEquals("Travel Per Diem Expense date is incorrect", DATE_FORMAT.parse(PER_DIEM_DATE), travelPerDiemExpense.getPerDiemDate());
         assertEquals("Travel Per Diem Expense breakfast value is incorrect", BREAKFAST_VALUE, travelPerDiemExpense.getBreakfastValue());
         assertEquals("Travel Per Diem Expense lunch value is incorrect", LUNCH_VALUE, travelPerDiemExpense.getLunchValue());
         assertEquals("Travel Per Diem Expense dinner value is incorrect", DINNER_VALUE, travelPerDiemExpense.getDinnerValue());
         assertEquals("Travel Per Diem Expense incidentals value is incorrect", INCIDENTALS_VALUE, travelPerDiemExpense.getIncidentalsValue());
-
-        TravelMileageRate travelMileageRate = travelPerDiemExpense.getMileageRate();
-        assertNotNull("Travel Per Diem Expense mileage rate is null", travelMileageRate);
-        assertNotNull("Travel Mileage Rate ID is null", travelMileageRate.getMileageRateId());
-        assertEquals("Travel Mileage Rate code is incorrect", MILEAGE_RATE_CODE, travelMileageRate.getMileageRateCd());
-        assertEquals("Travel Mileage Rate name is incorrect", MILEAGE_RATE_NAME, travelMileageRate.getMileageRateName());
-        assertEquals("Travel Mileage Rate amount is incorrect", MILEAGE_RATE, travelMileageRate.getMileageRate());
-
+        assertEquals("Travel Per Diem Expense mileage rate ID is incorrect", MILEAGE_RATE_ID, travelPerDiemExpense.getMileageRateId());
         assertEquals("Travel Per Diem Expense estimated mileage is incorrect", ESTIMATED_MILEAGE, travelPerDiemExpense.getEstimatedMileage());
     }
 
     private String createTravelPerDiemExpense() throws Exception {
-        TravelDestination newTravelDestination = new TravelDestination();
-        newTravelDestination.setTravelDestinationName(DESTINATION_NAME);
-        newTravelDestination.setCountryCd(COUNTRY_CODE);
-        newTravelDestination.setStateCd(STATE_CODE);
-        TravelDestination travelDestination = KRADServiceLocator.getDataObjectService().save(newTravelDestination);
-
-        TravelMileageRate newTravelMileageRate = new TravelMileageRate();
-        newTravelMileageRate.setMileageRateCd(MILEAGE_RATE_CODE);
-        newTravelMileageRate.setMileageRateName(MILEAGE_RATE_NAME);
-        newTravelMileageRate.setMileageRate(MILEAGE_RATE);
-        TravelMileageRate travelMileageRate = KRADServiceLocator.getDataObjectService().save(newTravelMileageRate);
-
-        Document document = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
-
         TravelPerDiemExpense travelPerDiemExpense = new TravelPerDiemExpense();
-        travelPerDiemExpense.setTravelAuthorizationDocumentId(document.getDocumentNumber());
-        travelPerDiemExpense.setTravelDestinationId(travelDestination.getTravelDestinationId());
+        travelPerDiemExpense.setTravelAuthorizationDocumentId(DOCUMENT_NUMBER);
+        travelPerDiemExpense.setTravelDestinationId(TRAVEL_DESTINATION_ID);
         travelPerDiemExpense.setPerDiemDate(DATE_FORMAT.parse(PER_DIEM_DATE));
         travelPerDiemExpense.setBreakfastValue(BREAKFAST_VALUE);
         travelPerDiemExpense.setLunchValue(LUNCH_VALUE);
         travelPerDiemExpense.setDinnerValue(DINNER_VALUE);
         travelPerDiemExpense.setIncidentalsValue(INCIDENTALS_VALUE);
-        travelPerDiemExpense.setMileageRateId(travelMileageRate.getMileageRateId());
+        travelPerDiemExpense.setMileageRateId(MILEAGE_RATE_ID);
         travelPerDiemExpense.setEstimatedMileage(ESTIMATED_MILEAGE);
 
-        return KRADServiceLocator.getDataObjectService().save(travelPerDiemExpense).getTravelPerDiemExpenseId();
+        return KRADServiceLocator.getDataObjectService().save(travelPerDiemExpense, PersistenceOption.FLUSH).getTravelPerDiemExpenseId();
     }
 }

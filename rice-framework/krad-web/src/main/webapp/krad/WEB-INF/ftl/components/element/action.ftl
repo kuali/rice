@@ -42,58 +42,85 @@
     </#if>
 
     <#assign imagePlacement="${element.actionImagePlacement}"/>
+    <#assign iconPlacement="${element.actionIconPlacement}"/>
+<#-- icon definition -->
+    <#if element.iconClass??>
+        <#if iconPlacement == 'ICON_ONLY'>
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+            <span class="${element.iconClass}"></span>
+        </button>
+        <#elseif iconPlacement == 'LEFT'>
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+        ${element.actionLabel}<span class="${element.iconClass}"></span>
+        </button>
+        <#elseif iconPlacement == 'RIGHT'>
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+            <span class="${element.iconClass}"></span>${element.actionLabel}
+        </button>
+        <#elseif iconPlacement == 'BOTTOM'>
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+        ${element.actionLabel}<br><span class="${element.iconClass}"></span>
+        </button>
+        <#elseif iconPlacement == 'TOP'>
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+            <span class="${element.iconClass}"></span><br>${element.actionLabel}
+        </button>
+        </#if>
 
-<#-- determine if input of type image should be rendered -->
-    <#if element.actionImage?? && element.actionImage.render && (!imagePlacement?has_content
-    || (imagePlacement == 'IMAGE_ONLY'))>
-
-    <input type="image" id="${element.id}" ${disabled!}
-           src="${element.actionImage.source}"
-           alt="${element.actionImage.altText!}"
-           title="${element.actionImage.title!}" ${height!} ${width!}
-    ${krad.attrBuild(element)} ${tabindex!}
-    ${element.simpleDataAttributes!}/>
     <#else>
 
-    <#-- build a button with or without an image -->
-    <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+    <#--determine if input of type image should be rendered-->
+        <#if element.actionImage?? && element.actionImage.render && (!imagePlacement?has_content
+        || (imagePlacement == 'IMAGE_ONLY'))>
 
-        <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
-            <#if imagePlacement == 'TOP'>
-                <#local imageStyleClass="topActionImage"/>
-                <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
-                <#local spanEndTag="</span>"/>
-            <#elseif imagePlacement == 'BOTTOM'>
-                <#local imageStyleClass="bottomActionImage"/>
-                <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
-                <#local spanEndTag="</span>"/>
-            <#elseif imagePlacement == 'RIGHT'>
-                <#local imageStyleClass="rightActionImage"/>
-            <#elseif imagePlacement == 'LEFT'>
-                <#local imageStyleClass="leftActionImage"/>
+        <input type="image" id="${element.id}" ${disabled!}
+               src="${element.actionImage.source}"
+               alt="${element.actionImage.altText!}"
+               title="${element.actionImage.title!}" ${height!} ${width!}
+        ${krad.attrBuild(element)} ${tabindex!}
+        ${element.simpleDataAttributes!}/>
+        <#else>
+
+        <#-- build a button with or without an image -->
+        <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
+
+            <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+                <#if imagePlacement == 'TOP'>
+                    <#local imageStyleClass="topActionImage"/>
+                    <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
+                    <#local spanEndTag="</span>"/>
+                <#elseif imagePlacement == 'BOTTOM'>
+                    <#local imageStyleClass="bottomActionImage"/>
+                    <#local spanBeginTag="<span class=\"topBottomSpan\">"/>
+                    <#local spanEndTag="</span>"/>
+                <#elseif imagePlacement == 'RIGHT'>
+                    <#local imageStyleClass="rightActionImage"/>
+                <#elseif imagePlacement == 'LEFT'>
+                    <#local imageStyleClass="leftActionImage"/>
+                </#if>
+
+                <#local imageTag>
+                    <img ${height!} ${width!}
+                            style="${element.actionImage.style!}"
+                            class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
+                            src="${element.actionImage.source}"
+                            alt="${element.actionImage.altText!}"
+                            title="${element.actionImage.title!}"/>
+                </#local>
             </#if>
 
-            <#local imageTag>
-                <img ${height!} ${width!}
-                        style="${element.actionImage.style!}"
-                        class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
-                        src="${element.actionImage.source}"
-                        alt="${element.actionImage.altText!}"
-                        title="${element.actionImage.title!}"/>
-            </#local>
+            <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
+            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
+            <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
+            ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
+            <#else>
+            <#-- no image, just render label text -->
+            ${element.actionLabel!}
+            </#if>
+
+        </button>
+
         </#if>
-
-        <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
-        ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
-        <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
-        ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
-        <#else>
-        <#-- no image, just render label text -->
-        ${element.actionLabel!}
-        </#if>
-
-    </button>
-
     </#if>
 
     <@krad.disable control=element type="action"/>

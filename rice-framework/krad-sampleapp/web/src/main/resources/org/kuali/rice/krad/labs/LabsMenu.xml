@@ -68,8 +68,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFluid"/>
                         <bean parent="Uif-Link" p:linkText="View Fixed Container" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
-                        <bean parent="Uif-Link" p:linkText="Document Unified Header" p:target="_self"
-                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsDocumentUnifiedHeader"/>
+                        <bean parent="Uif-Link" p:linkText="Bootstrap Icons" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
                       </list>
                   </property>
               </bean>

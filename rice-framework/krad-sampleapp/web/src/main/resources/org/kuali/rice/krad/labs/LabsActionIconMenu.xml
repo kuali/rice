@@ -1,0 +1,133 @@
+<!--
+  ~ Copyright 2006-2013 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-ActionIconMenu" parent="Uif-FormView">
+    <property name="headerText" value="Action Icon"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibView</value>
+      </list>
+    </property>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <ref bean="Demo-Image-Example1"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!-- Default -->
+  <bean id="Demo-Image-Example1"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!--<bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');">-->
+        <!--<property name="actionIcon">-->
+        <!--<bean parent="Uif-Icon" p:iconClass="glyphicon-adjust"/>-->
+        <!--</property>-->
+        <!--</bean>-->
+
+        <bean parent="Uif-Icon" p:iconClass="icon-cool"/>
+        <bean parent="Uif-SecondaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-home" p:actionIconPlacement="ICON_ONLY">
+        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office" p:actionIconPlacement="TOP" p:actionLabel="Save Document">
+        </bean>
+        <bean parent="Uif-SecondaryActionButton-Small" p:actionScript="alert('You clicked a button');" p:iconClass="icon-paint-format" p:actionIconPlacement="BOTTOM" p:actionLabel="Save Document">
+        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-music" p:actionLabel="Save Document">
+        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-connection" p:actionIconPlacement="RIGHT" p:actionLabel="Save Document">
+        </bean>
+        <bean parent="Uif-Link" p:href="http://www.kuali.org"
+              p:linkIconPlacement="ICON_ONLY"
+              p:iconClass="icon-pencil"
+              p:linkText="Kuali Website in a new page"
+              p:target="_blank">
+        </bean>
+        <bean parent="Uif-Link" p:href="http://www.kuali.org"
+              p:iconClass="icon-pencil"
+              p:linkText="Kuali Website in a new page"
+              p:target="_blank">
+        </bean>
+        <bean parent="Uif-Link" p:href="http://www.kuali.org"
+              p:linkIconPlacement="RIGHT"
+              p:iconClass="icon-home"
+              p:linkText="Kuali Website in a new page"
+              p:target="_blank">
+        </bean>
+        <!-- Buttons -->
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"
+              p:id="ST-DemoButton" p:actionScript="alert('You clicked a button');"/>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image BOTTOM"
+              p:actionImagePlacement="BOTTOM"
+              p:id="ST-DemoButtonImageBottom" p:actionScript="alert('You clicked a button');">
+          <property name="actionImage">
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image TOP"
+              p:actionImagePlacement="IMAGE_ONLY"
+              p:id="ST-DemoButtonImageTop" p:actionScript="alert('You clicked a button');">
+          <property name="actionImage">
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image LEFT"
+              p:actionImagePlacement="LEFT"
+              p:id="ST-DemoButtonImageLeft" p:actionScript="alert('You clicked a button');">
+          <property name="actionImage">
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Image RIGHT"
+              p:actionImagePlacement="RIGHT"
+              p:id="ST-DemoButtonImageRight" p:actionScript="alert('You clicked a button');">
+          <property name="actionImage">
+            <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton"
+              p:id="ST-DemoButtonImageOnly" p:actionScript="alert('You clicked a button');">
+          <property name="actionImage">
+            <bean parent="Uif-Image" p:altText="Image Only button"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.png"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button"
+              p:id="ST-DemoButtonDisabled" p:methodToCall="foo" p:disabled="true"/>
+
+
+
+      </list>
+    </property>
+  </bean>
+
+</beans>

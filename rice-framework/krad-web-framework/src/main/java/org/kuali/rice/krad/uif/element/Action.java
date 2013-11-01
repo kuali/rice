@@ -91,6 +91,9 @@ public class Action extends ContentElementBase {
     private Image actionImage;
     private String actionImagePlacement;
 
+    private String iconClass;
+    private String actionIconPlacement;
+
     private String jumpToIdAfterSubmit;
     private String jumpToNameAfterSubmit;
     private String focusOnIdAfterSubmit;
@@ -131,6 +134,7 @@ public class Action extends ContentElementBase {
         super();
 
         actionImagePlacement = UifConstants.Position.LEFT.name();
+        actionIconPlacement = UifConstants.Position.LEFT.name();
 
         ajaxSubmit = true;
 
@@ -503,6 +507,14 @@ public class Action extends ContentElementBase {
      */
     public void setActionImage(Image actionImage) {
         this.actionImage = actionImage;
+    }
+    @BeanTagAttribute(name = "iconClass")
+    public String getIconClass() {
+        return iconClass;
+    }
+
+    public void setIconClass(String iconClass) {
+        this.iconClass = iconClass;
     }
 
     /**
@@ -951,6 +963,15 @@ public class Action extends ContentElementBase {
         this.actionImagePlacement = actionImagePlacement;
     }
 
+    @BeanTagAttribute(name = "actionIconPlacement")
+    public String getActionIconPlacement() {
+        return actionIconPlacement;
+    }
+
+    public void setActionIconPlacement(String actionIconPlacement) {
+        this.actionIconPlacement = actionIconPlacement;
+    }
+
     /**
      * Gets the script which needs to be invoked before the form is submitted
      *
@@ -1342,7 +1363,10 @@ public class Action extends ContentElementBase {
             actionCopy.setActionImage((Image) this.actionImage.copy());
         }
 
+        actionCopy.setIconClass(this.iconClass);
+
         actionCopy.setActionImagePlacement(this.actionImagePlacement);
+        actionCopy.setActionIconPlacement(this.actionIconPlacement);
         actionCopy.setActionLabel(this.actionLabel);
 
         if (this.actionParameters != null) {
@@ -1401,11 +1425,13 @@ public class Action extends ContentElementBase {
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
-        // Checks that a label or image ui is presence
-        if (getActionLabel() == null && getActionImage() == null) {
-            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
-            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
-        }
+//        // Checks that a label or image ui is presence
+//        if (getActionLabel() == null && getActionImage() == null) {
+//            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+//            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
+//        }
+
+        //Checks to ensure Icon or Action Image are
 
         // Checks that an action is set
         if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {

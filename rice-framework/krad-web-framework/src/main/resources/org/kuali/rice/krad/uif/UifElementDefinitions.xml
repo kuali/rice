@@ -145,6 +145,20 @@
     <property name="captionHeaderPlacementAboveImage" value="true"/>
   </bean>
 
+  <bean id="Uif-Icon" parent="Uif-Icon-parentBean"/>
+  <bean id="Uif-Icon-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Icon"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/icon.ftl"/>
+    <property name="templateName" value="uif_icon"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-icon</value>
+      </list>
+    </property>
+  </bean>
+
+
+
   <bean id="Uif-ImageCaptionHeader" parent="Uif-ImageCaptionHeader-parentBean"/>
   <bean id="Uif-ImageCaptionHeader-parentBean" abstract="true" parent="Uif-HeaderFour"/>
 

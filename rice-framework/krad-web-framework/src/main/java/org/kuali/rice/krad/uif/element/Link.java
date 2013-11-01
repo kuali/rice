@@ -43,12 +43,16 @@ public class Link extends ContentElementBase {
     private String target;
     private String href;
 
+    private String iconClass;
+    private String linkIconPlacement;
+
     private boolean openInLightbox;
 
     private LightBox lightBox;
 
     public Link() {
         super();
+        linkIconPlacement = UifConstants.Position.LEFT.name();
     }
 
     /**
@@ -196,6 +200,39 @@ public class Link extends ContentElementBase {
     }
 
     /**
+     *
+     * @return
+     */
+    public String getIconClass() {
+        return iconClass;
+    }
+
+    /**
+     *
+     * @param IconClass
+     */
+    public void setIconClass(String iconClass) {
+        this.iconClass = iconClass;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "linkIconPlacement")
+    public String getLinkIconPlacement() {
+        return linkIconPlacement;
+    }
+
+    /**
+     *
+     * @param linkIconPlacement
+     */
+    public void setLinkIconPlacement(String linkIconPlacement) {
+        this.linkIconPlacement = linkIconPlacement;
+    }
+
+    /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
@@ -203,6 +240,8 @@ public class Link extends ContentElementBase {
         super.copyProperties(component);
 
         Link linkCopy = (Link) component;
+
+        linkCopy.setIconClass(this.iconClass);
 
         linkCopy.setHref(this.href);
 
@@ -213,6 +252,7 @@ public class Link extends ContentElementBase {
         linkCopy.setLinkText(this.linkText);
         linkCopy.setOpenInLightbox(this.openInLightbox);
         linkCopy.setTarget(this.target);
+        linkCopy.setLinkIconPlacement(this.linkIconPlacement);
     }
 
     /**

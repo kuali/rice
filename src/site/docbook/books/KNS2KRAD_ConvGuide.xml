@@ -1332,7 +1332,7 @@
           <listitem xml:id="IS6">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.addAdditionalSections() has been removed
               in KRAD. To add additional sections dynamically to an inquiry override <emphasis
-                role="keyword"> performFinalize</emphasis> method of ViewHelperService instead and
+                role="keyword"> performCustomInitialization</emphasis> method of ViewHelperService instead and
               add custom components. The custom Inquirable implementation can be specified using the
                 <emphasis role="keyword"> viewHelperServiceClass</emphasis> property of the view
               which in turn would extend <emphasis role="keyword"
@@ -1351,9 +1351,8 @@
           <listitem  xml:id="IS7">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.getSection() has been removed in KRAD.
               To modify existing sections dynamically in an inquiry override <emphasis
-                role="keyword"> performFinalize</emphasis> method of ViewHelperService. The list of
-              components can be obtained from the view object using <emphasis role="keyword"
-                >getComponentsForLifecycle</emphasis>. <inlinemediaobject>
+                role="keyword"> performCustomInitialization</emphasis> method of ViewHelperService.
+              <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>

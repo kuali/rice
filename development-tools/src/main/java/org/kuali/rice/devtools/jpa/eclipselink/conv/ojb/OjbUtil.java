@@ -133,9 +133,16 @@ public final class OjbUtil {
      * Gets all the mapped classes
      */
     public static Set<String> mappedClasses(Collection<DescriptorRepository> descriptors) throws Exception {
-        Set<String> mappedClasses = new HashSet<String>();
+        final Set<String> mappedClasses = new HashSet<String>();
         for (DescriptorRepository dr : descriptors) {
-            mappedClasses.addAll(((Map<String, ClassDescriptor>) dr.getDescriptorTable()).keySet());
+            for (Map.Entry<String, ClassDescriptor> entry : ((Map<String, ClassDescriptor>) dr.getDescriptorTable()).entrySet()) {
+                final Collection<String> extents = entry.getValue().getExtentClassNames();
+                if (extents != null && !extents.isEmpty()) {
+                    mappedClasses.addAll(extents);
+                } else {
+                    mappedClasses.add(entry.getKey());
+                }
+            }
         }
         return mappedClasses;
     }

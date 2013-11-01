@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class IdentityPersonBlanketAppAftBase extends AdminTmplMthdAftNa
         return "Person";
     }
    
-    public void testIdentityPersonBlanketAppBookmark(Failable failable) throws Exception {
+    public void testIdentityPersonBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testIdentityPersonBlanketApprove();
         passed();
     }
 
-    public void testIdentityPersonBlanketAppNav(Failable failable) throws Exception {
+    public void testIdentityPersonBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testIdentityPersonBlanketApprove();
         passed();
     }

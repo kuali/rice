@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class LocationPostCodeAftBase extends AdminTmplMthdAftNavBase {
         return "Postal Code";
     }
    
-    public void testLocationPostCodeBookmark(Failable failable) throws Exception {
+    public void testLocationPostCodeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         passed();
     }
 
-    public void testLocationPostCodeNav(Failable failable) throws Exception {
+    public void testLocationPostCodeNav(JiraAwareFailable failable) throws Exception {
         testCreateNewCancelNav();
         passed();
     }

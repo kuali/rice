@@ -20,7 +20,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @deprecated
  */
-public abstract class WebDriverITBase implements Failable {
+public abstract class WebDriverITBase {
 
     public WebDriver driver;
     static ChromeDriverService chromeDriverService;
@@ -65,7 +65,6 @@ public abstract class WebDriverITBase implements Failable {
     }
 
 
-    @Override
     public void fail(String message) {
         SeleneseTestBase.fail(message);
     }
@@ -78,10 +77,25 @@ public abstract class WebDriverITBase implements Failable {
     @Before
     public void setUp() throws Exception {
         driver = WebDriverUtil.setUp(getUserName(), WebDriverUtil.getBaseUrlString() + "/" + getTestUrl());
-        WebDriverUtil.loginKradOrKns(driver, getUserName(), new Failable() {
+        WebDriverLegacyITBase.loginKradOrKns(driver, getUserName(), new JiraAwareFailable() {
             @Override
             public void fail(String message) {
                 SeleneseTestBase.fail(message);
+            }
+
+            @Override
+            public void jiraAwareFail(String message) {
+                SeleneseTestBase.fail(message);
+            }
+
+            @Override
+            public void jiraAwareFail(String contents, String message) {
+                SeleneseTestBase.fail(contents + " " + message);
+            }
+
+            @Override
+            public void jiraAwareFail(String contents, String message, Throwable throwable) {
+                SeleneseTestBase.fail(contents + " " + message + " " + throwable.getMessage());
             }
         });
     }
@@ -437,15 +451,15 @@ public abstract class WebDriverITBase implements Failable {
         waitFor(By.name(name));
     }
     
-    protected void checkForIncidentReport(Failable failable) {
+    protected void checkForIncidentReport(JiraAwareFailable failable) {
         checkForIncidentReport("", failable, "");
     }
 
-    protected void checkForIncidentReport(String locator, Failable failable) {
+    protected void checkForIncidentReport(String locator, JiraAwareFailable failable) {
         checkForIncidentReport(locator, failable, "");
     }
     
-    protected void checkForIncidentReport(String locator, Failable failable, String message) {
+    protected void checkForIncidentReport(String locator, JiraAwareFailable failable, String message) {
         AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }
 

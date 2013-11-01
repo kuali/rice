@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceConstraintTextAftBase extends KradTmplMthdSTNav
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceConstraintTextBookmark(Failable failable) throws Exception {
+    public void testMaintenanceConstraintTextBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyConstraintText();
         passed();
     }
     
-    public void testMaintenanceConstraintTextNav(Failable failable) throws Exception {
+    public void testMaintenanceConstraintTextNav(JiraAwareFailable failable) throws Exception {
         testVerifyConstraintText();
         passed();
     }

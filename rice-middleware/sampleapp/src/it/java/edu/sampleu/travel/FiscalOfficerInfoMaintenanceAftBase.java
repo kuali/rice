@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
@@ -50,13 +50,13 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
         waitAndClickByXpath(FISCAL_OFFICER_INFO_MAINTENANCE_NEW_XPATH);
     }
 
-    protected void testFiscalOfficerInfoMaintenanceNav(Failable failable) throws Exception {
+    protected void testFiscalOfficerInfoMaintenanceNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testFiscalOfficerInfoMaintenanceNew(); 
         passed();
     }
 
-    protected void testFiscalOfficerInfoMaintenanceBookmark(Failable failable) throws Exception {
+    protected void testFiscalOfficerInfoMaintenanceBookmark(JiraAwareFailable failable) throws Exception {
         testFiscalOfficerInfoMaintenanceNew();
         passed();
     }    

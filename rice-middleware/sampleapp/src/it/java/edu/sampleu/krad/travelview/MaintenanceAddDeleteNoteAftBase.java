@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceAddDeleteNoteAftBase extends KradTmplMthdSTNavB
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceAddDeleteNoteBookmark(Failable failable) throws Exception {
+    public void testMaintenanceAddDeleteNoteBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyAddDeleteNoteLegacy();
         passed();
     }
     
-    public void testMaintenanceAddDeleteNoteNav(Failable failable) throws Exception {
+    public void testMaintenanceAddDeleteNoteNav(JiraAwareFailable failable) throws Exception {
         testVerifyAddDeleteNoteLegacy();
         passed();
     }

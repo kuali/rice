@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class IdentityPermissionBlanketAppAftBase extends AdminTmplMthdA
         return "Permission";
     }
    
-    public void testIdentityPermissionBlanketAppBookmark(Failable failable) throws Exception {
+    public void testIdentityPermissionBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testIdentityPermissionBlanketApprove();
         passed();
     }
 
-    public void testIdentityPermissionBlanketAppNav(Failable failable) throws Exception {
+    public void testIdentityPermissionBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testIdentityPermissionBlanketApprove();
         passed();
     }

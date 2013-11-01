@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class ReferenceCampusTypeBlanketAppAftBase extends AdminTmplMthd
         return "Campus Type";
     }
    
-    public void testReferenceCampusTypeBlanketAppBookmark(Failable failable) throws Exception {
+    public void testReferenceCampusTypeBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testReferenceCampusTypeBlanketApprove();
         passed();
     }
 
-    public void testReferenceCampusTypeBlanketAppNav(Failable failable) throws Exception {
+    public void testReferenceCampusTypeBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testReferenceCampusTypeBlanketApprove();
         passed();
     }

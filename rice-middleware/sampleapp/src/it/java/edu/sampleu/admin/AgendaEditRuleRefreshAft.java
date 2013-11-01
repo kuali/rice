@@ -51,7 +51,6 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
         Thread.sleep(3000);
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
                 "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");
-        checkForIncidentReport("");
         Thread.sleep(3000);
         waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // jiraAwareWaitAndClick("//li[@id='473_node_0_parent_root']/a");
         waitAndClickByXpath("//li/a[@class='agendaNode logicNode whenTrueNode']");
@@ -61,7 +60,7 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
         for (int i = 0; i < 6; i++) {
             for (int second = 0;; second++) {
                 if (second >= waitSeconds)
-                    failableFail(TIMEOUT_MESSAGE);
+                    jiraAwareFail(TIMEOUT_MESSAGE);
                 try {
                     if (isElementPresent(".kr-refresh-button"))
                         break;

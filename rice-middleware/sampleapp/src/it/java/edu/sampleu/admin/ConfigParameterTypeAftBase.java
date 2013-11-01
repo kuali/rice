@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,14 +48,14 @@ public abstract class ConfigParameterTypeAftBase extends AdminTmplMthdAftNavBase
         return "Parameter Type";
     }
 
-    public void testConfigParameterTypeBookmark(Failable failable) throws Exception {
+    public void testConfigParameterTypeBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
-    public void testConfigParameterTypeNav(Failable failable) throws Exception {
+    public void testConfigParameterTypeNav(JiraAwareFailable failable) throws Exception {
         testEditCancel(); 
         navigate();
         testCreateNewCancel();

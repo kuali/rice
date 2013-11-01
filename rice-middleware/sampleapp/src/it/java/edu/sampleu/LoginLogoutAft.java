@@ -38,7 +38,7 @@ public class LoginLogoutAft extends WebDriverLegacyITBase {
     }
 
     /**
-     * Navigate to the page under test click logout.  {@link LoginLogoutAft#waitAndClickLogout(org.kuali.rice.testtools.common.Failable)}
+     * Navigate to the page under test click logout.  {@link LoginLogoutAft#waitAndClickLogout(org.kuali.rice.testtools.common.JiraAwareFailable)}
      *
      * @throws {@link Exception}
      */

@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigParameterLookUpAndInquireAftBase extends AdminTmplMt
         return "Parameter";
     }
 
-    public void testConfigParameterLookUpAndInquireBookmark(Failable failable) throws Exception {
+    public void testConfigParameterLookUpAndInquireBookmark(JiraAwareFailable failable) throws Exception {
         testConfigParameterLookUpAndInquire();
         passed();
     }
 
-    public void testConfigParameterLookUpAndInquireNav(Failable failable) throws Exception {
+    public void testConfigParameterLookUpAndInquireNav(JiraAwareFailable failable) throws Exception {
         testConfigParameterLookUpAndInquire();
         passed();
     }    

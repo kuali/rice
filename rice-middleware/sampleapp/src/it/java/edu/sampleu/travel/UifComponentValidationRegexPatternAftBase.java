@@ -15,8 +15,7 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -42,13 +41,13 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testValidCharacterConstraintNav(Failable failable) throws Exception {
+    protected void testValidCharacterConstraintNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testValidCharacterConstraint();
         passed();
     }
 
-    protected void testValidCharacterConstraintBookmark(Failable failable) throws Exception {
+    protected void testValidCharacterConstraintBookmark(JiraAwareFailable failable) throws Exception {
         testValidCharacterConstraint();
         passed();
     }

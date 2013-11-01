@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -52,11 +52,11 @@ public class AttributeDefinitionLookUpAftBase extends MainTmplMthdSTNavBase{
         return "Attribute Definition Lookup";
     }
 
-    public void testAttributeDefinitionLookUpBookmark(Failable failable) throws Exception {
+    public void testAttributeDefinitionLookUpBookmark(JiraAwareFailable failable) throws Exception {
         testAttributeDefinitionLookUp();
         passed();
     }
-    public void testAttributeDefinitionLookUpNav(Failable failable) throws Exception {
+    public void testAttributeDefinitionLookUpNav(JiraAwareFailable failable) throws Exception {
         testAttributeDefinitionLookUp();
         passed();
     }

@@ -69,7 +69,6 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollapseExpand() throws InterruptedException {
-        checkForIncidentReport();
         waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent("Travel Account Number:");
         assertTextPresent(EXPAND_ALL);

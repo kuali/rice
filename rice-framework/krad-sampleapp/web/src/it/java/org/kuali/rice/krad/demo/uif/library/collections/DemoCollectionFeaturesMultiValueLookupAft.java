@@ -59,7 +59,6 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
 
         waitAndClickButtonByText("return selected");
         Thread.sleep(3000);
-        checkForIncidentReport();
         assertTextPresent("a1"); // TODO better assertion once NullPointer is resolved
     }
 

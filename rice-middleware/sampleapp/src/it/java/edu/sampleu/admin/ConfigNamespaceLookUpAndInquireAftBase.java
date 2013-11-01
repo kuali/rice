@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigNamespaceLookUpAndInquireAftBase extends AdminTmplMt
         return "Namespace";
     }
 
-    public void testConfigNamespaceLookUpAndInquireBookmark(Failable failable) throws Exception {
+    public void testConfigNamespaceLookUpAndInquireBookmark(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceLookUpAndInquire();
         passed();
     }
 
-    public void testConfigNamespaceLookUpAndInquireNav(Failable failable) throws Exception {
+    public void testConfigNamespaceLookUpAndInquireNav(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceLookUpAndInquire();
         passed();
     }    

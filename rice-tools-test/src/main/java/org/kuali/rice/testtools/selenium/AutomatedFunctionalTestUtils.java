@@ -16,7 +16,7 @@
 package org.kuali.rice.testtools.selenium;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 
 import java.io.BufferedReader;
@@ -29,11 +29,12 @@ import java.net.URLEncoder;
 import java.util.Calendar;
 
 /**
- * TODO:
+ * For Rice specific sampleapp testing code.
  * <ol>
- *   <li>Keep WebDriver dependencies out of this class, those should be in {@link WebDriverUtil}</li>
- *   <li>Keep JUnit or TestNG dependencies out of in this class.</li>
- *   <li>Rename to AutomatedFunctionalTestUtils or such</li>
+ *   <li>Keep test framework methods (WebDriver, Assert) dependencies out of this class, those should be in
+ *   {@link WebDriverUtil}</li>
+ *   <li>Move JiraAware calls out of this class, those should be in {@see JiraAwareFailureUtil} or modified to be failed
+ *   in another class</li>
  * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -162,7 +163,7 @@ public class AutomatedFunctionalTestUtils {
         return dtsTwo;
     }
 
-    protected static void checkForIncidentReport(String contents, String linkLocator, String message, Failable failable) {
+    protected static void checkForIncidentReport(String contents, String linkLocator, String message, JiraAwareFailable failable) {
         if (contents == null) { //guard clause
             return;
         }
@@ -266,7 +267,7 @@ public class AutomatedFunctionalTestUtils {
         return "\nIncident report detected for " + linkLocator + " but not able to parse.  " + message;
     }
 
-    public static void failOnInvalidUserName(String userName, String contents, Failable failable) {
+    public static void failOnInvalidUserName(String userName, String contents, JiraAwareFailable failable) {
         if (contents.indexOf("Invalid") > -1) {
             failable.fail("Invalid Login " + userName);
         }
@@ -285,12 +286,12 @@ public class AutomatedFunctionalTestUtils {
     }
 */
 
-    private static void failWithInfo(String contents, String linkLocator, Failable failable, String message) {
+    private static void failWithInfo(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, linkLocator, failable);
         failable.fail(contents);
     }
 
-    private static void failWithReportInfo(String contents, String linkLocator, Failable failable, String message) {
+    private static void failWithReportInfo(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
         JiraAwareFailureUtil.failOnMatchedJira(incidentReportInformation, failable);
         failWithInfo(incidentReportInformation, linkLocator, failable, message);
@@ -302,7 +303,7 @@ public class AutomatedFunctionalTestUtils {
         SeleneseTestBase.fail(kimIncidentReport);
     }
 */
-    private static void failWithReportInfoForKim(String contents, String linkLocator, Failable failable, String message) {
+    private static void failWithReportInfoForKim(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
         JiraAwareFailureUtil.failOnMatchedJira(kimIncidentReport, failable);
         failable.fail(kimIncidentReport);
@@ -364,7 +365,7 @@ public class AutomatedFunctionalTestUtils {
                                   contents.indexOf("</pre><p></p><p><b>note</b>"));
     }
 
-    private static void processFreemarkerException(String contents, String linkLocator, Failable failable, String message) {
+    private static void processFreemarkerException(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
         String ftlStackTrace = null;
         if (contents.contains("more<")) {
@@ -398,7 +399,7 @@ public class AutomatedFunctionalTestUtils {
     }
 */
 
-    protected static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
+    protected static void processIncidentReport(String contents, String linkLocator, JiraAwareFailable failable, String message) {
 
         if (contents.indexOf("Incident Feedback") > -1) {
             failWithReportInfo(contents, linkLocator, failable, message);
@@ -426,5 +427,22 @@ public class AutomatedFunctionalTestUtils {
         throwable.printStackTrace(pw);
         pw.flush();
         return wrt.toString();
+    }
+
+    /**
+     * <p>
+     * Use the KRAD Login Screen or the old KNS Login Screen
+     * </p>
+     *
+     * @return true if Krad login
+     */
+    public static boolean isKradLogin(){
+        // check system property, default to KRAD
+        String loginUif = System.getProperty(WebDriverUtil.REMOTE_LOGIN_UIF);
+        if (loginUif == null) {
+            loginUif = REMOTE_UIF_KRAD;
+        }
+
+        return (REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
     }
 }

@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigNamespaceLookUpAndCopyAftBase extends AdminTmplMthdA
         return "Namespace";
     }
 
-    public void testConfigNamespaceLookUpAndCopyBookmark(Failable failable) throws Exception {
+    public void testConfigNamespaceLookUpAndCopyBookmark(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceLookUpAndCopy();
         passed();
     }
 
-    public void testConfigNamespaceLookUpAndCopyNav(Failable failable) throws Exception {
+    public void testConfigNamespaceLookUpAndCopyNav(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceLookUpAndCopy();
         passed();
     }    

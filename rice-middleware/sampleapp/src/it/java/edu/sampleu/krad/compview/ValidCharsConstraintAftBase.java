@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.compview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -42,14 +41,14 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testValidCharsConstraintNav(Failable failable) throws Exception {
+    protected void testValidCharsConstraintNav(JiraAwareFailable failable) throws Exception {
         navigation();
         waitAndClickByLinkText("Validation - Regex");
         testValidCharsConstraintIT();
         passed();
     }
 
-    protected void testValidCharsConstraintBookmark(Failable failable) throws Exception {
+    protected void testValidCharsConstraintBookmark(JiraAwareFailable failable) throws Exception {
         testValidCharsConstraintIT();
         passed();
     }

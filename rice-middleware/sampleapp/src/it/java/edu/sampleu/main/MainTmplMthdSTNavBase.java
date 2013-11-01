@@ -16,7 +16,7 @@
 package edu.sampleu.main;
 
 import edu.sampleu.common.NavTemplateMethodAftBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.openqa.selenium.By;
 
 /**
@@ -36,7 +36,7 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodAftBase {
         return "Main Menu";
     }
 
-    protected void testSearchEditBack(Failable failable) throws Exception {
+    protected void testSearchEditBack(JiraAwareFailable failable) throws Exception {
         waitAndClickSearch3();
         waitForElementPresentByClassName(DATA_TABLES_INFO);
         String pageBannerText = getText(By.className(DATA_TABLES_INFO));
@@ -49,7 +49,7 @@ public abstract class MainTmplMthdSTNavBase extends NavTemplateMethodAftBase {
         }
     }
 
-    protected void testSearchSearchBack(Failable failable, String fieldName, String searchText) throws Exception {
+    protected void testSearchSearchBack(JiraAwareFailable failable, String fieldName, String searchText) throws Exception {
         waitAndClickSearch3();
         waitForElementPresentByClassName(DATA_TABLES_INFO);
         String pageBannerText = getText(By.className(DATA_TABLES_INFO));

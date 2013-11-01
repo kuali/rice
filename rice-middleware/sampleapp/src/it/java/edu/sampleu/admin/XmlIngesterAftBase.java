@@ -18,8 +18,8 @@ package edu.sampleu.admin;
 import edu.sampleu.common.FreemarkerAftBase;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.PropertiesUtils;
-import org.kuali.rice.testtools.common.Failable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 import org.openqa.selenium.By;
@@ -88,7 +88,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     /**
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */
-    protected void navigate(Failable failable) throws Exception {
+    protected void navigate(JiraAwareFailable failable) throws Exception {
         selectTopFrame();
         waitAndClickAdministration(failable);
         waitForTitleToEqualKualiPortalIndex();
@@ -100,16 +100,16 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     /**
      * Navigate to the page under test and call {@link #testIngestion}
      *
-     * @param failable {@link org.kuali.rice.testtools.common.Failable}
+     * @param failable {@link org.kuali.rice.testtools.common.JiraAwareFailable}
      * @throws Exception
      */
-    protected void testIngestionNav(Failable failable) throws Exception {
+    protected void testIngestionNav(JiraAwareFailable failable) throws Exception {
         navigate(failable);
         testIngestion(failable);
         passed();
     }
 
-    protected void testIngestionBookmark(Failable failable) throws Exception {
+    protected void testIngestionBookmark(JiraAwareFailable failable) throws Exception {
         testIngestion(failable);
         passed();
     }
@@ -121,7 +121,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      *
      *
      */
-    protected void testIngestion(Failable failable) throws Exception {
+    protected void testIngestion(JiraAwareFailable failable) throws Exception {
         selectFrameIframePortlet();
         List<File> fileUploadList = buildFileUploadList();
         int cnt = 0;

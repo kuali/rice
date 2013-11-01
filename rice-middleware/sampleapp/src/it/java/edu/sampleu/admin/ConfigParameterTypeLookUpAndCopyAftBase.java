@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigParameterTypeLookUpAndCopyAftBase extends AdminTmplM
         return "Parameter Type";
     }
 
-    public void testConfigParameterTypeLookUpAndCopyBookmark(Failable failable) throws Exception {
+    public void testConfigParameterTypeLookUpAndCopyBookmark(JiraAwareFailable failable) throws Exception {
         testConfigParameterTypeLookUpAndCopy();
         passed();
     }
 
-    public void testConfigParameterTypeLookUpAndCopyNav(Failable failable) throws Exception {
+    public void testConfigParameterTypeLookUpAndCopyNav(JiraAwareFailable failable) throws Exception {
         testConfigParameterTypeLookUpAndCopy();
         passed();
     }    

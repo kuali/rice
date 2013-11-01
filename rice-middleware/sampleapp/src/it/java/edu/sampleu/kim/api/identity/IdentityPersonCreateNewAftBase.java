@@ -17,7 +17,7 @@ package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -51,12 +51,12 @@ public abstract class IdentityPersonCreateNewAftBase extends AdminTmplMthdAftNav
         return "Person";
     }
    
-    public void testIdentityPersonCreateNewBookmark(Failable failable) throws Exception {
+    public void testIdentityPersonCreateNewBookmark(JiraAwareFailable failable) throws Exception {
         testIdentityPersonCreateNew();
         passed();
     }
 
-    public void testIdentityPersonCreateNewNav(Failable failable) throws Exception {
+    public void testIdentityPersonCreateNewNav(JiraAwareFailable failable) throws Exception {
         testIdentityPersonCreateNew();
         passed();
     }

@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,11 +50,11 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         return "People Flow";
     }
 
-    public void testPeopleFlowCreateNewBookmark(Failable failable) throws Exception {
+    public void testPeopleFlowCreateNewBookmark(JiraAwareFailable failable) throws Exception {
         testPeopleFlow();
         passed();
     }
-    public void testPeopleFlowCreateNewNav(Failable failable) throws Exception {
+    public void testPeopleFlowCreateNewNav(JiraAwareFailable failable) throws Exception {
         testPeopleFlow();
         passed();
     }

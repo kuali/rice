@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -55,7 +55,7 @@ public abstract class ParameterTypeAftBase extends AdminTmplMthdAftNavBase {
         return "Parameter Type";
     }
    
-    public void testParameterTypeBookmark(Failable failable) throws Exception {
+    public void testParameterTypeBookmark(JiraAwareFailable failable) throws Exception {
      // Create New
         selectFrame("iframeportlet");
         waitAndCreateNew();
@@ -85,7 +85,7 @@ public abstract class ParameterTypeAftBase extends AdminTmplMthdAftNavBase {
         passed();
     }
 
-    public void testParameterTypeNav(Failable failable) throws Exception {
+    public void testParameterTypeNav(JiraAwareFailable failable) throws Exception {
       //Create New
         gotoCreateNew();
         List<String> params;

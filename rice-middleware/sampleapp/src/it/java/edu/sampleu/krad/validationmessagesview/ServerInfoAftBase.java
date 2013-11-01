@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.validationmessagesview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -42,13 +41,13 @@ public abstract class ServerInfoAftBase extends WebDriverLegacyITBase {
         switchToWindow(KUALI_VIEW_WINDOW_TITLE);
     }
 
-    protected void testServerInfoNav(Failable failable) throws Exception {
+    protected void testServerInfoNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testServerInfoIT();
         passed();
     }
 
-    protected void testServerInfoBookmark(Failable failable) throws Exception {
+    protected void testServerInfoBookmark(JiraAwareFailable failable) throws Exception {
         testServerInfoIT();
         passed();
     }    

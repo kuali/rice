@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,11 +48,11 @@ public class CreateSampleEdocLiteAftBase extends MainTmplMthdSTNavBase{
         return "eDoc Lite";
     }
 
-    public void testCreateSampleEDocLiteBookmark(Failable failable) throws Exception {
+    public void testCreateSampleEDocLiteBookmark(JiraAwareFailable failable) throws Exception {
         testCreateSampleEDocLite();
         passed();
     }
-    public void testCreateSampleEDocLiteNav(Failable failable) throws Exception {
+    public void testCreateSampleEDocLiteNav(JiraAwareFailable failable) throws Exception {
         testCreateSampleEDocLite();
         passed();
     }

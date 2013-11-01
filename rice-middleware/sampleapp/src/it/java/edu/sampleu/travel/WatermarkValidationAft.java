@@ -45,7 +45,6 @@ public class WatermarkValidationAft extends WebDriverITBase {
 		Thread.sleep(5000);
 		//Switch to new window.
 		switchWindow();
-        checkForIncidentReport(WebDriverLegacyITBase.UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT, this, "WatermarkValidationAft.testWatermarking");
         waitAndClickByLinkText("Text Controls");
         assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
 		assertEquals("Watermark... ",getAttributeByName("field110", "placeholder"));

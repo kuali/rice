@@ -75,10 +75,8 @@ public class DemoLookUpConditionalCriteriaAft extends WebDriverLegacyITBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(10000); // If we don't wait long enough we'll get concurrency issues.
-        checkForIncidentReport(SEARCH, "DemoLookUpConditionalCriteriaAft testLookUpConditionalCriteria");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        checkForIncidentReport();
         assertTextPresent(DATE_REQUIRED_MESSAGE);
         
         //Case 2 - Date field read only by number a2

@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * @{code JiraAwareRegexFailures.properties} and {@code JiraAwareContainsFailures.properties} will be read as a resource stream.  To
  * override the Jira browse url set -Djira.aware.browse.url
  * </p><p>
- * To make use of JiraAwareFailureUtil implement {@see Failable} and call {@code JiraAwareFailureUtil.fail(contents, message, failable);} instead of
+ * To make use of JiraAwareFailureUtil implement {@see JiraAwareFailable} and call {@code JiraAwareFailureUtil.fail(contents, message, failable);} instead of
  * asserts or Assert.fail().
  * </p><p>
  * TODO:
@@ -101,41 +101,41 @@ public class JiraAwareFailureUtil {
 
     /**
      * <p>
-     * Calls {@see #failOnMatchedJira(String, Failable)} and calls fail on the {@see Failable#fail} if no matched jira failures.
+     * Calls {@see #failOnMatchedJira(String, JiraAwareFailable)} and calls fail on the {@see JiraAwareFailable#fail} if no matched jira failures.
      * </p>
      *
      * @param message to pass to fail
-     * @param failable {@see Failable#fail}
+     * @param failable {@see JiraAwareFailable#fail}
      */
-    public static void fail(String message, Failable failable) {
+    public static void fail(String message, JiraAwareFailable failable) {
         failOnMatchedJira(message, failable);
         failable.fail(message);
     }
 
     /**
      * <p>
-     * Calls {@see #failOnMatchedJira(String, String, Failable)} and calls fail on the {@see Failable#fail} fails if no matched jira failures.
+     * Calls {@see #failOnMatchedJira(String, String, JiraAwareFailable)} and calls fail on the {@see JiraAwareFailable#fail} fails if no matched jira failures.
      * </p>
      *
      * @param contents to check for jira matches on
      * @param message to pass to fail, also checked for jira matches
-     * @param failable {@see Failable#fail}
+     * @param failable {@see JiraAwareFailable#fail}
      */
-    public static void fail(String contents, String message, Failable failable) {
+    public static void fail(String contents, String message, JiraAwareFailable failable) {
         failOnMatchedJira(contents, message, failable);
         failable.fail(contents + " " + message);
     }
 
     /**
      * <p>
-     * Calls {@see #failOnMatchedJira(String, String, Failable)} and calls fail on the {@see Failable#fail} fails if no matched jira failures.
+     * Calls {@see #failOnMatchedJira(String, String, JiraAwareFailable)} and calls fail on the {@see JiraAwareFailable#fail} fails if no matched jira failures.
      * </p>
      *
      * @param contents to check for jira matches on
      * @param message to pass to fail, also checked for jira matches
-     * @param failable {@see Failable#fail}
+     * @param failable {@see JiraAwareFailable#fail}
      */
-    public static void fail(String contents, String message, Throwable throwable, Failable failable) {
+    public static void fail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         failOnMatchedJira(contents, message, failable);
         failOnMatchedJira(ExceptionUtils.getStackTrace(throwable), throwable.getMessage(), failable);
         failable.fail(contents + " " + message + " " + throwable.getMessage() + "\n\t" + ExceptionUtils.getStackTrace(throwable));
@@ -143,27 +143,27 @@ public class JiraAwareFailureUtil {
 
     /**
      * <p>
-     * Calls {@see #failOnMatchedJira(String, Failable)} with the contents and if no match is detected then the message.
+     * Calls {@see #failOnMatchedJira(String, JiraAwareFailable)} with the contents and if no match is detected then the message.
      * </p>
      *
      * @param contents to check for containing of the jiraMatches keys.
      * @param message to check for containing of the jiraMatches keys if contents doesn't
      * @param failable to fail with the jiraMatches value if the contents or message is detected
      */
-    public static void failOnMatchedJira(String contents, String message, Failable failable) {
+    public static void failOnMatchedJira(String contents, String message, JiraAwareFailable failable) {
         failOnMatchedJira(contents, failable);
         failOnMatchedJira(message, failable);
     }
 
     /**
      * <p>
-     * If the contents contains the jiraMatches key, calls fail on the {@see Failable#fail} passing in the jiraMatches value for the matched key.
+     * If the contents contains the jiraMatches key, calls fail on the {@see JiraAwareFailable#fail} passing in the jiraMatches value for the matched key.
      * </p>
      *
      * @param contents to check for containing of the jiraMatches keys.
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */
-    public static void failOnMatchedJira(String contents, Failable failable) {
+    public static void failOnMatchedJira(String contents, JiraAwareFailable failable) {
         String key = null;
         Pattern pattern = null;
         Matcher matcher = null;

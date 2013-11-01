@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,7 +49,7 @@ public abstract class WorkFlowDocTypeAftBase extends AdminTmplMthdAftNavBase {
         return "Document Type";
     }
    
-    public void testWorkFlowDocTypeBookmark(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testSearchEditCancel();
@@ -58,7 +58,7 @@ public abstract class WorkFlowDocTypeAftBase extends AdminTmplMthdAftNavBase {
         passed();
     }
 
-    public void testWorkFlowDocTypeNav(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeNav(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         navigate();
         testSearchEditCancel();

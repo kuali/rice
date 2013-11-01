@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
@@ -48,13 +48,13 @@ public abstract class TravelAccountLookupAftBase extends WebDriverLegacyITBase {
         waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
     }
 
-    protected void testTravelAccountLookupNav(Failable failable) throws Exception {
+    protected void testTravelAccountLookupNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testTravelAccountLookup();
         passed();
     }
 
-    protected void testTravelAccountLookupBookmark(Failable failable) throws Exception {
+    protected void testTravelAccountLookupBookmark(JiraAwareFailable failable) throws Exception {
         testTravelAccountLookup();
         passed();
     }

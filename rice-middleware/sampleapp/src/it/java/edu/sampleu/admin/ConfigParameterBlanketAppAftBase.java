@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigParameterBlanketAppAftBase extends AdminTmplMthdAftN
         return "Parameter";
     }
 
-    public void testConfigParameterBlanketAppBookmark(Failable failable) throws Exception {
+    public void testConfigParameterBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testConfigParamaterBlanketApprove();
         passed();
     }
 
-    public void testConfigParameterBlanketAppNav(Failable failable) throws Exception {
+    public void testConfigParameterBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testConfigParamaterBlanketApprove();
         passed();
     }    

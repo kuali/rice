@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -52,11 +52,11 @@ public class ContextLookUpAftBase extends MainTmplMthdSTNavBase{
         return "Context Lookup";
     }
 
-    public void testContextLookUpBookmark(Failable failable) throws Exception {
+    public void testContextLookUpBookmark(JiraAwareFailable failable) throws Exception {
         contextLookupAssertions();
         passed();
     }
-    public void testContextLookUpNav(Failable failable) throws Exception {
+    public void testContextLookUpNav(JiraAwareFailable failable) throws Exception {
         contextLookupAssertions();
         passed();
     }

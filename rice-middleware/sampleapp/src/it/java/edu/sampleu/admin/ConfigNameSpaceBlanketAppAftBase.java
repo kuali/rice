@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,12 +49,12 @@ public abstract class ConfigNameSpaceBlanketAppAftBase extends AdminTmplMthdAftN
         return "Namespace";
     }
 
-    public void testConfigNamespaceBlanketApproveBookmark(Failable failable) throws Exception {
+    public void testConfigNamespaceBlanketApproveBookmark(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceBlanketApprove();
         passed();
     }
 
-    public void testConfigNamespaceBlanketApproveNav(Failable failable) throws Exception {
+    public void testConfigNamespaceBlanketApproveNav(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceBlanketApprove();
         passed();
     }

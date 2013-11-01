@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class IdentityResponsibilityAftBase extends AdminTmplMthdAftNavB
         return "Responsibility";
     }
    
-    public void testIdentityResponsibilityBookmark(Failable failable) throws Exception {
+    public void testIdentityResponsibilityBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         passed();
     }
 
-    public void testIdentityResponsibilityNav(Failable failable) throws Exception {
+    public void testIdentityResponsibilityNav(JiraAwareFailable failable) throws Exception {
         testCreateNewCancelNav();
         passed();
     }

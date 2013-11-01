@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -52,11 +52,11 @@ public class CategoryLookUpAftBase extends MainTmplMthdSTNavBase{
         return "Category Lookup";
     }
 
-    public void testCategoryLookUpBookmark(Failable failable) throws Exception {
+    public void testCategoryLookUpBookmark(JiraAwareFailable failable) throws Exception {
         testCategoryLookUp();
         passed();
     }
-    public void testCategoryLookUpNav(Failable failable) throws Exception {
+    public void testCategoryLookUpNav(JiraAwareFailable failable) throws Exception {
         testCategoryLookUp();
         passed();
     }

@@ -208,7 +208,6 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         Thread.sleep(2000);
 
         driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
-        checkForIncidentReport("Travel Account Inquiry");
         assertTextPresent("Travel Account");
         selectTopFrame();
         gotoIframeByXpath("//iframe[@class='fancybox-iframe']");

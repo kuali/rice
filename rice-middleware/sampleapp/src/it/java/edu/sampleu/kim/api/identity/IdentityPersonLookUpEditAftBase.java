@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         return "Person";
     }
    
-    public void testIdentityPersonLookUpEditBookmark(Failable failable) throws Exception {
+    public void testIdentityPersonLookUpEditBookmark(JiraAwareFailable failable) throws Exception {
         testIdentityPersonLookUpEdit();
         passed();
     }
 
-    public void testIdentityPersonLookUpEditNav(Failable failable) throws Exception {
+    public void testIdentityPersonLookUpEditNav(JiraAwareFailable failable) throws Exception {
         testIdentityPersonLookUpEdit();
         passed();
     }

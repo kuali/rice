@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigParameterCreateNewAftBase extends AdminTmplMthdAftNa
         return "Parameter";
     }
 
-    public void testConfigParameterCreateNewBookmark(Failable failable) throws Exception {
+    public void testConfigParameterCreateNewBookmark(JiraAwareFailable failable) throws Exception {
         testConfigParameterCreateNew();
         passed();
     }
 
-    public void testConfigParameterCreateNewNav(Failable failable) throws Exception {
+    public void testConfigParameterCreateNewNav(JiraAwareFailable failable) throws Exception {
         testConfigParameterCreateNew();
         passed();
     }    

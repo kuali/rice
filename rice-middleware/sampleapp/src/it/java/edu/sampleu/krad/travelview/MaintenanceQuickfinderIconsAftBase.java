@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceQuickfinderIconsAftBase extends KradTmplMthdSTN
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceQuickfinderIconsBookmark(Failable failable) throws Exception {
+    public void testMaintenanceQuickfinderIconsBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyQuickfinderIconsLegacy();
         passed();
     }
     
-    public void testMaintenanceQuickfinderIconsNav(Failable failable) throws Exception {
+    public void testMaintenanceQuickfinderIconsNav(JiraAwareFailable failable) throws Exception {
         testVerifyQuickfinderIconsLegacy();
         passed();
     }

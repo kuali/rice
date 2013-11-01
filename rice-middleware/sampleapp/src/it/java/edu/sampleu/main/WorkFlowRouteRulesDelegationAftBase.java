@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public class WorkFlowRouteRulesDelegationAftBase extends MainTmplMthdSTNavBase{
         return "Routing Rules Delegation";
     }
 
-    public void testWorkFlowRouteRulesDelegationBookmark(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesDelegationBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewRRDTravelRequestDestRouting();
         passed();
     }
 
-    public void testWorkFlowRouteRulesDelegationNav(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesDelegationNav(JiraAwareFailable failable) throws Exception {
         testCreateNewRRDTravelRequestDestRouting();
         passed();
     }

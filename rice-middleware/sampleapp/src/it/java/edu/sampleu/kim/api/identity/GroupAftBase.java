@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class GroupAftBase extends AdminTmplMthdAftNavBase {
         return "Group";
     }
    
-    public void testGroupBookmark(Failable failable) throws Exception {
+    public void testGroupBookmark(JiraAwareFailable failable) throws Exception {
         testAddingBrownGroup();
         passed();
     }
 
-    public void testGroupNav(Failable failable) throws Exception {
+    public void testGroupNav(JiraAwareFailable failable) throws Exception {
         testAddingBrownGroup();
         passed();
     }

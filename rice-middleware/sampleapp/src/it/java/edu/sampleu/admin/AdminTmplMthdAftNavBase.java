@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import edu.sampleu.common.NavTemplateMethodAftBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.openqa.selenium.By;
 
 /**
@@ -55,17 +55,16 @@ public abstract class AdminTmplMthdAftNavBase extends NavTemplateMethodAftBase {
         testSearchEditCancel();
     }
 
-    public void testSearchEditBack(Failable failable) throws Exception {
+    public void testSearchEditBack(JiraAwareFailable failable) throws Exception {
         waitAndClickSearch2();
         String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
         waitAndClickByLinkText("edit");
         waitFor(By.name(BLANKET_APPROVE_NAME));
         back();
-        checkForIncidentReport();
         assertTextPresent("Going back from Edit Search results not available https://jira.kuali.org/browse/KULRICE-9709", pageBannerText);
     }
 
-    public void testSearchSearchBack(Failable failable, String fieldName, String searchText) throws Exception {
+    public void testSearchSearchBack(JiraAwareFailable failable, String fieldName, String searchText) throws Exception {
         waitAndClickSearch2();
         String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
         waitAndTypeByName(fieldName, searchText);

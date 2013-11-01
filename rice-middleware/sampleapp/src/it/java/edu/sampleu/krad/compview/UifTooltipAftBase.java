@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.compview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -45,14 +44,14 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testUifTooltipNav(Failable failable) throws Exception {
+    protected void testUifTooltipNav(JiraAwareFailable failable) throws Exception {
         navigation();
         waitAndClickByLinkText("Other Examples");
         testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }
 
-    protected void testUifTooltipBookmark(Failable failable) throws Exception {
+    protected void testUifTooltipBookmark(JiraAwareFailable failable) throws Exception {
         testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }

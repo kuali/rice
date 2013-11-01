@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -52,11 +52,11 @@ public class TermSpecificationLookUpAftBase extends MainTmplMthdSTNavBase{
         return "Term Specification Lookup";
     }
 
-    public void testTermSpecificationLookUpBookmark(Failable failable) throws Exception {
+    public void testTermSpecificationLookUpBookmark(JiraAwareFailable failable) throws Exception {
         testTermSpecificationLookupAssertions();
         passed();
     }
-    public void testTermSpecificationLookUpNav(Failable failable) throws Exception {
+    public void testTermSpecificationLookUpNav(JiraAwareFailable failable) throws Exception {
         testTermSpecificationLookupAssertions();
         passed();
     }

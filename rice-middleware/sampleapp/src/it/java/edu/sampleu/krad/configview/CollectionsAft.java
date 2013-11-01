@@ -106,7 +106,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value").equals(""))
                     break;
@@ -169,7 +169,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection1']//tr[2]/td[6]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/div[2]/button"))
                     break;
@@ -182,7 +182,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isElementPresentByXpath("//div[2]/div[2]/div[2]/table/tbody/tr[2]/td/div/fieldset/div/div[2]/button"))
                     break;
@@ -195,7 +195,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/div[2]/button"))
                     break;

@@ -18,8 +18,6 @@ package org.kuali.rice.testtools.selenium;
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -52,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * without having to extend WebDriverLegacyITBase.
  * </p><p>
  * For compatibility with {@see JiraAwareFailureUtil}, external test framework asserts and fails should not be called from
- * WebDriverUtil, instead use WebDriverUtil asserts or explicit if checks and call a JiraAwareFailureUtil.fail method.
+ * WebDriverUtil, instead use {@see JiraAwareAftBase}.
  * </p><p>
  * For the first example see waitFor
  * </p>
@@ -394,49 +392,6 @@ public class WebDriverUtil {
 
     /**
      * <p>
-     * Fail if the button defined by the buttonText is enabled.
-     * </p>
-     *
-     * @param driver to get the button from
-     * @param buttonText to identify the button
-     * @param failable to fail on if button identified by buttonText is enabled.
-     */
-    public static void assertButtonDisabledByText(WebDriver driver, String buttonText, Failable failable) {
-        jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is disabled");
-        if (findButtonByText(driver, buttonText).isEnabled()) {
-            failable.fail(buttonText + " button is not disabled");
-        }
-    }
-
-    /**
-     * <p>
-     * Fail if the button defined by the buttonText is disabled.
-     * </p>
-     *
-     * @param driver to get the button from
-     * @param buttonText to identify the button
-     * @param failable to fail on if button identified by buttonText is disabled.
-     */
-    public static void assertButtonEnabledByText(WebDriver driver, String buttonText, Failable failable) {
-        jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is enabled");
-        if (!findButtonByText(driver, buttonText).isEnabled()) {
-            failable.fail(buttonText + " button is not enabled");
-        }
-    }
-
-    /***
-     * {@see ITUtil#checkForIncidentReport}
-     *
-     * @param driver to get page source from
-     * @param locator current locator
-     * @param message to display and be matched against in the event of a failure
-     */
-    public static void checkForIncidentReport(WebDriver driver, String locator, Failable failable, String message) {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
-    }
-
-    /**
-     * <p>
      * <a href="http://code.google.com/p/chromedriver/downloads/list">ChromeDriver downloads</a>, {@see #REMOTE_PUBLIC_CHROME},
      * {@see #WEBDRIVER_CHROME_DRIVER}, and {@see #HUB_DRIVER_PROPERTY}
      * </p>
@@ -573,27 +528,6 @@ public class WebDriverUtil {
         stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
 
         return "\nIncident report "+ message+ " navigating to "+ linkLocator + " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
-    }
-
-    /**
-     * <p>
-     * {@see JiraAwareFailureUtil#failOnMatchedJira(String, Failable)}.
-     * </p>
-     * @param contents to check for a jira aware fail match
-     * @param failable to call fail on if a jira aware match is found
-     */
-    public static void failOnMatchedJira(String contents, Failable failable) {
-        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
-    }
-
-    private static void failWithReportInfo(String contents, String linkLocator, String message) {
-        final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
-        SeleneseTestBase.fail(incidentReportInformation); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
-    }
-
-    private static void failWithReportInfoForKim(String contents, String linkLocator, String message) {
-        final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
-        SeleneseTestBase.fail(kimIncidentReport); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
     }
 
     /**
@@ -773,23 +707,6 @@ public class WebDriverUtil {
 
     /**
      * <p>
-     * Use the KRAD Login Screen or the old KNS Login Screen
-     * </p>
-     *
-     * @return true if Krad login
-     */
-    public static boolean isKradLogin(){
-        // check system property, default to KRAD
-        String loginUif = System.getProperty(REMOTE_LOGIN_UIF);
-        if (loginUif == null) {
-            loginUif = AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD;
-        }
-
-        return (AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD.equalsIgnoreCase(loginUif));
-    }
-
-    /**
-     * <p>
      * Display jGrowl.
      * </p>
      *
@@ -839,83 +756,6 @@ public class WebDriverUtil {
         if (JGROWL_ERROR_FAILURE) {
             SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet
         }
-    }
-
-    /**
-     * <p>
-     * Logs in using the KRAD Login Page, if the JVM arg remote.autologin is set, auto login as admin will not be done.
-     * </p>
-     *
-     * @param driver to login with
-     * @param userName to login with
-     * @param failable to fail on if there is a login problem
-     * @throws InterruptedException
-     */
-    public static void kradLogin(WebDriver driver, String userName, Failable failable) throws InterruptedException {
-            driver.findElement(By.name("login_user")).clear();
-            driver.findElement(By.name("login_user")).sendKeys(userName);
-            driver.findElement(By.id("Rice-LoginButton")).click();
-            Thread.sleep(1000);
-            String contents = driver.getPageSource();
-            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login",
-                    "Krad Login failure", failable);
-    }
-
-    /**
-     * <p>
-     * Logs into the Rice portal using the KNS Style Login Page.
-     * </p>
-     *
-     * @param driver to login with
-     * @param userName to login with
-     * @param failable to fail on if there is a login problem
-     * @throws InterruptedException
-     */
-    public static void login(WebDriver driver, String userName, Failable failable) throws InterruptedException {
-            driver.findElement(By.name("__login_user")).clear();
-            driver.findElement(By.name("__login_user")).sendKeys(userName);
-            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-            Thread.sleep(1000);
-            String contents = driver.getPageSource();
-            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login",
-                    "KNS Login failure", failable);
-    }
-
-    /**
-     * <p>
-     * Login as KRAD or KNS if {@see #REMOTE_AUTOLOGIN_PROPERTY} is not set to true.
-     * </p>
-     *
-     * @param driver to login with
-     * @param user to login with
-     * @param failable to fail on if there is a login problem
-     * @throws InterruptedException
-     */
-    public static void loginKradOrKns(WebDriver driver, String user, Failable failable) throws InterruptedException {// login via either KRAD or KNS login page
-        if ("true".equalsIgnoreCase(System.getProperty(REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
-            if (isKradLogin()){
-                WebDriverUtil.kradLogin(driver, user, failable);
-            } else {
-                WebDriverUtil.login(driver, user, failable);
-            }
-        }
-    }
-
-    private static void processIncidentReport(String contents, String linkLocator, Failable failable, String message) {
-        failOnMatchedJira(contents, failable);
-
-        if (contents.indexOf("Incident Feedback") > -1) {
-            failWithReportInfo(contents, linkLocator, message);
-        }
-
-        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
-            failWithReportInfoForKim(contents, linkLocator, message);
-        }
-
-        SeleneseTestBase.fail("\nIncident report detected " + message + "\n Unable to parse out details for the contents that triggered exception: " + deLinespace(
-                contents)); // SeleneseTestBase.fail okay here as JiraAwareFailure has already been called
     }
 
     /**

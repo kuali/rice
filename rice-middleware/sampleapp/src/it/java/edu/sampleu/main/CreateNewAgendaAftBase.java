@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,11 +48,11 @@ public class CreateNewAgendaAftBase extends MainTmplMthdSTNavBase{
         return "Create New Agenda";
     }
 
-    public void testCreateNewAgendaBookmark(Failable failable) throws Exception {
+    public void testCreateNewAgendaBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewAgenda();
         passed();
     }
-    public void testCreateNewAgendaNav(Failable failable) throws Exception {
+    public void testCreateNewAgendaNav(JiraAwareFailable failable) throws Exception {
         testCreateNewAgenda();
         passed();
     }

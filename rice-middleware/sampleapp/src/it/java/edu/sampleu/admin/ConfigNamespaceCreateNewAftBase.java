@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
         return "Namespace";
     }
 
-    public void testConfigNamespaceCreateNewBookmark(Failable failable) throws Exception {
+    public void testConfigNamespaceCreateNewBookmark(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceCreateNew();
         passed();
     }
 
-    public void testConfigNamespaceCreateNewNav(Failable failable) throws Exception {
+    public void testConfigNamespaceCreateNewNav(JiraAwareFailable failable) throws Exception {
         testConfigNamespaceCreateNew();
         passed();
     }    

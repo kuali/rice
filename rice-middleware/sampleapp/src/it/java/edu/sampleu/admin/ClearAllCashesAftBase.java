@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -46,12 +46,12 @@ public abstract class ClearAllCashesAftBase extends AdminTmplMthdAftNavBase {
         return "Cache Admin";
     }
 
-    public void testClearAllCashesBookmark(Failable failable) throws Exception {
+    public void testClearAllCashesBookmark(JiraAwareFailable failable) throws Exception {
         testClearAllCashes();
         passed();
     }
 
-    public void testClearAllCashesNav(Failable failable) throws Exception {
+    public void testClearAllCashesNav(JiraAwareFailable failable) throws Exception {
         testClearAllCashes();
         passed();
     }    

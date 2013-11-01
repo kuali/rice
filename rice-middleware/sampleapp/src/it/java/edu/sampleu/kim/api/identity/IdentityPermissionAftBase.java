@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,14 +50,14 @@ public abstract class IdentityPermissionAftBase extends AdminTmplMthdAftNavBase 
         return "Permission";
     }
    
-    public void testIdentityPermissionBookmark(Failable failable) throws Exception {
+    public void testIdentityPermissionBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
         passed();
     }
 
-    public void testIdentityPermissionNav(Failable failable) throws Exception {
+    public void testIdentityPermissionNav(JiraAwareFailable failable) throws Exception {
         testEditCancel();
         navigate();
         testCreateNewCancelNav();

@@ -16,7 +16,7 @@
 package edu.sampleu.admin;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,12 +49,12 @@ public abstract class ConfigComponentLookUpAndCopyAftBase extends AdminTmplMthdA
         return "Component";
     }
 
-    public void testConfigComponentLookUpAndCopyBookmark(Failable failable) throws Exception {
+    public void testConfigComponentLookUpAndCopyBookmark(JiraAwareFailable failable) throws Exception {
         testConfigComponentLookUpAndCopy();
         passed();
     }
 
-    public void testConfigComponentLookUpAndCopyNav(Failable failable) throws Exception {
+    public void testConfigComponentLookUpAndCopyNav(JiraAwareFailable failable) throws Exception {
         testConfigComponentLookUpAndCopy();
         passed();
     }    

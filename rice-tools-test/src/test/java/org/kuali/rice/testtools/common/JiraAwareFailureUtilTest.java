@@ -18,7 +18,7 @@ package org.kuali.rice.testtools.common;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JiraAwareFailureUtilTest implements Failable {
+public class JiraAwareFailureUtilTest implements JiraAwareFailable {
 
     String message;
 
@@ -38,6 +38,21 @@ public class JiraAwareFailureUtilTest implements Failable {
 
     @Override
     public void fail(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public void jiraAwareFail(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public void jiraAwareFail(String contents, String message) {
+        this.message = message;
+    }
+
+    @Override
+    public void jiraAwareFail(String contents, String message, Throwable throwable) {
         this.message = message;
     }
 }

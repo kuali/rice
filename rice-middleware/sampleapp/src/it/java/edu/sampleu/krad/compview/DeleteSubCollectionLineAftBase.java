@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.compview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 import static org.junit.Assert.assertNotSame;
@@ -49,13 +48,13 @@ public abstract class DeleteSubCollectionLineAftBase extends WebDriverLegacyITBa
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testDeleteSubCollectionLineNav(Failable failable) throws Exception {
+    protected void testDeleteSubCollectionLineNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testDeleteSubCollectionLine();
         passed();
     }
 
-    protected void testDeleteSubCollectionLineBookmark(Failable failable) throws Exception {
+    protected void testDeleteSubCollectionLineBookmark(JiraAwareFailable failable) throws Exception {
         testDeleteSubCollectionLine();
         passed();
     }

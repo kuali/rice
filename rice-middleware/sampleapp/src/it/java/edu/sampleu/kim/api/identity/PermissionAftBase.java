@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -55,7 +55,7 @@ public abstract class PermissionAftBase extends AdminTmplMthdAftNavBase {
         return "Permission";
     }
    
-    public void testPermissionBookmark(Failable failable) throws Exception {
+    public void testPermissionBookmark(JiraAwareFailable failable) throws Exception {
       //Create New Permission
         selectFrame("iframeportlet");
         waitAndCreateNew();
@@ -79,7 +79,7 @@ public abstract class PermissionAftBase extends AdminTmplMthdAftNavBase {
         passed();
     }
 
-    public void testPermissionNav(Failable failable) throws Exception {
+    public void testPermissionNav(JiraAwareFailable failable) throws Exception {
         //Create New
         gotoCreateNew();
         List<String> params;

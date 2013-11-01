@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.configview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -43,7 +42,7 @@ public abstract class Help2AftBase extends WebDriverLegacyITBase {
         selectFrameIframePortlet();
     }
 
-    protected void testHelp2Nav(Failable failable) throws Exception {
+    protected void testHelp2Nav(JiraAwareFailable failable) throws Exception {
         navigation();
         testViewHelp2();
         navigation();
@@ -55,7 +54,7 @@ public abstract class Help2AftBase extends WebDriverLegacyITBase {
         passed();
     }
 
-    protected void testHelp2Bookmark(Failable failable) throws Exception {
+    protected void testHelp2Bookmark(JiraAwareFailable failable) throws Exception {
         testViewHelp();
         testPageHelp();
         testTooltipHelp();

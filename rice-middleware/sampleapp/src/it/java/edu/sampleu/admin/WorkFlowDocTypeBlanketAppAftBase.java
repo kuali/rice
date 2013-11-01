@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,12 +49,12 @@ public abstract class WorkFlowDocTypeBlanketAppAftBase extends AdminTmplMthdAftN
         return "Document Type";
     }
    
-    public void testWorkFlowDocTypeBlanketAppBookmark(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testWorkFlowDocTypeBlanketApprove();
         passed();
     }
 
-    public void testWorkFlowDocTypeBlanketAppNav(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testWorkFlowDocTypeBlanketApprove();
         passed();
     }

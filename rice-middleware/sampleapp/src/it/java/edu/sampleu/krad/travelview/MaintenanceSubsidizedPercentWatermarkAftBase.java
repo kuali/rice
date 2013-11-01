@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceSubsidizedPercentWatermarkAftBase extends KradT
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceSubsidizedPercentWatermarkBookmark(Failable failable) throws Exception {
+    public void testMaintenanceSubsidizedPercentWatermarkBookmark(JiraAwareFailable failable) throws Exception {
         testVerifySubsidizedPercentWatermarkLegacy();
         passed();
     }
     
-    public void testMaintenanceSubsidizedPercentWatermarkNav(Failable failable) throws Exception {
+    public void testMaintenanceSubsidizedPercentWatermarkNav(JiraAwareFailable failable) throws Exception {
         testVerifySubsidizedPercentWatermarkLegacy();
         passed();
     }

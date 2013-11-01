@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceExpandCollapseAftBase extends KradTmplMthdSTNav
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceExpandCollapseBookmark(Failable failable) throws Exception {
+    public void testMaintenanceExpandCollapseBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyExpandCollapse();
         passed();
     }
     
-    public void testMaintenanceExpandCollapseNav(Failable failable) throws Exception {
+    public void testMaintenanceExpandCollapseNav(JiraAwareFailable failable) throws Exception {
         testVerifyExpandCollapse();
         passed();
     }

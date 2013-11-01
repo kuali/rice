@@ -16,8 +16,7 @@
 package edu.sampleu.travel;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -43,13 +42,13 @@ public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testDirtyFieldsCheckNav(Failable failable) throws Exception {
+    protected void testDirtyFieldsCheckNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testDirtyFieldsCheck();
         passed();
     }
 
-    protected void testDirtyFieldsCheckBookmark(Failable failable) throws Exception {
+    protected void testDirtyFieldsCheckBookmark(JiraAwareFailable failable) throws Exception {
         testDirtyFieldsCheck();
         passed();
     }

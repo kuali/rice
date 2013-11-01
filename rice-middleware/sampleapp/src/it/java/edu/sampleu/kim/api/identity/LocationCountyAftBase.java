@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class LocationCountyAftBase extends AdminTmplMthdAftNavBase {
         return "County";
     }
    
-    public void testLocationCountyBookmark(Failable failable) throws Exception {
+    public void testLocationCountyBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         passed();
     }
 
-    public void testLocationCountyNav(Failable failable) throws Exception {
+    public void testLocationCountyNav(JiraAwareFailable failable) throws Exception {
         testCreateNewCancelNav();
         passed();
     }

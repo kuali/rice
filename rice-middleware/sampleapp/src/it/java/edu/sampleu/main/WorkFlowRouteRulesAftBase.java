@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,14 +48,14 @@ public class WorkFlowRouteRulesAftBase extends MainTmplMthdSTNavBase{
         return "Routing Rules";
     }
 
-    public void testWorkFlowRouteRulesBookmark(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesBookmark(JiraAwareFailable failable) throws Exception {
         testWorkFlowRouteRulesCreateNew();
         driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testWorkFlowRouteRulesEditRouteRules();
         passed();
     }
     
-    public void testWorkFlowRouteRulesNav(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesNav(JiraAwareFailable failable) throws Exception {
         testWorkFlowRouteRulesCreateNew();
         navigate();
         testWorkFlowRouteRulesEditRouteRules();

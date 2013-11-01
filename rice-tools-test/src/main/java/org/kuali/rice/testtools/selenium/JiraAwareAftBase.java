@@ -16,18 +16,21 @@
 package org.kuali.rice.testtools.selenium;
 
 import org.junit.Assert;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * <p>
  * Jira Aware Automated Functional Test Base.
  * </p><p>
  * <ul>
- *     <li>{@see Failable}</li>
+ *     <li>{@see JiraAwareWebDriverUtils}</li>
+ *     <li>{@see JiraAwareFailable}</li>
  *     <li>{@see JiraAwareFailure}</li>
  * </ul>
  * TODO: promote the various jiraAware methods from WebDriverLegacyITBase
@@ -35,7 +38,7 @@ import org.openqa.selenium.WebElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase implements Failable {
+public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase implements JiraAwareFailable {
 
     /**
      * Test state, used for Saucelabs REST API call to set test state via @{see SauceLabsWebDriverHelper#tearDown}.
@@ -43,8 +46,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     private boolean passed = false;
 
     /**
-     * Implement to check for Incident Report or other on screen errors, should call {@see Failable#fail} to fail, without
-     * calling any of the jiraAwareFail methods to avoid an infinite loop.
+     * Implement to check for Incident Report or other on screen errors, should call {@see JiraAwareFailable#fail} to fail,
+     * without calling any of the jiraAwareFail methods to avoid an infinite loop.
      *
      * @param locator used in failure message if there is an incident report can be blank
      * @param message used in failure message if there is an incident report can be blank
@@ -64,7 +67,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param buttonText of button to assert is disabled
      */
     protected void assertButtonDisabledByText(String buttonText) {
-        WebDriverUtil.assertButtonDisabledByText(getDriver(), buttonText, this);
+        JiraAwareWebDriverUtils.assertButtonDisabledByText(getDriver(), buttonText, this);
     }
 
     /**
@@ -73,7 +76,48 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param buttonText of button to assert is disabled
      */
     protected void assertButtonEnabledByText(String buttonText) {
-        WebDriverUtil.assertButtonEnabledByText(getDriver(), buttonText, this);
+        JiraAwareWebDriverUtils.assertButtonEnabledByText(getDriver(), buttonText, this);
+    }
+
+    protected void assertElementPresentByName(String name) {
+        assertElementPresentByName(name, "");
+    }
+
+    protected void assertElementPresentByName(String name, String message) {
+        try {
+            findElement(By.name(name));
+        } catch (Exception e) {
+            jiraAwareFail(name + " not present " + message);
+        }
+    }
+
+    protected void assertElementPresentByXpath(String locator) {
+        assertElementPresentByXpath(locator, "");
+    }
+
+    protected void assertElementPresentByXpath(String locator, String message) {
+        try {
+            findElement(By.xpath(locator));
+        } catch (Exception e) {
+            jiraAwareFail(By.xpath(locator), message, e);
+        }
+    }
+
+    protected void assertElementPresentByLinkText(String linkText) {
+        try {
+            findElement(By.linkText(linkText));
+        } catch (Exception e) {
+            jiraAwareFail(By.cssSelector(linkText), "", e);
+        }
+
+    }
+
+    protected void assertElementPresent(String locator) {
+        try {
+            findElement(By.cssSelector(locator));
+        } catch (Exception e) {
+            jiraAwareFail(By.cssSelector(locator), "", e);
+        }
     }
 
     /**
@@ -82,20 +126,129 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param booleanToAssertFalse
      */
     protected void assertFalse(boolean booleanToAssertFalse) {
-        if (booleanToAssertFalse) {
-            jiraAwareFail("expected false, but was true");
-        }
+        JiraAwareWebDriverUtils.assertFalse(booleanToAssertFalse, this);
     }
 
     /**
      * If booleanToAssertFalse is true call {@see jiraAwareFail}.
      *
-     * @param message to include if booleanToAssertTrue is false
+     * @param message to include if booleanToAssertTrue is true
      * @param booleanToAssertFalse
      */
     protected void assertFalse(String message, boolean booleanToAssertFalse) {
-        if (booleanToAssertFalse) {
-            jiraAwareFail(message + " expected false, but was true");
+        JiraAwareWebDriverUtils.assertFalse(message, booleanToAssertFalse, this);
+    }
+
+    protected void assertIsVisible(String locator) {
+        if (!isVisible(locator)) {
+            jiraAwareFail(locator + " is not visible and should be");
+        }
+    }
+
+    protected void assertIsVisible(By by, String message) {
+        if (!isVisible(by)) {
+            jiraAwareFail(by + " not visible " + message);
+        }
+    }
+
+    protected void assertIsVisibleById(String id) {
+        if (!isVisibleById(id)) {
+            jiraAwareFail(id + " is not visible and should be");
+        }
+    }
+
+    protected void assertIsVisibleByXpath(String xpath, String message) {
+        if (!isVisibleByXpath(xpath)) {
+            jiraAwareFail(xpath + " not visible " + message);
+        }
+    }
+
+    protected void assertIsNotVisible(By by) {
+        assertIsNotVisible(by, "");
+    }
+
+    protected void assertIsNotVisible(By by, String message) {
+        if (isVisible(by)) {
+            jiraAwareFail(by + " is visible and should not be " + message);
+        }
+    }
+
+    protected void assertIsNotVisible(String locator) {
+        if (isVisible(locator)) {
+            jiraAwareFail(locator + " is visible and should not be");
+        }
+    }
+
+    protected void assertIsNotVisibleByXpath(String xpath) {
+        if (isVisible(By.xpath(xpath))) {
+            jiraAwareFail(xpath + " is visible and should not be");
+        }
+    }
+
+    protected void assertIsNotVisibleByXpath(String xpath, String message) {
+        if (isVisibleByXpath(xpath)) {
+            jiraAwareFail(xpath + " visible and should not be " + message);
+        }
+    }
+
+    /**
+     * <b>WARNING:</b> this only does a check against the page source.  The form url can have random character that match
+     * simple text.  A narrowly scoped locator for {@see #assertTextPresent(String String String)}
+     *
+     * @param text
+     */
+    protected void assertTextPresent(String text) {
+        assertTextPresent(text, "");
+    }
+
+    /**
+     * <b>WARNING:</b> this only does a check against the page source.  The form url can have random character that match simple text
+     * @param text
+     */
+    protected void assertTextPresent(String text, String message) {
+        String pageSource = getDriver().getPageSource();
+        if (!pageSource.contains(text)) {
+            jiraAwareFail(text + " not present " + message);
+        }
+    }
+
+    /**
+     * @param text
+     */
+    protected void assertTextPresent(String text, String cssSelector, String message){
+        WebElement element = findElement(By.cssSelector(cssSelector));
+        if (!element.getText().contains(text)){
+            jiraAwareFail(text + " for " + cssSelector + " not present " + message);
+        }
+    }
+
+    /**
+     * Asset that the given text does not occur in the page
+     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
+     * @param text the text to search for
+     */
+    protected void assertTextNotPresent(String text) {
+        assertTextNotPresent(text, "");
+    }
+
+    /**
+     * Assert that the given text does not occur in the page, and add an additional message to the failure
+     * @param text the text to search for
+     * @param message the message to add to the failure
+     */
+    protected void assertTextNotPresent(String text, String message) {
+        if (getDriver().getPageSource().contains(text)) {
+            jiraAwareFail(text + " is present and should not be " + message);
+        }
+    }
+
+    /**
+     * @param text
+     */
+    protected void assertTextNotPresent(String text, String cssSelector, String message){
+        WebElement element = findElement(By.cssSelector(cssSelector));
+        if (element.getText().contains(text)){
+            jiraAwareFail(text + " for " + cssSelector + " is present and shouldn't be " + message);
         }
     }
 
@@ -105,9 +258,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param booleanToAssertTrue
      */
     protected void assertTrue(boolean booleanToAssertTrue) {
-        if (!booleanToAssertTrue) {
-            jiraAwareFail("expected true, but was false");
-        }
+        JiraAwareWebDriverUtils.assertTrue(booleanToAssertTrue, this);
     }
 
     /**
@@ -117,14 +268,13 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param booleanToAssertTrue
      */
     protected void assertTrue(String message, boolean booleanToAssertTrue) {
-        if (!booleanToAssertTrue) {
-            jiraAwareFail(message + " expected true, but was false");
-        }
+        JiraAwareWebDriverUtils.assertTrue(message, booleanToAssertTrue, this);
     }
 
     /**
+     * {@inheritDoc}
      * <p>
-     * Set passed to false, call jGrowl sticky with the given message, then fails using  {@see Failable#fail}.
+     * Set passed to false, call jGrowl sticky with the given message, then fails using  {@see JiraAwareFailable#fail}.
      * </p>
      * @param message to display with failure
      */
@@ -142,26 +292,68 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @return WebElement found with given by
      */
     protected WebElement findElement(By by) {
-        return WebDriverUtil.findElement(getDriver(), by);
+        try {
+            return WebDriverUtil.findElement(getDriver(), by);
+        } catch (Exception e) {
+            jiraAwareFail(by.toString(), e.getMessage(), e);
+        }
+        return null; // requred by compiler, never reached
+    }
+
+    protected WebElement findElement(By by, WebElement elementToFindOn) {
+        try {
+            WebElement found = elementToFindOn.findElement(by);
+            WebDriverUtil.highlightElement(getDriver(), found);
+            return found;
+        } catch (Exception e) {
+            jiraAwareFail(by.toString(), e.getMessage(), e);
+        }
+        return null; // requred by compiler, never reached
+    }
+
+    protected boolean isVisible(String locator) {
+        return isVisible(By.cssSelector(locator));
+    }
+
+    protected boolean isVisible(By by) {
+        List<WebElement> elements = getDriver().findElements(by);
+        for (WebElement element: elements) {
+            if (element.isDisplayed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean isVisibleById(String id) {
+        return isVisible(By.id(id));
+    }
+
+    protected boolean isVisibleByXpath(String locator) {
+        return isVisible(By.xpath(locator));
     }
 
     /**
+     * {@inheritDoc}
      * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param message to check for a Jira match and fail with.
      */
-    protected void jiraAwareFail(String message) {
+    @Override
+    public void jiraAwareFail(String message) {
         checkForIncidentReport("", message);
         JiraAwareFailureUtil.fail(message, this);
     }
 
     /**
+     * {@inheritDoc}
      * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
      *
      * @param contents to check for a Jira match
      * @param message to check for a Jira match and fail with.
      */
-    protected void jiraAwareFail(String contents, String message) {
+    @Override
+    public void jiraAwareFail(String contents, String message) {
         checkForIncidentReport(contents, message);
         JiraAwareFailureUtil.fail(contents, message, this);
     }
@@ -174,8 +366,21 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param throwable to check for a Jira match
      */
     protected void jiraAwareFail(By by, String message, Throwable throwable) {
-        checkForIncidentReport(by.toString(), message);
-        JiraAwareFailureUtil.fail(by.toString(), message, throwable, this);
+        jiraAwareFail(by.toString(), message, throwable);
+    }
+
+    /**
+     * {@inheritDoc}
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     *
+     * @param contents to check for a Jira match
+     * @param message to check for a Jira match and fail with.
+     * @param throwable to check for a Jira match
+     */
+    @Override
+    public void jiraAwareFail(String contents, String message, Throwable throwable) {
+        checkForIncidentReport(contents, message);
+        JiraAwareFailureUtil.fail(contents, message, throwable, this);
     }
 
     /**
@@ -186,7 +391,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param throwable to check for a Jira match
      * @param failable to call fail on
      */
-    protected void jiraAwareFail(String contents, String message, Throwable throwable, Failable failable) {
+    protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         checkForIncidentReport(contents, message);
         JiraAwareFailureUtil.fail(contents, message, throwable, failable);
     }
@@ -210,13 +415,13 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to fail on if not found
      * @throws InterruptedException
      */
-    protected void jiraAwareWaitAndClick(By by, String message, Failable failable) throws InterruptedException {
+    protected void jiraAwareWaitAndClick(By by, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message, failable);
             WebElement element = findElement(by);
             element.click();
         } catch (Exception e) {
-//            jiraAwareFail(by, message, e);
+            failable.jiraAwareFail(by.toString(), message, e);
         }
     }
 
@@ -260,7 +465,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to fail if given by is not found
      * @throws InterruptedException
      */
-    protected void jiraAwareWaitFor(By by, String message, Failable failable) throws InterruptedException {
+    protected void jiraAwareWaitFor(By by, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
             WebDriverUtil.waitFor(getDriver(), WebDriverUtil.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
@@ -293,6 +498,41 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         return passed;
     }
 
+    protected void selectOptionByName(String name, String optionValue) throws InterruptedException {
+        selectOption(By.name(name), optionValue);
+    }
+
+    protected void selectOptionByXpath(String locator, String optionValue) throws InterruptedException {
+        selectOption(By.name(locator), optionValue);
+    }
+
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @param optionValue
+     * @throws InterruptedException
+     */
+    protected void selectOption(By by, String optionValue) throws InterruptedException {
+        WebElement select1 = findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+
+        if (options == null || options.size() == 0) {
+            jiraAwareFail("No options for select "
+                    + select1.toString()
+                    + " was looking for value "
+                    + optionValue
+                    + " using "
+                    + by.toString());
+        }
+
+        for (WebElement option : options) {
+            if (option.getAttribute("value").equals(optionValue)) {
+                option.click();
+                break;
+            }
+        }
+    }
+
     /**
      * <p>
      * Set the test state to passed, call jGrowl sticky with success, required to be called at the conclusion of a test
@@ -302,5 +542,27 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void passed() {
         passed = true;
         WebDriverUtil.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
+    }
+
+    protected void waitAndType(By by, String text, String message) throws InterruptedException {
+        try {
+            jiraAwareWaitFor(by, message);
+            WebElement element = findElement(by);
+            WebDriverUtil.highlightElement(getDriver(), element);
+            element.sendKeys(text);
+        } catch (Exception e) {
+            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
+            jiraAwareFail(e.getMessage()
+                    + " "
+                    + by.toString()
+                    + "  unable to type text '"
+                    + text
+                    + "'  "
+                    + message
+                    + " current url "
+                    + getDriver().getCurrentUrl()
+                    + "\n"
+                    + AutomatedFunctionalTestUtils.deLinespace(getDriver().getPageSource()));
+        }
     }
 }

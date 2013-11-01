@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,12 +49,12 @@ public abstract class WorkFlowDocTypeLookUpAftBase extends AdminTmplMthdAftNavBa
         return "Document Type";
     }
    
-    public void testWorkFlowDocTypeLookUpBookmark(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeLookUpBookmark(JiraAwareFailable failable) throws Exception {
         testDocTypeLookup();
         passed();
     }
 
-    public void testWorkFlowDocTypeLookUpNav(Failable failable) throws Exception {
+    public void testWorkFlowDocTypeLookUpNav(JiraAwareFailable failable) throws Exception {
         testDocTypeLookup();
         passed();
     }

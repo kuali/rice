@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,12 +50,12 @@ public abstract class LocationCountryBlanketAppAftBase extends AdminTmplMthdAftN
         return "Country";
     }
    
-    public void testLocationCountryBlanketAppBookmark(Failable failable) throws Exception {
+    public void testLocationCountryBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testLocationCountryBlanketApprove();
         passed();
     }
 
-    public void testLocationCountryBlanketAppNav(Failable failable) throws Exception {
+    public void testLocationCountryBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testLocationCountryBlanketApprove();
         passed();
     }

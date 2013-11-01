@@ -89,7 +89,6 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         selectFrameIframePortlet();
         waitAndClickButtonByText("submit");
         Thread.sleep(10000);
-        checkForIncidentReport("Account Maintenance (Edit)");
         assertTextPresent("Document was successfully submitted.");
     }
 

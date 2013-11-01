@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.compview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -42,13 +41,13 @@ public abstract class ParentLineAftBase extends WebDriverLegacyITBase {
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
     }
 
-    protected void testParentLineNav(Failable failable) throws Exception {
+    protected void testParentLineNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testSubCollectionSize();
         passed();
     }
 
-    protected void testParentLineBookmark(Failable failable) throws Exception {
+    protected void testParentLineBookmark(JiraAwareFailable failable) throws Exception {
         testSubCollectionSize();
         passed();
     }

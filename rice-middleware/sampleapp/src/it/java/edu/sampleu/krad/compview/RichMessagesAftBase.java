@@ -15,8 +15,7 @@
  */
 package edu.sampleu.krad.compview;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -44,7 +43,7 @@ public abstract class RichMessagesAftBase extends WebDriverLegacyITBase {
         Thread.sleep(9000);
     }
 
-    protected void testRichMessagesNav(Failable failable) throws Exception {
+    protected void testRichMessagesNav(JiraAwareFailable failable) throws Exception {
         navigation();
         //Verify Basic Functionality Section
         super.verifyRichMessagesValidationBasicFunctionality();
@@ -63,7 +62,7 @@ public abstract class RichMessagesAftBase extends WebDriverLegacyITBase {
         passed();
     }
 
-    protected void testRichMessagesBookmark(Failable failable) throws Exception {
+    protected void testRichMessagesBookmark(JiraAwareFailable failable) throws Exception {
         checkForIncidentReport(getTestUrl());
         Thread.sleep(9000);
         

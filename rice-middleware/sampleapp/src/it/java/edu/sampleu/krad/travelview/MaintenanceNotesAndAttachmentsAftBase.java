@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceNotesAndAttachmentsAftBase extends KradTmplMthd
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceNotesAndAttachmentsBookmark(Failable failable) throws Exception {
+    public void testMaintenanceNotesAndAttachmentsBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyNotesAndAttachments();
         passed();
     }
     
-    public void testMaintenanceNotesAndAttachmentsNav(Failable failable) throws Exception {
+    public void testMaintenanceNotesAndAttachmentsNav(JiraAwareFailable failable) throws Exception {
         testVerifyNotesAndAttachments();
         passed();
     }

@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -55,16 +55,15 @@ import static org.junit.Assert.assertEquals;
  *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a <pre>{@link &#35;CONSTANT}</pre>.
  *   <li>Replace large chunks of duplication</li>
  *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtil
- *   so inheritance doesn't have to be used for
- * reuse.  See WebDriverUtil.waitFor </li>
+ *   so inheritance doesn't have to be used for reuse.  See WebDriverUtil.waitFor </li>
  *   <li>Extract Nav specific code?</li>
- *   <li>Rename to WebDriverAbstractSmokeTestBase</li>
+ *   <li>Rename to SampleAppAftBase</li>
  * </ol>
  * </p>
  * <p>Calls to passed() probably don't belong in the methods reused here.</p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implements Failable { //implements com.saucelabs.common.SauceOnDemandSessionIdProvider {
+public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     /**
      * Administration
@@ -403,6 +402,68 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
             chromeDriverService.start();
     }
 
+    /**
+     * <p>
+     * Logs in using the KRAD Login Page, if the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * </p>
+     *
+     * @param driver to login with
+     * @param userName to login with
+     * @param failable to fail on if there is a login problem
+     * @throws InterruptedException
+     */
+    public static void loginKrad(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
+            driver.findElement(By.name("login_user")).clear();
+            driver.findElement(By.name("login_user")).sendKeys(userName);
+            driver.findElement(By.id("Rice-LoginButton")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login",
+                    "Krad Login failure", failable);
+    }
+
+    /**
+     * <p>
+     * Logs into the Rice portal using the KNS Style Login Page.
+     * </p>
+     *
+     * @param driver to login with
+     * @param userName to login with
+     * @param failable to fail on if there is a login problem
+     * @throws InterruptedException
+     */
+    public static void login(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
+            driver.findElement(By.name("__login_user")).clear();
+            driver.findElement(By.name("__login_user")).sendKeys(userName);
+            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login",
+                    "KNS Login failure", failable);
+    }
+
+    /**
+     * <p>
+     * Login as KRAD or KNS if {@see #REMOTE_AUTOLOGIN_PROPERTY} is not set to true.
+     * </p>
+     *
+     * @param driver to login with
+     * @param user to login with
+     * @param failable to fail on if there is a login problem
+     * @throws InterruptedException
+     */
+    public static void loginKradOrKns(WebDriver driver, String user, JiraAwareFailable failable) throws InterruptedException {// login via either KRAD or KNS login page
+        if ("true".equalsIgnoreCase(System.getProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
+            if (AutomatedFunctionalTestUtils.isKradLogin()){
+                loginKrad(driver, user, failable);
+            } else {
+                login(driver, user, failable);
+            }
+        }
+    }
+
     protected void startSession(Method method) throws Exception {
         testMethodName = method.getName(); // TestNG
     }
@@ -434,7 +495,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
-            WebDriverUtil.loginKradOrKns(driver, user, this);
+            loginKradOrKns(driver, user, this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 
@@ -605,47 +666,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
     }
 
-    protected void assertElementPresentByName(String name) {
-        assertElementPresentByName(name, "");
-    }
-
-    protected void assertElementPresentByName(String name, String message) {
-        try {
-            findElement(By.name(name));
-        } catch (Exception e) {
-            failableFail(name + " not present " + message);
-        }
-    }
-
-    protected void assertElementPresentByXpath(String locator) {
-        assertElementPresentByXpath(locator, "");
-    }
-
-    protected void assertElementPresentByXpath(String locator, String message) {
-        try {
-            findElement(By.xpath(locator));
-        } catch (Exception e) {
-            jiraAwareFail(By.xpath(locator), message, e);
-        }
-    }
-
-    protected void assertElementPresentByLinkText(String linkText) {
-        try {
-            findElement(By.linkText(linkText));
-        } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(linkText), "", e);
-        }
-
-    }
-
-    protected void assertElementPresent(String locator) {
-        try {
-            findElement(By.cssSelector(locator));
-        } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(locator), "", e);
-        }
-    }
-
     protected void assertFocusTypeBlurError(String field, String textToType) throws InterruptedException {
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
@@ -677,58 +697,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
     }
 
-    protected void assertIsVisible(By by, String message) {
-        if (!isVisible(by)) {
-            jiraAwareFail(by + " not visible " + message);
-        }
-    }
-
-    protected void assertIsVisibleByXpath(String xpath, String message) {
-        if (!isVisibleByXpath(xpath)) {
-            jiraAwareFail(xpath + " not visible " + message);
-        }
-    }
-
-    protected void assertIsNotVisibleByXpath(String xpath, String message) {
-        if (isVisibleByXpath(xpath)) {
-            jiraAwareFail(xpath + " visible and should not be " + message);
-        }
-    }
-
-    protected void assertIsVisible(String locator) {
-        if (!isVisible(locator)) {
-            jiraAwareFail(locator + " is not visible and should be");
-        }
-    }
-
-    protected void assertIsVisibleById(String id) {
-        if (!isVisibleById(id)) {
-            jiraAwareFail(id + " is not visible and should be");
-        }
-    }
-
-    protected void assertIsNotVisible(By by) {
-        assertIsNotVisible(by, "");
-    }
-
-    protected void assertIsNotVisible(By by, String message) {
-        if (isVisible(by)) {
-            jiraAwareFail(by + " is visible and should not be " + message);
-        }
-    }
-
-    protected void assertIsNotVisible(String locator) {
-        if (isVisible(locator)) {
-            jiraAwareFail(locator + " is visible and should not be");
-        }
-    }
-
-    protected void assertIsNotVisibleByXpath(String xpath) {
-        if (isVisible(By.xpath(xpath))) {
-            jiraAwareFail(xpath + " is visible and should not be");
-        }
-    }
-
     protected void assertLabelFor(String forElementId, String labelText) {
         SeleneseTestBase.assertEquals(labelText, getForLabelText(forElementId));
     }
@@ -736,7 +704,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void assertMultiValueDeselectAllThisPage() throws InterruptedException {
         waitAndClickDropDown("deselect all items on this page");
         if (!areNoMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("deselect all items on this page failure", this);
+            jiraAwareFail("deselect all items on this page failure");
         }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
@@ -773,65 +741,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         assertTrue(pageSource.contains("Field 3"));
         assertTrue(pageSource.contains("Field 4"));
         assertTrue(pageSource.contains("Actions"));
-    }
-
-    /**
-     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
-     * @param text
-     */
-    protected void assertTextPresent(String text) {
-        assertTextPresent(text, "");
-    }
-
-    /**
-     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
-     * @param text
-     */
-    protected void assertTextPresent(String text, String message) {
-        String pageSource = driver.getPageSource();
-        if (!pageSource.contains(text)) {
-            failableFail(text + " not present " + message);
-        }
-    }
-
-    /**
-     * @param text
-     */
-    protected void assertTextPresent(String text, String cssSelector, String message){
-        WebElement element = findElement(By.cssSelector(cssSelector));
-        if (!element.getText().contains(text)){
-            failableFail(text + " for " + cssSelector + " not present " + message);
-        }
-    }
-
-    /**
-     * Asset that the given text does not occur in the page
-     * Warning, this only does a check against the page source.  The form url can have random character that match simple text
-     * @param text the text to search for
-     */
-    protected void assertTextNotPresent(String text) {
-        assertTextNotPresent(text, "");
-    }
-
-    /**
-     * Assert that the given text does not occur in the page, and add an additional message to the failure
-     * @param text the text to search for
-     * @param message the message to add to the failure
-     */
-    protected void assertTextNotPresent(String text, String message) {
-        if (driver.getPageSource().contains(text)) {
-            failableFail(text + " is present and should not be " + message);
-        }
-    }
-
-    /**
-     * @param text
-     */
-    protected void assertTextNotPresent(String text, String cssSelector, String message){
-        WebElement element = findElement(By.cssSelector(cssSelector));
-        if (element.getText().contains(text)){
-            failableFail(text + " for " + cssSelector + " is present and shouldn't be " + message);
-        }
     }
 
     protected void back() {
@@ -904,7 +813,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
 
         if (errorText != null && errorText.contains("errors")) {
-            failableFail(errorText + message);
+            jiraAwareFail(errorText + message);
         }
     }
 
@@ -915,7 +824,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         checkForIncidentReport();
         if (hasDocError()) {
             String errorText = extractErrorText();
-            failableFail(errorText);
+            jiraAwareFail(errorText);
         }
     }
 
@@ -982,7 +891,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     /**
      * @deprecated {@see #checkForIncidentReport(String, String)}
      */
-    protected void checkForIncidentReport(String locator, Failable failable, String message) {
+    protected void checkForIncidentReport(String locator, JiraAwareFailable failable, String message) {
         AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }
 
@@ -1052,7 +961,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 //        // confirm that the input box containing the modified value is not present
 //        for (int second = 0;; second++) {
 //            if (second >= waitSeconds)
-//                failableFail(TIMEOUT_MESSAGE);
+//                jiraAwareFail(TIMEOUT_MESSAGE);
 //            try {
 //                if (!"selenium".equals(waitAndGetAttributeByName("list4[0].subList[0].field1", "value")))
 //                    break;
@@ -1283,29 +1192,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
     }
 
-    /**
-     * <p>
-     * Set passed to false, call jGrowlSticky with the given message, then fail.
-     * </p>
-     * @param message to display with failure
-     */
-    public void failableFail(String message) {
-        jiraAwareFail(message); // Failable.fail in AutomatedFunctionalTestBase sets passed to false, calls jGrowlSticky with the given message
-    }
-
     protected WebElement findButtonByText(String buttonText) {
         return WebDriverUtil.findButtonByText(driver, buttonText);
-    }
-
-    protected WebElement findElement(By by, WebElement elementToFindOn) {
-        try {
-            WebElement found = elementToFindOn.findElement(by);
-            WebDriverUtil.highlightElement(driver, found);
-            return found;
-        } catch (Exception e) {
-            jiraAwareFail(e.getMessage());
-        }
-        return null; // requred by compiler, never reached
     }
 
     protected List<WebElement> findVisibleElements(By by) {
@@ -1476,28 +1364,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         return Boolean.FALSE;
     }
 
-    protected boolean isVisible(String locator) {
-        return isVisible(By.cssSelector(locator));
-    }
-
-    protected boolean isVisible(By by) {
-        List<WebElement> elements = driver.findElements(by);
-        for (WebElement element: elements) {
-            if (element.isDisplayed()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected boolean isVisibleById(String id) {
-        return isVisible(By.id(id));
-    }
-
-    protected boolean isVisibleByXpath(String locator) {
-        return isVisible(By.xpath(locator));
-    }
-
     protected void jGrowl(String message) {
         WebDriverUtil.jGrowl(driver, jGrowlHeader, false, message);
     }
@@ -1569,36 +1435,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         }
     }
 
-    protected void selectOptionByName(String name, String optionValue) throws InterruptedException {
-        selectOption(By.name(name), optionValue);
-    }
-
-    protected void selectOptionByXpath(String locator, String optionValue) throws InterruptedException {
-        selectOption(By.name(locator), optionValue);
-    }
-
-    /**
-     * Uses Selenium's findElements method which does not throw a test exception if not found.
-     * @param by
-     * @param optionValue
-     * @throws InterruptedException
-     */
-    protected void selectOption(By by, String optionValue) throws InterruptedException {
-        WebElement select1 = findElement(by);
-        List<WebElement> options = select1.findElements(By.tagName("option"));
-
-        if (options == null || options.size() == 0) {
-            failableFail("No options for select " + select1.toString() + " was looking for value " + optionValue + " using " + by.toString());
-        }
-
-        for (WebElement option : options) {
-            if (option.getAttribute("value").equals(optionValue)) {
-                option.click();
-                break;
-            }
-        }
-    }
-
     /**
      * If a window contains the given title switchTo it.
      * @param title
@@ -1620,7 +1456,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     }
 
     // TODO move method to AddingNameSpaceAbstractSmokeTestBase after locators are extracted
-    protected void testAddingNamespace(Failable failable) throws Exception {
+    protected void testAddingNamespace(JiraAwareFailable failable) throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitForPageToLoad();
@@ -2751,7 +2587,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         // wait for collections page to load by checking the presence of a sub collection line item
         for (int second = 0;; second++) {                   
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE + " looking for " + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
+                jiraAwareFail(TIMEOUT_MESSAGE
+                        + " looking for "
+                        + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
             try {                
                 if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
                 {
@@ -3613,7 +3451,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             }
             try {
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
@@ -3641,7 +3479,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -3657,7 +3495,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -3668,7 +3506,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -3683,7 +3521,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             try {
                 if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
                     break;
@@ -4200,7 +4038,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickAdministration(Failable failable) throws InterruptedException {
+    protected void waitAndClickAdministration(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, failable);
     }
 
@@ -4214,7 +4052,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         jiraAwareWaitAndClick(by, "");
     }
 
-    protected void waitAndClick(By by, Failable failable) throws InterruptedException {
+    protected void waitAndClick(By by, JiraAwareFailable failable) throws InterruptedException {
         jiraAwareWaitAndClick(by, "", failable);
     }
 
@@ -4238,11 +4076,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClickByLinkText(text, message, this);
     }
 
-    protected void waitAndClickByLinkText(String text, Failable failable) throws InterruptedException {
+    protected void waitAndClickByLinkText(String text, JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(text, "", failable);
     }
 
-    protected void waitAndClickByLinkText(String text, String message, Failable failable) throws InterruptedException {
+    protected void waitAndClickByLinkText(String text, String message, JiraAwareFailable failable) throws InterruptedException {
         jGrowl("Click " + text + " link.");
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
     }
@@ -4264,7 +4102,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         waitAndClick(By.xpath(xpath));
     }
 
-    protected void waitAndClickByXpath(String xpath, Failable failable) throws InterruptedException {
+    protected void waitAndClickByXpath(String xpath, JiraAwareFailable failable) throws InterruptedException {
         waitAndClick(By.xpath(xpath), failable);
     }
 
@@ -4338,7 +4176,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickLogout(Failable failable) throws InterruptedException {
+    protected void waitAndClickLogout(JiraAwareFailable failable) throws InterruptedException {
         selectTopFrame();
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
@@ -4348,7 +4186,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickMainMenu(Failable failable) throws InterruptedException {
+    protected void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, failable);
     }
 
@@ -4373,7 +4211,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickXMLIngester(Failable failable) throws InterruptedException {
+    protected void waitAndClickXMLIngester(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(XML_INGESTER_LINK_TEXT, failable);
     }
 
@@ -4384,20 +4222,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
     protected void waitAndType(By by, String text) throws InterruptedException {
         waitAndType(by, text,  "");
-    }
-
-    protected void waitAndType(By by, String text, String message) throws InterruptedException {
-        try {
-            jiraAwareWaitFor(by, message);
-            WebElement element = findElement(by);
-            WebDriverUtil.highlightElement(driver, element);
-            element.sendKeys(text);
-        } catch (Exception e) {
-            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
-            failableFail(e.getMessage() + " " + by.toString() + "  unable to type text '" + text + "'  " + message
-                    + " current url " + driver.getCurrentUrl()
-                    + "\n" + AutomatedFunctionalTestUtils.deLinespace(driver.getPageSource()));
-        }
     }
 
     protected void waitAndType(String selector, String text) throws InterruptedException {
@@ -4550,7 +4374,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
 
 //        for (int second = 0;; second++) {
 //            if (second >= waitSeconds) {
-//                failableFail(TIMEOUT_MESSAGE + " " + by.toString());
+//                jiraAwareFail(TIMEOUT_MESSAGE + " " + by.toString());
 //            }
 //            if (isVisible(by)) {
 //                break;
@@ -4562,7 +4386,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void waitIsVisible(By by, String message) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                failableFail(TIMEOUT_MESSAGE + " " + by.toString() + " " + message);
+                jiraAwareFail(TIMEOUT_MESSAGE + " " + by.toString() + " " + message);
             }
             if (isVisible(by)) {
                 break;
@@ -4640,7 +4464,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
 
         if (failed) {
-            failableFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver.getCurrentUrl());
+            jiraAwareFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver
+                    .getCurrentUrl());
         }
     }
 
@@ -4672,7 +4497,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
         // }
 
         // WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
-        // if (failed) failableFail("timeout of " + waitSeconds + " seconds " + message);
+        // if (failed) jiraAwareFail("timeout of " + waitSeconds + " seconds " + message);
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
@@ -4711,7 +4536,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {//implemen
     protected void waitNotVisible(By by) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                failableFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE);
             }
             if (!isVisible(by)) {
                 break;

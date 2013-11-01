@@ -17,7 +17,7 @@ package edu.sampleu.travel;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Assert;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
@@ -65,13 +65,13 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
         waitAndClickByXpath("(//a[contains(text(),'Travel Account Lookup')])[3]");
     }
 
-    protected void testInquiryNav(Failable failable) throws Exception {
+    protected void testInquiryNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testInquiry();
         passed();
     }
 
-    protected void testInquiryBookmark(Failable failable) throws Exception {
+    protected void testInquiryBookmark(JiraAwareFailable failable) throws Exception {
         testInquiry();
         passed();
     }

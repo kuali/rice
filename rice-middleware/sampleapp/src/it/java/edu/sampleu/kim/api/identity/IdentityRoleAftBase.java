@@ -16,7 +16,7 @@
 package edu.sampleu.kim.api.identity;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -50,14 +50,14 @@ public abstract class IdentityRoleAftBase extends AdminTmplMthdAftNavBase {
         return "Role";
     }
    
-    public void testIdentityRoleBookmark(Failable failable) throws Exception {
+    public void testIdentityRoleBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewSearchReturnValueCancelConfirmation();
         driver.navigate().to(WebDriverUtil.getBaseUrlString() + BOOKMARK_URL);
         testSearchEditCancel();
         passed();
     }
 
-    public void testIdentityRoleNav(Failable failable) throws Exception {
+    public void testIdentityRoleNav(JiraAwareFailable failable) throws Exception {
         testEditCancel();
         navigate();
         testCreateNewSearchReturnValueCancelConfirmation();

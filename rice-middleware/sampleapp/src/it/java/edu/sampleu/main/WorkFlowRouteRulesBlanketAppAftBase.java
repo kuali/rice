@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,11 +48,11 @@ public class WorkFlowRouteRulesBlanketAppAftBase extends MainTmplMthdSTNavBase{
         return "Routing Rules";
     }
 
-    public void testWorkFlowRouteRulesBlanketAppBookmark(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
         testWorkFlowRouteRulesBlanketApp();
         passed();
     }
-    public void testWorkFlowRouteRulesBlanketAppNav(Failable failable) throws Exception {
+    public void testWorkFlowRouteRulesBlanketAppNav(JiraAwareFailable failable) throws Exception {
         testWorkFlowRouteRulesBlanketApp();
         passed();
     }

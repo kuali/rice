@@ -15,7 +15,7 @@
  */
 package edu.sampleu.krad.travelview;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -48,12 +48,12 @@ public abstract class MaintenanceAddDeleteFiscalOfficerAftBase extends KradTmplM
         return "Travel Account Maintenance (New)";
     }
 
-    public void testMaintenanceAddDeleteFiscalOfficerBookmark(Failable failable) throws Exception {
+    public void testMaintenanceAddDeleteFiscalOfficerBookmark(JiraAwareFailable failable) throws Exception {
         testVerifyAddDeleteFiscalOfficerLegacy();
         passed();
     }
     
-    public void testMaintenanceAddDeleteFiscalOfficerNav(Failable failable) throws Exception {
+    public void testMaintenanceAddDeleteFiscalOfficerNav(JiraAwareFailable failable) throws Exception {
         testVerifyAddDeleteFiscalOfficerLegacy();
         passed();
     }

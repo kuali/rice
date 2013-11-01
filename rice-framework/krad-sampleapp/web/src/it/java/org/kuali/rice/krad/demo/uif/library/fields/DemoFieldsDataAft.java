@@ -155,7 +155,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
         WebElement exampleDiv = navigateToExample("Demo-DataField-Example11");
 
         if (findElements(By.cssSelector(DIV_DATA_LABEL_DATA_FIELD_1), exampleDiv).size() > 0) {
-            failableFail(DIV_DATA_LABEL_DATA_FIELD_1 + " not hidden");
+            jiraAwareFail(DIV_DATA_LABEL_DATA_FIELD_1 + " not hidden");
         }
     }
 

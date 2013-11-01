@@ -15,8 +15,7 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.testtools.common.Failable;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -50,7 +49,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         waitForTitleToEqualKualiPortalIndex();   
     }
 
-    protected void testConfigurationTestViewNav(Failable failable) throws Exception {     
+    protected void testConfigurationTestViewNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testConfigurationTestView(idPrefix);
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
@@ -59,7 +58,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         passed();
     }
 
-    protected void testConfigurationTestViewBookmark(Failable failable) throws Exception {
+    protected void testConfigurationTestViewBookmark(JiraAwareFailable failable) throws Exception {
         testConfigurationTestView(idPrefix);
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
         testAddLineWithAllDay(idPrefix, addLineIdSuffix);

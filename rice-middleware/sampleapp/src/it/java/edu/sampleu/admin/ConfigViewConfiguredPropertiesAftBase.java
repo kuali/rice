@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -47,12 +47,12 @@ public abstract class ConfigViewConfiguredPropertiesAftBase extends AdminTmplMth
         return "Configuration Viewer";
     }
 
-    public void testConfigViewConfiguredPropertiesBookmark(Failable failable) throws Exception {
+    public void testConfigViewConfiguredPropertiesBookmark(JiraAwareFailable failable) throws Exception {
         testConfigViewConfiguredProperties();
         passed();
     }
 
-    public void testConfigViewConfiguredPropertiesNav(Failable failable) throws Exception {
+    public void testConfigViewConfiguredPropertiesNav(JiraAwareFailable failable) throws Exception {
         testConfigViewConfiguredProperties();
         passed();
     }    

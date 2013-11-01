@@ -15,7 +15,7 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -52,22 +52,22 @@ public class AgendaLookUpAftBase extends MainTmplMthdSTNavBase{
         return AGENDA_LOOKUP_LINK_TEXT;
     }
 
-    public void testAgendaLookUpBookmark(Failable failable) throws Exception {
+    public void testAgendaLookUpBookmark(JiraAwareFailable failable) throws Exception {
         agendaLookupAssertions();
         passed();
     }
 
-    public void testAgendaLookUpNav(Failable failable) throws Exception {
+    public void testAgendaLookUpNav(JiraAwareFailable failable) throws Exception {
         agendaLookupAssertions();
         passed();
     }
 
-    public void testSearchEditBackNav(Failable failable) throws Exception {
+    public void testSearchEditBackNav(JiraAwareFailable failable) throws Exception {
         testSearchEditBack(this);
         passed();
     }
 
-    public void testSearchSearchBackNav(Failable failable) throws Exception {
+    public void testSearchSearchBackNav(JiraAwareFailable failable) throws Exception {
         testSearchSearchBack(this, "lookupCriteria[id]", "T1000");
         passed();
     }

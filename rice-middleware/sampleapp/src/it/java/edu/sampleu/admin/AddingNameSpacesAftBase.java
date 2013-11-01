@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -45,22 +45,22 @@ public abstract class AddingNameSpacesAftBase extends AdminTmplMthdAftNavBase {
         return "Namespace";
     }
 
-    public void testAddingNamespaceBookmark(Failable failable) throws Exception {
+    public void testAddingNamespaceBookmark(JiraAwareFailable failable) throws Exception {
         testAddingNamespace(this);
         passed();
     }
 
-    public void testAddingNamespaceNav(Failable failable) throws Exception {
+    public void testAddingNamespaceNav(JiraAwareFailable failable) throws Exception {
         testAddingNamespace(this);
         passed();
     }
 
-    public void testSearchEditBackNav(Failable failable) throws Exception {
+    public void testSearchEditBackNav(JiraAwareFailable failable) throws Exception {
         testSearchEditBack(this);
         passed();
     }
 
-    public void testSearchSearchBackNav(Failable failable) throws Exception {
+    public void testSearchSearchBackNav(JiraAwareFailable failable) throws Exception {
         testSearchSearchBack(this, "code", "KR-SYS");
         passed();
     }

@@ -15,7 +15,7 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.Failable;
+import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtil;
 
@@ -49,12 +49,12 @@ public abstract class CreateDocTypeAftBase extends AdminTmplMthdAftNavBase {
         return "Document Type";
     }
 
-    public void testCreateDocTypeBookmark(Failable failable) throws Exception {
+    public void testCreateDocTypeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateDocType();
         passed();
     }
 
-    public void testCreateDocTypeNav(Failable failable) throws Exception {
+    public void testCreateDocTypeNav(JiraAwareFailable failable) throws Exception {
         testCreateDocType();
         passed();
     }

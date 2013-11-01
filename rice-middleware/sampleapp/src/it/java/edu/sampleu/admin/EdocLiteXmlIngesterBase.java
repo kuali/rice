@@ -79,7 +79,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         try {
             setUpFiles("src/it/resources/" + resourceDir);
         } catch (Exception e) {
-            failableFail("Files not found. If running from Intellij make sure working directory is rice-middleware/sampleapp");
+            jiraAwareFail("Files not found. If running from Intellij make sure working directory is rice-middleware/sampleapp");
         }
     }
 

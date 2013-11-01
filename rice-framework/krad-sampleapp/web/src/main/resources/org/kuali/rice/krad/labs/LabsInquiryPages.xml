@@ -128,4 +128,19 @@
     </property>
   </bean>
 
+  <bean id="KradInquirySample-PageR3C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR3C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?travelPerDiemExpenseId=10000&amp;methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

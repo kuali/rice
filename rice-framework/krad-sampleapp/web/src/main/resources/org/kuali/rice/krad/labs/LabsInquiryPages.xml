@@ -84,6 +84,13 @@
             <list>
               <bean parent="Uif-Link" p:linkText="Link to Sample Inquiry" p:target="_self"
                     p:href=""/>
+              <bean id="KradInquirySampleItems-Section2-PageR2C1" parent="Uif-VerticalBoxSection">
+                 <property name="items">
+                   <list>
+
+                   </list>
+                 </property>
+               </bean>
             </list>
           </property>
         </bean>

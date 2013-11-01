@@ -103,9 +103,8 @@ public class IdClassResolver implements AnnotationResolver {
             return null;
         }
         final String name = dclr.getName();
-        final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
-        final String fullyQualifiedClass = pckg + "." + name;
-        final Collection<FieldDescriptor> primaryKeyDescriptors = getPrimaryKeyDescriptors(fullyQualifiedClass);
+
+        final Collection<FieldDescriptor> primaryKeyDescriptors = getPrimaryKeyDescriptors(mappedClass);
 
         if (primaryKeyDescriptors != null && primaryKeyDescriptors.size() > 1) {
             final NodeAndImports<ClassOrInterfaceDeclaration> primaryKeyClass = createPrimaryKeyClass(name, primaryKeyDescriptors);

@@ -62,6 +62,8 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
                 pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
             } else if ("readwrite".equals(access)) {
                 LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is readwrite keeping @Column attributes (insertable, updatable) at defaults");
+            } else if ("anonymous".equals(access)) {
+                LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
             } else if (access == null) {
                 LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
             } else {

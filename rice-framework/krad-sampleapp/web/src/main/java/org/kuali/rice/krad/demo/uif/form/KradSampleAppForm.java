@@ -110,6 +110,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<UITestObject> collection3 = new ArrayList<UITestObject>();
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection6 = new ArrayList<UITestObject>();
 
     private List<UIInactivatableTestObject> inactivatableCollection = new ArrayList<UIInactivatableTestObject>();
 
@@ -212,6 +213,10 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         collection5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
         collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
         collection5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+
+        collection6.add(new UITestObject("1", "2", "3", "4"));
+        collection6.add(new UITestObject("5", "6", "7", "8"));
+        collection6.add(new UITestObject("9", "10", "11", "12"));
 
         inactivatableCollection.add(new UIInactivatableTestObject("A", "100", "200", "300", true));
         inactivatableCollection.add(new UIInactivatableTestObject("B", "100", "200", "300", true));
@@ -821,6 +826,10 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public List<UITestObject> getCollection5() {
         return collection5;
+    }
+
+    public List<UITestObject> getCollection6() {
+        return collection6;
     }
 
     public void setCollection5(List<UITestObject> collection5) {

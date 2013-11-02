@@ -30,11 +30,13 @@
       <list>
         <ref bean="Demo-TableLayoutManager-Example1"/>
         <ref bean="Demo-TableLayoutManager-Example2"/>
+        <ref bean="Demo-TableLayoutManager-Example3"/>
+        <ref bean="Demo-TableLayoutManager-Example4"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-TableLayoutManager-Example1" parent="Uif-VerticalBoxSection" p:headerText="CollectionGroupTableLayout Example">
+  <bean id="Demo-TableLayoutManager-Example1" parent="Uif-VerticalBoxSection" p:headerText="Basic Table Layout">
     <property name="items">
       <list>
         <!-- ex:Demo-TableLayoutManager-Example1 start-->
@@ -75,7 +77,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-TableLayoutManager-Example2" parent="Uif-VerticalBoxSection" p:headerText="CollectionGroupTableLayout with jQuery table features on">
+  <bean id="Demo-TableLayoutManager-Example2" parent="Uif-VerticalBoxSection" p:headerText="jQuery Table Features">
     <property name="items">
       <list>
         <!-- ex:Demo-TableLayoutManager-Example2 start-->
@@ -150,6 +152,67 @@
           </property>
         </bean>
         <!-- ex:Demo-TableLayoutManager-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example3" parent="Uif-VerticalBoxSection" p:headerText="Add Blank Line Top">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example3 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Table Layout With Add Blank line TOP (default)"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="renderAddBlankLineButton" value="true"/>
+          <property name="propertyName" value="collection3"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
+                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
+                    p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
+                    p:required="true">
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example4" parent="Uif-VerticalBoxSection" p:headerText="Add Blank Line Bottom">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example4 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Table Layout With Add Blank line BOTTOM"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="renderAddBlankLineButton" value="true"/>
+          <property name="addLinePlacement" value="BOTTOM"/>
+          <property name="propertyName" value="collection4"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
+                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
+                    p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
+                    p:required="true">
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example4 end-->
       </list>
     </property>
   </bean>

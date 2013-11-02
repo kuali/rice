@@ -18,7 +18,7 @@ package edu.sampleu.admin;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * Tests the Component section in Rice.
@@ -35,11 +35,11 @@ public class ComponentAft extends WebDriverLegacyITBase {
     public static final String FOR_TEST_MESSAGE = " for Component Parameter";
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtils.getBaseUrlString() +
      "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
      ITUtil.PORTAL_URL + "&hideReturnLink=true";
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtils
             .getBaseUrlString() +"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + "&hideReturnLink=true";
 

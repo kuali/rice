@@ -23,7 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -54,8 +54,8 @@ import static org.junit.Assert.assertEquals;
  *   Javadoc constant with constant value.
  *   <li>Extract duplicate waitAndClick...(CONSTANT) to waitAndClickConstant, Javadoc a <pre>{@link &#35;CONSTANT}</pre>.
  *   <li>Replace large chunks of duplication</li>
- *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtil
- *   so inheritance doesn't have to be used for reuse.  See WebDriverUtil.waitFor </li>
+ *   <li><a href="https://jira.kuali.org/browse/KULRICE-9205">KULRICE-9205</a> Invert dependencies on fields and extract methods to WebDriverUtils
+ *   so inheritance doesn't have to be used for reuse.  See WebDriverUtils.waitFor </li>
  *   <li>Extract Nav specific code?</li>
  *   <li>Rename to SampleAppAftBase</li>
  * </ol>
@@ -391,13 +391,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     String sessionId = null;
 
     /**
-     * If WebDriverUtil.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
-     * {@link org.kuali.rice.testtools.selenium.WebDriverUtil#chromeDriverCreateCheck()}
+     * If WebDriverUtils.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
+     * {@link WebDriverUtils#chromeDriverCreateCheck()}
      * @throws Exception
      */
     @BeforeClass
     public static void chromeDriverService() throws Exception {
-        chromeDriverService = WebDriverUtil.chromeDriverCreateCheck();
+        chromeDriverService = WebDriverUtils.chromeDriverCreateCheck();
         if (chromeDriverService != null)
             chromeDriverService.start();
     }
@@ -455,7 +455,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     public static void loginKradOrKns(WebDriver driver, String user, JiraAwareFailable failable) throws InterruptedException {// login via either KRAD or KNS login page
-        if ("true".equalsIgnoreCase(System.getProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
+        if ("true".equalsIgnoreCase(System.getProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
             if (AutomatedFunctionalTestUtils.isKradLogin()){
                 loginKrad(driver, user, failable);
             } else {
@@ -471,8 +471,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     /**
      * Failures in testSetup cause the test to not be recorded.  Future plans are to extract form @Before and call at the start of each test.
      * Setup the WebDriver properties, test, and login.  Named testSetUp so it runs after TestNG's startSession(Method)
-     * {@link WebDriverUtil#determineUser(String)}
-     * {@link WebDriverUtil#setUp(String, String, String, String)}
+     * {@link WebDriverUtils#determineUser(String)}
+     * {@link WebDriverUtils#setUp(String, String, String, String)}
      */
     @Before
     public void testSetUp() {
@@ -482,15 +482,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 testMethodName = testName.getMethodName();
             }
 
-            waitSeconds = WebDriverUtil.configuredImplicityWait();
-            String givenUser = WebDriverUtil.determineUser(this.toString());
+            waitSeconds = WebDriverUtils.configuredImplicityWait();
+            String givenUser = WebDriverUtils.determineUser(this.toString());
             if (givenUser != null) {
                 user = givenUser;
             }
 
             String testUrl = kulrice9804(); // https://jira.kuali.org/browse/KULRICE-9804 KNS Create new link absent when Bookmark URL requires Login
 
-            driver = WebDriverUtil.setUp(getUserName(), testUrl , getClass().getSimpleName(), testMethodName);
+            driver = WebDriverUtils.setUp(getUserName(), testUrl, getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
@@ -521,15 +521,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     /**
      * Tear down test as configured.  Do not allow exceptions to be thrown by tearDown, it kills the test run.
-     * {@link WebDriverUtil#tearDown(boolean, String, String, String)}
-     * {@link WebDriverUtil#REMOTE_PUBLIC_USERPOOL_PROPERTY}
-     * {@link org.kuali.rice.testtools.selenium.WebDriverUtil#dontTearDownPropertyNotSet()}
+     * {@link WebDriverUtils#tearDown(boolean, String, String, String)}
+     * {@link WebDriverUtils#REMOTE_PUBLIC_USERPOOL_PROPERTY}
+     * {@link WebDriverUtils#dontTearDownPropertyNotSet()}
      * @throws Exception
      */
     @After
     public void tearDown() {
         try {
-            WebDriverUtil.tearDown(isPassed(), sessionId, this.toString().trim(), user);
+            WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
             t.printStackTrace();
@@ -548,7 +548,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     private void closeAndQuitWebDriver() {
         if (driver != null) {
-            if (WebDriverUtil.dontTearDownPropertyNotSet() && WebDriverUtil.dontTearDownOnFailure(isPassed())) {
+            if (WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 try {
                     driver.close();
                 } catch (NoSuchWindowException nswe) {
@@ -560,8 +560,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 }
             }
         } else {
-            System.out.println("WebDriver is null for " + this.getClass().toString() + ", if using saucelabs, has" +
-                    " sauceleabs been uncommented in WebDriverUtil.java?  If using a remote hub did you include the port?");
+            System.out.println("WebDriver is null for " + this.getClass().toString() + " if using a remote hub did you include the port?");
         }
     }
 
@@ -593,14 +592,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * Accept the javascript alert (clicking OK)
      */
     protected void alertAccept() {
-        WebDriverUtil.alertAccept(driver);
+        WebDriverUtils.alertAccept(driver);
     }
 
     /**
      * Dismiss the javascript alert (clicking Cancel)
      */
     protected void alertDismiss() {
-        WebDriverUtil.alertDismiss(driver);
+        WebDriverUtils.alertDismiss(driver);
     }
 
     protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
@@ -712,7 +711,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void assertMultiValueSelectAllThisPage() throws InterruptedException {
         waitAndClickDropDown("select all items on this page");
         if (!areAllMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("select all items on this page failure", this);
+            JiraAwareFailureUtils.fail("select all items on this page failure", this);
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
@@ -1025,7 +1024,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitAndGetElementByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
-        return WebDriverUtil.waitAndGetElementByAttributeValue(driver, attribute, attributeValue, waitSeconds);
+        return WebDriverUtils.waitAndGetElementByAttributeValue(driver, attribute, attributeValue, waitSeconds);
     }
 
     protected List<WebElement> waitAndGetElementsByAttributeValue(String attribute, String attributeValue) throws InterruptedException {
@@ -1049,12 +1048,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
 
         List<WebElement> elements = getElementsByAttributeValue(attribute, attributeValue);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         return elements;
     }
 
     protected String[] waitAndGetText(By by) throws InterruptedException {
-        WebDriverUtil.waitFors(driver, WebDriverUtil.configuredImplicityWait(), by, "");
+        WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, "");
         List<WebElement> found = findElements(by);
         String[] texts = new String[found.size()];
         int i = 0;
@@ -1072,7 +1071,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
 
     protected String getBaseUrlString() {
-        return WebDriverUtil.getBaseUrlString();
+        return WebDriverUtils.getBaseUrlString();
     }
 
     protected int getCssCount(String selector) {
@@ -1158,7 +1157,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     /**
-     * "admin" by default.  Can be overridden using {@see WebDriverUtil#REMOTE_PUBLIC_USER_PROPERTY}
+     * "admin" by default.  Can be overridden using {@see WebDriverUtils#REMOTE_PUBLIC_USER_PROPERTY}
      * @return string
      */
     public String getUserName() {
@@ -1193,7 +1192,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement findButtonByText(String buttonText) {
-        return WebDriverUtil.findButtonByText(driver, buttonText);
+        return WebDriverUtils.findButtonByText(driver, buttonText);
     }
 
     protected List<WebElement> findVisibleElements(By by) {
@@ -1365,7 +1364,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void jGrowl(String message) {
-        WebDriverUtil.jGrowl(driver, jGrowlHeader, false, message);
+        WebDriverUtils.jGrowl(driver, jGrowlHeader, false, message);
     }
 
     /**
@@ -1373,7 +1372,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * in an infinite loop if JGROWL_ERROR_FAILURE is true so please don't.
      */
     protected void jGrowlSticky(String message) {
-        WebDriverUtil.jGrowl(driver, jGrowlHeader, true, message);
+        WebDriverUtils.jGrowl(driver, jGrowlHeader, true, message);
     }
 
     protected String multiValueResultCount() throws InterruptedException {
@@ -1396,7 +1395,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (IFRAMEPORTLET_NAME.equals(locator)) {
             gotoNestedFrame();
         } else {
-           WebDriverUtil.selectFrameSafe(driver, locator);
+           WebDriverUtils.selectFrameSafe(driver, locator);
         }
     }
 
@@ -3268,7 +3267,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickDropDown("select all items");
         acceptAlertIfPresent();
         if (!areAllMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("select all items failure", this);
+            JiraAwareFailureUtils.fail("select all items failure", this);
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
@@ -3279,31 +3278,32 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         // all should be checked and button enabled on the next page as well (server side paging)
         if (!anotherPageOfResults) {
-            JiraAwareFailureUtil.fail("select all items server side paging failure not enough results for next page", this);
+            JiraAwareFailureUtils.fail("select all items server side paging failure not enough results for next page",
+                    this);
         }
         waitAndClickByLinkText("Next");
 
         if (!areAllMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("select all items server side paging failure", this);
+            JiraAwareFailureUtils.fail("select all items server side paging failure", this);
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // deselect all no checkboxes should be checked and return button disabled
         waitAndClickDropDown("deselect all items");
         if (!areNoMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("deselect all items failure", this);
+            JiraAwareFailureUtils.fail("deselect all items failure", this);
         }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         waitAndClickByLinkText("Previous");
         if (!areNoMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("deselect all items failure", this);
+            JiraAwareFailureUtils.fail("deselect all items failure", this);
         }
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
     protected void acceptAlertIfPresent() {
-        WebDriverUtil.acceptAlertIfPresent(driver);
+        WebDriverUtils.acceptAlertIfPresent(driver);
     }
 
     protected void testMultiValueSelectAllThisPage() throws InterruptedException {
@@ -3323,9 +3323,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByLinkText("Next");
         if (!areNoMultiValueSelectsChecked()) {
             if (anotherPageOfResults) {
-                JiraAwareFailureUtil.fail("select all items on this page failure", this);
+                JiraAwareFailureUtils.fail("select all items on this page failure", this);
             } else {
-                JiraAwareFailureUtil.fail("select all items on this page failure not enough results for next page", this);
+                JiraAwareFailureUtils.fail("select all items on this page failure not enough results for next page",
+                        this);
             }
         }
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
@@ -3333,7 +3334,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // back to the previous page, checkboxes should be checked and return button enabled still
         waitAndClickByLinkText("Previous");
         if (!areAllMultiValueSelectsChecked()) {
-            JiraAwareFailureUtil.fail("select all items on previous page failure", this);
+            JiraAwareFailureUtils.fail("select all items on previous page failure", this);
         }
 
         // deselect no checkboxes should be checked and the return button should be disabled
@@ -4264,7 +4265,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
-        if (WebDriverUtil.waitFors(driver, By.xpath(CREATE_NEW_XPATH)).size() > 0) {
+        if (WebDriverUtils.waitFors(driver, By.xpath(CREATE_NEW_XPATH)).size() > 0) {
             waitAndClickByXpath(CREATE_NEW_XPATH, message);
         } else {
             System.out.println("waitAndClickByXpath(" + CREATE_NEW_XPATH + ") wasn't found trying " + CREATE_NEW_XPATH2);
@@ -4496,7 +4497,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         //     try { if (failed || ITUtil.KUALI_PORTAL_TITLE.equals(driver.getTitle())) break; } catch (Exception e) {}
         // }
 
-        // WebDriverUtil.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
+        // WebDriverUtils.checkForIncidentReport(driver, message); // after timeout to be sure page is loaded
         // if (failed) jiraAwareFail("timeout of " + waitSeconds + " seconds " + message);
     }
 
@@ -4522,7 +4523,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitFor(By by, String message) throws InterruptedException {
-        WebDriverUtil.waitFor(this.driver, this.waitSeconds, by, message);
+        WebDriverUtils.waitFor(this.driver, this.waitSeconds, by, message);
     }
 
     /**

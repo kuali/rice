@@ -17,7 +17,7 @@ package edu.sampleu.main;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -26,13 +26,13 @@ public class TermLookUpAftBase extends MainTmplMthdSTNavBase{
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Term%20Lookup&channelUrl="
-     *  + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     *  + WebDriverUtils.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      *  + "org.kuali.rice.krms.impl.repository.TermBo"
      *  + ITUtil.SHOW_MAINTENANCE_LINKS
      *  + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Term%20Lookup&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
+            + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "org.kuali.rice.krms.impl.repository.TermBo"
             + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS
             + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;

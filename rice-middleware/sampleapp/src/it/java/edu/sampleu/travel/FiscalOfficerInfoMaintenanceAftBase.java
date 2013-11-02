@@ -18,7 +18,7 @@ package edu.sampleu.travel;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * Tests the Component section in Rice.
@@ -30,13 +30,13 @@ public abstract class FiscalOfficerInfoMaintenanceAftBase extends WebDriverLegac
     /**
      * ITUtil.PORTAL
      * + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
-     * + WebDriverUtil.getBaseUrlString()
+     * + WebDriverUtils.getBaseUrlString()
      * + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL
             + "?channelTitle=FiscalOfficerInfo%20Maintenance%20(New)&channelUrl="
-            + WebDriverUtil.getBaseUrlString()
+            + WebDriverUtils.getBaseUrlString()
             + "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 

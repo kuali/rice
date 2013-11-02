@@ -18,7 +18,7 @@ package edu.sampleu;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,13 +37,13 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
 
     @Override
     public void testSetUp()  {
-        System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "false"); // turn off auto login so we can test invalid login
+        System.setProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "false"); // turn off auto login so we can test invalid login
         super.testSetUp();
     }
 
     @Test(expected = AssertionError.class)
     public void testAdStarUserNameBookmark() throws InterruptedException {
-        System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+        System.setProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true");
         loginKradOrKns(driver, "ad*", this);
         waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
         passed();
@@ -56,7 +56,7 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
     @Test
     public void testInvalidUserNameBookmark() throws InterruptedException {
         try {
-            System.setProperty(WebDriverUtil.REMOTE_AUTOLOGIN_PROPERTY, "true");
+            System.setProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true");
             loginKradOrKns(driver, AutomatedFunctionalTestUtils.DTS_TWO, this);
             fail("Expected Invalid Login exception with user " + AutomatedFunctionalTestUtils.DTS_TWO);
         } catch (AssertionError e) {

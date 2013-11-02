@@ -264,7 +264,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * @throws Exception
      */
     public void setUp(String className, String testName) throws Exception {
-        if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) { // dup guard so WebDriverUtil doesn't have to be used.
+        if (System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) { // dup guard so WebDriverUtils doesn't have to be used.
             return;
         }
 
@@ -351,7 +351,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * @throws Exception
      */
     public static void tearDown(boolean passed, String sessionId) throws Exception {
-        if (sessionId != null && System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) { // dup guard so WebDriverUtil doesn't have to be used
+        if (sessionId != null && System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) { // dup guard so WebDriverUtils doesn't have to be used
             SauceREST client = new SauceREST(System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
                     System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
             /* Using a map of udpates:
@@ -386,7 +386,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 + System.getProperty(SAUCE_PLATFORM_PROPERTY, Platform.UNIX.toString()) + "-"
                 + System.getProperty(SAUCE_BROWSER_PROPERTY) + "-"
                 + System.getProperty(SAUCE_VERSION_PROPERTY) + "-"
-                + System.getProperty(WebDriverUtil.REMOTE_PUBLIC_USER_PROPERTY, "admin") + "-"
+                + System.getProperty(WebDriverUtils.REMOTE_PUBLIC_USER_PROPERTY, "admin") + "-"
                 + System.getProperty(SAUCE_BUILD_PROPERTY, "unknown_build") + "-"
                 + AutomatedFunctionalTestUtils.DTS + "-"
                 + resource;

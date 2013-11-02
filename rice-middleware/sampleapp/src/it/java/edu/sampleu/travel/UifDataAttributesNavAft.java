@@ -21,7 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
  */
 public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
 
-    public static String BOOKMARK_URL = WebDriverUtil.getBaseUrlString()+ "/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start";
+    public static String BOOKMARK_URL = WebDriverUtils.getBaseUrlString()+ "/kr-krad/data-attributes-test-uif-controller?viewId=dataAttributesView_selenium&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

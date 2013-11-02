@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -93,7 +93,7 @@ public class DocumentSearchUrlParametersAft extends WebDriverITBase {
         
     }
     protected String getDocSearchURL(String params) {
-        return WebDriverUtil.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
+        return WebDriverUtils.getBaseUrlString() + "/kew/DocumentSearch.do?" + params;
     }
     
     private WebElement findElementByTagAndName(String tag, String name) {
@@ -131,12 +131,12 @@ public class DocumentSearchUrlParametersAft extends WebDriverITBase {
             String value = findInput(entry.getKey()).getAttribute("value");
             assertEquals("Field '" + entry.getKey() + "' expected '" + entry.getValue() + "' got '" + value + "'", entry.getValue(), value);
             if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
-                driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+                driver.manage().timeouts().implicitlyWait(WebDriverUtils.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
                 quickmode = true;
             }
         }
         if (quickmode) {
-            driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         }
     }
 
@@ -149,12 +149,12 @@ public class DocumentSearchUrlParametersAft extends WebDriverITBase {
                 assertEquals("Expected field '" + name + "' not to be present", 0, driver.findElements(By.name(name)).size());
             }
             if (!quickmode) { // do the first find slow to make sure the screen has finished loading, then do them fast, else some tests take minutes to run
-                driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+                driver.manage().timeouts().implicitlyWait(WebDriverUtils.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
                 quickmode = true;
             }
         }
         if (quickmode) {
-            driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         }
     }
 

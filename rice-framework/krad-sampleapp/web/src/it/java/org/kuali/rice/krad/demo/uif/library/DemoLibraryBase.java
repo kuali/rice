@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -58,7 +58,7 @@ public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
         if(isElementPresentById("ComponentLibrary-TabGroup_tabList")
                 && isElementPresentByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId)){
             WebElement menuItem = getElementByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId);
-            WebDriverUtil.highlightElement(driver, menuItem.findElement(By.cssSelector("a")));
+            WebDriverUtils.highlightElement(driver, menuItem.findElement(By.cssSelector("a")));
             menuItem.findElement(By.cssSelector("a")).click();
 
             waitForElementPresent(tabId);

@@ -20,7 +20,7 @@ import org.junit.Assert;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -34,13 +34,13 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-     * + WebDriverUtil.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     * + WebDriverUtils.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
      * +"edu.sampleu.travel.bo.TravelAccount&returnLocation="
      * + ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK + ITUtil.SHOW_MAINTENANCE_LINKS
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL
             + "?channelTitle=Travel%20Account%20Lookup&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
+            + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
             + "edu.sampleu.travel.bo.TravelAccount"
             + "&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
 

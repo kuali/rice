@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.collections;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -48,7 +48,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         String preValueString = waitAndGetText(By.xpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0];
         if (StringUtils.isBlank(preValueString)) {
-            JiraAwareFailureUtil.fail("calculation column contains no text", this);
+            JiraAwareFailureUtils.fail("calculation column contains no text", this);
         }
         Integer preValue = Integer.parseInt(preValueString);
         clearTextByName("collection1[0].field1");

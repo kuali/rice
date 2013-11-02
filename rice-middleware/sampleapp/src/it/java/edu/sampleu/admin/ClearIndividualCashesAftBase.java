@@ -17,7 +17,7 @@ package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,10 +25,10 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
 public abstract class ClearIndividualCashesAftBase extends AdminTmplMthdAftNavBase {
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+WebDriverUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+WebDriverUtils.getBaseUrlString()+
      * "/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start"+    
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Cache%20Admin&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/kr-krad/core/admin/cache?viewId=CacheAdmin-view1&methodToCall=start";
 
     @Override

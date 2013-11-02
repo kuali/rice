@@ -17,7 +17,7 @@ package edu.sampleu.krad.travelview;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,11 +25,11 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
 public abstract class MaintenanceAddDeleteFiscalOfficerAftBase extends KradTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtil.getBaseUrlString() +
+     * ITUtil.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtils.getBaseUrlString() +
      * "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Travel%20Account%20Maintenance%20(New)&channelUrl=" + WebDriverUtils
             .getBaseUrlString() +"/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.bo.TravelAccount&viewName=ks_maintenance&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 

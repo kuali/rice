@@ -21,7 +21,7 @@ import org.junit.rules.TemporaryFolder;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      * http://env12.rice.kuali.org/portal.do?channelTitle=XML%20Ingester&channelUrl=http://env12.rice.kuali.org/kew/../core/Ingester.do
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=XML%20Ingester&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + "/kew/../core/Ingester.do";
+            + WebDriverUtils.getBaseUrlString() + "/kew/../core/Ingester.do";
 
     // File generation
     private String PROPS_LOCATION = System.getProperty("xmlingester.props.location", null);

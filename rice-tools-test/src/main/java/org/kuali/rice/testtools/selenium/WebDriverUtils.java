@@ -46,18 +46,18 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * The goal of the WebDriverUtil class is to invert the dependencies on WebDriver from {@see WebDriverLegacyITBase} for reuse
+ * The goal of the WebDriverUtils class is to invert the dependencies on WebDriver from {@see WebDriverLegacyITBase} for reuse
  * without having to extend WebDriverLegacyITBase.
  * </p><p>
- * For compatibility with {@see JiraAwareFailureUtil}, external test framework asserts and fails should not be called from
- * WebDriverUtil, instead use {@see JiraAwareAftBase}.
+ * For compatibility with {@see JiraAwareFailureUtils}, external test framework asserts and fails should not be called from
+ * WebDriverUtils, instead use {@see JiraAwareAftBase}.
  * </p><p>
  * For the first example see waitFor
  * </p>
  * @see WebDriverLegacyITBase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WebDriverUtil {
+public class WebDriverUtils {
 
     public static boolean jGrowlEnabled = false;
 
@@ -278,7 +278,7 @@ public class WebDriverUtil {
         if ("true".equals(System.getProperty(JS_HIGHLIGHT_PROPERTY, "false"))) {
             jsHighlightEnabled = true;
             if (System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY) != null) {
-                InputStream in = WebDriverUtil.class.getResourceAsStream(System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY));
+                InputStream in = WebDriverUtils.class.getResourceAsStream(System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY));
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 String line = null;
                 List<String> lines = new LinkedList<String>();
@@ -348,8 +348,8 @@ public class WebDriverUtil {
      * @param driver to accept alert on
      */
     public static void acceptAlertIfPresent(WebDriver driver) {
-        if (WebDriverUtil.isAlertPresent(driver)) {
-            System.out.println("Alert present " + WebDriverUtil.alertText(driver));
+        if (WebDriverUtils.isAlertPresent(driver)) {
+            System.out.println("Alert present " + WebDriverUtils.alertText(driver));
             alertAccept(driver);
         }
     }
@@ -554,7 +554,7 @@ public class WebDriverUtil {
      */
     public static WebElement findElement(WebDriver driver, By by) {
         WebElement found = driver.findElement(by);
-        WebDriverUtil.highlightElement(driver, found);
+        WebDriverUtils.highlightElement(driver, found);
         return found;
     }
 
@@ -807,7 +807,7 @@ public class WebDriverUtil {
         }
 
         WebElement element = getElementByAttributeValue(driver, attribute, attributeValue);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.configuredImplicityWait(), TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }
 

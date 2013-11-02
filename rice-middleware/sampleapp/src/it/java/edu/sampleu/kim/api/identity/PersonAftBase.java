@@ -18,7 +18,7 @@ package edu.sampleu.kim.api.identity;
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ public abstract class PersonAftBase extends AdminTmplMthdAftNavBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Person&channelUrl=" 
-     * + WebDriverUtil.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
+     * + WebDriverUtils.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Person&channelUrl="
-            + WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
+            + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
             "org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK ;
 
@@ -64,7 +64,7 @@ public abstract class PersonAftBase extends AdminTmplMthdAftNavBase {
         
         //LookUp Person
         selectTopFrame();
-        open(WebDriverUtil.getBaseUrlString()+BOOKMARK_URL);
+        open(WebDriverUtils.getBaseUrlString()+BOOKMARK_URL);
         selectFrame("iframeportlet");
         params=testLookUpPerson(params.get(0), params.get(1));
 

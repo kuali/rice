@@ -69,8 +69,8 @@ public class JiraAwareWebDriverUtils {
      * @param failable to fail on if button identified by buttonText is enabled.
      */
     public static void assertButtonDisabledByText(WebDriver driver, String buttonText, JiraAwareFailable failable) {
-        WebDriverUtil.jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is disabled");
-        if (WebDriverUtil.findButtonByText(driver, buttonText).isEnabled()) {
+        WebDriverUtils.jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is disabled");
+        if (WebDriverUtils.findButtonByText(driver, buttonText).isEnabled()) {
             failable.jiraAwareFail(buttonText + " button is not disabled");
         }
     }
@@ -85,8 +85,8 @@ public class JiraAwareWebDriverUtils {
      * @param failable to fail on if button identified by buttonText is disabled.
      */
     public static void assertButtonEnabledByText(WebDriver driver, String buttonText, JiraAwareFailable failable) {
-        WebDriverUtil.jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is enabled");
-        if (!WebDriverUtil.findButtonByText(driver, buttonText).isEnabled()) {
+        WebDriverUtils.jGrowl(driver, "Assert", false, "Assert " + buttonText + " button is enabled");
+        if (!WebDriverUtils.findButtonByText(driver, buttonText).isEnabled()) {
             failable.jiraAwareFail(buttonText + " button is not enabled");
         }
     }

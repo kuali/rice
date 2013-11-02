@@ -17,7 +17,7 @@ package org.kuali.rice.testtools.selenium;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,8 +32,8 @@ import java.util.Calendar;
  * For Rice specific sampleapp testing code.
  * <ol>
  *   <li>Keep test framework methods (WebDriver, Assert) dependencies out of this class, those should be in
- *   {@link WebDriverUtil}</li>
- *   <li>Move JiraAware calls out of this class, those should be in {@see JiraAwareFailureUtil} or modified to be failed
+ *   {@link WebDriverUtils}</li>
+ *   <li>Move JiraAware calls out of this class, those should be in {@see JiraAwareFailureUtils} or modified to be failed
  *   in another class</li>
  * </ol>
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -89,7 +89,7 @@ public class AutomatedFunctionalTestUtils {
     /**
      * /kr-krad/kradsampleapp?viewId=KradSampleAppHome
      */
-    public static final String KRAD_PORTAL_URL = WebDriverUtil.getBaseUrlString() + KRAD_PORTAL;
+    public static final String KRAD_PORTAL_URL = WebDriverUtils.getBaseUrlString() + KRAD_PORTAL;
 
     /**
      * /kr-krad/labs?viewId=LabsMenuView
@@ -97,9 +97,9 @@ public class AutomatedFunctionalTestUtils {
     public static final  String LABS = "/kr-krad/labs?viewId=LabsMenuView";
 
     /**
-     * WebDriverUtil.getBaseUrlString() + LABS
+     * WebDriverUtils.getBaseUrlString() + LABS
      */
-    public static final String LABS_URL = WebDriverUtil.getBaseUrlString() + LABS;
+    public static final String LABS_URL = WebDriverUtils.getBaseUrlString() + LABS;
 
     /**
      * /portal.do
@@ -107,9 +107,9 @@ public class AutomatedFunctionalTestUtils {
     public static final String PORTAL = "/portal.do";
 
     /**
-     * WebDriverUtil.getBaseUrlString() + ITUtil.PORTAL
+     * WebDriverUtils.getBaseUrlString() + ITUtil.PORTAL
      */
-    public static final String PORTAL_URL =  WebDriverUtil.getBaseUrlString() + AutomatedFunctionalTestUtils.PORTAL;
+    public static final String PORTAL_URL =  WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.PORTAL;
 
     /**
      * URLEncoder.encode(PORTAL_URL)
@@ -287,13 +287,13 @@ public class AutomatedFunctionalTestUtils {
 */
 
     private static void failWithInfo(String contents, String linkLocator, JiraAwareFailable failable, String message) {
-        JiraAwareFailureUtil.failOnMatchedJira(contents, linkLocator, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(contents, linkLocator, failable);
         failable.fail(contents);
     }
 
     private static void failWithReportInfo(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         final String incidentReportInformation = extractIncidentReportInfo(contents, linkLocator, message);
-        JiraAwareFailureUtil.failOnMatchedJira(incidentReportInformation, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(incidentReportInformation, failable);
         failWithInfo(incidentReportInformation, linkLocator, failable, message);
     }
 
@@ -305,7 +305,7 @@ public class AutomatedFunctionalTestUtils {
 */
     private static void failWithReportInfoForKim(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         final String kimIncidentReport = extractIncidentReportKim(contents, linkLocator, message);
-        JiraAwareFailureUtil.failOnMatchedJira(kimIncidentReport, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(kimIncidentReport, failable);
         failable.fail(kimIncidentReport);
     }
 
@@ -366,14 +366,14 @@ public class AutomatedFunctionalTestUtils {
     }
 
     private static void processFreemarkerException(String contents, String linkLocator, JiraAwareFailable failable, String message) {
-        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(contents, failable);
         String ftlStackTrace = null;
         if (contents.contains("more<")) {
             ftlStackTrace = contents.substring(contents.indexOf("----------"), contents.indexOf("more<") - 1);
         } else if (contents.contains("at java.lang.Thread.run(Thread.java:")) {
             ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
         }
-        JiraAwareFailureUtil.failOnMatchedJira(ftlStackTrace, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(ftlStackTrace, failable);
         failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim());
     }
 
@@ -409,7 +409,7 @@ public class AutomatedFunctionalTestUtils {
             failWithReportInfoForKim(contents, linkLocator, failable, message);
         }
 
-        JiraAwareFailureUtil.failOnMatchedJira(contents, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(contents, failable);
         failable.fail("\nIncident report detected "
                 + message
                 + "\n Unable to parse out details for the contents that triggered exception: "
@@ -438,7 +438,7 @@ public class AutomatedFunctionalTestUtils {
      */
     public static boolean isKradLogin(){
         // check system property, default to KRAD
-        String loginUif = System.getProperty(WebDriverUtil.REMOTE_LOGIN_UIF);
+        String loginUif = System.getProperty(WebDriverUtils.REMOTE_LOGIN_UIF);
         if (loginUif == null) {
             loginUif = REMOTE_UIF_KRAD;
         }

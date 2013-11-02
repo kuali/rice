@@ -18,21 +18,21 @@ package org.kuali.rice.testtools.common;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class JiraAwareFailureUtilTest implements JiraAwareFailable {
+public class JiraAwareFailureUtilsTest implements JiraAwareFailable {
 
     String message;
 
     @Test
     public void testJiraAwareFailureRegex() {
-        JiraAwareFailureUtil.regexJiraMatches.put("TEST.*NullPointerException.*TEST", "KULRICE-TEST");
-        JiraAwareFailureUtil.failOnMatchedJira("TEST NullPointerException InputField.performFinalize TEST", this);
+        JiraAwareFailureUtils.regexJiraMatches.put("TEST.*NullPointerException.*TEST", "KULRICE-TEST");
+        JiraAwareFailureUtils.failOnMatchedJira("TEST NullPointerException InputField.performFinalize TEST", this);
         Assert.assertTrue(message.contains("KULRICE-TEST"));
     }
 
     @Test
     public void testJiraAwareFailureContains() {
-        JiraAwareFailureUtil.jiraMatches.put("TEST\u0020IndexOutOfBoundsExceptionException\u0020TEST", "KULRICE-TEST2");
-        JiraAwareFailureUtil.failOnMatchedJira("TEST IndexOutOfBoundsExceptionException TEST", this);
+        JiraAwareFailureUtils.jiraMatches.put("TEST\u0020IndexOutOfBoundsExceptionException\u0020TEST", "KULRICE-TEST2");
+        JiraAwareFailureUtils.failOnMatchedJira("TEST IndexOutOfBoundsExceptionException TEST", this);
         Assert.assertTrue(message.contains("KULRICE-TEST2"));
     }
 

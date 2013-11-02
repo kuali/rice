@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -117,7 +117,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
     protected void testDataFieldDefaultValue() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
         if(!"2012".equals(valueText)) {
-            JiraAwareFailureUtil.fail("Fields Data Field Default Value 2012 not displayed", this);
+            JiraAwareFailureUtils.fail("Fields Data Field Default Value 2012 not displayed", this);
         }
     }
 

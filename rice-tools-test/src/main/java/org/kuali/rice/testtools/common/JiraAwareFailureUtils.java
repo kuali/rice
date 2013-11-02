@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * @{code JiraAwareRegexFailures.properties} and {@code JiraAwareContainsFailures.properties} will be read as a resource stream.  To
  * override the Jira browse url set -Djira.aware.browse.url
  * </p><p>
- * To make use of JiraAwareFailureUtil implement {@see JiraAwareFailable} and call {@code JiraAwareFailureUtil.fail(contents, message, failable);} instead of
+ * To make use of JiraAwareFailureUtils implement {@see JiraAwareFailable} and call {@code JiraAwareFailureUtils.fail(contents, message, failable);} instead of
  * asserts or Assert.fail().
  * </p><p>
  * TODO:
@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class JiraAwareFailureUtil {
+public class JiraAwareFailureUtils {
 
     /**
      * <p>
@@ -97,7 +97,7 @@ public class JiraAwareFailureUtil {
         }
     }
 
-    private JiraAwareFailureUtil() {}
+    private JiraAwareFailureUtils() {}
 
     /**
      * <p>

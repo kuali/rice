@@ -60,7 +60,7 @@ public abstract class WebDriverITBase {
 
     @BeforeClass
     public static void createAndStartService() throws Exception {
-        chromeDriverService = WebDriverUtil.chromeDriverCreateCheck();
+        chromeDriverService = WebDriverUtils.chromeDriverCreateCheck();
         if (chromeDriverService != null) chromeDriverService.start();
     }
 
@@ -76,7 +76,7 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        driver = WebDriverUtil.setUp(getUserName(), WebDriverUtil.getBaseUrlString() + "/" + getTestUrl());
+        driver = WebDriverUtils.setUp(getUserName(), WebDriverUtils.getBaseUrlString() + "/" + getTestUrl());
         WebDriverLegacyITBase.loginKradOrKns(driver, getUserName(), new JiraAwareFailable() {
             @Override
             public void fail(String message) {
@@ -107,7 +107,7 @@ public abstract class WebDriverITBase {
      */
     @After
     public void tearDown() throws Exception {
-        if (WebDriverUtil.dontTearDownPropertyNotSet()) {
+        if (WebDriverUtils.dontTearDownPropertyNotSet()) {
             driver.quit(); // TODO not tested with chrome, the service stop might need this check too
         }
     }
@@ -154,9 +154,9 @@ public abstract class WebDriverITBase {
      * @return true if the element is present, false otherwise
      */
     public boolean isElementPresentQuick(By by) {
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
         boolean result = isElementPresent(by);
-        driver.manage().timeouts().implicitlyWait(WebDriverUtil.IMPLICIT_WAIT_TIME_SECONDS_DEFAULT, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.IMPLICIT_WAIT_TIME_SECONDS_DEFAULT, TimeUnit.SECONDS);
         return result;
     }
 
@@ -186,7 +186,7 @@ public abstract class WebDriverITBase {
     }
 
     /**
-     * TODO Investigate using WebDriverUtil.waitFor
+     * TODO Investigate using WebDriverUtils.waitFor
      *
      * @param by The locating mechanism of the element
      * @param message User defined message to display

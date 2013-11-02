@@ -17,7 +17,7 @@ package org.kuali.rice.testtools.selenium;
 
 import org.junit.Assert;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtil;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -62,7 +62,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected abstract WebDriver getDriver();
 
     /**
-     * {@see WebDriverUtil#assertButtonDisabledByText}
+     * {@see WebDriverUtils#assertButtonDisabledByText}
      *
      * @param buttonText of button to assert is disabled
      */
@@ -71,7 +71,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
-     * {@see WebDriverUtil.assertButtonEnabledByText}.
+     * {@see WebDriverUtils.assertButtonEnabledByText}.
      *
      * @param buttonText of button to assert is disabled
      */
@@ -281,19 +281,19 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     @Override
     public void fail(String message) {
         passed = false;
-        WebDriverUtil.jGrowl(getDriver(), "Failure " + getClass().getSimpleName(), true, message);
+        WebDriverUtils.jGrowl(getDriver(), "Failure " + getClass().getSimpleName(), true, message);
         Assert.fail(message); // The final fail that JiraAwareFailure calls, do not change this to a JiraAwareFailure.
     }
 
     /**
-     * {@see WebDriverUtil#findElement}.
+     * {@see WebDriverUtils#findElement}.
      *
      * @param by to find element with
      * @return WebElement found with given by
      */
     protected WebElement findElement(By by) {
         try {
-            return WebDriverUtil.findElement(getDriver(), by);
+            return WebDriverUtils.findElement(getDriver(), by);
         } catch (Exception e) {
             jiraAwareFail(by.toString(), e.getMessage(), e);
         }
@@ -303,7 +303,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected WebElement findElement(By by, WebElement elementToFindOn) {
         try {
             WebElement found = elementToFindOn.findElement(by);
-            WebDriverUtil.highlightElement(getDriver(), found);
+            WebDriverUtils.highlightElement(getDriver(), found);
             return found;
         } catch (Exception e) {
             jiraAwareFail(by.toString(), e.getMessage(), e);
@@ -335,19 +335,19 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
     /**
      * {@inheritDoc}
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param message to check for a Jira match and fail with.
      */
     @Override
     public void jiraAwareFail(String message) {
         checkForIncidentReport("", message);
-        JiraAwareFailureUtil.fail(message, this);
+        JiraAwareFailureUtils.fail(message, this);
     }
 
     /**
      * {@inheritDoc}
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param contents to check for a Jira match
      * @param message to check for a Jira match and fail with.
@@ -355,11 +355,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     @Override
     public void jiraAwareFail(String contents, String message) {
         checkForIncidentReport(contents, message);
-        JiraAwareFailureUtil.fail(contents, message, this);
+        JiraAwareFailureUtils.fail(contents, message, this);
     }
 
     /**
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param by to check for a Jira match
      * @param message to check for a Jira match and fail with.
@@ -371,7 +371,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
     /**
      * {@inheritDoc}
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param contents to check for a Jira match
      * @param message to check for a Jira match and fail with.
@@ -380,11 +380,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     @Override
     public void jiraAwareFail(String contents, String message, Throwable throwable) {
         checkForIncidentReport(contents, message);
-        JiraAwareFailureUtil.fail(contents, message, throwable, this);
+        JiraAwareFailureUtils.fail(contents, message, throwable, this);
     }
 
     /**
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param contents to check for a Jira match
      * @param message to check for a Jira match and fail with.
@@ -393,11 +393,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         checkForIncidentReport(contents, message);
-        JiraAwareFailureUtil.fail(contents, message, throwable, failable);
+        JiraAwareFailureUtils.fail(contents, message, throwable, failable);
     }
 
     /**
-     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtil#fail}.
+     * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.
      *
      * @param by to click on
      * @param message on failure
@@ -426,7 +426,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
-     * {@see WebDriverUtil#waitFor}.
+     * {@see WebDriverUtils#waitFor}.
      *
      * @param by to find
      * @param message on failure
@@ -435,7 +435,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected WebElement jiraAwareWaitFor(By by, String message) throws InterruptedException {
         try {
-            return WebDriverUtil.waitFor(getDriver(), WebDriverUtil.configuredImplicityWait(), by, message);
+            return WebDriverUtils.waitFor(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
             jiraAwareFail(by, message, t);
         }
@@ -443,7 +443,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     /**
-     * {@see WebDriverUtil#waitFor}.
+     * {@see WebDriverUtils#waitFor}.
      *
      * @param by to find
      * @param message on failure
@@ -451,14 +451,14 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected void jiraAwareWaitFors(By by, String message) throws InterruptedException {
         try {
-            WebDriverUtil.waitFors(getDriver(), WebDriverUtil.configuredImplicityWait(), by, message);
+            WebDriverUtils.waitFors(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
             jiraAwareFail(by, message, t);
         }
     }
 
     /**
-     * {@see WebDriverUtil#waitFor}.
+     * {@see WebDriverUtils#waitFor}.
      *
      * @param by to find
      * @param message on failure
@@ -467,14 +467,14 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected void jiraAwareWaitFor(By by, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
-            WebDriverUtil.waitFor(getDriver(), WebDriverUtil.configuredImplicityWait(), by, message);
+            WebDriverUtils.waitFor(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
             jiraAwareFail(by.toString(), message, t, failable);
         }
     }
 
     /**
-     * {@see WebDriverUtil#waitFor}.
+     * {@see WebDriverUtils#waitFor}.
      *
      * @param by to find
      * @param seconds to wait
@@ -484,7 +484,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected WebElement jiraAwareWaitFor(By by, int seconds, String message) throws InterruptedException {
         try {
-            return WebDriverUtil.waitFor(getDriver(), seconds, by, message);
+            return WebDriverUtils.waitFor(getDriver(), seconds, by, message);
         } catch (Throwable t) {
             jiraAwareFail(by, message, t);
         }
@@ -541,17 +541,17 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected void passed() {
         passed = true;
-        WebDriverUtil.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
+        WebDriverUtils.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
     }
 
     protected void waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
-            WebDriverUtil.highlightElement(getDriver(), element);
+            WebDriverUtils.highlightElement(getDriver(), element);
             element.sendKeys(text);
         } catch (Exception e) {
-            JiraAwareFailureUtil.failOnMatchedJira(by.toString(), message, this);
+            JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
             jiraAwareFail(e.getMessage()
                     + " "
                     + by.toString()

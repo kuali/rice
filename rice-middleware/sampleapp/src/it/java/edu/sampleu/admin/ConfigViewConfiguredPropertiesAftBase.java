@@ -17,7 +17,7 @@ package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtil;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,10 +25,10 @@ import org.kuali.rice.testtools.selenium.WebDriverUtil;
 public abstract class ConfigViewConfiguredPropertiesAftBase extends AdminTmplMthdAftNavBase {
 
     /**
-     * ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+WebDriverUtil.getBaseUrlString()+
+     * ITUtil.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+WebDriverUtils.getBaseUrlString()+
      * "/ksb/ConfigViewer.do"+
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ WebDriverUtil
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Configuration%20Viewer&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/ksb/ConfigViewer.do";
 
 

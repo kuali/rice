@@ -1350,6 +1350,8 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
 
     if (onePage) {
         footerRow.find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
+    } else {
+        footerRow.find("div[data-role='pageTotal'], label[data-role='pageTotal']").show();
     }
 
     var groupTotalRows = dataTable.find("tr[data-groupvalue]");

@@ -807,7 +807,7 @@ public class ObjectPropertyReference {
         } else {
             Class<?> returnType = readMethod.getReturnType();
             assert (writeMethod = ObjectPropertyUtils.getWriteMethod(implClass, name)) == null
-                    || writeMethod.getParameterTypes()[0].equals(returnType) : "Property types don't match "
+                    || writeMethod.getParameterTypes()[0].isAssignableFrom(returnType) : "Property types don't match "
                     + readMethod + " " + writeMethod;
             return returnType;
         }

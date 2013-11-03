@@ -30,6 +30,20 @@
   <properties>
     <generateReports>false</generateReports>
   </properties>
+
+  <build>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
   <dependencies>
 
     <dependency>

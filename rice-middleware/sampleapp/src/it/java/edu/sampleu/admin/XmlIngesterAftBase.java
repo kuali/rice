@@ -159,7 +159,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
                     && "true".equalsIgnoreCase((String) props.get("userIncludeDTSinPrefix"))) {
                 props.setProperty("userPrefix", "" + props.get("userPrefix") + AutomatedFunctionalTestUtils.DTS);
             }
-            PropertiesUtils.systemPropertiesOverride(props, "XMLIngester");
+            props = new PropertiesUtils().systemPropertiesOverride(props, "XMLIngester");
 
             // build files and add to array
             fileUploadList.add(

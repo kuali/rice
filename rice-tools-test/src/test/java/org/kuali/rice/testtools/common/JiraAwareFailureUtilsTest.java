@@ -18,6 +18,9 @@ package org.kuali.rice.testtools.common;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class JiraAwareFailureUtilsTest implements JiraAwareFailable {
 
     String message;

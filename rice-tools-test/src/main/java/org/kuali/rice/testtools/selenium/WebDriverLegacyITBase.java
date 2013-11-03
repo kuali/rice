@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
+import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -478,6 +479,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public void testSetUp() {
         // TODO it would be better if all opening of urls and logging in was not done in setUp, failures in setUp case the test to not be recorded. extract to setUp and call first for all tests.
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
+            if (System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY) != null) {
+                PropertiesUtils propUtils = new PropertiesUtils();
+                propUtils.loadPropertiesWithSystemAndOverridesIntoSystem(System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY));
+            }
+
             if (testName != null && testName.getMethodName() != null) { // JUnit
                 testMethodName = testName.getMethodName();
             }

@@ -204,6 +204,11 @@ public class WebDriverUtils {
     public static final String REMOTE_LOGIN_UIF = "remote.login.uif";
 
     /**
+     * Set -Dremote.property.file= to load proprties from file
+     */
+    public static final String REMOTE_PROPERTIES_PROPERTY = "remote.property.file";
+
+    /**
      * Set -Dremote.public.chrome= or WEBDRIVER_CHROME_DRIVER
      */
     public static final String REMOTE_PUBLIC_CHROME = "remote.public.chrome";

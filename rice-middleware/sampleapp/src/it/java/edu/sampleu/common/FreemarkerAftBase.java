@@ -82,7 +82,7 @@ public abstract class FreemarkerAftBase extends WebDriverLegacyITBase {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
         }
         if(in != null) {
-            props = PropertiesUtils.loadProperties(in);
+            props = new PropertiesUtils().loadProperties(in);
             in.close();
         }
 

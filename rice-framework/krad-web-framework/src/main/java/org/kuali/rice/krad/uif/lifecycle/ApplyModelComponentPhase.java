@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
 import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewTheme;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -96,7 +97,11 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
             commonContext.putAll(view.getContext());
         }
 
-        commonContext.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
+        ViewTheme theme = view.getTheme();
+        if (theme != null) {
+            commonContext.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
+        }
+        
         commonContext.put(UifConstants.ContextVariableNames.COMPONENT, getComponent());
 
         this.commonContext = Collections.unmodifiableMap(commonContext);

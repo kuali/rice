@@ -60,6 +60,7 @@ import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.FieldDescriptor;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.ParserUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.AnnotationResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.Level;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
@@ -106,7 +107,8 @@ public class IdClassResolver implements AnnotationResolver {
 
         final Collection<FieldDescriptor> primaryKeyDescriptors = getPrimaryKeyDescriptors(mappedClass);
 
-        if (primaryKeyDescriptors != null && primaryKeyDescriptors.size() > 1) {
+        if (primaryKeyDescriptors != null && primaryKeyDescriptors.size() > 1  && nodeContainsPkFields(dclr,
+                primaryKeyDescriptors)) {
             final NodeAndImports<ClassOrInterfaceDeclaration> primaryKeyClass = createPrimaryKeyClass(name, primaryKeyDescriptors);
             final String pkClassName = primaryKeyClass.node.getName();
             return new NodeData(new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new NameExpr(name + "." + pkClassName + ".class")),
@@ -114,6 +116,24 @@ public class IdClassResolver implements AnnotationResolver {
 
         }
         return null;
+    }
+
+    private boolean nodeContainsPkFields(TypeDeclaration dclr, Collection<FieldDescriptor> pks) {
+        for (FieldDescriptor pk : pks) {
+            boolean contains = false;
+            for (FieldDeclaration field : ParserUtil.getFieldMembers(dclr.getMembers())) {
+                if (field.getVariables().get(0).getId().getName().equals(pk.getAttributeName())) {
+                    contains =  true;
+                    break;
+                }
+            }
+
+            if (!contains) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private Collection<FieldDescriptor> getPrimaryKeyDescriptors(String clazz) {

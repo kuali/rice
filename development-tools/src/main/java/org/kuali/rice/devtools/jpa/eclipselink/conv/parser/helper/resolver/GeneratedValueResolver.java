@@ -39,8 +39,11 @@ public class GeneratedValueResolver extends AbstractMappedFieldResolver {
     public static final String PACKAGE = "javax.persistence";
     public static final String SIMPLE_NAME = "GeneratedValue";
 
-    public GeneratedValueResolver(Collection<DescriptorRepository> descriptorRepositories) {
+    private final boolean upperCaseTableName;
+
+    public GeneratedValueResolver(Collection<DescriptorRepository> descriptorRepositories, boolean upperCaseTableName) {
         super(descriptorRepositories);
+        this.upperCaseTableName = upperCaseTableName;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class GeneratedValueResolver extends AbstractMappedFieldResolver {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has autoincrement set to false but sequenceName is " + seqName + ".");
             }
             if (autoInc || StringUtils.isNotBlank(seqName)) {
-                return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("generator", new StringLiteralExpr(seqName)))),
+                return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("generator", new StringLiteralExpr(upperCaseTableName ? seqName.toUpperCase() : seqName)))),
                         new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
             }
         }

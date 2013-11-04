@@ -38,8 +38,11 @@ public class PortableSequenceGeneratorResolver extends AbstractMappedFieldResolv
     public static final String PACKAGE = "org.kuali.rice.krad.data.jpa.eclipselink";
     public static final String SIMPLE_NAME = "PortableSequenceGenerator";
 
-    public PortableSequenceGeneratorResolver(Collection<DescriptorRepository> descriptorRepositories) {
+    private final boolean upperCaseTableName;
+
+    public PortableSequenceGeneratorResolver(Collection<DescriptorRepository> descriptorRepositories, boolean upperCaseTableName) {
         super(descriptorRepositories);
+        this.upperCaseTableName = upperCaseTableName;
     }
 
     @Override
@@ -62,7 +65,7 @@ public class PortableSequenceGeneratorResolver extends AbstractMappedFieldResolv
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has autoincrement set to false but sequenceName is " + seqName + ".");
             }
             if (autoInc || StringUtils.isNotBlank(seqName)) {
-                return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("name", new StringLiteralExpr(seqName)))),
+                return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("name", new StringLiteralExpr(upperCaseTableName ? seqName.toUpperCase() : seqName)))),
                         new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
             }
         }

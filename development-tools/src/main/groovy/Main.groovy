@@ -103,7 +103,7 @@ println "\n\n************************************************************"
 println "*** Starting Conversion"
 println "************************************************************\n\n"
 
-entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.removeExistingAnnotations )
+entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.removeExistingAnnotations, c.project.upperCaseDbArtifactNames)
 
 for (String className : mappedJavaFiles.keySet()) {
     File ojbMappedFile = mappedJavaFiles[className]

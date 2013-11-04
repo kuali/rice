@@ -75,6 +75,9 @@ project {
         
     // Set this property to true if you want to wipe out all existing JPA annotations on target classes
     removeExistingAnnotations = true
+
+    // Set this property to true if you want to automatically upper case all database names such as column, table, and sequence names
+    upperCaseDbArtifactNames = true
     
     // Project source directories.  These directories will be scanned in order to find the source
     // files for the classes which need JPA annotation

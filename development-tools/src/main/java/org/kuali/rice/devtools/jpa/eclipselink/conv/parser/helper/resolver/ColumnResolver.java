@@ -41,8 +41,11 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
     public static final String PACKAGE = "javax.persistence";
     public static final String SIMPLE_NAME = "Column";
 
-    public ColumnResolver(Collection<DescriptorRepository> descriptorRepositories) {
+    private final boolean upperCaseTableName;
+
+    public ColumnResolver(Collection<DescriptorRepository> descriptorRepositories, boolean upperCaseTableName) {
         super(descriptorRepositories);
+        this.upperCaseTableName = upperCaseTableName;
     }
 
     @Override
@@ -72,7 +75,7 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
 
             final String columnName = fd.getColumnName();
             if (StringUtils.isNotBlank(columnName)) {
-                pairs.add(new MemberValuePair("name", new StringLiteralExpr(columnName)));
+                pairs.add(new MemberValuePair("name", new StringLiteralExpr(upperCaseTableName ? columnName.toUpperCase() : columnName)));
             } else {
                 LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field column is blank");
             }

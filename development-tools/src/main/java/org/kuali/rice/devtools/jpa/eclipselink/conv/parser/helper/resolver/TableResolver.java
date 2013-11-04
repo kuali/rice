@@ -45,9 +45,11 @@ public class TableResolver implements AnnotationResolver {
     public static final String SIMPLE_NAME = "Table";
 
     private final Collection<DescriptorRepository> descriptorRepositories;
+    private final boolean upperCaseTableName;
 
-    public TableResolver(Collection<DescriptorRepository> descriptorRepositories) {
+    public TableResolver(Collection<DescriptorRepository> descriptorRepositories, boolean upperCaseTableName) {
         this.descriptorRepositories = descriptorRepositories;
+        this.upperCaseTableName = upperCaseTableName;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class TableResolver implements AnnotationResolver {
                 return null;
             }
 
-            return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("name", new StringLiteralExpr(tableName)))),
+            return new NodeData(new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), Collections.singletonList(new MemberValuePair("name", new StringLiteralExpr(upperCaseTableName ? tableName.toUpperCase() : tableName)))),
                     new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
         }
         return null;

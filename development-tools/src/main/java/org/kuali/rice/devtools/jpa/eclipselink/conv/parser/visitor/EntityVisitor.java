@@ -66,7 +66,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
 
     private final VoidVisitorHelper<String> annotationHelper;
 
-    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings, boolean removeExisting) {
+    public EntityVisitor(Collection<DescriptorRepository> descriptorRepositories, Map<String,String> converterMappings, boolean removeExisting, boolean upperCaseDbArtifactNames) {
         super(descriptorRepositories);
 
         if (converterMappings == null || converterMappings.isEmpty()) {
@@ -76,11 +76,11 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         final Collection<AnnotationResolver> annotations = new ArrayList<AnnotationResolver>();
         annotations.add(new EntityResolver(getDescriptorRepositories()));
         annotations.add(new MappedSuperClassResolver(getDescriptorRepositories()));
-        annotations.add(new TableResolver(getDescriptorRepositories()));
+        annotations.add(new TableResolver(getDescriptorRepositories(), upperCaseDbArtifactNames));
         annotations.add(new CustomizerResolver(getDescriptorRepositories()));
         annotations.add(new TransientResolver(getDescriptorRepositories()));
-        annotations.add(new PortableSequenceGeneratorResolver(getDescriptorRepositories()));
-        annotations.add(new GeneratedValueResolver(getDescriptorRepositories()));
+        annotations.add(new PortableSequenceGeneratorResolver(getDescriptorRepositories(), upperCaseDbArtifactNames));
+        annotations.add(new GeneratedValueResolver(getDescriptorRepositories(), upperCaseDbArtifactNames));
         annotations.add(new IdResolver(getDescriptorRepositories()));
         annotations.add(new OneToOneResolver(getDescriptorRepositories()));
         annotations.add(new OneToManyResolver(getDescriptorRepositories()));
@@ -88,7 +88,7 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new ManyToManyResolver(getDescriptorRepositories()));
         annotations.add(new JoinTableResolver(getDescriptorRepositories()));
         annotations.add(new OrderByResolver(getDescriptorRepositories()));
-        annotations.add(new ColumnResolver(getDescriptorRepositories()));
+        annotations.add(new ColumnResolver(getDescriptorRepositories(), upperCaseDbArtifactNames));
         annotations.add(new ConvertResolver(getDescriptorRepositories(),converterMappings));
         annotations.add(new VersionResolver(getDescriptorRepositories()));
         annotations.add(new TemporalResolver(getDescriptorRepositories()));

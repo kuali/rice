@@ -100,6 +100,9 @@
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/checkbox.ftl"/>
     <property name="templateName" value="uif_checkbox"/>
+    <property name="libraryCssClasses">
+      <null/>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-checkboxControl</value>
@@ -201,6 +204,9 @@
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/radioGroup.ftl"/>
     <property name="templateName" value="uif_radiobuttons"/>
+    <property name="libraryCssClasses">
+      <null/>
+    </property>
     <property name="fieldsetClasses">
       <list>
         <value>uif-verticalRadioFieldset</value>
@@ -221,6 +227,9 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/radioGroup.ftl"/>
     <property name="templateName" value="uif_radiobuttons"/>
     <property name="delimiter" value="&amp;nbsp;"/>
+    <property name="libraryCssClasses">
+      <null/>
+    </property>
     <property name="fieldsetClasses">
       <list>
         <value>uif-horizontalRadioFieldset</value>
@@ -240,6 +249,9 @@
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/checkboxGroup.ftl"/>
     <property name="templateName" value="uif_checkboxes"/>
+    <property name="libraryCssClasses">
+      <null/>
+    </property>
     <property name="fieldsetClasses">
       <list>
         <value>uif-verticalCheckboxesFieldset</value>
@@ -260,6 +272,9 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/control/checkboxGroup.ftl"/>
     <property name="templateName" value="uif_checkboxes"/>
     <property name="delimiter" value="&amp;nbsp;"/>
+    <property name="libraryCssClasses">
+      <null/>
+    </property>
     <property name="fieldsetClasses">
       <list>
         <value>uif-horizontalCheckboxesFieldset</value>
@@ -280,7 +295,6 @@
     <property name="templateName" value="uif_file"/>
     <property name="cssClasses">
       <list>
-
         <value>uif-fileControl</value>
       </list>
     </property>
@@ -299,7 +313,6 @@
     </property>
     <property name="cssClasses">
       <list>
-
         <value>uif-dateControl</value>
       </list>
     </property>
@@ -307,8 +320,7 @@
 
   <bean id="Uif-SpinnerControl" parent="Uif-SpinnerControl-parentBean"/>
   <bean id="Uif-SpinnerControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SpinnerControl"
-        scope="prototype"
-        parent="Uif-SmallTextControl">
+        scope="prototype" parent="Uif-SmallTextControl">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/spinner.ftl"/>
     <property name="templateName" value="uif_spinner"/>
     <property name="spinner">
@@ -316,7 +328,6 @@
     </property>
     <property name="cssClasses">
       <list>
-
         <value>uif-spinnerControl</value>
       </list>
     </property>
@@ -344,7 +355,6 @@
     <property name="templateName" value="uif_password"/>
     <property name="cssClasses">
       <list>
-
         <value>uif-passwordControl</value>
       </list>
     </property>

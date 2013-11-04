@@ -174,4 +174,20 @@
       </list>
     </property>
   </bean>
+
+  <bean id="KradInquirySample-PageR4C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR4C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with a Custom Link" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-CustomLink&amp;methodToCall=start&amp;accountTypeCode=IAT&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

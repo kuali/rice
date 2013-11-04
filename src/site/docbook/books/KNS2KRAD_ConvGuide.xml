@@ -1496,10 +1496,10 @@
           <para>In order to customize Inquiry links, the code originally in a subclass of <emphasis
               role="keyword">org.kuali.rice.kns.inquiry.Inquirable.getInquiryUrl</emphasis> will
             need to move to <emphasis role="keyword"
-              >org.kuali.rice.krad.inquiry.Inquirable.buildInquiryLink</emphasis> and be adapted for
+              >org.kuali.rice.krad.inquiry.Inquirable.buildInquirableLink</emphasis> and be adapted for
             the new framework. Implementers have a choice between using the convenience method
-              <emphasis role="keyword">Inquiry.buildInquiryLink</emphasis> to automatically build
-            the link or define a completely new link by calling <emphasis role="keyword"
+              <emphasis role="keyword">org.kuali.rice.krad.uif.widget.Inquiry.buildInquiryLink</emphasis>
+            to automatically build the link or define a completely new link by calling <emphasis role="keyword"
               >inquiry.getInquiryLink().setHref</emphasis>. <inlinemediaobject>
               <imageobject>
                 <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>

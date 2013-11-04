@@ -27,7 +27,7 @@
     </property>
     <property name="headerText" value="Inquiry Sample"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
-    <property name="Items">
+    <property name="items">
       <list>
         <bean id="TravelAccount-InquiryView-General" parent="Uif-Disclosure-GridSection">
           <property name="headerText" value="Account Type Information"/>
@@ -60,6 +60,32 @@
     <property name="page.header.lowerGroup.items">
       <list merge="true">
         <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Site"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsInquiry-CustomLink" parent="LabsInquiry-DefaultView">
+    <property name="viewName" value="LabsInquiry-CustomLinkView"/>
+    <property name="headerText" value="Inquiry Custom Link Sample"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.labs.inquiry.LabsInquiryCustomLinkInquirable"/>
+    <property name="items">
+      <list>
+        <bean id="TravelAccount-InquiryView-Custom" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Account Type Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="accountTypeCode" p:forcedValue="@{#dp.accountTypeCode} (Click for Example)">
+                <property name="inquiry">
+                  <bean parent="Uif-Inquiry">
+                    <property name="viewName" value="LabsInquiry-CustomLinkView"/>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-DataField" p:propertyName="name"/>
+              <bean parent="Uif-DataField" p:propertyName="codeAndDescription"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

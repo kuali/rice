@@ -15,7 +15,9 @@
  */
 package edu.sampleu.travel.dataobject;
 
+import edu.sampleu.travel.options.PostalCountryCode;
 import edu.sampleu.travel.options.PostalCountryCodeKeyValuesFinder;
+import edu.sampleu.travel.options.PostalStateCode;
 import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.DataObjectBase;
@@ -26,6 +28,9 @@ import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
 import javax.persistence.Column;
@@ -33,6 +38,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -61,12 +67,27 @@ public class TravelDestination extends DataObjectBase implements MutableInactiva
     private String travelDestinationName;
 
     @Column(name = "POSTAL_CNTRY_CD")
+    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+                      @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     @KeyValuesFinderClass(PostalCountryCodeKeyValuesFinder.class)
     private String countryCd;
 
+    @Transient
+    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA))
+    @Label("Country")
+    private String countryName;
+
     @Column(name = "POSTAL_STATE_CD")
+    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+                      @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     @KeyValuesFinderClass(PostalStateCodeKeyValuesFinder.class)
     private String stateCd;
+
+    @Transient
+    @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA))
+    @Label("State")
+    private String stateName;
+
 
     @Column(name = "ACTV_IND", nullable = false, length = 1)
     @javax.persistence.Convert(converter = BooleanYNConverter.class)
@@ -98,12 +119,20 @@ public class TravelDestination extends DataObjectBase implements MutableInactiva
         this.countryCd = countryCd;
     }
 
+    public String getCountryName() {
+        return PostalCountryCode.valueOf(countryCd).getLabel();
+    }
+
     public String getStateCd() {
         return stateCd;
     }
 
     public void setStateCd(String stateCd) {
         this.stateCd = stateCd;
+    }
+
+    public String getStateName() {
+        return PostalStateCode.valueOf(stateCd).getLabel();
     }
 
     public boolean isActive() {

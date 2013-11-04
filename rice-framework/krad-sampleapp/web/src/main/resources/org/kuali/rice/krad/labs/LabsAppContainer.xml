@@ -33,40 +33,45 @@
     </property>
   </bean>
 
-  <bean id="LabsDocumentUnifiedHeader" parent="Demo-AppHeader-View1">
+  <bean id="LabsProposal" parent="Demo-AppHeader-View1">
     <property name="unifiedHeader" value="false"/>
     <property name="breadcrumbs.render" value="false"/>
     <property name="header">
       <bean parent="Uif-ViewHeader" p:headerText="Proposal: #23533" p:areaTitleText="Proposal Development"
             p:supportTitleText="PI: [em]Not yet assigned[/em]">
         <property name="rightGroup">
-          <ref bean="LabsDocumentUnifiedHeader-DocInfo"/>
+          <ref bean="LabsProposal-DocInfo"/>
         </property>
         <property name="lowerGroup">
-          <ref bean="LabsDocumentUnifiedHeader-DocActionBar"/>
+          <ref bean="LabsProposal-DocActionBar"/>
         </property>
       </bean>
     </property>
     <property name="items">
       <list>
-          <ref bean="LabsDocumentUnifiedHeader-Page"/>
+        <ref bean="LabsProposal-Page"/>
+      </list>
+    </property>
+    <property name="additionalCssFiles">
+      <list merge="true">
+        <value>css/labsProposal.css</value>
       </list>
     </property>
   </bean>
 
-  <bean id="LabsDocumentUnifiedHeader-DocInfo" parent="Uif-VerticalBoxGroup">
+  <bean id="LabsProposal-DocInfo" parent="Uif-VerticalBoxGroup">
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="[strong]Document Info[/strong]"/>
         <bean parent="Uif-MessageField" p:label="Doc Nbr" p:messageText="2743"/>
         <bean parent="Uif-MessageField" p:label="Initiator" p:messageText="thrclark"/>
         <bean parent="Uif-MessageField" p:label="Status" p:messageText="In Progress"/>
-        <ref bean="LabsDocumentUnifiedHeader-MoreDocInfo"/>
+        <ref bean="LabsProposal-MoreDocInfo"/>
       </list>
     </property>
   </bean>
 
-  <bean id="LabsDocumentUnifiedHeader-MoreDocInfo" parent="Uif-DropdownMenu" p:dropdownToggleText="more..."
+  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownMenu" p:dropdownToggleText="more..."
         p:renderToggleCaret="false">
     <property name="menuGroup">
       <bean parent="Uif-DropdownTable" p:headerText="Document Info">
@@ -94,36 +99,37 @@
     </property>
   </bean>
 
-  <bean id="LabsDocumentUnifiedHeader-DocActionBar" parent="Uif-ActionBar">
+  <bean id="LabsProposal-DocActionBar" parent="Uif-ActionBar">
     <property name="items">
       <list>
         <bean parent="Uif-ActionLink" p:methodToCall="toggleAuditMode"
               p:actionLabel="Audit Mode (on)"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="print" p:actionLabel="Print"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="Copy"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="medusa" p:actionLabel="Medusa"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="showHierarchy" p:actionLabel="Hierarchy"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="access" p:actionLabel="Access"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="print" p:actionLabel="Print" p:iconClass="icon-print"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="Copy" p:iconClass="icon-copy"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="medusa" p:actionLabel="Medusa" p:iconClass="icon-tasks"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="showHierarchy" p:actionLabel="Hierarchy"
+              p:iconClass="icon-list-ol"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="access" p:actionLabel="Access" p:iconClass="icon-lock"/>
       </list>
     </property>
   </bean>
 
-  <bean id="LabsDocumentUnifiedHeader-Page" parent="Uif-Page" p:headerText="Proposal Details">
+  <bean id="LabsProposal-Page" parent="Uif-Page" p:headerText="Proposal Details">
     <property name="header.lowerGroup">
-       <bean parent="Uif-VerticalBoxGroup">
-         <property name="items">
-           <list>
-             <bean parent="Uif-Message" p:messageText="[p]* Indicates required fields[/p]" p:cssClasses="text-muted"/>
-           </list>
-         </property>
-       </bean>
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="[p]* Indicates required fields[/p]" p:cssClasses="text-muted"/>
+          </list>
+        </property>
+      </bean>
     </property>
     <property name="items">
       <list>
         <bean parent="Uif-CssGridSection-1FieldLabelColumn">
           <property name="items">
             <list>
-               <!--<bean parent="Uif-InputField" p:label="Proposal type" p:propertyName="field1"/>-->
+              <bean parent="Uif-InputField" p:label="Proposal type" p:propertyName="field1" p:required="true"/>
             </list>
           </property>
         </bean>

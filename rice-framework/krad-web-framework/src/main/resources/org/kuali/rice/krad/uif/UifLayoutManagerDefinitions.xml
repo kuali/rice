@@ -87,6 +87,7 @@
         class="org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager"
         scope="prototype">
     <property name="numberOfLabelColumns" value="1"/>
+    <property name="labelColumnCssClass" value="uif-cssGridLabelCol"/>
   </bean>
 
   <!--Grid Layout Managers-->

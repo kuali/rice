@@ -1,0 +1,17 @@
+/** overridding styles on controls to be 100% **/
+input[type="text"], .uif-textAreaControl {
+    width: 100%;
+}
+
+.uif-dropdownControl {
+    width: 100%;
+}
+
+select[multiple] {
+    width: 100%;
+}
+
+/** add bottom border for view header **/
+.uif-viewHeader-contentWrapper {
+    border-bottom: 1px solid #ccc;
+}

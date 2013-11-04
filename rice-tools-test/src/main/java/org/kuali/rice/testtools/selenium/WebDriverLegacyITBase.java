@@ -36,6 +36,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -377,6 +378,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     static ChromeDriverService chromeDriverService;
 
+    static {
+        if (System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY) != null) {
+            PropertiesUtils propUtils = new PropertiesUtils();
+            try {
+                propUtils.loadPropertiesWithSystemAndOverridesIntoSystem(System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY));
+            } catch (IOException ioe) {
+                System.out.println("Exception opening " + System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY) + " " + ioe.getMessage());
+            }
+        }
+    }
+
     protected WebDriver driver;
     protected String user = "admin";
     protected int waitSeconds;
@@ -479,11 +491,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public void testSetUp() {
         // TODO it would be better if all opening of urls and logging in was not done in setUp, failures in setUp case the test to not be recorded. extract to setUp and call first for all tests.
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
-            if (System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY) != null) {
-                PropertiesUtils propUtils = new PropertiesUtils();
-                propUtils.loadPropertiesWithSystemAndOverridesIntoSystem(System.getProperty(WebDriverUtils.REMOTE_PROPERTIES_PROPERTY));
-            }
-
             if (testName != null && testName.getMethodName() != null) { // JUnit
                 testMethodName = testName.getMethodName();
             }

@@ -78,10 +78,16 @@ public class PropertiesUtils {
                 in = new FileInputStream(fileLocation);
             } catch (FileNotFoundException fio) {
                 System.out.println(fio.getMessage() + " trying to read as resource.");
-                in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+                if (resourceLocation != null) {
+                    System.out.println("Trying to read as " + resourceLocation+ " as a resource.");
+                    in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+                }
             }
         } else {
             in = getClass().getClassLoader().getResourceAsStream(resourceLocation);
+            if (in == null) {
+                System.out.println("Unable to read " + fileLocation + " as a file or " + resourceLocation + " as a resource stream");
+            }
         }
         if(in != null) {
             props = loadProperties(in);

@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -29,10 +30,13 @@ import java.util.Properties;
  */
 public class PropertiesUtilsTest {
 
+    protected static PropertiesUtils propUtils;
+
     @BeforeClass
     public static void setUp() {
         System.setProperty("remote.driver.saucelabs", "true");
         System.setProperty("PROPERTY_DOESNT_EXIST", "true");
+        propUtils = new PropertiesUtils();
 
 //        printSystemProperties();
     }
@@ -45,23 +49,22 @@ public class PropertiesUtilsTest {
         }
     }
 
-    @Ignore // TODO fix with mvn
     @Test
     public void testLoadPropertiesResource() throws IOException {
-        Properties props = new PropertiesUtils().loadProperties(null, "JiraAwareRegexFailures.properties");
+        Properties props = propUtils.loadProperties(null, "JiraAwareRegexFailures.properties");
         Assert.assertTrue(props.keySet().size() > 0);
     }
 
-    @Ignore // TODO address path
+    @Ignore // deal with path
     @Test
     public void testLoadPropertiesFile() throws IOException {
-        Properties props = new PropertiesUtils().loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null);
+        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null);
         Assert.assertTrue(props.keySet().size() > 0);
     }
 
     @Test
     public void testLoadProperties() throws IOException {
-        Properties props = new PropertiesUtils().loadProperties(null, "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
+        Properties props = propUtils.loadProperties(null, "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
         Assert.assertTrue(props.keySet().size() > 0);
         Assert.assertTrue(props.keySet().contains("remote.driver.saucelabs"));
         Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals(""));
@@ -70,7 +73,7 @@ public class PropertiesUtilsTest {
     @Test
     public void testSystemPropertiesOverrides() throws IOException {
         Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = new PropertiesUtils().loadPropertiesWithSystemOverrides("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
+        Properties props = propUtils.loadPropertiesWithSystemOverrides("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
         Assert.assertTrue(props.keySet().size() > 0);
         Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals("true"));
         Assert.assertFalse(props.containsKey("PROPERTY_DOESNT_EXIST"));
@@ -79,7 +82,8 @@ public class PropertiesUtilsTest {
     @Test
     public void testSystemPropertiesAndOverrides() throws IOException {
         Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = new PropertiesUtils().loadPropertiesWithSystemAndOverrides("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
+        Properties props = propUtils.loadPropertiesWithSystemAndOverrides(
+                "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
         Assert.assertTrue(props.keySet().size() > 0);
         Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals("true"));
         Assert.assertTrue(props.getProperty("PROPERTY_DOESNT_EXIST").equals("true"));
@@ -88,7 +92,7 @@ public class PropertiesUtilsTest {
     @Test
     public void testLoadPropertiesWithSystemAndOverridesIntoSystem() throws IOException {
         Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = new PropertiesUtils().loadPropertiesWithSystemAndOverridesIntoSystem("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
+        Properties props = propUtils.loadPropertiesWithSystemAndOverridesIntoSystem("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
         Assert.assertTrue(System.getProperty("saucelabs.browser").equals("ff"));
     }
 }

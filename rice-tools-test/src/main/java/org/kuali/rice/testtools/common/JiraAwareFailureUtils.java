@@ -164,6 +164,10 @@ public class JiraAwareFailureUtils {
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */
     public static void failOnMatchedJira(String contents, JiraAwareFailable failable) {
+        if (regexJiraMatches == null || regexJiraMatches.keySet() == null || jiraMatches == null || jiraMatches.keySet() == null) {
+            System.out.println("WARNING JiraAwareFailureUtils properties empty, JiraAwareFailures not available.");
+            return;
+        }
         String key = null;
         Pattern pattern = null;
         Matcher matcher = null;

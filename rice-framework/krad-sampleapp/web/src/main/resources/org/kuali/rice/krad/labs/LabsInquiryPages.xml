@@ -32,6 +32,7 @@
         <bean id="KradInquirySampleItems" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
+              <bean parent="Uif-SyntaxHighlighter"/>
               <bean parent="Uif-Link" p:linkText="accountTypeCode=IAT" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;accountTypeCode=IAT&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
             </list>
@@ -129,9 +130,24 @@
   </bean>
 
   <bean id="KradInquirySample-PageR3C1" parent="KradSampleAppView">
+  <property name="page.items">
+    <list>
+      <bean id="KradInquirySampleItems-PageR3C1" parent="Uif-VerticalBoxSection">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
+                  p:href="@{#ConfigProperties['krad.url']}/inquiry?travelPerDiemExpenseId=10000&amp;methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+          </list>
+        </property>
+      </bean>
+    </list>
+  </property>
+</bean>
+
+  <bean id="KradInquirySample-PageR3C2" parent="KradSampleAppView">
     <property name="page.items">
       <list>
-        <bean id="KradInquirySampleItems-PageR3C1" parent="Uif-VerticalBoxSection">
+        <bean id="KradInquirySampleItems-PageR3C2" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
@@ -143,4 +159,19 @@
     </property>
   </bean>
 
+  <bean id="KradInquirySample-PageR3C3" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR3C3" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-SyntaxHighlighter"/>
+              <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?travelPerDiemExpenseId=10000&amp;methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

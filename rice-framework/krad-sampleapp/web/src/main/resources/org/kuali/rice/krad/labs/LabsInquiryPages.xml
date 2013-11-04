@@ -190,4 +190,23 @@
     </property>
   </bean>
 
+  <bean id="KradInquirySample-PageR4C2" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR4C2" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="documentNumber" p:label="Document Number">
+                <property name="inquiry">
+                  <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.bo.DocumentHeader"
+                        p:inquiryParameters="documentNumber:documentNumber"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

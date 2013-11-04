@@ -90,4 +90,25 @@
     </property>
   </bean>
 
+  <bean id="LabsInquiry-DocumentHeader" parent="Uif-InquiryView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
+    <property name="headerText" value="Inquiry Document Header Sample"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.bo.DocumentHeader"/>
+    <property name="items">
+      <list>
+        <bean id="DocumentHeader-InquiryView-General" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Document Header Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="documentNumber"/>
+              <bean parent="Uif-DataField" p:propertyName="documentDescription"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

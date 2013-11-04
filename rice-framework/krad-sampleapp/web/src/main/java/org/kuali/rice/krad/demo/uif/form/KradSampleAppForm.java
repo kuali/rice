@@ -20,11 +20,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.sampleu.travel.dataobject.TravelAuthorizationDocument;
+import edu.sampleu.travel.dataobject.TravelDestination;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
+import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -145,6 +157,8 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             + "                }\n"
             + "            }\n"
             + "        }";
+
+    private String documentNumber;
 
     public KradSampleAppForm() {
         super();
@@ -360,6 +374,38 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             root.addChild(item3);
 
             tree2.setRootElement(root);
+        }
+
+        DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
+        builder.setDocumentTypeName("TravelAuthorization");
+        List<DocumentSearchResult> results = KEWServiceLocator.getDocumentSearchService().lookupDocuments(
+                GlobalVariables.getUserSession().getPrincipalId(), builder.build()).getSearchResults();
+
+        if (results.isEmpty()) {
+            try {
+                Document newDocument
+                        = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+                newDocument.getDocumentHeader().setDocumentDescription("Test");
+
+                TravelAuthorizationDocument newTravelAuthorizationDocument = (TravelAuthorizationDocument) newDocument;
+                newTravelAuthorizationDocument.setCellPhoneNumber("555-555-5555");
+
+                QueryByCriteria query = QueryByCriteria.Builder.create().build();
+                List<TravelDestination> travelDestinations
+                        = KRADServiceLocator.getDataObjectService().findMatching(TravelDestination.class, query).getResults();
+                if (!travelDestinations.isEmpty()) {
+                    newTravelAuthorizationDocument.setTripDestinationId(travelDestinations.get(0).getTravelDestinationId());
+                }
+
+                Document document
+                        = KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
+                setDocumentNumber(document.getDocumentNumber());
+            } catch (WorkflowException we) {
+                // ignore
+            }
+        } else {
+            DocumentSearchResult result = results.get(0);
+            setDocumentNumber(result.getDocument().getDocumentId());
         }
     }
 
@@ -1036,5 +1082,13 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setCodeSample(String codeSample) {
         this.codeSample = codeSample;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
     }
 }

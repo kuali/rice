@@ -103,7 +103,7 @@ public class UifComponentsTestController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
     public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        String pageId = form.getActionParameterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
+        String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
 
         if (pageId.equals("UifCompView-Page8")) {
             GlobalVariables.getMessageMap().putError("gField1", "serverTestError");
@@ -386,8 +386,8 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView customLineAction(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        String actionParm1 = uifForm.getActionParameterValue("field1");
-        String actionParm2 = uifForm.getActionParameterValue("field2");
+        String actionParm1 = uifForm.getActionParamaterValue("field1");
+        String actionParm2 = uifForm.getActionParamaterValue("field2");
 
         GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "actionParms.message", actionParm1,
                 actionParm2);
@@ -409,7 +409,7 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView updateOfficial(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        String actionParm1 = uifForm.getActionParameterValue("field1");
+        String actionParm1 = uifForm.getActionParamaterValue("field1");
 
         GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "customLineAction.message", actionParm1);
 

@@ -50,39 +50,53 @@
 
     <#local imagePlacement="${element.actionImagePlacement}"/>
 
-<a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
-${tabindex} ${element.simpleDataAttributes!}>
-
-    <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
-        <#if imagePlacement == 'RIGHT'>
-            <#local imageStyleClass="rightActionImage"/>
-        <#elseif imagePlacement == 'LEFT'>
-            <#local imageStyleClass="leftActionImage"/>
-        </#if>
-
-        <#local imageTag>
-            <img ${imageRole!} ${height!} ${width!}
-                    style="${element.actionImage.style!}"
-                    class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
-                    src="${element.actionImage.source!}"
-                    alt="${element.actionImage.altText!}"
-                    title="${element.actionImage.title!}"/>
-        </#local>
-
-        <#if imagePlacement == 'RIGHT'>
-        ${element.actionLabel!}${imageTag}
-        <#elseif imagePlacement == 'LEFT'>
-        ${imageTag}${element.actionLabel!}
-        <#elseif imagePlacement == 'IMAGE_ONLY'>
-        ${imageTag}
-        <#else>
-        ${element.actionLabel!}
+    <#if element.iconClass??>
+        <#if element.actionIconPlacement == 'ICON_ONLY'>
+        <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
+        ${tabindex} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span></a>
+        <#elseif element.actionIconPlacement == 'LEFT'>
+        <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
+        ${tabindex} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span>${element.actionLabel}</a>
+        <#elseif element.actionIconPlacement == 'RIGHT'>
+        <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
+        ${tabindex} ${element.simpleDataAttributes!}>${element.actionLabel}<span class="${element.iconClass}"></span></a>
         </#if>
     <#else>
-    ${element.actionLabel!}
-    </#if>
 
-</a>
+        <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
+        ${tabindex} ${element.simpleDataAttributes!}>
+
+            <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+                <#if imagePlacement == 'RIGHT'>
+                    <#local imageStyleClass="rightActionImage"/>
+                <#elseif imagePlacement == 'LEFT'>
+                    <#local imageStyleClass="leftActionImage"/>
+                </#if>
+
+                <#local imageTag>
+                    <img ${imageRole!} ${height!} ${width!}
+                            style="${element.actionImage.style!}"
+                            class="actionImage ${imageStyleClass!} ${element.actionImage.styleClassesAsString!}"
+                            src="${element.actionImage.source!}"
+                            alt="${element.actionImage.altText!}"
+                            title="${element.actionImage.title!}"/>
+                </#local>
+
+                <#if imagePlacement == 'RIGHT'>
+                ${element.actionLabel!}${imageTag}
+                <#elseif imagePlacement == 'LEFT'>
+                ${imageTag}${element.actionLabel!}
+                <#elseif imagePlacement == 'IMAGE_ONLY'>
+                ${imageTag}
+                <#else>
+                ${element.actionLabel!}
+                </#if>
+            <#else>
+            ${element.actionLabel!}
+            </#if>
+
+        </a>
+    </#if>
 
     <@krad.disable control=element type="actionLink"/>
 

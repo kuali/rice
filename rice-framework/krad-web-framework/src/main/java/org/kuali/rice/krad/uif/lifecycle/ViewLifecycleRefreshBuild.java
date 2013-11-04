@@ -22,13 +22,16 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 /**
- * TODO mark don't forget to fill this in. 
+ * Lifecycle processing task for encapsulating a view refresh. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see ViewLifecycle#encapsulateLifecycle(View, Object, HttpServletRequest, javax.servlet.http.HttpServletResponse, Runnable)
+ * @see UifControllerBase#refresh(UifFormBase, org.springframework.validation.BindingResult, HttpServletRequest, javax.servlet.http.HttpServletResponse)
  */
 public class ViewLifecycleRefreshBuild implements Runnable {
 

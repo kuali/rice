@@ -31,7 +31,7 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     private ViewLifecyclePhase phase;
 
     /**
-     * Create a lifecycle processing task.
+     * Creates a lifecycle processing task for a specific phase.
      * 
      * @param phase The phase this task is a part of.
      */
@@ -40,28 +40,19 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     }
 
     /**
-     * Perform phase-specific lifecycle processing tasks.
+     * Performs phase-specific lifecycle processing tasks.
      */
     protected abstract void performLifecycleTask();
 
     /**
-     * Reset this task, to facilitate recycling.
+     * Resets this task to facilitate recycling.
      */
     void recycle() {
         this.phase = null;
     }
 
     /**
-     * Set the phase on a recycled task.
-     * 
-     * @param phase The phase to set.
-     */
-    void setPhase(ViewLifecyclePhase phase) {
-        this.phase = phase;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask#getPhase()
+     * {@inheritDoc}
      */
     @Override
     public ViewLifecyclePhase getPhase() {
@@ -69,14 +60,24 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     }
 
     /**
-     * Execute the lifecycle task.
+     * Sets the phase on a recycled task.
+     * 
+     * @param phase The phase to set.
+     * @see #getPhase()
+     */
+    void setPhase(ViewLifecyclePhase phase) {
+        this.phase = phase;
+    }
+
+    /**
+     * Executes the lifecycle task.
      * 
      * <p>
      * This method performs state validation and updates component view status. Override
      * {@link #performLifecycleTask()} to provide task-specific behavior.
      * </p>
      * 
-     * @see java.lang.Runnable#run()
+     * {@inheritDoc}
      */
     @Override
     public final void run() {
@@ -117,7 +118,7 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

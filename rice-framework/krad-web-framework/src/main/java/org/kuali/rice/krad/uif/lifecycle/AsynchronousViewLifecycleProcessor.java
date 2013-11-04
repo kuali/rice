@@ -73,14 +73,14 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     private Throwable error;
 
     /**
-     * Get the minimum number of lifecycle worker threads to maintain.
+     * Gets the minimum number of lifecycle worker threads to maintain.
      * 
      * <p>
      * This value is controlled by the configuration parameter
      * &quot;krad.uif.lifecycle.asynchronous.minThreads&quot;.
      * </p>
      * 
-     * @return The minimum number of worker threads to maintain.
+     * @return minimum number of worker threads to maintain
      */
     public static int getMinThreads() {
         if (minThreads == null) {
@@ -93,14 +93,14 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * Get the maximum number of lifecycle worker threads to maintain.
+     * Gets the maximum number of lifecycle worker threads to maintain.
      * 
      * <p>
      * This value is controlled by the configuration parameter
      * &quot;krad.uif.lifecycle.asynchronous.maxThreads&quot;.
      * </p>
      * 
-     * @return The maximum number of worker threads to maintain.
+     * @return maximum number of worker threads to maintain
      */
     public static int getMaxThreads() {
         if (maxThreads == null) {
@@ -113,14 +113,14 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * Get the time, in milliseconds, to wait for a initial phase to process.
+     * Gets the time, in milliseconds, to wait for a initial phase to process.
      * 
      * <p>
      * This value is controlled by the configuration parameter
      * &quot;krad.uif.lifecycle.asynchronous.timeout&quot;.
      * </p>
      * 
-     * @return The time, in milliseconds, to wait for the initial phase to process.
+     * @return time in milliseconds to wait for the initial phase to process
      */
     public static long getTimeout() {
         if (timeout == null) {
@@ -160,7 +160,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * @see ViewLifecycleProcessor#getActivePhase()
+     * {@inheritDoc}
      */
     @Override
     public ViewLifecyclePhase getActivePhase() {
@@ -179,7 +179,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * @see ViewLifecycleProcessorBase#setActivePhase(ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     void setActivePhase(ViewLifecyclePhase phase) {
@@ -190,7 +190,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         }
         
         if (phase == null) {
-            // Ingore null setting, asychronous state is controlled by aphase.
+            // Ignore null setting, asychronous state is controlled by aphase.
             return;
         }
 
@@ -204,7 +204,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     };
 
     /**
-     * @see ViewLifecycleProcessor#getRenderingContext()
+     * {@inheritDoc}
      */
     @Override
     public LifecycleRenderingContext getRenderingContext() {
@@ -218,31 +218,36 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
             throw new IllegalStateException("No phase worker is active on this thread");
         }
 
+        // If a rendering context has already been assigned to this phase, return it.
         LifecycleRenderingContext renderContext = aphase.renderingContext;
         if (renderContext != null) {
             return renderContext;
         }
 
+        // Get a reusable rendering context from a pool private to the current lifecycle. 
         renderContext = renderingContextPool.poll();
         if (renderContext == null) {
+            // Create a new rendering context is a pooled instance is not available.
             ViewLifecycle lifecycle = getLifecycle();
             renderContext = new LifecycleRenderingContext(
                     lifecycle.model, lifecycle.request, lifecycle.response);
         }
 
+        // Ensure that all view templates have been imported on the new/reused context
         List<String> viewTemplates = ViewLifecycle.getView().getViewTemplates();
         synchronized (viewTemplates) {
             for (String viewTemplate : viewTemplates) {
                 renderContext.importTemplate(viewTemplate);
             }
         }
-        
+
+        // Assign the rendering context to the current thread.
         aphase.renderingContext = renderContext;
         return renderContext;
     }
 
     /**
-     * @see ViewLifecycleProcessor#pushPendingPhase(ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
@@ -262,7 +267,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * @see ViewLifecycleProcessor#offerPendingPhase(ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     public void offerPendingPhase(ViewLifecyclePhase phase) {
@@ -282,10 +287,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * This method should only be called a single time by the controlling thread in order to wait
-     * for all pending phases to be performed, and should not be called by any worker threads.
-     * 
-     * @see ViewLifecycleProcessor#performPhase(ViewLifecyclePhase)
+     * {@inheritDoc}
+     * <p>This method should only be called a single time by the controlling thread in order to wait
+     * for all pending phases to be performed, and should not be called by any worker threads.</p>
      */
     @Override
     public void performPhase(ViewLifecyclePhase initialPhase) {
@@ -331,11 +335,11 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * Get a new context wrapper for processing a lifecycle phase using the same lifecycle and
+     * Gets a new context wrapper for processing a lifecycle phase using the same lifecycle and
      * thread context as the current thread.
      * 
      * @param phase The lifecycle phase.
-     * @return A context wrapper for processing the phase.
+     * @return context wrapper for processing the phase
      */
     private AsynchronousLifecyclePhase getAsynchronousPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase rv = RecycleUtils.getRecycledInstance(AsynchronousLifecyclePhase.class);
@@ -351,10 +355,10 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * Recycle a phase context after processing.
+     * Recycles a phase context after processing.
      * 
-     * @param aphase The phase context, previously acquire using by
-     *        {@link #getAsynchronousPhase(ViewLifecyclePhase)}.
+     * @param aphase phase context previously acquired using
+     *        {@link #getAsynchronousPhase(ViewLifecyclePhase)}
      */
     private static void recyclePhase(AsynchronousLifecyclePhase aphase) {
         if (aphase.initial) {
@@ -369,7 +373,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     }
 
     /**
-     * Spawn new worker threads, if needed.
+     * Spawns new worker threads if needed.
      */
     private static void spawnWorkers() {
         int active = LIFECYCLE_EXECUTOR.getActiveCount();

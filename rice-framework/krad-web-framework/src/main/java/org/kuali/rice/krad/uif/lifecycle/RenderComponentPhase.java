@@ -23,9 +23,10 @@ import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 
 /**
- * Lifecycle phase processing task for applying the model to a component.
+ * Lifecycle phase processing task for rendering a component.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see ViewLifecycle#isRenderInLifecycle()
  */
 public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
@@ -33,7 +34,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     private int pendingChildren;
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
+     * {@inheritDoc}
      */
     @Override
     protected void recycle() {
@@ -61,7 +62,8 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
+     * {@inheritDoc}
+     * @return UifConstants.ViewPhases.RENDER
      */
     @Override
     public String getViewPhase() {
@@ -69,7 +71,8 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getStartViewStatus()
+     * {@inheritDoc}
+     * @return UifConstants.ViewStatus.FINAL
      */
     @Override
     public String getStartViewStatus() {
@@ -77,7 +80,8 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEndViewStatus()
+     * {@inheritDoc}
+     * @return UifConstants.ViewStatus.RENDERED
      */
     @Override
     public String getEndViewStatus() {
@@ -85,7 +89,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
+     * {@inheritDoc}
      */
     @Override
     public LifecycleEvent getEventToNotify() {
@@ -95,7 +99,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Perform rendering on the given component.
      * 
-     * @see ViewLifecyclePhaseBase#initializePendingTasks(Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -108,7 +112,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

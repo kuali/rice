@@ -24,6 +24,7 @@ import java.util.Set;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
 import org.kuali.rice.krad.uif.lifecycle.model.ApplyAuthAndPresentationLogicTask;
 import org.kuali.rice.krad.uif.lifecycle.model.ComponentDefaultApplyModelTask;
 import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
@@ -188,6 +189,8 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
 
         getComponent().initializePendingTasks(this, tasks);
+        
+        tasks.add(LifecycleTaskFactory.getTask(SetReadOnlyOnDataBindingTask.class, this));
     }
 
     /**

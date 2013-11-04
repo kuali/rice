@@ -45,6 +45,8 @@
 	
 	<bean id="viewDictionaryService" class="org.kuali.rice.krad.uif.util.TestViewDictionaryService" />
 
+	<bean id="parameterService" class="org.kuali.rice.krad.uif.util.MockParameterService" />
+	
 	<util:list id="uifDictionaryBeans">
 		<value>classpath:/org/kuali/rice/kns_2_4_M2/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>

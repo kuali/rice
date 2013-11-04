@@ -38,7 +38,7 @@ public final class LifecycleTaskFactory {
             Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor<?>>());
 
     /**
-     * Get a task instance by class.
+     * Gets a task instance by class.
      * 
      * @param <T> The lifecycle task type to return.
      * @param taskClass The task class.
@@ -66,7 +66,7 @@ public final class LifecycleTaskFactory {
     }
 
     /**
-     * Recycle a task instance after processing.
+     * Recycles a task instance after processing.
      * 
      * @param task The task to recycle.
      */
@@ -76,7 +76,7 @@ public final class LifecycleTaskFactory {
     }
 
     /**
-     * Get a single-arg constructor on for the task class for creating new tasks based on a view.
+     * Gets a single-arg constructor on for the task class for creating new tasks based on a view.
      * 
      * @param taskClass The task class.
      * @return A single-arg constructor on for the task class for creating new tasks based on a

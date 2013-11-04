@@ -115,11 +115,12 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();
                 msg.setMessageText("foobar");
-                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
+//                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
                 RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, 0);
-                renderPhase.run();
+                
+                ViewLifecycle.getProcessor().performPhase(renderPhase);
 
                 assertTrue(msg.isSelfRendered());
                 assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +

@@ -71,6 +71,7 @@ public class UifParameters {
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
     public static final String VALUE = "value";
+    public static final String VIEW = "view";
 	public static final String VIEW_ID = "viewId";
 	public static final String VIEW_NAME = "viewName";
 	public static final String VIEW_TYPE_NAME = "viewTypeName";

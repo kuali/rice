@@ -50,7 +50,8 @@ import org.kuali.rice.krad.uif.view.View;
 public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
+     * {@inheritDoc}
+     * @return UifConstants.ViewPhases.INITIALIZE
      */
     @Override
     public String getViewPhase() {
@@ -58,7 +59,8 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getStartViewStatus()
+     * {@inheritDoc}
+     * return UifConstants.ViewStatus.CREATED
      */
     @Override
     public String getStartViewStatus() {
@@ -66,7 +68,8 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEndViewStatus()
+     * {@inheritDoc}
+     * @return UifConstants.ViewStatus.INITIALIZED
      */
     @Override
     public String getEndViewStatus() {
@@ -74,7 +77,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
+     * {@inheritDoc}
      */
     @Override
     public LifecycleEvent getEventToNotify() {
@@ -83,6 +86,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Queues initialization phase tasks.
+     * {@inheritDoc}
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
@@ -104,8 +108,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
-     * 
-     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

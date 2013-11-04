@@ -47,7 +47,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private int pendingSuccessors = -1;
 
     /**
-     * Reset this phase for recycling.
+     * Resets this phase for recycling.
      */
     protected void recycle() {
         trace("recycle");
@@ -62,7 +62,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Prepare this phase for reuse.
+     * Prepares this phase for reuse.
      * 
      * @param component The component to be processed by this phase.
      * @param model The model associated with the lifecycle at this phase.
@@ -93,7 +93,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Initialize queue of pending tasks phases.
+     * Initializes queue of pending tasks phases.
      * 
      * <p>
      * This method will be called before during processing to determine which tasks to perform at
@@ -105,7 +105,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected abstract void initializePendingTasks(Queue<ViewLifecycleTask> tasks);
 
     /**
-     * Initialize queue of successor phases.
+     * Initializes queue of successor phases.
      * 
      * <p>
      * This method will be called while processing this phase after all tasks have been performed,
@@ -119,7 +119,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected abstract void initializeSuccessors(Queue<ViewLifecyclePhase> successors);
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getComponent()
+     * {@inheritDoc}
      */
     @Override
     public final Component getComponent() {
@@ -127,7 +127,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getModel()
+     * {@inheritDoc}
      */
     @Override
     public final Object getModel() {
@@ -135,7 +135,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @return the parent
+     * {@inheritDoc}
      */
     @Override
     public final Component getParent() {
@@ -143,7 +143,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getIndex()
+     * {@inheritDoc}
      */
     @Override
     public final int getIndex() {
@@ -151,7 +151,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#isProcessed()
+     * {@inheritDoc}
      */
     @Override
     public final boolean isProcessed() {
@@ -159,7 +159,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#isComplete()
+     * {@inheritDoc}
      */
     @Override
     public final boolean isComplete() {
@@ -167,7 +167,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * @see ViewLifecyclePhase#getPredecessor()
+     * {@inheritDoc}
      */
     @Override
     public ViewLifecyclePhase getPredecessor() {
@@ -175,7 +175,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Validate this phase before processing and log activity.
+     * Validates this phase and thread state before processing and logs activity.
      * @see #run()
      */
     private void validateBeforeProcessing() {
@@ -199,7 +199,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Execute the lifecycle phase.
+     * Executes the lifecycle phase.
      * 
      * <p>
      * This method performs state validation and updates component view status. Use
@@ -290,7 +290,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Notify predecessors that this task has completed.
+     * Notifies predecessors that this task has completed.
      */
     protected final void notifyCompleted() {
         trace("complete");
@@ -303,7 +303,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     event, ViewLifecycle.getView(), ViewLifecycle.getModel(), component);
         }
 
-        doNotifyCompleted();
+        component.notifyCompleted(this);
 
         if (nextPhase != null) {
             ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
@@ -326,15 +326,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Override for additional handling when all tasks and successor tasks have been completed for
-     * this phase.
-     */
-    protected void doNotifyCompleted() {
-        component.notifyCompleted(this);
-    }
-
-    /**
-     * @see java.lang.Object#toString()
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
@@ -385,6 +377,13 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         return sb.toString();
     }
 
+    /**
+     * Logs a trace message related to processing this lifecycle, when tracing is active and
+     * debugging is enabled.
+     * 
+     * @param step The step in processing the phase that has been reached.
+     * @see ViewLifecycle#isTrace()
+     */
     private void trace(String step) {
         if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
             String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " +

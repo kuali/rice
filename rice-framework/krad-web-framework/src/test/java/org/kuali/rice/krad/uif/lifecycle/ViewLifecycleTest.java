@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.krad.sampleapp_2_4_M2.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.KradLabsForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionForm;
@@ -60,7 +63,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
     public static void setUpClass() throws Throwable {
-        UifUnitTestUtils.establishMockConfig("KRAD-ViewHelperServiceTest");
+        UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
     }
 
     @Before
@@ -95,26 +98,26 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         ViewCleaner.cleanView(dummyLogin);
     }
 
+    private View testFormView(UifFormBase form, String viewName) throws Throwable {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        request.setParameter(UifParameters.VIEW_ID, viewName);
+        new UifServletRequestDataBinder(form).bind(request);
+        UifControllerHelper.prepareViewForRendering(request, response, form);
+        View view = form.getView();
+        assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
+        ViewCleaner.cleanView(view);
+        return view;
+    }
+    
     @Test
     public void testKitchenSinkView() throws Throwable {
-        ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        View uifCompView = viewService.getViewById("UifCompView");
-        UifComponentsTestForm uifcompform = new UifComponentsTestForm();
-        // TODO:
-        //        ViewLifecycle.buildView(uifCompView, uifcompform, Collections.<String, String> emptyMap());
+        testFormView(new UifComponentsTestForm(), "UifCompView");
     }
     
     @Test
     public void testTransactionView() throws Throwable {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        TransactionForm tform = new TransactionForm();
-        request.setParameter(UifParameters.VIEW_ID, "TransactionView");
-        new UifServletRequestDataBinder(tform).bind(request);
-        UifControllerHelper.prepareViewForRendering(request, response, tform);
-        View transactionView = tform.getView();
-        assertEquals(UifConstants.ViewStatus.RENDERED, transactionView.getViewStatus());
-        ViewCleaner.cleanView(transactionView);
+        testFormView(new TransactionForm(), "TransactionView");
     }
     
     @Test
@@ -152,23 +155,23 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testPerformanceMediumAll() throws Throwable {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-        KradLabsForm pform = new KradLabsForm();
-        request.setParameter(UifParameters.VIEW_ID, "Lab-PerformanceMedium");
-        new UifServletRequestDataBinder(pform).bind(request);
-        UifControllerHelper.prepareViewForRendering(request, response, pform);
-        View performanceView = pform.getView();
-        assertEquals(UifConstants.ViewStatus.RENDERED, performanceView.getViewStatus());
-        ViewCleaner.cleanView(performanceView);
-        pform.setPostedView(performanceView);
-        pform.setView(null);
+    public void testComponentLibrary() throws Throwable {
+        KradSampleAppForm form = new KradSampleAppForm();
+        testFormView(form, "ComponentLibraryHome");
+    }
 
-        assertEquals("uwdv4lg", performanceView.getItems().get(0).getItems().get(1).getId());
+    @Test
+    public void testPerformanceMediumAll() throws Throwable {
+        KradLabsForm form = new KradLabsForm();
+        View view = testFormView(form, "Lab-PerformanceMedium");
+
+        form.setPostedView(view);
+        form.setView(null);
+
+        assertEquals("uwdv4lg", view.getItems().get(0).getItems().get(1).getId());
         String tableId = "uwdv4lg";
 
-        request = new MockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");
         request.setParameter("tableId", tableId);
         request.setParameter("ajaxReturnType", "update-none");
@@ -242,7 +245,8 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         DataTablesPagingHelper.DataTablesInputs dataTablesInputs =
                 new DataTablesPagingHelper.DataTablesInputs(request);
         DataTablesPagingHelper pagingHelper = new DataTablesPagingHelper();
-        pagingHelper.processPagingRequest(tableId, pform, request, response, dataTablesInputs);
+        HttpServletResponse response = new MockHttpServletResponse();
+        pagingHelper.processPagingRequest(tableId, form, request, response, dataTablesInputs);
     }
 
 

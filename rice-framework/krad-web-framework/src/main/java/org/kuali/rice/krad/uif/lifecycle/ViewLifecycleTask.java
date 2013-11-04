@@ -23,9 +23,9 @@ package org.kuali.rice.krad.uif.lifecycle;
 public interface ViewLifecycleTask extends Runnable {
 
     /**
-     * Get the phase this lifecycle task is a part of.
+     * Gets the phase this lifecycle task is a part of.
      * 
-     * @return The phase this lifecycle task is a part of.
+     * @return lifecycle phase
      */
     ViewLifecyclePhase getPhase();
     

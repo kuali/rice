@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
- * Perform custom finalize behavior for the component defined by the helper.
+ * Sets data bindings to read-only at the end of the apply model phase.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

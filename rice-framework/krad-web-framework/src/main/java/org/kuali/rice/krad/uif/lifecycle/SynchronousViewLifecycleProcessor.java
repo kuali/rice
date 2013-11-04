@@ -43,7 +43,7 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     private LifecycleRenderingContext renderingContext;
 
     /**
-     * Create a new synchronous processor for a lifecycle.
+     * Creates a new synchronous processor for a lifecycle.
      * 
      * @param lifecycle The lifecycle to process.
      */
@@ -52,7 +52,7 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     }
 
     /**
-     * @return the renderingContext
+     * {@inheritDoc}
      */
     public LifecycleRenderingContext getRenderingContext() {
         if (renderingContext == null && ViewLifecycle.isRenderInLifecycle()) {
@@ -65,7 +65,7 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     }
 
     /**
-     * @see ViewLifecycleProcessor#getActivePhase()
+     * {@inheritDoc}
      */
     @Override
     public ViewLifecyclePhase getActivePhase() {
@@ -73,16 +73,9 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     }
 
     /**
-     * Report a phase as active on this lifecycle thread.
-     * 
-     * <p>
-     * Since each {@link ViewLifecycle} instance is specific to a thread, only one phase may be
-     * active at a time.
-     * </p>
-     * 
-     * @param phase The phase to report as activate. Set as null to when the phase has been
-     *        completed to indicate that no phase is active.
+     * {@inheritDoc}
      */
+    @Override
     void setActivePhase(ViewLifecyclePhase phase) {
         if (activePhase != null && phase != null) {
             throw new IllegalStateException("Another phase is already active on this lifecycle thread " + activePhase);
@@ -92,17 +85,15 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     }
 
     /**
-     * Offer a pending phase, to be executed after the completion of the active phase and all
-     * currently pending phases.
-     * 
-     * @param pendingPhase The pending phase.
+     * {@inheritDoc}
      */
+    @Override
     public void offerPendingPhase(ViewLifecyclePhase pendingPhase) {
         pendingPhases.offer(pendingPhase);
     }
 
     /**
-     * @see ViewLifecycleProcessor#pushPendingPhase(ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
@@ -110,7 +101,7 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     }
 
     /**
-     * Execute all pending lifecycle phases.
+     * {@inheritDoc}
      */
     @Override
     public void performPhase(ViewLifecyclePhase initialPhase) {

@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,8 @@ import org.slf4j.LoggerFactory;
  * Perform the full view lifecycle.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see ViewLifecycle#encapsulateLifecycle(View, Object, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Runnable)
+ * @see UifControllerHelper#prepareViewForRendering(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, UifFormBase)
  */
 public class ViewLifecycleFullBuild implements Runnable {
     

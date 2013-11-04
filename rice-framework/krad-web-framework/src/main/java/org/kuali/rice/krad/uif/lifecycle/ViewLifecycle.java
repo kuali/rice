@@ -136,7 +136,7 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
-         * Set the registered Event.
+         * Sets the registered Event.
          * 
          * @param event The registered event.
          * @see EventRegistration#getEvent()
@@ -146,7 +146,7 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
-         * Set the component.
+         * Sets the component.
          * 
          * @param eventComponent The component.
          * @see EventRegistration#getEventComponent()
@@ -156,7 +156,7 @@ public class ViewLifecycle implements Serializable {
         }
 
         /**
-         * Set the event listener.
+         * Sets the event listener.
          * 
          * @param eventListener The event listener.
          * @see EventRegistration#getEventListener()
@@ -167,11 +167,14 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Determine whether or not the lifecycle is operating in strict mode. In general, strict mode
-     * is preferred and should be used in development. However, due to it's recent addition several
-     * applications may not operate in a stable manner in strict mode so its use is optional. Once
-     * strictness violations have been resolved, then strict mode may be enabled to ensure that
-     * further violations are not introduced.
+     * Determines whether or not the lifecycle is operating in strict mode.
+     * 
+     * <p>
+     * {@link Component#getViewStatus()} is checked at the beginning and end of each lifecycle
+     * phase. When operating in strict mode, when a component is in the wrong status for the current
+     * phase {@link IllegalStateException} will be thrown. When not in strict mode, warning messages
+     * are logged on the console.
+     * </p>
      * 
      * <p>
      * This value is controlled by the configuration parameter
@@ -179,8 +182,7 @@ public class ViewLifecycle implements Serializable {
      * default.
      * </p>
      * 
-     * @return True if exceptions will be thrown due to strictness violations, false if a warning
-     *         should be logged instead.
+     * @return true for strict operation, false to treat lifecycle violations as warnings 
      */
     public static boolean isStrict() {
         if (strict == null) {
@@ -192,15 +194,15 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Determine whether or not to enable rendering within the lifecycle.
+     * Determines whether or not to enable rendering within the lifecycle.
      * 
      * <p>
      * This value is controlled by the configuration parameter
      * &quot;krad.uif.lifecycle.render&quot;.
      * </p>
      * 
-     * @return True if rendering will be performed within the lifecycle, false if all rendering
-     *         should be deferred for Spring view processing.
+     * @return true for rendering within the lifecycle, false if all rendering should be deferred
+     *         for Spring view processing
      */
     public static boolean isRenderInLifecycle() {
         if (renderInLifecycle == null) {
@@ -212,15 +214,15 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Determine whether or not to processing view lifecycle phases asynchronously.
+     * Determines whether or not to processing view lifecycle phases asynchronously.
      * 
      * <p>
      * This value is controlled by the configuration parameter
      * &quot;krad.uif.lifecycle.asynchronous&quot;.
      * </p>
      * 
-     * @return True if view lifecycle phases should be performed asynchronously, false for
-     *         synchronous operation.
+     * @return true if view lifecycle phases should be performed asynchronously, false for
+     *         synchronous operation
      */
     public static boolean isAsynchronousLifecycle() {
         if (asynchronousLifecycle == null) {
@@ -232,15 +234,18 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Determine whether or not to log trace details at the info level for troubleshooting lifecycle
-     * phases.
+     * Determines whether or not to log trace details for troubleshooting lifecycle phases.
      * 
      * <p>
-     * This value is controlled by the configuration parameter
-     * &quot;krad.uif.lifecycle.trace&quot;.
+     * View lifecycle tracing is very verbose. This feature should only be enabled for
+     * troubleshooting purposes.
      * </p>
      * 
-     * @return True if view lifecycle phases processing information should be logged at the info level.
+     * <p>
+     * This value is controlled by the configuration parameter &quot;krad.uif.lifecycle.trace&quot;.
+     * </p>
+     * 
+     * @return true if view lifecycle phase processing information should be logged
      */
     public static boolean isTrace() {
         if (trace == null) {
@@ -561,9 +566,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the helper active on this context.
+     * Gets the helper active within a lifecycle on the current thread.
      * 
-     * @return the helper
+     * @return helper active on the current thread
      */
     public static ViewHelperService getHelper() {
         ViewLifecycle active = getActiveLifecycle();
@@ -576,13 +581,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the view active within this context.
+     * Gets the view active within a lifecycle on the current thread.
      * 
-     * <p>
-     * After the lifecycle has completed, this view becomes the resulting view.
-     * </p>
-     * 
-     * @return The view active within this context.
+     * @return view active on the current thread
      */
     public static View getView() {
         ViewLifecycle active = getActiveLifecycle();
@@ -596,8 +597,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Return an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be used for evaluating
-     * expressions
-     * contained on the view
+     * expressions contained on the view
      *
      * <p>
      * A ExpressionEvaluator must be initialized with a model for expression evaluation. One instance is
@@ -617,9 +617,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the model related to the view active within this context.
+     * Gets the model related to the view active within this context.
      * 
-     * @return The model related to the view active within this context.
+     * @return model related to the view active within this context
      */
     public static Object getModel() {
         ViewLifecycle active = getActiveLifecycle();
@@ -632,9 +632,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the servlet request for this lifecycle.
+     * Gets the servlet request for this lifecycle.
      * 
-     * @return The servlet request for this lifecycle.
+     * @return servlet request for this lifecycle
      */
     public static HttpServletRequest getRequest() {
         ViewLifecycle active = getActiveLifecycle();
@@ -647,9 +647,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the current phase of the active lifecycle.
+     * Gets the current phase of the active lifecycle, or null if no phase is currently active.
      * 
-     * @return The current phase of the active lifecycle, or null if no phase is currently active.
+     * @return current phase of the active lifecycle
      */
     public static ViewLifecyclePhase getPhase() {
         ViewLifecycleProcessor processor = PROCESSOR.get();
@@ -657,9 +657,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the rendering context for this lifecycle.
+     * Gets the rendering context for this lifecycle.
      * 
-     * @return The rendering context for this lifecycle.
+     * @return rendering context for this lifecycle
      */
     public static LifecycleRenderingContext getRenderingContext() {
         ViewLifecycleProcessor processor = PROCESSOR.get();
@@ -667,9 +667,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the lifecycle processor active on the current thread.
+     * Gets the lifecycle processor active on the current thread.
      * 
-     * @return The lifecycle processor active on the current thread.
+     * @return lifecycle processor active on the current thread
      */
     public static ViewLifecycleProcessor getProcessor() {
         ViewLifecycleProcessor processor = PROCESSOR.get();
@@ -708,9 +708,9 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Get the view context active on the current thread.
+     * Gets the view context active on the current thread.
      * 
-     * @return The view context active on the current thread.
+     * @return view context active on the current thread
      */
     public static ViewLifecycle getActiveLifecycle() {
         return getProcessor().getLifecycle();

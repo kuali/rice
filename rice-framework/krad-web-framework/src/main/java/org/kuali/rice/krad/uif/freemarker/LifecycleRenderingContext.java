@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -130,9 +131,12 @@ public class LifecycleRenderingContext {
             global.put(AbstractTemplateView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE,
                     new RequestContext(request, response, servletContext, modelAttrs));
 
+            global.put(UifParameters.VIEW, ViewLifecycle.getView());
+            
             Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService()
                     .getAllProperties();
             global.put(UifParameters.CONFIG_PROPERTIES, properties);
+            global.put(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
 
             Environment env = template.createProcessingEnvironment(global, writer);
             env.importLib("/krad/WEB-INF/ftl/lib/krad.ftl", "krad");

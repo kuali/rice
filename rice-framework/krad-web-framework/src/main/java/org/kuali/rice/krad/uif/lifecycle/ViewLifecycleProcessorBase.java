@@ -36,7 +36,7 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     private final ExpressionEvaluator expressionEvaluator = new DefaultExpressionEvaluator();
 
     /**
-     * Create a new synchronous processor for a lifecycle.
+     * Creates a new processor for a lifecycle.
      * 
      * @param lifecycle The lifecycle to process.
      */
@@ -61,15 +61,16 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     }
 
     /**
-     * Report a phase as active on this lifecycle thread.
+     * Reports a phase as active on the current thread.
      * 
      * <p>
      * Since each {@link ViewLifecycle} instance is specific to a thread, only one phase may be
      * active at a time.
      * </p>
      * 
-     * @param phase The phase to report as activate. Set as null to when the phase has been
-     *        completed to indicate that no phase is active.
+     * @param phase The phase to report as active, or null when the active phase has been
+     *        completed.
+     * @see #getActivePhase()
      */
     abstract void setActivePhase(ViewLifecyclePhase phase);
 

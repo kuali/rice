@@ -21,6 +21,7 @@ import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -40,7 +41,6 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
@@ -52,6 +52,8 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 public final class UifUnitTestUtils {
 
+    private final static Logger LOG = Logger.getLogger(UifUnitTestUtils.class);
+    
     private final static ThreadLocal<Properties> TL_CONFIG_PROPERTIES = new ThreadLocal<Properties>();
 
     private static ConfigurableWebApplicationContext webApplicationContext;
@@ -66,7 +68,7 @@ public final class UifUnitTestUtils {
 
         MutablePropertyValues mpv = new MutablePropertyValues();
         mpv.add("preferFileSystemAccess", false);
-        mpv.add("templateLoaderPath", "/krad-web_2_4_M2");
+        mpv.add("templateLoaderPath", "/krad-web_2_4_M3");
         Properties props = new Properties();
         props.put("number_format", "computer");
         props.put("template_update_delay", "2147483647");
@@ -122,6 +124,16 @@ public final class UifUnitTestUtils {
         InputStream appPropertyResource = loader.getResourceAsStream(applicationId + ".properties");
         Assert.assertNotNull(applicationId + ".properties", appPropertyResource);
         configProperties.load(appPropertyResource);
+        
+        String resourceBundles = configProperties.getProperty("test.resource.bundles");
+        if (resourceBundles != null) {
+            for (String resourceBundle : resourceBundles.split(",")) {
+                InputStream propertyResource = loader.getResourceAsStream(resourceBundle);
+                Assert.assertNotNull(resourceBundle, resourceBundle);
+                configProperties.load(propertyResource);
+                LOG.info("Added resource bundle " + resourceBundle);
+            }
+        }
 
         config.putProperties(configProperties);
         config.putProperty("application.id", applicationId);

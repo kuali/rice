@@ -337,7 +337,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             expression = parser.parseExpression(expressionTemplate);
         }
 
-        cachedExpressions.put(expressionTemplate, expression);
+        synchronized (cachedExpressions) {
+            cachedExpressions.put(expressionTemplate, expression);
+        }
 
         return expression;
     }

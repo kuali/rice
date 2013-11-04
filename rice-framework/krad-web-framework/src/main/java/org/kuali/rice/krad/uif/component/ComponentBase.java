@@ -1093,11 +1093,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setSelfRendered(boolean)
      */
     public void setSelfRendered(boolean selfRendered) {
-        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
-        if (!(phase instanceof RenderComponentPhase) || this != phase.getComponent()) {
-            checkMutable(true);
-        }
-        
         this.selfRendered = selfRendered;
     }
 
@@ -1113,11 +1108,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see org.kuali.rice.krad.uif.component.Component#setRenderedHtmlOutput(java.lang.String)
      */
     public void setRenderedHtmlOutput(String renderedHtmlOutput) {
-        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
-        if (!(phase instanceof RenderComponentPhase) || this != phase.getComponent()) {
-            checkMutable(true);
-        }
-        
         this.renderedHtmlOutput = renderedHtmlOutput;
     }
 

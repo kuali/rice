@@ -25,7 +25,6 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -47,7 +46,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     private RenderComponentPhase renderPhase;
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
+     * {@inheritDoc}
      */
     @Override
     protected void recycle() {
@@ -56,7 +55,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * Create a new lifecycle phase processing task for finalizing a component.
+     * Creates a new lifecycle phase processing task for finalizing a component.
      * 
      * @param component The component instance the model should be applied to
      * @param model Top level object containing the data
@@ -68,7 +67,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
+     * {@inheritDoc}
+     * @return UifConstants.ViewPhases.FINALIZE
      */
     @Override
     public String getViewPhase() {
@@ -76,7 +76,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getStartViewStatus()
+     * {@inheritDoc}
+     * @return UifConstants.ViewStatus.MODEL_APPLIED
      */
     @Override
     public String getStartViewStatus() {
@@ -84,7 +85,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEndViewStatus()
+     * {@inheritDoc}
+     * @return UifConstants.ViewStatus.FINAL
      */
     @Override
     public String getEndViewStatus() {
@@ -92,7 +94,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
+     * {@inheritDoc}
+     * @return LifecycleEvent.LIFECYCLE_COMPLETE
      */
     @Override
     public LifecycleEvent getEventToNotify() {
@@ -101,12 +104,10 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Update state of the component and perform final preparation for rendering.
-     * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
-        tasks.add(LifecycleTaskFactory.getTask(SetReadOnlyOnDataBindingTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
@@ -118,8 +119,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Define all nested lifecycle components, and component prototypes, as successors.
-     * 
-     * @see ViewLifecyclePhaseBase#initializeSuccessors(Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {

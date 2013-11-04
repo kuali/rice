@@ -30,13 +30,19 @@ import java.util.Properties;
 
 /**
  * <p>
- * Util Properties methods which have come from refactoring test generation using freemarker.
+ * Util Properties methods which have come from refactoring test generation using freemarker, providing overriding of
+ * file properties from System Properties as well as setting file properties as System Properties, as well as turning
+ * numbered properties to a List.
  * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PropertiesUtils {
 
     /**
+     * <p>
+     * Plain load Properties from the given inputStream.
+     * </p>
+     *
      * @param inputStream to read properties from
      * @return Properties read from given Inputstream
      * @throws IOException
@@ -62,6 +68,7 @@ public class PropertiesUtils {
      * @param resourceLocation load resource as a stream {@code getClass().getClassLoader().getResourceAsStream(resourceLocation);}
      * @return Properties read from given Inputstream or Resource Loaction if the InputStream is null
      * @throws IOException
+     * @deprecated {@see #loadProperties(String)}
      */
     public Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
         Properties props = null;
@@ -121,12 +128,14 @@ public class PropertiesUtils {
     }
 
     /**
+     * <p>
      * Beware of classloader/timing issues!  Sometimes properties get added to the System properties after the point
      * you might expect.  Resulting in the System property not really being set for when you expected, such as with
      * settign statics.  Looks like WebDriverLegacyITBase has this going on with public.remote.url
+     * </p>
      *
-     * @param location
-     * @return
+     * @param location file or resource to load properties from, file is attempted first
+     * @return Properties
      * @throws IOException
      */
     public Properties loadPropertiesWithSystemAndOverridesIntoSystem(String location) throws IOException {
@@ -219,6 +228,19 @@ public class PropertiesUtils {
         return systemPropertiesOverride(props, null);
     }
 
+    /**
+     * <p>
+     * In addition to overriding file properties from System Properties, System properties are added to the returned
+     * Properties.
+     * </p><p>
+     * {@see #systemPropertiesOverride}
+     * </p>
+     *
+     *
+     * @param props Properties with System Properties added and Overriding file properties
+     * @param arg filter System Properties added to Properties by the Property key starting with arg
+     * @return
+     */
     public Properties systemPropertiesAndOverride(Properties props, String arg) {
         PropertiesUtils propUtils = new PropertiesUtils();
         props = propUtils.systemPropertiesOverride(props, arg);

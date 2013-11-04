@@ -1,15 +1,19 @@
-/** overridding styles on controls to be 100% **/
-input[type="text"], .uif-textAreaControl {
-    width: 100%;
-}
+/** overridding styles on controls to be 90% **/
+/*input[type="text"] {*/
+    /*width: 90%;*/
+/*}*/
 
-.uif-dropdownControl {
-    width: 100%;
-}
+/*.uif-dropdownControl {*/
+    /*width: 90%;*/
+/*}*/
 
-select[multiple] {
-    width: 100%;
-}
+/*select[multiple] {*/
+    /*width: 90%;*/
+/*}*/
+
+/*textarea {*/
+    /*width: 90%;*/
+/*}*/
 
 /** add bottom border for view header **/
 .uif-viewHeader-contentWrapper {

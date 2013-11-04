@@ -129,7 +129,36 @@
         <bean parent="Uif-CssGridSection-1FieldLabelColumn">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Proposal type" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Proposal Type" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Project Title" p:propertyName="field2" p:required="true">
+                <property name="control">
+                  <bean parent="Uif-MediumTextAreaControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-HorizontalFieldGroup" p:label="Project Dates">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field4">
+                      <property name="control">
+                        <bean parent="Uif-DateControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-Message" p:messageText="to"/>
+                    <bean parent="Uif-InputField" p:propertyName="field5">
+                      <property name="control">
+                        <bean parent="Uif-DateControl"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3">
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinderByScript"
+                        p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:field3"/>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

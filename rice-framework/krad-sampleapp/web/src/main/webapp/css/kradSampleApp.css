@@ -1065,10 +1065,9 @@ table.dataTable tr.demo-rowCondition {
     font-style: italic;
 }
 
-#KradSampleAppHome .container-fluid {
+#KradSampleAppHome .container-fluid, .demo-sampleAppView .container-fluid  {
     padding-left: 0px;
     padding-right: 0px;
     margin-left: auto;
     margin-right: auto;
 }
-

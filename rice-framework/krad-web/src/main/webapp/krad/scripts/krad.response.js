@@ -64,7 +64,7 @@ KradResponse.prototype = {
         page.hide();
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
-        var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " > #" +
+        var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " #" +
                 kradVariables.PAGE_CONTENT_WRAPPER;
         hideBubblePopups(pageInLayout);
 

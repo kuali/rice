@@ -243,7 +243,6 @@ class LegacyDetector {
                 }
             }
         } catch (Exception e) {
-            LOG.warn(e.getStackTrace());
             return false;
         }
 

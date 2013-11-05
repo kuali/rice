@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.metadata;
 
-import javax.persistence.CascadeType;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -24,33 +22,5 @@ import javax.persistence.CascadeType;
 public class ManyToOneDescriptor extends ObjectDescriptor implements java.io.Serializable {
 
 	private static final long serialVersionUID = -1277621663465909764L;
-
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("ManyToOneDescriptor = [ ");
-		sb.append("targetEntity:").append(targetEntity.getName()).append(", ");
-		sb.append("cascade = { ");
-		for (CascadeType ct : cascade) {
-			sb.append(ct).append(" ");
-		}
-		sb.append("}, ");
-		sb.append("fetch:").append(fetch).append(", ");
-		sb.append("optional:").append(optional);
-		if (!joinColumnDescriptors.isEmpty()) {
-			sb.append(", join columns = { ");
-			for (JoinColumnDescriptor joinColumnDescriptor : joinColumnDescriptors) {				
-				sb.append(" jc = { ");
-				sb.append("name:").append(joinColumnDescriptor.getName()).append(", ");
-				sb.append("insertable:").append(joinColumnDescriptor.isInsertable()).append(", ");
-				sb.append("nullable:").append(joinColumnDescriptor.isNullable()).append(", ");
-				sb.append("unique:").append(joinColumnDescriptor.isUnique()).append(", ");
-				sb.append("updateable:").append(joinColumnDescriptor.isUpdateable());
-				sb.append(" }");
-			}
-			sb.append(" } ");
-		}
-		sb.append(" ]");
-		return sb.toString();
-	}
 	
 }

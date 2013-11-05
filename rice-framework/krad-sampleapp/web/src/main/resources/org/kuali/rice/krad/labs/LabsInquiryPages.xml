@@ -222,6 +222,32 @@
       </list>
     </property>
   </bean>
-
-
+  <bean id="KradInquirySample-PageR5C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR5C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to specify the number of columns within an non-collection inquiry section." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krms.impl.repository.ContextBo&amp;id=CONTEXT1&amp;renderedInLightBox=true&amp;flow=start"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="KradInquirySample-PageR5C2" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR5C2" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to demonstrate the use of the disclosure widget to open/close sections by default." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

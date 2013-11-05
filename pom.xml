@@ -46,7 +46,7 @@
   </ciManagement>
 
   <properties>
-    <project.scm.url>https://svn.kuali.org/repos/rice/trunk</project.scm.url>
+    <project.scm.url>https://svn.kuali.org/repos/rice/sandbox/branches/rice-2.4-perf</project.scm.url>
   
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>

@@ -17,7 +17,7 @@
   box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.07);
 }
 
-.uif-applicationHeader div.toolbar .dropdown a {
+.uif-applicationHeader div.toolbar .dropdown > a {
   padding-top: 3px;
   padding-right: 6px;
   padding-bottom: 3px;
@@ -28,8 +28,12 @@
   -webkit-box-shadow: 1px 0px 0px 0px #cccccc;
   box-shadow: 1px 0px 0px 0px #cccccc;
 }
-
-
+.uif-applicationHeader div.toolbar .dropdown a:hover {
+  color: #fff;
+}
+.uif-applicationHeader div.toolbar .dropdown>a:hover {
+  color: #000;
+}
 
 .uif-applicationHeader div.toolbar .dropdown.open > a {   background: #eee;
 }

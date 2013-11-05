@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krad.util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -207,8 +209,8 @@ class LegacyDetector {
         //ADDED hack to handle classes like PersonImpl that are not in OJB but are Legacy and should
         //goto that adapter
         if (isLegacyDataFrameworkEnabled() &&
-                (ojbLoadedClass || (isTransientBoOnClasspath(dataObjectClass))) &&
-                        !isKradDataManaged(dataObjectClass)) {
+                (ojbLoadedClass || isTransientBO(dataObjectClass)) &&
+                !isKradDataManaged(dataObjectClass)) {
             return true;
         }
         // default to non-legacy when in a non-legacy context
@@ -216,20 +218,36 @@ class LegacyDetector {
     }
 
     /**
-     * Confirm if TransientBO on classpath and this is one
-     * @param dataObjectClass
-     * @return
+     * Confirm if this is a BO that is not mapped by OJB but should be handled by the Legacy Adapter.
+     *
+     * @param dataObjectClass the data object class
+     *
+     * @return true if {@code dataObjectClass} should be handled by the Legacy Adapter, false otherwise
      */
-    private boolean isTransientBoOnClasspath(Class dataObjectClass){
-        Class<?> tbob = null;
-        Object dataObject = null;
+    private boolean isTransientBO(Class dataObjectClass) {
+        boolean isTransientBo = false;
+
+        List<String> transientClassNames = Lists.newArrayList(
+                "org.kuali.rice.krad.bo.TransientBusinessObjectBase",
+                "org.kuali.rice.kim.impl.permission.UberPermissionBo");
+
         try {
-            dataObject = dataObjectClass.newInstance();
-            tbob = Class.forName("org.kuali.rice.krad.bo.TransientBusinessObjectBase");
+            Object dataObject = dataObjectClass.newInstance();
+
+            for (String transientClassName : transientClassNames) {
+                Class<?> transientClass = Class.forName(transientClassName);
+
+                if (transientClass.isInstance(dataObject)) {
+                    isTransientBo = true;
+                    break;
+                }
+            }
         } catch (Exception e) {
+            LOG.warn(e.getStackTrace());
             return false;
         }
-        return tbob.isInstance(dataObject);
+
+        return isTransientBo;
     }
 
     /**

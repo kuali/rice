@@ -209,8 +209,7 @@
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
-              p:refreshId="uLookupResults"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"

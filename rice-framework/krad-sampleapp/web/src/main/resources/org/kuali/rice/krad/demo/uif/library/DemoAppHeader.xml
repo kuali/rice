@@ -54,7 +54,7 @@
 
         <property name="applicationNavigation.items">
           <list>
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Researcher" p:renderToggleCaret="false">
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="RESEARCHER" p:renderToggleCaret="false">
               <property name="menuGroup">
                 <bean parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="6">
                   <property name="items">
@@ -67,10 +67,10 @@
               </property>
             </bean>
 
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Unit" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Central Admin" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Maintenance" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownMenu" p:dropdownToggleText="System Admin" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="UNIT" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="CENTRAL ADMIN" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="MAINTENANCE" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="SYSTEM ADMIN" p:renderToggleCaret="false"/>
           </list>
         </property>
 
@@ -79,7 +79,7 @@
             <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
               <property name="items">
                 <list>
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action list"
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action list"
                         p:additionalCssClasses="pull-right">
                     <property name="menuItems">
                       <list>
@@ -94,10 +94,10 @@
                     </property>
                   </bean>
 
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Doc Search" p:renderToggleCaret="false"
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:renderToggleCaret="false"
                         p:additionalCssClasses="pull-right"/>
 
-                  <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark"
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark"
                         p:additionalCssClasses="pull-right">
                     <property name="menuItems">
                       <list>

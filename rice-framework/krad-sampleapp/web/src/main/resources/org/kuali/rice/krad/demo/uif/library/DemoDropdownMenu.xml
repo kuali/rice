@@ -50,7 +50,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example1 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
@@ -69,7 +69,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example2 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action List">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action List">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1034"/>
@@ -80,7 +80,7 @@
 
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1037"/>
 
-              <bean parent="Uif-MenuAction" p:menuDivider="true"/>
+              <bean parent="Uif-MenuDivider"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Full Action List"/>
             </list>
@@ -96,16 +96,16 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example3 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Favorites">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Favorites">
           <property name="menuItems">
             <list>
-              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Documents"/>
+              <bean parent="Uif-MenuHeader" p:messageText="Documents"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Budget"/>
 
-              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Reports"/>
+              <bean parent="Uif-MenuHeader" p:messageText="Reports"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Yearly Budget"/>
             </list>
@@ -121,7 +121,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example4 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Approve"/>
@@ -140,7 +140,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example5 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action">
           <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"
@@ -163,7 +163,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example6 start-->
-        <bean parent="Uif-DropdownMenu" p:renderToggleButton="true">
+        <bean parent="Uif-DropdownToggleMenu" p:renderToggleButton="true">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
@@ -182,7 +182,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example7 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="more..." p:renderToggleCaret="false">
+        <bean parent="Uif-DropdownMenu" p:toggleText="more..." p:toggleCaretClass="">
           <property name="menuGroup">
             <bean parent="Uif-DropdownTable">
               <property name="items">

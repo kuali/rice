@@ -209,4 +209,20 @@
     </property>
   </bean>
 
+  <bean id="KradInquirySample-PageR4C3" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR4C3" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with a collection of inactivatable elements" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=TravelCompanyCategory-InquiryView"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
 </beans>

@@ -27,11 +27,8 @@ import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraint
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,6 +58,9 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
 
     @Column(name = "TRVL_AUTH_DOC_ID")
     private String travelAuthorizationDocumentId;
+
+    @Column(name = "TRVL_CO_NM")
+    private String travelCompanyName;
 
     @Column(name = "EXP_TYP_CD", length = 10)
     @Label("Expense Type")
@@ -109,6 +109,14 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
 
     public void setTravelAuthorizationDocumentId(String travelAuthorizationDocumentId) {
         this.travelAuthorizationDocumentId = travelAuthorizationDocumentId;
+    }
+
+    public String getTravelCompanyName() {
+        return travelCompanyName;
+    }
+
+    public void setTravelCompanyName(String travelCompanyName) {
+        this.travelCompanyName = travelCompanyName;
     }
 
     public String getTravelExpenseTypeCd() {

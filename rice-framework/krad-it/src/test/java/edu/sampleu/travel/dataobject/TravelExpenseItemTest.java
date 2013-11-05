@@ -52,6 +52,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
     private static final String CELL_PHONE_NUMBER = "555-555-5555";
 
     private static String TRAVEL_DESTINATION_ID;
+    private static final String TRAVEL_COMPANY_NAME = "Zorba's Travel";
     private static final String DESTINATION_NAME = PostalStateCode.CA.getLabel();
     private static final String COUNTRY_CODE = PostalCountryCode.US.getCode();
     private static final String STATE_CODE = PostalStateCode.CA.getCode();
@@ -106,6 +107,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
         assertNotNull("Travel Expense Item ID is null", travelExpenseItem.getTravelExpenseItemId());
         assertEquals("Travel Expense Item document ID is incorrect", DOCUMENT_NUMBER, travelExpenseItem.getTravelAuthorizationDocumentId());
         assertEquals("Travel Expense Item type is incorrect", EXPENSE_TYPE, travelExpenseItem.getTravelExpenseTypeCd());
+        assertEquals("Travel Company name is incorrect", TRAVEL_COMPANY_NAME, travelExpenseItem.getTravelCompanyName());
         assertEquals("Travel Expense Item description is incorrect", EXPENSE_DESCRIPTION, travelExpenseItem.getExpenseDesc());
         assertEquals("Travel Expense Item date is incorrect", DATE_FORMAT.parse(EXPENSE_DATE), travelExpenseItem.getExpenseDate());
         assertEquals("Travel Expense Item amount is incorrect", EXPENSE_AMOUNT, travelExpenseItem.getExpenseAmount());
@@ -118,6 +120,7 @@ public class TravelExpenseItemTest extends KRADTestCase {
         travelExpenseItem.setTravelAuthorizationDocumentId(DOCUMENT_NUMBER);
         travelExpenseItem.setTravelExpenseTypeCd(EXPENSE_TYPE);
         travelExpenseItem.setExpenseDesc(EXPENSE_DESCRIPTION);
+        travelExpenseItem.setTravelCompanyName(TRAVEL_COMPANY_NAME);
         travelExpenseItem.setExpenseDate(DATE_FORMAT.parse(EXPENSE_DATE));
         travelExpenseItem.setExpenseAmount(EXPENSE_AMOUNT);
         travelExpenseItem.setReimbursable(true);

@@ -72,7 +72,7 @@
   <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownMenu" p:dropdownToggleText="more..."
         p:renderToggleCaret="false">
     <property name="menuGroup">
-      <bean parent="Uif-DropdownTable" p:headerText="Document Info">
+      <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed" p:headerText="Document Info">
         <property name="items">
           <list>
             <bean parent="Uif-MessageField" p:label="Doc Nbr" p:fieldLabel.renderColon="false"

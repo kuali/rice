@@ -41,6 +41,7 @@
 	<util:list id="jpaPackagesToScan">
 		<value>edu.sampleu.travel.dataobject</value>
 		<value>org.kuali.rice.krad.demo.travel.dataobject</value>
+    <value>org.kuali.rice.krad.labs</value>
 	</util:list>
 	
 	<util:list id="managedClassNames" />

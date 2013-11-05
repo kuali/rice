@@ -257,7 +257,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with an encrypted parameter that will be decrypted" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-ParameterDecryption&amp;methodToCall=start&amp;accountTypeCode=rhHqKzmrgsM=&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-ParameterDecryption&amp;methodToCall=start&amp;accountTypeCode=rhHqKzmrgsM=&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsEncryptedTravelAccountType"/>
             </list>
           </property>
         </bean>

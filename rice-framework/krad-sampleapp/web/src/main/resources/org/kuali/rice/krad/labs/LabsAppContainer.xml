@@ -59,7 +59,7 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-DocInfo" parent="Uif-VerticalBoxGroup">
+  <bean id="LabsProposal-DocInfo" parent="Uif-VerticalBoxGroup" p:additionalCssClasses="uif-documentInfo">
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="[strong]Document Info[/strong]"/>

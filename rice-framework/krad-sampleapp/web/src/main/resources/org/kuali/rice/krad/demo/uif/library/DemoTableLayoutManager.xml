@@ -34,6 +34,7 @@
         <ref bean="Demo-TableLayoutManager-Example4"/>
         <ref bean="Demo-TableLayoutManager-Example5"/>
         <ref bean="Demo-TableLayoutManager-Example6"/>
+        <ref bean="Demo-TableLayoutManager-Example7"/>
       </list>
     </property>
   </bean>
@@ -278,6 +279,36 @@
           </property>
         </bean>
         <!-- ex:Demo-TableLayoutManager-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example7" parent="Uif-VerticalBoxSection" p:headerText="Action Column Left">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example7 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Table Layout Action Column Left"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
+                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
+                    p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
+                    p:required="true">
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example7 end-->
       </list>
     </property>
   </bean>

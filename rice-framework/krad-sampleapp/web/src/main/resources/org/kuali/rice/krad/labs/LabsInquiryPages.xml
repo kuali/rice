@@ -250,4 +250,19 @@
       </list>
     </property>
   </bean>
+  <bean id="KradInquirySample-PageR5C3" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR5C3" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with an encrypted parameter that will be decrypted" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-ParameterDecryption&amp;methodToCall=start&amp;accountTypeCode=rhHqKzmrgsM=&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

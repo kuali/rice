@@ -70,7 +70,7 @@
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.labs.inquiry.LabsInquiryCustomLinkInquirable"/>
     <property name="items">
       <list>
-        <bean id="TravelAccount-InquiryView-Custom" parent="Uif-Disclosure-GridSection">
+        <bean id="TravelAccount-InquiryView-CustomLink" parent="Uif-Disclosure-GridSection">
           <property name="headerText" value="Account Type Information"/>
           <property name="items">
             <list>
@@ -155,6 +155,37 @@
     <property name="presentationControllerClass" value="org.kuali.rice.krad.demo.uif.controller.DemoInquiryViewPresentationController"/>
     <property name="viewName" value="LabsInquiry-PresentationControllerView"/>
     <property name="headerText" value="Inquiry with presentation controller controlling field and section visibility"/>
+  </bean>
+
+  <bean id="LabsInquiry-ParameterDecryption" parent="LabsInquiry-DefaultView">
+    <property name="viewName" value="LabsInquiry-ParameterDecryptionView"/>
+    <property name="headerText" value="Inquiry Parameter Decryption Sample"/>
+    <property name="items">
+      <list>
+        <bean id="DocumentHeader-InquiryView-ParameterDecryption" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Account Type Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="accountTypeCode">
+                <property name="componentSecurity">
+                  <bean parent="Uif-DataFieldSecurity">
+                    <property name="attributeSecurity">
+                      <bean parent="AttributeSecurity" p:mask="true">
+                        <property name="maskFormatter">
+                          <bean parent="MaskFormatterLiteral" p:literal="*********"/>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-DataField" p:propertyName="name"/>
+              <bean parent="Uif-DataField" p:propertyName="codeAndDescription"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
 </beans>

@@ -1793,7 +1793,11 @@
           </listitem>
           <listitem xml:id="LBB5">
             <para><emphasis role="keyword">multipleValuesSelectResultSetLimit</emphasis> [KRAD line
-              51] overrides the MULTIPLE_VALUE_RESULTS_PER_PAGE application/system parameter. <inlinemediaobject>
+              51] overrides the MULTIPLE_VALUE_RESULTS_LIMIT application/system parameter.  This
+              parameter restricts the number of results returned from a lookup that can return
+              multiple values.  The parameter defaults to 100 results, but can either be changed in
+              the database or be overridden by setting <emphasis role="keyword"
+              >multipleValuesSelectResultSetLimit</emphasis>. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1801,7 +1805,10 @@
           </listitem>
           <listitem xml:id="LBB6">
             <para><emphasis role="keyword">resultSetLimit</emphasis> [KRAD line 52] overrides the
-              application/system parameter RESULTS_LIMIT. <inlinemediaobject>
+              application/system parameter RESULTS_LIMIT.  This parameter restricts the number of
+              results returned from a lookup that can return one value.  The parameter defaults to
+              100 results, but can either be changed in the database or be overridden by setting
+              <emphasis role="keyword">resultSetLimit</emphasis>. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>

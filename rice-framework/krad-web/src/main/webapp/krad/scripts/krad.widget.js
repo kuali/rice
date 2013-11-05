@@ -180,6 +180,88 @@ function createVerticalMenu(listId, options) {
     });
 }
 
+/**
+ * Setup the sidebar navigation menu scripts, which allow for collapsing, and toggling of sub menus, as well as icon
+ * swapping when interacting with these toggles
+ *
+ * @param id the id of the navigation group
+ * @param openedToggleIconClass the icon to use when a sub toggle menu is open
+ * @param closedToggleIconClass the icon to use when a sub toggle menu is closed
+ */
+function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
+    var navMenu = jQuery("#" + id);
+    var menuWidth = navMenu.outerWidth(true);
+
+    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).css("margin-left", menuWidth);
+
+    // TODO Unsure if the following line is needed:
+    jQuery(".show-popover").popover();
+
+    // Animation and icon swapping handler for the sub toggle menus
+    jQuery("a.dropdown-toggle", navMenu).click(function () {
+        var subMenu = jQuery(this).next(".submenu");
+        var icon = jQuery(this).children("." + kradVariables.TOGGLE_ARROW_CLASS);
+        if (icon.hasClass(closedToggleIconClass)) {
+            icon.addClass("anim-turn90");
+        } else {
+            icon.addClass("anim-turn-90");
+        }
+        subMenu.slideToggle(400, function () {
+            if (jQuery(this).is(":hidden")) {
+                icon.attr("class", kradVariables.TOGGLE_ARROW_CLASS + " " + closedToggleIconClass);
+            } else {
+                icon.attr("class", kradVariables.TOGGLE_ARROW_CLASS + " " + openedToggleIconClass);
+            }
+            icon.removeClass("anim-turn90").removeClass("anim-turn-90");
+        })
+    });
+
+    // If menu is already collapsed, show appropriate icon
+    jQuery("#" + id + "." + kradVariables.MENU_COLLAPSED
+            + "." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_RIGHT);
+
+    // Collapsing handler for when the menu collapse is clicked, swaps icon, classes, and page margin
+    jQuery("." + kradVariables.MENU_COLLAPSE_ACTION).click(function () {
+        jQuery("#" + id).toggleClass(kradVariables.MENU_COLLAPSED);
+        var menuWidth = jQuery("#" + id).outerWidth(true);
+        jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).css("margin-left", menuWidth);
+        if (jQuery("#" + id).hasClass(kradVariables.MENU_COLLAPSED)) {
+            jQuery("." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_RIGHT);
+            jQuery.cookie(kradVariables.MENU_COLLAPSED, "true");
+        } else {
+            jQuery("." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_LEFT);
+            jQuery.cookie(kradVariables.MENU_COLLAPSED, "false");
+        }
+    });
+
+    // Setup event that can be fired to open the menu
+    jQuery("#" + id).on("show.bs.collapse", function () {
+        if (jQuery(this).hasClass(kradVariables.MENU_COLLAPSED)) {
+            jQuery(this).removeClass(kradVariables.MENU_COLLAPSED);
+        }
+    });
+
+    // Mark the current active link
+    markActiveMenuLink();
+
+    // Add open toggleClass if the item is active
+    jQuery(".nav > li." + kradVariables.ACTIVE_CLASS + " > a > ." + kradVariables.TOGGLE_ARROW_CLASS,
+            navMenu).removeClass(closedToggleIconClass).addClass(openedToggleIconClass);
+}
+
+/**
+ * Mark the menu link that is considered to be active for the current page
+ */
+function markActiveMenuLink() {
+    // Clear current active
+    jQuery("li." + kradVariables.ACTIVE_CLASS).removeClass(kradVariables.ACTIVE_CLASS);
+
+    // Select active
+    var pageId = getCurrentPageId();
+    var liParents = jQuery("a[name='" + pageId + "']").parents("li");
+    liParents.addClass(kradVariables.ACTIVE_CLASS);
+}
+
 /** Widgets */
 
 /**
@@ -1095,11 +1177,11 @@ function createTabs(id, widgetId, options, position) {
     }
     else if (position == "RIGHT") {
         tabs.addClass('ui-tabs-vertical ui-tabs-vertical-right ui-helper-clearfix');
-        tabs.find("li").removeClass('ui-corner-top').addClass('ui-corner-right');
+        tabs.find("> ul > li").removeClass('ui-corner-top').addClass('ui-corner-right');
     }
     else if (position == "LEFT") {
         tabs.addClass("ui-tabs-vertical ui-tabs-vertical-left ui-helper-clearfix");
-        tabs.find("li").removeClass("ui-corner-top").addClass("ui-corner-left");
+        tabs.find("> ul > li").removeClass("ui-corner-top").addClass("ui-corner-left");
     }
 }
 

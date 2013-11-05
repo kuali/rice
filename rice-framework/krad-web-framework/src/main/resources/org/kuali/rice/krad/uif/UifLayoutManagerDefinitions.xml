@@ -353,9 +353,9 @@
   </bean>
 
   <bean id="Uif-SelectCollectionItemMenu" parent="Uif-SelectCollectionItemMenu-parentBean"/>
-  <bean id="Uif-SelectCollectionItemMenu-parentBean" abstract="true" parent="Uif-DropdownMenu"
+  <bean id="Uif-SelectCollectionItemMenu-parentBean" abstract="true" parent="Uif-DropdownToggleMenu"
         p:renderToggleButton="true">
-    <property name="menuActions">
+    <property name="menuItems">
       <list>
         <!-- Select / Deselect All pages -->
 

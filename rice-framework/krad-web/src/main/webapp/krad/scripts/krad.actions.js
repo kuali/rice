@@ -407,7 +407,7 @@ function retrieveCollectionPage(linkElement, collectionId) {
     var parentLI = link.parent();
 
     // Skip processing if the link supplied is disabled or active
-    if (parentLI.is("." + kradVariables.DISABLED_CLASS) || parentLI.is(kradVariables.ACTIVE_CLASS)) {
+    if (parentLI.is("." + kradVariables.DISABLED_CLASS) || parentLI.is("." + kradVariables.ACTIVE_CLASS)) {
         return;
     }
 

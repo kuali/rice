@@ -81,7 +81,7 @@
                 <list>
                   <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action list"
                         p:additionalCssClasses="pull-right">
-                    <property name="menuActions">
+                    <property name="menuItems">
                       <list>
                         <bean parent="Uif-MenuAction"
                               p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
@@ -99,7 +99,7 @@
 
                   <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark"
                         p:additionalCssClasses="pull-right">
-                    <property name="menuActions">
+                    <property name="menuItems">
                       <list>
                         <bean parent="Uif-MenuAction"
                               p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"

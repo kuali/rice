@@ -23,7 +23,7 @@
   <!-- Dropdown Menu demo -->
   <bean id="Demo-DropdownMenu-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoDropdownMenu.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.DropdownMenu"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.ToggleMenu"/>
     <!-- TODO: add anchor once docs are complete -->
     <!--<property name="docBookAnchor" value="d6813e7830"/>-->
     <property name="demoGroups">
@@ -49,8 +49,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example1 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
-          <property name="menuActions">
+        <bean parent="Uif-DropdownMenu" p:toggleText="User thclark">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
 
@@ -68,8 +68,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example2 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action List">
-          <property name="menuActions">
+        <bean parent="Uif-DropdownMenu" p:toggleText="Action List">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1034"/>
 
@@ -95,16 +95,16 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example3 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Favorites">
-          <property name="menuActions">
+        <bean parent="Uif-DropdownMenu" p:toggleText="Favorites">
+          <property name="menuItems">
             <list>
-              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Documents"/>
+              <bean parent="Uif-MenuHeader" p:messageText="Documents"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Budget"/>
 
-              <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Reports"/>
+              <bean parent="Uif-MenuHeader" p:messageText="Reports"/>
 
               <bean parent="Demo-MenuAction" p:actionLabel="Yearly Budget"/>
             </list>
@@ -120,8 +120,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example4 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
-          <property name="menuActions">
+        <bean parent="Uif-DropdownMenu" p:toggleText="Select Action">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Approve"/>
 
@@ -139,8 +139,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example5 start-->
-        <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
-          <property name="menuActions">
+        <bean parent="Uif-DropdownMenu" p:toggleText="Select Action">
+          <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"
                     p:refreshId="Demo-DropdownMenu-Example5"/>
@@ -163,7 +163,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example6 start-->
         <bean parent="Uif-DropdownMenu" p:renderToggleButton="true">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
 

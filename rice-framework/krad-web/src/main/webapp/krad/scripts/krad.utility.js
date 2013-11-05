@@ -2348,7 +2348,7 @@ function initStickyContent(currentScroll) {
         }
 
         //move the navigation with total height of the header pieces - the scroll
-        navigation.attr("style", "position:fixed; top: " + (topOffset - currentScroll) + "px;");
+        navigation.attr("style", "position:absolute; top: " + (topOffset - currentScroll) + "px;");
     }
 
     //make the ViewContentWrapper margin-top reflect the visible header content pixel height
@@ -2394,7 +2394,7 @@ function handleStickyContent() {
         });
 
         //adjust the fixed nav position (if navigation exists)
-        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; top: " +
+        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:absolute; top: " +
                 (navAdjust) + "px;");
         currentHeaderHeight = navAdjust;
 

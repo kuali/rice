@@ -41,6 +41,11 @@
         <#local disabled="disabled=\"disabled\""/>
     </#if>
 
+    <#local actionLabel="${element.actionLabel!}"/>
+    <#if element.renderInnerTextSpan>
+        <#local actionLabel="<span class=\"uif-innerText\">${element.actionLabel!}</span>"/>
+    </#if>
+
     <#assign imagePlacement="${element.actionImagePlacement}"/>
     <#assign iconPlacement="${element.actionIconPlacement}"/>
 <#-- icon definition -->
@@ -51,19 +56,19 @@
         </button>
         <#elseif iconPlacement == 'LEFT'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
-        ${element.actionLabel}<span class="${element.iconClass}"></span>
+        ${actionLabel}<span class="${element.iconClass}"></span>
         </button>
         <#elseif iconPlacement == 'RIGHT'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
-            <span class="${element.iconClass}"></span>${element.actionLabel}
+            <span class="${element.iconClass}"></span>${actionLabel}
         </button>
         <#elseif iconPlacement == 'BOTTOM'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
-        ${element.actionLabel}<br><span class="${element.iconClass}"></span>
+        ${actionLabel}<br><span class="${element.iconClass}"></span>
         </button>
         <#elseif iconPlacement == 'TOP'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
-            <span class="${element.iconClass}"></span><br>${element.actionLabel}
+            <span class="${element.iconClass}"></span><br>${actionLabel}
         </button>
         </#if>
 
@@ -110,12 +115,12 @@
             </#if>
 
             <#if ['TOP','LEFT']?seq_contains(element.actionImagePlacement)>
-            ${spanBeginTag!}${imageTag!}${spanEndTag!}${element.actionLabel!}
+            ${spanBeginTag!}${imageTag!}${spanEndTag!}${actionLabel!}
             <#elseif ['BOTTOM','RIGHT']?seq_contains(element.actionImagePlacement)>
-            ${element.actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
+            ${actionLabel!}${spanBeginTag!}${imageTag!}${spanEndTag!}
             <#else>
             <#-- no image, just render label text -->
-            ${element.actionLabel!}
+            ${actionLabel!}
             </#if>
 
         </button>

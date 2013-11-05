@@ -27,16 +27,22 @@
     </#if>
 
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <@krad.template component=element.dropdownToggle/>
 
-        <#if element.renderToggleCaret || element.renderToggleButton>
-            <#local caretClass="caret"/>
-            <#if element.renderToggleButton>
-                <#-- tmp until styling is fixed -->
-                <#--<#local caretClass="${caretClass} btn btn-xs"/>-->
-            </#if>
+        <#if element.iconClass?has_content>
+            <span class="${element.iconClass}"></span>
+        </#if>
 
-            <span class="${caretClass}"></span>
+        <@krad.template component=element.toggleMessage/>
+
+        <#if element.toggleCaretClass?has_content>
+            <#local caretClass="class=\"${element.toggleCaretClass}\""/>
+
+<#--            <#if element.renderToggleButton>
+                &lt;#&ndash; tmp until styling is fixed &ndash;&gt;
+                &lt;#&ndash;<#local caretClass="${caretClass} btn btn-xs"/>&ndash;&gt;
+            </#if>-->
+
+            <span ${caretClass!}></span>
         </#if>
     </a>
 

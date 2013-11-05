@@ -159,7 +159,7 @@ function setupStickyHeaderAndFooter() {
     stickyContent = jQuery("[data-sticky='true']:visible");
     if (stickyContent.length) {
         stickyContent.each(function () {
-            jQuery(this).data("offset", jQuery(this).offset())
+            jQuery(this).data("offset", jQuery(this).offset());
         });
 
         stickyContentOffset = stickyContent.offset();

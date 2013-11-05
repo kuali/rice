@@ -50,16 +50,21 @@
 
     <#local imagePlacement="${element.actionImagePlacement}"/>
 
+    <#local actionLabel="${element.actionLabel!}"/>
+    <#if element.renderInnerTextSpan>
+        <#local actionLabel="<span class=\"uif-innerText\">${element.actionLabel!}</span>"/>
+    </#if>
+
     <#if element.iconClass??>
         <#if element.actionIconPlacement == 'ICON_ONLY'>
         <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
         ${tabindex} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span></a>
         <#elseif element.actionIconPlacement == 'LEFT'>
         <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
-        ${tabindex} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span>${element.actionLabel}</a>
+        ${tabindex} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span>${actionLabel}</a>
         <#elseif element.actionIconPlacement == 'RIGHT'>
         <a id="${element.id}" ${href!} ${name!} ${krad.attrBuild(element)}
-        ${tabindex} ${element.simpleDataAttributes!}>${element.actionLabel}<span class="${element.iconClass}"></span></a>
+        ${tabindex} ${element.simpleDataAttributes!}>${actionLabel}<span class="${element.iconClass}"></span></a>
         </#if>
     <#else>
 
@@ -83,16 +88,16 @@
                 </#local>
 
                 <#if imagePlacement == 'RIGHT'>
-                ${element.actionLabel!}${imageTag}
+                ${actionLabel!}${imageTag}
                 <#elseif imagePlacement == 'LEFT'>
-                ${imageTag}${element.actionLabel!}
+                ${imageTag}${actionLabel!}
                 <#elseif imagePlacement == 'IMAGE_ONLY'>
                 ${imageTag}
                 <#else>
-                ${element.actionLabel!}
+                ${actionLabel!}
                 </#if>
             <#else>
-            ${element.actionLabel!}
+            ${actionLabel!}
             </#if>
 
         </a>

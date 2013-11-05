@@ -65,7 +65,7 @@ KradResponse.prototype = {
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
         var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " #" +
-                kradVariables.PAGE_CONTENT_WRAPPER;
+                kradVariables.PAGE_CONTENT_WRAPPER + ":first";
         hideBubblePopups(pageInLayout);
 
         // update page contents from response
@@ -73,6 +73,8 @@ KradResponse.prototype = {
 
         pageValidatorReady = false;
         runHiddenScripts(jQuery(pageInLayout).attr("id"), false, true);
+
+        markActiveMenuLink();
 
         jQuery(pageInLayout).show();
     },

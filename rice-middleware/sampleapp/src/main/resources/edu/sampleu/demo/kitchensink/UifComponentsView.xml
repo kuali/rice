@@ -349,10 +349,26 @@ color:#FFF;">
     <property name="items">
       <list>
         <bean parent="Uif-HeaderTwo" id="UifCompView-Header1"/>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Select Action">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script1" p:actionScript="alert('Menu Script1');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script2" p:actionScript="alert('Menu Script2');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script3" p:actionScript="alert('Menu Script3');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script4" p:actionScript="alert('Menu Script4');"/>
+            </list>
+          </property>
+        </bean>
         <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation1" p:navigateToPageId="UifCompView-Page1"/>
         <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation2" p:navigateToPageId="UifCompView-Page2"/>
-        <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation3" p:navigateToPageId="UifCompView-Page3"/>
-        <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation4" p:navigateToPageId="UifCompView-Page4"/>
+        <bean parent="Uif-SidebarToggleMenu" p:iconClass="icon-ok" p:toggleText="Validation">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation3" p:navigateToPageId="UifCompView-Page3"/>
+              <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation4" p:navigateToPageId="UifCompView-Page4"/>
+            </list>
+          </property>
+        </bean>
         <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation5" p:navigateToPageId="UifCompView-Page5"/>
         <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation6" p:navigateToPageId="UifCompView-Page6"/>
         <bean parent="Uif-NavigationActionLink" id="UifCompView-Navigation7" p:navigateToPageId="UifCompView-Page7"/>

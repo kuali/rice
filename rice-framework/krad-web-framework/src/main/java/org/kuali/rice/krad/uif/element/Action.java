@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -86,8 +87,11 @@ public class Action extends ContentElementBase {
     private String navigateToPageId;
 
     private String actionScript;
+    private UrlInfo actionUrl;
 
     private String actionLabel;
+    private boolean renderInnerTextSpan;
+
     private Image actionImage;
     private String actionImagePlacement;
 
@@ -164,8 +168,8 @@ public class Action extends ContentElementBase {
         if (disabledExpression != null) {
             ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
-            disabledExpression = expressionEvaluator.replaceBindingPrefixes(
-                    ViewLifecycle.getView(), this, disabledExpression);
+            disabledExpression = expressionEvaluator.replaceBindingPrefixes(ViewLifecycle.getView(), this,
+                    disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
     }
@@ -238,6 +242,12 @@ public class Action extends ContentElementBase {
         // Apply dirty check if it is enabled for the view and the action requires it
         if (view instanceof FormView) {
             performDirtyValidation = performDirtyValidation && ((FormView) view).isApplyDirtyCheck();
+        }
+
+        if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
+            String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
+
+            setActionScript(actionScript);
         }
 
         buildActionData(view, model, parent);
@@ -484,6 +494,23 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * When true, a span will be rendered around the actionLabel text
+     *
+     * @return true if rendering a span around actionLabel, false otherwise
+     */
+    @BeanTagAttribute(name = "renderInnerTextSpan")
+    public boolean isRenderInnerTextSpan() {
+        return renderInnerTextSpan;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#isRenderInnerTextSpan()
+     */
+    public void setRenderInnerTextSpan(boolean renderInnerTextSpan) {
+        this.renderInnerTextSpan = renderInnerTextSpan;
+    }
+
+    /**
      * Image to use for the action
      *
      * <p>
@@ -508,11 +535,20 @@ public class Action extends ContentElementBase {
     public void setActionImage(Image actionImage) {
         this.actionImage = actionImage;
     }
+
+    /**
+     * The css class (some which exist in bootstrap css) to use to render an icon for this action
+     *
+     * @return the icon css class
+     */
     @BeanTagAttribute(name = "iconClass")
     public String getIconClass() {
         return iconClass;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.element.Action#getIconClass()
+     */
     public void setIconClass(String iconClass) {
         this.iconClass = iconClass;
     }
@@ -844,6 +880,28 @@ public class Action extends ContentElementBase {
         }
 
         this.actionScript = actionScript;
+    }
+
+    /**
+     * Url to open when the action item is selected
+     *
+     * <p>
+     * This makes the action behave like a standard link. Instead of posting the form, the configured URL will
+     * simply be opened (using window.open). For using standard post actions these does not need to be configured.
+     * </p>
+     *
+     * @return Url info instance for the configuration action link
+     */
+    @BeanTagAttribute(name = "actionUrl")
+    public UrlInfo getActionUrl() {
+        return actionUrl;
+    }
+
+    /**
+     * @see Action#getActionUrl()
+     */
+    public void setActionUrl(UrlInfo actionUrl) {
+        this.actionUrl = actionUrl;
     }
 
     /**
@@ -1378,6 +1436,11 @@ public class Action extends ContentElementBase {
         }
 
         actionCopy.setActionScript(this.actionScript);
+
+        if (this.actionUrl != null) {
+            actionCopy.setActionUrl((UrlInfo) this.actionUrl.copy());
+        }
+        actionCopy.setActionScript(this.actionScript);
         actionCopy.setAjaxReturnType(this.ajaxReturnType);
         actionCopy.setAjaxSubmit(this.ajaxSubmit);
         actionCopy.setClearDirtyOnAction(this.clearDirtyOnAction);
@@ -1425,11 +1488,11 @@ public class Action extends ContentElementBase {
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
-//        // Checks that a label or image ui is presence
-//        if (getActionLabel() == null && getActionImage() == null) {
-//            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
-//            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
-//        }
+        //        // Checks that a label or image ui is presence
+        //        if (getActionLabel() == null && getActionImage() == null) {
+        //            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+        //            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
+        //        }
 
         //Checks to ensure Icon or Action Image are
 

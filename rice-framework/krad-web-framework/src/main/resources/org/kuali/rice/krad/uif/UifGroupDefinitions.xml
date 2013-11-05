@@ -571,14 +571,25 @@
     </property>
   </bean>
 
-  <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
-  <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-NavigationGroupBase">
+  <bean id="Uif-SidebarNavigationGroup" parent="Uif-SidebarNavigationGroup-parentBean"/>
+  <bean id="Uif-SidebarNavigationGroup-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.SidebarNavigationGroup"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/sidebarNavigationGroup.ftl"/>
+    <property name="templateName" value="uif_sidebarNavigationGroup"/>
+    <property name="renderCollapse" value="true"/>
+    <property name="defaultItemIconClass" value="icon-file-alt"/>
+    <property name="openedToggleIconClass" value="icon-angle-down"/>
+    <property name="closedToggleIconClass" value="icon-angle-right"/>
     <property name="cssClasses">
       <list>
         <value>uif-menuNavigationGroup</value>
       </list>
     </property>
-    <property name="navigationType" value="VERTICAL_MENU"/>
+  </bean>
+
+  <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
+  <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-SidebarNavigationGroup">
   </bean>
 
   <bean id="Uif-TabNavigationGroup" parent="Uif-TabNavigationGroup-parentBean"/>

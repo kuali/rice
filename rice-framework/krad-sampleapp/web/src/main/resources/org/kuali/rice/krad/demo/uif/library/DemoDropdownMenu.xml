@@ -51,7 +51,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example1 start-->
         <bean parent="Uif-DropdownMenu" p:dropdownToggleText="User thclark">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
 
@@ -70,7 +70,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example2 start-->
         <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Action List">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1034"/>
 
@@ -97,7 +97,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example3 start-->
         <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Favorites">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:menuHeader="true" p:actionLabel="Documents"/>
 
@@ -122,7 +122,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example4 start-->
         <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Approve"/>
 
@@ -141,7 +141,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example5 start-->
         <bean parent="Uif-DropdownMenu" p:dropdownToggleText="Select Action">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"
                     p:refreshId="Demo-DropdownMenu-Example5"/>
@@ -164,7 +164,7 @@
       <list>
         <!-- ex:Demo-DropdownMenu-Example6 start-->
         <bean parent="Uif-DropdownMenu" p:renderToggleButton="true">
-          <property name="menuActions">
+          <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
 

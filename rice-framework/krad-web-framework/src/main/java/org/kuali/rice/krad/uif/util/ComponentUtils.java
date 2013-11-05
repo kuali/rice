@@ -16,10 +16,12 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.springframework.core.OrderComparator;
@@ -982,4 +986,66 @@ public class ComponentUtils {
         }
     }
 
+    /**
+     * Gets subcomponents for lifecycle processing.
+     * 
+     * @param component The component to scan.
+     * @param includePrototypes True to include component properties marked with
+     *        {@link LifecyclePrototype}.
+     * @return lifecycle components
+     */
+    public static Map<String, Component> getComponentsForLifecycle(LifecycleElement component, boolean includePrototypes) {
+        Set<String> noLifecyclePropertyNames =
+                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, NoLifecycle.class);
+        Set<String> prototypePropertyNames = includePrototypes ? null :
+                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, LifecyclePrototype.class);
+        Map<String, Component> components = new LinkedHashMap<String, Component>();
+
+        for (String propertyName : ObjectPropertyUtils
+                .getReadablePropertyNamesByType(component, LifecycleElement.class)) {
+            if (noLifecyclePropertyNames.contains(propertyName) ||
+                    !includePrototypes && prototypePropertyNames.contains(propertyName)) {
+                continue;
+            }
+            
+            LifecycleElement element = ObjectPropertyUtils.getPropertyValue(component, propertyName);
+            if (element instanceof Component) {
+                components.put(propertyName, (Component) element);
+            } else if (element != null) {
+                for (Entry<String, Component> managerEntry :
+                        getComponentsForLifecycle(element, includePrototypes).entrySet()) {
+                    components.put(propertyName + "." + managerEntry.getKey(), managerEntry.getValue());
+                }
+            }
+        }
+        
+        for (String propertyName : ObjectPropertyUtils
+                .getReadablePropertyNamesByCollectionType(component, Component.class)) {
+            if (noLifecyclePropertyNames.contains(propertyName) ||
+                    !includePrototypes && prototypePropertyNames.contains(propertyName)) {
+                continue;
+            }
+
+            Object componentCollection = ObjectPropertyUtils.getPropertyValue(component, propertyName);
+            if (component.getClass().isArray()) {
+                for (int i = 0; i < Array.getLength(componentCollection); i++) {
+                    components.put(propertyName + "[" + i + "]",
+                            (Component) Array.get(componentCollection, i));
+                }
+            } else if (componentCollection instanceof List) {
+                for (int i = 0; i < ((List<?>) componentCollection).size(); i++) {
+                    components.put(propertyName + "[" + i + "]",
+                            (Component) ((List<?>) componentCollection).get(i));
+                }
+            } else if (componentCollection instanceof Map) {
+                for (Entry<?, ?> entry : ((Map<?, ?>) componentCollection).entrySet()) {
+                    components.put(propertyName + "[" + entry.getKey() + "]",
+                            (Component) entry.getValue());
+                }
+            }
+        }
+
+        return components;
+    }
+    
 }

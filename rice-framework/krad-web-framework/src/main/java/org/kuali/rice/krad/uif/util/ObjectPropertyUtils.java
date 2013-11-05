@@ -20,9 +20,18 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditorManager;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.apache.log4j.Logger;
@@ -37,7 +46,7 @@ public final class ObjectPropertyUtils {
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
     /**
-     * Internal property descriptor cache.
+     * Internal metadata cache.
      * 
      * <p>
      * NOTE: WeakHashMap is used as the internal cache representation. Since class objects are used
@@ -47,8 +56,8 @@ public final class ObjectPropertyUtils {
      * maintenance is not necessary.
      * </p>
      */
-    private static final Map<Class<?>, Map<String, PropertyDescriptor>> PROPERTY_DESCRIPTOR_CACHE = Collections
-            .synchronizedMap(new WeakHashMap<Class<?>, Map<String, PropertyDescriptor>>(2048));
+    private static final Map<Class<?>, ObjectPropertyMetadata> METADATA_CACHE = Collections
+            .synchronizedMap(new WeakHashMap<Class<?>, ObjectPropertyMetadata>(2048));
 
     /**
      * Get a mapping of property descriptors by property name for a bean class.
@@ -57,32 +66,7 @@ public final class ObjectPropertyUtils {
      * @return A mapping of all property descriptors for the bean class, by property name.
      */
     public static Map<String, PropertyDescriptor> getPropertyDescriptors(Class<?> beanClass) {
-        Map<String, PropertyDescriptor> propertyDescriptors = PROPERTY_DESCRIPTOR_CACHE.get(beanClass);
-
-        if (propertyDescriptors == null) {
-            BeanInfo beanInfo;
-            try {
-                beanInfo = Introspector.getBeanInfo(beanClass);
-            } catch (IntrospectionException e) {
-                LOG.warn(
-                        "Bean Info not found for bean " + beanClass, e);
-                beanInfo = null;
-            }
-
-            Map<String, PropertyDescriptor> mutablePropertyDescriptorMap = new java.util.LinkedHashMap<String, PropertyDescriptor>();
-
-            if (beanInfo != null) {
-                for (PropertyDescriptor propertyDescriptor : beanInfo
-                        .getPropertyDescriptors()) {
-                    mutablePropertyDescriptorMap.put(propertyDescriptor.getName(), propertyDescriptor);
-                }
-            }
-
-            propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap);
-            PROPERTY_DESCRIPTOR_CACHE.put(beanClass, propertyDescriptors);
-        }
-
-        return propertyDescriptors;
+        return getMetadata(beanClass).propertyDescriptors;
     }
 
     /**
@@ -107,42 +91,6 @@ public final class ObjectPropertyUtils {
     }
 
     /**
-     * Infer the read method based on method name.
-     * 
-     * @param beanClass The bean class.
-     * @param propertyName The property name.
-     * @return The read method for the property.
-     */
-    private static Method getReadMethodByName(Class<?> beanClass, String propertyName) {
-
-        try {
-            return beanClass.getMethod("get" + Character.toUpperCase(propertyName.charAt(0))
-                    + propertyName.substring(1));
-        } catch (SecurityException e) {
-            // Ignore
-        } catch (NoSuchMethodException e) {
-            // Ignore
-        }
-
-        try {
-            Method readMethod = beanClass.getMethod("is"
-                    + Character.toUpperCase(propertyName.charAt(0))
-                    + propertyName.substring(1));
-            
-            if (readMethod.getReturnType() == Boolean.class
-                    || readMethod.getReturnType() == Boolean.TYPE) {
-                return readMethod;
-            }
-        } catch (SecurityException e) {
-            // Ignore
-        } catch (NoSuchMethodException e) {
-            // Ignore
-        }
-        
-        return null;
-    }
-    
-    /**
      * Get the read method for a specific property on a bean class.
      * 
      * @param beanClass The bean class.
@@ -150,21 +98,7 @@ public final class ObjectPropertyUtils {
      * @return The read method for the property.
      */
     public static Method getReadMethod(Class<?> beanClass, String propertyName) {
-        if (propertyName == null || propertyName.length() == 0) {
-            return null;
-        }
-
-        PropertyDescriptor propertyDescriptor = getPropertyDescriptors(beanClass).get(propertyName);
-
-        if (propertyDescriptor != null) {
-            Method readMethod = propertyDescriptor.getReadMethod();
-            
-            if (readMethod != null) {
-                return readMethod;
-            }
-        }
-
-        return getReadMethodByName(beanClass, propertyName);
+        return getMetadata(beanClass).readMethods.get(propertyName);
     }
 
     /**
@@ -175,16 +109,7 @@ public final class ObjectPropertyUtils {
      * @return The read method for the property.
      */
     public static Method getWriteMethod(Class<?> beanClass, String propertyName) {
-        PropertyDescriptor propertyDescriptor = ObjectPropertyUtils.getPropertyDescriptors(beanClass).get(propertyName);
-
-        if (propertyDescriptor != null) {
-            Method writeMethod = propertyDescriptor.getWriteMethod();
-            assert writeMethod == null
-                    || (writeMethod.getParameterTypes().length == 1 && writeMethod.getParameterTypes()[0] != null) : writeMethod;
-            return writeMethod;
-        } else {
-            return null;
-        }
+        return getMetadata(beanClass).writeMethods.get(propertyName);
     }
 
     /**
@@ -245,6 +170,78 @@ public final class ObjectPropertyUtils {
         } finally {
             ObjectPropertyReference.setWarning(false);
         }
+    }
+
+    /**
+     * Gets the property names by property type, based on the read methods.
+     * 
+     * @param bean The bean.
+     * @param propertyType The return type of the read method on the property.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByType(
+            Object bean, Class<?> propertyType) {
+        return getReadablePropertyNamesByType(bean.getClass(), propertyType);
+    }
+
+    /**
+     * Gets the property names by property type, based on the read methods.
+     * 
+     * @param beanClass The bean class.
+     * @param propertyType The return type of the read method on the property.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByType(
+            Class<?> beanClass, Class<?> propertyType) {
+        return getMetadata(beanClass).getReadablePropertyNamesByType(propertyType);
+    }
+
+    /**
+     * Gets the property names by annotation type, based on the read methods.
+     * 
+     * @param bean The bean.
+     * @param annotationType The type of an annotation on the return type.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByAnnotationType(
+            Object bean, Class<? extends Annotation> annotationType) {
+        return getReadablePropertyNamesByAnnotationType(bean.getClass(), annotationType);
+    }
+
+    /**
+     * Gets the property names by annotation type, based on the read methods.
+     * 
+     * @param beanClass The bean class.
+     * @param annotationType The type of an annotation on the return type.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByAnnotationType(
+            Class<?> beanClass, Class<? extends Annotation> annotationType) {
+        return getMetadata(beanClass).getReadablePropertyNamesByAnnotationType(annotationType);
+    }
+
+    /**
+     * Gets the property names by collection type, based on the read methods.
+     * 
+     * @param bean The bean.
+     * @param collectionType The type of elements in a collection or array.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByCollectionType(
+            Object bean, Class<?> collectionType) {
+        return getReadablePropertyNamesByCollectionType(bean.getClass(), collectionType);
+    }
+
+    /**
+     * Gets the property names by collection type, based on the read methods.
+     * 
+     * @param beanClass The bean class.
+     * @param collectionType The type of elements in a collection or array.
+     * @return list of property names
+     */
+    public static Set<String> getReadablePropertyNamesByCollectionType(
+            Class<?> beanClass, Class<?> collectionType) {
+        return getMetadata(beanClass).getReadablePropertyNamesByCollectionType(collectionType);
     }
 
     /**
@@ -411,4 +408,236 @@ public final class ObjectPropertyUtils {
      */
     private ObjectPropertyUtils() {}
 
+    /**
+     * Infer the read method based on method name.
+     * 
+     * @param beanClass The bean class.
+     * @param propertyName The property name.
+     * @return The read method for the property.
+     */
+    private static Method getReadMethodByName(Class<?> beanClass, String propertyName) {
+
+        try {
+            return beanClass.getMethod("get" + Character.toUpperCase(propertyName.charAt(0))
+                    + propertyName.substring(1));
+        } catch (SecurityException e) {
+            // Ignore
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        }
+
+        try {
+            Method readMethod = beanClass.getMethod("is"
+                    + Character.toUpperCase(propertyName.charAt(0))
+                    + propertyName.substring(1));
+            
+            if (readMethod.getReturnType() == Boolean.class
+                    || readMethod.getReturnType() == Boolean.TYPE) {
+                return readMethod;
+            }
+        } catch (SecurityException e) {
+            // Ignore
+        } catch (NoSuchMethodException e) {
+            // Ignore
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the cached metadata for a bean class.
+     * 
+     * @param beanClass The bean class.
+     * @return cached metadata for beanClass
+     */
+    private static ObjectPropertyMetadata getMetadata(Class<?> beanClass) {
+        ObjectPropertyMetadata metadata = METADATA_CACHE.get(beanClass);
+
+        if (metadata == null) {
+            metadata = new ObjectPropertyMetadata(beanClass);
+            METADATA_CACHE.put(beanClass, metadata);
+        }
+
+        return metadata;
+    }
+    
+    /**
+     * Stores property metadata related to a bean class, for reducing introspection and reflection
+     * overhead.
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class ObjectPropertyMetadata {
+
+        private final Map<String, PropertyDescriptor> propertyDescriptors;
+        private final Map<String, Method> readMethods;
+        private final Map<String, Method> writeMethods;
+        private final Map<Class<?>, Set<String>> readablePropertyNamesByPropertyType =
+                Collections.synchronizedMap(new WeakHashMap<Class<?>, Set<String>>());
+        private final Map<Class<?>, Set<String>> readablePropertyNamesByAnnotationType =
+                Collections.synchronizedMap(new WeakHashMap<Class<?>, Set<String>>());
+        private final Map<Class<?>, Set<String>> readablePropertyNamesByCollectionType =
+                Collections.synchronizedMap(new WeakHashMap<Class<?>, Set<String>>());
+        
+        /**
+         * Gets the property names by type, based on the read methods.
+         * 
+         * @param propertyType The return type of the read method on the property.
+         * @return list of property names
+         */
+        private Set<String> getReadablePropertyNamesByType(Class<?> propertyType) {
+            Set<String> propertyNames = readablePropertyNamesByPropertyType.get(propertyType);
+            if (propertyNames != null) {
+                return propertyNames;
+            }
+            
+            propertyNames = new LinkedHashSet<String>();
+            for (Entry<String, Method> readMethodEntry : readMethods.entrySet()) {
+                Method readMethod = readMethodEntry.getValue();
+                if (readMethod != null && propertyType.isAssignableFrom(readMethod.getReturnType())) {
+                    propertyNames.add(readMethodEntry.getKey());
+                }
+            }
+            
+            propertyNames = Collections.unmodifiableSet(propertyNames);
+            readablePropertyNamesByPropertyType.put(propertyType, propertyNames);
+            
+            return propertyNames;
+        }
+
+        /**
+         * Gets the property names by annotation type, based on the read methods.
+         * 
+         * @param annotationType The type of an annotation on the return type.
+         * @return list of property names
+         */
+        private Set<String> getReadablePropertyNamesByAnnotationType(
+                Class<? extends Annotation> annotationType) {
+            Set<String> propertyNames = readablePropertyNamesByAnnotationType.get(annotationType);
+            if (propertyNames != null) {
+                return propertyNames;
+            }
+            
+            propertyNames = new LinkedHashSet<String>();
+            for (Entry<String, Method> readMethodEntry : readMethods.entrySet()) {
+                Method readMethod = readMethodEntry.getValue();
+                if (readMethod != null && readMethod.isAnnotationPresent(annotationType)) {
+                    propertyNames.add(readMethodEntry.getKey());
+                }
+            }
+            
+            propertyNames = Collections.unmodifiableSet(propertyNames);
+            readablePropertyNamesByPropertyType.put(annotationType, propertyNames);
+            
+            return propertyNames;
+        }
+
+        /**
+         * Gets the property names by collection type, based on the read methods.
+         * 
+         * @param collectionType The type of elements in a collection or array.
+         * @return list of property names
+         */
+        private Set<String> getReadablePropertyNamesByCollectionType(Class<?> collectionType) {
+            Set<String> propertyNames = readablePropertyNamesByCollectionType.get(collectionType);
+            if (propertyNames != null) {
+                return propertyNames;
+            }
+            
+            propertyNames = new LinkedHashSet<String>();
+            for (Entry<String, Method> readMethodEntry : readMethods.entrySet()) {
+                Method readMethod = readMethodEntry.getValue();
+                if (readMethod == null) {
+                    continue;
+                }
+                
+                Class<?> propertyClass = readMethod.getReturnType();
+                if (propertyClass.isArray() &&
+                        collectionType.isAssignableFrom(propertyClass.getComponentType())) {
+                    propertyNames.add(readMethodEntry.getKey());
+                    continue;
+                }
+                
+                boolean isCollection = Collection.class.isAssignableFrom(propertyClass);
+                boolean isMap = Map.class.isAssignableFrom(propertyClass);
+                if (!isCollection && !isMap) {
+                    continue;
+                }
+                
+                if (collectionType.equals(Object.class)) {
+                    propertyNames.add(readMethodEntry.getKey());
+                    continue;
+                }
+                
+                Type propertyType = readMethodEntry.getValue().getGenericReturnType();
+                if (propertyType instanceof ParameterizedType) {
+                    ParameterizedType parameterizedType = (ParameterizedType) propertyType;
+                    Type valueType = parameterizedType.getActualTypeArguments()[isCollection ? 0 : 1];
+
+                    if (valueType instanceof WildcardType) {
+                        Type[] upperBounds = ((WildcardType) valueType).getUpperBounds(); 
+                        
+                        if (upperBounds.length >= 1) {
+                            valueType = upperBounds[0];
+                        }
+                    }
+                    
+                    if (valueType instanceof Class &&
+                            collectionType.isAssignableFrom((Class<?>) valueType)) {
+                        propertyNames.add(readMethodEntry.getKey());
+                    }
+                }
+            }
+            
+            propertyNames = Collections.unmodifiableSet(propertyNames);
+            readablePropertyNamesByPropertyType.put(collectionType, propertyNames);
+            
+            return propertyNames;
+        }
+
+        /**
+         * Creates a new metadata wrapper for a bean class.
+         * 
+         * @param beanClass The bean class.
+         */
+        private ObjectPropertyMetadata(Class<?> beanClass) {
+            BeanInfo beanInfo;
+            try {
+                beanInfo = Introspector.getBeanInfo(beanClass);
+            } catch (IntrospectionException e) {
+                LOG.warn(
+                        "Bean Info not found for bean " + beanClass, e);
+                beanInfo = null;
+            }
+
+            Map<String, PropertyDescriptor> mutablePropertyDescriptorMap = new LinkedHashMap<String, PropertyDescriptor>();
+            Map<String, Method> mutableReadMethodMap = new LinkedHashMap<String, Method>();
+            Map<String, Method> mutableWriteMethodMap = new LinkedHashMap<String, Method>();
+
+            if (beanInfo != null) {
+                for (PropertyDescriptor propertyDescriptor : beanInfo
+                        .getPropertyDescriptors()) {
+                    String propertyName = propertyDescriptor.getName();
+
+                    mutablePropertyDescriptorMap.put(propertyName, propertyDescriptor);
+                    Method readMethod = propertyDescriptor.getReadMethod();
+                    if (readMethod == null) {
+                        readMethod = getReadMethodByName(beanClass, propertyName);
+                    }
+                    mutableReadMethodMap.put(propertyName, readMethod);
+
+                    Method writeMethod = propertyDescriptor.getWriteMethod();
+                    assert writeMethod == null
+                            || (writeMethod.getParameterTypes().length == 1 && writeMethod.getParameterTypes()[0] != null) : writeMethod;
+                    mutableWriteMethodMap.put(propertyName, writeMethod);
+                }
+            }
+
+            propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap);
+            readMethods = Collections.unmodifiableMap(mutableReadMethodMap);
+            writeMethods = Collections.unmodifiableMap(mutableWriteMethodMap);
+        }
+
+    }
+    
 }

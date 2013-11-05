@@ -16,11 +16,16 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,6 +45,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
@@ -51,6 +57,8 @@ import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.login.DummyLoginForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -60,6 +68,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecycleTest extends ProcessLoggingUnitTest {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTest.class);
 
     @BeforeClass
     public static void setUpClass() throws Throwable {
@@ -124,6 +134,28 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     public void testTransactionViewOnly() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         viewService.getViewById("TransactionView");
+    }
+    
+    @Test
+    public void testComponentsForLifecycle() throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
+        View view = viewService.getViewById("TransactionView");
+        
+        List<Component> l1 = view.getComponentsForLifecycle();
+        Map<String, Component> m2 = ComponentUtils.getComponentsForLifecycle(view, false);
+        LOG.debug(l1.toString());
+        LOG.debug(m2.toString());
+        assertTrue(l1.size() >= m2.size());
+
+        Iterator<Entry<String, Component>> i2 = m2.entrySet().iterator();
+        while (i2.hasNext()) {
+            Entry<String, Component> e2 = i2.next();
+            assertTrue(e2.getKey(), l1.contains(e2.getValue()));
+            l1.remove(e2.getValue());
+        }
+        for (int i=0;i<l1.size();i++) {
+            assertNull(l1.get(i) == null ? null : l1.get(i).toString(), l1.get(i));
+        }
     }
     
     @Test

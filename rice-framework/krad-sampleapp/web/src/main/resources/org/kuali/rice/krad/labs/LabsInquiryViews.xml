@@ -111,4 +111,50 @@
     </property>
   </bean>
 
+  <bean id="LabsInquiry-PerDiemSections" parent="LabsInquiry-DefaultView">
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+    <property name="viewName" value="LabsInquiry-PerDiemSectionsView"/>
+    <property name="Items">
+      <list>
+        <bean id="TravelAccount-InquiryView-AcountInfo" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Account Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="travelPerDiemExpenseId"/>
+              <bean parent="Uif-DataField" p:propertyName="travelAuthorizationDocumentId"/>
+              <bean parent="Uif-DataField" p:propertyName="travelDestinationId"/>
+              <bean parent="Uif-DataField" p:propertyName="perDiemDate"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="TravelAccount-InquiryView-Costs" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Cost Estimates"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="breakfastValue"/>
+              <bean parent="Uif-DataField" p:propertyName="lunchValue"/>
+              <bean parent="Uif-DataField" p:propertyName="dinnerValue"/>
+              <bean parent="Uif-DataField" p:propertyName="incidentalsValue"/>
+              <bean parent="Uif-DataField" p:propertyName="mileageRate.mileageRateName"/>
+              <bean parent="Uif-DataField" p:propertyName="mileageRate.mileageRate"/>
+              <bean parent="Uif-DataField" p:propertyName="estimatedMileage"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsInquiry-Authorizer" parent="LabsInquiry-PerDiemSections">
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+    <property name="viewName" value="LabsInquiry-AuthorizerView"/>
+    <property name="headerText" value="Inquiry with authorizer controlling field and section visibility"/>
+  </bean>
+
+  <bean id="LabsInquiry-PresentationController" parent="LabsInquiry-PerDiemSections">
+    <property name="viewName" value="LabsInquiry-PresentationControllerView"/>
+    <property name="presentationControllerClass" value="org.kuali.rice.krad.demo.uif.controller.DemoInquiryViewPresentationController"/>
+    <property name="headerText" value="Inquiry with presentation controller controlling field and section visibility"/>
+  </bean>
+
 </beans>

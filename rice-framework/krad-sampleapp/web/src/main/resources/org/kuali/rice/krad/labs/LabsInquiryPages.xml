@@ -150,8 +150,8 @@
         <bean id="KradInquirySampleItems-PageR3C2" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?travelPerDiemExpenseId=10000&amp;methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with Authorizer configured" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-Authorizer&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
             </list>
           </property>
         </bean>
@@ -165,9 +165,8 @@
         <bean id="KradInquirySampleItems-PageR3C3" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-SyntaxHighlighter"/>
-              <bean parent="Uif-Link" p:linkText="KRAD Inquiry TravelPerDiemExpense = 10000" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?travelPerDiemExpenseId=10000&amp;methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with Authorizer configured" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-PresentationController&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
             </list>
           </property>
         </bean>

@@ -69,7 +69,7 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownMenu" p:dropdownToggleText="more..."
+  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:dropdownToggleText="more..."
         p:renderToggleCaret="false">
     <property name="menuGroup">
       <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed" p:headerText="Document Info">

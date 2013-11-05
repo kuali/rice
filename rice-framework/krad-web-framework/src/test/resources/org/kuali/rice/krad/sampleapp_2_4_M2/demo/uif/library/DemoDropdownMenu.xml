@@ -49,7 +49,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example1 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="User thclark">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>
@@ -68,7 +68,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example2 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="Action List">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action List">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Proposal #1034"/>
@@ -95,7 +95,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example3 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="Favorites">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Favorites">
           <property name="menuItems">
             <list>
               <bean parent="Uif-MenuHeader" p:messageText="Documents"/>
@@ -120,7 +120,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example4 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="Select Action">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Approve"/>
@@ -139,7 +139,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example5 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="Select Action">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action">
           <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"
@@ -162,7 +162,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example6 start-->
-        <bean parent="Uif-DropdownMenu" p:renderToggleButton="true">
+        <bean parent="Uif-DropdownToggleMenu" p:renderToggleButton="true">
           <property name="menuItems">
             <list>
               <bean parent="Demo-MenuAction" p:actionLabel="Preferences"/>

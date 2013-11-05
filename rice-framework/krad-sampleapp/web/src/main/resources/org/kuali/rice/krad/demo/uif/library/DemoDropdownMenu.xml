@@ -182,7 +182,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example7 start-->
-        <bean parent="Uif-DropdownMenu" p:toggleText="more..." p:toggleCaretClass="">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="more..." p:toggleCaretClass="">
           <property name="menuGroup">
             <bean parent="Uif-DropdownTable">
               <property name="items">

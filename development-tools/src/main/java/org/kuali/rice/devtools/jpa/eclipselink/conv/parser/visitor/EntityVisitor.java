@@ -167,21 +167,26 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
                 entries.put(mappedClass, n);
                 cache.put(enclosingName, entries);
             } else {
-                boolean equalsAny = false;
-                for (Map.Entry<String, CompilationUnit> entry : entries.entrySet()) {
-                    if (!entry.getValue().equals(n)) {
-                        LOG.error(ResolverUtil.logMsgForClass(enclosingName, mappedClass) + " does not equal the modified AST for " + ResolverUtil.logMsgForClass(enclosingName, entry.getKey()) +
-                                ". This likely means that a super class' fields have different mapping configurations across mapped subclasses.");
-                    } else {
-                        equalsAny = true;
-                    }
-                }
-                if (!equalsAny) {
+                if (!equalsAny(n, mappedClass, entries, enclosingName)) {
                     //put this unique version of the AST in the cache... don't bother storing equal versions
                     entries.put(mappedClass, n);
                     cache.put(enclosingName, entries);
                 }
             }
         }
+    }
+
+    private boolean equalsAny(CompilationUnit n, String mappedClass, Map<String, CompilationUnit> entries, String enclosingName) {
+        boolean equalsAny = false;
+        for (Map.Entry<String, CompilationUnit> entry : entries.entrySet()) {
+            if (!entry.getValue().equals(n)) {
+                LOG.error(ResolverUtil.logMsgForClass(enclosingName, mappedClass) + " does not equal the modified AST for " + ResolverUtil.logMsgForClass(enclosingName, entry.getKey()) +
+                        ". This likely means that a super class' fields have different mapping configurations across mapped subclasses.");
+            } else {
+                equalsAny = true;
+            }
+        }
+
+        return equalsAny;
     }
 }

@@ -94,7 +94,7 @@
                     </property>
                   </bean>
 
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:toggleCaretClass=""
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:renderToggleCaret="false"
                         p:additionalCssClasses="pull-right"/>
 
                   <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark"

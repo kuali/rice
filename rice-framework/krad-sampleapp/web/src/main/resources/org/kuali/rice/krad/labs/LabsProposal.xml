@@ -34,6 +34,7 @@
         </property>
       </bean>
     </property>
+    <property name="navigation" ref="LabsProposal-Menu"/>
     <property name="items">
       <list>
         <ref bean="LabsProposal-Page"/>
@@ -53,6 +54,71 @@
     <property name="additionalCssFiles">
       <list merge="true">
         <value>css/labsProposal.css</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-Menu" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Basics" p:iconClass="icon-file-alt">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Proposal Details" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="S2S Opportunity Search"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Delivery Info" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Sponsor &amp; Program Information"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Organization &amp; Location"
+                    p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Key Personnel" p:iconClass="icon-user">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Credit Allocation" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Delivery Info" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Sponsor &amp; Program Information"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Organization &amp; Location"
+                    p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Compliance" p:iconClass="icon-ok"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Attachments" p:iconClass="icon-paper-clip"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Questionnaire" p:iconClass="icon-question"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Budget" p:iconClass="icon-money">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Summary" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Parameters" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Rates" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Non-Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Distribution &amp; Income"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Modular" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Actions" p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Supplemental Information" p:iconClass="icon-bell">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Page 1" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Page 2" p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Summary/Submit" p:iconClass="icon-signout"
+              p:actionScript="alert('Menu Script');"/>
       </list>
     </property>
   </bean>

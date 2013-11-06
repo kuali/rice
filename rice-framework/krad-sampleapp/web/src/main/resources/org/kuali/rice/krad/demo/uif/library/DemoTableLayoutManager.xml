@@ -37,6 +37,7 @@
         <ref bean="Demo-TableLayoutManager-Example7"/>
         <ref bean="Demo-TableLayoutManager-Example8"/>
         <ref bean="Demo-TableLayoutManager-Example9"/>
+        <ref bean="Demo-TableLayoutManager-Example10"/>
       </list>
     </property>
   </bean>
@@ -371,6 +372,54 @@
           </property>
         </bean>
         <!-- ex:Demo-TableLayoutManager-Example9 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example10" parent="Uif-VerticalBoxSection" p:headerText="Multirow">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example10 start-->
+        <bean parent="Uif-VerticalBoxGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Disclosure-TableCollectionSection"
+                    p:layoutManager.numberOfColumns="2" p:layoutManager.suppressLineWrapping="false">
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection1"/>
+                <property name="layoutManager.sequencePropertyName" value="field1"/>
+                <property name="layoutManager.generateAutoSequence" value="false"/>
+                <property name="layoutManager.sequenceFieldPrototype">
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+                </property>
+                <property name="layoutManager.richTable.render" value="false"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
+                          p:constraintText="Requires Field 1 be filled out">
+                      <property name="dependencyConstraints">
+                        <list>
+                          <bean parent="PrerequisiteConstraint" p:propertyName="field1"/>
+                        </list>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="bfield" p:label="SubField 4"
+                          p:required="true">
+                      <property name="control">
+                        <bean parent="Uif-CheckboxControl">
+                          <property name="onChangeScript" value="alert('checkbox clicked')"/>
+                        </bean>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example10 end-->
       </list>
     </property>
   </bean>

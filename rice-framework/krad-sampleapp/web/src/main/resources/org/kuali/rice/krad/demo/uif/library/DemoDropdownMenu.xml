@@ -23,7 +23,7 @@
   <!-- Dropdown Menu demo -->
   <bean id="Demo-DropdownMenu-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoDropdownMenu.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.DropdownMenu"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.ToggleMenu"/>
     <!-- TODO: add anchor once docs are complete -->
     <!--<property name="docBookAnchor" value="d6813e7830"/>-->
     <property name="demoGroups">

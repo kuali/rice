@@ -95,6 +95,11 @@
         <value>uif-inputField</value>
       </list>
     </property>
+    <property name="postInputCssClasses">
+      <list>
+        <value>input-group-btn</value>
+      </list>
+    </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
     <property name="validationMessages">
       <bean parent="Uif-FieldValidationMessages"/>
@@ -315,6 +320,20 @@
     </property>
     <property name="group">
       <bean parent="Uif-HorizontalBoxGroup"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridFieldGroup" parent="Uif-CssGridFieldGroup-parentBean"/>
+  <bean id="Uif-CssGridFieldGroup-parentBean" parent="Uif-FieldGroupBase">
+    <property name="group">
+      <bean parent="Uif-CssGridGroup"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-SimpleFieldGroup" parent="Uif-SimpleFieldGroup-parentBean"/>
+  <bean id="Uif-SimpleFieldGroup-parentBean" parent="Uif-FieldGroupBase">
+    <property name="group">
+      <bean parent="Uif-SimpleGroup"/>
     </property>
   </bean>
 

@@ -221,6 +221,15 @@ public class Action extends ContentElementBase {
             actionImage.setAltText("");
         }
 
+        // when icon only is set, add the icon class to the action
+        if (StringUtils.isNotBlank(iconClass) && (UifConstants.ICON_ONLY_PLACEMENT.equals(actionIconPlacement)
+                || StringUtils.isBlank(actionLabel))) {
+            getCssClasses().add(iconClass);
+
+            // force icon only placement
+            actionIconPlacement = UifConstants.ICON_ONLY_PLACEMENT;
+        }
+
         if (!actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT) && StringUtils.isNotBlank(actionEvent)) {
             actionParameters.put(UifConstants.UrlParams.ACTION_EVENT, actionEvent);
         }

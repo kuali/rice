@@ -13,24 +13,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /** overridding styles on controls to be 90% **/
-/*input[type="text"] {*/
-    /*width: 90%;*/
-/*}*/
+input[type="text"], .uif-textAreaControl {
+    width: 100%;
+}
 
-/*.uif-dropdownControl {*/
-    /*width: 90%;*/
-/*}*/
+.form-control {
+    width: 100%;
+}
 
-/*select[multiple] {*/
-    /*width: 90%;*/
-/*}*/
+.input-group-addon, .input-group-btn {
+    width: 1%;
+}
 
-/*textarea {*/
-    /*width: 90%;*/
-/*}*/
+.input-group {
+    width: 100%;
+}
+
+.form-inline .form-control {
+    display: inline-block;
+}
 
 /** add bottom border for view header **/
 .uif-viewHeader-contentWrapper {
     border-bottom: 1px solid #ccc;
+}
+
+.input-group-btn > a.uif-actionLink {
+    display: inline-block;
+    padding: 7px 7px 7px 7px;
+    border-top: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    color: #1150b0;
+    border-color: #cccccc;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #ffffff), color-stop(50%, #ffffff), color-stop(52%, #f2f2f2), color-stop(100%, #e6e6e6));
+    background: -webkit-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: -moz-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: -o-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background-clip: padding-box;
+}
+
+.input-group-btn > .uif-message {
+    display: inline-block;
+    padding: 4px 7px 4px 7px;
+    border-top: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    color: #444;
+    border-color: #cccccc;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #ffffff), color-stop(50%, #ffffff), color-stop(52%, #f2f2f2), color-stop(100%, #e6e6e6));
+    background: -webkit-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: -moz-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: -o-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+    background-clip: padding-box;
 }

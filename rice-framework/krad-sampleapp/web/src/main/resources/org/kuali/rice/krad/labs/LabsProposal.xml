@@ -69,8 +69,8 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:dropdownToggleText="more..."
-        p:renderToggleCaret="false">
+  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:toggleText="more..."
+        p:toggleCaretClass="">
     <property name="menuGroup">
       <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed" p:headerText="Document Info">
         <property name="items">
@@ -133,18 +133,18 @@
                   <bean parent="Uif-MediumTextAreaControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-HorizontalFieldGroup" p:label="Project Dates">
+              <bean parent="Uif-CssGridFieldGroup" p:label="Project Dates">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:propertyName="field4">
+                    <bean parent="Uif-InputField" p:propertyName="field4" p:colSpan="5">
                       <property name="control">
-                        <bean parent="Uif-DateControl"/>
+                        <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-Message" p:messageText="to"/>
-                    <bean parent="Uif-InputField" p:propertyName="field5">
+                    <bean parent="Uif-Message" p:messageText="to" p:colSpan="2"/>
+                    <bean parent="Uif-InputField" p:propertyName="field5" p:colSpan="5">
                       <property name="control">
-                        <bean parent="Uif-DateControl"/>
+                        <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy"/>
                       </property>
                     </bean>
                   </list>
@@ -155,6 +155,18 @@
                   <bean parent="Uif-QuickFinderByScript"
                         p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                         p:fieldConversions="number:field3"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Keywords" p:propertyName="field4">
+                <property name="control">
+                  <bean parent="Uif-DropdownControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Biology"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Chemistry"/>
+                      </list>
+                    </property>
+                  </bean>
                 </property>
               </bean>
             </list>

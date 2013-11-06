@@ -48,11 +48,12 @@
 
     <#assign imagePlacement="${element.actionImagePlacement}"/>
     <#assign iconPlacement="${element.actionIconPlacement}"/>
-<#-- icon definition -->
+
+    <#-- icon definition -->
     <#if element.iconClass??>
         <#if iconPlacement == 'ICON_ONLY'>
+        <#-- no span necessary, icon class is on the link -->
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
-            <span class="${element.iconClass}"></span>
         </button>
         <#elseif iconPlacement == 'LEFT'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -62,7 +63,7 @@ public class Link extends ContentElementBase {
      * <li>Initialize the nested lightBox widget if open in lightbox is true</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
@@ -86,6 +87,15 @@ public class Link extends ContentElementBase {
                     lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
             this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
             lightBox.setRender(false);
+        }
+
+        // when icon only is set, add the icon class to the action
+        if (StringUtils.isNotBlank(iconClass) && (UifConstants.ICON_ONLY_PLACEMENT.equals(linkIconPlacement)
+                || StringUtils.isBlank(linkText))) {
+            getCssClasses().add(iconClass);
+
+            // force icon only placement
+            linkIconPlacement = UifConstants.ICON_ONLY_PLACEMENT;
         }
     }
 

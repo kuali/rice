@@ -142,11 +142,13 @@
       <bean parent="Uif-LightBox"/>
     </property>
     <property name="quickfinderAction">
-      <bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
-        <property name="actionImage">
-          <bean parent="Uif-QuickLookupImage"/>
-        </property>
-      </bean>
+      <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:methodToCall="performLookup"
+            p:focusOnIdAfterSubmit="NEXT_INPUT"/>
+      <!--<bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">-->
+        <!--<property name="actionImage">-->
+          <!--<bean parent="Uif-QuickLookupImage"/>-->
+        <!--</property>-->
+      <!--</bean>-->
     </property>
     <property name="render" value="@{!#parent.readOnly}"/>
   </bean>

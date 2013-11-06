@@ -143,6 +143,12 @@ div.uif-cssGridLabelCol {
   margin-bottom: 15px;
 }
 
+/** this is necessary because controls have 2px margin, and the group button is display table cell **/
+.input-group-addon, .input-group-btn {
+  padding-bottom: 2px;
+  width: inherit;
+}
+
 .uif-applicationHeader .uif-appMenuGroup {
   min-width: 400px;
   white-space: normal;

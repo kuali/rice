@@ -54,7 +54,7 @@
 
         <property name="applicationNavigation.items">
           <list>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="RESEARCHER" p:renderToggleCaret="false">
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="RESEARCHER" p:toggleCaretClass="">
               <property name="menuGroup">
                 <bean parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="6">
                   <property name="items">
@@ -67,10 +67,10 @@
               </property>
             </bean>
 
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="UNIT" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="CENTRAL ADMIN" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="MAINTENANCE" p:renderToggleCaret="false"/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="SYSTEM ADMIN" p:renderToggleCaret="false"/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="UNIT" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="CENTRAL ADMIN" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="MAINTENANCE" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="SYSTEM ADMIN" p:toggleCaretClass=""/>
           </list>
         </property>
 
@@ -94,7 +94,7 @@
                     </property>
                   </bean>
 
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:renderToggleCaret="false"
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:toggleCaretClass=""
                         p:additionalCssClasses="pull-right"/>
 
                   <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark"

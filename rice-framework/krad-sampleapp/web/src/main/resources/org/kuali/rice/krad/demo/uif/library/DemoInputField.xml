@@ -40,6 +40,7 @@
         <ref bean="Demo-InputField-Example11"/>
         <ref bean="Demo-InputField-Example12"/>
         <ref bean="Demo-InputField-Example13"/>
+        <ref bean="Demo-InputField-Example14"/>
       </list>
     </property>
   </bean>
@@ -231,5 +232,36 @@
     </property>
   </bean>
 
+  <bean id="Demo-InputField-Example14" parent="Uif-VerticalBoxSection" p:headerText="Input Addons">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InputField-Example14 start-->
+        <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField14">
+          <property name="postInputAddons">
+            <list>
+                 <bean parent="Uif-Message" p:messageText=".00"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField15">
+          <property name="postInputAddons">
+            <list>
+                 <bean parent="Uif-ActionLink" p:iconClass="icon-search"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:label="Multiple Addons" p:propertyName="inputField16">
+          <property name="postInputAddons">
+            <list>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-facebook3"/>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-twitter3"/>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-youtube"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-InputField-Example14 end-->
+      </list>
+    </property>
+  </bean>
 
 </beans>

@@ -23,14 +23,14 @@
 			}, options);
 			
 			if(options.selectPage){
-                var oldTab = $(this).find(".ui-state-active");
+                var oldTab = $(this).find(".active");
                 if(oldTab.length){
-                    oldTab.removeClass("ui-state-active");
+                    oldTab.removeClass("active");
                 }
 
 				var currentTab = $(this).find("a[name='" + options.selectPage + "']");
 				if(currentTab.length){
-					currentTab.parent().addClass("ui-state-active");
+					currentTab.parent().addClass("active");
 				}
 			}
 		});
@@ -51,13 +51,13 @@
 			var link_elements = list_elements + " a";
 			
 			//Styling
-			$(this).parent().addClass("ui-tabs tab-navigation-block");
-			$(this).addClass("ui-helper-reset ui-helper-clearfix uif-tabMenu");
-			$(list_elements).addClass("ui-state-default ui-corner-top");
+			$(this).parent().addClass("");
+			$(this).addClass("uif-tabMenu");
+			$(list_elements).addClass("");
 			if(options.currentPage){
 				var currentTab = $(this).find("a[name='" + options.currentPage + "']");
 				if(currentTab){
-					currentTab.closest("li").addClass("ui-state-active");
+					currentTab.closest("li").addClass("active");
 				}
 			}
 			//Handlers and animation
@@ -66,29 +66,29 @@
 					$(link_elements).each(function(i)
 					{
 						if(i == 0 && options.defaultSelectFirst && !options.currentPage){
-							$(this).closest("li").addClass("ui-state-active");
+							$(this).closest("li").addClass("active");
 						}
 						$(this).focus(
 						function()
 						{
-							$(this).closest("li").addClass("ui-state-focus");
+							$(this).closest("li").addClass("");
 						});
 
                         $(this).click(
 						function()
 						{
-							$(link_elements).each(function(){$(this).closest("li").removeClass("ui-state-active")});
-							$(this).closest("li").addClass("ui-state-active");
+							$(link_elements).each(function(){$(this).closest("li").removeClass("active")});
+							$(this).closest("li").addClass("active");
 						});
 				
 						$(this).hover(
 						function()
 						{
-							$(this).closest("li").addClass("ui-state-hover");
+							$(this).closest("li").addClass("");
 						},		
 						function()
 						{
-							$(this).closest("li").removeClass("ui-state-hover");
+							$(this).closest("li").removeClass("");
 						});
 				
 
@@ -96,7 +96,7 @@
 						$(this).blur(
 						function()
 						{
-							$(this).closest("li").removeClass("ui-state-focus");
+							$(this).closest("li").removeClass("");
 						});
 					});
 			});

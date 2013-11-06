@@ -52,7 +52,7 @@
 			
 			//Styling
 			$(this).parent().addClass("");
-			$(this).addClass("uif-tabMenu");
+			$(this).addClass("nav nav-tabs");
 			$(list_elements).addClass("");
 			if(options.currentPage){
 				var currentTab = $(this).find("a[name='" + options.currentPage + "']");

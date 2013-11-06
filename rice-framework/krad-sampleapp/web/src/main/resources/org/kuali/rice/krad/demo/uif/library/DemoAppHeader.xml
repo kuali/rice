@@ -54,7 +54,7 @@
 
         <property name="applicationNavigation.items">
           <list>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="RESEARCHER" p:toggleCaretClass="">
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Researcher" p:toggleCaretClass="">
               <property name="menuGroup">
                 <bean parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="6">
                   <property name="items">
@@ -67,10 +67,10 @@
               </property>
             </bean>
 
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="UNIT" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="CENTRAL ADMIN" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="MAINTENANCE" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="SYSTEM ADMIN" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Unit" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Central Admin" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Maintenance" p:toggleCaretClass=""/>
+            <bean parent="Uif-DropdownToggleMenu" p:toggleText="System Admin" p:toggleCaretClass=""/>
           </list>
         </property>
 

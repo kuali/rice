@@ -76,7 +76,7 @@
 	color: #FFF;
 }
 .uif-navigationMenu-wrapper > ul > li > a, .nav > li > div {
-	display: block;
+	//display: block;   introduces a bug with the Appheader menu
 	color: #000000;
 	padding-top: 6px;
 	padding-right: 0;
@@ -584,59 +584,32 @@ nav-list > li > a {
 }
 @media (min-width: 980px) {
 }
-.nav.nav-list li a {
+#Uif-Navigation .nav.nav-list li a {
     border-bottom: 1px solid #E2E1E3;
 }
-.nav.nav-list li .submenu li a {
+#Uif-Navigation .nav.nav-list li .submenu li a {
     background: none repeat scroll 0 0 #FFFFFF;
     border-right: 1px solid #CCCCCC;
 }
-.nav.nav-list .active .submenu .active a {
+#Uif-Navigation .nav.nav-list .active .submenu .active a {
     border-right: medium none;
   margin-right: -1px;
 }
-.nav.nav-list > .active > a {
+#Uif-Navigation .nav.nav-list > .active > a {
     background: none repeat scroll 0 0 #AA003E;
     color: #FFFFFF;
 }
-.nav.nav-list a {
+#Uif-Navigation .nav.nav-list a {
     color: #666666;
 }
-.nav.nav-list > li > a:hover, .nav > li > a:focus {
+#Uif-Navigation .nav.nav-list > li > a:hover, #Uif-Navigation .nav > li > a:focus {
     background: none repeat scroll 0 0 #AA003E !important;
     color: #FFFFFF;
     text-decoration: none;
 }
-.nav.nav-list {
+#Uif-Navigation .nav.nav-list {
     transition: all 500ms ease-out 0s !important;
 }
-.uif-menuNavigationGroup + #Uif-PageContentWrapper {
+#Uif-Navigation .uif-menuNavigationGroup + #Uif-PageContentWrapper {
     margin-left: 250px;
-}
-.right-sidebar {
-    background: none repeat scroll 0 0 #F8F8F8;
-    border-left: 1px dotted #DEDEDE;
-    content: "";
-    display: none;
-    margin: -16px 16px 16px;
-    position: absolute;
-    right: 5%;
-    width: 200px;
-    z-index: 10;
-}
-.right-sidebar .wrapper {
-    padding: 12px;
-}
-.right-sidebar:before {
-    background: none repeat scroll 0 0 #F8F8F8;
-    border-bottom: 1px dotted #DEDEDE;
-    border-left: 1px dotted #DEDEDE;
-    content: "";
-    display: block;
-    height: 16px;
-    left: -9px;
-    position: absolute;
-    top: 20px;
-    transform: rotate(45deg);
-    width: 16px;
 }

@@ -63,6 +63,18 @@
     </property>
   </bean>
 
+  <bean id="Uif-DatePickerOnFocus" parent="Uif-DatePickerOnFocus-parentBean"/>
+  <bean id="Uif-DatePickerOnFocus-parentBean" abstract="true" scope="prototype" parent="Uif-DatePicker">
+    <property name="templateOptions">
+      <map>
+        <entry key="showAnim" value="slideDown"/>
+        <entry key="showButtonPanel" value="true"/>
+        <entry key="changeMonth" value="true"/>
+        <entry key="changeYear" value="true"/>
+      </map>
+    </property>
+  </bean>
+
   <bean id="Uif-LightBox" parent="Uif-LightBox-parentBean"/>
   <bean id="Uif-LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype"
         parent="Uif-WidgetBase">

@@ -203,15 +203,20 @@
               <bean parent="Uif-CssGridFieldGroup" p:label="Project Dates">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:propertyName="field4" p:colSpan="5">
+                    <bean parent="Uif-InputField" p:propertyName="field4" p:colSpan="6">
                       <property name="control">
-                        <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy"/>
+                        <bean parent="Uif-DateControlOnFocus" p:watermarkText="mm/dd/yyyy"/>
+                      </property>
+                      <property name="postInputAddons">
+                        <list>
+                          <bean parent="Uif-Message" p:messageText="to"/>
+                        </list>
                       </property>
                     </bean>
-                    <bean parent="Uif-Message" p:messageText="to" p:colSpan="2"/>
-                    <bean parent="Uif-InputField" p:propertyName="field5" p:colSpan="5">
+
+                    <bean parent="Uif-InputField" p:propertyName="field5" p:colSpan="6">
                       <property name="control">
-                        <bean parent="Uif-DateControl" p:watermarkText="mm/dd/yyyy"/>
+                        <bean parent="Uif-DateControlOnFocus" p:watermarkText="mm/dd/yyyy"/>
                       </property>
                     </bean>
                   </list>

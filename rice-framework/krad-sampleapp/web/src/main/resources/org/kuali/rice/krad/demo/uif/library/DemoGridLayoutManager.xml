@@ -33,6 +33,7 @@
         <ref bean="Demo-GridLayoutManager-Example2"/>
         <ref bean="Demo-GridLayoutManager-Example3"/>
         <ref bean="Demo-GridLayoutManager-Example4"/>
+        <ref bean="Demo-GridLayoutManager-Example5"/>
       </list>
     </property>
   </bean>
@@ -117,4 +118,67 @@
     </property>
   </bean>
 
+  <bean id="Demo-GridLayoutManager-Example5" parent="Uif-VerticalBoxSection" p:headerText="Rowspan">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GridLayoutManager-Example5 start-->
+        <bean parent="Uif-GridGroup"
+              p:layoutManager.numberOfColumns="3"
+              p:layoutManager.renderAlternatingHeaderColumns="false">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxSection" p:rowSpan="2">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField12"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField13"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection" p:rowSpan="3">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField14"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField15"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="inputField16"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 6" p:propertyName="inputField17"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-GridLayoutManager-Example5 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

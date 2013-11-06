@@ -83,15 +83,8 @@
         <bean id="KradInquirySampleItems-PageR2C1" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Link to Sample Inquiry" p:target="_self"
-                    p:href=""/>
-              <bean id="KradInquirySampleItems-Section2-PageR2C1" parent="Uif-VerticalBoxSection">
-                 <property name="items">
-                   <list>
-
-                   </list>
-                 </property>
-               </bean>
+              <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelExpenseItem&amp;travelExpenseItemId=10000"/>
             </list>
           </property>
         </bean>

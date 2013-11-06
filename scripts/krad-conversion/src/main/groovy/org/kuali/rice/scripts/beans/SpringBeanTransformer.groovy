@@ -244,6 +244,38 @@ class SpringBeanTransformer {
         return attributes;
     }
 
+    def gatherPropertyTagsAndPropertyAttributes = { Node beanNode, Map searchAttrs ->
+        def attributes = gatherPropertyTags(beanNode, searchAttrs);
+        // locate attributes and special cases (i.e. '*name')
+        attributes += gatherPropertyAttrs(beanNode, searchAttrs);
+        return attributes;
+    }
+
+    def gatherPropertyAttrs = { Node beanNode, Map searchAttrs ->
+        def attributes = [:];
+        // locate attributes and special cases (i.e. '*name')
+        beanNode.attributes().each { key, value ->
+            def keyString = key.toString();
+            if(key instanceof QName) {
+                keyString = ((QName)key).getLocalPart();
+            }
+            if (searchAttrs.any { matchesAttr(it.key, keyString) }) {
+                attributes.put(searchAttrs.find { matchesAttr(it.key, keyString) }.value, value);
+            }
+        }
+        return attributes;
+    }
+
+    def gatherPropertyTags = { Node beanNode, Map searchAttrs ->
+        def attributes = [:];
+        beanNode.property.each { beanProperty ->
+            if (searchAttrs.any { matchesAttr(it.key, beanProperty.@name) }) {
+                attributes.put(searchAttrs.find { matchesAttr(it.key, beanProperty.@name) }.value, beanProperty.@value);
+            }
+        }
+        return attributes;
+    }
+
     /**
      * For copying properties over if they exist without conversion.
      * (may be replaced by the
@@ -291,7 +323,7 @@ class SpringBeanTransformer {
 
     def gatherNameAttribute = { Node beanNode -> return genericGatherAttributes(beanNode, ["*name": "p:propertyName"]); }
 
-    def gatherValidationPatternAttributes = { Node beanNode -> return genericGatherAttributes(beanNode, validationPatternPropertiesMap); }
+    def gatherValidationPatternProperties = { Node beanNode -> return gatherPropertyTagsAndPropertyAttributes(beanNode, validationPatternPropertiesMap); }
     def gatherControlAttributes = { Node beanNode -> return genericGatherAttributes(beanNode, controlPropertiesMap); }
 
     // helper closures - bean transforms

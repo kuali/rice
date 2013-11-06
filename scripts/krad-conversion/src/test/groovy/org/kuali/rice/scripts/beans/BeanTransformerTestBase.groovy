@@ -18,6 +18,8 @@ package org.kuali.rice.scripts.beans
 import groovy.xml.XmlUtil
 import org.junit.Assert
 
+import groovy.xml.QName
+
 /**
  * This class contains many of the helper methods used in the other bean transformer tests
  *
@@ -49,8 +51,17 @@ class BeanTransformerTestBase {
         Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
     }
 
+    /**
+     * checks whether property exists as a tag or an attribute in a bean node
+     *
+     * @param beanNode
+     * @param propertyName
+     */
     public void checkBeanPropertyExists(def beanNode, String propertyName) {
-        Assert.assertTrue("bean should contains property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0);
+        def tagAssertion = beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0;
+        def attrAssertion = beanNode.attributes().findAll {
+            it.key.contains("p:") && propertyName.equals(it.key.minus("p:")) }.size() > 0;
+        Assert.assertTrue("bean should contains property " + propertyName, tagAssertion || attrAssertion);
     }
 
     public void checkBeanPropertyNotExists(def beanNode, String propertyName) {
@@ -69,10 +80,9 @@ class BeanTransformerTestBase {
     }
 
     public static Node getSimpleSpringXmlNode() {
-        def rootBean = new XmlParser().parseText("<beans>" + "<bean id='SimpleBean' parent='SpringBean' attributeName='test'>" + "<property name='simpleProperty' value='test' />" + "<property name='propertyWithRef' value='value2' />" + "<property name='propertyList'>" + "<list><value>1</value><value>2</value></list>" + "</property>" + "<property name='propertyListWithBeans'>" + "<list><bean id='test' parent='FieldDefinition' attributeName='builder'/></list>" + "</property>" + "</bean>" + "</beans>");
+        def rootBean = new XmlParser().parseText("<beans>" + "<bean xmlns:p=\"http://www.springframework.org/schema/p\"  id='SimpleBean' p:name='SimpleBean' parent='SpringBean' attributeName='test'>" + "<property name='simpleProperty' value='test' />" + "<property name='propertyWithRef' value='value2' />" + "<property name='propertyList'>" + "<list><value>1</value><value>2</value></list>" + "</property>" + "<property name='propertyListWithBeans'>" + "<list><bean id='test' parent='FieldDefinition' attributeName='builder'/></list>" + "</property>" + "</bean>" + "</beans>");
         return rootBean;
     }
-
 
     /**
      * Used to check bean structure has been transformed appropriately.  Helpful for cases which carry over properties

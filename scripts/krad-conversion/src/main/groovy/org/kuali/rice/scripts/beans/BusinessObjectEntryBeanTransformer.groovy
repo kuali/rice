@@ -158,14 +158,19 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      */
     def buildValidationPatternProperty(NodeBuilder builder, Node beanNode) {
         def patternBean = beanNode.bean.find { return true; }
-        def beanAttributes = gatherValidationPatternAttributes(patternBean)
+        def beanAttributes = [:];
+        def beanProperties = gatherValidationPatternProperties(patternBean)
         def propertyAttributes = [name: 'validCharactersConstraint']
         if (beanNode.@id) {
             propertyAttributes.put("id", beanNode.@id)
         }
         builder.property(propertyAttributes) {
             beanAttributes.put("parent", validationPatternMap[patternBean.@parent])
-            genericBeanTransform(builder, beanAttributes)
+            bean(beanAttributes) {
+               beanProperties.each {
+                   property(name: it.key, value: it.value)
+               }
+            }
         }
     }
 

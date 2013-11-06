@@ -51,6 +51,9 @@
         </property>
       </bean>
     </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
     <property name="additionalCssFiles">
       <list merge="true">
         <value>css/labsProposal.css</value>
@@ -195,7 +198,8 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Proposal Type" p:propertyName="field1" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Project Title" p:propertyName="field2" p:required="true">
+              <bean parent="Uif-InputField" p:label="Project Title" p:propertyName="field2" p:required="true"
+                    p:helperText="Give this proposal a title. Be detailed but concise.">
                 <property name="control">
                   <bean parent="Uif-MediumTextAreaControl"/>
                 </property>
@@ -222,7 +226,8 @@
                   </list>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3">
+              <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3"
+                    p:helperText="Enter the award ID for this proposal.">
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"
                         p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
@@ -264,7 +269,8 @@
               <bean parent="Uif-TabGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Details">
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Details"
+                          p:header.render="false">
                       <property name="items">
                         <list>
                           <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -275,7 +281,8 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Organization">
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Organization"
+                          p:header.render="false">
                       <property name="items">
                         <list>
                           <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -286,7 +293,8 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Education">
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Education"
+                          p:header.render="false">
                       <property name="items">
                         <list>
                           <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -297,7 +305,8 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Degrees">
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Degrees"
+                          p:header.render="false">
                       <property name="items">
                         <list>
                           <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -318,8 +327,19 @@
     </property>
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionHorizontalBoxItem" p:disclosure.render="true">
+        <property name="layoutManager">
+          <bean parent="Uif-SimpleLayout"/>
+        </property>
         <property name="header">
-          <bean parent="Uif-HeaderFour"/>
+          <bean parent="Uif-HeaderFour">
+            <!--<property name="rightGroup">-->
+               <!--<bean parent="Uif-VerticalBoxGroup">-->
+                 <!--<property name="items">-->
+                   <!--<bean parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-remove"/>-->
+                 <!--</property>-->
+               <!--</bean>-->
+            <!--</property>-->
+          </bean>
         </property>
       </bean>
     </property>

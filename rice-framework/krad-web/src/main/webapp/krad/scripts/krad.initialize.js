@@ -133,6 +133,8 @@ jQuery(document).ready(function () {
     //disclosure handler setup
     setupDisclosureHandler();
 
+    setupHelperTextHandler();
+
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
@@ -618,6 +620,27 @@ function setupDisclosureHandler() {
                     }
                 }
             });
+}
+
+/**
+ * Sets up focus and blur events for inputs with helper text.
+ */
+function setupHelperTextHandler() {
+    if (jQuery('.uif-helperText').length) {
+        jQuery('.uif-helperText').slideUp();
+    }
+
+    jQuery('.has-helper').on('focus', function () {
+        if (jQuery(this).parent().find('.uif-helperText')) {
+            jQuery(this).parent().find('.uif-helperText').slideDown();
+        }
+    });
+
+    jQuery('.has-helper').on('blur', function () {
+        if (jQuery(this).parent().find('.uif-helperText')) {
+            jQuery(this).parent().find('.uif-helperText').slideUp();
+        }
+    });
 }
 
 /**

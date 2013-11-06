@@ -39,6 +39,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
@@ -127,6 +128,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     private Message constraintMessage;
     private Message instructionalMessage;
+
+    private String helperText;
 
     private AttributeQuery attributeQuery;
 
@@ -291,6 +294,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         if ((postInputAddons != null) && !postInputAddons.isEmpty()) {
             renderInputGroup = true;
+        }
+
+        if (StringUtils.isNotBlank(helperText) && (getControl() != null)) {
+            getControl().getCssClasses().add(CssConstants.Classes.HAS_HELPER);
         }
 
         DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -967,6 +974,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
+     * Help text that displays under the control and is disclosed on focus.
+     *
+     * @return String help text for input
+     */
+    public String getHelperText() {
+        return helperText;
+    }
+
+    /**
+     * @see InputField#getHelperText()
+     */
+    public void setHelperText(String helperText) {
+        this.helperText = helperText;
+    }
+
+    /**
      * Text that display a restriction on the value a field can hold
      *
      * <p>
@@ -1431,6 +1454,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         if (this.instructionalMessage != null) {
             inputFieldCopy.setInstructionalMessage((Message) this.instructionalMessage.copy());
         }
+
+        inputFieldCopy.setHelperText(this.helperText);
 
         if (this.attributeQuery != null) {
             inputFieldCopy.setAttributeQuery((AttributeQuery) this.attributeQuery.copy());

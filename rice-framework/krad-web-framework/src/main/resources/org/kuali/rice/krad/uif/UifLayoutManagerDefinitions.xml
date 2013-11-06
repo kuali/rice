@@ -36,6 +36,13 @@
     </property>
   </bean>
 
+  <bean id="Uif-SimpleLayout" abstract="true" parent="Uif-SimpleLayout-parentBean"/>
+  <bean id="Uif-SimpleLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.SimpleLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/layout/simple.ftl"/>
+    <property name="templateName" value="uif_simpleLayout"/>
+  </bean>
+
   <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
   <bean id="Uif-HorizontalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
     <property name="cssClasses">

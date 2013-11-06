@@ -13516,7 +13516,7 @@ $.widget( "ui.tabs", {
 			this.tabs.eq( 0 ).attr( "tabIndex", 0 );
 		} else {
 			this.active
-				.addClass( "ui-tabs-active ui-state-active" )
+				.addClass( "active" )
 				.attr({
 					"aria-selected": "true",
 					tabIndex: 0
@@ -13534,11 +13534,11 @@ $.widget( "ui.tabs", {
 		var that = this;
 
 		this.tablist = this._getList()
-			.addClass( "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" )
+			.addClass( "nav nav-tabs" )
 			.attr( "role", "tablist" );
 
 		this.tabs = this.tablist.find( "> li:has(a[href])" )
-			.addClass( "ui-state-default ui-corner-top" )
+			.addClass( "" )
 			.attr({
 				role: "tab",
 				tabIndex: -1
@@ -13591,7 +13591,7 @@ $.widget( "ui.tabs", {
 		});
 
 		this.panels
-			.addClass( "ui-tabs-panel ui-widget-content ui-corner-bottom" )
+			.addClass( "" )
 			.attr( "role", "tabpanel" );
 	},
 
@@ -13758,7 +13758,7 @@ $.widget( "ui.tabs", {
 		}
 
 		function show() {
-			eventData.newTab.closest( "li" ).addClass( "ui-tabs-active ui-state-active" );
+			eventData.newTab.closest( "li" ).addClass( "active" );
 
 			if ( toShow.length && that.options.show ) {
 				that._show( toShow, that.options.show, complete );
@@ -13771,11 +13771,11 @@ $.widget( "ui.tabs", {
 		// start out by hiding, then showing, then completing
 		if ( toHide.length && this.options.hide ) {
 			this._hide( toHide, this.options.hide, function() {
-				eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-state-active" );
+				eventData.oldTab.closest( "li" ).removeClass( "active" );
 				show();
 			});
 		} else {
-			eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-state-active" );
+			eventData.oldTab.closest( "li" ).removeClass( "active" );
 			toHide.hide();
 			show();
 		}
@@ -14497,7 +14497,7 @@ if ( $.uiBackCompat !== false ) {
 			}
 
 			function show() {
-				eventData.newTab.closest( "li" ).addClass( "ui-tabs-active ui-state-active" );
+				eventData.newTab.closest( "li" ).addClass( "active" );
 
 				if ( toShow.length && fx.show ) {
 					toShow
@@ -14513,11 +14513,11 @@ if ( $.uiBackCompat !== false ) {
 			// start out by hiding, then showing, then completing
 			if ( toHide.length && fx.hide ) {
 				toHide.animate( fx.hide, fx.hide.duration, function() {
-					eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-state-active" );
+					eventData.oldTab.closest( "li" ).removeClass( "active" );
 					show();
 				});
 			} else {
-				eventData.oldTab.closest( "li" ).removeClass( "ui-tabs-active ui-state-active" );
+				eventData.oldTab.closest( "li" ).removeClass( "active" );
 				toHide.hide();
 				show();
 			}

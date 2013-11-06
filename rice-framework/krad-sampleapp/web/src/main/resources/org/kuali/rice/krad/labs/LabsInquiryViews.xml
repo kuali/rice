@@ -163,4 +163,31 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsEncryptedTravelAccountType"/>
   </bean>
 
+  <bean id="LabsInquiry-PerDiemSections-NoInquiry" parent="LabsInquiry-PerDiemSections">
+    <property name="headerText" value="No Inquiry on primary destination"/>
+    <property name="viewName" value="LabsInquiry-PerDiemSections-NoInquiry"/>
+    <property name="items">
+      <list>
+        <bean id="PerDiemSections-InquiryView-NoInquiry" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Account Information"/>
+          <property name="items">
+            <list>
+
+                <bean parent="Uif-DataField" p:propertyName="travelPerDiemExpenseId"/>
+                <bean parent="Uif-DataField" p:propertyName="travelAuthorizationDocumentId"/>
+                <bean parent="Uif-DataField" p:propertyName="travelDestinationId">
+                  <property name="inquiry">
+                    <bean parent="Uif-Inquiry">
+                      <property name="render" value="false"/>
+                    </bean>
+                  </property>
+                </bean>
+                <bean parent="Uif-DataField" p:propertyName="perDiemDate"/>
+              </list>
+
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

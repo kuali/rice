@@ -264,5 +264,18 @@
       </list>
     </property>
   </bean>
-
+  <bean id="KradInquirySample-PageR6C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR6C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to demonstrate ability to suppress the automatically generated inquiry link on fields." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=LabsInquiry-PerDiemSections-NoInquiry&amp;travelPerDiemExpenseId=10000"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

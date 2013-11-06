@@ -72,7 +72,8 @@
   <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:toggleText="more..."
         p:toggleCaretClass="">
     <property name="menuGroup">
-      <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed" p:headerText="Document Info">
+      <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed"
+            p:headerText="Document Info">
         <property name="items">
           <list>
             <bean parent="Uif-MessageField" p:label="Doc Nbr" p:fieldLabel.renderColon="false"
@@ -172,9 +173,85 @@
             </list>
           </property>
         </bean>
+
+        <bean parent="LabsProposal-StackedSection"/>
       </list>
     </property>
   </bean>
 
+  <bean id="LabsProposal-StackedSection" parent="Uif-StackedCollectionSection">
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="propertyName" value="list4"/>
+    <property name="layoutManager.summaryTitle" value="Line @{#line.field1}"/>
+    <property name="renderAddLine" value="false"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-SimpleFieldGroup">
+          <property name="items">
+            <list>
+
+              <bean parent="Uif-TabGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Details">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Organization">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Education">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Degrees">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="layoutManager.lineGroupPrototype">
+      <bean parent="Uif-CollectionHorizontalBoxItem" p:disclosure.render="true">
+        <property name="header">
+          <bean parent="Uif-HeaderFour"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
 </beans>

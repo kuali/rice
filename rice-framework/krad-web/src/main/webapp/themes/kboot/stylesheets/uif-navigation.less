@@ -257,12 +257,21 @@ nav-list > li > a {
     right: 0;
     top: 0;
 }
+.uif-menuNavigationGroup:before {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border-right: 1px solid #CCCCCC;
+    bottom: 0;
+    box-shadow: -5px 0 12px 2px rgba(0, 0, 0, 0.05) inset;
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    width: 250px;
+    z-index: -1;
+}
 .uif-menuNavigationGroup {
   width: 250px;
   margin-left: -15px;
-  background: none repeat scroll 0 0 #F5F5F5;
-  border-right: 1px solid #CCCCCC;
-  box-shadow: -5px 0 12px 2px rgba(0, 0, 0, 0.05) inset;
   position: absolute;
 }
 .uif-menuNavigationGroup.sidebar-fixed {

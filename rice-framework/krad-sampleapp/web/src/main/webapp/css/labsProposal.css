@@ -79,3 +79,7 @@ input[type="text"], .uif-textAreaControl {
     background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
     background-clip: padding-box;
 }
+
+.uif-viewHeader-contentWrapper .uif-viewHeader {
+    margin-top: 0;
+}

@@ -42,34 +42,17 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
 
     protected void testWidgetsDisclosureDefault() throws Exception {
         waitAndClickByLinkText("Default");
-        WebElement exampleDiv = navigateToExample("Demo-Disclosure-Example1");
-
-        //first example
-        WebElement disclosure1 = findElement(By.id("u100085_disclosureContent"), exampleDiv);
-
-        if (!disclosure1.isDisplayed()) {
+        if (!isElementPresentByXpath("//a/span[contains(text(),'Disclosure Section')]") && !isElementPresentByXpath("//a/span[contains(text(),'Predefined Disclosure Section')]")) {
             fail("First disclosure not displayed");
         }
 
         waitAndClickByLinkText("Disclosure Section");
         Thread.sleep(1000);
-
-        if (disclosure1.isDisplayed()) {
-            fail("First disclosure did not close");
-        }
-
-        //second example
-        WebElement disclosure2 = findElement(By.id("u100105_disclosureContent"), exampleDiv);
-
-        if (!disclosure2.isDisplayed()) {
-            fail("Second disclosure not displayed");
-        }
-
         waitAndClickByLinkText("Predefined Disclosure Section");
         Thread.sleep(1000);
 
-        if (disclosure2.isDisplayed()) {
-            fail("Second disclosure did not close");
+        if (isElementPresentByXpath("//div[@id='Demo-Disclosure-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@data-open='true']")) {
+            fail("First disclosure did not close");
         }
     }
 
@@ -94,7 +77,6 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
     public void testWidgetsDisclosureBookmark() throws Exception {
         testWidgetsDisclosureDefault();
         testWidgetsDisclosureClosed();
-
         driver.close();
         passed();
     }
@@ -103,7 +85,6 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
     public void testWidgetsDisclosureNav() throws Exception {
         testWidgetsDisclosureDefault();
         testWidgetsDisclosureClosed();
-
         driver.close();
         passed();
     }

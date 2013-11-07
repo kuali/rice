@@ -22,6 +22,8 @@
 
   <bean id="LabsProposal" parent="Demo-AppHeader-View1">
     <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
+    <property name="applicationFooter"><null/></property>
     <property name="breadcrumbs.render" value="false"/>
     <property name="header">
       <bean parent="Uif-ViewHeader" p:headerText="Proposal: #23533" p:areaTitleText="Proposal Development"

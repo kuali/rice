@@ -2292,7 +2292,7 @@ function initStickyContent(currentScroll) {
         currentScroll = jQuery(window).scrollTop();
     }
 
-    var topOffset = stickyContentOffset.top;
+    var topOffset = Math.round(stickyContentOffset.top);
 
     var totalHeight = 0;
     var margin = 0;
@@ -2300,35 +2300,38 @@ function initStickyContent(currentScroll) {
     var automateMargin = false;
     var innerNonStickyCount = 0;
 
+    var lastStickyContent;
     //fix each sticky piece of content
     stickyContent.each(function () {
         var height = jQuery(this).outerHeight();
         var thisOffset = jQuery(this).data("offset");
+        var thisOffsetTop = Math.round(thisOffset.top);
         jQuery(this).addClass(kradVariables.STICKY_CLASS);
 
-        if (thisOffset.top < 1) {
+        if (thisOffsetTop < 1) {
             automateMargin = true;
         }
 
         //scroll content with the scroll
         if (currentScroll > 0) {
-            jQuery(this).attr("style", "position:fixed; left: 0; top: " + (thisOffset.top - currentScroll) + "px;");
+            jQuery(this).attr("style", "position:fixed; left: 0; top: " + (thisOffsetTop - currentScroll) + "px;");
         }
         else {
-            jQuery(this).attr("style", "position:fixed; left: 0; top: " + thisOffset.top + "px;");
+            jQuery(this).attr("style", "position:fixed; left: 0; top: " + thisOffsetTop + "px;");
         }
 
         //this means there is inner non-sticky content in the header
-        if (thisOffset.top > topOffset) {
+        if (thisOffsetTop > topOffset) {
             margin = margin + totalHeight;
             innerNonStickyCount++;
-            topOffset = thisOffset.top;
+            topOffset = thisOffsetTop;
         }
 
         //set totalHeight of sticky elements, topOffset, and prevHeight
         totalHeight = totalHeight + height;
         topOffset = topOffset + height;
         prevHeight = height;
+        lastStickyContent = jQuery(this);
     });
 
     //Only adjust the margin if a sticky area exists in the top most area, and there is inner-non-sticky content
@@ -2348,11 +2351,20 @@ function initStickyContent(currentScroll) {
         }
 
         //move the navigation with total height of the header pieces - the scroll
-        navigation.attr("style", "position:absolute; top: " + (topOffset - currentScroll) + "px;");
+        // TODO support both absolute and fixed
+        //navigation.attr("style", "position:fixed; top: " + (topOffset - currentScroll) + "px;");
+        navigation.attr("style", "position:absolute;");
+    }
+
+    // Determine which div to apply the margin to by figuring out the first applicable div that exists after all
+    // the sticky content, in order to push down that content and content below it correctly
+    var applyMarginToContent = jQuery(".uif-formView > div.uif-sticky:last").next();
+    if (applyMarginToContent.length == 0){
+        applyMarginToContent = jQuery(".uif-formView");
     }
 
     //make the ViewContentWrapper margin-top reflect the visible header content pixel height
-    jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER).css("marginTop",
+    jQuery(applyMarginToContent).css("marginTop",
             (totalHeight + navigationHeightAdjust - margin) + "px");
 
     //set header height global
@@ -2369,7 +2381,7 @@ function handleStickyContent() {
         return;
     }
 
-    if (jQuery(window).scrollTop() >= stickyContentOffset.top) {
+    if (jQuery(window).scrollTop() >= Math.round(stickyContentOffset.top)) {
         var topOffset = 0;
         var navAdjust = 0;
 
@@ -2378,9 +2390,10 @@ function handleStickyContent() {
             var height = jQuery(this).outerHeight();
 
             var thisOffset = jQuery(this).data("offset");
+            var thisOffsetTop = Math.round(thisOffset.top);
             //content exist between this sticky and last sticky
-            if (thisOffset && thisOffset.top - jQuery(window).scrollTop() > topOffset) {
-                var diff = thisOffset.top - jQuery(window).scrollTop();
+            if (thisOffset && thisOffsetTop - jQuery(window).scrollTop() > topOffset) {
+                var diff = thisOffsetTop - jQuery(window).scrollTop();
                 jQuery(this).attr("style", "position:fixed; left: 0; top: " + diff + "px;");
                 navAdjust = diff + height;
             }
@@ -2394,12 +2407,14 @@ function handleStickyContent() {
         });
 
         //adjust the fixed nav position (if navigation exists)
-        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:absolute; top: " +
-                (navAdjust) + "px;");
+        // TODO support both absolute and fixed
+        /* jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; top: " +
+                (navAdjust) + "px;");*/
+        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:absolute;");
         currentHeaderHeight = navAdjust;
 
     }
-    else if (jQuery(window).scrollTop() < stickyContentOffset.top) {
+    else if (jQuery(window).scrollTop() < Math.round(stickyContentOffset.top)) {
         //the content is back to past the first sticky element (topmost)
         initStickyContent(jQuery(window).scrollTop());
     }
@@ -2457,8 +2472,8 @@ function handleStickyFooterContent() {
     var scrollTop = jQuery(window).scrollTop();
 
     //reposition elements when the scroll exceeds the footer's top (and footer content exists)
-    if (windowHeight + scrollTop >= appFooterOffset.top && scrollTop != 0 && applicationFooter.height() > 0) {
-        var bottomOffset = (windowHeight + scrollTop) - appFooterOffset.top;
+    if (windowHeight + scrollTop >= Math.round(appFooterOffset.top) && scrollTop != 0 && applicationFooter.height() > 0) {
+        var bottomOffset = (windowHeight + scrollTop) - Math.round(appFooterOffset.top);
 
         jQuery(stickyFooterContent.get().reverse()).each(function () {
             var height = jQuery(this).outerHeight();

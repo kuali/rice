@@ -85,3 +85,19 @@ input[type="text"], .uif-textAreaControl {
     margin-top: 0;
     padding-top: 10px;
 }
+
+.uif-stickyButtonFooter {
+    background: none repeat scroll 0 0 #F8F8F8;
+    border-top: 1px solid #E2E2E2;
+    box-shadow: none;
+    padding: 0;
+}
+
+.uif-stickyButtonFooter > div {
+    float: right;
+    padding: 15px;
+}
+
+.uif-stickyButtonFooter button {
+    margin: 0;
+}

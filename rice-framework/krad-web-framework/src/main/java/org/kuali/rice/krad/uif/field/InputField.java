@@ -1481,7 +1481,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         if (this.postInputAddons != null) {
-            inputFieldCopy.setPostInputAddons(new ArrayList<Component>(this.postInputAddons));
+            List<Component> postInputAddonsCopy = new ArrayList<Component>();
+            for (Component addon : postInputAddons) {
+                postInputAddonsCopy.add((Component) addon.copy());
+            }
+            inputFieldCopy.setPostInputAddons(postInputAddonsCopy);
         }
     }
 

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -189,6 +190,15 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         if (((UifFormBase) model).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
+        }
+
+        // any actions that are attached to the group prototype (like the header) need to get action parameters
+        // and context set for the collection line
+        List<Action> lineGroupActions = ComponentUtils.getComponentsOfTypeDeep(lineGroup, Action.class);
+        if (lineGroupActions != null) {
+            collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup,
+                    currentLine, lineIndex, idSuffix);
+            ComponentUtils.updateContextsForLine(lineGroupActions, currentLine, lineIndex, idSuffix);
         }
 
         ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);

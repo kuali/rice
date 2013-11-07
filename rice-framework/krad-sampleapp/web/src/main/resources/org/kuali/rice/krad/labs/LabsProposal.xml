@@ -326,6 +326,9 @@
         </bean>
       </list>
     </property>
+    <property name="lineActions">
+      <list/>
+    </property>
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionHorizontalBoxItem" p:disclosure.render="true">
         <property name="layoutManager">
@@ -333,13 +336,15 @@
         </property>
         <property name="header">
           <bean parent="Uif-HeaderFour">
-            <!--<property name="rightGroup">-->
-               <!--<bean parent="Uif-VerticalBoxGroup">-->
-                 <!--<property name="items">-->
-                   <!--<bean parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-remove"/>-->
-                 <!--</property>-->
-               <!--</bean>-->
-            <!--</property>-->
+            <property name="rightGroup">
+              <bean parent="Uif-VerticalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-close"/>
+                  </list>
+                </property>
+              </bean>
+            </property>
           </bean>
         </property>
       </bean>

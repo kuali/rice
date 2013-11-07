@@ -117,7 +117,7 @@
         <!-- ex:Demo-Disclosure-Example4 start-->
         <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Section Header">
           <!-- default triangle disclosure image will not be shown -->
-          <property name="disclosure.renderImage" value="false"/>
+          <property name="disclosure.renderIcon" value="false"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField11"/>
@@ -130,15 +130,15 @@
     </property>
   </bean>
 
-  <!-- change image -->
+  <!-- change icon -->
   <bean id="Demo-Disclosure-Example5" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Disclosure-Example5 start-->
         <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Section Header">
-          <!-- default triangle disclosure image will not be shown -->
-          <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['application.url']}/images/collapse-black.png"/>
-          <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['application.url']}/images/expand-black.png"/>
+          <!-- change icon for collapsed and expanded -->
+          <property name="disclosure.collapsedIconClass" value="icon-folder"/>
+          <property name="disclosure.expandedIconClass" value="icon-folder-open"/>
 
           <property name="items">
             <list>

@@ -38,12 +38,7 @@
       <bean parent="Uif-GroupValidationMessages"/>
     </property>
     <property name="disclosure">
-      <bean parent="Uif-Disclosure" p:render="false">
-        <property name="collapseImageSrc"
-                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-        <property name="expandImageSrc"
-                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-      </bean>
+      <bean parent="Uif-Disclosure" p:render="false"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>

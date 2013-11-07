@@ -620,30 +620,30 @@ function createDatePicker(controlId, options) {
  * @param widgetId - id for the accordion widget, used for updating state
  * @param defaultOpen -
  *          indicates whether the group should be initially open or close
- * @param collapseImgSrc -
- *          path to the image that should be displayed for collapsing the group
- * @param expandImgSrc -
- *          path to the image that should be displayed for expanding the group
+ * @param collapsedIconClass -
+ *          class for the icon that is displayed with the group is collapsed
+ * @param expandedIconClass -
+ *          class for the icon that is displayed with the group is expanded
  * @param animationSpeed -
  *          speed at which the group should be expanded or collapsed
- * @param renderImage -
- *          boolean that indicates whether the expanded or collapsed image should be rendered
+ * @param renderIcon -
+ *          boolean that indicates whether the expanded or collapsed icon should be rendered
  * @param ajaxRetrieval -
  *          boolean that indicates whether the disclosure group should be retrieved when open
  */
-function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage, ajaxRetrieval) {
+function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapsedIconClass, expandedIconClass, animationSpeed, renderIcon, ajaxRetrieval) {
     jQuery(document).ready(function () {
         var groupToggleLinkId = groupId + kradVariables.ID_SUFFIX.DISCLOSURE_TOGGLE;
 
-        var expandImage = "";
-        var collapseImage = "";
-        if (renderImage && defaultOpen) {
-            expandImage = "<img id='" + groupToggleLinkId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
-            collapseImage = "<img style='display:none;' id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
+        var expandedIcon = "";
+        var collapsedIcon = "";
+        if (renderIcon && defaultOpen) {
+            expandedIcon = "<span id='" + groupToggleLinkId + "_exp" + "' class='" + expandedIconClass + "'></span>";
+            collapsedIcon = "<span style='display:none;' id='" + groupToggleLinkId + "_col" + "' class='" + collapsedIconClass + "'></span>";
         }
-        else if (renderImage && !defaultOpen) {
-            expandImage = "<img style='display:none;' id='" + groupToggleLinkId + "_exp" + "' src='" + expandImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_EXPAND) + "' class='uif-disclosure-image'/>";
-            collapseImage = "<img id='" + groupToggleLinkId + "_col" + "' src='" + collapseImgSrc + "' alt='" + getMessage(kradVariables.MESSAGE_COLLAPSE) + "' class='uif-disclosure-image'/>";
+        else if (renderIcon && !defaultOpen) {
+            collapsedIcon = "<span id='" + groupToggleLinkId + "_col" + "' class='" + collapsedIconClass + "'></span>";
+            expandedIcon = "<span style='display:none;' id='" + groupToggleLinkId + "_exp" + "' class='" + expandedIconClass + "'></span>";
         }
 
         var content = jQuery("#" + groupId + kradVariables.ID_SUFFIX.DISCLOSURE_CONTENT);
@@ -655,16 +655,16 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
 
             content.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
 
-            headerText.prepend(expandImage);
-            headerText.prepend(collapseImage);
+            headerText.prepend(collapsedIcon);
+            headerText.prepend(expandedIcon);
         }
         else {
             content.hide();
 
             content.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
 
-            headerText.prepend(collapseImage);
-            headerText.prepend(expandImage);
+            headerText.prepend(expandedIcon);
+            headerText.prepend(collapsedIcon);
         }
 
         headerText.wrap("<a data-role=" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + " data-linkfor='"

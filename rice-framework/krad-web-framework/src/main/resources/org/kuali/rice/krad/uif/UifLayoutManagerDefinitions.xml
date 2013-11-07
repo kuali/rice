@@ -292,7 +292,7 @@
         <property name="header">
           <bean parent="Uif-HeaderFour"/>
         </property>
-        <property name="disclosure.renderImage" value="false"/>
+        <property name="disclosure.renderIcon" value="false"/>
         <property name="disclosure.defaultOpen" value="true"/>
       </bean>
     </property>

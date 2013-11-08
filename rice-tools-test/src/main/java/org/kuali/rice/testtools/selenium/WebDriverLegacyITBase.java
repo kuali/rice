@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -44,8 +43,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * <p>
@@ -426,14 +423,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     public static void loginKrad(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
-            driver.findElement(By.name("login_user")).clear();
-            driver.findElement(By.name("login_user")).sendKeys(userName);
-            driver.findElement(By.id("Rice-LoginButton")).click();
-            Thread.sleep(1000);
-            String contents = driver.getPageSource();
-            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login",
-                    "Krad Login failure", failable);
+        driver.findElement(By.name("login_user")).clear();
+        driver.findElement(By.name("login_user")).sendKeys(userName);
+        driver.findElement(By.id("Rice-LoginButton")).click();
+        Thread.sleep(1000);
+        String contents = driver.getPageSource();
+        AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Krad Login",
+                "Krad Login failure", failable);
     }
 
     /**
@@ -447,14 +444,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     public static void login(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
-            driver.findElement(By.name("__login_user")).clear();
-            driver.findElement(By.name("__login_user")).sendKeys(userName);
-            driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-            Thread.sleep(1000);
-            String contents = driver.getPageSource();
-            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login",
-                    "KNS Login failure", failable);
+        driver.findElement(By.name("__login_user")).clear();
+        driver.findElement(By.name("__login_user")).sendKeys(userName);
+        driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
+        Thread.sleep(1000);
+        String contents = driver.getPageSource();
+        AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "KNS Login",
+                "KNS Login failure", failable);
     }
 
     /**
@@ -526,7 +523,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     private String kulrice9804() {
         String testUrl = getTestUrl();
         if (testUrl.contains(AutomatedFunctionalTestUtils.HIDE_RETURN_LINK) &&
-            !testUrl.contains("&showMaintenanceLinks=true")) {
+                !testUrl.contains("&showMaintenanceLinks=true")) {
             testUrl += "&showMaintenanceLinks=true";
         }
         return testUrl;
@@ -671,10 +668,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jiraAwareWaitFor(By.linkText("spreadsheet"), "");
 
         if (isElementPresent(By.linkText(docId))) {
-            SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
+            assertEquals(DOC_STATUS_FINAL, getDocStatus());
         } else {
-            SeleneseTestBase.assertEquals(docId,findElement(By.xpath(DOC_ID_XPATH_2)));
-            SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getDocStatus());
+            assertEquals(docId,findElement(By.xpath(DOC_ID_XPATH_2)).getText());
+            assertEquals(DOC_STATUS_FINAL, getDocStatus());
         }
     }
 
@@ -710,7 +707,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertLabelFor(String forElementId, String labelText) {
-        SeleneseTestBase.assertEquals(labelText, getForLabelText(forElementId));
+        assertEquals(labelText, getForLabelText(forElementId));
     }
 
     protected void assertMultiValueDeselectAllThisPage() throws InterruptedException {
@@ -741,7 +738,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String parentWindowHandle = driver.getWindowHandle();
         // wait page to be loaded
         driver.switchTo().window(windowName).findElements(By.tagName("head"));
-        SeleneseTestBase.assertEquals(url, driver.getCurrentUrl());
+        assertEquals(url, driver.getCurrentUrl());
         driver.switchTo().window(parentWindowHandle);
     }
 
@@ -765,7 +762,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 "Blanket Approve failure", this);
         waitAndClickDocSearch();
         waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
-        SeleneseTestBase.assertEquals("Kuali Portal Index", driver.getTitle());
+        assertEquals("Kuali Portal Index", driver.getTitle());
         selectFrameIframePortlet();
         waitAndClickSearch();
     }
@@ -955,35 +952,35 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         passed();
     }
 
-//    protected void deleteSubCollectionLine() throws Exception {
-//        // click on collections page link
-//        waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
-//        Thread.sleep(5000);
-//
-//        // wait for collections page to load by checking the presence of a sub collection line item
-//        waitForElementPresentByName("list4[0].subList[0].field1");
-//
-//        // change a value in the line to be deleted
-//        waitAndTypeByName("list4[0].subList[0].field1", "selenium");
-//
-//        // click the delete button
-//        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
-//        Thread.sleep(2000);
-//
-//        // confirm that the input box containing the modified value is not present
-//        for (int second = 0;; second++) {
-//            if (second >= waitSeconds)
-//                jiraAwareFail(TIMEOUT_MESSAGE);
-//            try {
-//                if (!"selenium".equals(waitAndGetAttributeByName("list4[0].subList[0].field1", "value")))
-//                    break;
-//            } catch (Exception e) {}
-//            Thread.sleep(1000);
-//        }
-//
-//        // verify that the value has changed for the input box in the line that has replaced the deleted one
-//        assertNotSame("selenium", waitAndGetAttributeByName("list4[0].subList[0].field1", "value"));
-//    }
+    //    protected void deleteSubCollectionLine() throws Exception {
+    //        // click on collections page link
+    //        waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
+    //        Thread.sleep(5000);
+    //
+    //        // wait for collections page to load by checking the presence of a sub collection line item
+    //        waitForElementPresentByName("list4[0].subList[0].field1");
+    //
+    //        // change a value in the line to be deleted
+    //        waitAndTypeByName("list4[0].subList[0].field1", "selenium");
+    //
+    //        // click the delete button
+    //        waitAndClickByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div[@class='uif-group uif-gridGroup uif-collectionItem uif-gridCollectionItem']/table/tbody/tr[5]/td/div/fieldset/div/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button");
+    //        Thread.sleep(2000);
+    //
+    //        // confirm that the input box containing the modified value is not present
+    //        for (int second = 0;; second++) {
+    //            if (second >= waitSeconds)
+    //                jiraAwareFail(TIMEOUT_MESSAGE);
+    //            try {
+    //                if (!"selenium".equals(waitAndGetAttributeByName("list4[0].subList[0].field1", "value")))
+    //                    break;
+    //            } catch (Exception e) {}
+    //            Thread.sleep(1000);
+    //        }
+    //
+    //        // verify that the value has changed for the input box in the line that has replaced the deleted one
+    //        assertNotSame("selenium", waitAndGetAttributeByName("list4[0].subList[0].field1", "value"));
+    //    }
 
     protected void expandColapseByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);
@@ -1012,7 +1009,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected String waitAndGetAttribute(By by, String attribute) throws InterruptedException {
         jiraAwareWaitFor(by, attribute);
-        
+
         return findElement(by).getAttribute(attribute);
     }
 
@@ -1404,11 +1401,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void selectFrame(String locator) {
-        
+
         if (IFRAMEPORTLET_NAME.equals(locator)) {
             gotoNestedFrame();
         } else {
-           WebDriverUtils.selectFrameSafe(driver, locator);
+            WebDriverUtils.selectFrameSafe(driver, locator);
         }
     }
 
@@ -1455,7 +1452,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Set<String> windows = driver.getWindowHandles();
 
         for (String window : windows) {
-            driver.switchTo().window(window);            
+            driver.switchTo().window(window);
             if (driver.getTitle().contains(title)) {
                 return;
             }
@@ -1486,10 +1483,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertDocumentStatusSaved();
 
         //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, findElement(By.xpath(
-                "//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", findElement(By.xpath(
-                "//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
     }
 
     protected void assertDocumentStatusSaved() {
@@ -1517,8 +1512,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkForIncidentReport();
 
         //checks it is saved and initiator is admin.
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        SeleneseTestBase.assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
+        assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
+        assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitForPageToLoad();
         waitAndClickSearch();
@@ -1587,7 +1582,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Parameter ");
         assertBlanketApproveButtonsPresent();
-        SeleneseTestBase.assertEquals("", getTextByName(CANCEL_NAME));
+        assertEquals("", getTextByName(CANCEL_NAME));
         selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
         String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -1631,7 +1626,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
-        
+
         //waitForElementPresentByXpath(DOC_ID_XPATH);
         //String docId = findElement(By.xpath(DOC_ID_XPATH)).getText();
         String docId = waitForDocId();
@@ -1648,7 +1643,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']","${kr.url}/maintenance.do?methodToCall=docHandler");
-        
+
         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "Label for " + docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
@@ -1661,7 +1656,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, findElement(By.xpath(DOC_ID_XPATH_2)).getText());
+        assertEquals(docId, findElement(By.xpath(DOC_ID_XPATH_2)).getText());
     }
 
     protected void testCreateNewCancel() throws Exception {
@@ -1694,8 +1689,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1724,8 +1719,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1765,8 +1760,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1796,8 +1791,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1816,7 +1811,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
         waitForPageToLoad();
         waitAndClickByXpath(SAVE_XPATH_3);
-        SeleneseTestBase.assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
+        assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
         waitAndClickByName("methodToCall.clearValues");
         waitAndTypeByName("name", "Kuali*D");
         waitAndClickByXpath(SAVE_XPATH_3);
@@ -1852,8 +1847,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1882,8 +1877,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -1894,7 +1889,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testEditRouteRulesDelegation() throws Exception {
         waitForPageToLoad();
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndClickSearch();
         waitForPageToLoad();
@@ -1968,7 +1963,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testIdentityGroupBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();                
+        waitAndCreateNew();
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + dtsTwo);
@@ -1987,7 +1982,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew();
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
@@ -2004,7 +1999,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Person");
         assertBlanketApproveButtonsPresent();
@@ -2049,7 +2044,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");        
+        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
@@ -2069,7 +2064,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testLocationCampusBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew();
         String docId = waitForDocId();
         String twoLetters = RandomStringUtils.randomAlphabetic(2);
         waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
@@ -2085,7 +2080,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew();
         String docId = waitForDocId();
         assertBlanketApproveButtonsPresent();
         String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
@@ -2108,7 +2103,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testLocationCountyBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew();        
+        waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test County");
         assertBlanketApproveButtonsPresent();
@@ -2163,7 +2158,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test State");
         assertBlanketApproveButtonsPresent();
-        
+
         //jiraAwareWaitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
         String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
@@ -2208,8 +2203,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected List<String> testLookUpParameterType(String docId, String parameterType, String parameterCode) throws Exception {
         performParameterInquiry(parameterType);
-        SeleneseTestBase.assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
-        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        assertEquals(parameterCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickCloseWindow();
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -2223,9 +2218,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception {
         performParameterInquiry(parameterName);
         checkForIncidentReport();
-        SeleneseTestBase.assertEquals(parameterName, getTextByXpath(
+        assertEquals(parameterName, getTextByXpath(
                 "//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']")
+        assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']")
                 .trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
@@ -2238,14 +2233,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testPeopleFlow() throws Exception {
         selectFrameIframePortlet();
-        
+
         //Click Main Menu and Create New
         // waitAndCreateNew();
         // waitForPageToLoad();
         jGrowl("Create New");
         checkForIncidentReport();
         waitAndClickByLinkText("Create New");
-        
+
         //jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
         waitForElementPresent("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
@@ -2275,7 +2270,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkForIncidentReport();
         jGrowl("Blanket Approve");
         Thread.sleep(5000);
-        
+
         //Close the Doc
         //findElement(By.id("uif-close")).click();
         //Thread.sleep(3000);
@@ -2287,7 +2282,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
         jGrowl("Is doc status final?");
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         findElement(By.name("imageField")).click();
         Thread.sleep(5000);
@@ -2310,8 +2305,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected List<String> testVerifyModifiedParameter(String docId, String parameterName) throws Exception {
         performParameterInquiry(parameterName);
-        SeleneseTestBase.assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
+        assertEquals(parameterName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals("N", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
@@ -2324,14 +2319,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected List<String> testVerifyCopyParameterType(String docId, String parameterType, String parameterCode) throws Exception
     {
         performParameterInquiry(parameterType);
-        SeleneseTestBase.assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
+        assertEquals(parameterType, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim().toLowerCase());
         waitAndClickCloseWindow();
         switchToWindow("null");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(parameterType);
         params.add(parameterCode);
-        
+
         return params;
     }
 
@@ -2359,15 +2354,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickSave();
         waitForPageToLoad();
         assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
+        assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
-        SeleneseTestBase.assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
+        assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
-        
+
         return params;
     }
 
@@ -2380,7 +2375,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
-        
+
         return params;
     }
 
@@ -2397,7 +2392,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
-        
+
         return params;
     }
 
@@ -2411,7 +2406,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
-        
+
         return params;
     }
 
@@ -2421,14 +2416,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding Charlie Brown");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Charlie Brown to test KIM");
-        
+
         //here You should also check for lower case validation for principalName, but it is skipped for now as there is an incident report error there.
         personName = "cbrown" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.principalName", personName);
         waitAndClickSave();
         waitForPageToLoad();
         assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
-        SeleneseTestBase.assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
+        assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
@@ -2449,11 +2444,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickSubmit();
         waitForPageToLoad();
         assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
-        SeleneseTestBase.assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
+        assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
-        
+
         return params;
     }
 
@@ -2478,7 +2473,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
-        
+
         return params;
     }
 
@@ -2489,9 +2484,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(5000);
         switchToWindow("Kuali :: Person");
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
-        SeleneseTestBase.assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
-        SeleneseTestBase.assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
+        assertEquals(personName, getTextByXpath("//div[@class='tab-container']/table//tr[2]/td[1]/div").trim());
+        assertEquals("BL - BLOOMINGTON", getTextByXpath("//div[@class='tab-container']/table[3]//tr[2]/td[2]/div").trim());
+        assertEquals("Student", getTextByXpath("//select/option[@selected]").trim());
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
@@ -2513,7 +2508,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(personName);
-        
+
         return params;
     }
 
@@ -2521,9 +2516,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // check if tooltip opens on focus
         fireEvent(NAME_FIELD_1, "focus");
         fireMouseOverEventByName(NAME_FIELD_1);
-        
+
         // assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
-        SeleneseTestBase.assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
+        assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
                 "td.jquerybubblepopup-innerHtml"));
 
         // check if tooltip closed on blur
@@ -2532,9 +2527,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 "td.jquerybubblepopup-innerHtml"));
         Thread.sleep(5000);
         fireEvent("field119", "focus");
-        
+
         // check if tooltip opens on mouse over
-        fireMouseOverEventByName(NAME_FIELD_2);        
+        fireMouseOverEventByName(NAME_FIELD_2);
         assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check if tooltip closed on mouse out
@@ -2549,9 +2544,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByName(NAME_FIELD_1);
         Thread.sleep(10000);
         assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
-                        isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
-                                !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
-       
+                isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
+                        !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
+
         // TODO figure out this last assert     
         passed();
     }
@@ -2565,21 +2560,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertFocusTypeBlurValidation("field52", new String[]{"5551112222"},new String[]{"555-111-1111"});
         assertFocusTypeBlurValidation("field53", new String[]{"1ClassName.java"},new String[]{"ClassName.java"});
         assertFocusTypeBlurValidation("field54", new String[]{"aaaaa"},new String[]{"aaaaa@kuali.org"});
-        assertFocusTypeBlurValidation("field84", new String[]{"aaaaa"},new String[]{"http://www.kuali.org"});       
+        assertFocusTypeBlurValidation("field84", new String[]{"aaaaa"},new String[]{"http://www.kuali.org"});
         assertFocusTypeBlurValidation("field55", new String[]{"023512"},new String[]{"022812"});
         assertFocusTypeBlurValidation("field75", new String[]{"02/35/12"},new String[]{"02/28/12"});
         assertFocusTypeBlurValidation("field82", new String[]{"13:22"},new String[]{"02:33"});
         assertFocusTypeBlurValidation("field83", new String[]{"25:22"},new String[]{"14:33"});
-        assertFocusTypeBlurValidation("field57", new String[]{"0"},new String[]{"2020"});      
-        assertFocusTypeBlurValidation("field58", new String[]{"13"},new String[]{"12"});  
+        assertFocusTypeBlurValidation("field57", new String[]{"0"},new String[]{"2020"});
+        assertFocusTypeBlurValidation("field58", new String[]{"13"},new String[]{"12"});
         assertFocusTypeBlurValidation("field61", new String[]{"5555-444"},new String[]{"55555-4444"});
-        assertFocusTypeBlurValidation("field62", new String[]{"aa5bb6_a"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"});       
-        assertFocusTypeBlurValidation("field63", new String[]{"fff555"},new String[]{"aa22 _/"});       
-        assertFocusTypeBlurValidation("field64", new String[]{"AABB55"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z"});       
-        assertFocusTypeBlurValidation("field76", new String[]{"AA~BB%"},new String[]{"abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?"});       
-        assertFocusTypeBlurValidation("field65", new String[]{"sdfs$#$# dsffs"},new String[]{"sdfs$#$#sffs"});      
+        assertFocusTypeBlurValidation("field62", new String[]{"aa5bb6_a"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"});
+        assertFocusTypeBlurValidation("field63", new String[]{"fff555"},new String[]{"aa22 _/"});
+        assertFocusTypeBlurValidation("field64", new String[]{"AABB55"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z"});
+        assertFocusTypeBlurValidation("field76", new String[]{"AA~BB%"},new String[]{"abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?"});
+        assertFocusTypeBlurValidation("field65", new String[]{"sdfs$#$# dsffs"},new String[]{"sdfs$#$#sffs"});
         assertFocusTypeBlurValidation("field66", new String[]{"abcABCD"},new String[]{"ABCabc"});
-        assertFocusTypeBlurValidation("field67", new String[]{"(111)B-(222)A"},new String[]{"(12345)-(67890)"});  
+        assertFocusTypeBlurValidation("field67", new String[]{"(111)B-(222)A"},new String[]{"(12345)-(67890)"});
         assertFocusTypeBlurValidation("field68", new String[]{"A.66"},new String[]{"a.4"});
         assertFocusTypeBlurValidation("field56", new String[]{"2020-06-02"},new String[]{"2020-06-02 03:30:30.22"});
     }
@@ -2592,17 +2587,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testSubCollectionSize() throws Exception {
         checkForIncidentReport(COLLECTIONS_LINK_TEXT);
-        
+
         // click on collections page link
         waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
-        
+
         // wait for collections page to load by checking the presence of a sub collection line item
-        for (int second = 0;; second++) {                   
+        for (int second = 0;; second++) {
             if (second >= waitSeconds)
                 jiraAwareFail(TIMEOUT_MESSAGE
                         + " looking for "
                         + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
-            try {                
+            try {
                 if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
                 {
                     break;
@@ -2610,41 +2605,41 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        
+
         // verify that sub collection sizes are displayed as expected
-        SeleneseTestBase.assertEquals("SubCollection - (3 lines)", getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH));
-        SeleneseTestBase.assertEquals("SubCollection - (2 lines)", getTextByXpath(
+        assertEquals("SubCollection - (3 lines)", getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH));
+        assertEquals("SubCollection - (2 lines)", getTextByXpath(
                 "//a[@id='subCollection1_line1_toggle']/span"));
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
         waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
-        
+
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
         String styleValue = waitAndGetAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']",
                 "style");
-        
+
         // log.info("styleValue is " + styleValue);
         assertTrue(idPrefix + "textInputField label does not contain expected style", styleValue.replace(" ", "").contains("color:red"));
-        
+
         // get current list of options
         String refreshTextSelectLocator = "//select[@id='" + idPrefix + "RefreshTextField_control']";
         String[] options1 = getSelectOptionsByXpath(refreshTextSelectLocator);
         String dropDownSelectLocator = "//select[@id='" + idPrefix + "DropDown_control']";
         selectByXpath(dropDownSelectLocator, "Vegetables");
         Thread.sleep(3000);
-        
+
         //get list of options after change
         String[] options2 = getSelectOptionsByXpath(refreshTextSelectLocator);
-        
+
         //verify that the change has occurred
         assertFalse("Field 1 selection did not change Field 2 options https://jira.kuali.org/browse/KULRICE-8163 Configuration Test View Conditional Options doesn't change Field 2 options based on Field 1 selection",
                 options1[options1.length - 1].equalsIgnoreCase(options2[options2.length - 1]));
-        
+
         //confirm that control gets disabled
         selectByXpath(dropDownSelectLocator, "None");
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath(refreshTextSelectLocator, "disabled"));
+        assertEquals("true", waitAndGetAttributeByXpath(refreshTextSelectLocator, "disabled"));
     }
 
     /**
@@ -2667,14 +2662,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath(startTimeId, inputTime);
         String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
         selectByXpath(amPmSelectLocator, "PM");
-        SeleneseTestBase.assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
+        assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
         Thread.sleep(5000); //allow for ajax refresh        
         waitAndClickByXpath("//button");
         Thread.sleep(5000); //allow for line to be added
-        
+
         //confirm that line has been added
         assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
-                        isElementPresentByXpath("//input[@value='7:06']"));
+                isElementPresentByXpath("//input[@value='7:06']"));
     }
 
     protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
@@ -2694,7 +2689,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
         waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
-        
+
         //store number of rows before adding the lines
         String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
         int rowCount = (getCssCount(cssCountRows));
@@ -2703,35 +2698,35 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath(allDayId);
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
-        
+
         //confirm that line has been added (by checking for the new delete button)
         assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
     }
 
-//    protected void testTravelAccountTypeLookup() throws Exception {
-//        selectFrameIframePortlet();
-//
-//        //Blank Search
-//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-//        Thread.sleep(4000);
-//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
-//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
-//
-//        //search with each field
-//        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
-//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-//        Thread.sleep(2000);
-//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
-//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
-//        Thread.sleep(2000);
-//        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
-//        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
-//        Thread.sleep(4000);
-//        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
-//
-//        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
-//    }
+    //    protected void testTravelAccountTypeLookup() throws Exception {
+    //        selectFrameIframePortlet();
+    //
+    //        //Blank Search
+    //        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+    //        Thread.sleep(4000);
+    //        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+    //        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+    //        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'IAT')]");
+    //
+    //        //search with each field
+    //        waitAndTypeByName("lookupCriteria[accountTypeCode]", "CAT");
+    //        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+    //        Thread.sleep(2000);
+    //        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'CAT')]");
+    //        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[2]");
+    //        Thread.sleep(2000);
+    //        waitAndTypeByName("lookupCriteria[name]", "Expense Account Type");
+    //        waitAndClickByXpath("//*[contains(button,\"earch\")]/button[1]");
+    //        Thread.sleep(4000);
+    //        assertElementPresentByXpath("//table[@class='uif-tableCollectionLayout dataTable']//tr[contains(td[1],'EAT')]");
+    //
+    //        //Currently No links available for Travel Account Type Inquiry so cant verify heading and values.
+    //    }
 
     protected void testCategoryLookUp() throws Exception {
         waitForPageToLoad();
@@ -2740,7 +2735,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(3000);
         waitForPageToLoad();
         findElement(By.tagName("body")).getText().contains("Actions"); // there are no actions, but the header is the only unique text from searching
-        
+
         // Category's don't have actions (yet)
         //waitAndClick("id=u80");
         //waitForPageToLoad();
@@ -2755,11 +2750,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testCreateSampleEDocLite() throws Exception {
         waitForPageToLoad();
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
-        
+
         // click on the create new.
         waitAndClickByLinkText("Create Document");
         waitForPageToLoad();
@@ -2772,9 +2767,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//td[@class='datacell']/div/img");
         waitForPageToLoad();
         waitAndClickByXpath("//input[@value='submit']");
-        SeleneseTestBase.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
-        SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
-        SeleneseTestBase.assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
+        assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
+        assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
+        assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
         waitForPageToLoad();
         selectTopFrame();
         waitAndClickDocSearch();
@@ -2796,83 +2791,83 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitForPageToLoad();
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
-        
+
         // click on the create new button
         waitAndClickCreateNew();
         waitForPageToLoad();
-        
+
         // lookup on the Document Type Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
-        
+
         // type in the name field the text RoutingRuleDocument
         waitAndTypeByName("name", "RoutingRuleDocument");
-        
+
         // click the search button
         waitAndClickSearch();
         waitForPageToLoad();
-        
+
         // click the return value link
         waitAndClickReturnValue();
         waitForPageToLoad();
-        
+
         // lookup on the Rule Template Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
         waitForPageToLoad();
-        
+
         // type in the name field the text RuleRoutingTemplate
         waitAndTypeByName("name", "RuleRoutingTemplate");
-        
+
         // click the search button
         waitAndClickSearch();
         waitForPageToLoad();
-        
+
         // click the return value link
         waitAndClickReturnValue();
         waitForPageToLoad();
-        
+
         // click the create new button
         waitAndClickByName("methodToCall.createRule");
         waitForPageToLoad();
         String docId = waitForDocId();
         assertTrue(isElementPresentByName(CANCEL_NAME));
-       
+
         // type in the Document Overview Description the text Test Routing Rule
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule " + random);
-       
+
         // click the Force Action checkbox
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
-       
+
         // type in the Description text area the text Test Routing Rule1
         waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1 "
                 + random);
-       
+
         // type in the Document type name field the text DocumentTypeDocument
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
                 "DocumentTypeDocument");
-        
+
         // lookup on Person
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
         waitForPageToLoad();
-       
+
         // click the search button
         waitAndClickSearch();
         waitForPageToLoad();
-        
+
         // click the return value
         waitAndClickReturnValue();
         waitForPageToLoad();
-        
+
         // select from the Action Request ACKNOWLEDGE
         selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
                 "ACKNOWLEDGE");
-        
+
         // type in the Priority field the text 1
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
-       
+
         // click the add button
         waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
         waitForPageToLoad();
@@ -2887,7 +2882,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.switchTo().defaultContent(); //selectWindow("null");
         waitAndClickDocSearch();
         waitForPageToLoad();
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
@@ -2899,8 +2894,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));
             }
         } else {
-            SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
-            SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+            assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
+            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         }
     }
 
@@ -2932,13 +2927,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testWorkFlowRouteRulesCreateNew() throws Exception {
         waitForPageToLoad();
         Thread.sleep(5000);
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndClickCreateNew();
         waitForPageToLoad();
         Thread.sleep(3000);
         waitAndClickByName(CANCEL_NAME,"https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
-   
+
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
         waitForPageToLoad();
         Thread.sleep(3000);
@@ -2953,7 +2948,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testWorkFlowRouteRulesEditRouteRules() throws Exception {
         waitForPageToLoad();
-        SeleneseTestBase.assertEquals("Kuali Portal Index", getTitle());
+        assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         Thread.sleep(3000);
         checkForIncidentReport();
@@ -2977,7 +2972,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected String testCreateNewComponent(String componentName, String componentCode, String message) throws Exception {
         waitForPageToLoad();
         String docId = waitForDocId();
-        
+
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
         selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
@@ -2994,13 +2989,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
         return docId;
     }
-    
-    
+
+
     protected void testLookUpComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         //Lookup
@@ -3012,12 +3007,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
     }
-    
+
     protected void testEditComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndClickEdit();
@@ -3036,11 +3031,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
     }
-    
+
     protected void testCopyComponent(String docId, String componentName, String componentCode) throws Exception {
         selectFrameIframePortlet();
         waitAndClickCopy();
@@ -3062,8 +3057,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndClickSearch();
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        SeleneseTestBase.assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
         selectTopFrame();
     }
 
@@ -3077,25 +3072,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
     }
-    
+
     /**
      * Test the tooltip and external help on the page
      */
     protected void testPageHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h2/span[@class='uif-headerText-span']");
-        SeleneseTestBase.assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
+        assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Help Page']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);      
+        Thread.sleep(5000);
         switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 
@@ -3107,69 +3102,69 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
         }
-       
+
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'"; 
+        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        
+
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
-    
+
         // test tooltip help of field with label to the left
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[1].style.display='none'"; 
+                "element[1].style.display='none'";
         Thread.sleep(3000);
         ((JavascriptExecutor) driver).executeScript(javascript);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-        
+
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
@@ -3178,7 +3173,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
@@ -3192,8 +3187,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
-        }        
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'"; 
+        }
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
@@ -3203,19 +3198,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);                
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'"; 
+        Thread.sleep(3000);
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);    
+        Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'"; 
+        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         Thread.sleep(3000);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
@@ -3224,12 +3219,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     /**
      * Test the tooltip help on the sub-section and fields that are display only
      */
-     protected void testDisplayOnlyTooltipHelp() throws Exception {
+    protected void testDisplayOnlyTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
             assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
         }
-        
+
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
             assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
         }
@@ -3238,7 +3233,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
         String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'"; 
+                "element[0].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
         assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
 
@@ -3246,7 +3241,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
         javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'"; 
+                "element[0].style.display='none'";
         ((JavascriptExecutor) driver).executeScript(javascript);
     }
 
@@ -3259,7 +3254,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
-       
+
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
         assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
@@ -3410,7 +3405,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // test external help of standalone help widget is not rendered
         assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
-    
+
     protected void testReferenceCampusTypeBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
@@ -3614,7 +3609,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testViewHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        SeleneseTestBase.assertEquals("Sample text for view help", getText("td.jquerybubblepopup-innerHtml"));
+        assertEquals("Sample text for view help", getText("td.jquerybubblepopup-innerHtml"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");
@@ -3649,13 +3644,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].foId", "2");
         waitAndClickByXpath("//button[@data-loadingmessage='Adding Line...']");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number");
-        SeleneseTestBase.assertEquals("1234567890", waitAndGetAttributeByName(
+        assertEquals("1234567890", waitAndGetAttributeByName(
                 "document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number", "value"));
-        SeleneseTestBase.assertEquals("2", waitAndGetAttributeByName(
+        assertEquals("2", waitAndGetAttributeByName(
                 "document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].foId", "value"));
         waitAndClickByXpath("//button[@data-loadingmessage='Deleting Line...']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName(
+        assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName(
                 "document.newMaintainableObject.dataObject.fiscalOfficer.accounts[0].number"));
         passed();
     }
@@ -3667,10 +3662,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName("newCollectionLines['document.notes'].noteText");
         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
         waitAndClick("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-//        waitForElementPresentByName("document.notes[0].noteText");
-        SeleneseTestBase.assertEquals("Test note", getTextByXpath("//pre"));
+        //        waitForElementPresentByName("document.notes[0].noteText");
+        assertEquals("Test note", getTextByXpath("//pre"));
         waitAndClick("button[title='Delete a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
-        SeleneseTestBase.assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName("document.notes[0].noteText"));
+        assertEquals(Boolean.FALSE, (Boolean) isElementPresentByName("document.notes[0].noteText"));
         passed();
     }
 
@@ -3702,13 +3697,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testVerifyConstraintText() throws Exception {
         selectFrameIframePortlet();
-        SeleneseTestBase.assertEquals("* indicates required field", getText(
+        assertEquals("* indicates required field", getText(
                 "div.uif-boxLayout.uif-horizontalBoxLayout.clearfix > span.uif-message.uif-requiredInstructionsMessage.uif-boxLayoutHorizontalItem"));
-        SeleneseTestBase.assertEquals("Must not be more than 10 characters", getText(
+        assertEquals("Must not be more than 10 characters", getText(
                 "div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-        SeleneseTestBase.assertEquals("Must not be more than 10 characters", getText(
+        assertEquals("Must not be more than 10 characters", getText(
                 "div.uif-group.uif-gridGroup.uif-gridSection.uif-disclosure.uif-boxLayoutVerticalItem.clearfix div[data-label='Travel Sub Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
-        SeleneseTestBase.assertEquals("Must not be more than 10 characters", getText(
+        assertEquals("Must not be more than 10 characters", getText(
                 "div.uif-group.uif-gridGroup.uif-collectionItem.uif-gridCollectionItem.uif-collectionAddItem div[data-label='Travel Account Number'].uif-field.uif-inputField span.uif-message.uif-constraintMessage"));
         passed();
     }
@@ -3723,8 +3718,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(2000);
         switchToWindow("Kuali :: Inquiry");
         Thread.sleep(2000);
-        SeleneseTestBase.assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
-        SeleneseTestBase.assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
+        assertEquals(componentName, getTextByXpath("//div[@class='tab-container']/table//span[@id='name.div']").trim());
+        assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
         List<String> parameterList=new ArrayList<String>();
@@ -4386,15 +4381,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         isVisible(by);
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-//        for (int second = 0;; second++) {
-//            if (second >= waitSeconds) {
-//                jiraAwareFail(TIMEOUT_MESSAGE + " " + by.toString());
-//            }
-//            if (isVisible(by)) {
-//                break;
-//            }
-//            Thread.sleep(1000);
-//        }
+        //        for (int second = 0;; second++) {
+        //            if (second >= waitSeconds) {
+        //                jiraAwareFail(TIMEOUT_MESSAGE + " " + by.toString());
+        //            }
+        //            if (isVisible(by)) {
+        //                break;
+        //            }
+        //            Thread.sleep(1000);
+        //        }
     }
 
     protected void waitIsVisible(By by, String message) throws InterruptedException {

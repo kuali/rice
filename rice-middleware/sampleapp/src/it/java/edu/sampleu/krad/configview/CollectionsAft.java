@@ -15,7 +15,6 @@
  */
 package edu.sampleu.krad.configview;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
@@ -71,16 +70,26 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     }
 
     @Test
+    public void testAddBlankLineBookmark() throws Exception {
+        testAddBlankLine();
+        passed();
+    }
+
+    @Test
+    public void testAddBlankLineNav() throws Exception {
+        testAddBlankLine();
+        passed();
+    }
+
+    @Test
     public void testAddDeleteBookmark() throws Exception {
         testAddRowOfText();
-        testAddBlankLine();
         passed();
     }
 
     @Test
     public void testAddDeleteNav() throws Exception {
         testAddRowOfText();
-        testAddBlankLine();
         passed();
     }
 
@@ -114,16 +123,16 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             Thread.sleep(1000);
         }
 
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field2", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field3", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field4", "value"));
-        SeleneseTestBase.assertEquals("asdf1", waitAndGetAttributeByName("list1[0].field1", "value"));
-        SeleneseTestBase.assertEquals("asdf2", waitAndGetAttributeByName("list1[0].field2", "value"));
-        SeleneseTestBase.assertEquals("asdf3", waitAndGetAttributeByName("list1[0].field3", "value"));
-        SeleneseTestBase.assertEquals("asdf4", waitAndGetAttributeByName("list1[0].field4", "value"));
-        assertTrue(isElementPresentByXpath("//div[@id='Collections-Base-TableLayout_disclosureContent']/div/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field2", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field3", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field4", "value"));
+        assertEquals("asdf1", waitAndGetAttributeByName("list1[0].field1", "value"));
+        assertEquals("asdf2", waitAndGetAttributeByName("list1[0].field2", "value"));
+        assertEquals("asdf3", waitAndGetAttributeByName("list1[0].field3", "value"));
+        assertEquals("asdf4", waitAndGetAttributeByName("list1[0].field4", "value"));
     }
+
     /**
      * Test adding a column of values to the Add Blank Line Tests Table Layout
      */
@@ -135,23 +144,23 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible would be better
         assertElementPresentByName("list1[0].field1");
         assertTableLayout();
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("list1[0].field1", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("list1[0].field2", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("list1[0].field3", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("list1[0].field4", "value"));
+        assertEquals("", waitAndGetAttributeByName("list1[0].field1", "value"));
+        assertEquals("", waitAndGetAttributeByName("list1[0].field2", "value"));
+        assertEquals("", waitAndGetAttributeByName("list1[0].field3", "value"));
+        assertEquals("", waitAndGetAttributeByName("list1[0].field4", "value"));
     }
 
     private void testSum() throws InterruptedException {
-        SeleneseTestBase.assertEquals("5", waitAndGetAttributeByName("list1[0].field1", "value"));
-        SeleneseTestBase.assertEquals("6", waitAndGetAttributeByName("list1[0].field2", "value"));
-        SeleneseTestBase.assertEquals("7", waitAndGetAttributeByName("list1[0].field3", "value"));
-        SeleneseTestBase.assertEquals("8", waitAndGetAttributeByName("list1[0].field4", "value"));
-        SeleneseTestBase.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        assertEquals("5", waitAndGetAttributeByName("list1[0].field1", "value"));
+        assertEquals("6", waitAndGetAttributeByName("list1[0].field2", "value"));
+        assertEquals("7", waitAndGetAttributeByName("list1[0].field3", "value"));
+        assertEquals("8", waitAndGetAttributeByName("list1[0].field4", "value"));
+        assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndTypeByName("list1[0].field1", "1");
         waitAndTypeByName("list1[0].field2", "1");
         waitAndTypeByName("list1[0].field3", "1");
         waitAndTypeByName("list1[0].field4", "1");
-        SeleneseTestBase.assertEquals("Total: 465", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        assertEquals("Total: 465", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
     }
 
     /**
@@ -207,7 +216,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testAddViaLightbox() throws Exception {
         waitAndClickByLinkText("Add Via Lightbox");
-        SeleneseTestBase.assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        assertEquals("Total: 419", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
         Thread.sleep(3000);
         waitAndTypeByXpath("//form/div/table/tbody/tr/td/div/input", "1");
@@ -216,7 +225,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//form/div/table/tbody/tr[4]/td/div/input", "1");
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
         Thread.sleep(3000);
-        SeleneseTestBase.assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
+        assertEquals("Total: 420", driver.findElement(By.xpath("//fieldset/div/div[2]/div[2]")).getText());
     }
 
     protected void testColumnSequence() throws Exception {
@@ -256,13 +265,13 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testIfRowHasBeenAdded() throws Exception {
         //Check if row has been added really or not
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field2", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field3", "value"));
-        SeleneseTestBase.assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field4", "value"));
-        SeleneseTestBase.assertEquals("1", waitAndGetAttributeByName("list1[0].field1", "value"));
-        SeleneseTestBase.assertEquals("1", waitAndGetAttributeByName("list1[0].field2", "value"));
-        SeleneseTestBase.assertEquals("1", waitAndGetAttributeByName("list1[0].field3", "value"));
-        SeleneseTestBase.assertEquals("1", waitAndGetAttributeByName("list1[0].field4", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field2", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field3", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field4", "value"));
+        assertEquals("1", waitAndGetAttributeByName("list1[0].field1", "value"));
+        assertEquals("1", waitAndGetAttributeByName("list1[0].field2", "value"));
+        assertEquals("1", waitAndGetAttributeByName("list1[0].field3", "value"));
+        assertEquals("1", waitAndGetAttributeByName("list1[0].field4", "value"));
     }
 }

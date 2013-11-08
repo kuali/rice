@@ -120,6 +120,31 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    protected void assertEquals(boolean expected, boolean actual) {
+        if (expected != actual) {
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead");
+        }
+    }
+
+    protected void assertEquals(int expected, int actual) {
+        if (expected != actual) {
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead");
+        }
+    }
+
+    protected void assertEquals(String message, int expected, int actual) {
+        if (expected != actual) {
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead " + message);
+        }
+    }
+
+
+    protected void assertEquals(String expected, String actual) {
+        if (!expected.equals(actual)) {
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead");
+        }
+    }
+
     /**
      * If booleanToAssertFalse is true call {@see jiraAwareFail}.
      *

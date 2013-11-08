@@ -45,7 +45,7 @@ public class TravelerDetail extends DataObjectBase {
     @GeneratedValue(generator = "TEM_TRAVELER_DTL_ID_SEQ")
     @SequenceGenerator(name = "TEM_TRAVELER_DTL_ID_SEQ", sequenceName = "TEM_TRAVELER_DTL_ID_SEQ", allocationSize = 5)
     @Column(name = "id", nullable = false)
-	protected Integer id;
+	protected String id;
     @Column(name = "doc_nbr", length=14)
     protected String documentNumber;
     @Column(name = "EMP_PRINCIPAL_ID")
@@ -140,12 +140,12 @@ public class TravelerDetail extends DataObjectBase {
         this.documentNumber = documentNumber;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

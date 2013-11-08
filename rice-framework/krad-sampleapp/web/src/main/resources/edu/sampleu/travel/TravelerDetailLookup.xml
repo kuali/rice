@@ -20,7 +20,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 <bean id="TravelerDetail-LookupView" parent="Uif-LookupView">
-  <property name="headerText" value="Travel Account Lookup" />
+  <property name="headerText" value="Traveler Detail Lookup" />
   <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelerDetail" />
   <property name="criteriaFields">
     <list>
@@ -31,6 +31,7 @@
   </property>
   <property name="resultFields">
     <list>
+      <bean parent="Uif-DataField" p:propertyName="id" />
       <bean parent="Uif-DataField" p:propertyName="person.principalName" />
       <bean parent="Uif-DataField" p:propertyName="firstName" />
       <bean parent="Uif-DataField" p:propertyName="lastName" />

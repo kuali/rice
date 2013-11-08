@@ -98,8 +98,8 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     private TravelDestination tripDestination;
 
     // traveler
-	@Column(name="TRAVELER_DTL_ID",length=19,precision=0)
-    private Integer travelerDetailId;
+	@Column(name="TRAVELER_DTL_ID",length=40)
+    private String travelerDetailId;
 	@Transient
     private TravelerDetail travelerDetail;
 
@@ -158,11 +158,11 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
         this.tripDescription = tripDescription;
     }
 
-    public Integer getTravelerDetailId() {
+    public String getTravelerDetailId() {
         return travelerDetailId;
     }
 
-    public void setTravelerDetailId(Integer travelerDetailId) {
+    public void setTravelerDetailId(String travelerDetailId) {
         this.travelerDetailId = travelerDetailId;
     }
 

@@ -24,9 +24,9 @@ import org.junit.Test;
 public class LabsLookupMvUrlAft extends DemoLabsLookupBase {
 
     /**
-     * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ResultsLimitView&hideReturnLink=true&multipleValuesSelect=true
+     * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ResultsLimitView&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ResultsLimitView&hideReturnLink=true&multipleValuesSelect=true";
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ResultsLimitView&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts";
 
     @Override
     protected String getBookmarkUrl() {

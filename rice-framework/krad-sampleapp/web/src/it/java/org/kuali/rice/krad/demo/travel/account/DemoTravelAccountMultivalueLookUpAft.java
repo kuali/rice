@@ -25,14 +25,14 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&suppressActions=true&conversionFields=number:foo,name:foo
+     * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts&suppressActions=true&conversionFields=number:foo,name:foo
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&suppressActions=true&conversionFields=number:foo,name:foo";
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts&suppressActions=true&conversionFields=number:foo,name:foo";
    
     /**
-     * lookupCriteria[accountTypeCode]
+     * selectedCollectionLines['lookupResults']
      */
-    public static final String ACCOUNT_TYPE_CODE_NAME = "lookupCriteria[accountTypeCode]";
+    public static final String LOOKUP_RESULTS = "selectedCollectionLines['lookupResults']";
 
     @Override
     public String getBookmarkUrl() {
@@ -48,18 +48,18 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
     private void testSearchSelect() throws InterruptedException {
         waitAndClickByValue("CAT");
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
-        waitAndClickByName("selectedCollectionLines['lookupResults']");
+        waitAndClickByName(LOOKUP_RESULTS);
         assertTextPresent("a14");
         assertTextPresent("a6");
         assertTextPresent("a9");
         assertButtonEnabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
-        waitAndClickByName("selectedCollectionLines['lookupResults']");
+        waitAndClickByName(LOOKUP_RESULTS);
         assertButtonDisabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
 
         assertMultiValueSelectAllThisPage();
         assertMultiValueDeselectAllThisPage();
 
-        waitAndClickByName("selectedCollectionLines['lookupResults']");
+        waitAndClickByName(LOOKUP_RESULTS);
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         checkForIncidentReport();
     }

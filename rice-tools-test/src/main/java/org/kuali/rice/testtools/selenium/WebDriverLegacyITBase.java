@@ -4286,7 +4286,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         WebElement dropdownMenu = waitAndGetElementByAttributeValue("class", "dropdown-toggle");
         Thread.sleep(1000);
         dropdownMenu.click();
-        waitAndClickLinkContainingText(dropDownText, "dropdown click " + dropDownText + " problem");
+        waitAndClickByLinkText(dropDownText, "dropdown click " + dropDownText + " problem");
     }
 
     protected void waitAndClickEdit() throws InterruptedException {

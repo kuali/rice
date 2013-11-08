@@ -791,7 +791,7 @@ function jumpToElementById(id) {
 
 //Jump(scroll) to the top of the current screen
 function jumpToTop() {
-    if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length) {
+    if (!usePortalForContext() || jQuery("#fancybox-frame", parent.document).length || !top.jQuery.scrollTo) {
         jQuery.scrollTo(0);
     }
     else {

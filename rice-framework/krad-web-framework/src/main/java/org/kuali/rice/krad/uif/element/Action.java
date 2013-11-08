@@ -1497,14 +1497,6 @@ public class Action extends ContentElementBase {
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
-//        // Checks that a label or image ui is presence
-//        if (getActionLabel() == null && getActionImage() == null) {
-//            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
-//            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
-//        }
-
-        //Checks to ensure Icon or Action Image are
-
         // Checks that an action is set
         if (getJumpToIdAfterSubmit() != null && getJumpToNameAfterSubmit() != null) {
             String currentValues[] = {"jumpToIdAfterSubmit =" + getJumpToIdAfterSubmit(),

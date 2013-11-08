@@ -2825,7 +2825,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForPageToLoad();
 
         // click the return value link
-        waitAndClickReturnValue();
+        waitAndClickReturnValue("testWorkFlowRouteRulesBlanketApp");
         waitForPageToLoad();
 
         // click the create new button
@@ -4295,6 +4295,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitAndClickReturnValue() throws InterruptedException {
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT);
+    }
+
+    protected void waitAndClickReturnValue(String message) throws InterruptedException {
+        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, message);
     }
 
     /**

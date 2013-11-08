@@ -84,14 +84,14 @@ public class DemoLookUpConditionalResultsAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         Assert.assertEquals(4, getCssCount("div#uLookupResults thead th"));
-        assertElementPresent("div#uLookupResults thead th:nth-child(1)");
-        assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
-                TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME + " column not present");
         assertElementPresent("div#uLookupResults thead th:nth-child(2)");
-        assertTextPresent(ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
-                ACCOUNT_NAME_COLUMN_NAME + " column not present");
+        assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
+                TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME + " column not present");
         assertElementPresent("div#uLookupResults thead th:nth-child(3)");
-        assertTextPresent(DATE_CREATED_COLUMN_NAME, "div#uLookupResults thead th:nth-child(3) label",
+        assertTextPresent(ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(3) label",
+                ACCOUNT_NAME_COLUMN_NAME + " column not present");
+        assertElementPresent("div#uLookupResults thead th:nth-child(4)");
+        assertTextPresent(DATE_CREATED_COLUMN_NAME, "div#uLookupResults thead th:nth-child(4) label",
                 DATE_CREATED_COLUMN_NAME + " column not present");
     }
 

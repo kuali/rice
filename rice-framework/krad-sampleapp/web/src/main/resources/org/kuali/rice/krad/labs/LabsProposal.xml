@@ -101,8 +101,8 @@
         <bean parent="Uif-SidebarToggleMenu" p:toggleText="Budget" p:iconClass="icon-money">
           <property name="menuItems">
             <list>
-              <bean parent="Uif-MenuAction" p:actionLabel="Summary" p:actionScript="alert('Menu Script');"/>
-              <bean parent="Uif-MenuAction" p:actionLabel="Parameters" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Summary2" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Parameters2" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Rates" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Non-Personnel" p:actionScript="alert('Menu Script');"/>

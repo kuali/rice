@@ -32,7 +32,7 @@
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <ref bean="Demo-Image-Example1"/>
+            <ref bean="Lab-Icon-Examples"/>
           </list>
         </property>
       </bean>
@@ -41,7 +41,7 @@
 
 
   <!-- Default -->
-  <bean id="Demo-Image-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Lab-Icon-Examples"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--<bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');">-->
@@ -77,6 +77,19 @@
               p:iconClass="icon-home"
               p:linkText="Kuali Website in a new page"
               p:target="_blank">
+        </bean>
+        <bean parent="Uif-ActionLink" p:actionScript="alert('You clicked a link');"
+              p:actionIconPlacement="ICON_ONLY"
+              p:iconClass="icon-pencil">
+        </bean>
+        <bean parent="Uif-ActionLink" p:actionScript="alert('You clicked a link');"
+              p:iconClass="icon-pencil"
+              p:actionLabel="Left Icon Placement">
+        </bean>
+        <bean parent="Uif-ActionLink" p:actionScript="alert('You clicked a link');"
+              p:actionIconPlacement="RIGHT"
+              p:iconClass="icon-home"
+              p:actionLabel="Right Icon Placement">
         </bean>
         <!-- Buttons -->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"

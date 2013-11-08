@@ -25,7 +25,11 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 
 
 
-
+/**
+ * Element that presents an Icon
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @BeanTags({@BeanTag(name = "icon-bean", parent = "Uif-Icon")})
 public class Icon extends ContentElementBase {
 
@@ -37,11 +41,25 @@ public class Icon extends ContentElementBase {
         super();
     }
 
-    @BeanTagAttribute(name="iconClass")
+    /**
+     * Icon Class for the action
+     *
+     * <p>
+     * Bootstrap Icon Class to be rendered on this Action
+     * </p>
+     *
+     * @return label for action
+     */
+    @BeanTagAttribute(name = "iconClass")
     public String getIconClass() {
         return iconClass;
     }
 
+    /**
+     * Setter for the Icon Class
+     *
+     * @param iconClass
+     */
     public void setIconClass(String iconClass) {
         this.iconClass = iconClass;
     }

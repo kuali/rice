@@ -30,6 +30,7 @@
         <ref bean="Demo-Link-Example1"/>
         <ref bean="Demo-Link-Example2"/>
         <ref bean="Demo-Link-Example3"/>
+        <ref bean="Demo-Link-Example4"/>
       </list>
     </property>
   </bean>
@@ -71,6 +72,22 @@
           </property>
         </bean>
         <!-- ex:Demo-Link-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Link with bootstrap icon -->
+  <bean id="Demo-Link-Example4"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Link-Example4 start-->
+        <bean parent="Uif-Link" p:href="http://www.kuali.org"
+              p:linkIconPlacement="ICON_ONLY"
+              p:iconClass="icon-pencil"
+              p:linkText="Kuali Website in a new page"
+              p:target="_blank">
+        </bean>
+        <!-- ex:Demo-Link-Example4 end-->
       </list>
     </property>
   </bean>

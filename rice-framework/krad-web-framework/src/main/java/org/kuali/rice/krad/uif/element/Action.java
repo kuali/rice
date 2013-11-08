@@ -1445,11 +1445,6 @@ public class Action extends ContentElementBase {
         }
 
         actionCopy.setActionScript(this.actionScript);
-
-        if (this.actionUrl != null) {
-            actionCopy.setActionUrl((UrlInfo) this.actionUrl.copy());
-        }
-        actionCopy.setActionScript(this.actionScript);
         actionCopy.setAjaxReturnType(this.ajaxReturnType);
         actionCopy.setAjaxSubmit(this.ajaxSubmit);
         actionCopy.setClearDirtyOnAction(this.clearDirtyOnAction);
@@ -1497,11 +1492,11 @@ public class Action extends ContentElementBase {
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
-        //        // Checks that a label or image ui is presence
-        //        if (getActionLabel() == null && getActionImage() == null) {
-        //            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
-        //            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
-        //        }
+//        // Checks that a label or image ui is presence
+//        if (getActionLabel() == null && getActionImage() == null) {
+//            String currentValues[] = {"actionLabel =" + getActionLabel(), "actionImage =" + getActionImage()};
+//            tracer.createError("ActionLabel and/or actionImage must be set", currentValues);
+//        }
 
         //Checks to ensure Icon or Action Image are
 

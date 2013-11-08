@@ -210,24 +210,34 @@ public class Link extends ContentElementBase {
     }
 
     /**
+     * Icon Class for the link
      *
-     * @return
+     * <p>
+     * Bootstrap Icon Class to be rendered on this Link
+     * </p>
+     *
+     * @return label for action
      */
+    @BeanTagAttribute(name = "iconClass")
     public String getIconClass() {
         return iconClass;
     }
 
     /**
+     * Setter for the Icon Class
      *
-     * @param IconClass
+     * @param iconClass
      */
     public void setIconClass(String iconClass) {
         this.iconClass = iconClass;
     }
 
     /**
+     * Set to LEFT, RIGHT to position image at that location within the button. When set to blank/null/ICON_ONLY, the icon
+     * itself will be the Action, if no value is set the default is ALWAYS LEFT, you must explicitly set
+     * blank/null/ICON_ONLY to use ONLY the image as the Action.
      *
-     * @return
+     * @return Action Icon Placement
      */
     @BeanTagAttribute(name = "linkIconPlacement")
     public String getLinkIconPlacement() {
@@ -235,13 +245,13 @@ public class Link extends ContentElementBase {
     }
 
     /**
+     * Setter for the Link Icon Placement
      *
      * @param linkIconPlacement
      */
     public void setLinkIconPlacement(String linkIconPlacement) {
         this.linkIconPlacement = linkIconPlacement;
     }
-
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */

@@ -55,11 +55,11 @@
         <#-- no span necessary, icon class is on the link -->
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
         </button>
-        <#elseif iconPlacement == 'LEFT'>
+        <#elseif iconPlacement == 'RIGHT'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
         ${actionLabel}<span class="${element.iconClass}"></span>
         </button>
-        <#elseif iconPlacement == 'RIGHT'>
+        <#elseif iconPlacement == 'LEFT'>
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
             <span class="${element.iconClass}"></span>${actionLabel}
         </button>

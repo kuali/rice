@@ -364,6 +364,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View"/>
         <bean parent="Uif-Link" p:linkText="Image"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View"/>
+        <bean parent="Uif-Link" p:linkText="Icon"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Icon-View"/>
         <bean parent="Uif-Link" p:linkText="Space"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Space-View"/>
         <bean parent="Uif-Link" p:linkText="Iframe"

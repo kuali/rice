@@ -105,7 +105,6 @@ function setMultivalueLookupReturnButton(selectControl) {
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllLines(collectionId) {
-
     var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
     var lookupCollectionDiv = jQuery("#" + collectionId);
 
@@ -138,7 +137,6 @@ function selectAllLines(collectionId) {
  * @param collectionId - id for the collection to deselect checkboxes for
  */
 function deselectAllLines(collectionId) {
-
     // get a handle on the datatables plugin object for the results collection
     var oTable = getDataTableHandle(jQuery("#" + collectionId).find("table").attr('id'));
     var query = "input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS;
@@ -246,7 +244,7 @@ function returnLookupResultReload(returnLink) {
     var href = jqReturnLink.attr("href");
     var target = jqReturnLink.attr("target");
 
-    var closeLightbox = true;
+    var closedLightboxNeeded = true;
 
     if (parent.jQuery('iframe[id*=easyXDM_]').length > 0) {
         // portal and content on same domain
@@ -258,11 +256,11 @@ function returnLookupResultReload(returnLink) {
         window.open(href, target);
 
         if (!target || (target === "_self")) {
-            closeLightbox = false;
+            closedLightboxNeeded = false;
         }
     }
 
-    if (closeLightbox) {
+    if (closedLightboxNeeded) {
         closeLightbox();
     }
 }

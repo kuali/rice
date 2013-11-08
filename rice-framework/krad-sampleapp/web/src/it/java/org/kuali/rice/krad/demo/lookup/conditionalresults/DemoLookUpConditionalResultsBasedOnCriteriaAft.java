@@ -78,31 +78,31 @@ public class DemoLookUpConditionalResultsBasedOnCriteriaAft extends WebDriverLeg
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         Assert.assertEquals(2, getCssCount("div#uLookupResults thead th"));
-        assertElementPresent("div#uLookupResults thead th:nth-child(1)");
-        assertTextPresent(PRINCIPAL_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
-                "Principal Name column not present");
+        assertElementPresent("div#uLookupResults thead th:nth-child(2)");
+        assertTextPresent(PRINCIPAL_NAME_COLUMN_NAME,"div#uLookupResults thead th:nth-child(2) label",
+        		"Principal Name column not present");
 
         // Case 2 - Search by Group
         waitAndTypeByName(LOOKUP_CRITERIA_TYPE_CODE, "G");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         Assert.assertEquals(3, getCssCount("div#uLookupResults thead th"));
-        assertElementPresent("div#uLookupResults thead th:nth-child(1)");
-        assertTextPresent(GROUP_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
-                "Group Name column not present");
         assertElementPresent("div#uLookupResults thead th:nth-child(2)");
-        assertTextPresent(DESCRIPTION_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
+        assertTextPresent(GROUP_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
+                "Group Name column not present");
+        assertElementPresent("div#uLookupResults thead th:nth-child(3)");
+        assertTextPresent(DESCRIPTION_COLUMN_NAME, "div#uLookupResults thead th:nth-child(3) label",
                 "Description column not present");
 
         // Case 3 - Search by Role
         waitAndTypeByName(LOOKUP_CRITERIA_TYPE_CODE, "R");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        Assert.assertEquals(2, getCssCount("div#uLookupResults thead th"));
-        assertTextPresent(ROLE_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
+        Assert.assertEquals(3, getCssCount("div#uLookupResults thead th"));
+        assertTextPresent(ROLE_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
                 "Role Name column not present");
-        assertElementPresent("div#uLookupResults thead th:nth-child(2)");
-        assertTextPresent(DESCRIPTION_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
+        assertElementPresent("div#uLookupResults thead th:nth-child(3)");
+        assertTextPresent(DESCRIPTION_COLUMN_NAME, "div#uLookupResults thead th:nth-child(3) label",
                 "Description column not present");
     }
 

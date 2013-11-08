@@ -172,7 +172,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-ActionLink" p:methodToCall="toggleAuditMode"
-              p:actionLabel="Audit Mode (on)"/>
+              p:actionLabel="Audit Mode &lt;span style='color:#090'&gt;(on)&lt;/span&gt;"/>
         <bean parent="Uif-ActionLink" p:methodToCall="print" p:actionLabel="Print" p:iconClass="icon-print"/>
         <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="Copy" p:iconClass="icon-copy"/>
         <bean parent="Uif-ActionLink" p:methodToCall="medusa" p:actionLabel="Medusa" p:iconClass="icon-tasks"/>
@@ -296,14 +296,13 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Education"
-                          p:header.render="false">
+                    <bean parent="Uif-GridCondensedSubSection" p:headerText="Education">
                       <property name="items">
                         <list>
-                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
-                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
-                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
-                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field4" p:label="Field 4"/>
                         </list>
                       </property>
                     </bean>

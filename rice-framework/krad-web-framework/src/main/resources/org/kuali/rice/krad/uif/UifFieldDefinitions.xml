@@ -78,12 +78,15 @@
   </bean>
 
   <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
-  <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
-        parent="Uif-DataField">
+  <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" parent="Uif-DataField">
     <property name="fieldLabel">
       <null/>
     </property>
   </bean>
+
+  <bean id="Uif-DataField-condensedTable" abstract="true" parent="Uif-DataField-condensedTable-parentBean"/>
+  <bean id="Uif-DataField-condensedTable-parentBean" abstract="true" parent="Uif-DataField"
+        p:fieldLabel.renderColon="false" p:fieldLabel.cellCssClasses="col-md-3"/>
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
   <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"

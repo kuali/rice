@@ -333,6 +333,20 @@
     </property>
   </bean>
 
+  <bean id="Uif-GridCondensedSection" parent="Uif-GridCondensedSection-parentBean"/>
+  <bean id="Uif-GridCondensedSection-parentBean" abstract="true" parent="Uif-GridSection" scope="prototype"
+        p:layoutManager.libraryCssClasses="table,table-condensed" p:layoutManager.cssClasses=""
+        p:layoutManager.applyDefaultCellWidths="false">
+
+  </bean>
+
+  <bean id="Uif-GridCondensedSubSection" parent="Uif-GridCondensedSubSection-parentBean"/>
+  <bean id="Uif-GridCondensedSubSection-parentBean" abstract="true" parent="Uif-GridSubSection" scope="prototype"
+        p:layoutManager.libraryCssClasses="table,table-condensed" p:layoutManager.cssClasses=""
+        p:layoutManager.applyDefaultCellWidths="false">
+
+  </bean>
+
   <!--Disclosure versions -->
 
   <bean id="Uif-Disclosure-GridSection" parent="Uif-Disclosure-GridSection-parentBean"/>

@@ -177,8 +177,16 @@ KradResponse.prototype = {
 
     // performs a redirect to the URL found in the returned contents
     redirectHandler: function (content, dataAttr) {
-        // get contents between div and do window.location = parsed href
-        window.location.href = jQuery(content).text();
+        // get url contents between div
+        var redirectUrl = jQuery(content).text().trim();
+
+        // don't check dirty state on a simple refresh (old url starts with the new one's url text)
+        if (window.location.href.indexOf(redirectUrl) === 0) {
+            dirtyFormState.skipDirtyChecks = true;
+        }
+
+        // redirect
+        window.location.href = redirectUrl;
     },
 
     // replaces the view with the given content and run the hidden scripts

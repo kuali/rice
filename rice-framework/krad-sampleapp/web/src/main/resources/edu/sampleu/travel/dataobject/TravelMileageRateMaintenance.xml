@@ -45,7 +45,7 @@
               <bean parent="Uif-InputField" p:propertyName="mileageRateId" p:defaultValue="@{ #sequence('TRVL_MLG_RT_ID_S') }" />
               <bean parent="Uif-InputField" p:propertyName="mileageRateCd"/>
               <bean parent="Uif-InputField" p:propertyName="mileageRateName"/>
-              <bean parent="Uif-InputField" p:propertyName="mileageRate"/>
+              <bean parent="Uif-InputField" p:propertyName="mileageRate" p:instructionalText="Enter rate in dollars per mile"/>
             </list>
           </property>
         </bean>

@@ -1,13 +1,15 @@
-"KitchenSink PerfomanceMedium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,11000
-"KitchenSink PerfomanceMedium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,23000
+# https://wiki.kuali.org/display/KULRICE/Rice+Performance+Benchmarks
+"KitchenSink PerfomanceMedium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,2000
+"KitchenSink PerfomanceMedium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,2000
 "UICompView page 1",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1000
-"UICompView page 2",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,4000
-"UICompView page 3",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,5000
-"UICompView page 4",/kr-krad/uicomponents,UifCompView,UifCompView-Page4,4000
-"UICompView page 5",/kr-krad/uicomponents,UifCompView,UifCompView-Page5,4000
-"UICompView page 6",/kr-krad/uicomponents,UifCompView,UifCompView-Page6,3000
-"UICompView page 7",/kr-krad/uicomponents,UifCompView,UifCompView-Page7,4000
-"UICompView page 8",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,3000
-"UICompView page 9",/kr-krad/uicomponents,UifCompView,UifCompView-Page9,5000
-"UICompView page 10",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,5000
-"UICompView page 11",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,5000
+"UICompView page 2",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,2000
+"UICompView page 3",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,2000
+"UICompView page 4",/kr-krad/uicomponents,UifCompView,UifCompView-Page4,2000
+"UICompView page 5",/kr-krad/uicomponents,UifCompView,UifCompView-Page5,2000
+"UICompView page 6",/kr-krad/uicomponents,UifCompView,UifCompView-Page6,2000
+# Kitchen Sink Collections is page 7
+"UICompView page 7",/kr-krad/uicomponents,UifCompView,UifCompView-Page7,2000
+"UICompView page 8",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,2000
+"UICompView page 9",/kr-krad/uicomponents,UifCompView,UifCompView-Page9,2000
+"UICompView page 10",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,2000
+"UICompView page 11",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,2000

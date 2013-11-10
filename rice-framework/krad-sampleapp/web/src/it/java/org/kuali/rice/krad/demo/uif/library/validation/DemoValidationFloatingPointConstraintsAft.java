@@ -43,18 +43,14 @@ public class DemoValidationFloatingPointConstraintsAft extends WebDriverLegacyIT
 
     protected void testValidationFloatingPointConstraints() throws Exception {
        //Scenario-1
-       waitAndTypeByName("inputField1","-9.3");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+       assertFocusTypeBlurError("inputField1","-9.3");
     }
     
     protected void testValidationFloatingPointConstraintsAdditional() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","-0.92F");
-        waitAndClickByLinkText("Usage");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+        assertFocusTypeBlurError("inputField2","-0.92F");
     }
     
     @Test

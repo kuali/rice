@@ -41,8 +41,8 @@ public class DemoContainerTabGroupAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryContainerTabGroup() throws Exception {
-        waitForElementPresentByXpath("//li/a[contains(text(),'one')]");
-        assertElementPresentByXpath("//li/a[contains(text(),'two')]");
+        waitForElementPresentByXpath("//li/a[contains(text(),'One')]");
+        assertElementPresentByXpath("//li/a[contains(text(),'Two')]");
     }
     
     @Test

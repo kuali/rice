@@ -26,7 +26,7 @@ public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true";
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType&hideReturnLink=true";
 
     /**
      * Search
@@ -99,7 +99,7 @@ public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
         }   // catch
     }   // isAlertPresent()
 
-//    @Test
+    @Test
     public void testTravelAccountTypeLookUpNav() throws Exception {
         testTravelAccountTypeLookUp();
         testTravelAccountTypeLookUpXss(TRAVEL_ACCOUNT_TYPE_CODE_FIELD);

@@ -73,10 +73,10 @@ public class DemoInputFieldsAft extends DemoKitchenSinkBase {
     	assertElementPresentByXpath("//input[@name='field133' and @placeholder='mm-dd-yyyy ']");
     	waitAndTypeByName("field133","asd");
     	waitAndTypeByName("date5","2");
-    	assertElementPresentByXpath("//input[@name='field133' and @class='uif-dateControl validChar-field1330 hasDatepicker dirty error']");
+    	assertElementPresentByXpath("//input[@name='field133' and @class='form-control input-sm uif-dateControl validChar-field1330 hasDatepicker dirty error']");
     	waitAndTypeByName("date6","");
     	assertElementPresentByXpath("//button[contains(text(),'Today')]");
-    	assertElementPresentByXpath("//input[@class='uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
+    	assertElementPresentByXpath("//input[@class='form-control input-sm uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
     	assertElementPresentByXpath("//input[@name='date7' and @disabled]");
     	
     	//Selection Control

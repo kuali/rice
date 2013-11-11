@@ -785,16 +785,25 @@ public class CollectionGroupBuilder implements Serializable {
      * @param collectionLine object instance for the current line
      * @param lineIndex index of the line the actions should apply to
      */
-    protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view, Object model,
-            CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
+    protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view,
+            Object model, CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
+
         List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
-        // Initialize Action related properties for all nested actions in the list of components
         List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionComponents, Action.class);
+        initializeActions(actions, collectionGroup, collectionLine, lineIndex, lineSuffix);
+
+        ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
+
+        return actionComponents;
+    }
+
+    public void initializeActions(List<Action> actions, CollectionGroup collectionGroup, Object collectionLine,
+            int lineIndex, String lineSuffix) {
         for (Action action : actions) {
             if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
                 // need to update the actions expressions so our settings do not get overridden
@@ -834,10 +843,6 @@ public class CollectionGroupBuilder implements Serializable {
                 action.setPerformClientSideValidation(false);
             }
         }
-
-        ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
-
-        return actionComponents;
     }
 
     /**

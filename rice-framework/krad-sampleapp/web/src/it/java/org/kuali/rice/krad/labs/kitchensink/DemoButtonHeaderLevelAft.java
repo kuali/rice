@@ -50,16 +50,16 @@ public class DemoButtonHeaderLevelAft extends DemoKitchenSinkBase {
     protected void testButtonHeaderLevel() throws InterruptedException 
     {
     	//Buttons
-    	waitAndClickByXpath("//button[@id='Demo-Primary-Action1' and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutVerticalItem clearfix']");
+    	waitAndClickByXpath("//button[@id='Demo-Primary-Action1']");
     	alertAccept();
-    	waitAndClickByXpath("//button[@id='Demo-Primary-Action2' and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
-    	waitAndClickByXpath("//button[@id='Demo-Secondary-Action1' and @class='btn uif-secondaryActionButton uif-boxLayoutVerticalItem clearfix']");
+    	waitAndClickByXpath("//button[@id='Demo-Primary-Action2']");
+    	waitAndClickByXpath("//button[@id='Demo-Secondary-Action1']");
     	alertAccept();
-    	waitAndClickByXpath("//button[@id='Demo-Secondary-Action2' and @class='btn uif-secondaryActionButton uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
-    	assertElementPresentByXpath("//a[@id='Demo-Links-Action1' and @class='uif-actionLink uif-boxLayoutVerticalItem clearfix']");
-    	waitAndClickByXpath("//button[@id='Demo-Primary-Action3' and @class='btn btn-primary btn-small uif-smallActionButton uif-boxLayoutVerticalItem clearfix']");
+    	waitAndClickByXpath("//button[@id='Demo-Secondary-Action2']");
+    	assertElementPresentByXpath("//a[@id='Demo-Links-Action1']");
+    	waitAndClickByXpath("//button[@id='Demo-Primary-Action3']");
     	alertAccept();
-    	waitAndClickByXpath("//button[@id='Demo-Primary-Action4' and @class='btn btn-primary btn-small uif-smallActionButton uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitAndClickByXpath("//button[@id='Demo-Primary-Action4']");
     
     	//Header
     	assertElementPresentByXpath("//h3/span[contains(text(),'H3 Header Title')]");

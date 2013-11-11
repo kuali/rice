@@ -46,7 +46,6 @@
   </ciManagement>
 
   <properties>
-    <project.scm.url>https://svn.kuali.org/repos/rice/trunk</project.scm.url>
   
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
@@ -2462,9 +2461,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:${project.scm.url}</connection>
-    <developerConnection>scm:${project.scm.vendor}:${project.scm.url}</developerConnection>
-    <url>${project.scm.url}</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/trunk</url>
   </scm>
 
 </project>

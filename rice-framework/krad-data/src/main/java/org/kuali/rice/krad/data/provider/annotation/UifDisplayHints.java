@@ -29,7 +29,7 @@ import org.kuali.rice.krad.data.provider.PersistenceProvider;
  * 
  * This is a *hint* only, visible to the system metadata. The KRAD Data module does not enforce it.
  */
-@Target(ElementType.FIELD)
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface UifDisplayHints {

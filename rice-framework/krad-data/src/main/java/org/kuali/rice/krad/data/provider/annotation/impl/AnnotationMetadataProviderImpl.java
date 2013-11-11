@@ -175,6 +175,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			}
 			if (a instanceof UifAutoCreateViews) {
 				metadata.setAutoCreateUifViewTypes(Arrays.asList(((UifAutoCreateViews) a).value()));
+				classAnnotationFound = true;
 			}
 		}
 		if (fieldAnnotationsFound) {

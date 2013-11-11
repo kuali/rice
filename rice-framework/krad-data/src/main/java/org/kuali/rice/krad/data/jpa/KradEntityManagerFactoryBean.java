@@ -340,6 +340,8 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     @Override
     public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
+		LOG.info("Setting load time weaver " + loadTimeWeaver + " on persistence unit manager "
+				+ persistenceUnitManager);
         persistenceUnitManager.setLoadTimeWeaver(loadTimeWeaver);
     }
 

@@ -75,7 +75,7 @@
 
             <#else>
 
-                <#if field.postInputAddons??>
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
                     <div class="input-group">
                 </#if>
 
@@ -97,8 +97,10 @@
                              <@krad.template component=postAddon/>
                          </span>
                      </#list>
+                </#if>
 
-                     </div>
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                    </div>
                 </#if>
             </#if>
 
@@ -109,6 +111,7 @@
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
             <#if !readOnly && (field.inquiry.render)!false>
+
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 

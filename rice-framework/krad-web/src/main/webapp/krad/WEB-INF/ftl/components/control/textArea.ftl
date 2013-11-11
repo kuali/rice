@@ -52,7 +52,7 @@ Standard HTML TextArea Input
     </#if>
 
     <#if control.textExpand>
-        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}', '${ConfigProperties[\"krad.externalizable.images.url\"]}');" />
+        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}');" />
     </#if>
 
     <@krad.disable control=field.control type="textArea"/>

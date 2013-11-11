@@ -41,9 +41,8 @@ input[type="text"], .uif-textAreaControl {
     border-bottom: 1px solid #ccc;
 }
 
-.input-group-btn > a.uif-actionLink {
+.input-group-btn > a {
     display: inline-block;
-    padding: 7px 7px 8px 7px;
     border-top: 1px solid #aaa;
     border-right: 1px solid #aaa;
     border-bottom: 1px solid #aaa;
@@ -59,6 +58,14 @@ input[type="text"], .uif-textAreaControl {
     background: -o-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
     background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
     background-clip: padding-box;
+}
+
+.input-group-btn > a.icon-search {
+    padding: 7px 7px 8px 7px;
+}
+
+.input-group-btn > a.icon-edit-sign {
+    padding: 8px 7px 7px 7px;
 }
 
 .input-group-btn > .uif-message {

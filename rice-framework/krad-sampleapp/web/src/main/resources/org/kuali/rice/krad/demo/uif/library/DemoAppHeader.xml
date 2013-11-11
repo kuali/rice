@@ -56,14 +56,7 @@
           <list>
             <bean parent="Uif-DropdownToggleMenu" p:toggleText="Researcher" p:toggleCaretClass="">
               <property name="menuGroup">
-                <bean parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="6">
-                  <property name="items">
-                    <list>
-                       <bean parent="Demo-Menu-ResearcherC1"/>
-                       <bean parent="Demo-Menu-ResearcherC2"/>
-                    </list>
-                  </property>
-                </bean>
+                <bean parent="Demo-Menu-Researcher"/>
               </property>
             </bean>
 
@@ -128,17 +121,39 @@
   </bean>
 
   <!-- ex:Demo-AppHeader-Example1 start-->
-  <bean id="Demo-Menu-ResearcherC1" parent="Uif-SimpleGroup">
+  <bean id="Demo-Menu-Researcher" parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="3">
     <property name="items">
       <list>
-        <bean parent="Uif-MenuList" p:headerText="Proposals">
+        <bean parent="Uif-SimpleGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Create Proposal"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Proposals Enroute"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="All My Proposals"/>
-              <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Search Proposals"/>
+              <bean parent="Demo-Menu-Researcher-ProposalGroup"/>
+              <bean parent="Demo-Menu-Researcher-AwardGroup"/>
+              <bean parent="Demo-Menu-Researcher-NegotiationGroup"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SimpleGroup">
+          <property name="items">
+            <list>
+              <bean parent="Demo-Menu-Researcher-IRBGroup"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SimpleGroup">
+          <property name="items">
+            <list>
+              <bean parent="Demo-Menu-Researcher-COIGroup"/>
+              <bean parent="Demo-Menu-Researcher-IacucGroup"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SimpleGroup">
+          <property name="items">
+            <list>
+              <bean parent="Demo-Menu-Researcher-QuicklinksGroup"/>
+              <bean parent="Demo-Menu-Researcher-PersonnelGroup"/>
+              <bean parent="Demo-Menu-Researcher-WorkflowGroup"/>
             </list>
           </property>
         </bean>
@@ -146,20 +161,116 @@
     </property>
   </bean>
 
-  <bean id="Demo-Menu-ResearcherC2" parent="Uif-SimpleGroup">
+  <bean id="Demo-Menu-Researcher-ProposalGroup" parent="Uif-MenuList" p:headerText="Proposals">
     <property name="items">
       <list>
-        <bean parent="Uif-MenuList" p:headerText="IRB Protocols">
-          <property name="items">
-            <list>
-              <bean parent="Uif-SimpleHeaderFour" p:headerText="Actions"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Create IRB Protocol"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Amend or Renew IRB Protocol"/>
-              <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
-              <bean parent="Uif-Link" p:href="#" p:linkText="Pending Protocols"/>
-            </list>
-          </property>
-        </bean>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create Proposal"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Proposals Enroute"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Proposals"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create Proposal For S2S Opportunity"/>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Proposals"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Proposal Log"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Institutional Proposals"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-AwardGroup" parent="Uif-MenuList" p:headerText="Awards">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="Awards in Progress"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All my Awards"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-NegotiationGroup" parent="Uif-MenuList" p:headerText="Negotiations">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Negotiations"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-IRBGroup" parent="Uif-MenuList" p:headerText="IRB Protocols">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="Actions"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create IRB Protocol"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Amend or Renew IRB Protocol"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Notify IRB on a Protocol"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Request a Status Change on a IRB Protocol"/>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Pending Protocols"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Protocols Pending PI Action"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Protocols Pending Committee Action"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Protocols Under Development"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Protocols"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Protocols"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Reviews"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Schedules"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-COIGroup" parent="Uif-MenuList" p:headerText="Conflict of Interest">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="My Financial Entities"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Financial Entity"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="View/Edit Financial Entities"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Financial Entities"/>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="My Disclosures"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Master Disclosure"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create Annual Disclosure"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create Manual Disclosure"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="New Project Disclosures To Complete"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Update Master Disclosure"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Disclosures"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Disclosures"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-IacucGroup" parent="Uif-MenuList" p:headerText="IACUC Protocols">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="Actions"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Create IACUC Protocol"/>
+        <bean parent="Uif-SimpleHeaderFour" p:headerText="Lists"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Protocols"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Search Protocols"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All My Reviews"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-QuicklinksGroup" parent="Uif-MenuList" p:headerText="Quicklinks">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="Pessimistic Lock"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Grants.gov Opportunity Lookup"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Change Password"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-PersonnelGroup" parent="Uif-MenuList" p:headerText="Personnel">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="Degree Information"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Current &amp; Pending Support"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="Bio-sketches"/>
+        <bean parent="Uif-MenuAction" p:actionLabel="All my Training"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Menu-Researcher-WorkflowGroup" parent="Uif-MenuList" p:headerText="Workflow">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:actionLabel="Preferences"/>
       </list>
     </property>
   </bean>

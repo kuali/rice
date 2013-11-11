@@ -101,7 +101,7 @@
         <bean parent="Uif-SidebarToggleMenu" p:toggleText="Budget" p:iconClass="icon-money">
           <property name="menuItems">
             <list>
-              <bean parent="Uif-MenuAction" p:actionLabel="Summary2" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Summary2" p:actionScript="alert('Menu Script 2');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Parameters2" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Rates" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
@@ -254,6 +254,9 @@
         <bean parent="LabsProposal-StackedSection"/>
 
         <ref bean="LabsProposal-Dialogs"/>
+
+        <ref bean="LabsProposal-Buttons"/>
+
       </list>
     </property>
   </bean>
@@ -276,7 +279,11 @@
                           p:header.render="false">
                       <property name="items">
                         <list>
-                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
+                            <property name="control">
+                              <bean parent="Uif-TextControl" p:textExpand="true"/>
+                            </property>
+                          </bean>
                           <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
                           <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
                           <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
@@ -559,6 +566,36 @@
           </property>
         </bean>
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-Buttons" parent="Uif-VerticalBoxGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-PrimaryActionButton-Large" p:actionLabel="Primary Large"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-SecondaryActionButton-Large" p:actionLabel="Secondary Large"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Primary"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Secondary"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Primary Small"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Secondary Small"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-PrimaryActionButton-Mini" p:actionLabel="Primary Mini"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+
+        <bean parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Secondary Mini"
+              p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
       </list>
     </property>
   </bean>

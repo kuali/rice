@@ -23,6 +23,8 @@ import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,14 +40,15 @@ import java.util.Date;
 
 @Entity
 @Table(name="TRVL_TRAVELER_DTL_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelerDetail extends DataObjectBase implements MutableInactivatable {
 	private static final long serialVersionUID = -7169083136626617130L;
 
     @Id
     @GeneratedValue(generator = "TEM_TRAVELER_DTL_ID_SEQ")
     @SequenceGenerator(name = "TEM_TRAVELER_DTL_ID_SEQ", sequenceName = "TEM_TRAVELER_DTL_ID_SEQ", allocationSize = 5)
-    @Column(name = "id", nullable = false)
-	protected Integer id;
+    @Column(name = "id", length = 40, nullable = false)
+	protected String id;
     @Column(name = "doc_nbr", length=14)
     protected String documentNumber;
     @Column(name = "EMP_PRINCIPAL_ID")
@@ -140,12 +143,12 @@ public class TravelerDetail extends DataObjectBase implements MutableInactivatab
         this.documentNumber = documentNumber;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

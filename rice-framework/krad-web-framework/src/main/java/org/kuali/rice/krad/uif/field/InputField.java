@@ -39,8 +39,10 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
@@ -127,6 +129,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private Message constraintMessage;
     private Message instructionalMessage;
 
+    private String helperText;
+
     private AttributeQuery attributeQuery;
 
     // widgets
@@ -138,6 +142,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     private Suggest suggest;
 
     private boolean widgetInputOnly;
+
+    private boolean renderInputGroup;
+    private List<String> postInputCssClasses;
+    private List<Component> postInputAddons;
 
     public InputField() {
         super();
@@ -282,6 +290,14 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {
             return;
+        }
+
+        if ((postInputAddons != null) && !postInputAddons.isEmpty()) {
+            renderInputGroup = true;
+        }
+
+        if (StringUtils.isNotBlank(helperText) && (getControl() != null)) {
+            getControl().getCssClasses().add(CssConstants.Classes.HAS_HELPER);
         }
 
         DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -628,6 +644,10 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         components.add(quickfinder);
         components.add(suggest);
 
+        if (postInputAddons != null) {
+            components.addAll(postInputAddons);
+        }
+
         return components;
     }
 
@@ -859,6 +879,47 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         this.widgetInputOnly = widgetInputOnly;
     }
 
+    public boolean isRenderInputGroup() {
+        return renderInputGroup;
+    }
+
+    public void setRenderInputGroup(boolean renderInputGroup) {
+        this.renderInputGroup = renderInputGroup;
+    }
+
+    public List<String> getPostInputCssClasses() {
+        return postInputCssClasses;
+    }
+
+    public void setPostInputCssClasses(List<String> postInputCssClasses) {
+        this.postInputCssClasses = postInputCssClasses;
+    }
+
+    public List<Component> getPostInputAddons() {
+        return postInputAddons;
+    }
+
+    public void setPostInputAddons(List<Component> postInputAddons) {
+        this.postInputAddons = postInputAddons;
+    }
+
+    public String getPostInputCssClassesAsString() {
+        if (postInputCssClasses != null) {
+            return StringUtils.join(postInputCssClasses, " ");
+        }
+
+        return "";
+    }
+
+    public void addPostInputAddon(Component addOn) {
+        if (postInputAddons == null) {
+            postInputAddons = new ArrayList<Component>();
+        }
+
+        postInputAddons.add(addOn);
+        renderInputGroup = true;
+    }
+
     /**
      * Instructional text that display an explanation of the field usage
      *
@@ -910,6 +971,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      */
     public void setInstructionalMessage(Message instructionalMessage) {
         this.instructionalMessage = instructionalMessage;
+    }
+
+    /**
+     * Help text that displays under the control and is disclosed on focus.
+     *
+     * @return String help text for input
+     */
+    public String getHelperText() {
+        return helperText;
+    }
+
+    /**
+     * @see InputField#getHelperText()
+     */
+    public void setHelperText(String helperText) {
+        this.helperText = helperText;
     }
 
     /**
@@ -1378,6 +1455,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             inputFieldCopy.setInstructionalMessage((Message) this.instructionalMessage.copy());
         }
 
+        inputFieldCopy.setHelperText(this.helperText);
+
         if (this.attributeQuery != null) {
             inputFieldCopy.setAttributeQuery((AttributeQuery) this.attributeQuery.copy());
         }
@@ -1396,6 +1475,18 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         inputFieldCopy.setWidgetInputOnly(this.widgetInputOnly);
+
+        if (this.postInputCssClasses != null) {
+            inputFieldCopy.setPostInputCssClasses(new ArrayList<String>(this.postInputCssClasses));
+        }
+
+        if (this.postInputAddons != null) {
+            List<Component> postInputAddonsCopy = new ArrayList<Component>();
+            for (Component addon : postInputAddons) {
+                postInputAddonsCopy.add((Component) addon.copy());
+            }
+            inputFieldCopy.setPostInputAddons(postInputAddonsCopy);
+        }
     }
 
     /**

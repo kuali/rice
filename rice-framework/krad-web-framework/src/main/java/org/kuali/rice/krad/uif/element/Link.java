@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -62,7 +63,7 @@ public class Link extends ContentElementBase {
      * <li>Initialize the nested lightBox widget if open in lightbox is true</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(java.lang.Object,
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
@@ -86,6 +87,15 @@ public class Link extends ContentElementBase {
                     lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
             this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
             lightBox.setRender(false);
+        }
+
+        // when icon only is set, add the icon class to the action
+        if (StringUtils.isNotBlank(iconClass) && (UifConstants.ICON_ONLY_PLACEMENT.equals(linkIconPlacement)
+                || StringUtils.isBlank(linkText))) {
+            getCssClasses().add(iconClass);
+
+            // force icon only placement
+            linkIconPlacement = UifConstants.ICON_ONLY_PLACEMENT;
         }
     }
 
@@ -200,24 +210,34 @@ public class Link extends ContentElementBase {
     }
 
     /**
+     * Icon Class for the link
      *
-     * @return
+     * <p>
+     * Bootstrap Icon Class to be rendered on this Link
+     * </p>
+     *
+     * @return label for action
      */
+    @BeanTagAttribute(name = "iconClass")
     public String getIconClass() {
         return iconClass;
     }
 
     /**
+     * Setter for the Icon Class
      *
-     * @param IconClass
+     * @param iconClass
      */
     public void setIconClass(String iconClass) {
         this.iconClass = iconClass;
     }
 
     /**
+     * Set to LEFT, RIGHT to position image at that location within the button. When set to blank/null/ICON_ONLY, the icon
+     * itself will be the Action, if no value is set the default is ALWAYS LEFT, you must explicitly set
+     * blank/null/ICON_ONLY to use ONLY the image as the Action.
      *
-     * @return
+     * @return Action Icon Placement
      */
     @BeanTagAttribute(name = "linkIconPlacement")
     public String getLinkIconPlacement() {
@@ -225,13 +245,13 @@ public class Link extends ContentElementBase {
     }
 
     /**
+     * Setter for the Link Icon Placement
      *
      * @param linkIconPlacement
      */
     public void setLinkIconPlacement(String linkIconPlacement) {
         this.linkIconPlacement = linkIconPlacement;
     }
-
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */

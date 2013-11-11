@@ -61,7 +61,7 @@
         <property name="id" value="travelerQuickfinder"/>
         <property name="quickfinder">
           <bean parent="Uif-QuickFinder"
-                p:dataObjectClassName="org.kuali.rice.krad.demo.travel.authorization.dataobject.TravelerDetail">
+                p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelerDetail">
             <property name="fieldConversions">
               <map>
                 <entry key="id" value="travelerDetailId"/>

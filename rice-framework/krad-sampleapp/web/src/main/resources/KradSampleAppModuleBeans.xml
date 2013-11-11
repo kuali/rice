@@ -144,6 +144,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoBreadcrumbsResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLightTableResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPasswordControlResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIconResources</value>
         <!-- kitchen sink -->
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>

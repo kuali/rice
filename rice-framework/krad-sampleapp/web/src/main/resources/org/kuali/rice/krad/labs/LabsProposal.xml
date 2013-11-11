@@ -22,6 +22,7 @@
 
   <bean id="LabsProposal" parent="Demo-AppHeader-View1">
     <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
     <property name="breadcrumbs.render" value="false"/>
     <property name="header">
       <bean parent="Uif-ViewHeader" p:headerText="Proposal: #23533" p:areaTitleText="Proposal Development"
@@ -34,6 +35,7 @@
         </property>
       </bean>
     </property>
+    <property name="navigation" ref="LabsProposal-Menu"/>
     <property name="items">
       <list>
         <ref bean="LabsProposal-Page"/>
@@ -50,9 +52,77 @@
         </property>
       </bean>
     </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
     <property name="additionalCssFiles">
       <list merge="true">
         <value>css/labsProposal.css</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-Menu" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Basics" p:iconClass="icon-file-alt">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Proposal Details" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="S2S Opportunity Search"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Delivery Info" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Sponsor &amp; Program Information"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Organization &amp; Location"
+                    p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Key Personnel" p:iconClass="icon-user">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Credit Allocation" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Delivery Info" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Sponsor &amp; Program Information"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Organization &amp; Location"
+                    p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Compliance" p:iconClass="icon-ok"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Attachments" p:iconClass="icon-paper-clip"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Questionnaire" p:iconClass="icon-question"
+              p:actionScript="alert('Menu Script');"/>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Budget" p:iconClass="icon-money">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Summary2" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Parameters2" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Rates" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Non-Personnel" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Distribution &amp; Income"
+                    p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Modular" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Actions" p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="Supplemental Information" p:iconClass="icon-bell">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Page 1" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Page 2" p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Summary/Submit" p:iconClass="icon-signout"
+              p:actionScript="alert('Menu Script');"/>
       </list>
     </property>
   </bean>
@@ -69,10 +139,11 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownMenu" p:dropdownToggleText="more..."
-        p:renderToggleCaret="false">
+  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:toggleText="more..."
+        p:toggleCaretClass="">
     <property name="menuGroup">
-      <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed" p:headerText="Document Info">
+      <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed"
+            p:headerText="Document Info">
         <property name="items">
           <list>
             <bean parent="Uif-MessageField" p:label="Doc Nbr" p:fieldLabel.renderColon="false"
@@ -101,7 +172,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-ActionLink" p:methodToCall="toggleAuditMode"
-              p:actionLabel="Audit Mode (on)"/>
+              p:actionLabel="Audit Mode &lt;span style='color:#090'&gt;(on)&lt;/span&gt;"/>
         <bean parent="Uif-ActionLink" p:methodToCall="print" p:actionLabel="Print" p:iconClass="icon-print"/>
         <bean parent="Uif-ActionLink" p:methodToCall="copy" p:actionLabel="Copy" p:iconClass="icon-copy"/>
         <bean parent="Uif-ActionLink" p:methodToCall="medusa" p:actionLabel="Medusa" p:iconClass="icon-tasks"/>
@@ -128,41 +199,368 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Proposal Type" p:propertyName="field1" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Project Title" p:propertyName="field2" p:required="true">
+              <bean parent="Uif-InputField" p:label="Project Title" p:propertyName="field2" p:required="true"
+                    p:helperText="Give this proposal a title. Be detailed but concise.">
                 <property name="control">
                   <bean parent="Uif-MediumTextAreaControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-HorizontalFieldGroup" p:label="Project Dates">
+              <bean parent="Uif-CssGridFieldGroup" p:label="Project Dates">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:propertyName="field4">
+                    <bean parent="Uif-InputField" p:propertyName="field4" p:colSpan="6">
                       <property name="control">
-                        <bean parent="Uif-DateControl"/>
+                        <bean parent="Uif-DateControlOnFocus" p:watermarkText="mm/dd/yyyy"/>
+                      </property>
+                      <property name="postInputAddons">
+                        <list>
+                          <bean parent="Uif-Message" p:messageText="to"/>
+                        </list>
                       </property>
                     </bean>
-                    <bean parent="Uif-Message" p:messageText="to"/>
-                    <bean parent="Uif-InputField" p:propertyName="field5">
+
+                    <bean parent="Uif-InputField" p:propertyName="field5" p:colSpan="6">
                       <property name="control">
-                        <bean parent="Uif-DateControl"/>
+                        <bean parent="Uif-DateControlOnFocus" p:watermarkText="mm/dd/yyyy"/>
                       </property>
                     </bean>
                   </list>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3">
+              <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3"
+                    p:helperText="Enter the award ID for this proposal.">
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"
                         p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                         p:fieldConversions="number:field3"/>
                 </property>
               </bean>
+              <bean parent="Uif-InputField" p:label="Keywords" p:propertyName="field4">
+                <property name="control">
+                  <bean parent="Uif-DropdownControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Biology"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Chemistry"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="LabsProposal-StackedSection"/>
+
+        <ref bean="LabsProposal-Dialogs"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-StackedSection" parent="Uif-StackedCollectionSection">
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="propertyName" value="list4"/>
+    <property name="layoutManager.summaryTitle" value="Line @{#line.field1}"/>
+    <property name="renderAddLine" value="false"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-SimpleFieldGroup">
+          <property name="items">
+            <list>
+
+              <bean parent="Uif-TabGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Details"
+                          p:header.render="false">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Organization"
+                          p:header.render="false">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-GridCondensedSubSection" p:headerText="Education">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-DataField-condensedTable" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="Degrees"
+                          p:header.render="false">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
             </list>
           </property>
         </bean>
       </list>
     </property>
+    <property name="lineActions">
+      <list/>
+    </property>
+    <property name="layoutManager.lineGroupPrototype">
+      <bean parent="Uif-CollectionHorizontalBoxItem" p:disclosure.render="true">
+        <property name="layoutManager">
+          <bean parent="Uif-SimpleLayout"/>
+        </property>
+        <property name="header">
+          <bean parent="Uif-HeaderFour">
+            <property name="rightGroup">
+              <bean parent="Uif-VerticalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-close"/>
+                  </list>
+                </property>
+              </bean>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
   </bean>
 
+  <!-- dialogs -->
+  <bean id="LabsProposal-Dialogs" parent="Uif-CssGridGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 1"
+              p:actionScript="showLightboxComponent('LabsProposal-Dialog1')"/>
+        <bean id="LabsProposal-Dialog1" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
+          <property name="header">
+
+            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
+
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-CssGridSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+                          p:propertyName="field10" p:label="Search for">
+                      <property name="control">
+                        <bean parent="Uif-VerticalRadioControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="E" p:value="Employees"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Non-employees"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Enter Known Details">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:label="Last name"
+                                p:propertyName="field11">
+                            <property name="control">
+                              <bean parent="Uif-TextControl"/>
+                            </property>
+                          </bean>
+                          <bean parent="Uif-InputField" p:label="First name"
+                                p:propertyName="field12">
+                            <property name="control">
+                              <bean parent="Uif-TextControl"/>
+                            </property>
+                          </bean>
+                          <bean parent="Uif-InputField" p:label="Username"
+                                p:propertyName="field13">
+                            <property name="control">
+                              <bean parent="Uif-TextControl"/>
+                            </property>
+                          </bean>
+                          <bean parent="Uif-InputField" p:label="Email address"
+                                p:propertyName="field14">
+                            <property name="control">
+                              <bean parent="Uif-TextControl" p:watermarkText="user@domain.com"/>
+                            </property>
+                          </bean>
+                          <bean parent="Uif-InputField" p:label="Office phone"
+                                p:propertyName="field15">
+                            <property name="control">
+                              <bean parent="Uif-TextControl"/>
+                            </property>
+                          </bean>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="footer">
+                  <bean parent="Uif-FooterBase">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
+                              p:actionScript="alert('Button');"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 2"
+              p:actionScript="showLightboxComponent('LabsProposal-Dialog2')"/>
+
+        <bean id="LabsProposal-Dialog2" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
+          <property name="header">
+
+            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
+
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-CssGridGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-TableCollectionSection"
+                          p:headerText="Search Results"
+                          p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"
+                          p:additionalCssClasses="kc-personnel-table"
+                          p:propertyName="list1" p:renderAddLine="false" p:renderLineActions="false"
+                          p:layoutManager.renderSequenceField="false">
+                      <property name="layoutManager.richTable.templateOptions">
+                        <map>
+                          <entry key="bAutoWidth" value="false"/>
+                          <entry key="sDom" value="tip"/>
+                          <entry key="bRetrieve" value="true"/>
+                          <entry key="sPaginationType" value="full_numbers"/>
+                          <entry key="aaSorting" value="[[1,'asc']]"/>
+                          <entry key="aoColumnDefs"
+                                 value="[{'sWidth' : '20px', 'bSortable':false, 'aTargets' : [0]}]"/>
+                        </map>
+                      </property>
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="" p:readOnly="false">
+                            <property name="control">
+                              <bean parent="Uif-VerticalRadioControl">
+                                <property name="options">
+                                  <list>
+                                    <bean parent="Uif-KeyLabelPair" p:key="Y" p:value=""/>
+                                  </list>
+                                </property>
+                              </bean>
+                            </property>
+                          </bean>
+                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Name" p:readOnly="true"/>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="User ID" p:readOnly="true"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="footer">
+                  <bean parent="Uif-FooterBase">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Go back"
+                              p:actionScript="alert('Button');"/>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
+                              p:actionScript="alert('Button');"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 3"
+              p:actionScript="showLightboxComponent('LabsProposal-Dialog3')"/>
+
+        <bean id="LabsProposal-Dialog3" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
+          <property name="header">
+
+            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
+
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-CssGridSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+                          p:propertyName="field20" p:label="Assign a role">
+                      <property name="control">
+                        <bean parent="Uif-VerticalRadioControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Principal Investigator/Contact"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Co-Principal Investigator"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Key Person"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:propertyName="field21">
+                      <property name="control">
+                        <bean parent="Uif-CheckboxControl" p:checked="true"
+                              p:checkboxLabel="Yes, include in this proposal's budget"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="footer">
+                  <bean parent="Uif-FooterBase">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Go back"
+                              p:actionScript="alert('Button');"/>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
+                              p:actionScript="alert('Button');"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
 
 </beans>

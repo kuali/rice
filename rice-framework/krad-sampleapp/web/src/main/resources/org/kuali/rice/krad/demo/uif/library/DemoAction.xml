@@ -33,6 +33,7 @@
         <ref bean="Demo-Action-Example4"/>
         <ref bean="Demo-Action-Example5"/>
         <ref bean="Demo-Action-Example6"/>
+        <ref bean="Demo-Action-Example7"/>
       </list>
     </property>
   </bean>
@@ -120,11 +121,25 @@
     </property>
   </bean>
 
-  <!-- Buttons -->
+   <!--Icons-->
   <bean id="Demo-Action-Example6"  parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-Action-Example6 start-->
+      <!-- ex:Demo-Action-Example6 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office" p:actionLabel="Left Icon Placement">
+        </bean>
+        <bean parent="Uif-SecondaryActionButton-Small" p:actionScript="alert('You clicked a button');" p:iconClass="icon-paint-format" p:actionIconPlacement="RIGHT" p:actionLabel="Right Icon Placment">
+        </bean>
+      <!-- ex:Demo-Action-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Buttons -->
+  <bean id="Demo-Action-Example7"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+         <!--ex:Demo-Action-Example7 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"
               p:id="ST-DemoButton" p:actionScript="alert('You clicked a button');"/>
 
@@ -171,7 +186,7 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button"
               p:id="ST-DemoButtonDisabled" p:methodToCall="foo" p:disabled="true"/>
 
-        <!-- ex:Demo-Action-Example6 end-->
+         <!--ex:Demo-Action-Example7 end-->
       </list>
     </property>
   </bean>

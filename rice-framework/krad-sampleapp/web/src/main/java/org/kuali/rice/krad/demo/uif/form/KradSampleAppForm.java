@@ -32,6 +32,7 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
@@ -159,6 +160,8 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             + "        }";
 
     private String documentNumber;
+
+    private List<TravelAccount> travelAccounts = new ArrayList<TravelAccount>();
 
     public KradSampleAppForm() {
         super();
@@ -1090,5 +1093,13 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
+    }
+
+    public List<TravelAccount> getTravelAccounts() {
+        return travelAccounts;
+    }
+
+    public void setTravelAccounts(List<TravelAccount> travelAccounts) {
+        this.travelAccounts = travelAccounts;
     }
 }

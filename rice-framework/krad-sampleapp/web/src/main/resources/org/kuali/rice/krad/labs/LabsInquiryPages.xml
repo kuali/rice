@@ -83,15 +83,10 @@
         <bean id="KradInquirySampleItems-PageR2C1" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Link to Sample Inquiry" p:target="_self"
-                    p:href=""/>
-              <bean id="KradInquirySampleItems-Section2-PageR2C1" parent="Uif-VerticalBoxSection">
-                 <property name="items">
-                   <list>
-
-                   </list>
-                 </property>
-               </bean>
+              <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelExpenseItem&amp;travelExpenseItemId=10000"/>
+              <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting (Partial Attribute Masking)" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;id=1&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail"/>
             </list>
           </property>
         </bean>
@@ -257,12 +252,25 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with an encrypted parameter that will be decrypted" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-ParameterDecryption&amp;methodToCall=start&amp;accountTypeCode=rhHqKzmrgsM=&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-ParameterDecryption&amp;methodToCall=start&amp;accountTypeCode=rhHqKzmrgsM=&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsEncryptedTravelAccountType"/>
             </list>
           </property>
         </bean>
       </list>
     </property>
   </bean>
-
+  <bean id="KradInquirySample-PageR6C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR6C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Link to demonstrate ability to suppress the automatically generated inquiry link on fields." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=LabsInquiry-PerDiemSections-NoInquiry&amp;travelPerDiemExpenseId=10000"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

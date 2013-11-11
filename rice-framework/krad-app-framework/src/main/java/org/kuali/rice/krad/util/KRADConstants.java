@@ -702,6 +702,7 @@ public final class KRADConstants {
         public static final String KRAD_STRICT_LIFECYCLE = "rice.krad.lifecycle.strict";
         public static final String KRAD_VIEW_LIFECYCLE_TRACE = "rice.krad.lifecycle.trace";
         public static final String KRAD_RENDER_IN_LIFECYCLE = "rice.krad.lifecycle.render";
+        public static final String KRAD_VIEW_LIFECYCLE_REFLECTION = "rice.krad.lifecycle.reflection";
         public static final String KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS = "rice.krad.lifecycle.asynchronous";
         public static final String KRAD_VIEW_LIFECYCLE_MINTHREADS = "rice.krad.lifecycle.asynchronous.minThreads";
         public static final String KRAD_VIEW_LIFECYCLE_MAXTHREADS = "rice.krad.lifecycle.asynchronous.maxThreads";

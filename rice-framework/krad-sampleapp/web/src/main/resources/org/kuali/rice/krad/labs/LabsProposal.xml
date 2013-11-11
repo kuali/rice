@@ -579,7 +579,7 @@
         <bean parent="Uif-SecondaryActionButton-Large" p:actionLabel="Secondary Large"
               p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
 
-        <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Primary"
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Primary"
               p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
 
         <bean parent="Uif-SecondaryActionButton" p:actionLabel="Secondary"

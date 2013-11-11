@@ -3280,7 +3280,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertButtonEnabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         boolean anotherPageOfResults = false;
-        if (Integer.parseInt(multiValueResultCount()) > 5) {
+        if (Integer.parseInt(multiValueResultCount()) > 10) {
             anotherPageOfResults = true;
         }
 

@@ -75,7 +75,7 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         helper.performCustomViewInitialization(model);
 
-        processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null));
+        processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null, null));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("initialize:" + view.getId());
@@ -113,7 +113,7 @@ public class ViewLifecycleFullBuild implements Runnable {
         String growlScript = helper.buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null));
+        processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null, null));
         
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("finalize:" + view.getId());

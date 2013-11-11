@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.Queue;
+import java.util.Map.Entry;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -26,6 +27,7 @@ import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTa
 import org.kuali.rice.krad.uif.lifecycle.initialize.HelperCustomInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -117,18 +119,32 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
         // initialize nested components
         int index = 0;
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            if (nestedComponent != null && !nestedComponent.isInitialized()) {
-                successors.offer(LifecyclePhaseFactory.initialize(
-                        nestedComponent, model, index++, null, null));
+        if (ViewLifecycle.isUseReflection()) {
+            for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
+                    true).entrySet()) {
+                String path = getPath();
+                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+                Component nestedComponent = nestedComponentEntry.getValue();
+                
+                if (nestedComponent != null && !nestedComponent.isInitialized()) {
+                    successors.offer(LifecyclePhaseFactory.initialize(
+                            nestedComponent, model, index++, nestedPath, null, null));
+                }
             }
-        }
+        } else {
+            for (Component nestedComponent : component.getComponentsForLifecycle()) {
+                if (nestedComponent != null && !nestedComponent.isInitialized()) {
+                    successors.offer(LifecyclePhaseFactory.initialize(
+                            nestedComponent, model, index++, null, null, null));
+                }
+            }
 
-        // initialize component prototypes
-        for (Component nestedComponent : component.getComponentPrototypes()) {
-            if (nestedComponent != null) {
-                successors.add(LifecyclePhaseFactory.initialize(
-                        nestedComponent, model, index++, null, null));
+            // initialize component prototypes
+            for (Component nestedComponent : component.getComponentPrototypes()) {
+                if (nestedComponent != null) {
+                    successors.add(LifecyclePhaseFactory.initialize(
+                            nestedComponent, model, index++, null, null, null));
+                }
             }
         }
     }

@@ -67,14 +67,14 @@ import org.kuali.rice.krad.util.KRADUtils;
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
 
     private static final long serialVersionUID = -4449335748129894350L;
-    
+
     private String id;
     private String baseId;
     private String template;
     private String templateName;
 
     private String viewStatus;
-    
+
     private String title;
 
     private boolean render;
@@ -119,7 +119,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String cellWidth;
 
     private String style;
-    
+
     private List<String> libraryCssClasses;
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
@@ -176,18 +176,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String preRenderContent;
     private String postRenderContent;
-    
+
     public ComponentBase() {
         super();
 
-//        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
+        //        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
 
         order = 0;
         colSpan = 1;
         rowSpan = 1;
 
         viewStatus = ViewStatus.CREATED;
-        
+
         render = true;
         selfRendered = false;
         progressiveRenderViaAJAX = false;
@@ -200,12 +200,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
         templateOptions = Collections.emptyMap();
-        
+
         cssClasses = Collections.emptyList();
         libraryCssClasses = Collections.emptyList();
         additionalCssClasses = Collections.emptyList();
     }
-    
+
     /**
      * @see LifecycleElement#checkMutable(boolean)
      */
@@ -219,7 +219,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (ViewLifecycle.isActive()) {
             return;
         }
-        
+
         if (UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
             if (!legalDuringInitialization) {
                 ViewLifecycle.reportIllegalState(
@@ -241,18 +241,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         return (UifConstants.ViewStatus.CREATED.equals(viewStatus) && legalDuringInitialization)
                 || ViewLifecycle.isActive();
     }
-    
+
     /**
      * Indicates what lifecycle phase the component instance is in
-     *
+     * 
      * <p>
-     * The view lifecycle begins with the CREATED status. In this status a new
-     * instance of the view has been retrieved from the dictionary, but no
-     * further processing has been done. After the initialize phase has been run
-     * the status changes to INITIALIZED. After the model has been applied and
-     * the view is ready for render the status changes to FINAL
+     * The view lifecycle begins with the CREATED status. In this status a new instance of the view
+     * has been retrieved from the dictionary, but no further processing has been done. After the
+     * initialize phase has been run the status changes to INITIALIZED. After the model has been
+     * applied and the view is ready for render the status changes to FINAL
      * </p>
-     *
+     * 
      * @return view status
      * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
      */
@@ -262,7 +261,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the view status
-     *
+     * 
      * @param viewStatus
      */
     @Override
@@ -270,13 +269,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (!UifConstants.ViewStatus.CREATED.equals(status)) {
             checkMutable(true);
         }
-        
+
         this.viewStatus = status;
     }
 
     /**
      * Setter for the view status
-     *
+     * 
      * @param viewStatus
      */
     @Override
@@ -294,12 +293,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
      */
     @Override
-    public void notifyCompleted(ViewLifecyclePhase phase) {
-    }
+    public void notifyCompleted(ViewLifecyclePhase phase) {}
 
     /**
      * Indicates whether the component has been initialized.
-     *
+     * 
      * @return True if the component has been initialized, false if not.
      */
     public boolean isInitialized() {
@@ -308,7 +306,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates whether the component has been updated from the model.
-     *
+     * 
      * @return True if the component has been updated, false if not.
      */
     public boolean isModelApplied() {
@@ -316,9 +314,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Indicates whether the component has been updated from the model and final
-     * updates made.
-     *
+     * Indicates whether the component has been updated from the model and final updates made.
+     * 
      * @return True if the component has been updated, false if not.
      */
     public boolean isFinal() {
@@ -327,7 +324,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates whether the component has been fully rendered.
-     *
+     * 
      * @return True if the component has fully rendered, false if not.
      */
     public boolean isRendered() {
@@ -345,8 +342,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(Object model) {
-    }
+    public void performInitialization(Object model) {}
 
     /**
      * The following updates are done here:
@@ -362,7 +358,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public void performApplyModel(Object model, Component parent) {
         View view = ViewLifecycle.getView();
-        
+
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with render, will not render at least one of the two are false
             ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
@@ -519,7 +515,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.util.LifecycleElement#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     * @see org.kuali.rice.krad.uif.util.LifecycleElement#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase,
+     *      java.util.Queue)
      */
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
@@ -568,7 +565,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (propertyReplacers == null) {
             return Collections.emptyList();
         }
-        
+
         List<Component> components = new ArrayList<Component>();
         for (Object replacer : propertyReplacers) {
             components.addAll(((PropertyReplacer) replacer).getNestedComponents());
@@ -919,7 +916,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (libraryCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             libraryCssClasses = new LifecycleAwareList<String>(this);
         }
-        
+
         return libraryCssClasses;
     }
 
@@ -946,7 +943,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             cssClasses = new LifecycleAwareList<String>(this);
         }
-        
+
         return cssClasses;
     }
 
@@ -970,7 +967,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             additionalCssClasses = new LifecycleAwareList<String>(this);
         }
-        
+
         return additionalCssClasses;
     }
 
@@ -1008,11 +1005,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (StringUtils.isEmpty(styleClass)) {
             return;
         }
-        
+
         if (cssClasses.isEmpty()) {
             setCssClasses(new ArrayList<String>());
         }
-        
+
         if (!cssClasses.contains(styleClass)) {
             cssClasses.add(styleClass);
         }
@@ -1234,7 +1231,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
             context = new LifecycleAwareMap<String, Object>(this);
         }
-        
+
         return context;
     }
 
@@ -1287,11 +1284,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (objects == null || objects.isEmpty()) {
             return;
         }
-        
+
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
             context = new LifecycleAwareMap<String, Object>(this);
         }
-        
+
         context.putAll(objects);
 
         List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
@@ -1683,7 +1680,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (templateOptions == Collections.EMPTY_MAP && isMutable(true)) {
             templateOptions = new LifecycleAwareMap<String, String>(this);
         }
-        
+
         return templateOptions;
     }
 
@@ -1715,7 +1712,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (templateOptions == null) {
             return "{}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         sb.append("{");
 
@@ -1932,7 +1929,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List<java.lang.String>)
+     * @see 
+     *      org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List
+     *      <java.lang.String>)
      */
     public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
         checkMutable(true);
@@ -2097,7 +2096,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (dataAttributes == Collections.EMPTY_MAP) {
             dataAttributes = new LifecycleAwareMap<String, String>(this);
         }
-        
+
         return dataAttributes;
     }
 
@@ -2124,7 +2123,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void addDataAttribute(String key, String value) {
         checkMutable(true);
-        
+
         if (dataAttributes == Collections.EMPTY_MAP) {
             dataAttributes = new LifecycleAwareMap<String, String>(this);
         }
@@ -2204,7 +2203,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public ComponentBase clone() throws CloneNotSupportedException {
         ComponentBase copy = (ComponentBase) super.clone();
-        
+
         // Copy initialized status, but reset to created for others.
         // This allows prototypes to bypass repeating the initialized phase.
         if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
@@ -2212,7 +2211,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             copy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
-        
+
         return copy;
     }
 
@@ -2228,7 +2227,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             ViewLifecycle.reportIllegalState("View status is " + viewStatus + " prior to caching "
                     + getClass().getName() + " " + getId() + ", expected C or X");
         }
-     
+
         viewStatus = UifConstants.ViewStatus.CACHED;
     }
 

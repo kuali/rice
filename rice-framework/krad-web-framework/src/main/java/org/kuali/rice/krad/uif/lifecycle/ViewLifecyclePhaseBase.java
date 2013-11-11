@@ -37,6 +37,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private Object model;
     private Component parent;
     private int index = -1;
+    private String path;
     private ViewLifecyclePhaseBase predecessor;
 
     private ViewLifecyclePhase nextPhase;
@@ -76,7 +77,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * @see LifecyclePhaseFactory
      */
     protected void prepare(Component component, Object model, int index,
-            Component parent, ViewLifecyclePhase nextPhase) {
+            String path, Component parent, ViewLifecyclePhase nextPhase) {
         if (component.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
                     "Component is already in the expected end status " + getEndViewStatus()
@@ -85,6 +86,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
         this.model = model;
         this.index = index;
+        this.path = path;
         this.component = component;
         this.parent = parent;
         this.nextPhase = nextPhase;
@@ -148,6 +150,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     @Override
     public final int getIndex() {
         return index;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPath() {
+        return this.path;
     }
 
     /**
@@ -359,6 +369,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             sb.append(" ");
             sb.append(System.identityHashCode(tp));
             sb.append(" ");
+            sb.append(tp.getPath());
+            sb.append(" ");
             sb.append(tp.getComponent().getClass().getSimpleName());
             sb.append(" ");
             sb.append(tp.getComponent().getId());
@@ -386,7 +398,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     private void trace(String step) {
         if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
-            String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " +
+            String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " + path + " " +
                     (component == null ? "(recycled)" : component.getClass() + " " + component.getId());
             LOG.debug(msg);
         }

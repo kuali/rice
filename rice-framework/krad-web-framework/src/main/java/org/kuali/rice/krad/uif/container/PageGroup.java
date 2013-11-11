@@ -146,6 +146,22 @@ public class PageGroup extends Group {
         return components;
     }
 
+    public List<BreadcrumbItem> getHomewardPathBreadcrumbs() {
+        return breadcrumbOptions == null ? null : breadcrumbOptions.getHomewardPathBreadcrumbs();
+    }
+
+    public List<BreadcrumbItem> getPreViewBreadcrumbs() {
+        return breadcrumbOptions == null ? null : breadcrumbOptions.getPreViewBreadcrumbs();
+    }
+
+    public List<BreadcrumbItem> getPrePageBreadcrumbs() {
+        return breadcrumbOptions == null ? null : breadcrumbOptions.getPrePageBreadcrumbs();
+    }
+
+    public List<BreadcrumbItem> getBreadcrumbOverrides() {
+        return breadcrumbOptions == null ? null : breadcrumbOptions.getBreadcrumbOverrides();
+    }
+    
     /**
      * When this is true, the first field of the kualiForm will be focused by
      * default, unless the parameter focusId is set on the form (by an

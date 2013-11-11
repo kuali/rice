@@ -54,6 +54,13 @@ public interface ViewLifecyclePhase extends Runnable {
     int getIndex();
     
     /**
+     * Gets the path relative the predecessor phase's component.
+     * 
+     * @return path relative the predecessor phase's component
+     */
+    String getPath();
+    
+    /**
      * Determines if this lifecycle phase has completed processing.
      * 
      * <p>

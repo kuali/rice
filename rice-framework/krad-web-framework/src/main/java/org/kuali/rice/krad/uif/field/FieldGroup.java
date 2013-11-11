@@ -24,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
@@ -121,6 +122,7 @@ public class FieldGroup extends FieldBase {
      *
      * @return List<? extends Component> items
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (group != null) {

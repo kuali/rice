@@ -55,8 +55,8 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      *        processing before this phase.
      */
     protected void prepare(Component component, Object model, int index,
-            RenderComponentPhase parent, int pendingChildren) {
-        super.prepare(component, model, index, parent == null ? null : parent.getComponent(), null);
+            String path, RenderComponentPhase parent, int pendingChildren) {
+        super.prepare(component, model, index, path, parent == null ? null : parent.getComponent(), null);
         this.renderParent = parent;
         this.pendingChildren = pendingChildren;
     }

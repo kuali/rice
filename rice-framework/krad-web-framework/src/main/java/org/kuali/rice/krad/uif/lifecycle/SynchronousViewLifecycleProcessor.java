@@ -19,6 +19,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 
 /**
  * Single-threaded view lifecycle processor implementation.
@@ -43,6 +45,11 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     private LifecycleRenderingContext renderingContext;
 
     /**
+     * The expression evaluator to use with this lifecycle.
+     */
+    private final ExpressionEvaluator expressionEvaluator = new DefaultExpressionEvaluator();
+
+    /**
      * Creates a new synchronous processor for a lifecycle.
      * 
      * @param lifecycle The lifecycle to process.
@@ -62,6 +69,14 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
         }
 
         return this.renderingContext;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        return this.expressionEvaluator;
     }
 
     /**

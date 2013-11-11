@@ -29,9 +29,12 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -189,6 +192,15 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
 
         if (((UifFormBase) model).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
+        }
+
+        // any actions that are attached to the group prototype (like the header) need to get action parameters
+        // and context set for the collection line
+        List<Action> lineGroupActions = ComponentUtils.getComponentsOfTypeDeep(lineGroup, Action.class);
+        if (lineGroupActions != null) {
+            collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup,
+                    currentLine, lineIndex, idSuffix);
+            ComponentUtils.updateContextsForLine(lineGroupActions, currentLine, lineIndex, idSuffix);
         }
 
         ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);
@@ -383,6 +395,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * @return add line group instance
      * @see #getAddLineGroup()
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return this.addLineGroup;
@@ -404,6 +417,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return Group instance to use as prototype
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
@@ -421,6 +435,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     /**
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
@@ -449,6 +464,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return select field prototype instance
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
@@ -515,9 +531,14 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      *
      * @return collection groups
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getStackedGroups() {
         return this.stackedGroups;
+    }
+
+    public List<Group> getStackedGroupsNoWrapper() {
+        return wrapperGroup != null ? null : this.stackedGroups;
     }
 
     /**

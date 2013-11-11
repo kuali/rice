@@ -59,6 +59,7 @@ public class ViewLifecycle implements Serializable {
     private static Boolean renderInLifecycle;
     private static Boolean asynchronousLifecycle;
     private static Boolean trace;
+    private static Boolean reflection;
 
     /**
      * Enumerates potential lifecycle events.
@@ -231,6 +232,27 @@ public class ViewLifecycle implements Serializable {
         }
 
         return asynchronousLifecycle;
+    }
+
+    /**
+     * Determine whether to use reflection to determine components for lifecycle, or to use the
+     * original implementation.
+     * 
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.reflection&quot;.
+     * </p>
+     * 
+     * @return true if view reflection should be used to determine lifecycle phases, false to use
+     *         {@link Component#getComponentsForLifecycle()}
+     */
+    public static boolean isUseReflection() {
+        if (reflection == null) {
+            reflection = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_REFLECTION, false);
+        }
+
+        return reflection;
     }
 
     /**
@@ -476,7 +498,7 @@ public class ViewLifecycle implements Serializable {
             // Perform sub-lifecycle immediately in the same thread
             FinalizeComponentPhase finalPhase = null;
             if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
-                finalPhase = LifecyclePhaseFactory.finalize(component, model, 0, parent);
+                finalPhase = LifecyclePhaseFactory.finalize(component, model, 0, null, parent);
             }
 
             if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
@@ -488,7 +510,7 @@ public class ViewLifecycle implements Serializable {
             if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
                     UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
                 applyModelPhase = LifecyclePhaseFactory.applyModel(
-                        component, model, 0, parent, finalPhase, new HashSet<String>());
+                        component, model, 0, null, parent, finalPhase, new HashSet<String>());
             }
 
             if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
@@ -497,7 +519,7 @@ public class ViewLifecycle implements Serializable {
             }
 
             InitializeComponentPhase initializePhase = 
-                    LifecyclePhaseFactory.initialize(component, model, 0, parent, applyModelPhase);
+                    LifecyclePhaseFactory.initialize(component, model, 0, null, parent, applyModelPhase);
             processor.pushPendingPhase(initializePhase);
 
         } else {
@@ -511,7 +533,7 @@ public class ViewLifecycle implements Serializable {
                 
                 // Perform sub-lifecycle immediately in the same thread
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-                    synchProcessor.performPhase(LifecyclePhaseFactory.initialize(component, model, 0, parent, null));
+                    synchProcessor.performPhase(LifecyclePhaseFactory.initialize(component, model, 0, null, parent, null));
                 }
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
@@ -520,14 +542,14 @@ public class ViewLifecycle implements Serializable {
 
                 if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
                         UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                    synchProcessor.performPhase(LifecyclePhaseFactory.applyModel(component, model, 0, parent, null, new HashSet<String>()));
+                    synchProcessor.performPhase(LifecyclePhaseFactory.applyModel(component, model, 0, null, parent, null, new HashSet<String>()));
                 }
 
                 if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
                     return;
                 }
 
-                synchProcessor.performPhase(LifecyclePhaseFactory.finalize(component, model, 0, parent));
+                synchProcessor.performPhase(LifecyclePhaseFactory.finalize(component, model, 0, null, parent));
 
             } finally {
                 PROCESSOR.set(processor);

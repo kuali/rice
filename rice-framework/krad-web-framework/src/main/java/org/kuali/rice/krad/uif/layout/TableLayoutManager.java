@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.layout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,8 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -1085,6 +1088,20 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         return components;
     }
 
+    public List<Component> getColumnCalculationComponents() {
+        if (columnCalculations == null) {
+            return Collections.emptyList();
+        }
+        
+        List<Component> components = new ArrayList<Component>(columnCalculations.size() * 3);
+        for (ColumnCalculationInfo cInfo : columnCalculations) {
+            components.add(cInfo.getTotalField());
+            components.add(cInfo.getPageTotalField());
+            components.add(cInfo.getGroupTotalFieldPrototype());
+        }
+        return components;
+    }
+    
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
      */
@@ -1147,6 +1164,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Label instance to serve as prototype
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getHeaderLabelPrototype() {
         return this.headerLabelPrototype;
@@ -1245,6 +1263,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Attribute field instance
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSequenceFieldPrototype() {
         return this.sequenceFieldPrototype;
@@ -1269,6 +1288,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return GroupField instance
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getActionFieldPrototype() {
         return this.actionFieldPrototype;
@@ -1286,6 +1306,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
@@ -1316,6 +1337,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return select field prototype instance
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
@@ -1400,6 +1422,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return list of field instances
      */
+    @NoLifecycle
     public List<Field> getFirstRowFields() {
         return firstRowFields;
     }
@@ -1565,6 +1588,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return rowDetailsGroup component
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
@@ -1838,6 +1862,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the list of components for the footer
      */
+    @NoLifecycle
     public List<Component> getFooterCalculationComponents() {
         return footerCalculationComponents;
     }

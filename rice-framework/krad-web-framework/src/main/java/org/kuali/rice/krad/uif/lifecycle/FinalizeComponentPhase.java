@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.Map.Entry;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -62,8 +64,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * @param index The position of this phase within its predecessor phase's successor queue.
      * @param parent The parent component.
      */
-    protected void prepare(Component component, Object model, int index, Component parent) {
-        super.prepare(component, model, index, parent, null);
+    protected void prepare(Component component, Object model, int index, String path, Component parent) {
+        super.prepare(component, model, index, path, parent, null);
     }
 
     /**
@@ -127,15 +129,31 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         Object model = getModel();
 
         List<Component> nestedComponents = component.getComponentsForLifecycle();
-        
+
         // initialize nested components
         int index = 0;
-        for (Component nestedComponent : nestedComponents) {
-            if (nestedComponent != null) {
-                FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedComponent, model, index, component);
-                successors.add(nestedFinalizePhase);
-                index++;
+        if (ViewLifecycle.isUseReflection()) {
+            for (Entry<String, Component> nestedComponentEntry :
+                    ComponentUtils.getComponentsForLifecycle(component, false).entrySet()) {
+                String path = getPath();
+                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+                Component nestedComponent = nestedComponentEntry.getValue();
+                
+                if (nestedComponent != null) {
+                    FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
+                            nestedComponent, model, index, nestedPath, component);
+                    successors.add(nestedFinalizePhase);
+                    index++;
+                }
+            }
+        } else {
+            for (Component nestedComponent : nestedComponents) {
+                if (nestedComponent != null) {
+                    FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
+                            nestedComponent, model, index, null, component);
+                    successors.add(nestedFinalizePhase);
+                    index++;
+                }
             }
         }
 

@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.lifecycle;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.kuali.rice.krad.uif.layout;
 
 /**
- * Annotation for {@link LifecycleElement} bean properties that should be excluded from the
- * component tree when determining subcomponents for lifecycle phases after initialization.
- * 
+ * Layout manager that just renders the items one after another (no wrapping occurs).
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface LifecyclePrototype {
+public class SimpleLayoutManager extends LayoutManagerBase {
+    private static final long serialVersionUID = -2406117038629228088L;
 
+    /**
+     * Default constructor
+     */
+    public SimpleLayoutManager() {
+        super();
+    }
 }

@@ -31,11 +31,6 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     private final ViewLifecycle lifecycle;
 
     /**
-     * The expression evaluator to use with this lifecycle.
-     */
-    private final ExpressionEvaluator expressionEvaluator = new DefaultExpressionEvaluator();
-
-    /**
      * Creates a new processor for a lifecycle.
      * 
      * @param lifecycle The lifecycle to process.
@@ -50,14 +45,6 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     @Override
     public ViewLifecycle getLifecycle() {
         return lifecycle;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExpressionEvaluator getExpressionEvaluator() {
-        return this.expressionEvaluator;
     }
 
     /**

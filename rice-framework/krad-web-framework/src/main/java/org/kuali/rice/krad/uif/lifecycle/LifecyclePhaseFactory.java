@@ -40,7 +40,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(Component component, Object model) {
-        return initialize(component, model, 0, null, null);
+        return initialize(component, model, 0, null, null, null);
     }
     
     /**
@@ -55,9 +55,9 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(Component component, Object model,
-            int index, Component parent, ApplyModelComponentPhase nextPhase) {
+            int index, String path, Component parent, ApplyModelComponentPhase nextPhase) {
         InitializeComponentPhase initializePhase = RecycleUtils.getInstance(InitializeComponentPhase.class);
-        initializePhase.prepare(component, model, index, parent, nextPhase);
+        initializePhase.prepare(component, model, index, path, parent, nextPhase);
         return initializePhase;
     }
 
@@ -69,7 +69,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model) {
-        return applyModel(component, model, 0, null, null, new HashSet<String>());
+        return applyModel(component, model, 0, null, null, null, new HashSet<String>());
     }
     
     /**
@@ -81,7 +81,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, Component parent) {
-        return applyModel(component, model, 0, parent, null, new HashSet<String>());
+        return applyModel(component, model, 0, null, parent, null, new HashSet<String>());
     }
     
     /**
@@ -97,9 +97,10 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model,
-            int index, Component parent, FinalizeComponentPhase nextPhase, Set<String> visitedIds) {
+            int index, String path, Component parent, FinalizeComponentPhase nextPhase,
+            Set<String> visitedIds) {
         ApplyModelComponentPhase applyModelPhase = RecycleUtils.getInstance(ApplyModelComponentPhase.class);
-        applyModelPhase.prepare(component, model, index, parent, nextPhase, visitedIds);
+        applyModelPhase.prepare(component, model, index, path, parent, nextPhase, visitedIds);
         return applyModelPhase;
     }
 
@@ -111,7 +112,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model) {
-        return finalize(component, model, 0, null);
+        return finalize(component, model, 0, null, null);
     }
     
     /**
@@ -123,7 +124,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, Component parent) {
-        return finalize(component, model, 0, parent);
+        return finalize(component, model, 0, null, parent);
     }
     
     /**
@@ -136,9 +137,9 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model,
-            int index, Component parent) {
+            int index, String path, Component parent) {
         FinalizeComponentPhase finalizePhase = RecycleUtils.getInstance(FinalizeComponentPhase.class);
-        finalizePhase.prepare(component, model, index, parent);
+        finalizePhase.prepare(component, model, index, path, parent);
         return finalizePhase;
     }
 
@@ -151,9 +152,9 @@ public final class LifecyclePhaseFactory {
      *        successor queue.
      * @return lifecycle processing task for processing the render phase on the component
      */
-    public static RenderComponentPhase render(Component component, Object model, int index) {
+    public static RenderComponentPhase render(Component component, Object model, int index, String path) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
-        renderPhase.prepare(component, model, index, null, 0);
+        renderPhase.prepare(component, model, index, path, null, 0);
         return renderPhase;
     }
 
@@ -170,7 +171,7 @@ public final class LifecyclePhaseFactory {
             FinalizeComponentPhase finalizePhase, RenderComponentPhase parent, int pendingChildren) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
         renderPhase.prepare(finalizePhase.getComponent(), finalizePhase.getModel(),
-                finalizePhase.getIndex(), parent, pendingChildren);
+                finalizePhase.getIndex(), finalizePhase.getPath(), parent, pendingChildren);
         return renderPhase;
     }
 

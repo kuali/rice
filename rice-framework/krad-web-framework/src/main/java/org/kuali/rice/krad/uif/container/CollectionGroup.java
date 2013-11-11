@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -33,6 +38,8 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
@@ -41,11 +48,6 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -446,6 +448,15 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @LifecyclePrototype
+    @Override
+    public List<? extends Component> getItems() {
+        return super.getItems();
+    }
+
+    /**
      * Object class the collection maintains. Used to get dictionary information
      * in addition to creating new instances for the collection when necessary
      *
@@ -509,6 +520,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return line action fields
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getLineActions() {
         return this.lineActions;
@@ -671,6 +683,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
@@ -694,6 +707,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return add line action fields
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineActions() {
         return this.addLineActions;
@@ -877,6 +891,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return sub collections
      */
+    @LifecyclePrototype
     @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;

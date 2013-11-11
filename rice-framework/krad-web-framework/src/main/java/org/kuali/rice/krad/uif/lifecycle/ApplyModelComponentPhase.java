@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
 import org.kuali.rice.krad.uif.lifecycle.model.HelperCustomApplyModelTask;
 import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
 import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewTheme;
@@ -85,9 +87,9 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      */
-    protected void prepare(Component component, Object model, int index,
+    protected void prepare(Component component, Object model, int index, String path,
             Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
-        super.prepare(component, model, index, parent, nextPhase);
+        super.prepare(component, model, index, path, parent, nextPhase);
         this.visitedIds = visitedIds;
 
         Map<String, Object> commonContext = new HashMap<String, Object>();
@@ -205,10 +207,24 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
         // initialize nested components
         int index = 0;
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            if (nestedComponent != null) {
-                successors.offer(LifecyclePhaseFactory
-                        .applyModel(nestedComponent, model, index++, component, null, visitedIds));
+        if (ViewLifecycle.isUseReflection()) {
+            for (Entry<String, Component> nestedComponentEntry :
+                    ComponentUtils.getComponentsForLifecycle(component, false).entrySet()) {
+                String path = getPath();
+                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+                Component nestedComponent = nestedComponentEntry.getValue();
+                
+                if (nestedComponent != null) {
+                    successors.offer(LifecyclePhaseFactory
+                            .applyModel(nestedComponent, model, index++, nestedPath, component, null, visitedIds));
+                }
+            }
+        } else {
+            for (Component nestedComponent : component.getComponentsForLifecycle()) {
+                if (nestedComponent != null) {
+                    successors.offer(LifecyclePhaseFactory
+                            .applyModel(nestedComponent, model, index++, null, component, null, visitedIds));
+                }
             }
         }
     }

@@ -35,6 +35,8 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -69,6 +71,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
 
     private final Queue<LifecycleRenderingContext> renderingContextPool =
             ViewLifecycle.isRenderInLifecycle() ? new ConcurrentLinkedQueue<LifecycleRenderingContext>() : null;
+    private final Queue<ExpressionEvaluator> expressionEvaluatorPool =
+            new ConcurrentLinkedQueue<ExpressionEvaluator>();
 
     private Throwable error;
 
@@ -227,7 +231,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         // Get a reusable rendering context from a pool private to the current lifecycle. 
         renderContext = renderingContextPool.poll();
         if (renderContext == null) {
-            // Create a new rendering context is a pooled instance is not available.
+            // Create a new rendering context if a pooled instance is not available.
             ViewLifecycle lifecycle = getLifecycle();
             renderContext = new LifecycleRenderingContext(
                     lifecycle.model, lifecycle.request, lifecycle.response);
@@ -244,6 +248,35 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         // Assign the rendering context to the current thread.
         aphase.renderingContext = renderContext;
         return renderContext;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        AsynchronousLifecyclePhase aphase = ACTIVE_PHASE.get();
+
+        // If a rendering context has already been assigned to this phase, return it.
+        ExpressionEvaluator expressionEvaluator = aphase == null ? null : aphase.expressionEvaluator;
+        if (expressionEvaluator != null) {
+            return expressionEvaluator;
+        }
+
+        // Get a reusable expression evaluator from a pool private to the current lifecycle. 
+        expressionEvaluator = expressionEvaluatorPool.poll();
+        if (expressionEvaluator == null) {
+            // Create a new expression evaluator if a pooled instance is not available.
+            expressionEvaluator = new DefaultExpressionEvaluator();
+            expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
+        }
+
+        // Assign the rendering context to the current thread.
+        if (aphase != null) {
+            aphase.expressionEvaluator = expressionEvaluator;
+        }
+        
+        return expressionEvaluator;
     }
 
     /**
@@ -394,6 +427,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         private GlobalVariables globalVariables;
         private AsynchronousViewLifecycleProcessor processor;
         private ViewLifecyclePhase phase;
+        private ExpressionEvaluator expressionEvaluator;
         private LifecycleRenderingContext renderingContext;
     }
 
@@ -463,6 +497,12 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                     aphase.renderingContext = null;
                     if (renderingContext != null && aphase.processor != null) {
                         aphase.processor.renderingContextPool.offer(renderingContext);
+                    }
+
+                    ExpressionEvaluator expressionEvaluator = aphase.expressionEvaluator;
+                    aphase.expressionEvaluator = null;
+                    if (expressionEvaluator != null && aphase.processor != null) {
+                        aphase.processor.expressionEvaluatorPool.offer(expressionEvaluator);
                     }
 
                     synchronized (BUSY_COMPONENTS) {

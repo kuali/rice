@@ -23,11 +23,10 @@ function JavascriptKradVariables() {
 JavascriptKradVariables.prototype = {
     ACTION_DEFAULTS: "action_defaults",
     ACTION_ONCLICK_DATA: "onclick",
-    ACTIVE_CLASS: ".active",
+    ACTIVE_CLASS: "active",
     APPLICATION_FOOTER_WRAPPER: "Uif-ApplicationFooter-Wrapper",
     APP_ID: "Uif-Application",
     APPLICATION_URL: "applicationUrl",
-
     ATTRIBUTES: {
         DATA_OPEN: "data-open",
         DATA_RETURN: "data-return"
@@ -84,6 +83,10 @@ JavascriptKradVariables.prototype = {
     KRAD_URL: "kradUrl",
     KUALI_FORM: "kualiForm",
     LIGHTBOX_PARAM: "lightbox",
+    MENU_COLLAPSE_ACTION: "sidebar-collapse",
+    MENU_COLLAPSE_ICON_RIGHT: "icon-angle-right",
+    MENU_COLLAPSE_ICON_LEFT: "icon-angle-left",
+    MENU_COLLAPSED: "sidebar-collapsed",
     MESSAGE_COUNT_CLASS: "uif-messageCount",
     MESSAGE_KEY_DIRTY_FIELDS: "message.dirtyFields",
     MESSAGE_ERROR: "message.error",
@@ -149,6 +152,7 @@ JavascriptKradVariables.prototype = {
     TABLE_COLLECTION_LAYOUT_CLASS: "uif-tableCollectionLayout",
     TAB_GROUP_CLASS: "Uif-TabGroup",
     TAB_MENU_CLASS: "uif-tabMenu",
+    TOGGLE_ARROW_CLASS: "arrow",
     TOOLTIP_CLASS: "uif-tooltip",
     VALIDATION_IMAGE_CLASS: "uif-validationImage",
     SERVER_MESSAGES: "server_messages",

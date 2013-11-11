@@ -75,18 +75,37 @@
 
             <#else>
 
+                <#if field.postInputAddons??>
+                    <div class="input-group">
+                </#if>
+
                 <#-- render field instructional text -->
                 <@krad.template component=field.instructionalMessage/>
 
                 <#-- render control for input -->
                 <@krad.template component=field.control field=field/>
 
+                <#if field.helperText?has_content>
+                    <div class="uif-helperText">
+                        ${field.helperText}
+                    </div>
+                </#if>
+
+                <#if field.postInputAddons??>
+                     <#list field.postInputAddons as postAddon>
+                         <span class="${field.postInputCssClassesAsString}">
+                             <@krad.template component=postAddon/>
+                         </span>
+                     </#list>
+
+                     </div>
+                </#if>
             </#if>
 
             <#-- render field quickfinder -->
-            <#if field.inputAllowed>
-                <@krad.template component=field.quickfinder componentId="${field.id}"/>
-            </#if>
+            <#--<#if field.inputAllowed>-->
+                <#--<@krad.template component=field.quickfinder componentId="${field.id}"/>-->
+            <#--</#if>-->
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
             <#if !readOnly && (field.inquiry.render)!false>
@@ -102,7 +121,6 @@
 
         </@krad.fieldLbl>
 
-        <!-- placeholder for dynamic field markers -->
         <#if field.renderMarkerIconSpan>
             <span id="${field.id}_markers"></span>
         </#if>

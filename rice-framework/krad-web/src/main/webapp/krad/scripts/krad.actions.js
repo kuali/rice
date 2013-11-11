@@ -1,4 +1,4 @@
-/*
+S/*
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -407,7 +407,7 @@ function retrieveCollectionPage(linkElement, collectionId) {
     var parentLI = link.parent();
 
     // Skip processing if the link supplied is disabled or active
-    if (parentLI.is("." + kradVariables.DISABLED_CLASS) || parentLI.is(kradVariables.ACTIVE_CLASS)) {
+    if (parentLI.is("." + kradVariables.DISABLED_CLASS) || parentLI.is("." + kradVariables.ACTIVE_CLASS)) {
         return;
     }
 

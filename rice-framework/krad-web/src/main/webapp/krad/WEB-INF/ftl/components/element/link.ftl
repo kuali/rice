@@ -32,8 +32,9 @@
 
     <#if element.iconClass??>
         <#if element.linkIconPlacement == 'ICON_ONLY'>
+            <#-- no span necessary, icon class is on the link -->
             <a id="${element.id}" href="${element.href!}" target="${element.target!}"
-            ${krad.attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span></a>
+            ${krad.attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}></a>
         <#elseif element.linkIconPlacement == 'LEFT'>
             <a id="${element.id}" href="${element.href!}" target="${element.target!}"
             ${krad.attrBuild(element)} ${tabindex!} ${element.simpleDataAttributes!}><span class="${element.iconClass}"></span>${body!}</a>

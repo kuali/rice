@@ -15,12 +15,16 @@
     limitations under the License.
 
 -->
-<#macro uif_disclosure widget parent>
+<#--
+    Simple Layout Manager:
 
-    <#local isOpen=widget.defaultOpen/>
+      Renders each component one after another
+ -->
 
-    <@krad.script value="createDisclosure('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen?string},
-          '${widget.collapsedIconClass}', '${widget.expandedIconClass}', ${widget.animationSpeed},
-          ${widget.renderIcon?string}, ${widget.ajaxRetrievalWhenOpened?string});"/>
+<#macro uif_simpleLayout items manager container>
+
+    <#list items as item>
+        <@krad.template component=item/>
+    </#list>
 
 </#macro>

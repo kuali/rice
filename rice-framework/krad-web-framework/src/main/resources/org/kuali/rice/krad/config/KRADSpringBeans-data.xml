@@ -90,6 +90,10 @@
 			ref="dbPlatform" />
 	</bean>
 
+	<import resource="KRADSpringBeans-jpa.xml" />
+
 	<import resource="classpath:org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml" />
+
+
 
 </beans>

@@ -90,5 +90,6 @@ public class CssConstants {
         public static final String HAS_ADD_LINE = "uif-hasAddLine";
         public static final String SELECT_FIELD_STYLE_CLASS = "uif-select-line";
         public static final String ACTION_COLUMN_STYLE_CLASS = "uif-collection-column-action";
+        public static final String HAS_HELPER = "has-helper";
     }
 }

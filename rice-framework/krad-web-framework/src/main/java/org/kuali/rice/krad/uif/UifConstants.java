@@ -38,7 +38,6 @@ public class UifConstants {
     public static final String THEME_DEV_JS_FILES = "devJsIncludes";
     public static final String THEME_LESS_FILES = "themeLessFiles";
 
-    // uncomment for freemarker testing
     public static final String SPRING_VIEW_ID = "/krad/WEB-INF/ftl/uifRender";
     public static final String SPRING_REDIRECT_ID = "/krad/WEB-INF/ftl/redirect";
     public static final String REDIRECT_PREFIX = "redirect:";
@@ -72,6 +71,8 @@ public class UifConstants {
 
     public static final String EXPORT_FILE_NAME = "export.xml";
     public static final String KUALI_FORM_ATTR = "KualiForm";
+
+    public static final String ICON_ONLY_PLACEMENT = "ICON_ONLY";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -128,6 +129,7 @@ public class UifConstants {
             this.key = key;
         }
     }
+
     public static enum WindowTargets {
         _blank, _self, _parent, _top
     }

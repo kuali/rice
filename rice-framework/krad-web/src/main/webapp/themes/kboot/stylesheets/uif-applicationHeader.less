@@ -56,7 +56,12 @@
         }
       }
     }
+    .dropdown:first-child {
+      .dropdown-menu {
+        right: -200px;
 
+      }
+    }
     a:focus {
       color: #FFF;
       background: darken(@header_background,3%);
@@ -150,7 +155,7 @@ div.uif-cssGridLabelCol {
 }
 
 .uif-applicationHeader .uif-appMenuGroup {
-  min-width: 400px;
+  min-width: 600px;
   white-space: normal;
   padding-bottom: 20px;
   margin-right: auto;

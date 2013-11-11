@@ -90,7 +90,7 @@ input[type="text"], .uif-textAreaControl {
 .uif-stickyButtonFooter {
     background: none repeat scroll 0 0 #F8F8F8;
     border-top: 1px solid #E2E2E2;
-    box-shadow: none;
+    /* box-shadow: none;     */
     padding: 0;
 }
 

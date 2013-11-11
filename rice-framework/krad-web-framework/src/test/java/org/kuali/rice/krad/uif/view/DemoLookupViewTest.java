@@ -59,6 +59,7 @@ public class DemoLookupViewTest extends ProcessLoggingUnitTest {
     public static void tearDownClass() throws Throwable {
         UifUnitTestUtils.tearDownMockConfig();
     }
+/*
 
     @Test
     public void testSanity() throws Throwable {
@@ -73,5 +74,6 @@ public class DemoLookupViewTest extends ProcessLoggingUnitTest {
         //        assertEquals(UifConstants.ViewStatus.RENDERED, dummyLogin.getViewStatus());
         //        ViewCleaner.cleanView(dummyLogin);
     }
+*/
 
 }

@@ -115,7 +115,7 @@ public class ObjectDescriptor implements java.io.Serializable {
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("ObjectDescriptor = [ ");
+		sb.append(getClass().getSimpleName() + " = [ ");
 		sb.append("targetEntity:").append(targetEntity.getName()).append(", ");
 		sb.append("cascade = { ");
 		for (CascadeType ct : cascade) {

@@ -24,6 +24,9 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  
+  <import resource="KRADSpringBeans-data.xml"/>
+  <import resource="KRADSpringBeans-jpa.xml"/>
 
   <bean id="dateTimeService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="dateTimeService"/>
@@ -36,6 +39,7 @@
   <bean id="kradApplicationModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration"
         abstract="true">
     <property name="namespaceCode" value="KR-NS"/>
+    <property name="providerRegistry" ref="kd-providerRegistry" />
     <property name="dataSourceName" value="kradApplicationDataSource"/>
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
@@ -639,8 +643,5 @@
   <bean id="legacyAppFrameworkAdapter"
         class="org.kuali.rice.krad.service.impl.LegacyAppFrameworkAdapterServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter" />
-
-  <import resource="KRADSpringBeans-data.xml"/>
-  <import resource="KRADSpringBeans-jpa.xml"/>
 
 </beans>

@@ -21,12 +21,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="Uif-DropdownMenu" parent="Uif-DropdownMenu-parentBean"/>
-  <bean id="Uif-DropdownMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.DropdownMenu"
+  <bean id="Uif-DropdownToggleMenu" parent="Uif-DropdownToggleMenu-parentBean"/>
+  <bean id="Uif-DropdownToggleMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.ToggleMenu"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/dropdownMenu.ftl"/>
     <property name="templateName" value="uif_dropdownMenu"/>
-    <property name="dropdownToggle">
+    <property name="toggleCaretClass" value="caret"/>
+    <property name="toggleMessage">
       <bean parent="Uif-Message" p:generateSpan="false"/>
     </property>
     <property name="libraryCssClasses">
@@ -39,14 +40,39 @@
     </property>
   </bean>
 
+  <bean id="Uif-SidebarToggleMenu" parent="Uif-SidebarToggleMenu-parentBean"/>
+  <bean id="Uif-SidebarToggleMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.ToggleMenu"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/dropdownMenu.ftl"/>
+    <property name="templateName" value="uif_dropdownMenu"/>
+    <property name="renderedInList" value="true"/>
+    <property name="toggleCaretClass" value="arrow icon-angle-right"/>
+    <property name="toggleMessage">
+      <bean parent="Uif-Message" p:cssClasses="uif-innerText"/>
+    </property>
+    <property name="menuGroup">
+      <bean parent="Uif-SimpleListGroup" p:layoutManager.libraryCssClasses="submenu"/>
+    </property>
+  </bean>
+
   <bean id="Uif-MenuAction" parent="Uif-MenuAction-parentBean"/>
-  <bean id="Uif-MenuAction-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MenuAction"
-        parent="Uif-ActionLink" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/ftl/components/element/menuAction.ftl"/>
-    <property name="templateName" value="uif_menuAction"/>
+  <bean id="Uif-MenuAction-parentBean" parent="Uif-ActionLink" scope="prototype">
     <property name="actionUrl">
       <bean parent="Uif-Url"/>
     </property>
+  </bean>
+
+  <bean id="Uif-MenuDivider" parent="Uif-MenuDivider-parentBean"/>
+  <bean id="Uif-MenuDivider-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Space"
+        scope="prototype">
+    <property name="libraryCssClasses" value="divider"/>
+  </bean>
+
+  <bean id="Uif-MenuHeader" parent="Uif-MenuHeader-parentBean"/>
+  <bean id="Uif-MenuHeader-parentBean" abstract="true" parent="Uif-Message"
+        scope="prototype">
+    <property name="generateSpan" value="false"/>
+    <property name="libraryCssClasses" value="dropdown-header"/>
   </bean>
 
   <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>

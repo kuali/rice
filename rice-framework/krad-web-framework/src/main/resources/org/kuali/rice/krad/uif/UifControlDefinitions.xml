@@ -318,6 +318,13 @@
     </property>
   </bean>
 
+  <bean id="Uif-DateControlOnFocus" parent="Uif-DateControlOnFocus-parentBean"/>
+  <bean id="Uif-DateControlOnFocus-parentBean" abstract="true" parent="Uif-DateControl">
+    <property name="datePicker">
+      <bean parent="Uif-DatePickerOnFocus"/>
+    </property>
+  </bean>
+
   <bean id="Uif-SpinnerControl" parent="Uif-SpinnerControl-parentBean"/>
   <bean id="Uif-SpinnerControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SpinnerControl"
         scope="prototype" parent="Uif-SmallTextControl">

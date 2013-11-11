@@ -38,12 +38,7 @@
       <bean parent="Uif-GroupValidationMessages"/>
     </property>
     <property name="disclosure">
-      <bean parent="Uif-Disclosure" p:render="false">
-        <property name="collapseImageSrc"
-                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-        <property name="expandImageSrc"
-                  value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-      </bean>
+      <bean parent="Uif-Disclosure" p:render="false"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
@@ -338,6 +333,20 @@
     </property>
   </bean>
 
+  <bean id="Uif-GridCondensedSection" parent="Uif-GridCondensedSection-parentBean"/>
+  <bean id="Uif-GridCondensedSection-parentBean" abstract="true" parent="Uif-GridSection" scope="prototype"
+        p:layoutManager.libraryCssClasses="table,table-condensed" p:layoutManager.cssClasses=""
+        p:layoutManager.applyDefaultCellWidths="false">
+
+  </bean>
+
+  <bean id="Uif-GridCondensedSubSection" parent="Uif-GridCondensedSubSection-parentBean"/>
+  <bean id="Uif-GridCondensedSubSection-parentBean" abstract="true" parent="Uif-GridSubSection" scope="prototype"
+        p:layoutManager.libraryCssClasses="table,table-condensed" p:layoutManager.cssClasses=""
+        p:layoutManager.applyDefaultCellWidths="false">
+
+  </bean>
+
   <!--Disclosure versions -->
 
   <bean id="Uif-Disclosure-GridSection" parent="Uif-Disclosure-GridSection-parentBean"/>
@@ -571,14 +580,25 @@
     </property>
   </bean>
 
-  <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
-  <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-NavigationGroupBase">
+  <bean id="Uif-SidebarNavigationGroup" parent="Uif-SidebarNavigationGroup-parentBean"/>
+  <bean id="Uif-SidebarNavigationGroup-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.SidebarNavigationGroup"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/sidebarNavigationGroup.ftl"/>
+    <property name="templateName" value="uif_sidebarNavigationGroup"/>
+    <property name="renderCollapse" value="true"/>
+    <property name="defaultItemIconClass" value="icon-file-alt"/>
+    <property name="openedToggleIconClass" value="icon-angle-down"/>
+    <property name="closedToggleIconClass" value="icon-angle-right"/>
     <property name="cssClasses">
       <list>
         <value>uif-menuNavigationGroup</value>
       </list>
     </property>
-    <property name="navigationType" value="VERTICAL_MENU"/>
+  </bean>
+
+  <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
+  <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-SidebarNavigationGroup">
   </bean>
 
   <bean id="Uif-TabNavigationGroup" parent="Uif-TabNavigationGroup-parentBean"/>

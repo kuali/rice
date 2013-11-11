@@ -63,6 +63,18 @@
     </property>
   </bean>
 
+  <bean id="Uif-DatePickerOnFocus" parent="Uif-DatePickerOnFocus-parentBean"/>
+  <bean id="Uif-DatePickerOnFocus-parentBean" abstract="true" scope="prototype" parent="Uif-DatePicker">
+    <property name="templateOptions">
+      <map>
+        <entry key="showAnim" value="slideDown"/>
+        <entry key="showButtonPanel" value="true"/>
+        <entry key="changeMonth" value="true"/>
+        <entry key="changeYear" value="true"/>
+      </map>
+    </property>
+  </bean>
+
   <bean id="Uif-LightBox" parent="Uif-LightBox-parentBean"/>
   <bean id="Uif-LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype"
         parent="Uif-WidgetBase">
@@ -142,11 +154,13 @@
       <bean parent="Uif-LightBox"/>
     </property>
     <property name="quickfinderAction">
-      <bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
-        <property name="actionImage">
-          <bean parent="Uif-QuickLookupImage"/>
-        </property>
-      </bean>
+      <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:methodToCall="performLookup"
+            p:focusOnIdAfterSubmit="NEXT_INPUT"/>
+      <!--<bean parent="Uif-ActionImage" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">-->
+        <!--<property name="actionImage">-->
+          <!--<bean parent="Uif-QuickLookupImage"/>-->
+        <!--</property>-->
+      <!--</bean>-->
     </property>
     <property name="render" value="@{!#parent.readOnly}"/>
   </bean>
@@ -202,8 +216,8 @@
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/disclosure.ftl"/>
     <property name="templateName" value="uif_disclosure"/>
-    <property name="collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_expand.png"/>
-    <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_collapse.png"/>
+    <property name="collapsedIconClass" value="icon-angle-right"/>
+    <property name="expandedIconClass" value="icon-angle-down"/>
     <property name="animationSpeed" value="500"/>
     <property name="defaultOpen" value="true"/>
   </bean>

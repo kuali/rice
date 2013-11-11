@@ -170,6 +170,9 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         updateFieldConversions(inputField.getBindingInfo());
         updateLookupParameters(inputField.getBindingInfo());
         updateReferencesToRefresh(inputField.getBindingInfo());
+
+        // add the quickfinders action as an input field addon
+        inputField.addPostInputAddon(quickfinderAction);
     }
 
     /**

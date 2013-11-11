@@ -119,8 +119,8 @@ public class ViewCleaner {
         component.setAlign(null);
         component.setValign(null);
         component.setWidth(null);
-        component.setCellCssClasses(null);
-        component.setCellStyle(null);
+        component.setWrapperCssClasses(null);
+        component.setWrapperStyle(null);
         component.setCellWidth(null);
         component.setStyle(null);
         component.setLibraryCssClasses(null);

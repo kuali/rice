@@ -214,7 +214,7 @@
                       </property>
                       <property name="postInputAddons">
                         <list>
-                          <bean parent="Uif-Message" p:messageText="to"/>
+                          <bean parent="Uif-Message" p:messageText="to" p:wrapperCssClasses="input-group-msg"/>
                         </list>
                       </property>
                     </bean>

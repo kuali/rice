@@ -79,7 +79,7 @@
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:width="20%" p:render="@{false}"/>
-         <bean parent="Uif-InputField" p:propertyName="field2" p:cellCssClasses="hello" p:required="true" p:readOnly="true" p:width="20%"/>
+         <bean parent="Uif-InputField" p:propertyName="field2" p:wrapperCssClasses="hello" p:required="true" p:readOnly="true" p:width="20%"/>
          <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:width="20%"/>
          <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" p:width="20%">
            <property name="mustOccurConstraints">

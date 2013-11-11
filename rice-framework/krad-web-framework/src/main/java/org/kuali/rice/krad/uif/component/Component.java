@@ -610,7 +610,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      *
      * @return the css classes to apply to the wrapping td (or th) element for this component
      */
-    public List<String> getCellCssClasses();
+    public List<String> getWrapperCssClasses();
 
     /**
      * Set the cellCssClasses property which defines the classes that will be placed on the corresponding td (or th)
@@ -618,14 +618,14 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      *
      * @param cellCssClasses
      */
-    public void setCellCssClasses(List<String> cellCssClasses);
+    public void setWrapperCssClasses(List<String> cellCssClasses);
 
     /**
      * Add a cell css class to the cell classes list
      *
      * @param cssClass the name of the class to add
      */
-    public void addCellCssClass(String cssClass);
+    public void addWrapperCssClass(String cssClass);
 
     /**
      * CSS style string to be applied to the cell containing the component (only applies within
@@ -637,14 +637,14 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      *
      * @return String css style string
      */
-    public String getCellStyle();
+    public String getWrapperStyle();
 
     /**
      * Setter for the cell style attribute
      *
      * @param cellStyle
      */
-    public void setCellStyle(String cellStyle);
+    public void setWrapperStyle(String cellStyle);
 
     /**
      * Width setting for the cell containing the component (only applies within table based

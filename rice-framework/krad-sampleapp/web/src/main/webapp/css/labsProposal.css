@@ -28,6 +28,13 @@ input[type="text"], .uif-textAreaControl {
     vertical-align: top;
 }
 
+.input-group-msg {
+    display: table-cell;
+    width: 1%;
+    vertical-align: top;
+    padding-left: 8px;
+}
+
 .input-group {
     width: 100%;
 }
@@ -68,24 +75,11 @@ input[type="text"], .uif-textAreaControl {
     padding: 8px 7px 7px 7px;
 }
 
-.input-group-btn > .uif-message {
+.input-group-msg > .uif-message {
     display: inline-block;
-    padding: 4px 7px 4px 7px;
-    border-top: 1px solid #aaa;
-    border-right: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-    color: #444;
-    border-color: #cccccc;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    background-color: #ffffff;
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #ffffff), color-stop(50%, #ffffff), color-stop(52%, #f2f2f2), color-stop(100%, #e6e6e6));
-    background: -webkit-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
-    background: -moz-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
-    background: -o-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
-    background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
-    background-clip: padding-box;
 }
 
 .uif-viewHeader-contentWrapper .uif-viewHeader {

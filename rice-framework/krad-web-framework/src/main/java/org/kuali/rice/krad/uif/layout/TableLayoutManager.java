@@ -697,7 +697,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
                 // adjusting add line label to match sequence prototype cells attributes
                 sequenceField.setCellWidth(getSequenceFieldPrototype().getCellWidth());
-                sequenceField.setCellStyle(getSequenceFieldPrototype().getCellStyle());
+                sequenceField.setWrapperStyle(getSequenceFieldPrototype().getWrapperStyle());
             }
 
             sequenceField.setRowSpan(rowSpan);
@@ -843,10 +843,10 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
-        if (lineActionsField.getCellCssClasses() != null) {
-            lineActionsField.getCellCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
+        if (lineActionsField.getWrapperCssClasses() != null) {
+            lineActionsField.getWrapperCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
         } else {
-            lineActionsField.setCellCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
+            lineActionsField.setWrapperCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
         }
 
         setCellAttributes(lineActionsField);
@@ -962,10 +962,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     protected void addActionHeader(int rowCount, String idSuffix, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
         getActionFieldPrototype().setRowSpan(rowCount);
-        if (getActionFieldPrototype().getCellCssClasses() != null) {
-            getActionFieldPrototype().getCellCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
+        if (getActionFieldPrototype().getWrapperCssClasses() != null) {
+            getActionFieldPrototype().getWrapperCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
         } else {
-            getActionFieldPrototype().setCellCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
+            getActionFieldPrototype().setWrapperCssClasses(Arrays.asList(
+                    CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
         }
 
         addHeaderField(getActionFieldPrototype(), idSuffix, cellPosition);
@@ -1008,8 +1009,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         setCellAttributes(field);
 
         // copy cell attributes from the field to the label
-        headerLabel.setCellCssClasses(field.getCellCssClasses());
-        headerLabel.setCellStyle(field.getCellStyle());
+        headerLabel.setWrapperCssClasses(field.getWrapperCssClasses());
+        headerLabel.setWrapperStyle(field.getWrapperStyle());
         headerLabel.setCellWidth(field.getCellWidth());
 
         headerLabels.add(headerLabel);

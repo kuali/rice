@@ -72,8 +72,12 @@
             <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
               <property name="items">
                 <list>
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action list"
-                        p:additionalCssClasses="pull-right">
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action list">
+                    <property name="wrapperCssClasses">
+                      <list merge="true">
+                        <value>pull-right</value>
+                      </list>
+                    </property>
                     <property name="menuItems">
                       <list>
                         <bean parent="Uif-MenuAction"
@@ -87,11 +91,20 @@
                     </property>
                   </bean>
 
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:toggleCaretClass=""
-                        p:additionalCssClasses="pull-right"/>
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:toggleCaretClass="">
+                    <property name="wrapperCssClasses">
+                      <list merge="true">
+                        <value>pull-right</value>
+                      </list>
+                    </property>
+                  </bean>
 
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark"
-                        p:additionalCssClasses="pull-right">
+                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
+                    <property name="wrapperCssClasses">
+                      <list merge="true">
+                        <value>pull-right</value>
+                      </list>
+                    </property>
                     <property name="menuItems">
                       <list>
                         <bean parent="Uif-MenuAction"

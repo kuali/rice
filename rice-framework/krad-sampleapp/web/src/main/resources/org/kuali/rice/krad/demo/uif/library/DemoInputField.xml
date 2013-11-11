@@ -246,16 +246,16 @@
         <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField15">
           <property name="postInputAddons">
             <list>
-                 <bean parent="Uif-ActionLink" p:iconClass="icon-search"/>
+                 <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:wrapperCssClasses="input-group-btn"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:label="Multiple Addons" p:propertyName="inputField16">
           <property name="postInputAddons">
             <list>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-facebook3"/>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-twitter3"/>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-youtube"/>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-facebook3" p:wrapperCssClasses="input-group-btn"/>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-twitter3" p:wrapperCssClasses="input-group-btn"/>
+              <bean parent="Uif-ActionLink" p:iconClass="icon-youtube" p:wrapperCssClasses="input-group-btn"/>
             </list>
           </property>
         </bean>

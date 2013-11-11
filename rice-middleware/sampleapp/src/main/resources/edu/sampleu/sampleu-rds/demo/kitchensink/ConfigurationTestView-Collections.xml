@@ -97,9 +97,9 @@
       </spring:list>
     </spring:property>
     <items>
-      <inputField-bean cellCssClasses="demo-customCell1,demo-customCell2" fieldLabel.cellCssClasses="demo-customHeader"
+      <inputField-bean wrapperCssClasses="demo-customCell1,demo-customCell2" fieldLabel.cellCssClasses="demo-customHeader"
                        label="Field 1" propertyName="field1" required="true"/>
-      <inputField-bean cellCssClasses="demo-customCell3" label="Field 2" propertyName="field2" required="true"/>
+      <inputField-bean wrapperCssClasses="demo-customCell3" label="Field 2" propertyName="field2" required="true"/>
       <inputField-bean label="Field 3" propertyName="field3" required="true"/>
       <inputField-bean label="Field 4" propertyName="field4" required="true"/>
     </items>

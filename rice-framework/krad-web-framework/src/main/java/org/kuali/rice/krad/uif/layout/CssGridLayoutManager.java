@@ -84,10 +84,10 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
             }
 
             // determine "cell" div css
-            List<String> cellCssClasses = item.getCellCssClasses();
+            List<String> cellCssClasses = item.getWrapperCssClasses();
             if (cellCssClasses == null) {
-                item.setCellCssClasses(new ArrayList<String>());
-                cellCssClasses = item.getCellCssClasses();
+                item.setWrapperCssClasses(new ArrayList<String>());
+                cellCssClasses = item.getWrapperCssClasses();
             }
             cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + colSpan);
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));

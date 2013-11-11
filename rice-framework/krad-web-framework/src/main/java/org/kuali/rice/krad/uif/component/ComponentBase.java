@@ -36,7 +36,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
@@ -65,7 +64,6 @@ import org.kuali.rice.krad.util.KRADUtils;
  */
 @BeanTag(name = "componentBase-bean", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
-
     private static final long serialVersionUID = -4449335748129894350L;
     
     private String id;
@@ -114,8 +112,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     // optional table-backed layout options
     private int colSpan;
     private int rowSpan;
-    private List<String> cellCssClasses;
-    private String cellStyle;
+    private List<String> wrapperCssClasses;
+    private String wrapperStyle;
     private String cellWidth;
 
     private String style;
@@ -179,8 +177,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     
     public ComponentBase() {
         super();
-
-//        ProcessLogger.ntrace("new-comp:", ":" + getClass().getSimpleName(), 1000);
 
         order = 0;
         colSpan = 1;
@@ -769,61 +765,61 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getCellCssClasses()
+     * @see org.kuali.rice.krad.uif.component.Component#getWrapperCssClasses()
      */
-    public List<String> getCellCssClasses() {
-        return cellCssClasses;
+    public List<String> getWrapperCssClasses() {
+        return wrapperCssClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setCellCssClasses(java.util.List)
+     * @see org.kuali.rice.krad.uif.component.Component#setWrapperCssClasses(java.util.List)
      */
-    public void setCellCssClasses(List<String> cellCssClasses) {
+    public void setWrapperCssClasses(List<String> wrapperCssClasses) {
         checkMutable(true);
-        this.cellCssClasses = cellCssClasses;
+        this.wrapperCssClasses = wrapperCssClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#addCellCssClass(String)
+     * @see org.kuali.rice.krad.uif.component.Component#addWrapperCssClass(String)
      */
-    public void addCellCssClass(String cssClass) {
+    public void addWrapperCssClass(String cssClass) {
         checkMutable(false);
-        if (this.cellCssClasses == null) {
-            this.cellCssClasses = new ArrayList<String>();
+        if (this.wrapperCssClasses == null) {
+            this.wrapperCssClasses = new ArrayList<String>();
         }
 
         if (cssClass != null) {
-            this.cellCssClasses.add(cssClass);
+            this.wrapperCssClasses.add(cssClass);
         }
     }
 
     /**
      * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
-     * delimiter
+     * delimiter.
      * 
      * @return class attribute string
      */
-    public String getCellStyleClassesAsString() {
-        if (cellCssClasses != null) {
-            return StringUtils.join(cellCssClasses, " ");
+    public String getWrapperCssClassesAsString() {
+        if (wrapperCssClasses != null) {
+            return StringUtils.join(wrapperCssClasses, " ");
         }
 
         return "";
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getCellStyle()
+     * @see org.kuali.rice.krad.uif.component.Component#getWrapperStyle()
      */
-    public String getCellStyle() {
-        return cellStyle;
+    public String getWrapperStyle() {
+        return wrapperStyle;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#setCellStyle(java.lang.String)
+     * @see org.kuali.rice.krad.uif.component.Component#setWrapperStyle(java.lang.String)
      */
-    public void setCellStyle(String cellStyle) {
+    public void setWrapperStyle(String wrapperStyle) {
         checkMutable(true);
-        this.cellStyle = cellStyle;
+        this.wrapperStyle = wrapperStyle;
     }
 
     /**
@@ -2263,11 +2259,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         componentCopy.setAlign(this.align);
 
-        if (this.cellCssClasses != null) {
-            componentCopy.setCellCssClasses(new ArrayList<String>(this.cellCssClasses));
+        if (this.wrapperCssClasses != null) {
+            componentCopy.setWrapperCssClasses(new ArrayList<String>(this.wrapperCssClasses));
         }
 
-        componentCopy.setCellStyle(this.cellStyle);
+        componentCopy.setWrapperStyle(this.wrapperStyle);
         componentCopy.setCellWidth(this.cellWidth);
         componentCopy.setColSpan(this.colSpan);
         componentCopy.setConditionalRefresh(this.conditionalRefresh);

@@ -23,10 +23,11 @@
 
         <@krad.fieldLbl field=field>
 
-            <#if field.renderFieldset>
-                <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
-                    <legend style="display: none">${field.label!}</legend>
-            </#if>
+            <#-- TODO: verify removal -->
+            <#--<#if field.renderFieldset>-->
+                <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
+                    <#--<legend style="display: none">${field.label!}</legend>-->
+            <#--</#if>-->
 
             <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
@@ -93,7 +94,11 @@
 
                 <#if field.postInputAddons??>
                      <#list field.postInputAddons as postAddon>
-                         <span class="${field.postInputCssClassesAsString}">
+                         <#if postAddon.wrapperCssClassesAsString?has_content>
+                             <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                         </#if>
+
+                         <span ${postAddonStyleClass!}>
                              <@krad.template component=postAddon/>
                          </span>
                      </#list>
@@ -118,9 +123,9 @@
             <#-- render field help -->
             <@krad.template component=field.help/>
 
-            <#if field.renderFieldset>
-                </fieldset>
-            </#if>
+            <#--<#if field.renderFieldset>-->
+                <#--</fieldset>-->
+            <#--</#if>-->
 
         </@krad.fieldLbl>
 

@@ -112,7 +112,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:width="20%" p:render="@{false}" p:label="Field 1"/>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:cellCssClasses="hello" p:required="true" p:readOnly="true" p:width="20%" p:label="Field 2"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:wrapperCssClasses="hello" p:required="true" p:readOnly="true" p:width="20%" p:label="Field 2"/>
               <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:width="20%" p:label="Field 3"/>
               <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" p:width="20%" p:label="Field 4" p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
                 <property name="mustOccurConstraints">
@@ -175,10 +175,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -206,10 +206,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -237,10 +237,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -269,10 +269,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -299,10 +299,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -329,10 +329,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"
@@ -359,10 +359,10 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.cellCssClasses="demo-customHeader"
-                    p:propertyName="field1" p:required="true" p:cellCssClasses="demo-customCell1,demo-customCell2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:fieldLabel.wrapperCssClasses="demo-customHeader"
+                    p:propertyName="field1" p:required="true" p:wrapperCssClasses="demo-customCell1,demo-customCell2"/>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"
-                    p:required="true" p:cellCssClasses="demo-customCell3"/>
+                    p:required="true" p:wrapperCssClasses="demo-customCell3"/>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"
                     p:required="true"/>
               <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"

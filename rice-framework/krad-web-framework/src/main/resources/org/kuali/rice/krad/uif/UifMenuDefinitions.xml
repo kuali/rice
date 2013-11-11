@@ -35,6 +35,11 @@
         <value>dropdown</value>
       </list>
     </property>
+    <property name="wrapperCssClasses">
+      <list>
+        <value>dropdown</value>
+      </list>
+    </property>
     <property name="menuGroup">
       <bean parent="Uif-SimpleListGroup" p:layoutManager.libraryCssClasses="dropdown-menu"/>
     </property>

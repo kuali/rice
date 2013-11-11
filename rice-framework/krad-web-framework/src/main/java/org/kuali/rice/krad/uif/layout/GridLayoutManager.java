@@ -90,7 +90,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 
         for (Component item : container.getItems()) {
             if (!(this instanceof TableLayoutManager)) {
-                item.addCellCssClass("uif-gridLayoutCell");
+                item.addWrapperCssClass("uif-gridLayoutCell");
             }
             setCellAttributes(item);
         }
@@ -108,24 +108,25 @@ public class GridLayoutManager extends LayoutManagerBase {
             component.setWidth("");
         }
 
-        if (StringUtils.isNotBlank(component.getAlign()) && !StringUtils.contains(component.getCellStyle(),
+        if (StringUtils.isNotBlank(component.getAlign()) && !StringUtils.contains(component.getWrapperStyle(),
                 CssConstants.TEXT_ALIGN)) {
-            if (component.getCellStyle() == null) {
-                component.setCellStyle("");
+            if (component.getWrapperStyle() == null) {
+                component.setWrapperStyle("");
             }
 
-            component.setCellStyle(component.getCellStyle() + CssConstants.TEXT_ALIGN + component.getAlign() + ";");
+            component.setWrapperStyle(
+                    component.getWrapperStyle() + CssConstants.TEXT_ALIGN + component.getAlign() + ";");
             component.setAlign("");
         }
 
-        if (StringUtils.isNotBlank(component.getValign()) && !StringUtils.contains(component.getCellStyle(),
+        if (StringUtils.isNotBlank(component.getValign()) && !StringUtils.contains(component.getWrapperStyle(),
                 CssConstants.VERTICAL_ALIGN)) {
-            if (component.getCellStyle() == null) {
-                component.setCellStyle("");
+            if (component.getWrapperStyle() == null) {
+                component.setWrapperStyle("");
             }
 
-            component.setCellStyle(
-                    component.getCellStyle() + CssConstants.VERTICAL_ALIGN + component.getValign() + ";");
+            component.setWrapperStyle(
+                    component.getWrapperStyle() + CssConstants.VERTICAL_ALIGN + component.getValign() + ";");
             component.setValign("");
         }
     }

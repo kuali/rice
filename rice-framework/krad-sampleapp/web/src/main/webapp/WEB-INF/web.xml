@@ -37,11 +37,6 @@
   </context-param>
 
   <filter>
-  	<filter-name>ProcessLoggingFilter</filter-name>
-  	<filter-class>org.kuali.rice.krad.uif.util.ProcessLoggingFilter</filter-class>
-  </filter>
-
-  <filter>
     <filter-name>HttpRequestLogger</filter-name>
     <filter-class>org.kuali.rice.core.RequestLoggingFilter</filter-class>
   </filter>
@@ -85,11 +80,6 @@
     <filter-name>DummyLoginFilter</filter-name>
     <filter-class>org.kuali.rice.krad.web.filter.DummyLoginFilter</filter-class>
   </filter>
-
-  <filter-mapping>
-    <filter-name>ProcessLoggingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
 
   <filter-mapping>
     <filter-name>HttpRequestLogger</filter-name>

@@ -986,6 +986,9 @@ public class ComponentUtils {
         }
     }
 
+    private static final String COMPONENTS_FOR_LIFECYCLE = "componentsForLifecycle";
+    private static final String COMPONENT_PROTOTYPES = "componentPrototypes";
+    
     /**
      * Gets subcomponents for lifecycle processing.
      * 
@@ -1003,8 +1006,10 @@ public class ComponentUtils {
 
         for (String propertyName : ObjectPropertyUtils
                 .getReadablePropertyNamesByType(component, LifecycleElement.class)) {
-            if (noLifecyclePropertyNames.contains(propertyName) ||
-                    !includePrototypes && prototypePropertyNames.contains(propertyName)) {
+            if (noLifecyclePropertyNames.contains(propertyName)
+                    || COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
+                    || COMPONENT_PROTOTYPES.equals(propertyName)
+                    || (!includePrototypes && prototypePropertyNames.contains(propertyName))) {
                 continue;
             }
             
@@ -1021,8 +1026,10 @@ public class ComponentUtils {
         
         for (String propertyName : ObjectPropertyUtils
                 .getReadablePropertyNamesByCollectionType(component, Component.class)) {
-            if (noLifecyclePropertyNames.contains(propertyName) ||
-                    !includePrototypes && prototypePropertyNames.contains(propertyName)) {
+            if (noLifecyclePropertyNames.contains(propertyName)
+                    || COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
+                    || COMPONENT_PROTOTYPES.equals(propertyName)
+                    || (!includePrototypes && prototypePropertyNames.contains(propertyName))) {
                 continue;
             }
 

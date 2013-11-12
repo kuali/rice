@@ -64,8 +64,12 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      * @param container the container using this layout manager
      */
     private void processSeparateLabelLayout(Container container) {
-        int labelColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 1 / 3;
-        int fieldColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 2 / 3;
+        int labelColumnSize = 3;
+        int fieldColumnSize = 9;
+        if (numberOfLabelColumns > 1) {
+            labelColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 1 / 3;
+            fieldColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 2 / 3;
+        }
         int itemNumber = 0;
         int rowIndex = 0;
         boolean isOdd = true;

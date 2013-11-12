@@ -99,7 +99,7 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
         <#local cellClassAttr=""/>
         <#if item.wrapperCssClassesAsString?has_content>
-            <#local cellClassAttr="class=\"${item.cellStyleClassesAsString}\""/>
+            <#local cellClassAttr="class=\"${item.wrapperCssClassesAsString}\""/>
         </#if>
 
         <#local cellStyleAttr=""/>

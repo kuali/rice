@@ -23,10 +23,11 @@
 
         <@krad.fieldLbl field=field>
 
-            <#if field.renderFieldset>
-                <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
-                    <legend style="display: none">${field.label!}</legend>
-            </#if>
+            <#-- TODO: verify removal -->
+            <#--<#if field.renderFieldset>-->
+                <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
+                    <#--<legend style="display: none">${field.label!}</legend>-->
+            <#--</#if>-->
 
             <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
@@ -75,7 +76,7 @@
 
             <#else>
 
-                <#if field.postInputAddons??>
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
                     <div class="input-group">
                 </#if>
 
@@ -93,12 +94,18 @@
 
                 <#if field.postInputAddons??>
                      <#list field.postInputAddons as postAddon>
-                         <span class="${field.postInputCssClassesAsString}">
+                         <#if postAddon.wrapperCssClassesAsString?has_content>
+                             <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                         </#if>
+
+                         <span ${postAddonStyleClass!}>
                              <@krad.template component=postAddon/>
                          </span>
                      </#list>
+                </#if>
 
-                     </div>
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                    </div>
                 </#if>
             </#if>
 
@@ -109,15 +116,16 @@
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
             <#if !readOnly && (field.inquiry.render)!false>
+
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 
             <#-- render field help -->
             <@krad.template component=field.help/>
 
-            <#if field.renderFieldset>
-                </fieldset>
-            </#if>
+            <#--<#if field.renderFieldset>-->
+                <#--</fieldset>-->
+            <#--</#if>-->
 
         </@krad.fieldLbl>
 

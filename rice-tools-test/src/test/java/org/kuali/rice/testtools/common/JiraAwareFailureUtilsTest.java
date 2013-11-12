@@ -29,7 +29,7 @@ public class JiraAwareFailureUtilsTest implements JiraAwareFailable {
     public void testJiraAwareFailureRegex() {
         JiraAwareFailureUtils.regexJiraMatches.put("TEST.*NullPointerException.*TEST", "KULRICE-TEST");
         JiraAwareFailureUtils.failOnMatchedJira("TEST NullPointerException InputField.performFinalize TEST", this);
-        Assert.assertTrue(message.contains("KULRICE-TEST"));
+        Assert.assertTrue(message, message.contains("KULRICE-10674"));
     }
 
     @Test

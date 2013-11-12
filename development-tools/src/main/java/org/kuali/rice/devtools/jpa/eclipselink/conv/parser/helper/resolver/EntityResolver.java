@@ -72,12 +72,12 @@ public class EntityResolver implements AnnotationResolver {
         final String pckg = ((CompilationUnit) dclr.getParentNode()).getPackage().getName().toString();
         final String enclosingClass = pckg + "." + name;
 
-        final ClassDescriptor cd = OjbUtil.findClassDescriptor(mappedClass, descriptorRepositories);
-        if (cd == null) {
-            LOG.error(ResolverUtil.logMsgForClass(enclosingClass, mappedClass) + " Class Descriptor could not be found");
-            return null;
+        final ClassDescriptor cd = OjbUtil.findClassDescriptor(enclosingClass, descriptorRepositories);
+        if (cd != null) {
+            return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
+                    new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
         }
-        return new NodeData(new MarkerAnnotationExpr(new NameExpr(SIMPLE_NAME)),
-            new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false));
+
+        return null;
     }
 }

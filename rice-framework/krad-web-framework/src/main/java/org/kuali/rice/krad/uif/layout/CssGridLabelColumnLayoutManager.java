@@ -114,10 +114,10 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
             }
 
             // Determine "cell" label div css and add it to cellCssClassAttributes (retrieved by index in template)
-            List<String> cellCssClasses = label.getCellCssClasses();
+            List<String> cellCssClasses = label.getWrapperCssClasses();
             if (cellCssClasses == null) {
-                label.setCellCssClasses(new ArrayList<String>());
-                cellCssClasses = label.getCellCssClasses();
+                label.setWrapperCssClasses(new ArrayList<String>());
+                cellCssClasses = label.getWrapperCssClasses();
             }
             cellCssClasses.add(0, labelColumnCssClass);
             cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + labelColumnSize);
@@ -127,10 +127,10 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
             currentRow.add(label);
 
             // Determine "cell" field div css and add it to cellCssClassAttributes (retrieved by index in template)
-            cellCssClasses = field.getCellCssClasses();
+            cellCssClasses = field.getWrapperCssClasses();
             if (cellCssClasses == null) {
-                field.setCellCssClasses(new ArrayList<String>());
-                cellCssClasses = field.getCellCssClasses();
+                field.setWrapperCssClasses(new ArrayList<String>());
+                cellCssClasses = field.getWrapperCssClasses();
             }
             cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + fieldColumnSize);
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));

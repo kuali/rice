@@ -1,0 +1,119 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:dd="http://rice.kuali.org/dd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
+
+  <bean id="TravelMileageRate" parent="TravelMileageRate-parentBean" />
+  <bean id="TravelMileageRate-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelMileageRate" />
+    <property name="objectLabel" value="Travel Mileage Rate" />
+    <property name="attributes">
+      <list>
+        <ref bean="TravelMileageRate-id" />
+        <ref bean="TravelMileageRate-code" />
+        <ref bean="TravelMileageRate-name" />
+        <ref bean="TravelMileageRate-rate" />
+        <ref bean="TravelMileageRate-active" />
+      </list>
+    </property>
+  </bean>
+  <bean id="TravelMileageRate-id" parent="TravelMileageRate-id-parentBean" />
+  <bean id="TravelMileageRate-id-parentBean" parent="AttributeDefinition">
+    <property name="name" value="mileageRateId" />
+    <property name="label" value="ID" />
+    <property name="shortLabel" value="ID" />
+    <property name="maxLength" value="40" />
+    <property name="required" value="true" />
+    <property name="summary" value="Id" />
+    <property name="description" value="Unique identifier for item" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AlphaNumericPatternConstraint" p:allowWhitespace="false" />
+    </property>
+  </bean>
+
+ <bean id="TravelMileageRate-code" parent="TravelMileageRate-code-parentBean" />
+  <bean id="TravelMileageRate-code-parentBean" parent="AttributeDefinition">
+    <property name="name" value="mileageRateCd" />
+    <property name="label" value="Mileage Rate Code" />
+    <property name="shortLabel" value="Rate Code" />
+    <property name="maxLength" value="40" />
+    <property name="summary" value="Unique identifier for mileage rate" />
+    <property name="description" value="Unique identifier for mileage rate" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40" />
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true" />
+    </property>
+  </bean>
+
+  <bean id="TravelMileageRate-name" parent="TravelMileageRate-name-parentBean" />
+  <bean id="TravelMileageRate-name-parentBean" parent="AttributeDefinition">
+    <property name="name" value="mileageRateName" />
+    <property name="label" value="Mileage Rate Name" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="40" />
+    <property name="summary" value="Name of rate (i.e Domestic)" />
+    <property name="description" value="Name of rate (i.e Domestic)" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40" />
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true" />
+    </property>
+  </bean>
+
+
+  <bean id="TravelMileageRate-rate" parent="TravelMileageRate-rate-parentBean" />
+  <bean id="TravelMileageRate-rate-parentBean" parent="AttributeDefinition">
+    <property name="name" value="mileageRate" />
+    <property name="label" value="Rate in dollars per mile" />
+    <property name="shortLabel" value="Rate" />
+    <property name="maxLength" value="10" />
+    <property name="required" value="true" />
+    <property name="summary" value="Rate in dollars per mile" />
+    <property name="description" value="Rate in dollars per mile" />
+    <property name="controlField">
+      <bean parent="Uif-CurrencyTextControl" p:size="10" />
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="FloatingPointPatternConstraint" />
+    </property>
+  </bean>
+
+  <bean id="TravelMileageRate-active" parent="TravelMileageRate-active-parentBean" />
+  <bean id="TravelMileageRate-active-parentBean" parent="AttributeDefinition">
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter" />
+    <property name="name" value="active" />
+    <property name="label" value="Active Indicator" />
+    <property name="shortLabel" value="Active" />
+    <property name="summary" value="Whether Active or Inactive" />
+    <property name="description" value="Whether Active or Inactive" />
+    <property name="controlField">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
+    </property>
+  </bean>
+</beans>

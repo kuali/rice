@@ -136,9 +136,9 @@ public class ComponentUtilsTest {
         cellCssClasses.add("CellClass1");
         cellCssClasses.add("CellClass2");
         cellCssClasses.add("CellClass3");
-        componentBase.setCellCssClasses(cellCssClasses);
+        componentBase.setWrapperCssClasses(cellCssClasses);
 
-        componentBase.setCellStyle("Style1");
+        componentBase.setWrapperStyle("Style1");
         componentBase.setCellWidth("20px");
         componentBase.setColSpan(2);
         componentBase.setConditionalRefresh("Refresh");
@@ -294,15 +294,15 @@ public class ComponentUtilsTest {
             result = false;
         }
 
-        List<String> missingCellCssClasses = originalComponent.getCellCssClasses();
+        List<String> missingCellCssClasses = originalComponent.getWrapperCssClasses();
         if (missingCellCssClasses != null) {
-            missingCellCssClasses.removeAll(copiedComponent.getCellCssClasses());
+            missingCellCssClasses.removeAll(copiedComponent.getWrapperCssClasses());
             if (!missingCellCssClasses.isEmpty()) {
                 result = false;
             }
         }
 
-        if (!originalComponent.getCellStyle().equals(copiedComponent.getCellStyle())) {
+        if (!originalComponent.getWrapperStyle().equals(copiedComponent.getWrapperStyle())) {
             result = false;
         }
         if (!originalComponent.getCellWidth().equals(copiedComponent.getCellWidth())) {

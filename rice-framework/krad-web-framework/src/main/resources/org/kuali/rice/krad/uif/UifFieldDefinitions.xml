@@ -86,7 +86,7 @@
 
   <bean id="Uif-DataField-condensedTable" abstract="true" parent="Uif-DataField-condensedTable-parentBean"/>
   <bean id="Uif-DataField-condensedTable-parentBean" abstract="true" parent="Uif-DataField"
-        p:fieldLabel.renderColon="false" p:fieldLabel.cellCssClasses="col-md-3"/>
+        p:fieldLabel.renderColon="false" p:fieldLabel.wrapperCssClasses="col-md-3"/>
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
   <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
@@ -185,7 +185,7 @@
         <value>uif-actionField</value>
       </list>
     </property>
-    <property name="cellCssClasses">
+    <property name="wrapperCssClasses">
       <list merge="true">
         <util:constant static-field="org.kuali.rice.krad.uif.CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS"/>
       </list>

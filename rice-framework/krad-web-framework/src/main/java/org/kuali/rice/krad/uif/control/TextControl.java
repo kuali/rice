@@ -88,8 +88,8 @@ public class TextControl extends ControlBase implements SizedControl {
                 setMinLength(field.getMinLength());
             }
 
-            if (datePicker != null && datePicker.isRender()) {
-                field.setRenderInputGroup(true);
+            if (textExpand) {
+                field.setRenderInputAddonGroup(true);
             }
         }
     }

@@ -272,11 +272,10 @@ function markActiveMenuLink() {
  * @param label - label to be used in popout
  * @param summary - summary to be used in popout
  * @param constraint - constraint to be used in popout
- * @param imageUrl - the url for the popout icon
  */
-function setupTextPopout(id, label, summary, constraint, imageUrl) {
+function setupTextPopout(id, label, summary, constraint) {
     var options = {label: label, summary: summary, constraint: constraint};
-    jQuery("#" + id).initPopoutText(options, imageUrl);
+    jQuery("#" + id).initPopoutText(options);
 }
 
 /**

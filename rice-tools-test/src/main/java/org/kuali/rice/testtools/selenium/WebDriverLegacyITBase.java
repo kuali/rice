@@ -3323,7 +3323,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertMultiValueSelectAllThisPage();
 
         boolean anotherPageOfResults = false;
-        if (Integer.parseInt(multiValueResultCount()) > 10) {
+        if (Integer.parseInt(multiValueResultCount()) > 5) {
             anotherPageOfResults = true;
         }
 

@@ -79,7 +79,7 @@ public class TableResolver implements AnnotationResolver {
 
         final ClassDescriptor cd = OjbUtil.findClassDescriptor(enclosingClass, descriptorRepositories);
         if (cd != null) {
-            final String tableName = getMappedTable(mappedClass);
+            final String tableName = getMappedTable(enclosingClass);
             if (tableName == null) {
                 LOG.error(ResolverUtil.logMsgForClass(enclosingClass, mappedClass) + " table could not be found");
                 return null;

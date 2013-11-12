@@ -143,7 +143,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
     private boolean widgetInputOnly;
 
-    private boolean renderInputGroup;
+    private boolean renderInputAddonGroup;
     private List<String> postInputCssClasses;
     private List<Component> postInputAddons;
 
@@ -290,10 +290,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // if read only or the control is null no input can be given so no need to setup validation
         if (isReadOnly() || getControl() == null) {
             return;
-        }
-
-        if ((postInputAddons != null) && !postInputAddons.isEmpty()) {
-            renderInputGroup = true;
         }
 
         if (StringUtils.isNotBlank(helperText) && (getControl() != null)) {
@@ -879,30 +875,42 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         this.widgetInputOnly = widgetInputOnly;
     }
 
-    public boolean isRenderInputGroup() {
-        return renderInputGroup;
+    /**
+     * Forces rendering of the input group div around the control.
+     *
+     * <p>If other components add content through script that should be grouped with the control, this flag
+     * can be set to true to generate the input group, even though {@link InputField#getPostInputAddons()} may
+     * be empty</p>
+     *
+     * @return boolean true to force rendering of the input group, false if not
+     */
+    public boolean isRenderInputAddonGroup() {
+        return renderInputAddonGroup;
     }
 
-    public void setRenderInputGroup(boolean renderInputGroup) {
-        this.renderInputGroup = renderInputGroup;
+    /**
+     * @see InputField#isRenderInputAddonGroup()
+     */
+    public void setRenderInputAddonGroup(boolean renderInputAddonGroup) {
+        this.renderInputAddonGroup = renderInputAddonGroup;
     }
 
+    /**
+     * List of CSS classes that will be applied to the span that wraps the post input components.
+     *
+     * TODO: revisist this, possibly getting the classes from component wrapper css classes once created
+     *
+     * @return List of CSS classes
+     */
     public List<String> getPostInputCssClasses() {
         return postInputCssClasses;
     }
 
-    public void setPostInputCssClasses(List<String> postInputCssClasses) {
-        this.postInputCssClasses = postInputCssClasses;
-    }
-
-    public List<Component> getPostInputAddons() {
-        return postInputAddons;
-    }
-
-    public void setPostInputAddons(List<Component> postInputAddons) {
-        this.postInputAddons = postInputAddons;
-    }
-
+    /**
+     * Returns the list of post input css classes as a string formed by joining the classes with a space.
+     *
+     * @return post input css classes string
+     */
     public String getPostInputCssClassesAsString() {
         if (postInputCssClasses != null) {
             return StringUtils.join(postInputCssClasses, " ");
@@ -911,13 +919,45 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         return "";
     }
 
+    /**
+     * @see InputField#getPostInputCssClasses()
+     */
+    public void setPostInputCssClasses(List<String> postInputCssClasses) {
+        this.postInputCssClasses = postInputCssClasses;
+    }
+
+    /**
+     * List of components that will be grouped with the input field control to form an input group.
+     *
+     * <p>Generally these are icon, link, or button components that should be rendered with the control.</p>
+     *
+     * <p>See <a href="http://getbootstrap.com/components/#input-groups">Bootstrap Input Groups</a></p>
+     *
+     * @return List of post input components
+     */
+    public List<Component> getPostInputAddons() {
+        return postInputAddons;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.InputField#getPostInputAddons()
+     */
+    public void setPostInputAddons(List<Component> postInputAddons) {
+        this.postInputAddons = postInputAddons;
+    }
+
+    /**
+     * Adds a component to the list of post input addon components.
+     *
+     * @param addOn component to add
+     * @see InputField#getPostInputAddons()
+     */
     public void addPostInputAddon(Component addOn) {
         if (postInputAddons == null) {
             postInputAddons = new ArrayList<Component>();
         }
 
         postInputAddons.add(addOn);
-        renderInputGroup = true;
     }
 
     /**

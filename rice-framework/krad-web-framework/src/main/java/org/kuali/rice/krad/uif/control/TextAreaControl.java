@@ -70,6 +70,10 @@ public class TextAreaControl extends ControlBase {
             if (getMinLength() == null) {
                 setMinLength(field.getMinLength());
             }
+
+            if (textExpand) {
+                field.setRenderInputAddonGroup(true);
+            }
         }
     }
 

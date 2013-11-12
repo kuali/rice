@@ -68,7 +68,7 @@ the JMeter UI or command line script -->
         </elementProp>
         <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,3000)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,2000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="TESTPLANNAME" elementType="Argument">

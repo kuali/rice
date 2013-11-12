@@ -34,12 +34,13 @@
         <ref bean="Demo-Action-Example5"/>
         <ref bean="Demo-Action-Example6"/>
         <ref bean="Demo-Action-Example7"/>
+        <ref bean="Demo-Action-Example8"/>
       </list>
     </property>
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-Action-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Action-Example1 start-->
@@ -51,7 +52,7 @@
   </bean>
 
   <!-- Pre submit -->
-  <bean id="Demo-Action-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Action-Example2 start-->
@@ -68,7 +69,7 @@
   </bean>
 
   <!-- Success Callback -->
-  <bean id="Demo-Action-Example3"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Action-Example3 start-->
@@ -81,7 +82,7 @@
   </bean>
 
   <!-- Validation -->
-  <bean id="Demo-Action-Example4"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="InputField 1"
@@ -96,7 +97,7 @@
   </bean>
 
   <!-- Images -->
-  <bean id="Demo-Action-Example5"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example5" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Action-Example5 start-->
@@ -121,25 +122,36 @@
     </property>
   </bean>
 
-   <!--Icons-->
-  <bean id="Demo-Action-Example6"  parent="Uif-VerticalBoxSection">
+  <!--Icons-->
+  <bean id="Demo-Action-Example6" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-      <!-- ex:Demo-Action-Example6 start-->
-        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office" p:actionLabel="Left Icon Placement">
+        <!-- ex:Demo-Action-Example6 start-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office"
+              p:actionLabel="Left Icon Placement">
         </bean>
-        <bean parent="Uif-SecondaryActionButton-Small" p:actionScript="alert('You clicked a button');" p:iconClass="icon-paint-format" p:actionIconPlacement="RIGHT" p:actionLabel="Right Icon Placment">
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office"
+              p:actionLabel="Right Icon Placment" p:actionIconPlacement="RIGHT">
         </bean>
-      <!-- ex:Demo-Action-Example6 end-->
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office"
+              p:actionLabel="Top Icon Placment" p:actionIconPlacement="TOP">
+        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office"
+              p:actionLabel="Bottom Icon Placement" p:actionIconPlacement="BOTTOM">
+        </bean>
+        <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked a button');" p:iconClass="icon-office"
+              p:actionIconPlacement="ICON_ONLY">
+        </bean>
+        <!-- ex:Demo-Action-Example6 end-->
       </list>
     </property>
   </bean>
 
   <!-- Buttons -->
-  <bean id="Demo-Action-Example7"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Action-Example7" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-         <!--ex:Demo-Action-Example7 start-->
+        <!--ex:Demo-Action-Example7 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"
               p:id="ST-DemoButton" p:actionScript="alert('You clicked a button');"/>
 
@@ -186,8 +198,144 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Disabled Button"
               p:id="ST-DemoButtonDisabled" p:methodToCall="foo" p:disabled="true"/>
 
-         <!--ex:Demo-Action-Example7 end-->
+        <!--ex:Demo-Action-Example7 end-->
       </list>
     </property>
   </bean>
+
+  <bean id="Demo-Action-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!--ex:Demo-Action-Example8 start-->
+        <bean parent="Uif-HorizontalBoxSection" p:headerText="Size &amp; Type Examples">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxSubSection" p:headerText="Primary Button">
+                <property name="items">
+                  <list>
+                    <bean p:actionLabel="Large" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled" parent="Uif-PrimaryActionButton-Large" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Normal" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled" parent="Uif-PrimaryActionButton" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Small" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-PrimaryActionButton-Small" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Mini" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-PrimaryActionButton-Mini" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-VerticalBoxSubSection" p:headerText="Secondary Button">
+                <property name="items">
+                  <list>
+                    <bean p:actionLabel="Large" parent="Uif-SecondaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-SecondaryActionButton-Large" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Normal" parent="Uif-SecondaryActionButton"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-SecondaryActionButton" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Small" parent="Uif-SecondaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-SecondaryActionButton-Small" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Mini" parent="Uif-SecondaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-SecondaryActionButton-Mini" p:disabled="true"
+                          p:actionScript="alert('You clicked a button');"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-VerticalBoxSubSection" p:headerText="Link">
+                <property name="items">
+                  <list>
+                    <bean p:actionLabel="Action Link" parent="Uif-ActionLink"
+                          p:actionScript="alert('You clicked a link');"/>
+                    <bean p:actionLabel="Disabled"
+                          parent="Uif-ActionLink" p:disabled="true"
+                          p:actionScript="alert('You clicked a link');"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-HorizontalBoxSubSection" p:headerText="Icon Examples">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean p:actionLabel="Large" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="TOP"/>
+                    <bean p:actionLabel="Normal" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="TOP"/>
+                    <bean p:actionLabel="Small" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="TOP"/>
+                    <bean p:actionLabel="Mini" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="TOP"/>
+                    <bean p:actionLabel="Large" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Normal" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Small" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean p:actionLabel="Mini" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-VerticalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean p:actionLabel="Large" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="BOTTOM"/>
+                    <bean p:actionLabel="Normal" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="BOTTOM"/>
+                    <bean p:actionLabel="Small" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="BOTTOM"/>
+                    <bean p:actionLabel="Mini" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="BOTTOM"/>
+                    <bean p:actionLabel="Large" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="RIGHT"/>
+                    <bean p:actionLabel="Normal" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="RIGHT"/>
+                    <bean p:actionLabel="Small" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="RIGHT"/>
+                    <bean p:actionLabel="Mini" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="RIGHT"/>
+                    <bean p:actionLabel="Large" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Large"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="ICON_ONLY"/>
+                    <bean p:actionLabel="Normal" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="ICON_ONLY"/>
+                    <bean p:actionLabel="Small" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Small"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="ICON_ONLY"/>
+                    <bean p:actionLabel="Mini" p:iconClass="icon-ok" parent="Uif-PrimaryActionButton-Mini"
+                          p:actionScript="alert('You clicked a button');" p:actionIconPlacement="ICON_ONLY"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!--ex:Demo-Action-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+
 </beans>

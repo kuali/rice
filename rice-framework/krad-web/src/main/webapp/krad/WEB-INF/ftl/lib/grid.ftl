@@ -98,13 +98,13 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#local index = columnArray[columnIndex]?number />
 
         <#local cellClassAttr=""/>
-        <#if item.cellStyleClassesAsString?has_content>
-            <#local cellClassAttr="class=\"${item.cellStyleClassesAsString}\""/>
+        <#if item.wrapperCssClassesAsString?has_content>
+            <#local cellClassAttr="class=\"${item.wrapperCssClassesAsString}\""/>
         </#if>
 
         <#local cellStyleAttr=""/>
-        <#if item.cellStyle?has_content>
-            <#local cellStyleAttr="style=\"${item.cellStyle}\""/>
+        <#if item.wrapperStyle?has_content>
+            <#local cellStyleAttr="style=\"${item.wrapperStyle}\""/>
         </#if>
 
         <#if (index == 1)>

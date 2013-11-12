@@ -65,13 +65,7 @@
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
-    <maven.skip.packaging>false</maven.skip.packaging>
-    <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
-    <maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
-    <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
-    <maven.failsafe.skip>true</maven.failsafe.skip>
-    <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
-    <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
+
     <jmeter.phase>verify</jmeter.phase>
     <jmeter.goal>jmeter</jmeter.goal>
     <jmeter.testFilesDirectory>${basedir}/src/test/resources/jmeter</jmeter.testFilesDirectory>
@@ -89,6 +83,14 @@
     <jmeter.counterconfigstart>1</jmeter.counterconfigstart>
     <jmeter.counterconfigend>6</jmeter.counterconfigend>
     <jmeter.counterconfigincr>1</jmeter.counterconfigincr>
+
+    <maven.skip.packaging>false</maven.skip.packaging>
+    <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
+    <maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
+    <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
+    <maven.failsafe.skip>true</maven.failsafe.skip>
+    <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
+    <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
 
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
@@ -308,6 +310,58 @@
     </profile>
     <!-- Setup the dependency tree needed by the deploy logic -->
     <profile>
+      <id>jmeter</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>com.lazerycode.jmeter</groupId>
+              <artifactId>jmeter-maven-plugin</artifactId>
+              <version>${plugin.jmeter.version}</version>
+              <executions>
+                <execution>
+                  <id>jmeter-tests</id>
+                  <phase>${jmeter.phase}</phase>
+                  <goals>
+                    <goal>${jmeter.goal}</goal>
+                  </goals>
+                  <configuration>
+                    <testFilesDirectory>${jmeter.testFilesDirectory}</testFilesDirectory>
+                    <testFilesIncluded>
+                      <jMeterTestFile>${jmeter.jMeterTestFile}</jMeterTestFile>
+                    </testFilesIncluded>
+                    <testFilesExcluded>
+                      <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+                    </testFilesExcluded>
+                    <testResultsTimestamp>${jmeter.testResultsTimestamp}</testResultsTimestamp>
+                    <propertiesUser>
+                      <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
+                        ${__P(server,localhost)}
+                        ${__P(port,80)}
+                        See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
+                        http://jmeter.apache.org/usermanual/test_plan.html#using_variables
+                        http://jmeter.apache.org/usermanual/functions.html#__P
+                        http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
+                      -->
+                      <server>${jmeter.server}</server>
+                      <port>${jmeter.port}</port>
+                      <threads>${jmeter.threads}</threads>
+                      <loops>${jmeter.loops}</loops>
+                      <rampseconds>${jmeter.rampseconds}</rampseconds>
+                      <userprefix>${jmeter.userprefix}</userprefix>
+                      <counterconfigstart>${jmeter.counterconfigstart}</counterconfigstart>
+                      <counterconfigend>${jmeter.counterconfigend}</counterconfigend>
+                      <counterconfigincr>${jmeter.counterconfigincr}</counterconfigincr>
+                    </propertiesUser>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
       <id>kdo</id>
       <properties>
         <kdo.psc>org.kuali.rice.deploy.spring.DeployPSC</kdo.psc>
@@ -469,59 +523,6 @@
             </configuration>
           </plugin>
         </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>jmeter</id>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>com.lazerycode.jmeter</groupId>
-              <artifactId>jmeter-maven-plugin</artifactId>
-              <version>${plugin.jmeter.version}</version>
-              <executions>
-                <execution>
-                  <id>jmeter-tests</id>
-                  <phase>${jmeter.phase}</phase>
-                  <goals>
-                    <goal>${jmeter.goal}</goal>
-                  </goals>
-                  <configuration>
-                    <testFilesDirectory>${jmeter.testFilesDirectory}</testFilesDirectory>
-                    <testFilesIncluded>
-                      <jMeterTestFile>${jmeter.jMeterTestFile}</jMeterTestFile>
-                    </testFilesIncluded>
-                    <testFilesExcluded>
-                      <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
-                    </testFilesExcluded>
-                    <testResultsTimestamp>${jmeter.testResultsTimestamp}</testResultsTimestamp>
-                    <propertiesUser>
-                      <!-- server and port must be defined (and used) in the JMeter jmx file as User Defined Variables
-                        ${__P(server,localhost)}
-                        ${__P(port,80)}
-                        See http://jmeter.apache.org/usermanual/component_reference.html#User_Defined_Variables
-                        http://jmeter.apache.org/usermanual/test_plan.html#using_variables
-                        http://jmeter.apache.org/usermanual/functions.html#__P
-                        http://jmeter.apache.org/usermanual/best-practices.html#parameterising_tests
-                      -->
-                      <server>${jmeter.server}</server>
-                      <port>${jmeter.port}</port>
-                      <threads>${jmeter.threads}</threads>
-                      <loops>${jmeter.loops}</loops>
-                      <rampseconds>${jmeter.rampseconds}</rampseconds>
-                      <userprefix>${jmeter.userprefix}</userprefix>
-                      <counterconfigstart>${jmeter.counterconfigstart}</counterconfigstart>
-                      <counterconfigend>${jmeter.counterconfigend}</counterconfigend>
-                      <counterconfigincr>${jmeter.counterconfigincr}</counterconfigincr>
-                    </propertiesUser>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
-        </pluginManagement>
       </build>
     </profile>
 
@@ -2461,9 +2462,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:${project.scm.url}</connection>
-    <developerConnection>scm:${project.scm.vendor}:${project.scm.url}</developerConnection>
-    <url>${project.scm.url}</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/trunk</url>
   </scm>
 
 </project>

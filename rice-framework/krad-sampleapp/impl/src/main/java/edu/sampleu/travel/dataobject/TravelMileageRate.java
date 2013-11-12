@@ -50,29 +50,18 @@ public class TravelMileageRate extends DataObjectBase implements MutableInactiva
     @GeneratedValue(generator = "TRVL_MLG_RT_ID_S")
     @PortableSequenceGenerator(name = "TRVL_MLG_RT_ID_S")
     @Label("ID")
-    @Description("Unique identifier for item")
-    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
-    private String mileageRateId;
+   private String mileageRateId;
 
     @Column(name = "MLG_RT_CD", length = 40)
-    @Label("Mileage Rate Code")
-    @Description("Unique identifier for mileage rate")
-    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String mileageRateCd;
 
     @Column(name = "MLG_RT_NM", length = 40)
-    @Label("Mileage Rate Name")
-    @Description("Name of rate (i.e. Domestic)")
     private String mileageRateName;
 
     @Column(name = "MLG_RT", length = 10)
-    @Label("Mileage Rate")
-    @Description("Rate in dollars per mile")
     private BigDecimal mileageRate;
 
     @Column(name = "ACTV_IND", nullable = false, length = 1)
-    @Label("Active")
-    @Description("Whether active or inactive")
     @javax.persistence.Convert(converter = BooleanYNConverter.class)
     boolean active = Boolean.TRUE;
 

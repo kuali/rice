@@ -81,7 +81,7 @@ public class ManyToOneResolver extends AbstractMappedFieldResolver {
 
                 final boolean proxy = ord.isLazy();
                 if (proxy) {
-                    pairs.add(new MemberValuePair("fetch", new StringLiteralExpr("Fetch.LAZY")));
+                    pairs.add(new MemberValuePair("fetch", new NameExpr("FetchType.LAZY")));
                     additionalImports.add(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), "FetchType"), false, false));
                 }
 

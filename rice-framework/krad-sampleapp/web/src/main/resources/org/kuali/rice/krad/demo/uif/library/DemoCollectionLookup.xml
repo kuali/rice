@@ -169,7 +169,7 @@
         <entry key="oTableTools"
                value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ]}"/>
         <entry key="aLengthMenu" value="[5, 10, 25, 50]"/>
-        <entry key="iDisplayLength" value="5"/>
+        <entry key="iDisplayLength" value="10"/>
       </map>
     </property>
   </bean>
@@ -202,7 +202,7 @@
     <property name="multipleValuesSelect" value="true"/>
     <property name="resultsGroup.useServerPaging" value="true"/>
     <property name="resultsGroup.renderLineActions" value="false"/>
-    <property name="resultsGroup.displayLength" value="5"/>
+    <property name="resultsGroup.displayLength" value="10"/>
     <property name="resultsGroup.layoutManager.richTable.render" value="false"/>
 
   </bean>
@@ -235,7 +235,7 @@
     <property name="resultsGroup.layoutManager.richTable.render" value="true"/>
     <property name="resultsGroup.layoutManager.numberOfColumns" value="7"/>
     <property name="resultsGroup.useServerPaging" value="true"/>
-    <property name="resultsGroup.displayLength" value="5"/>
+    <property name="resultsGroup.displayLength" value="10"/>
     <property name="resultsGroup.renderLineActions" value="false"/>
     <property name="resultsGroup.layoutManager.richTable.templateOptions">
       <map>
@@ -246,7 +246,7 @@
         <entry key="oTableTools"
                value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ]}"/>
         <entry key="aLengthMenu" value="[5, 10, 25, 50]"/>
-        <entry key="iDisplayLength" value="5"/>
+        <entry key="iDisplayLength" value="10"/>
       </map>
     </property>
   </bean>

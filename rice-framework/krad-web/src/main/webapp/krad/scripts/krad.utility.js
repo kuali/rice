@@ -959,10 +959,12 @@ function time(start, testingText) {
 function deleteLineMouseOver(deleteButton, highlightItemClass) {
     var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
-    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
-        jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
-    } else {
-        jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).addClass(highlightItemClass);
+    if (innerLayout) {
+        if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
+            jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
+        } else {
+            jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).addClass(highlightItemClass);
+        }
     }
 }
 
@@ -975,10 +977,12 @@ function deleteLineMouseOver(deleteButton, highlightItemClass) {
 function deleteLineMouseOut(deleteButton, highlightItemClass) {
     var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
-    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
-        jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
-    } else {
-        jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).removeClass(highlightItemClass);
+    if (innerLayout) {
+        if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
+            jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
+        } else {
+            jQuery(deleteButton).closest('.' + kradVariables.COLLECTION_ITEM_CLASS).removeClass(highlightItemClass);
+        }
     }
 }
 
@@ -991,10 +995,12 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
 function addLineMouseOver(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
-    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
-        jQuery(addButton).parent().find('table').addClass(highlightItemClass);
-    } else {
-        jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).addClass(highlightItemClass).children().addClass(highlightItemClass);
+    if (innerLayout) {
+        if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
+            jQuery(addButton).parent().find('table').addClass(highlightItemClass);
+        } else {
+            jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).addClass(highlightItemClass).children().addClass(highlightItemClass);
+        }
     }
 }
 
@@ -1007,10 +1013,12 @@ function addLineMouseOver(addButton, highlightItemClass) {
 function addLineMouseOut(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
-    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
-        jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
-    } else {
-        jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+    if (innerLayout) {
+        if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
+            jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
+        } else {
+            jQuery(addButton).parent().find('.' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).removeClass(highlightItemClass).children().removeClass(highlightItemClass);
+        }
     }
 }
 

@@ -159,8 +159,7 @@ function deselectAllLines(collectionId) {
  * @param collectionId - id for the collection to select checkboxes for
  */
 function selectAllPageLines(collectionId) {
-   // jQuery("#" + collectionId + " input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).attr('checked', true);
-    var selectedLineCount = 0;
+    var selectedLineCount = jQuery('#' + collectionId).data('selectedlinecount');
     jQuery( "#" + collectionId ).find("input:checkbox." + kradVariables.SELECT_FIELD_STYLE_CLASS).each( function (index) {
         if (jQuery(this).attr('checked') != true) {
             jQuery(this).attr('checked',true);
@@ -189,7 +188,7 @@ function deselectAllPageLines(collectionId) {
         }
     });
 
-    jQuery('#' + collectionId).data('selectedlineCount',selectedLineCount);
+    jQuery('#' + collectionId).data('selectedlinecount',selectedLineCount);
     setMultivalueLookupReturnButton(jQuery("#" + collectionId));
 }
 

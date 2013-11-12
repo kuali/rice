@@ -68,15 +68,19 @@ KradResponse.prototype = {
                 kradVariables.PAGE_CONTENT_WRAPPER + ":first";
         hideBubblePopups(pageInLayout);
 
+        var $pageInLayout = jQuery(pageInLayout);
+
         // update page contents from response
-        jQuery(pageInLayout).empty().append(page.find(">*"));
+        $pageInLayout.empty().append(page.find(">*"));
 
         pageValidatorReady = false;
-        runHiddenScripts(jQuery(pageInLayout).attr("id"), false, true);
+        runHiddenScripts($pageInLayout.attr("id"), false, true);
 
         markActiveMenuLink();
 
-        jQuery(pageInLayout).show();
+        $pageInLayout.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
+
+        $pageInLayout.show();
     },
 
 
@@ -95,8 +99,11 @@ KradResponse.prototype = {
         });
 
         // replace component
-        if (jQuery("#" + id).length) {
-            jQuery("#" + id).replaceWith(component.html());
+        var $dialog = jQuery("#" + id);
+        if ($dialog.length) {
+            $dialog.replaceWith(component.html());
+
+            $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
         }
 
         runHiddenScripts(id);
@@ -109,20 +116,20 @@ KradResponse.prototype = {
     // and removed from the component.  This allows for label and component content separation on fields
     updateComponentHandler: function (content, dataAttr) {
         var id = dataAttr.updatecomponentid;
-        var elementToBlock = jQuery("#" + id);
 
-        hideBubblePopups(elementToBlock);
+        var $newComponent = jQuery("#" + id);
+
+        hideBubblePopups($newComponent);
 
         var component = jQuery("#" + id + "_update", content);
 
-        var displayWithId = id;
-
         // special label handling, if any
-        var theLabel = jQuery("#" + displayWithId + "_label_span", component);
-        if (jQuery(".displayWith-" + displayWithId).length && theLabel.length) {
-            theLabel.addClass("displayWith-" + displayWithId);
-            jQuery("span.displayWith-" + displayWithId).replaceWith(theLabel);
-            component.remove("#" + displayWithId + "_label_span");
+        var theLabel = jQuery("#" + id + "_label_span", component);
+        if (jQuery(".displayWith-" + id).length && theLabel.length) {
+            theLabel.addClass("displayWith-" + id);
+            jQuery("span.displayWith-" + id).replaceWith(theLabel);
+
+            component.remove("#" + id + "_label_span");
         }
 
         // remove old stuff
@@ -135,44 +142,44 @@ KradResponse.prototype = {
         });
 
         // replace component
-        if (jQuery("#" + id).length) {
-            jQuery("#" + id).replaceWith(component.html());
-        }
+        if ($newComponent.length) {
+            $newComponent.replaceWith(component.html());
 
-        if (jQuery("#" + id).parent().is("td")) {
-            jQuery("#" + id).parent().show();
-        }
-
-        var newComponent = jQuery("#" + id);
-
-        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
-        displayWithLabel.show();
-        if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
-            displayWithLabel.parent().show();
-        }
-
-        // assume this content is open if being refreshed
-        var open = newComponent.attr("data-open");
-        if (open != undefined && open == "false"){
-            newComponent.attr("data-open", "true");
-            newComponent.show();
-        }
-
-        // runs scripts on the span or div with id
-        runHiddenScripts(id);
-
-        // Only for table layout collections. Keeps collection on same page.
-        var currentPage = retrieveFromSession(id + ":currentPageRichTable");
-        if (currentPage != null) {
-            openDataTablePage(id, currentPage);
-        }
-
-        elementToBlock.unblock({onUnblock: function () {
-            jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-            newComponent.animate({backgroundColor:"transparent"}, 6000);
-            jQuery(component).find("#" + id).animate({backgroundColor:"transparent"}, 6000);
+            if ($newComponent.parent().is("td")) {
+                $newComponent.parent().show();
             }
-        });
+
+            var displayWithLabel = jQuery(".displayWith-" + id);
+            displayWithLabel.show();
+            if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
+                displayWithLabel.parent().show();
+            }
+
+            // assume this content is open if being refreshed
+            var open = $newComponent.attr("data-open");
+            if (open != undefined && open == "false") {
+                $newComponent.attr("data-open", "true");
+                $newComponent.show();
+            }
+
+            // runs scripts on the span or div with id
+            runHiddenScripts(id);
+
+            // Only for table layout collections. Keeps collection on same page.
+            var currentPage = retrieveFromSession(id + ":currentPageRichTable");
+            if (currentPage != null) {
+                openDataTablePage(id, currentPage);
+            }
+
+            $newComponent.unblock({onUnblock: function () {
+                jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+                $newComponent.animate({backgroundColor: "transparent"}, 6000);
+                jQuery(component).find("#" + id).animate({backgroundColor: "transparent"}, 6000);
+            }
+            });
+
+            $newComponent.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
+        }
     },
 
     // performs a redirect to the URL found in the returned contents
@@ -191,7 +198,11 @@ KradResponse.prototype = {
 
     // replaces the view with the given content and run the hidden scripts
     updateViewHandler: function (content, dataAttr) {
-        jQuery('#' + kradVariables.APP_ID).replaceWith(content);
+        var $view = jQuery('#' + kradVariables.APP_ID);
+
+        $view.replaceWith(content);
+
+        $view.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         runHiddenScriptsAgain();
     },

@@ -91,6 +91,20 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
     }
 
    @Test
+    void testGatherProperties() {
+        def ddRootNode = getSimpleSpringXmlNode();
+
+       def searchProperties = ["simpleProperty":"simpleProperty"];
+       def properties = springBeanTransformer.gatherPropertyTags(ddRootNode.bean[0], searchProperties);
+       Assert.assertTrue("attribute list should contain property tags - " + properties, properties["simpleProperty"] != null);
+
+        def searchAttrs = ["name":"name"];
+        def attributes = springBeanTransformer.gatherPropertyAttrs(ddRootNode.bean[0], searchAttrs);
+        Assert.assertTrue("attribute list should contain property attribute name - " + attributes, attributes["name"] != null);
+
+    }
+
+    @Test
     void testGenericNodeTransform() {
         def ddRootNode = getSimpleSpringXmlNode();
         def searchAttrs = ["*name": "p:propertyName"];

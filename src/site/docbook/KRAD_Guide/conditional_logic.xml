@@ -27,9 +27,87 @@
   </section>
   <section>
     <title>Presentation Controllers and Authorizers</title>
-    <para>Coming Soon!</para>
-    <!-- TODO: Add content here.
-      -->
+    <para>The View Presentation Controller is the class where business logic authorizations are handled.   The base
+      class is org.kuali.rice.krad.uif.view.ViewPresentationControllerBase.  The example below shows
+      how a Presentation Controller is configured to a view.
+    </para>
+    <programlisting linenumbering="numbered">
+      &lt;bean id=&quot;LabsInquiry-PresentationController&quot; parent=&quot;LabsInquiry-PerDiemSections&quot;&gt;
+        &lt;property name=&quot;presentationControllerClass&quot; value=&quot;org.kuali.rice.krad.demo.uif.controller.DemoInquiryViewPresentationController&quot;/&gt;
+        &lt;property name=&quot;viewName&quot; value=&quot;LabsInquiry-PresentationControllerView&quot;/&gt;
+        &lt;property name=&quot;headerText&quot; value=&quot;Inquiry with presentation controller controlling field and section visibility&quot;/&gt;
+      &lt;/bean&gt;
+    </programlisting>
+    <para>Overriding the Presentation Controller methods provides the capability to control things like visibility,
+      and edit modes of both fields and sections within a view.  The example below shows how
+      business logic can be implemented to control the visibility for both a field and
+      a section within a view.</para>
+    <programlisting linenumbering="numbered">
+      @Override
+      public boolean canViewField(View view, ViewModel model, Field field, String propertyName) {
+
+        //hide travel authorization number
+        if (propertyName.equals(&quot;travelAuthorizationDocumentId&quot;)) {
+           return false;
+        }
+
+        return super.canViewField(view, model, field, propertyName);
+      }
+
+      @Override
+      public boolean canViewGroup(View view, ViewModel model, Group group, String groupId) {
+
+        //hide the estimates section
+        if (groupId.equals(&quot;TravelAccount-InquiryView-Costs&quot;)) {
+          return false;
+        }
+
+        return super.canViewGroup(view, model, group, groupId);
+      }
+    </programlisting>
+    <para>
+      The View Authorizer is the class that handles the KIM permission checks for the view. The base class
+      is org.kuali.rice.krad.uif.view.ViewAuthorizerBase.  The example below shows how a
+      View Authorizer is configured to a view.
+    </para>
+    <programlisting linenumbering="numbered">
+      &lt;bean id=&quot;LabsInquiry-Authorizer&quot; parent=&quot;LabsInquiry-PerDiemSections&quot;&gt;
+        &lt;property name=&quot;authorizerClass&quot; value=&quot;org.kuali.rice.krad.demo.uif.authorizer.DemoInquiryViewAuthorizer&quot;/&gt;
+        &lt;property name=&quot;viewName&quot; value=&quot;LabsInquiry-AuthorizerView&quot;/&gt;
+        &lt;property name=&quot;headerText&quot; value=&quot;Inquiry with authorizer controlling field and section visibility&quot;/&gt;
+      &lt;/bean&gt;
+    </programlisting>
+    <para>
+      Overriding the View Authorizer methods gives provides the ability to control things like visibility,
+      and edit modes (based on KIM permissions) for both fields and sections within a view.
+      The example below shows how business logic based on KIM permissions can be implemented to control the visibility
+      for both a field and section within a view.
+    </para>
+    <programlisting linenumbering="numbered">
+      @Override
+      public boolean canViewField(View view, ViewModel model, Field field, String propertyName, Person user) {
+
+        //hide travel authorization number from admin
+        if(propertyName.equals(&amp;&quot;travelAuthorizationDocumentId&amp;&quot;) &amp;&amp;
+        user.getPrincipalName().equals(&amp;&quot;admin&amp;&quot;))   {
+          return false;
+        }
+
+        return super.canViewField(view,model,field,propertyName,user);
+      }
+
+      @Override
+      public boolean canViewGroup(View view, ViewModel model, Group group, String groupId, Person user) {
+
+        //hide the estimates section if the user is admin
+        if(groupId.equals(&amp;&quot;TravelAccount-InquiryView-Costs&amp;&quot;) &amp;&amp;
+        user.getPrincipalName().equals(&amp;&quot;admin&amp;&quot;))  {
+          return false;
+        }
+
+        return super.canViewGroup(view,model,group,groupId,user);
+      }
+    </programlisting>
   </section>
   <section>
     <title>Configuration with Expressions</title>

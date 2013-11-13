@@ -384,11 +384,7 @@
     float: left;
 }
 
-
 #ComponentLibrary-TabGroup_tabList .ui-widget-header { background: none}
-
-
-
 
 .ui-widget-header {
 
@@ -396,11 +392,7 @@
 
 }
 
-
-
-
-
-.demo-xLargeLibraryView > .uif-viewContentWrapper > .uif-pageContentWrapper{
+.demo-xLargeLibraryView > .uif-viewContentWrapper .uif-pageContentWrapper{
     width: 940px;
     margin: 20px;
 }

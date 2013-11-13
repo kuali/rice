@@ -260,7 +260,7 @@
 
         <ref bean="LabsProposal-Dialogs"/>
 
-        <ref bean="LabsProposal-Buttons"/>
+        <bean id="LabsProposal-Tabs2" parent="LabsProposal-Tabs"/>
 
         <ref bean="LabsProposal-AddList"/>
 
@@ -561,7 +561,16 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-Buttons" parent="Uif-VerticalBoxGroup">
+  <bean id="LabsProposal-Tabs" parent="Uif-TabSection">
+    <property name="items">
+      <list>
+        <bean parent="LabsProposal-Buttons" p:headerText="Buttons 1"/>
+        <bean parent="LabsProposal-Buttons" p:headerText="Buttons 2"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-Buttons" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton-Large" p:actionLabel="Primary Large"

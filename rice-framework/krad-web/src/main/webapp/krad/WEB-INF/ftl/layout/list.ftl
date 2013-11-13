@@ -49,10 +49,14 @@
 
             <#if item.wrapperCssClassesAsString?has_content>
                 <#local itemStyleClass="class=\"${item.wrapperCssClassesAsString}\""/>
+            <#else>
+                <#local itemStyleClass=""/>
             </#if>
 
             <#if item.wrapperStyle?has_content>
                 <#local itemStyle="style=\"${item.wrapperStyle}\""/>
+            <#else>
+                <#local itemStyle=""/>
             </#if>
 
             <li ${itemStyle!} ${itemStyleClass!}>

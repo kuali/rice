@@ -197,7 +197,6 @@
             <list>
               <bean id="KradSampleAppHome-Testimonial1" parent="Uif-Message"/>
               <bean id="KradSampleAppHome-Testimonial2" parent="Uif-Message"/>
-              <bean id="KradSampleAppHome-Testimonial3" parent="Uif-Message"/>
             </list>
           </property>
         </bean>

@@ -333,7 +333,6 @@ button img.rightActionImage, a img.rightActionImage {
   clear: both;
 }
 div.clearfix:after {
-  content: ".";
   display: block;
   height: 0;
   width: auto;
@@ -1272,10 +1271,10 @@ span.ui-spinner input {
   opacity: 0.4 !important;
 }
 /***** Syntax Highlighter *********************************************************************/
-/*div.uif-syntaxHighlighter {*/
-/*max-height: 400px;*/
-/*overflow: auto;*/
-/*}*/
+div.uif-syntaxHighlighter {
+  max-height: 400px;
+  overflow: auto;
+}
 
 .uif-syntaxHighlighter li {
   list-style: decimal outside none;
@@ -1289,11 +1288,10 @@ span.ui-spinner input {
   line-height: 20px;
   margin: 0 0 10px;
   padding: 9.5px;
-  overflow: auto;
-  max-height: 600px;
+  width: 1000px;
 }
 .uif-syntaxHighlighter pre.prettyprint {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .uif-syntaxHighlighter pre code {
   background-color: transparent;
@@ -1305,7 +1303,7 @@ span.ui-spinner input {
   box-shadow: 40px 0 0 #FBFBFC inset, 41px 0 0 #ECECF0 inset;
 }
 .uif-syntaxHighlighter ol.linenums {
-  margin: 0 0 0 33px;
+  margin: 0;
 }
 .uif-syntaxHighlighter ol.linenums li {
   color: #BEBEC5;
@@ -1328,7 +1326,7 @@ ol.linenums li:nth-of-type(2n+1) {
   height: 26px;
   overflow: hidden;
   position: absolute;
-  right: 0;
+  right: 18px;
   width: 26px;
 }
 .uif-syntaxHighlighter:hover .uif-copyPaste {

@@ -38,7 +38,7 @@
 
 /*********** Home styles *******************************************************/
 .demo-sampleAppHomeView {
-    margin-bottom: -8px;
+    margin-bottom: -20px;
 }
 
 .demo-sampleAppHomeView .uif-pageHeader {
@@ -181,8 +181,6 @@
 
 .demo-sampleAppHome-testimonialsWrapper {
     margin: 0;
-    padding: 0;
-    height: 160px;
     margin-top: 25px;
 }
 
@@ -664,7 +662,6 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
     border: 1px solid #CCCCCC;
     display: block;
     float: right;
-    height: 4em;
     margin: 0 0 1em 1em;
     padding: 1em;
     width: 11em;
@@ -778,7 +775,7 @@ a.demo-documentationLink {
 .demo-appFooter {
     background: none repeat scroll 0 0 #000000;
     color: #FFFFFF;
-    height: 64px;
+    height: 74px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
 }
@@ -799,6 +796,7 @@ a.demo-documentationLink {
     color: #999999;
     font-size: 14px;
     padding-top: 5px;
+    padding-bottom: 5px;
     text-align: center;
 }
 

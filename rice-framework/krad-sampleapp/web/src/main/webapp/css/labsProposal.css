@@ -106,7 +106,7 @@ input[type="text"], .uif-textAreaControl {
     padding: 15px;
 }
 
-.uif-lightbox > div{
+.uif-lightbox{
     width: 720px;
 }
 
@@ -127,7 +127,7 @@ input[type="text"], .uif-textAreaControl {
     background-color: #FFFFFF;
     margin-left: -7px;
     margin-right: -7px;
-    padding: 15px;
+    padding: 15px 15px 1px;
 }
 
 .uif-lightbox .uif-footer {

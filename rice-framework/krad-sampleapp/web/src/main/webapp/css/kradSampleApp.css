@@ -1061,3 +1061,7 @@ table.dataTable tr.demo-rowCondition {
     margin-left: auto;
     margin-right: auto;
 }
+
+.force-show {
+    display: block !important;
+}

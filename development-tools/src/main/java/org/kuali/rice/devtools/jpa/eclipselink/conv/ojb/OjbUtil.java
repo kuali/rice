@@ -54,6 +54,46 @@ public final class OjbUtil {
         throw new UnsupportedOperationException("do not call");
     }
 
+    /**
+     * Starting with a root class, get the entire tree of mapped objects including collections and references.
+     * Cycles are correctly handled.
+     *
+     * @param rootClass the top level class to start with.
+     * @return a collection of classes to process
+     */
+    public static Collection<String> getMappedTree(String rootClass, Collection<DescriptorRepository> descriptorRepositories) {
+        final Set<String> processed = new HashSet<String>();
+        getMappedTree(rootClass, descriptorRepositories, processed);
+        return processed;
+    }
+
+    private static void getMappedTree(String rootClass, Collection<DescriptorRepository> descriptorRepositories, Set<String> processed) {
+        if (processed.contains(rootClass)) {
+            return;
+        }
+
+        processed.add(rootClass);
+        final ClassDescriptor cd = findClassDescriptor(rootClass, descriptorRepositories);
+        if (cd != null) {
+            final Collection<ObjectReferenceDescriptor> ords = cd.getObjectReferenceDescriptors();
+            if (ords != null) {
+                for (ObjectReferenceDescriptor ord : ords) {
+                    getMappedTree(ord.getItemClassName(), descriptorRepositories, processed);
+                }
+            }
+
+            final Collection<CollectionDescriptor> clds = cd.getCollectionDescriptors();
+            if (clds != null) {
+                for (ObjectReferenceDescriptor cld : clds) {
+                    getMappedTree(cld.getItemClassName(), descriptorRepositories, processed);
+                }
+            }
+
+        } else {
+            LOG.warn("ClassDescriptor not found for " + rootClass);
+        }
+    }
+
     public static boolean isMappedColumn(String clazz, String fieldName, Collection<DescriptorRepository> descriptorRepositories) {
         final ClassDescriptor cd = findClassDescriptor(clazz, descriptorRepositories);
         if (cd != null) {
@@ -81,8 +121,12 @@ public final class OjbUtil {
     public static ClassDescriptor findClassDescriptor(String clazz, Collection<DescriptorRepository> descriptorRepositories) {
         for (DescriptorRepository dr : descriptorRepositories) {
             ClassDescriptor cd = (ClassDescriptor) dr.getDescriptorTable().get(clazz);
+
             if (cd != null) {
-                return cd;
+                //handle extends.  don't return class descriptor for extent classes
+                if (cd.getExtentClassNames() == null || cd.getExtentClassNames().isEmpty()) {
+                    return cd;
+                }
             }
         }
         return null;

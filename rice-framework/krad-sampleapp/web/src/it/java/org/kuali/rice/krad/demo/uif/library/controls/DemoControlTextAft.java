@@ -42,7 +42,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
     /**
      * //div[@id='Demo-TextControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/a[@title='Expand']
      */
-    private static final String EXPAND_TXT_FIELD_XPATH = "//div[@id='Demo-TextControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/a[@title='Expand']";
+    private static final String EXPAND_TXT_FIELD_XPATH = "//a[@title='Expand']";
     
     /**
      * //div[@id='Demo-TextControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField4' and @disabled='disabled']

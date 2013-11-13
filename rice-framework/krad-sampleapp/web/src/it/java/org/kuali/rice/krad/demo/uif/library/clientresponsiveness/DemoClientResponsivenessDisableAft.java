@@ -18,6 +18,8 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -74,13 +76,15 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
         selectByName("exampleShown","On keyup");
         waitAndTypeByName("inputField13","disable");
         assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']");
+        fireEvent("inputField13", "blur");
         waitAndClickByLinkText("Usage");
         assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']");
      }
     
     protected void testClientResponsivenessDisableInCollections() throws Exception {
         selectByName("exampleShown","In Collections");
-        assertElementPresentByXpath("//input[@class='uif-textControl ignoreValid']");
+        WebElement element = findElement(By.name("newCollectionLines['collection1'].field2"));
+        assertTrue(element.getAttribute("class").contains("ignoreValid"));
         selectByName("newCollectionLines['collection1'].field1","Disable");
         Thread.sleep(1000);
         assertElementPresentByXpath("//input[@disabled]");
@@ -89,10 +93,12 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
     protected void testClientResponsivenessDisableColl() throws Exception {
         selectByName("exampleShown","Coll. SpringEL Functions");
         waitAndClickByXpath("//input[@name='checkboxesField2' and @value='1']");
-        assertElementPresentByXpath("//input[@name='inputField20' and @class='uif-textControl disabled']");
+        WebElement element = findElement(By.name("inputField20"));
+        assertTrue(element.getAttribute("class").contains("disabled"));
         waitAndClickByXpath("//input[@name='checkboxesField2' and @value='2']");
         waitAndClickByXpath("//input[@name='checkboxesField2' and @value='3']");
-        assertElementPresentByXpath("//input[@name='inputField21' and @class='uif-textControl disabled']");
+        element = findElement(By.name("inputField21"));
+        assertTrue(element.getAttribute("class").contains("disabled"));
      }
     
     @Test

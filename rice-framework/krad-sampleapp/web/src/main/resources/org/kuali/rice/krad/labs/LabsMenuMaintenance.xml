@@ -68,7 +68,7 @@
             <property name="items">
               <list>
                 <bean parent="Uif-Link" p:linkText="Maintenance Sample - Basic"
-                   p:href="approval?methodToCall=docHandler&amp;command=initiate&amp;docTypeName=TravelAuthorization"/>
+                   p:href="maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
                 <bean parent="Uif-Message" p:messageText="Basic Maintenance Document"/>
               </list>
             </property>

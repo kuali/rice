@@ -36,7 +36,7 @@ public class JoinColumnsResolver extends AbstractJoinColumnResolver {
     protected NodeData getAnnotationNodes(String enclosingClass, String fieldName, String mappedClass) {
         final List<Expression> joinColumns = getJoinColumns(enclosingClass, fieldName, mappedClass);
         if (joinColumns != null && joinColumns.size() > 1) {
-            final Comment fixme = new BlockComment("\nFIXME:\n"
+            final Comment fixme = new BlockComment("\nFIXME: JPA_CONVERSION\n"
                     + "For compound primary keys, make sure the join columns are in the correct order.\n");
             AnnotationExpr
                     annotation = new SingleMemberAnnotationExpr(new NameExpr(SIMPLE_NAME), new ArrayInitializerExpr(joinColumns));

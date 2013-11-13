@@ -40,6 +40,8 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
+import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.FormView;
@@ -530,6 +532,7 @@ public class LookupView extends FormView {
      *
      * @return List of components to render as the lookup criteria
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "criteriaFields", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getCriteriaFields() {
         return this.criteriaFields;
@@ -560,6 +563,7 @@ public class LookupView extends FormView {
      *
      * @return group instance that will hold the search criteria fields
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "criteriaGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getCriteriaGroup() {
         return this.criteriaGroup;
@@ -582,6 +586,7 @@ public class LookupView extends FormView {
      *
      * @return List of components to render in the results group
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "resultFields", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getResultFields() {
         return this.resultFields;
@@ -612,6 +617,7 @@ public class LookupView extends FormView {
      *
      * @return collection group instance to render for the lookup results
      */
+    @NoLifecycle
     @BeanTagAttribute(name = "resultsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroup getResultsGroup() {
         return this.resultsGroup;
@@ -759,6 +765,7 @@ public class LookupView extends FormView {
      *
      * @return field group instance to use for creating range field groups
      */
+    @LifecyclePrototype
     public FieldGroup getRangeFieldGroupPrototype() {
         return rangeFieldGroupPrototype;
     }
@@ -776,6 +783,7 @@ public class LookupView extends FormView {
      *
      * @return message instance for range field group
      */
+    @LifecyclePrototype
     public Message getRangedToMessage() {
         return rangedToMessage;
     }

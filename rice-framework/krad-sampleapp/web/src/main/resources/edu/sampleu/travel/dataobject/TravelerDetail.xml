@@ -30,7 +30,7 @@
         <ref bean="TravelerDetail-id" />
         <ref bean="TravelerDetail-documentNumber" />
         <ref bean="TravelerDetail-principalId" />
-        <ref bean="TravelerDetail-firstName" />
+        <ref bean="TravelerDetail-firstNameLastName" />
         <ref bean="TravelerDetail-middleName" />
         <ref bean="TravelerDetail-lastName" />
         <ref bean="TravelerDetail-streetAddressLine1" />
@@ -92,15 +92,16 @@
     </property>
   </bean>
 
-  <bean id="TravelerDetail-firstName" parent="TravelerDetail-firstName-parentBean" />
-  <bean id="TravelerDetail-firstName-parentBean" parent="AttributeDefinition">
+  <bean id="TravelerDetail-firstNameLastName" parent="TravelerDetail-firstNameLast-parentBean" />
+  <bean id="TravelerDetail-firstNameLast-parentBean" parent="AttributeDefinition">
     <property name="name" value="firstName" />
-    <property name="label" value="First Name" />
-    <property name="shortLabel" value="First Name" />
+    <property name="additionalDisplayAttributeName" value="lastName"/>
+    <property name="label" value="First and Last Name (additionalDisplayAttributeName example)" />
+    <property name="shortLabel" value="First and Last Name" />
     <property name="maxLength" value="40" />
     <property name="required" value="false" />
-    <property name="summary" value="First Name" />
-    <property name="description" value="First Name" />
+    <property name="summary" value="First and Last Name" />
+    <property name="description" value="First and Last Name" />
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40" />
     </property>

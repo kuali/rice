@@ -85,7 +85,7 @@
             <list>
               <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelExpenseItem&amp;travelExpenseItemId=10000"/>
-              <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting (Partial Attribute Masking)" p:target="_self"
+              <bean parent="Uif-Link" p:linkText="Inquiry - AttributionDefinition Formatting (Partial Attribute Masking, Additional Display Attribute Name)" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;id=1&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail"/>
             </list>
           </property>

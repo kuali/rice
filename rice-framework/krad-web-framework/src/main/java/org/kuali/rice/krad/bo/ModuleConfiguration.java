@@ -20,7 +20,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.config.BasicModuleConfiguration;
+import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.Provider;
+import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,6 +30,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import javax.persistence.EntityManager;
+
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -103,6 +106,8 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
 
 	protected Object persistenceService;
 
+	protected ProviderRegistry providerRegistry;
+	
     /**
      * the implementation of the data dictionary service to use for this module.
      */
@@ -154,10 +159,11 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
         loadOjbRepositoryFiles();
 
         if ( getProviders() != null ) {
-            if ( KradDataServiceLocator.getProviderRegistry() != null ) {
+            ProviderRegistry providerRegistry = getProviderRegistry();
+            if ( providerRegistry != null ) {
                 for ( Provider provider : getProviders() ) {
                     LOG.info( "Registering data module provider for module with " + getNamespaceCode() + ": " + provider);
-                    KradDataServiceLocator.getProviderRegistry().registerProvider(provider);
+                    providerRegistry.registerProvider(provider);
                 }
             } else {
                 LOG.error( "Provider registry not initialized.  Data module provider configuration will be incomplete. (" + getNamespaceCode() + ")" );
@@ -381,6 +387,24 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
 	}
 
 	/**
+     * @return the providerRegistry
+     */
+    public ProviderRegistry getProviderRegistry() {
+        if (this.providerRegistry == null) {
+            this.providerRegistry = KradDataServiceLocator.getProviderRegistry();
+        }
+        
+        return this.providerRegistry;
+    }
+
+    /**
+     * @param providerRegistry the providerRegistry to set
+     */
+    public void setProviderRegistry(ProviderRegistry providerRegistry) {
+        this.providerRegistry = providerRegistry;
+    }
+
+    /**
 	 * @return the persistenceService
 	 */
     @Deprecated

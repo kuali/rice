@@ -187,11 +187,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testComponentLibrary() throws Throwable {
+    public void testComponentLibraryHome() throws Throwable {
         KradSampleAppForm form = new KradSampleAppForm();
         testFormView(form, "ComponentLibraryHome");
     }
-
+    
     @Test
     public void testPerformanceMediumAll() throws Throwable {
         KradLabsForm form = new KradLabsForm();

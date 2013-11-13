@@ -51,6 +51,7 @@
 	 			<entry key="demo">
  					<list>
 	 					<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/components/KradSampleAppDemo.xml</value>
+	 					<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoNavigationGroup.xml</value>
 	 				</list>
 	 			</entry>
 	 			<entry key="labs">

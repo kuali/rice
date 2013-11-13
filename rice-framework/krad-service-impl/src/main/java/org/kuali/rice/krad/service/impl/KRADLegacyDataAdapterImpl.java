@@ -114,7 +114,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> T saveDocument(T document) {
-        return dataObjectService.save(document, PersistenceOption.FLUSH);
+        return dataObjectService.save(document, PersistenceOption.LINK, PersistenceOption.FLUSH);
     }
 
     @Override

@@ -21,21 +21,28 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="KradMaintenanceSample" parent="KradSampleAppView">
+  <bean id="KradMaintenanceSample-PageR1C1" parent="KradSampleAppView">
     <property name="cssClasses">
       <list merge="true">
         <value>demo-MaintenanceSampleView</value>
       </list>
     </property>
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Basic New"/>
     <property name="page.items">
       <list>
-        <bean id="KradMaintenanceSampleItems" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+        <bean id="KradMaintenanceSampleItems-PageR1C1" parent="Uif-VerticalBoxSection"
+              p:headerText="Maintenance Sample - Basic"
+              p:instructionalText="A simple maintenance document that allows the user to maintain Travel Company
+              records.  Each link has a different methodToCall parameter which allows for creating, editing and copying
+              records.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic New"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Edit"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Copy"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceCopy&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>
@@ -44,21 +51,15 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR1C2" parent="KradSampleAppView">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>demo-MaintenanceSampleView</value>
-      </list>
-    </property>
     <property name="page.headerText" value="Sample"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR1C2" parent="Uif-VerticalBoxSection"
-                p:headerText="Demo of a sample maintenance page"
-                p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a sample maintenance page"
+              p:instructionalText="This is a placeholder content to replaced">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Sample - Basic"
-                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+
             </list>
           </property>
         </bean>

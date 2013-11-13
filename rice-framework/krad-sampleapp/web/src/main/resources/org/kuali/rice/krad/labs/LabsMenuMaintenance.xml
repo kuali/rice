@@ -68,27 +68,27 @@
             <property name="items">
               <list>
                 <bean parent="Uif-Link" p:linkText="Maintenance Sample - Basic"
-                   p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
-                <bean parent="Uif-Message" p:messageText="Basic Maintenance Document"/>
+                      p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR1C1"/>
+                <bean parent="Uif-Message" p:messageText="Simple maintenance documents for creating, editing and
+                 copying a record."/>
               </list>
             </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row1-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceNew">
+              p:dataAttributes="type:maintenanceEdit" p:render="false">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Sample - 2"
+              <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
                     p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR1C2"/>
               <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
             </list>
           </property>
         </bean>
-
         <bean id="LabsMenuMaintenance-Row1-Col3" parent="KradSampleAppDemo-DemoGroup"
               p:dataAttributes="type:maintenanceEdit" p:render="false">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Sample - 3"
+              <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
                     p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR1C3"/>
               <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
             </list>

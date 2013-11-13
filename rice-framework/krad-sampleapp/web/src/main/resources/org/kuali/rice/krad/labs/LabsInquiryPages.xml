@@ -147,6 +147,8 @@
             <list>
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with Authorizer configured" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-Authorizer&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with Component Security and Attribute Security configured on the view." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-Authorizer&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
             </list>
           </property>
         </bean>
@@ -162,6 +164,7 @@
             <list>
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with Authorizer configured" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-PresentationController&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
+
             </list>
           </property>
         </bean>

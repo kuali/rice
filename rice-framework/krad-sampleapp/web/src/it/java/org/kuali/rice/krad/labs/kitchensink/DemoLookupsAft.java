@@ -67,7 +67,7 @@ public class DemoLookupsAft extends DemoKitchenSinkBase {
     	gotoIframeByXpath(IFRAME_XPATH);
     	waitAndClickByXpath(SEARCH_BTN_XPATH);
     	waitAndClickLinkContainingText("return value","");
-    	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/fieldset/div/span/a");
+    	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
     	gotoIframeByXpath(IFRAME_XPATH); 
     	waitAndClickByXpath(SEARCH_BTN_XPATH);
     	waitAndClickLinkContainingText("return value","");

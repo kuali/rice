@@ -44,6 +44,8 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneTo
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OneToOneResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.OrderByResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.PortableSequenceGeneratorResolver;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.PrimaryKeyJoinColumnResolver;
+import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.PrimaryKeyJoinColumnsResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.ResolverUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TableResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TemporalResolver;
@@ -84,6 +86,8 @@ public class EntityVisitor extends OjbDescriptorRepositoryAwareVisitor {
         annotations.add(new IdResolver(getDescriptorRepositories()));
         annotations.add(new OneToOneResolver(getDescriptorRepositories()));
         annotations.add(new OneToManyResolver(getDescriptorRepositories()));
+        annotations.add(new PrimaryKeyJoinColumnResolver(getDescriptorRepositories()));
+        annotations.add(new PrimaryKeyJoinColumnsResolver(getDescriptorRepositories()));
         annotations.add(new ManyToOneResolver(getDescriptorRepositories()));
         annotations.add(new ManyToManyResolver(getDescriptorRepositories()));
         annotations.add(new JoinTableResolver(getDescriptorRepositories()));

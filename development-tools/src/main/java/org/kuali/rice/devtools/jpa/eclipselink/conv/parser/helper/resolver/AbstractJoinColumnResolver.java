@@ -68,6 +68,9 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
                 final FieldDescriptor[] ipfds = icd.getPkFields();
                 for (int i = 0; i < pfds.length; i++) {
                     final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
+
+                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfds[i].getColumnName())));
+                    pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ipfds[i].getColumnName())));
                     if (!isAnonymousFk(pfds[i])) {
                         pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
                         pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
@@ -76,9 +79,6 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
                     if (!isNullableFk(pfds[i])) {
                         pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
                     }
-
-                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfds[i].getColumnName())));
-                    pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ipfds[i].getColumnName())));
                     joinColumns.add(new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs));
                 }
             }

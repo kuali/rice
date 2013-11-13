@@ -150,6 +150,7 @@
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>
+        <bean parent="Uif-InputField" p:propertyName="travelCompanyName" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="travelExpenseTypeCd" p:required="true">
           <property name="control">
             <bean parent="Uif-DropdownControl"/>

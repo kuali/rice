@@ -375,7 +375,7 @@
     color: black;
 }
 
-.demo-noTabs > div.ui-tabs > ul.ui-tabs-nav {
+.demo-noTabs > div.ui-tabs > ul.nav-tabs {
     display: none;
 }
 
@@ -401,7 +401,7 @@
     display: none;
 }
 
-.demo-xLargeLibraryView .demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel{
+.demo-xLargeLibraryView .demo-noTabs > #ComponentLibrary-TabGroup_tabs > [role="tabpanel"]{
     width: 916px;
 }
 

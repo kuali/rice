@@ -136,6 +136,8 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<UITestObject> emptyCollection1 = new ArrayList<UITestObject>();
     private List<UITestObject> emptyCollection2 = new ArrayList<UITestObject>();
 
+    private List<UITestObject> names = new ArrayList<UITestObject>();
+
     private Tree<String, String> tree1 = new Tree<String, String>();
     private Tree<UITestObject, String> tree2 = new Tree<UITestObject, String>();
 
@@ -313,6 +315,11 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "BBB123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "CCC123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "DDD123", "2"));
+
+        names.add(new UITestObject("Jack", "", "", ""));
+        names.add(new UITestObject("Joe", "", "", ""));
+        names.add(new UITestObject("John", "", "", ""));
+        names.add(new UITestObject("Jim", "", "", ""));
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -923,6 +930,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDoubleGroupedCollection(List<UITestObject> doubleGroupedCollection) {
         this.doubleGroupedCollection = doubleGroupedCollection;
+    }
+
+    public List<UITestObject> getNames() {
+        return names;
+    }
+
+    public void setNames(List<UITestObject> names) {
+        this.names = names;
     }
 
     public List<UITestObject> getEmptyCollection() {

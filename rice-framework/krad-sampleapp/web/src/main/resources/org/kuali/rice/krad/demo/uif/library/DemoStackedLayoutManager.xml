@@ -34,6 +34,7 @@
         <ref bean="Demo-StackedLayoutManager-Example3"/>
         <ref bean="Demo-StackedLayoutManager-Example4"/>
         <ref bean="Demo-StackedLayoutManager-Example5"/>
+        <ref bean="Demo-StackedLayoutManager-Example6"/>
       </list>
     </property>
   </bean>
@@ -303,6 +304,32 @@
           </property>
         </bean>
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-StackedLayoutManager-Example6" parent="Uif-VerticalBoxSection" p:headerText="Stacked List">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-StackedLayoutManager-Example6 start-->
+        <bean parent="Uif-ListCollectionSubSection">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="names"/>
+          <property name="renderAddBlankLineButton" value="true"/>
+          <property name="addLinePlacement" value="BOTTOM"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1">
+                <property name="postInputAddons">
+                  <list>
+                    <bean parent="Uif-DeleteLineAction" p:wrapperCssClasses="input-group-btn"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-StackedLayoutManager-Example6 end-->
       </list>
     </property>
   </bean>

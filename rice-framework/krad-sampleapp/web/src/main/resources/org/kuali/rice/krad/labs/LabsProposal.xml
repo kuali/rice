@@ -60,6 +60,11 @@
         <value>css/labsProposal.css</value>
       </list>
     </property>
+    <property name="dialogs">
+      <list>
+        <ref bean="LabsProposal-wizard"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="LabsProposal-Menu" parent="Uif-MenuNavigationGroup">
@@ -68,9 +73,9 @@
         <bean parent="Uif-SidebarToggleMenu" p:toggleText="Basics" p:iconClass="icon-file-alt">
           <property name="menuItems">
             <list>
-              <bean parent="Uif-MenuAction" p:actionLabel="Proposal Details" p:actionScript="alert('Menu Script');"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Proposal Details" p:methodToCall="refresh"/>
               <bean parent="Uif-MenuAction" p:actionLabel="S2S Opportunity Search"
-                    p:actionScript="alert('Menu Script');"/>
+                    p:methodToCall="refresh"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Delivery Info" p:actionScript="alert('Menu Script');"/>
               <bean parent="Uif-MenuAction" p:actionLabel="Sponsor &amp; Program Information"
                     p:actionScript="alert('Menu Script');"/>
@@ -251,11 +256,13 @@
           </property>
         </bean>
 
-        <bean parent="LabsProposal-StackedSection"/>
+        <ref bean="LabsProposal-StackedSection"/>
 
         <ref bean="LabsProposal-Dialogs"/>
 
         <ref bean="LabsProposal-Buttons"/>
+
+        <ref bean="LabsProposal-AddList"/>
 
       </list>
     </property>
@@ -359,213 +366,197 @@
     </property>
   </bean>
 
+  <!--<bean id="LabsProposal-wizard" parent="Uif-CssGridGroup"-->
+        <!--class="org.kuali.rice.krad.labs.WizardGroup"-->
+        <!--p:resetDataOnRefresh="true" p:retrieveViaAjax="true">-->
+    <!--<property name="header">-->
+      <!--<bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>-->
+    <!--</property>-->
+    <!--<property name="items">-->
+      <!--<list>-->
+        <!--<bean parent="Uif-CssGridSection">-->
+          <!--<property name="items">-->
+            <!--<list>-->
+              <!--<bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"-->
+                    <!--p:propertyName="field10" p:label="Search for">-->
+                <!--<property name="control">-->
+                  <!--<bean parent="Uif-VerticalRadioControl">-->
+                    <!--<property name="options">-->
+                      <!--<list>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="E" p:value="Employees"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="N" p:value="Non-employees"/>-->
+                      <!--</list>-->
+                    <!--</property>-->
+                  <!--</bean>-->
+                <!--</property>-->
+              <!--</bean>-->
+              <!--<bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Enter Known Details">-->
+                <!--<property name="items">-->
+                  <!--<list>-->
+                    <!--<bean parent="Uif-InputField" p:label="Last name"-->
+                          <!--p:propertyName="field11">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-TextControl"/>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                    <!--<bean parent="Uif-InputField" p:label="First name"-->
+                          <!--p:propertyName="field12">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-TextControl"/>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                    <!--<bean parent="Uif-InputField" p:label="Username"-->
+                          <!--p:propertyName="field13">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-TextControl"/>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                    <!--<bean parent="Uif-InputField" p:label="Email address"-->
+                          <!--p:propertyName="field14">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-TextControl" p:watermarkText="user@domain.com"/>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                    <!--<bean parent="Uif-InputField" p:label="Office phone"-->
+                          <!--p:propertyName="field15">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-TextControl"/>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                  <!--</list>-->
+                <!--</property>-->
+              <!--</bean>-->
+            <!--</list>-->
+          <!--</property>-->
+          <!--<property name="footer">-->
+              <!--<bean parent="Uif-FooterBase">-->
+                  <!--<property name="items">-->
+                      <!--<list>-->
+                          <!--<bean parent="Uif-PrimaryActionButton"-->
+                                <!--p:actionLabel="Continue..."-->
+                                <!--p:refreshId="LabsProposal-wizard"-->
+                                <!--p:methodToCall="refresh"-->
+                                <!--p:actionParameters="LabsProposal-wizard.step:1"/>-->
+                      <!--</list>-->
+                  <!--</property>-->
+              <!--</bean>-->
+          <!--</property>-->
+        <!--</bean>-->
+        <!--<bean parent="Uif-CssGridGroup">-->
+          <!--<property name="items">-->
+            <!--<list>-->
+              <!--<bean parent="Uif-TableCollectionSection"-->
+                    <!--p:headerText="Search Results"-->
+                    <!--p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"-->
+                    <!--p:additionalCssClasses="kc-personnel-table"-->
+                    <!--p:propertyName="list1" p:renderAddLine="false" p:renderLineActions="false"-->
+                    <!--p:layoutManager.renderSequenceField="false">-->
+                <!--<property name="layoutManager.richTable.templateOptions">-->
+                  <!--<map>-->
+                    <!--<entry key="bAutoWidth" value="false"/>-->
+                    <!--<entry key="sDom" value="tip"/>-->
+                    <!--<entry key="bRetrieve" value="true"/>-->
+                    <!--<entry key="sPaginationType" value="full_numbers"/>-->
+                    <!--<entry key="aaSorting" value="[[1,'asc']]"/>-->
+                    <!--<entry key="aoColumnDefs"-->
+                           <!--value="[{'sWidth' : '20px', 'bSortable':false, 'aTargets' : [0]}]"/>-->
+                  <!--</map>-->
+                <!--</property>-->
+                <!--<property name="items">-->
+                  <!--<list>-->
+                    <!--<bean parent="Uif-InputField" p:propertyName="field1" p:label="" p:readOnly="false">-->
+                      <!--<property name="control">-->
+                        <!--<bean parent="Uif-VerticalRadioControl">-->
+                          <!--<property name="options">-->
+                            <!--<list>-->
+                              <!--<bean parent="Uif-KeyLabelPair" p:key="Y" p:value=""/>-->
+                            <!--</list>-->
+                          <!--</property>-->
+                        <!--</bean>-->
+                      <!--</property>-->
+                    <!--</bean>-->
+                    <!--<bean parent="Uif-InputField" p:propertyName="field2" p:label="Name" p:readOnly="true"/>-->
+                    <!--<bean parent="Uif-InputField" p:propertyName="field3" p:label="User ID" p:readOnly="true"/>-->
+                  <!--</list>-->
+                <!--</property>-->
+              <!--</bean>-->
+            <!--</list>-->
+          <!--</property>-->
+          <!--<property name="footer">-->
+              <!--<bean parent="Uif-FooterBase">-->
+                  <!--<property name="items">-->
+                      <!--<list>-->
+                          <!--<bean parent="Uif-PrimaryActionButton"-->
+                                <!--p:actionLabel="Go back"-->
+                                <!--p:refreshId="LabsProposal-wizard"-->
+                                <!--p:methodToCall="refresh"-->
+                                <!--p:actionParameters="LabsProposal-wizard.step:0">-->
+                          <!--</bean>-->
+                          <!--<bean parent="Uif-PrimaryActionButton"-->
+                                <!--p:actionLabel="Continue..."-->
+                                <!--p:refreshId="LabsProposal-wizard"-->
+                                <!--p:methodToCall="refresh"-->
+                                <!--p:actionParameters="LabsProposal-wizard.step:2"/>-->
+                      <!--</list>-->
+                  <!--</property>-->
+              <!--</bean>-->
+          <!--</property>-->
+        <!--</bean>-->
+        <!--<bean parent="Uif-CssGridSection">-->
+          <!--<property name="items">-->
+            <!--<list>-->
+              <!--<bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"-->
+                    <!--p:propertyName="field20" p:label="Assign a role">-->
+                <!--<property name="control">-->
+                  <!--<bean parent="Uif-VerticalRadioControl">-->
+                    <!--<property name="options">-->
+                      <!--<list>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="1" p:value="Principal Investigator/Contact"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="2" p:value="Co-Principal Investigator"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="3" p:value="Key Person"/>-->
+                      <!--</list>-->
+                    <!--</property>-->
+                  <!--</bean>-->
+                <!--</property>-->
+              <!--</bean>-->
+              <!--<bean parent="Uif-InputField" p:propertyName="field21">-->
+                <!--<property name="control">-->
+                  <!--<bean parent="Uif-CheckboxControl" p:checked="true"-->
+                        <!--p:checkboxLabel="Yes, include in this proposal's budget"/>-->
+                <!--</property>-->
+              <!--</bean>-->
+            <!--</list>-->
+          <!--</property>-->
+          <!--<property name="footer">-->
+              <!--<bean parent="Uif-FooterBase">-->
+                  <!--<property name="items">-->
+                      <!--<list>-->
+                          <!--<bean parent="Uif-PrimaryActionButton"-->
+                                <!--p:actionLabel="Go back"-->
+                                <!--p:refreshId="LabsProposal-wizard"-->
+                                <!--p:methodToCall="refresh"-->
+                                <!--p:actionParameters="LabsProposal-wizard.step:0">-->
+                          <!--</bean>-->
+                          <!--<bean parent="Uif-PrimaryActionButton"-->
+                                <!--p:actionLabel="Continue..."-->
+                                <!--p:refreshId="LabsProposal-wizard"-->
+                                <!--p:methodToCall="refresh"-->
+                                <!--p:actionParameters="LabsProposal-wizard.step:2"/>-->
+                      <!--</list>-->
+                  <!--</property>-->
+              <!--</bean>-->
+          <!--</property>-->
+        <!--</bean>-->
+      <!--</list>-->
+    <!--</property>-->
+  <!--</bean>-->
+
   <!-- dialogs -->
   <bean id="LabsProposal-Dialogs" parent="Uif-CssGridGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 1"
-              p:actionScript="showLightboxComponent('LabsProposal-Dialog1')"/>
-        <bean id="LabsProposal-Dialog1" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
-          <property name="header">
-
-            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
-
-          </property>
-          <property name="items">
-            <list>
-              <bean parent="Uif-CssGridSection">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
-                          p:propertyName="field10" p:label="Search for">
-                      <property name="control">
-                        <bean parent="Uif-VerticalRadioControl">
-                          <property name="options">
-                            <list>
-                              <bean parent="Uif-KeyLabelPair" p:key="E" p:value="Employees"/>
-                              <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Non-employees"/>
-                            </list>
-                          </property>
-                        </bean>
-                      </property>
-                    </bean>
-                    <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Enter Known Details">
-                      <property name="items">
-                        <list>
-                          <bean parent="Uif-InputField" p:label="Last name"
-                                p:propertyName="field11">
-                            <property name="control">
-                              <bean parent="Uif-TextControl"/>
-                            </property>
-                          </bean>
-                          <bean parent="Uif-InputField" p:label="First name"
-                                p:propertyName="field12">
-                            <property name="control">
-                              <bean parent="Uif-TextControl"/>
-                            </property>
-                          </bean>
-                          <bean parent="Uif-InputField" p:label="Username"
-                                p:propertyName="field13">
-                            <property name="control">
-                              <bean parent="Uif-TextControl"/>
-                            </property>
-                          </bean>
-                          <bean parent="Uif-InputField" p:label="Email address"
-                                p:propertyName="field14">
-                            <property name="control">
-                              <bean parent="Uif-TextControl" p:watermarkText="user@domain.com"/>
-                            </property>
-                          </bean>
-                          <bean parent="Uif-InputField" p:label="Office phone"
-                                p:propertyName="field15">
-                            <property name="control">
-                              <bean parent="Uif-TextControl"/>
-                            </property>
-                          </bean>
-                        </list>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-                <property name="footer">
-                  <bean parent="Uif-FooterBase">
-                    <property name="items">
-                      <list>
-                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
-                              p:actionScript="alert('Button');"/>
-                      </list>
-                    </property>
-                  </bean>
-                </property>
-              </bean>
-
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 2"
-              p:actionScript="showLightboxComponent('LabsProposal-Dialog2')"/>
-
-        <bean id="LabsProposal-Dialog2" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
-          <property name="header">
-
-            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
-
-          </property>
-          <property name="items">
-            <list>
-              <bean parent="Uif-CssGridGroup">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-TableCollectionSection"
-                          p:headerText="Search Results"
-                          p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"
-                          p:additionalCssClasses="kc-personnel-table"
-                          p:propertyName="list1" p:renderAddLine="false" p:renderLineActions="false"
-                          p:layoutManager.renderSequenceField="false">
-                      <property name="layoutManager.richTable.templateOptions">
-                        <map>
-                          <entry key="bAutoWidth" value="false"/>
-                          <entry key="sDom" value="tip"/>
-                          <entry key="bRetrieve" value="true"/>
-                          <entry key="sPaginationType" value="full_numbers"/>
-                          <entry key="aaSorting" value="[[1,'asc']]"/>
-                          <entry key="aoColumnDefs"
-                                 value="[{'sWidth' : '20px', 'bSortable':false, 'aTargets' : [0]}]"/>
-                        </map>
-                      </property>
-                      <property name="items">
-                        <list>
-                          <bean parent="Uif-InputField" p:propertyName="field1" p:label="" p:readOnly="false">
-                            <property name="control">
-                              <bean parent="Uif-VerticalRadioControl">
-                                <property name="options">
-                                  <list>
-                                    <bean parent="Uif-KeyLabelPair" p:key="Y" p:value=""/>
-                                  </list>
-                                </property>
-                              </bean>
-                            </property>
-                          </bean>
-                          <bean parent="Uif-InputField" p:propertyName="field2" p:label="Name" p:readOnly="true"/>
-                          <bean parent="Uif-InputField" p:propertyName="field3" p:label="User ID" p:readOnly="true"/>
-                        </list>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-                <property name="footer">
-                  <bean parent="Uif-FooterBase">
-                    <property name="items">
-                      <list>
-                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Go back"
-                              p:actionScript="alert('Button');"/>
-                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
-                              p:actionScript="alert('Button');"/>
-                      </list>
-                    </property>
-                  </bean>
-                </property>
-              </bean>
-
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-ActionLink" p:actionLabel="Dialog 3"
-              p:actionScript="showLightboxComponent('LabsProposal-Dialog3')"/>
-
-        <bean id="LabsProposal-Dialog3" parent="Uif-CssGridGroup" p:retrieveViaAjax="true">
-          <property name="header">
-
-            <bean parent="Uif-HeaderOne" p:headerText="Add Personnel"/>
-
-          </property>
-          <property name="items">
-            <list>
-              <bean parent="Uif-CssGridSection">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
-                          p:propertyName="field20" p:label="Assign a role">
-                      <property name="control">
-                        <bean parent="Uif-VerticalRadioControl">
-                          <property name="options">
-                            <list>
-                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Principal Investigator/Contact"/>
-                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Co-Principal Investigator"/>
-                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Key Person"/>
-                            </list>
-                          </property>
-                        </bean>
-                      </property>
-                    </bean>
-                    <bean parent="Uif-InputField" p:propertyName="field21">
-                      <property name="control">
-                        <bean parent="Uif-CheckboxControl" p:checked="true"
-                              p:checkboxLabel="Yes, include in this proposal's budget"/>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-                <property name="footer">
-                  <bean parent="Uif-FooterBase">
-                    <property name="items">
-                      <list>
-                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Go back"
-                              p:actionScript="alert('Button');"/>
-                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..."
-                              p:actionScript="alert('Button');"/>
-                      </list>
-                    </property>
-                  </bean>
-                </property>
-              </bean>
-
-            </list>
-          </property>
-        </bean>
-
+        <bean parent="Uif-ActionLink" p:actionLabel="Wizard"
+              p:actionScript="showLightboxComponent('LabsProposal-wizard')"/>
       </list>
     </property>
   </bean>
@@ -596,6 +587,26 @@
 
         <bean parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Secondary Mini"
               p:iconClass="icon-plus" p:actionScript="alert('button clicked');"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsProposal-AddList" parent="Uif-ListCollectionSubSection" p:headerText="Congressional Districts"
+        p:additionalCssClasses="col-md-2">
+    <property name="collectionObjectClass"
+              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="propertyName" value="list2"/>
+    <property name="renderAddBlankLineButton" value="true"/>
+    <property name="addLinePlacement" value="BOTTOM"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1">
+          <property name="postInputAddons">
+            <list>
+              <bean parent="Uif-DeleteLineAction" p:wrapperCssClasses="input-group-btn"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

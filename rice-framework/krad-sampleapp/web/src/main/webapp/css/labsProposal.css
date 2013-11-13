@@ -39,8 +39,16 @@ input[type="text"], .uif-textAreaControl {
     width: 100%;
 }
 
+.input-group-btn:nth-child(2) > .btn {
+    margin-left: -1px;
+}
+
 .form-inline .form-control {
     display: inline-block;
+}
+
+.form-control {
+    border-radius: 0 !important;
 }
 
 /** add bottom border for view header **/

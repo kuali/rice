@@ -702,11 +702,11 @@ a.inlineBlock, span.inlineBlock {
 /** Block ui plugin customizations ***********************************************************************/
 
 div.blockOverlay {
-  background-color: black;
+  background-color: white;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 60) !important;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)" !important;
-  opacity: .60;
-  -moz-opacity: .60;
+  opacity: 0;
+  -moz-opacity: 0;
   z-index: 10100 !important;
 }
 div.blockElement {
@@ -717,7 +717,7 @@ div.blockElement {
   background-color: white;
   text-align: center;
   color: #000;
-  border: 3px solid #aaa;
+//  border: 3px solid #aaa;
   cursor: wait;
   z-index: 10101 !important;
 }
@@ -729,8 +729,9 @@ div.blockPage {
   left: 35%;
   text-align: center;
   color: #000;
-  border: 3px solid #aaa;
+//  border: 3px solid #aaa;
   background-color: white;
+  opacity: 0.6;
   cursor: wait;
   z-index: 10101 !important;
   padding-bottom: 12px;

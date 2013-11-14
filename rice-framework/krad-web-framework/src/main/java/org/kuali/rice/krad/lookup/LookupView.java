@@ -68,6 +68,9 @@ public class LookupView extends FormView {
     private List<Component> criteriaFields;
     private Group criteriaGroup;
 
+    @RequestParameter
+    private boolean hideCriteriaOnSearch;
+
     private List<Component> resultFields;
     private CollectionGroup resultsGroup;
 
@@ -151,8 +154,12 @@ public class LookupView extends FormView {
             criteriaGroup.getFooter().setRender(false);
         }
 
-        if (!renderLookupCriteria) {
+        if (!renderLookupCriteria || (hideCriteriaOnSearch && lookupForm.isDisplayResults())) {
             criteriaGroup.setRender(false);
+        }
+
+        if (hideCriteriaOnSearch && !lookupForm.isDisplayResults()) {
+            resultsGroup.setRender(false);
         }
 
         boolean returnLinkAllowed = false;
@@ -572,6 +579,14 @@ public class LookupView extends FormView {
         this.criteriaGroup = criteriaGroup;
     }
 
+    public boolean isHideCriteriaOnSearch() {
+        return hideCriteriaOnSearch;
+    }
+
+    public void setHideCriteriaOnSearch(boolean hideCriteriaOnSearch) {
+        this.hideCriteriaOnSearch = hideCriteriaOnSearch;
+    }
+
     /**
      * List of fields that will be rendered for the result collection group, each field will be a column
      * (assuming table layout is used).
@@ -827,6 +842,8 @@ public class LookupView extends FormView {
             List<Component> criteriaFieldsCopy = ComponentUtils.copy(criteriaFields);
             lookupViewCopy.setCriteriaFields(criteriaFieldsCopy);
         }
+
+        lookupViewCopy.setHideCriteriaOnSearch(this.hideCriteriaOnSearch);
 
         if (this.resultFields != null) {
             List<Component> resultFieldsCopy = ComponentUtils.copy(resultFields);

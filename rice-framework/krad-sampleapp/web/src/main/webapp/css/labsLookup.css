@@ -48,11 +48,6 @@ input[type="text"], .uif-textAreaControl {
     border-radius: 0 !important;
 }
 
-/** add bottom border for view header **/
-.uif-viewHeader-contentWrapper {
-    border-bottom: 1px solid #ccc;
-}
-
 .input-group-btn > a {
     display: inline-block;
     border-top: 1px solid #aaa;
@@ -83,7 +78,7 @@ input[type="text"], .uif-textAreaControl {
 
 .uif-viewHeader-contentWrapper .uif-viewHeader {
     margin-top: 0;
-    padding-top: 10px;
+    padding-top: 0px;
 }
 
 .uif-stickyButtonFooter {
@@ -106,10 +101,6 @@ input[type="text"], .uif-textAreaControl {
     padding: 15px;
 }
 
-.uif-lightbox{
-    width: 720px;
-}
-
 .uif-lightbox h1 {
     font-size: 26px;
     margin: 0;
@@ -123,12 +114,11 @@ input[type="text"], .uif-textAreaControl {
     margin: 0;
 }
 
-.uif-lightbox .uif-cssGridLayout {
-    padding: 15px 15px 1px;
-}
-
-.uif-lightbox .uif-cssGridLayout {
+.uif-lightbox .uif-cssGridLayout .uif-cssGridLayout {
     background-color: #FFFFFF;
+    margin-left: -7px;
+    margin-right: -7px;
+    padding: 15px 15px 1px;
 }
 
 .uif-lightbox .uif-footer {
@@ -147,11 +137,34 @@ input[type="text"], .uif-textAreaControl {
     margin-right: 0;
 }
 
+.uif-lightbox .container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uif-lightbox .uif-viewContentWrapper .uif-pageContentWrapper  {
+    padding: 0px;
+    background: white;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+}
+
+.uif-lightbox .uif-viewHeader-contentWrapper {
+    background: #f9f9f9;
+}
+.uif-lightbox .uif-viewHeader-contentWrapper .uif-viewHeader .uif-headerText .uif-headerText-span {
+    font-size: 26px;
+}
+
+
 .fancybox-skin {
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-top: 0 !important;
     padding-bottom: 15px !important;
+    background: #f9f9f9;
 }
 
 .kc-personnel-table .dataTables_filter, .kc-personnel-table .dataTables_length {

@@ -43,6 +43,7 @@ public class UifParameters {
     public static final String FORM_KEY = "formKey";
     public static final String FORM_MANAGER = "formManager";
 	public static final String RENDER_RETURN_LINK = "renderReturnLink";
+    public static final String HIDE_CRITERIA_ON_SEARCH = "hideCriteriaOnSearch";
     public static final String JUMP_TO_ID = "jumpToId";
     public static final String FOCUS_ID = "focusId";
 	public static final String RENDER_LOOKUP_CRITERIA = "renderlookupCriteria";

@@ -40,7 +40,7 @@
       <bean parent="Uif-LookupPage"/>
     </property>
     <property name="footer">
-      <bean parent="Uif-FooterBase"/>
+      <bean parent="Uif-LookupView-Footer"/>
     </property>
     <property name="criteriaGroup">
       <bean parent="Uif-LookupCriteriaGroup"/>
@@ -65,6 +65,25 @@
     <property name="additionalScriptFiles">
       <list>
         <value>krad/scripts/krad.lookup.js</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-LookupView-Footer" parent="Uif-FooterBase" p:render="@{#view.hideCriteriaOnSearch}">
+    <property name="items">
+      <list>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="refresh" p:actionLabel="Refine Search"
+              p:additionalSubmitData="displayResults:false" p:iconClass="icon-chevron-left" p:ajaxSubmit="false"
+              p:render="@{displayResults}"/>
+        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"
+              p:render="@{!renderedInLightBox and displayResults}"/>
+        <bean parent="Uif-ActionLink" p:actionLabel="Close" p:render="@{renderedInLightBox and displayResults}"
+              p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
+              p:refreshId="uLookupCriteria" p:render="@{!displayResults}" p:ajaxSubmit="false"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"
+              p:render="@{!displayResults}"/>
       </list>
     </property>
   </bean>
@@ -109,7 +128,7 @@
     <property name="fieldBindingObjectPath" value="lookupCriteria"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
-      <bean parent="Uif-LookupCriteriaFooter"/>
+      <bean parent="Uif-LookupCriteriaFooter" p:render="@{!#view.hideCriteriaOnSearch}"/>
     </property>
   </bean>
 
@@ -209,9 +228,10 @@
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
-              p:refreshId="uLookupCriteria"/>
+              p:refreshId="uLookupCriteria" p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
               p:render="@{!#form.renderedInLightBox}"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"

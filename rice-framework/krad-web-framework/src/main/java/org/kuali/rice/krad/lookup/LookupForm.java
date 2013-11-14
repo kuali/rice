@@ -53,6 +53,7 @@ public class LookupForm extends UifFormBase {
     private Map<String, String> lookupCriteria;
 
     private Collection<?> lookupResults;
+    private boolean displayResults;
 
     public LookupForm() {
         super();
@@ -336,4 +337,11 @@ public class LookupForm extends UifFormBase {
         this.lookupResults = lookupResults;
     }
 
+    public boolean isDisplayResults() {
+        return displayResults;
+    }
+
+    public void setDisplayResults(boolean displayResults) {
+        this.displayResults = displayResults;
+    }
 }

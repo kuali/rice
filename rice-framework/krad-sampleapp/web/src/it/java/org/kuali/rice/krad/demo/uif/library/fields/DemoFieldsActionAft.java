@@ -1,3 +1,18 @@
+/*
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.apache.commons.io.IOUtils;
@@ -145,7 +160,7 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         alertAccept();
 
-        assertElementPresent("#" + imageBottomFieldId + " span.topBottomSpan img[src='/krad/images/searchicon.png']");
+        assertElementPresent("#" + imageBottomFieldId + " span.topBottomSpan img[src*='searchicon.png']");
         Node topFieldText = (Node) xPathFactory.evaluate(
                 "//button[@id='" + imageBottomFieldId + "']/text()[contains(., 'Image BOTTOM')]", document,
                 XPathConstants.NODE);
@@ -154,7 +169,7 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
             fail("Image is not on the bottom of the text");
         }
 
-        assertElementPresent("#" + imageTopFieldId + " span.topBottomSpan img[src='/krad/images/searchicon.png']");
+        assertElementPresent("#" + imageTopFieldId + " span.topBottomSpan img[src*='searchicon.png']");
         Node bottomFieldText = (Node) xPathFactory.evaluate(
                 "//button[@id='" + imageTopFieldId + "']/text()[contains(., 'Image TOP')]", document,
                 XPathConstants.NODE);
@@ -187,11 +202,11 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
 
     protected void testActionFieldExamples() throws Exception {
         testActionFieldDefault();
-        testActionFieldPresubmit();
         testActionFieldSuccessCallback();
         testActionFieldValidation();
         testActionFieldImages();
         testActionFieldButtons();
+        testActionFieldPresubmit();
     }
 
     @Test
@@ -203,78 +218,6 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
     @Test
     public void testActionFieldExamplesNav() throws Exception {
         testActionFieldExamples();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldDefaultBookmark() throws Exception {
-        testActionFieldDefault();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldDefaultNav() throws Exception {
-        testActionFieldDefault();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldPresubmitBookmark() throws Exception {
-        testActionFieldPresubmit();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldPresubmitNav() throws Exception {
-        testActionFieldPresubmit();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldSuccessCallbackBookmark() throws Exception {
-        testActionFieldSuccessCallback();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldSuccessCallbackNav() throws Exception {
-        testActionFieldSuccessCallback();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldValidationBookmark() throws Exception {
-        testActionFieldValidation();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldValidationNav() throws Exception {
-        testActionFieldValidation();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldImagesBookmark() throws Exception {
-        testActionFieldImages();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldImagesNav() throws Exception {
-        testActionFieldImages();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldButtonsBookmark() throws Exception {
-        testActionFieldButtons();
-        passed();
-    }
-
-    @Test
-    public void testActionFieldButtonsNav() throws Exception {
-        testActionFieldButtons();
         passed();
     }
 }

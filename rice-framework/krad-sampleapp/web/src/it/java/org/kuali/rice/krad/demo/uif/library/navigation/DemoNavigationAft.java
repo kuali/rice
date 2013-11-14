@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.demo.uif.library.navigation;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 
 /**

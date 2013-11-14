@@ -50,14 +50,14 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Dropdown with Divider");
         waitAndClickByLinkText("Action List");
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li/a[contains(text(),'Proposal #1034')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li[@class='uif-actionLink divider ui-corner-right']");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li[@class='divider']");
     }
     
     protected void testLibraryElementsDropdownWithHeader() throws Exception {
         waitAndClickByLinkText("Dropdown with Headers");
         waitAndClickByLinkText("Favorites");
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li/a[contains(text(),'Proposal')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li[@class='uif-actionLink dropdown-header ui-corner-right']");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li[@class='dropdown-header']");
     }
     
     protected void testLibraryElementsDropdownWithDisabled() throws Exception {

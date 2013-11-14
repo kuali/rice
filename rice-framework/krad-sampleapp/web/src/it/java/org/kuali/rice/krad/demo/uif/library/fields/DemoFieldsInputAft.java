@@ -160,10 +160,10 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-        String quickfinderId = findElement(By.cssSelector(".uif-actionImage"), field).getAttribute("id");
+        String quickfinderId = findElement(By.cssSelector(".input-group-btn .uif-actionLink"), field).getAttribute("id");
 
         // validate that the quickfinder comes after the value
-        findElement(By.cssSelector("input[id='" + controlId + "'] + input[id='" + quickfinderId + "']"), exampleDiv);
+        findElement(By.cssSelector("input[id='" + controlId + "'] + .input-group-btn a[id='" + quickfinderId + "']"), exampleDiv);
 
         assertIsVisible("#" + quickfinderId);
 

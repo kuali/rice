@@ -124,7 +124,7 @@ input[type="text"], .uif-textAreaControl {
 .uif-lightbox .uif-footer {
     background: none repeat scroll 0 0 #F9F9F9;
     margin-bottom: 0;
-    padding-top: 5px;
+    padding-top: 10px;
     text-align: right;
 }
 

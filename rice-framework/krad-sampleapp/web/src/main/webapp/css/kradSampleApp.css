@@ -667,7 +667,7 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 #ComponentLibrary-TabGroup_tabList li.active {
     background-color: #FFFFFF;
-    background-image: url(../images/widgetNavBorder.png), url(../images/widgetNavBorder.png), url(../images/widgetNavCorner.png);
+    background-image: url("../images/widgetNavBorder.png"), url("../images/widgetNavBorder.png"), url("../images/widgetNavCorner.png");
     background-position: left top, left bottom, left center;
     background-repeat: no-repeat, no-repeat, no-repeat;
     position: relative;
@@ -683,9 +683,25 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 #ComponentLibrary-TabGroup_tabList.nav.nav-tabs li a:hover {
     border-color: transparent;
 }
+
+#ComponentLibrary-TabGroup.demo-noTabs div[data-type="TabWrapper"] .uif-boxSection{
+
+width: 100%;
+}
+
+
 #ComponentLibrary-MainCodeViewer .uif-syntaxHighlighter .prettyprint.linenums {
     width: 682px;
 }
+
+
+
+
+
+
+
+
+
 
 /*********** Documentation tab *************************************************************/
 

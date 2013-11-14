@@ -646,6 +646,46 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
     border-top: 1px solid #CCC !important;
     padding: 12px 0 0 0 !important;
 }
+#ComponentLibrary-TabGroup div[data-type="TabWrapper"] {
+    margin-top: 0px;
+}
+#ComponentLibrary-TabGroup .uif-boxSection     {
+    width: 530px;
+    min-height: 400px;
+    border: 1px #ddd solid;
+
+    padding: 12px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+
+}
+#ComponentLibrary-TabGroup_tabList li {
+    background:;
+    clear: both;
+    width: 175px;
+}
+#ComponentLibrary-TabGroup_tabList li.active {
+    background-color: #FFFFFF;
+    background-image: url(../images/widgetNavBorder.png), url(../images/widgetNavBorder.png), url(../images/widgetNavCorner.png);
+    background-position: left top, left bottom, left center;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    position: relative;
+    margin-top: -1px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #ffbc04;
+}
+#ComponentLibrary-TabGroup_tabList li.active > a, #ComponentLibrary-TabGroup_tabList .nav-tabs> li> a:hover {
+    border: none;
+    border-color: transparent;
+}
+#ComponentLibrary-TabGroup_tabList.nav.nav-tabs li a:hover {
+    border-color: transparent;
+}
+#ComponentLibrary-MainCodeViewer .uif-syntaxHighlighter .prettyprint.linenums {
+    width: 682px;
+}
 
 /*********** Documentation tab *************************************************************/
 
@@ -1065,3 +1105,5 @@ table.dataTable tr.demo-rowCondition {
 .force-show {
     display: block !important;
 }
+
+

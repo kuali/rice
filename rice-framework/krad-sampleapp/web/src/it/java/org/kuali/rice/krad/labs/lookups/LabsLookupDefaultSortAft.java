@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupDefaultSortAft extends DemoLabsLookupBase {
+public class LabsLookupDefaultSortAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-DefaultSortView&hideReturnLink=true

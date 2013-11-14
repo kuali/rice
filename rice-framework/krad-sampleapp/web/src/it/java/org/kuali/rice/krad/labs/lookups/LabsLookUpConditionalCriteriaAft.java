@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsLookUpConditionalCriteriaAft extends DemoLabsLookupBase {
+public class LabsLookUpConditionalCriteriaAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ConditionalCriteriaView&hideReturnLink=true

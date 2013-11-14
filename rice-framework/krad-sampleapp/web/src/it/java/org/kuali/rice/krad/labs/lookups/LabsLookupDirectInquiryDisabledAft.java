@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupDirectInquiryDisabledAft extends DemoLabsLookupBase {
+public class LabsLookupDirectInquiryDisabledAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-DirectInquiryDisabledView&hideReturnLink=true

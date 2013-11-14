@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupWithoutSearchButtonAft extends DemoLabsLookupBase {
+public class LabsLookupWithoutSearchButtonAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-NoSearchButtonsView&hideReturnLink=true

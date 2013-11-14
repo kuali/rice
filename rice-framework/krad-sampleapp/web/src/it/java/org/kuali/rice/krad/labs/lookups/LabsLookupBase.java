@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs.kitchensink;
+package org.kuali.rice.krad.labs.lookups;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -21,10 +21,10 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoKitchenSinkBase extends WebDriverLegacyITBase {
+public abstract class LabsLookupBase extends WebDriverLegacyITBase {
 
-    protected void navigateToKitchenSink(String screenLinkText) throws InterruptedException {
-        waitAndClickByLinkText("Kitchen Sink");
+    protected void navigateToLookup(String screenLinkText) throws InterruptedException {
+        waitAndClickByLinkText("Lookups");
         waitAndClickByLinkText(screenLinkText);
     }
 }

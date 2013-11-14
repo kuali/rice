@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupHiddenCriteriaAft extends DemoLabsLookupBase {
+public class LabsLookupHiddenCriteriaAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-HideCriteriaView&hideReturnLink=true

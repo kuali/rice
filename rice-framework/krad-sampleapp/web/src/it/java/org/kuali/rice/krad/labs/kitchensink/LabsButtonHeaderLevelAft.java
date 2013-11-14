@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoButtonHeaderLevelAft extends DemoKitchenSinkBase {
+public class LabsButtonHeaderLevelAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=a9ce648c-c2e6-408f-ab0c-7628f99ee6a0&cacheKey=oc9kb09wqws0vik3bdahh&pageId=UifCompView-Page8#UifCompView-Page8";
 

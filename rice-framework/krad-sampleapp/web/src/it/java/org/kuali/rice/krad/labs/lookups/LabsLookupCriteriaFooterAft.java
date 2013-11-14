@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupCriteriaFooterAft extends DemoLabsLookupBase {
+public class LabsLookupCriteriaFooterAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-CriteriaFooterView&hideReturnLink=true

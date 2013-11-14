@@ -233,37 +233,39 @@ public class ViewLifecycleComponentBuild implements Runnable {
         }
 
         // make sure id, binding, and label settings stay the same as initial
-        if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
-            List<Component> originalNestedGroupComponents = ComponentUtils
-                    .getAllNestedComponents(origComponent);
-
-            for (Component nestedComponent : nestedGroupComponents) {
-                Component origNestedComponent = ComponentUtils.findComponentInList(
-                        originalNestedGroupComponents,
-                        nestedComponent.getId());
-
-                if (origNestedComponent != null) {
-                    // update binding
-                    if (nestedComponent instanceof DataBinding) {
-                        ((DataBinding) nestedComponent).setBindingInfo(
-                                ((DataBinding) origNestedComponent).getBindingInfo());
-                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-                    }
-
-                    // update label rendered flag
-                    if (nestedComponent instanceof Field) {
-                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
-                                .isLabelRendered());
-                    }
-
-                    if (origNestedComponent.isRefreshedByAction()) {
-                        nestedComponent.setRefreshedByAction(true);
-                    }
-                }
-            }
-        }
+        // TODO: this currently doesn't work because IDS don't get generated the same, needs reworked
+        // to use paths once that functionality is in palce
+//        if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
+//            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
+//            List<Component> originalNestedGroupComponents = ComponentUtils
+//                    .getAllNestedComponents(origComponent);
+//
+//            for (Component nestedComponent : nestedGroupComponents) {
+//                Component origNestedComponent = ComponentUtils.findComponentInList(
+//                        originalNestedGroupComponents,
+//                        nestedComponent.getId());
+//
+//                if (origNestedComponent != null) {
+//                    // update binding
+//                    if (nestedComponent instanceof DataBinding) {
+//                        ((DataBinding) nestedComponent).setBindingInfo(
+//                                ((DataBinding) origNestedComponent).getBindingInfo());
+//                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+//                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+//                    }
+//
+//                    // update label rendered flag
+//                    if (nestedComponent instanceof Field) {
+//                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
+//                                .isLabelRendered());
+//                    }
+//
+//                    if (origNestedComponent.isRefreshedByAction()) {
+//                        nestedComponent.setRefreshedByAction(true);
+//                    }
+//                }
+//            }
+//        }
 
         // get script for generating growl messages
         String growlScript = ViewLifecycle.getHelper().buildGrowlScript();

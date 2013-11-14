@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>eDoc.Example1.ParentDoctype</name>
+      <description>eDoc.Example1 Parent Doctype</description>
+      <label>eDoc.Example1 Parent Document</label>
+      <postProcessorName>org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor</postProcessorName>
+      <superUserGroupName namespace="KUALI">eDoc.Example1.SuperUsers</superUserGroupName>
+      <blanketApprovePolicy>NONE</blanketApprovePolicy>
+      <docHandler>${workflow.url}/EDocLite</docHandler>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+      <routePaths />
+    </documentType>
+  </documentTypes>
+</data>
+

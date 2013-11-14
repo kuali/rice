@@ -102,6 +102,7 @@
         <module name="rice-standalone" />
         <module name="rice-tools-test" />
         <module name="rice-web" />
+        <module name="rice-xml" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -180,6 +181,7 @@
       <module name="rice-standalone" target="1.6" />
       <module name="rice-tools-test" target="1.6" />
       <module name="rice-web" target="1.6" />
+      <module name="rice-xml" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

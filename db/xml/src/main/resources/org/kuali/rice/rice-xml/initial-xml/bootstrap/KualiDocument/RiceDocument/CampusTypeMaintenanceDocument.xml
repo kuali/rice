@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>CampusTypeMaintenanceDocument</name>
+      <parent>RiceDocument</parent>
+      <label>CampusTypeMaintenanceDocument</label>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcampustype.htm</helpDefinitionURL>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+    </documentType>
+  </documentTypes>
+</data>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>RecipeMaintenanceDocument</name>
+      <parent>RecipeParentMaintenanceDocument</parent>
+      <description>Create or Update a Recipe</description>
+      <label>Recipe Maintenance</label>
+      <applicationId>RECIPE</applicationId>
+      <postProcessorName>edu.sampleu.recipe.kew.RecipesPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>${application.url}/kr/maintenance.do?methodToCall=docHandler</docHandler>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="Adhoc Routing" nextNode="Chicken Recipe Masters Group Approval" />
+          <requests name="Chicken Recipe Masters Group Approval" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Adhoc Routing">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+        <requests name="Chicken Recipe Masters Group Approval">
+          <activationType>S</activationType>
+          <ruleSelector>Named</ruleSelector>
+          <ruleName>ChickenRecipeMastersGroupApproval</ruleName>
+        </requests>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>
+

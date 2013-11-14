@@ -17,40 +17,12 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice DB</name>
+  <name>Rice Xml</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
-    <artifactId>rice</artifactId>
+    <artifactId>rice-db</artifactId>
     <version>2.4.0-M3-SNAPSHOT</version>
   </parent>
-  <artifactId>rice-db</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-    <module>sql</module>
-    <module>impex</module>
-    <module>xml</module>
-  </modules>
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  <properties>
-    <kuali.testjar.phase>none</kuali.testjar.phase>
-    <gmaven.stubs.phase>none</gmaven.stubs.phase>
-    <gmaven.compile.phase>none</gmaven.compile.phase>
-    <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
-    <maven.test.skip>true</maven.test.skip>
-    <enforcer.phase>none</enforcer.phase>
-    <failsafe.phase>none</failsafe.phase>
-  </properties>
+  <artifactId>rice-xml</artifactId>
 </project>

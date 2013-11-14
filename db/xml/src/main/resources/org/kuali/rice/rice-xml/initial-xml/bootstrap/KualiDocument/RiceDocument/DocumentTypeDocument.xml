@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>DocumentTypeDocument</name>
+      <parent>RiceDocument</parent>
+      <description>Workflow Maintenance Document Type Document</description>
+      <label>Workflow Maintenance Document Type Document</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <helpDefinitionURL>default.htm?turl=WordDocuments%2Fdocumenttype.htm</helpDefinitionURL>
+      <active>true</active>
+      <routingVersion>2</routingVersion>
+      <routePaths>
+        <routePath>
+          <start name="placeholder" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="placeholder">
+          <activationType>S</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>
+

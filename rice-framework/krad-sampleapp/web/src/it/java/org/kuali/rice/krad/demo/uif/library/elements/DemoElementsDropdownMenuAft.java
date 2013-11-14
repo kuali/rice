@@ -43,7 +43,9 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
 
     protected void testLibraryElementsDropdownBasic() throws Exception {
         waitAndClickByLinkText("User thclark");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath(
+                "//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li[2]/a[contains(text(),'Logout')]");
     }
     
     protected void testLibraryElementsDropdownWithDivider() throws Exception {
@@ -79,25 +81,24 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
     }
 
-    @Test
-    public void testLibraryElementsDropdownBookmark() throws Exception {
+    private void testAllDropdowns() throws Exception {
         testLibraryElementsDropdownBasic();
         testLibraryElementsDropdownWithDivider();
         testLibraryElementsDropdownWithHeader();
         testLibraryElementsDropdownWithDisabled();
         testLibraryElementsDropdownWithActionOptions();
         testLibraryElementsDropdownWithToggleButton();
+    }
+
+    @Test
+    public void testLibraryElementsDropdownBookmark() throws Exception {
+        testAllDropdowns();
         passed();
     }
 
     @Test
     public void testLibraryElementsDropdownNav() throws Exception {
-        testLibraryElementsDropdownBasic();
-        testLibraryElementsDropdownWithDivider();
-        testLibraryElementsDropdownWithHeader();
-        testLibraryElementsDropdownWithDisabled();
-        testLibraryElementsDropdownWithActionOptions();
-        testLibraryElementsDropdownWithToggleButton();
+        testAllDropdowns();
         passed();
     }  
 }

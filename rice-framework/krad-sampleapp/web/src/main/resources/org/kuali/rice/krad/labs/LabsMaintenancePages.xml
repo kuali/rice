@@ -85,15 +85,16 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR2C1" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Sample - Configuring help links in section headers"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR2C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of configuring help URL"
+              p:instructionalText="This is an example of how to add a external help with the URL from the data dictionary to a section">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Configuring the help link using the externalHelpUrl property of Uif-Help"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany&amp;viewId=TravelCompany-MaintenanceHelpView"/>
             </list>
           </property>
         </bean>

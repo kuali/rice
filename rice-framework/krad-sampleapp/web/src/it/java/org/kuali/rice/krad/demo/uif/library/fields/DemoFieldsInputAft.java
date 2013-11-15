@@ -186,6 +186,8 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         acceptAlertIfPresent();
         selectTopFrame();
 
+        WebElement element = findElement(By.className("uif-headerText-span"));
+        assertTrue("Library Fields Input Quickfinder return value loads Default tab", element.getText().contains("Quickfinder"));
         assertIsVisible("#" + controlId);
         assertTextPresent("a1", "Control text did not appear");
     }
@@ -260,10 +262,10 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         testInputFieldConstraintText();
         testInputFieldLabelTop();
         testInputFieldLabelRight();
-        testInputFieldQuickfinder();
         testInputFieldInquiry();
         testInputFieldRequired();
         testInputFieldUppercase();
+        testInputFieldQuickfinder();
     }
 
     @Test
@@ -275,126 +277,6 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
     @Test
     public void testInputFieldExamplesNav() throws Exception {
         testInputFieldExamples();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldDefaultBookmark() throws Exception {
-        testInputFieldDefault();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldDefaultNav() throws Exception {
-        testInputFieldDefault();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldAltControlBookmark() throws Exception {
-        testInputFieldAltControl();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldAltControlNav() throws Exception {
-        testInputFieldAltControl();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldInstructionalTextBookmark() throws Exception {
-        testInputFieldInstructionalText();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldInstructionalTextNav() throws Exception {
-        testInputFieldInstructionalText();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldConstraintTextBookmark() throws Exception {
-        testInputFieldConstraintText();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldConstraintTextNav() throws Exception {
-        testInputFieldConstraintText();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldLabelTopBookmark() throws Exception {
-        testInputFieldLabelTop();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldLabelTopNav() throws Exception {
-        testInputFieldLabelTop();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldLabelRightBookmark() throws Exception {
-        testInputFieldLabelRight();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldLabelRightNav() throws Exception {
-        testInputFieldLabelRight();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldQuickfinderBookmark() throws Exception {
-        testInputFieldQuickfinder();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldQuickfinderNav() throws Exception {
-        testInputFieldQuickfinder();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldInquiryBookmark() throws Exception {
-        testInputFieldInquiry();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldInquiryNav() throws Exception {
-        testInputFieldInquiry();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldRequiredBookmark() throws Exception {
-        testInputFieldRequired();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldRequiredNav() throws Exception {
-        testInputFieldRequired();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldUppercaseBookmark() throws Exception {
-        testInputFieldUppercase();
-        passed();
-    }
-
-    @Test
-    public void testInputFieldUppercaseNav() throws Exception {
-        testInputFieldUppercase();
         passed();
     }
 }

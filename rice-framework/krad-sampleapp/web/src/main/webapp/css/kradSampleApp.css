@@ -649,7 +649,7 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 #ComponentLibrary-TabGroup div[data-type="TabWrapper"] {
     margin-top: 0px;
 }
-#ComponentLibrary-TabGroup .uif-boxSection     {
+#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > div {
     width: 530px;
     min-height: 400px;
     border: 1px #ddd solid;

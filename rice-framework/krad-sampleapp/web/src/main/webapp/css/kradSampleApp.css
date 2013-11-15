@@ -196,9 +196,10 @@
 .demo-sampleAppHome-testimonialsContent .uif-listGroup ul li {
     border-bottom: 1px dotted #CCCCCC;
     margin: 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    font-style: italic;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 1.46em;
+    /*font-style: italic;*/
 }
 
 /*********** Component Library home *******************************************************/
@@ -1115,6 +1116,22 @@ table.dataTable tr.demo-rowCondition {
 
 .force-show {
     display: block !important;
+}
+#KradSampleAppHome-Testimonial1_span, #KradSampleAppHome-Testimonial2_span{
+    line-height: 27px;
+}
+
+#KradSampleAppHome-testimonialsList .icon-quote-left, #KradSampleAppHome-testimonialsList .icon-quote-right {
+   font-size: x-large
+}
+
+#KradSampleAppHome-testimonialsList .icon-quote-left {
+    margin-right:5px;
+}
+
+#KradSampleAppHome-testimonialsList .icon-quote-right {
+    margin-right:5px;
+    margin-left:5px;
 }
 
 

@@ -96,7 +96,8 @@ public class ComponentLibraryView extends FormView {
         TabGroup tabGroup = ComponentFactory.getTabGroup();
         List<Component> tabItems = new ArrayList<Component>();
 
-        //Description processing
+        //TODO add back in when we have content for usage and description
+/*        //Description processing
         Group descriptionGroup = ComponentFactory.getVerticalBoxGroup();
 
         //Description header
@@ -132,7 +133,7 @@ public class ComponentLibraryView extends FormView {
         usageItems.add(usageMessage);
         usageGroup.setItems(usageItems);
 
-        tabItems.add(usageGroup);
+        tabItems.add(usageGroup);*/
 
         //Documentation processing
         if (javaFullClassPath != null) {

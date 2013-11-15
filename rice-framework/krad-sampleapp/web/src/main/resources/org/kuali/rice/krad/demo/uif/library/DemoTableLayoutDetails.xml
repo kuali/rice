@@ -30,7 +30,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-TableLayoutDetails-Example1"/>
-        <ref bean="Demo-TableLayoutDetails-Example2"/>
+<!-- TODO add back in when ajax row details is fixed        <ref bean="Demo-TableLayoutDetails-Example2"/>-->
         <ref bean="Demo-TableLayoutDetails-Example3"/>
         <ref bean="Demo-TableLayoutDetails-Example4"/>
         <ref bean="Demo-TableLayoutDetails-Example5"/>

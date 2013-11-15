@@ -195,8 +195,22 @@
 
           <property name="items">
             <list>
-              <bean id="KradSampleAppHome-Testimonial1" parent="Uif-Message"/>
-              <bean id="KradSampleAppHome-Testimonial2" parent="Uif-Message"/>
+              <bean id="KradSampleAppHome-Testimonial1" parent="Uif-Message">
+                <property name="inlineComponents">
+                  <list>
+                    <bean parent="Uif-Icon" p:iconClass="icon-quote-left"/>
+                    <bean parent="Uif-Icon" p:iconClass="icon-quote-right"/>
+                  </list>
+                </property>
+              </bean>
+              <bean id="KradSampleAppHome-Testimonial2" parent="Uif-Message">
+                <property name="inlineComponents">
+                  <list>
+                    <bean parent="Uif-Icon" p:iconClass="icon-quote-left"/>
+                    <bean parent="Uif-Icon" p:iconClass="icon-quote-right"/>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

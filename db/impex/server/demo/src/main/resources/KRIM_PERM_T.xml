@@ -437,4 +437,14 @@
         NM="Perform Kitchen Sink Line Action" NMSPC_CD="KR-SAP"
         OBJ_ID="CDD80329160CBF1FE040F90A05B94313" PERM_ID="KRSAP10016"
         PERM_TMPL_ID="67" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Phone Number on the Travel Detail document and inquiry."
+        NM="Full Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
+        OBJ_ID="EB40B8FBFD19E403E0406E0AC31D1E18" PERM_ID="KRSAP2100"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to paritally view the Phone Number on the Travel Detail document and inquiry."
+        NM="Partial Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
+        OBJ_ID="EB40B8FBFD1CE403E0406E0AC31D1E18" PERM_ID="KRSAP2200"
+        PERM_TMPL_ID="28" VER_NBR="1"/>
 </dataset>

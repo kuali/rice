@@ -367,4 +367,14 @@
         NM="Edit Kuali ENROUTE Document Route Status Code S"
         NMSPC_CD="KUALI" OBJ_ID="E3EF4C83B4BF5C9EE0406E0AC31D4562"
         PERM_ID="KR1002" PERM_TMPL_ID="16" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to view the entire Phone Number on the Travel Detail document and inquiry."
+        NM="Full Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
+        OBJ_ID="EB40B8FBFD19E403E0406E0AC31D1E18" PERM_ID="KRSAP2100"
+        PERM_TMPL_ID="27" VER_NBR="1"/>
+    <KRIM_PERM_T ACTV_IND="Y"
+        DESC_TXT="Authorizes users to paritally view the Phone Number on the Travel Detail document and inquiry."
+        NM="Partial Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
+        OBJ_ID="EB40B8FBFD1CE403E0406E0AC31D1E18" PERM_ID="KRSAP2200"
+        PERM_TMPL_ID="28" VER_NBR="1"/>
 </dataset>

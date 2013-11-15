@@ -147,31 +147,27 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         assertTextPresent("Subtracted:");
     }
 
-    @Test
-    public void testCollectionFeaturesColumnCalculationsBookmark() throws Exception {
+    private void testAllColumnCalculations() throws Exception {
         testCollectionFeaturesColumnCalculations();
         testCollectionFeaturesColumnCalculationsOnKeyUp();
         testCollectionFeaturesColumnCalculationsSomeColumns();
-        testCollectionFeaturesColumnCalculationsLeftLabel();
-        testCollectionFeaturesColumnCalculationsMultipleOptions();
-        testCollectionFeaturesColumnCalculationsMultipleCalculations();
         testCollectionFeaturesColumnCalculationsGroupingCalculations();
         testCollectionFeaturesColumnCalculationsNonClientSide();
         testCollectionFeaturesColumnCalculationsCustomCalculation();
+        testCollectionFeaturesColumnCalculationsLeftLabel();
+        testCollectionFeaturesColumnCalculationsMultipleOptions();
+        testCollectionFeaturesColumnCalculationsMultipleCalculations();
+    }
+
+    @Test
+    public void testCollectionFeaturesColumnCalculationsBookmark() throws Exception {
+        testAllColumnCalculations();
         passed();
     }
 
     @Test
     public void testCollectionFeaturesColumnCalculationsNav() throws Exception {
-        testCollectionFeaturesColumnCalculations();
-        testCollectionFeaturesColumnCalculationsOnKeyUp();
-        testCollectionFeaturesColumnCalculationsSomeColumns();
-        testCollectionFeaturesColumnCalculationsLeftLabel();
-        testCollectionFeaturesColumnCalculationsMultipleOptions();
-        testCollectionFeaturesColumnCalculationsMultipleCalculations();
-        testCollectionFeaturesColumnCalculationsGroupingCalculations();
-        testCollectionFeaturesColumnCalculationsNonClientSide();
-        testCollectionFeaturesColumnCalculationsCustomCalculation();
+        testAllColumnCalculations();
         passed();
     }
 }

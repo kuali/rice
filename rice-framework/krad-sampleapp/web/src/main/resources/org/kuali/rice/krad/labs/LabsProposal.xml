@@ -232,6 +232,11 @@
                   </list>
                 </property>
               </bean>
+              <bean parent="Uif-InputField" p:label="Proposal Indicator" p:propertyName="bField1">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl"/>
+                </property>
+              </bean>
               <bean parent="Uif-InputField" p:label="Award ID" p:propertyName="field3"
                     p:helperText="Enter the award ID for this proposal.">
                 <property name="quickfinder">
@@ -430,17 +435,17 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:1"/>
-                      </list>
-                  </property>
-              </bean>
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Continue..."
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:1"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-CssGridGroup">
@@ -484,23 +489,23 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Go back"
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:0">
-                          </bean>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:2"/>
-                      </list>
-                  </property>
-              </bean>
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Go back"
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:0">
+                  </bean>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Continue..."
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:2"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-CssGridSection">
@@ -529,23 +534,23 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Go back"
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:0">
-                          </bean>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:2"/>
-                      </list>
-                  </property>
-              </bean>
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Go back"
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:0">
+                  </bean>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Continue..."
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:2"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
       </list>

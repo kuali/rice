@@ -264,7 +264,7 @@ public class ComponentLibraryView extends FormView {
 
             //initialize the documentation content
             String documentationMessageContent =
-                    "<H3 class=\"uif-headerText\">" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
+                    "<H3 class=\"uif-documentationHeader\">" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
                             docLinkDiv + classMessage + "<H3>" + beanDefsTitle + "</H3>" + schemaTable;
 
             List<String> propertyDescriptions = new ArrayList<String>();

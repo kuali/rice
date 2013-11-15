@@ -40,9 +40,10 @@ public class KRADLibraryPropertiesDoclet {
 
     // TODO : remove hard coded arguments
     public static void main(String[] args) {
-        Main.execute(new String[]{"-doclet", "org.kuali.rice.krad.demo.uif.library.tools.KRADLibraryPropertiesDoclet",
-                "-sourcepath", "C:/Java/Projects/Rice/Trunk/krad/krad-web-framework/src/main/java", "-subpackages",
-                "org.kuali.rice.krad.uif:org.kuali.rice.krad.datadictionary.validation.constraint"});
+        Main.execute(new String[]{"-doclet", "org.kuali.rice.krad.devtools.doclet.KRADLibraryPropertiesDoclet",
+                "-sourcepath", "C:/Java/Projects/rice-uxi/rice-framework/krad-web-framework/src/main/java", "-subpackages",
+                "org.kuali.rice.krad.uif:org.kuali.rice.krad.datadictionary.validation.constraint", "-exclude",
+                "org.kuali.rice.krad.uif.lifecycle"});
     }
 
     /*
@@ -104,8 +105,8 @@ public class KRADLibraryPropertiesDoclet {
 
         // TODO : remove hard coding of filepath
         try {
-            prop.store(new FileOutputStream("C:/Java/Projects/Rice/Trunk/sampleapp/src/main/resources/"
-                    + "org/kuali/rice/devtools/krad/documentation/PropertiesDescription.properties"), null);
+            prop.store(new FileOutputStream("C:/Java/Projects/rice-uxi/rice-framework/krad-development-tools/src/main/resources/"
+                    + "org/kuali/rice/krad/devtools/documentation/PropertiesDescription.properties"), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,7 +142,10 @@ public class KRADLibraryPropertiesDoclet {
                 return "";
             }
             MethodDoc methodDoc = getNoParamMethodFromClassDocByName(classDoc, methodName);
-            return methodDoc.commentText();
+
+            if (methodDoc != null) {
+                return methodDoc.commentText();
+            }
         }
 
         return "";

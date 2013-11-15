@@ -93,7 +93,8 @@ public class ComponentLibraryView extends FormView {
         //set page name
         this.getPage().setHeaderText(this.getComponentName());
 
-        TabGroup tabGroup = ComponentFactory.getTabGroup();
+        Group tabGroup = ComponentFactory.getVerticalBoxSection();
+       // TabGroup tabGroup = ComponentFactory.getTabGroup();
         List<Component> tabItems = new ArrayList<Component>();
 
         //TODO add back in when we have content for usage and description
@@ -263,7 +264,7 @@ public class ComponentLibraryView extends FormView {
 
             //initialize the documentation content
             String documentationMessageContent =
-                    "<H3>" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
+                    "<H3 class=\"uif-headerText\">" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
                             docLinkDiv + classMessage + "<H3>" + beanDefsTitle + "</H3>" + schemaTable;
 
             List<String> propertyDescriptions = new ArrayList<String>();

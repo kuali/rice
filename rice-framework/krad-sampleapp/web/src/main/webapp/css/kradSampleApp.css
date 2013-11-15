@@ -590,6 +590,11 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
     background: none;
 }
 
+.demo-detailsGroup h3.uif-headerText {
+    font-family: 'ralewaysemibold', sans-serif;
+    font-size: 23px;
+}
+
 .demo-detailsGroup h3 img.uif-disclosure-image[alt="collapse"] {
     background: url("../images/collapse-black.png") no-repeat scroll 0 0 transparent;
 }

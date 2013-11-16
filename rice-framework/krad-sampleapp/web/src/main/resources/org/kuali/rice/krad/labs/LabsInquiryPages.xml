@@ -276,4 +276,18 @@
       </list>
     </property>
   </bean>
+  <bean id="KradInquirySample-PageR7C1" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR7C1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Traveler Detail Inquiry" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail&amp;id=1"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

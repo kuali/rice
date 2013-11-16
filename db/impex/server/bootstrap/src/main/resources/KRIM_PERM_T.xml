@@ -370,11 +370,11 @@
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Authorizes users to view the entire Phone Number on the Travel Detail document and inquiry."
         NM="Full Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
-        OBJ_ID="EB40B8FBFD19E403E0406E0AC31D1E18" PERM_ID="KRSAP2100"
+        OBJ_ID="EB45FB1CD8517C97E0406E0AC31D5A30" PERM_ID="KRSAP2100"
         PERM_TMPL_ID="27" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Authorizes users to paritally view the Phone Number on the Travel Detail document and inquiry."
         NM="Partial Unmask TravelerDetail Phone" NMSPC_CD="KR-SYS"
-        OBJ_ID="EB40B8FBFD1CE403E0406E0AC31D1E18" PERM_ID="KRSAP2200"
+        OBJ_ID="EB45FB1CD8547C97E0406E0AC31D5A30" PERM_ID="KRSAP2200"
         PERM_TMPL_ID="28" VER_NBR="1"/>
 </dataset>

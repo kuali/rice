@@ -163,7 +163,7 @@
         PARM_NM="DEFAULT_HELP_URL" PARM_TYP_CD="HELP"
         VAL="http://site.kuali.org/rice/latest/reference/html/Help.html#lookup" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-KRAD" OBJ_ID="EB40B8FBFD17E403E0406E0AC31D1E18"
+        NMSPC_CD="KR-KRAD" OBJ_ID="EB45FB1CD84F7C97E0406E0AC31D5A30"
         PARM_DESC_TXT="Maximum number of rows that will be displayed on a look-up results screen."
         PARM_NM="MULTIPLE_VALUE_RESULTS_LIMIT" PARM_TYP_CD="CONFG"
         VAL="100" VER_NBR="1"/>

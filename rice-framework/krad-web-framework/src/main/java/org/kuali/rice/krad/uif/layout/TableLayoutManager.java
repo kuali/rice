@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -55,6 +47,14 @@ import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
@@ -349,7 +349,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             // create a new field group to hold the totals fields
             FieldGroup calculationFieldGroup = ComponentFactory.getFieldGroup();
-            calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE, "totalsBlock");
+            calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE,
+                    UifConstants.RoleTypes.TOTALS_BLOCK);
 
             List<Component> calculationFieldGroupItems = new ArrayList<Component>();
 
@@ -357,15 +358,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = cInfo.getPageTotalField().copy();
                 setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), getPageTotalLabel(),
-                        "pageTotal", leftLabelColumnIndex);
+                        UifConstants.RoleTypes.PAGE_TOTAL, leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
             }
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = cInfo.getTotalField().copy();
-                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(), getTotalLabel(), "total",
-                        leftLabelColumnIndex);
+                setupTotalField(totalDataField, cInfo, this.isShowTotal(), getTotalLabel(),
+                        UifConstants.RoleTypes.TOTAL, leftLabelColumnIndex);
 
                 if (!cInfo.isRecalculateTotalClientSide()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
@@ -379,7 +380,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (cInfo.isShowGroupTotal()) {
                 Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype().copy();
                 setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), getGroupTotalLabelPrototype(),
-                        "groupTotal", leftLabelColumnIndex);
+                        UifConstants.RoleTypes.GROUP_TOTAL, leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
 
@@ -506,10 +507,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
 
             if (labelPhase != null) {
-                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField,
-                        null, labelPhase, true);
+                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField, null, labelPhase, true);
             }
-            
+
             totalDataField.setFieldLabel(label);
         }
 

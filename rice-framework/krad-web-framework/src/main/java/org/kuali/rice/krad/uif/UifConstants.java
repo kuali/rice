@@ -358,6 +358,10 @@ public class UifConstants {
         public static final String CONTROL = "Control";
         public static final String INPUT_FIELD = "InputField";
         public static final String GROUP = "Group";
+        public static final String GROUP_TOTAL = "groupTotal";
+        public static final String TOTAL = "total";
+        public static final String TOTALS_BLOCK = "totalsBlock";
+        public static final String PAGE_TOTAL = "pageTotal";
         public static final String ROW_GROUPING = "RowGrouping";
     }
 

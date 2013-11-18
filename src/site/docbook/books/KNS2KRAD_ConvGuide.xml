@@ -1102,7 +1102,16 @@
   </section>
   <section>
     <title>Inquiry Conversion</title>
-    <para>&lt;add introduction here></para>
+    <para>Inquiries allow users to quickly view a data entity (typically one created via a
+      maintenance document) without having to start editing that entity.  They provide a
+      more compact view of these entities and can control which users see what displayed data.
+      KRAD moves all inquiry definitions to a view and displays all inquiries in a lightbox
+      by default.  The conversion script will automate part of the conversion for your inquiries
+      to the view format, but some inquiry attributes require no conversion since they are
+      virtually identical between KNS and KRAD. The following sections provide a typical conversion
+      sample and identify the Business Object bean properties, Sections, Collections, helper classes,
+      and other features which are converted by the script and those which require manual conversion.
+    </para>
     <section>
       <title>InquiryDefinition in KNS Data Dictionary to InquiryView in KRAD</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>

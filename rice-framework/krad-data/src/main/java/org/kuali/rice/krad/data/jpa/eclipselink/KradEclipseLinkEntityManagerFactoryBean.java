@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.krad.data.jpa.eclipselink;
 
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
-
-import java.util.Map;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure an
@@ -39,6 +40,8 @@ import java.util.Map;
  */
 public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFactoryBean {
 
+	private static final Logger LOG = Logger.getLogger(KradEclipseLinkEntityManagerFactoryBean.class);
+
     public KradEclipseLinkEntityManagerFactoryBean() {
         super.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
     }
@@ -50,6 +53,8 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
         }
         jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
         jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
+		jpaProperties.put(PersistenceUnitProperties.WEAVING, "false");
+		LOG.info("EclipseLink JPA properties " + jpaProperties);
     }
 
 }

@@ -1,6 +1,6 @@
 KNS KRAD Conversion Script
 ---
-Note: This script is currently still IN DEVELOPMENT should NOT used for converting kns applications.
+Note: This script is still IN DEVELOPMENT.
 
 Purpose:
 ---

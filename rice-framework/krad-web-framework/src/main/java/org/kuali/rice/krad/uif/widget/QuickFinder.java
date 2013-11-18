@@ -75,6 +75,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     private Boolean autoSearch;
     private Boolean renderLookupCriteria;
     private Boolean renderCriteriaActions;
+    private Boolean hideCriteriaOnSearch;
     private Boolean renderMaintenanceLinks;
     private Boolean multipleValuesSelect;
 
@@ -372,6 +373,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         addActionParameterIfNotNull(UifParameters.AUTO_SEARCH, autoSearch);
         addActionParameterIfNotNull(UifParameters.RENDER_LOOKUP_CRITERIA, renderLookupCriteria);
         addActionParameterIfNotNull(UifParameters.RENDER_CRITERIA_ACTIONS, renderCriteriaActions);
+        addActionParameterIfNotNull(UifParameters.HIDE_CRITERIA_ON_SEARCH, hideCriteriaOnSearch);
         addActionParameterIfNotNull(UifParameters.RENDER_MAINTENANCE_LINKS, renderMaintenanceLinks);
         addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
         addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
@@ -713,6 +715,14 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         this.renderCriteriaActions = renderCriteriaActions;
     }
 
+    public Boolean getHideCriteriaOnSearch() {
+        return hideCriteriaOnSearch;
+    }
+
+    public void setHideCriteriaOnSearch(Boolean hideCriteriaOnSearch) {
+        this.hideCriteriaOnSearch = hideCriteriaOnSearch;
+    }
+
     /**
      * Indicates whether the maintenance action links should be rendered for the invoked lookup view.
      *
@@ -844,6 +854,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         quickFinderCopy.setAutoSearch(this.autoSearch);
         quickFinderCopy.setRenderLookupCriteria(this.renderLookupCriteria);
         quickFinderCopy.setRenderCriteriaActions(this.renderCriteriaActions);
+        quickFinderCopy.setHideCriteriaOnSearch(this.hideCriteriaOnSearch);
         quickFinderCopy.setRenderMaintenanceLinks(this.renderMaintenanceLinks);
         quickFinderCopy.setMultipleValuesSelect(this.multipleValuesSelect);
         quickFinderCopy.setLookupCollectionName(this.lookupCollectionName);

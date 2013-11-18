@@ -161,19 +161,17 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
                 // check mask authorization
                 boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
                         user);
-                if (!canUnmaskValue) {
+                boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
+                        dataField.getPropertyName(), user);
+                if (!canUnmaskValue && !canPartiallyUnmaskValue) {
                     dataField.setApplyMask(true);
                     dataField.setMaskFormatter(dataField.getDataFieldSecurity().getAttributeSecurity().
                             getMaskFormatter());
-                } else {
-                    // check partial mask authorization
-                    boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
-                            dataField.getPropertyName(), user);
-                    if (!canPartiallyUnmaskValue) {
+                }
+                else if (!canUnmaskValue && canPartiallyUnmaskValue) {
                         dataField.setApplyMask(true);
                         dataField.setMaskFormatter(
                                 dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
-                    }
                 }
             }
         }

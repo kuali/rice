@@ -198,8 +198,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         // and context set for the collection line
         List<Action> lineGroupActions = ComponentUtils.getComponentsOfTypeDeep(lineGroup, Action.class);
         if (lineGroupActions != null) {
-            collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup,
-                    currentLine, lineIndex, idSuffix);
+            collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup, lineIndex);
             ComponentUtils.updateContextsForLine(lineGroupActions, currentLine, lineIndex, idSuffix);
         }
 

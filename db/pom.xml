@@ -29,6 +29,7 @@
   <modules>
     <module>sql</module>
     <module>impex</module>
+    <module>xml</module>
   </modules>
   <repositories>
     <repository>

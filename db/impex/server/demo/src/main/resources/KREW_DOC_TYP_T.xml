@@ -353,4 +353,10 @@
         OBJ_ID="a4ecd35b-f35a-40ac-a9e1-ed47201281ec" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
+        DOC_TYP_DESC="Parent Document Type for all Travel Documents"
+        DOC_TYP_ID="KRSAP1000" DOC_TYP_NM="TravelDocument"
+        DOC_TYP_VER_NBR="0" LBL="Travel Document"
+        OBJ_ID="EB45FB1CD8597C97E0406E0AC31D5A30" PARNT_ID="2680"
+        RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

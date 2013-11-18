@@ -3932,7 +3932,7 @@
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
     </table>
     <table name="TRVL_AUTH_DOC_T">
-        <column name="TRVL_AUTH_DOC_ID" primaryKey="true" size="19" type="VARCHAR"/>
+        <column name="TRVL_AUTH_DOC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="TRAVELER_DTL_ID" size="40" type="VARCHAR"/>
         <column name="TRVL_TYP_CD" size="3" type="VARCHAR"/>
         <column name="TRVL_BGN_DT" type="DATE"/>
@@ -3943,10 +3943,10 @@
         <column name="CELL_PH_NUM" size="20" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <foreign-key foreignTable="TRVL_DEST_T" name="TRVL_AUTH_FK1">
+        <foreign-key foreignTable="TRVL_DEST_T" name="TRVL_AUTH_DOC_FK1">
             <reference foreign="TRVL_DEST_ID" local="TRVL_DEST_ID"/>
         </foreign-key>
-        <unique name="TRVL_AUTH_TC0">
+        <unique name="TRVL_AUTH_DOC_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -3956,7 +3956,7 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
-        <unique name="TRVL_CO_TC0">
+        <unique name="TRVL_CO_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -3968,7 +3968,7 @@
         <column name="POSTAL_CNTRY_CD" required="true" size="40" type="VARCHAR"/>
         <column name="POSTAL_STATE_CD" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="VARCHAR"/>
-        <unique name="TRVL_DEST_TC0">
+        <unique name="TRVL_DEST_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -3987,7 +3987,7 @@
         <foreign-key foreignTable="TRVL_AUTH_DOC_T" name="TRVL_EXP_ITEM_FK1">
             <reference foreign="TRVL_AUTH_DOC_ID" local="TRVL_AUTH_DOC_ID"/>
         </foreign-key>
-        <unique name="TRVL_EXP_ITEM_TC0">
+        <unique name="TRVL_EXP_ITEM_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -3999,7 +3999,7 @@
         <column name="MLG_RT_NM" required="true" size="40" type="VARCHAR"/>
         <column name="MLG_RT" required="true" scale="3" size="7" type="DECIMAL"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <unique name="TRVL_MIL_RT_TC0">
+        <unique name="TRVL_MIL_RT_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
@@ -4025,7 +4025,7 @@
         <foreign-key foreignTable="TRVL_DEST_T" name="TRVL_PD_EXP_FK2">
             <reference foreign="TRVL_DEST_ID" local="TRVL_DEST_ID"/>
         </foreign-key>
-        <unique name="TRVL_PD_EXP_TC0">
+        <unique name="TRVL_PD_EXP_TC1">
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>

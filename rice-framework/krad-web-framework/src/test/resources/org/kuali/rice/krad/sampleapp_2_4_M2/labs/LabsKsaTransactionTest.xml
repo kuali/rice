@@ -55,6 +55,7 @@
   <bean id="rollupList" parent="Uif-TableCollectionSection" p:headerText="Roll-Up"
         p:layoutManager.numberOfColumns="2" p:propertyName="rollupTransactions"
         p:collectionObjectClass="org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionModel">
+    <property name="readOnly" value="true"/>
     <property name="layoutManager.sequencePropertyName" value="id"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderAddLine" value="false"/>

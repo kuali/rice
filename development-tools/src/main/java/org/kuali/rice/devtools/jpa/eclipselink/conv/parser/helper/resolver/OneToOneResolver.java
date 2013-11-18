@@ -133,10 +133,10 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
                     LOG.info(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " bi-directional OneToOne relationship detected");
 
                     final String mappedBy = getMappedBy(mappedClass, itemClassName);
-                    final Comment fixme = new BlockComment("\nFIXME:\n"
+                    final Comment fixme = new BlockComment("\nFIXME: JPA_CONVERSION \n"
                             + "For one-to-one bidirectional relationships, the owning side corresponds to the side that contains the corresponding foreign key.\n"
                             + "Even in the absence of a foreign key, one side must be the owning side.\n"
-                            + "If this is the owning side, the required annotation should be:\n@OneToOne(mappedBy=\"" + mappedBy + "\")\n");
+                            + "If this is not the owning side, the required annotation should be:\n@OneToOne(mappedBy=\"" + mappedBy + "\")\n");
                     final NormalAnnotationExpr annotation = new NormalAnnotationExpr(new NameExpr(SIMPLE_NAME), pairs);
                     annotation.setComment(fixme);
                     nodeData =  new NodeData(annotation,

@@ -66,7 +66,7 @@ public class ColumnResolver extends AbstractMappedFieldResolver {
             } else if ("readwrite".equals(access)) {
                 LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is readwrite keeping @Column attributes (insertable, updatable) at defaults");
             } else if ("anonymous".equals(access)) {
-                LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is anonymous, the field should not exist in the java class as is the meaning anonymous access");
             } else if (access == null) {
                 LOG.debug(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field access is null keeping @Column attributes (insertable, updatable) at defaults");
             } else {

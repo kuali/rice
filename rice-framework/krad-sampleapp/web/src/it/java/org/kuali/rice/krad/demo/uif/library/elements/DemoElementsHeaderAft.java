@@ -77,25 +77,22 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
     
     protected void testLibraryElementsHeaderEditableHeader() throws Exception {
         waitAndClickByLinkText("EditablePage Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-small uif-expandDisclosuresButton uif-boxLayoutHorizontalItem']");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-small uif-collapseDisclosuresButton uif-boxLayoutHorizontalItem']");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div/h2/span");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-default btn-sm uif-expandDisclosuresButton uif-boxLayoutHorizontalItem']");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-default btn-sm uif-collapseDisclosuresButton uif-boxLayoutHorizontalItem']");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[2]/div/span[@class='uif-requiredInstructionsMessage uif-boxLayoutHorizontalItem']");
-    }
-    
-    protected void testLibraryElementsHeaderReadOnlyPageHeader() throws Exception {
-        waitAndClickByLinkText("Disclosure Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example13']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
     }
 
     protected void testLibraryElementsHeaderImageCaptionHeader() throws Exception {
         waitAndClickByLinkText("ImageCaption Header");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example14']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example14']/div[@class='uif-verticalBoxLayout clearfix']/div/div/h4/span");
     }
 
     protected void testLibraryElementsHeaderGroupsHeader() throws Exception {
         waitAndClickByLinkText("Header Groups");
-        assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[1]/div[@class='uif-horizontalBoxLayout clearfix']/span");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[2]/h3");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[3]/div[@class='uif-horizontalBoxLayout clearfix']/span");
     }
 
     private void testAllHeaders() throws Exception {
@@ -107,7 +104,8 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
         testLibraryElementsHeader5();
         testLibraryElementsHeader6();
         testLibraryElementsHeaderEditableHeader();
-        testLibraryElementsHeaderReadOnlyPageHeader();
+        testLibraryElementsHeaderImageCaptionHeader();
+        testLibraryElementsHeaderGroupsHeader();
         passed();
     }
 

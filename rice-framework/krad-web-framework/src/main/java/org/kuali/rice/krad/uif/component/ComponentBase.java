@@ -338,7 +338,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object)
      */
     @Override
-    public void performInitialization(Object model) {}
+    public void performInitialization(Object model) {
+        if (toolTip != null && toolTip.getTooltipContent() == null) {
+            toolTip = null;
+        }
+    }
 
     /**
      * The following updates are done here:

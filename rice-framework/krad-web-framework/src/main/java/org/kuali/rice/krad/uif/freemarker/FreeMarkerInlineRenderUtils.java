@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.widget.Disclosure;
@@ -450,7 +451,10 @@ public class FreeMarkerInlineRenderUtils {
                 out.write(Boolean.toString(disclosure.isDefaultOpen()));
                 out.write("\" class=\"uif-disclosureContent\">");
             }
-            renderTemplate(env, group.getValidationMessages(), null, false, false, null);
+            ValidationMessages validationMessages = group.getValidationMessages();
+            if (validationMessages != null) {
+                renderTemplate(env, group.getValidationMessages(), null, false, false, null);
+            }
             renderTemplate(env, group.getInstructionalMessage(), null, false, false, null);
         }
     }

@@ -39,6 +39,8 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,7 +145,30 @@ public final class CopyUtils {
             }
 
             try {
+                String phaseTask = "copy";
+                boolean doTrace = ViewLifecycle.isTrace();
+                if (doTrace) {
+                    if (ViewLifecycle.isActive()) {
+                        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
+                        if (phase != null) {
+                            ViewLifecycleTask task = phase.getCurrentTask();
+                            phaseTask += "-" + phase.getViewPhase()
+//                                    + "-" + phase.getComponent().getId()
+//                                    + "-" + phase.getPath()
+                                    + "-" + obj.getClass().getSimpleName()
+                                    + (task == null ? "" : "-" + task.getClass().getSimpleName());
+                        }
+                    }
+                    ProcessLogger.ntrace(phaseTask + ":", ":" + obj.getClass().getSimpleName(), 1000);
+                    ProcessLogger.countBegin(phaseTask);
+                }
+                
                 copyProperties.invoke(obj, copy);
+                
+                if (doTrace) {
+                    ProcessLogger.countEnd(phaseTask, obj.getClass() +
+                            (obj instanceof LifecycleElement ? " " + ((LifecycleElement) obj).getId() : ""));
+                }
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException("Access error copying properties with " + copyProperties);
             } catch (InvocationTargetException e) {

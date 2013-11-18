@@ -90,6 +90,13 @@ public interface ViewLifecyclePhase extends Runnable {
     String getViewPhase();
 
     /**
+     * Gets the task currently running.
+     * 
+     * @return the task currently running, null if this phase is not active.
+     */
+    ViewLifecycleTask getCurrentTask();
+    
+    /**
      * Gets the event to notify on completion.
      * 
      * @return lifecycle event to notify on completion

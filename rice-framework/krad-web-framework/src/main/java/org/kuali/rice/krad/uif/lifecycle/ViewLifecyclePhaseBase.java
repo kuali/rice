@@ -47,6 +47,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
   
     private int pendingSuccessors = -1;
 
+    private ViewLifecycleTask currentTask;
+
     /**
      * Resets this phase for recycling.
      */
@@ -185,6 +187,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewLifecycleTask getCurrentTask() {
+        return this.currentTask;
+    }
+
+    /**
      * Validates this phase and thread state before processing and logs activity.
      * @see #run()
      */
@@ -248,7 +258,9 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
                 while (!pendingTasks.isEmpty()) {
                     ViewLifecycleTask task = pendingTasks.poll();
+                    currentTask = task;
                     task.run();
+                    currentTask = null;
                 }
 
                 component.setViewStatus(this);

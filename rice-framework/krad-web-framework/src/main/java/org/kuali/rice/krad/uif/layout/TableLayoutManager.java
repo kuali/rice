@@ -167,6 +167,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     @Override
     public void performInitialization(Object model) {
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getComponent();
+        
+        if (collectionGroup.isReadOnly()) {
+            addLineGroup.setReadOnly(true);
+            actionFieldPrototype.setReadOnly(true);
+        }
 
         this.setupDetails(collectionGroup);
         this.setupGrouping(model, collectionGroup);
@@ -352,7 +357,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             // create a new field group to hold the totals fields
             FieldGroup calculationFieldGroup = ComponentFactory.getFieldGroup();
-            calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE, "totalsBlock");
+            calculationFieldGroup.addDataAttribute(UifConstants.DataAttributes.ROLE,
+                    UifConstants.RoleTypes.TOTALS_BLOCK);
 
             List<Component> calculationFieldGroupItems = new ArrayList<Component>();
 
@@ -360,15 +366,15 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (cInfo.isShowPageTotal()) {
                 Field pageTotalDataField = cInfo.getPageTotalField().copy();
                 setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), getPageTotalLabel(),
-                        "pageTotal", leftLabelColumnIndex);
+                        UifConstants.RoleTypes.PAGE_TOTAL, leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
             }
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
                 Field totalDataField = cInfo.getTotalField().copy();
-                setupTotalField(cInfo.getTotalField(), cInfo, this.isShowTotal(), getTotalLabel(), "total",
-                        leftLabelColumnIndex);
+                setupTotalField(totalDataField, cInfo, this.isShowTotal(), getTotalLabel(),
+                        UifConstants.RoleTypes.TOTAL, leftLabelColumnIndex);
 
                 if (!cInfo.isRecalculateTotalClientSide()) {
                     totalDataField.addDataAttribute(UifConstants.DataAttributes.SKIP_TOTAL, "true");
@@ -382,7 +388,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             if (cInfo.isShowGroupTotal()) {
                 Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype().copy();
                 setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), getGroupTotalLabelPrototype(),
-                        "groupTotal", leftLabelColumnIndex);
+                        UifConstants.RoleTypes.GROUP_TOTAL, leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
                 groupTotalDataField.setStyle("display: none;");
 
@@ -509,10 +515,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
 
             if (labelPhase != null) {
-                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField,
-                        null, labelPhase, true);
+                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField, null, labelPhase, true);
             }
-            
+
             totalDataField.setFieldLabel(label);
         }
 
@@ -1652,6 +1657,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
+        
+        detailsFieldGroup.setReadOnly(collectionGroup.isReadOnly());
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

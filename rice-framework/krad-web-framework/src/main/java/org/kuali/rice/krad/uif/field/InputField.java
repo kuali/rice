@@ -169,17 +169,22 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     @Override
     public void performInitialization(Object model) {
         super.performInitialization(model);
-        
-        if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
-                constraintMessage
-                        == null)) {
-            constraintMessage = ComponentFactory.getConstraintMessage();
-        }
 
-        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
-                instructionalMessage
+        if (!isReadOnly()) {
+            if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
+                    constraintMessage
                         == null)) {
-            instructionalMessage = ComponentFactory.getInstructionalMessage();
+                constraintMessage = ComponentFactory.getConstraintMessage();
+            }
+
+            if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null))
+                    && (
+                    instructionalMessage
+                        == null)) {
+                instructionalMessage = ComponentFactory.getInstructionalMessage();
+            }
+        } else {
+            setValidationMessages(null);
         }
 
     }
@@ -193,12 +198,16 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
 
         // Done in apply model so we have the message text for additional rich message processing in Message
         // Sets message
-        if (StringUtils.isNotBlank(instructionalText) && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(instructionalText)
+                && instructionalMessage != null
+                && StringUtils.isBlank(instructionalMessage.getMessageText())) {
             instructionalMessage.setMessageText(instructionalText);
         }
 
         // Sets constraints
-        if (StringUtils.isNotBlank(constraintText) && StringUtils.isBlank(constraintMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(constraintText)
+                && constraintMessage != null
+                && StringUtils.isBlank(constraintMessage.getMessageText())) {
             constraintMessage.setMessageText(constraintText);
         }
 

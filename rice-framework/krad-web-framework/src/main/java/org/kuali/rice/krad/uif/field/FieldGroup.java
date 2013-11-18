@@ -63,6 +63,10 @@ public class FieldGroup extends FieldBase {
         if (StringUtils.isNotBlank(getAlign()) && group != null) {
             group.setAlign(getAlign());
         }
+        
+        if (group != null) {
+            group.setReadOnly(isReadOnly());
+        }
     }
 
     @Override

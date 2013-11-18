@@ -70,14 +70,14 @@
   <bean id="Uif-MenuDivider" parent="Uif-MenuDivider-parentBean"/>
   <bean id="Uif-MenuDivider-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Space"
         scope="prototype">
-    <property name="libraryCssClasses" value="divider"/>
+    <property name="wrapperCssClasses" value="divider"/>
   </bean>
 
   <bean id="Uif-MenuHeader" parent="Uif-MenuHeader-parentBean"/>
   <bean id="Uif-MenuHeader-parentBean" abstract="true" parent="Uif-Message"
         scope="prototype">
     <property name="generateSpan" value="false"/>
-    <property name="libraryCssClasses" value="dropdown-header"/>
+    <property name="wrapperCssClasses" value="dropdown-header"/>
   </bean>
 
   <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>

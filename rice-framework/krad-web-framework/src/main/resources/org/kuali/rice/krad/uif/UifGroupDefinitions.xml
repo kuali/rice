@@ -1071,7 +1071,7 @@
 
   <bean id="Uif-ListCollectionGroup" parent="Uif-ListCollectionGroup-parentBean"/>
   <bean id="Uif-ListCollectionGroup-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Uif-GroupBase">
+        class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Uif-CollectionGroupBase">
     <property name="cssClasses">
       <list>
         <value>uif-collectionGroup</value>
@@ -1086,6 +1086,18 @@
     <property name="includeLineSelectionField" value="false"/>
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-List"/>
+    </property>
+    <property name="addLineBindingInfo">
+      <null/>
+    </property>
+    <property name="addLineLabel">
+      <null/>
+    </property>
+    <property name="addLineActions">
+      <list/>
+    </property>
+    <property name="lineActions">
+      <list/>
     </property>
   </bean>
 

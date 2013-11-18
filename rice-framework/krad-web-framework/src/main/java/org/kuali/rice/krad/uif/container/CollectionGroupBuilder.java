@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +48,7 @@ import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -455,6 +457,12 @@ public class CollectionGroupBuilder implements Serializable {
                     currentLine);
         }
 
+        // update action parameters for any actions that were added in the line items (as opposed to the line actions)
+        List<Action> lineFieldActions = ComponentUtils.getComponentsOfTypeDeep(lineFields, Action.class);
+        if (lineFieldActions != null) {
+            collectionGroup.getCollectionGroupBuilder().initializeActions(lineFieldActions, collectionGroup, lineIndex);
+        }
+
         // invoke layout manager to build the complete line
         layoutManager.buildLine(model, collectionGroup, lineFields, subCollectionFields, bindingPath, actionList,
                 lineSuffix, currentLine, lineIndex);
@@ -486,6 +494,7 @@ public class CollectionGroupBuilder implements Serializable {
             }
             collectionGroup.addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS, selector.replaceFirst(",", ""));
         }
+
     }
 
     /**
@@ -493,8 +502,6 @@ public class CollectionGroupBuilder implements Serializable {
      * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
      * is then inserted into the returned list at the position of the holder
      *
-     * @param view view instance containing the container
-     * @param model object instance containing the view data
      * @param group collection group instance to check for any remotable fields holder
      * @param items list of items to process
      */
@@ -795,15 +802,22 @@ public class CollectionGroupBuilder implements Serializable {
         List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
         List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionComponents, Action.class);
-        initializeActions(actions, collectionGroup, collectionLine, lineIndex, lineSuffix);
+        initializeActions(actions, collectionGroup, lineIndex);
 
         ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
 
         return actionComponents;
     }
 
-    public void initializeActions(List<Action> actions, CollectionGroup collectionGroup, Object collectionLine,
-            int lineIndex, String lineSuffix) {
+    /**
+     * Updates the action parameters, jump to, refresh id, and validation configuration for the list of actions
+     * associated with the given collection group and line index.
+     *
+     * @param actions list of action components to update
+     * @param collectionGroup collection group instance the actions belong to
+     * @param lineIndex index of the line the actions are associate with
+     */
+    public void initializeActions(List<Action> actions, CollectionGroup collectionGroup, int lineIndex) {
         for (Action action : actions) {
             if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
                 // need to update the actions expressions so our settings do not get overridden
@@ -821,8 +835,13 @@ public class CollectionGroupBuilder implements Serializable {
                 action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             }
 
-            action.setJumpToIdAfterSubmit(collectionGroup.getId());
-            action.setRefreshId(collectionGroup.getId());
+            if (StringUtils.isBlank(action.getJumpToIdAfterSubmit())) {
+                action.setJumpToIdAfterSubmit(collectionGroup.getId());
+            }
+
+            if (StringUtils.isBlank(action.getRefreshId()) && StringUtils.isBlank(action.getRefreshPropertyName())) {
+                action.setRefreshId(collectionGroup.getId());
+            }
 
             // if marked for validation, add call to validate the line and set validation flag to false
             // so the entire form will not be validated

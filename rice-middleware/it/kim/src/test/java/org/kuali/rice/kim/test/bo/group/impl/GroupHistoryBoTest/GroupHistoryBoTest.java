@@ -2,6 +2,7 @@ package org.kuali.rice.kim.test.bo.group.impl.GroupHistoryBoTest;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.OrderByField;
 import org.kuali.rice.core.api.criteria.OrderDirection;
@@ -21,6 +22,8 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class GroupHistoryBoTest extends KIMTestCase {
+
+    @Ignore // https://jira.kuali.org/browse/KULRICE-9182 Kim Effective dating
     @Test
     public void getGroupHistory() {
         Map<String, String> criteria = new HashMap<String, String>();
@@ -40,6 +43,7 @@ public class GroupHistoryBoTest extends KIMTestCase {
 
     }
 
+    @Ignore // https://jira.kuali.org/browse/KULRICE-9182 Kim Effective dating
     @Test
     public void getGroupHistoryByGroupService() {
         DateTime oldDate = new DateTime(2005, 1, 1, 12, 0, 0, 0);
@@ -54,6 +58,7 @@ public class GroupHistoryBoTest extends KIMTestCase {
 
     }
 
+    @Ignore // https://jira.kuali.org/browse/KULRICE-9182 Kim Effective dating
     @Test
     public void findGroupsAndSort() {
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();

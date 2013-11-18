@@ -45,52 +45,37 @@ public class CollectionTotallingAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testCollectionTotalling() throws Exception {
         //Scenario Asserts Changes in Total at client side
-        waitForElementPresent("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
-        SeleneseTestBase.assertEquals("Total: 419", getText(
-                "div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
-        clearText("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']");
-        waitAndType("div#Demo-CollectionTotaling-Section1 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section1]  input[name='list1[0].field1']","10");
-        waitAndClick("div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']");
-        Thread.sleep(5000);
-        SeleneseTestBase.assertEquals("Total: 424", getText(
-                "div#Demo-CollectionTotaling-Section1 div[role='grid'] div[data-label='Total']"));
-
+        assertEquals("333",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']"));
+        clearTextByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tbody/tr[2]/td[2]/div/input[@name='list1[0].field1']");
+        waitAndTypeByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tbody/tr[2]/td[2]/div/input[@name='list1[0].field1']","10");
+        waitAndClickByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']");
+        Thread.sleep(2000);
+        assertEquals("338",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']"));        
+        
         //Scenario Asserts Changes in Total at client side on keyUp
-        SeleneseTestBase.assertEquals("Total: 419", getText(
-                "div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
-        clearText("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']");
-        waitAndType("div#Demo-CollectionTotaling-Section2 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section2] input[name='list1[0].field1']","9");
-        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-        Thread.sleep(5000);
-        SeleneseTestBase.assertEquals("Total: 423", getText(
-                "div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']"));
+        assertEquals("333",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']"));
+        clearTextByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tbody/tr[2]/td[2]/div/input[@name='list1[0].field1']");
+        waitAndTypeByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tbody/tr[2]/td[2]/div/input[@name='list1[0].field1']","10");
+        Thread.sleep(2000);
+        assertEquals("338",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']"));        
+        
+        //Totalling Flexibility
+        assertEquals("82",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section3']/div[@role='grid']/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-message']"));
 
-        //Asserts absence of Total in 2nd column at the footer for Demonstrating totaling on only some columns
-        SeleneseTestBase.assertEquals("", getTextByXpath("//div[3]/div[3]/table/tfoot/tr/th[2]"));
-
-        //Asserts Presence of Total in 2nd column at the footer for Demonstrating totaling on only some columns
-        SeleneseTestBase.assertEquals("Total: 369", getTextByXpath(
-                "//div[3]/div[3]/table/tfoot/tr/th[3]/div/fieldset/div/div[2]/div[2]"));
-
-        //Asserts Presence of Total in left most column only being one with no totaling itself
-        SeleneseTestBase.assertEquals("Total:", getTextByXpath("//*[@id='u100213_span']"));
-        SeleneseTestBase.assertEquals("419", getTextByXpath(
-                "//div[4]/div[3]/table/tfoot/tr/th[2]/div/fieldset/div/div[2]/div[2]"));
-
-        //Asserts changes in value in Total and Decimal for Demonstrating multiple types of calculations for a single column (also setting average to 3 decimal places to demonstrate passing data to calculation function)
-        SeleneseTestBase.assertEquals("Total: 382", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
-        clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
-        waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","11");
-        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-        Thread.sleep(5000);
-        SeleneseTestBase.assertEquals("Total: 385", getTextByXpath("//div[2]/div/fieldset/div/div[2]/div[2]"));
-
-        // Assert changes in Decimal..
-        clearText("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']");
-        waitAndType("div#Demo-CollectionTotaling-Section6 > div[role='grid'] > table > tbody div[data-parent=Demo-CollectionTotaling-Section6] input[name='list1[0].field4']","15.25");
-        waitAndClick("div#Demo-CollectionTotaling-Section2 div[role='grid'] div[data-label='Total']");
-        Thread.sleep(5000);
-        SeleneseTestBase.assertEquals("Page Average: 11.917", getTextByXpath("//div[2]/fieldset/div/div[2]/div"));
+        //Left Total Labels
+        assertEquals("Page Total:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section4']/div[@role='grid']/table/tfoot/tr/th/div/div[@class='uif-verticalBoxLayout']/span[@class='uif-label']/label"));
+        
+        //Hide Footer
+        assertElementPresentByXpath("//div[@id='Demo-CollectionTotaling-Section5']/div[@role='grid']/table/tfoot/tr[@style='display: none;']");
+        
+        //Multiple Calculations
+        assertEquals("Page Total:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section6']/div[@role='grid']/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-label']/label"));
+        assertEquals("Page Average:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section6']/div[@role='grid']/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout']/div[2]/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-label']/label"));
+        assertEquals("Page Min:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section6']/div[@role='grid']/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout']/div[3]/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-label']/label"));
+        assertEquals("Page Max:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section6']/div[@role='grid']/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout']/div[@data-role='pageTotal']/span[@class='uif-label']/label"));
+        
+        //Group Totaling
+        assertEquals("Group Total:",getTextByXpath("//div[@id='Demo-CollectionTotaling-Section7']/div[@role='grid']/table/tbody/tr[7]/td/div/span/label"));
     }
 
     @Test

@@ -45,9 +45,8 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -1170,7 +1169,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Label instance to serve as prototype
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getHeaderLabelPrototype() {
         return this.headerLabelPrototype;
@@ -1269,7 +1268,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return Attribute field instance
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSequenceFieldPrototype() {
         return this.sequenceFieldPrototype;
@@ -1294,7 +1293,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return GroupField instance
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getActionFieldPrototype() {
         return this.actionFieldPrototype;
@@ -1312,7 +1311,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     /**
      * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
@@ -1343,7 +1342,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return select field prototype instance
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
@@ -1428,7 +1427,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return list of field instances
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public List<Field> getFirstRowFields() {
         return firstRowFields;
     }
@@ -1594,7 +1593,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return rowDetailsGroup component
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
@@ -1870,7 +1869,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      *
      * @return the list of components for the footer
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public List<Component> getFooterCalculationComponents() {
         return footerCalculationComponents;
     }

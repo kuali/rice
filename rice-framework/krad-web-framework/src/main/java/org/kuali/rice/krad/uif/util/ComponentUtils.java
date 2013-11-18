@@ -41,9 +41,8 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.springframework.core.OrderComparator;
 
@@ -993,23 +992,41 @@ public class ComponentUtils {
      * Gets subcomponents for lifecycle processing.
      * 
      * @param component The component to scan.
-     * @param includePrototypes True to include component properties marked with
-     *        {@link LifecyclePrototype}.
+     * @param viewPhase The view phase to return subcomponents for.
      * @return lifecycle components
      */
-    public static Map<String, Component> getComponentsForLifecycle(LifecycleElement component, boolean includePrototypes) {
-        Set<String> noLifecyclePropertyNames =
-                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, NoLifecycle.class);
-        Set<String> prototypePropertyNames = includePrototypes ? null :
-                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, LifecyclePrototype.class);
+    public static Map<String, Component> getComponentsForLifecycle(LifecycleElement component, String viewPhase) {
+        Set<String> restrictedPropertyNames =
+                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, ViewLifecycleRestriction.class);
+        
+        // Prune restrictions to only include those that apply to the indicated phase.
+        Class<?> componentClass = component.getClass();
+        if (!restrictedPropertyNames.isEmpty() && viewPhase != null) {
+            Set<String> origRestrictedPropertyNames = restrictedPropertyNames;
+            for (String restrictedPropertyName : origRestrictedPropertyNames) {
+                ViewLifecycleRestriction restriction = ObjectPropertyUtils
+                        .getReadMethod(componentClass, restrictedPropertyName)
+                        .getAnnotation(ViewLifecycleRestriction.class);
+                for (String phase : restriction.value()) {
+                    if (phase.equals(viewPhase)) {
+                        if (restrictedPropertyNames == origRestrictedPropertyNames) {
+                            restrictedPropertyNames = new HashSet<String>(origRestrictedPropertyNames);
+                        }
+                        
+                        restrictedPropertyNames.remove(restrictedPropertyName);
+                        break;
+                    }
+                }
+            }
+        }
+        
         Map<String, Component> components = new LinkedHashMap<String, Component>();
 
         for (String propertyName : ObjectPropertyUtils
                 .getReadablePropertyNamesByType(component, LifecycleElement.class)) {
-            if (noLifecyclePropertyNames.contains(propertyName)
-                    || COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
+            if (COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
                     || COMPONENT_PROTOTYPES.equals(propertyName)
-                    || (!includePrototypes && prototypePropertyNames.contains(propertyName))) {
+                    || restrictedPropertyNames.contains(propertyName)) {
                 continue;
             }
             
@@ -1018,7 +1035,7 @@ public class ComponentUtils {
                 components.put(propertyName, (Component) element);
             } else if (element != null) {
                 for (Entry<String, Component> managerEntry :
-                        getComponentsForLifecycle(element, includePrototypes).entrySet()) {
+                        getComponentsForLifecycle(element, viewPhase).entrySet()) {
                     components.put(propertyName + "." + managerEntry.getKey(), managerEntry.getValue());
                 }
             }
@@ -1026,10 +1043,9 @@ public class ComponentUtils {
         
         for (String propertyName : ObjectPropertyUtils
                 .getReadablePropertyNamesByCollectionType(component, Component.class)) {
-            if (noLifecyclePropertyNames.contains(propertyName)
-                    || COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
+            if (COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
                     || COMPONENT_PROTOTYPES.equals(propertyName)
-                    || (!includePrototypes && prototypePropertyNames.contains(propertyName))) {
+                    || restrictedPropertyNames.contains(propertyName)) {
                 continue;
             }
 

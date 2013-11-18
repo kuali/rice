@@ -39,13 +39,12 @@ import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.springframework.util.StringUtils;
@@ -638,7 +637,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the details group
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public Group getDetailsGroup() {
         return detailsGroup;
     }
@@ -657,7 +656,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the ComponentExhibit for this component demo view
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public ComponentExhibit getExhibit() {
         return exhibit;
     }
@@ -677,7 +676,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the demoGroups
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public List<Group> getDemoGroups() {
         return demoGroups;
     }

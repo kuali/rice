@@ -35,9 +35,9 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
@@ -526,7 +526,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
 

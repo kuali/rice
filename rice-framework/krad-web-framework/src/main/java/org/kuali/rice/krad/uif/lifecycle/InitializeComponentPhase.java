@@ -121,11 +121,11 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
         int index = 0;
         if (ViewLifecycle.isUseReflection()) {
             for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
-                    true).entrySet()) {
+                    getViewPhase()).entrySet()) {
                 String path = getPath();
                 String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
                 Component nestedComponent = nestedComponentEntry.getValue();
-                
+
                 if (nestedComponent != null && !nestedComponent.isInitialized()) {
                     successors.offer(LifecyclePhaseFactory.initialize(
                             nestedComponent, model, index++, nestedPath, null, null));

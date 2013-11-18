@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
 
 /**
@@ -93,7 +93,7 @@ public class ComponentExhibit extends ContentElementBase {
      *
      * @return the demoGroups
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public List<Group> getDemoGroups() {
         return demoGroups;
     }
@@ -148,7 +148,7 @@ public class ComponentExhibit extends ContentElementBase {
      * TODO not yet used
      * @return the FieldGroup that contains documentation links
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     public FieldGroup getDocLinkFields() {
         return docLinkFields;
     }

@@ -26,6 +26,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -447,8 +448,8 @@ public class ViewIndex implements Serializable {
                 }
 
                 // Queue child components for initialize lifecycle phase.
-                for (Entry<String, Component> entry :
-                    ComponentUtils.getComponentsForLifecycle(state.original, true).entrySet()) {
+                for (Entry<String, Component> entry : ComponentUtils.getComponentsForLifecycle(state.original,
+                        UifConstants.ViewPhases.INITIALIZE).entrySet()) {
                     Component nested = entry.getValue();
                     if (nested != null) {
                         Component nestedCopy = ObjectPropertyUtils

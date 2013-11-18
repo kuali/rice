@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 
@@ -265,7 +265,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name="fieldLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getFieldLabel() {
         return this.fieldLabel;

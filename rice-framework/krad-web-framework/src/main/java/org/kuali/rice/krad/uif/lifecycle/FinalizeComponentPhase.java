@@ -134,7 +134,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         int index = 0;
         if (ViewLifecycle.isUseReflection()) {
             for (Entry<String, Component> nestedComponentEntry :
-                    ComponentUtils.getComponentsForLifecycle(component, false).entrySet()) {
+                    ComponentUtils.getComponentsForLifecycle(component, getViewPhase()).entrySet()) {
                 String path = getPath();
                 String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
                 Component nestedComponent = nestedComponentEntry.getValue();

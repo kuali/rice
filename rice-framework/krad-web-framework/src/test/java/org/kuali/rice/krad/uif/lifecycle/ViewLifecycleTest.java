@@ -142,7 +142,8 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         View view = viewService.getViewById("TransactionView");
         
         List<Component> l1 = view.getComponentsForLifecycle();
-        Map<String, Component> m2 = ComponentUtils.getComponentsForLifecycle(view, false);
+        Map<String, Component> m2 =
+                ComponentUtils.getComponentsForLifecycle(view, UifConstants.ViewPhases.APPLY_MODEL);
         LOG.debug(l1.toString());
         LOG.debug(m2.toString());
         assertTrue(l1.size() >= m2.size());

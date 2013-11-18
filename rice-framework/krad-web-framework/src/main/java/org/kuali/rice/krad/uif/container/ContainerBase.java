@@ -30,8 +30,8 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -180,7 +180,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     /**
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
 	 */
-    @NoLifecycle
+    @ViewLifecycleRestriction
 	@Override
 	public List<Component> getComponentsForLifecycle() {
 		List<Component> components = super.getComponentsForLifecycle();

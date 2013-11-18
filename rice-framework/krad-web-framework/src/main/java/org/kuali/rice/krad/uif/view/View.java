@@ -48,9 +48,9 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -485,7 +485,7 @@ public class View extends ContainerBase {
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @Override
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
@@ -1641,7 +1641,7 @@ public class View extends ContainerBase {
      *
      * @return page group for single page views
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "page", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PageGroup getPage() {
         return this.page;
@@ -1661,7 +1661,7 @@ public class View extends ContainerBase {
      * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
      */
     @Override
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Group> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {

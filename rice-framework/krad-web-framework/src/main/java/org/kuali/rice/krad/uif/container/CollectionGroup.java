@@ -38,10 +38,9 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.lifecycle.LifecyclePrototype;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -450,7 +449,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * {@inheritDoc}
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @Override
     public List<? extends Component> getItems() {
         return super.getItems();
@@ -520,7 +519,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return line action fields
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getLineActions() {
         return this.lineActions;
@@ -683,7 +682,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
@@ -707,7 +706,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return add line action fields
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineActions() {
         return this.addLineActions;
@@ -891,7 +890,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return sub collections
      */
-    @LifecyclePrototype
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;

@@ -1,0 +1,52 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kuali.rice.krad.uif.lifecycle;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.kuali.rice.krad.uif.UifConstants;
+
+/**
+ * Annotation for {@link LifecycleElement} bean properties to restrict which view lifecycle phases
+ * for which the property will be considered while initializing the successor phase queue.
+ * 
+ * <p>
+ * This annotation should be placed on the read method for any properties on the component that
+ * should be excluded from the view lifecycle. An optional array of phases at which the property
+ * should be included may be provided.
+ * </p>
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface ViewLifecycleRestriction {
+
+    /**
+     * Array of view lifecycle phases at which to include the annotated bean property. By default
+     * the property will be excluded from all phases.
+     * 
+     * @return lifecycle phases at which to include the annotated property
+     * @see UifConstants.ViewPhases
+     */
+    String[] value() default {};
+
+}

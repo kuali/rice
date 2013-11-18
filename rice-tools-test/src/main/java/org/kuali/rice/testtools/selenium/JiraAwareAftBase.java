@@ -322,7 +322,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         } catch (Exception e) {
             jiraAwareFail(by.toString(), e.getMessage(), e);
         }
-        return null; // requred by compiler, never reached
+        return null; // required by compiler, never reached
     }
 
     protected WebElement findElement(By by, WebElement elementToFindOn) {
@@ -333,7 +333,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         } catch (Exception e) {
             jiraAwareFail(by.toString(), e.getMessage(), e);
         }
-        return null; // requred by compiler, never reached
+        return null; // required by compiler, never reached
     }
 
     protected boolean isVisible(String locator) {

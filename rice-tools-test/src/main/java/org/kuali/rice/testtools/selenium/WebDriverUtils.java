@@ -97,6 +97,7 @@ public class WebDriverUtils {
     public static final String HUB_DRIVER_PROPERTY = "remote.public.driver";
 
     /**
+     * For use when running Selenium tests through a Selenium Hub.
      * -Dremote.public.hub=
      */
     public static final String HUB_PROPERTY = "remote.public.hub";
@@ -107,7 +108,7 @@ public class WebDriverUtils {
     public static final String HUB_URL_PROPERTY = "http://localhost:4444/wd/hub";
 
     /**
-     * 1000 Milliseconds.
+     * wait Methods inter loop sleep period, default of 1000 Milliseconds.
      * TODO parametrize for JVM Arg
      */
     public static int IMPLICIT_WAIT_TIME_LOOP_MS = 1000;
@@ -122,7 +123,7 @@ public class WebDriverUtils {
     public static int IMPLICIT_WAIT_TIME_SECONDS_DEFAULT = 30;
 
     /**
-     * false
+     * If true tests will fail on jGrowl errors, default of false
      * TODO upgrade to config via JVM param.
      */
     public static final boolean JGROWL_ERROR_FAILURE = false;

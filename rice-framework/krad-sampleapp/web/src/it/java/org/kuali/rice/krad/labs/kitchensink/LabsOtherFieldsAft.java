@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoOtherFieldsAft extends DemoKitchenSinkBase {
+public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=cd45c8fc-586b-4174-866f-e2abf5171a49&cacheKey=qlapnzravopc76l0ypny3gjt9b&pageId=UifCompView-Page2#UifCompView-Page2";
     

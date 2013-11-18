@@ -73,10 +73,16 @@
       <list>
         <!-- ex:Demo-QuickFinder-Example3 start-->
         <bean parent="GenericTextField" p:propertyName="inputField14">
-          <property name="instructionalText" value="Overriden link to display different text - Search Now" />
+          <property name="instructionalText" value="Overriden link to display different text - Search Now"/>
           <property name="quickfinder">
-            <bean parent="Uif-QuickFinder" p:quickfinderAction.actionImage.altText="Search Now" p:quickfinderAction.actionImage.title="Search Now" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:inputField14"/>
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:inputField14">
+              <property name="quickfinderAction">
+                <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Search Now"
+                      p:focusOnIdAfterSubmit="NEXT_INPUT" p:wrapperCssClasses="input-group-msg"/>
+              </property>
+            </bean>
           </property>
         </bean>
         <!-- ex:Demo-QuickFinder-Example3 end-->

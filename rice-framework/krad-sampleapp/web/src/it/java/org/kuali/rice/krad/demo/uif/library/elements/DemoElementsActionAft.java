@@ -79,7 +79,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
 
     protected void testActionValidation() throws Exception {
         waitForElementPresentByClassName("uif-page"); // make sure the page is there before we use the driver
-        driver.findElement(By.className("uif-page")).findElement(By.linkText("Validation")).click();
+        findElement(By.className("uif-page")).findElement(By.linkText("Validation")).click();
 
         waitForElementPresentByClassName("uif-headerText-span");
         assertTextPresent("Action Field with client side validation");
@@ -100,10 +100,8 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertTextPresent("Images");
         assertTextPresent("Action Field with images");
 
-        driver.findElement(By.partialLinkText("Action Link with left image")).findElement(By.className(
-                "leftActionImage"));
-        driver.findElement(By.partialLinkText("Action Link with right image")).findElement(By.className(
-                "rightActionImage"));
+        findElement(By.partialLinkText("Action Link with left image")).findElement(By.className("leftActionImage"));
+        findElement(By.partialLinkText("Action Link with right image")).findElement(By.className("rightActionImage"));
     }
 
     protected void testActionButton() throws Exception {
@@ -124,51 +122,32 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
-        driver.findElement(By.id("ST-DemoButtonImageLeft")).click();
+        findElement(By.xpath("//span[contains(text(),'Image LEFT')]"));
+        findElement(By.id("ST-DemoButtonImageLeft")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.id("ST-DemoButtonImageRight")).click();
+        findElement(By.id("ST-DemoButtonImageRight")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.id("ST-DemoButtonImageOnly")).click();
+        findElement(By.id("ST-DemoButtonImageOnly")).click();
         assertTrue(driver.switchTo().alert().getText().contains("You clicked a button"));
         driver.switchTo().alert().accept();
 
-        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]/preceding-sibling::button/img"));
-        driver.findElement(By.xpath("//button/img[contains(@alt,'Image Only button')]"));
+        findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]/preceding-sibling::button/img"));
+        findElement(By.xpath("//button/img[contains(@alt,'Image Only button')]"));
 
-        driver.findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
+        findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
     }
 
     private void testAllActionTabs() throws Exception {
         testActionDefault();
-        testActionPresubmit();
         testActionSuccessCallback();
         testActionValidation();
         testActionImages();
         testActionButton();
-    }
-
-    @Test
-    public void testActionButtonAndImagesBookmark() throws Exception {
-        testActionImages();
-        testActionButton();
-        passed();
-    }
-
-    @Test
-    public void testActionButtonBookmark() throws Exception {
-        testActionButton();
-        passed();
-    }
-
-    @Test
-    public void testActionButtonNav() throws Exception {
-        testActionButton();
-        passed();
+        testActionPresubmit(); // last because it is failing https://jira.kuali.org/browse/KULRICE-10961 Library Action Presubmit Pre submit returning true Link redirects to Library Action Default
     }
 
     @Test

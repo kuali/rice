@@ -70,22 +70,23 @@ public class DemoContainerGroupAft extends WebDriverLegacyITBase {
         selectByName("exampleShown","Scrollpane");
         assertElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
     }
-    
-    @Test
-    public void testContainerGroupBookmark() throws Exception {
+
+    private void testAllGroups() throws Exception {
         testLibraryContainerGroupBasic();
         testLibraryContainerGroupSections();
         testLibraryContainerGroupDisclosure();
         testLibraryContainerGroupScrollpane();
+    }
+
+    @Test
+    public void testContainerGroupBookmark() throws Exception {
+        testAllGroups();
         passed();
     }
 
     @Test
     public void testContainerGroupNav() throws Exception {
-        testLibraryContainerGroupBasic();
-        testLibraryContainerGroupSections();
-        testLibraryContainerGroupDisclosure();
-        testLibraryContainerGroupScrollpane();
+        testAllGroups();
         passed();
     }  
 }

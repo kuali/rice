@@ -43,7 +43,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
 
     protected void testGeneralFeaturesUnifiedHeader() throws Exception {
        waitAndClickByLinkText("Unified Header");
-       waitAndClickByLinkText("Unified exampl");
+       waitAndClickByLinkText("Unified example");
        switchToWindow("Kuali :: View Header");
        assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
        assertElementPresentByXpath("//h1/span/span[@class='uif-viewHeader-supportTitle']");

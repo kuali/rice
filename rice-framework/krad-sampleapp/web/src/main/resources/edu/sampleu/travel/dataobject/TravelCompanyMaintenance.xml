@@ -51,4 +51,30 @@
     </property>
   </bean>
 
+  <bean id="TravelCompany-MaintenanceHelpView" parent="Uif-MaintenanceView">
+    <property name="headerText" value="Travel Company Maintenance"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelCompany"/>
+    <property name="viewName" value="TravelCompany-MaintenanceHelpView"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceGridSection">
+          <property name="headerText" value="Company Information"/>
+          <property name="help">
+            <bean parent="Uif-Help">
+              <property name="externalHelpUrl" value="http://www.kuali.org/"/>
+            </bean>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField"
+                    p:propertyName="travelCompanyId"
+                    p:defaultValue="@{ #sequence('TRVL_CO_ID_S') }" />
+              <bean parent="Uif-InputField" p:propertyName="travelCompanyName"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

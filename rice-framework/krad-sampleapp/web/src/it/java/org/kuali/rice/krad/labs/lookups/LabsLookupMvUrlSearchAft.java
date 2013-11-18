@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupMvUrlSearchAft extends DemoLabsLookupBase {
+public class LabsLookupMvUrlSearchAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=search&viewId=LabsLookup-ResultsLimitView&renderLookupCriteria=false&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts

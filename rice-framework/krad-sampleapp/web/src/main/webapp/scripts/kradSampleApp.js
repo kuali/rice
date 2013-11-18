@@ -127,6 +127,7 @@ function showLibraryNav() {
 
         jQuery("#Uif-Navigation").css("width", "0");
         jQuery("#Uif-Navigation").show();
+        jQuery("#Uif-Navigation").addClass("force-show");
         jQuery("#Uif-Navigation").animate({width:'220px'}, 300, function () {
             jQuery("#ComponentLibrary-ShowNavLink").text("<< Close Library Navigation");
         });
@@ -135,6 +136,7 @@ function showLibraryNav() {
 
         jQuery("#Uif-Navigation").animate({width:'1px'}, {duration:300, queue:false, complete:function () {
             jQuery("#ComponentLibrary-ShowNavLink").text(">> Show Library Navigation");
+            jQuery("#Uif-Navigation").removeClass("force-show");
             jQuery("#Uif-Navigation").hide();
         }});
 

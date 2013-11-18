@@ -116,7 +116,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"blah");
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"blah");
         selectByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"Clearing Account Type");
-        waitAndTypeByXpath(SUB_ACCOUNT_FIELD_XPATH,"a1");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");

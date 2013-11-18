@@ -29,6 +29,7 @@
       <list>
         <ref bean="Demo-NavigationGroup-Example1"/>
         <ref bean="Demo-NavigationGroup-Example2"/>
+        <ref bean="Demo-NavigationGroup-Example3"/>
       </list>
     </property>
   </bean>
@@ -36,10 +37,9 @@
   <bean id="Demo-NavigationGroup-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-NavigationGroup-Example1 start-->
         <bean id="NavigationGroupLink1" parent="Uif-Link"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=NavigationGroup-NavigationView&amp;methodToCall=start" p:target="_blank"/>
-        <!-- ex:Demo-NavigationGroup-Example1 end-->
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=NavigationGroup-NavigationView&amp;methodToCall=start"
+              p:target="_blank"/>
       </list>
     </property>
   </bean>
@@ -47,10 +47,19 @@
   <bean id="Demo-NavigationGroup-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-NavigationGroup-Example2 start-->
         <bean id="NavigationGroupLink2" parent="Uif-Link"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=MenuNavigationGroup-NavigationView&amp;methodToCall=start" p:target="_blank"/>
-        <!-- ex:Demo-NavigationGroup-Example2 end-->
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=MenuNavigationGroup-NavigationView&amp;methodToCall=start"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-NavigationGroup-Example3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean p:linkText="Navigation Toggle Menu" parent="Uif-Link"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=MenuNavigationGroup-NavigationView2&amp;methodToCall=start"
+              p:target="_blank"/>
       </list>
     </property>
   </bean>
@@ -88,36 +97,52 @@
       </list>
     </property>
   </bean>
+
+  <!-- ex:Demo-NavigationGroup-Example1 start-->
   <bean id="Navigation-Menu" parent="Uif-TabNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page1"/>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page2"/>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page3"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId="page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="page2"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 3" p:navigateToPageId="page3"/>
       </list>
     </property>
   </bean>
+  <!-- ex:Demo-NavigationGroup-Example1 end-->
 
   <bean id="MenuNavigationGroup-NavigationView" parent="Uif-FormView">
-    <property name="entryPageId" value="page4"/>
-    <property name="currentPageId" value="page4"/>
+    <property name="entryPageId" value="MenuNavigationGroup-Page1"/>
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.UITestForm"/>
     <property name="navigation">
       <ref bean="NavigationMenu2"/>
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-Page" p:id="page4">
+        <bean parent="Uif-Page" p:headerText="Page 1" p:style="height: 500px;" id="MenuNavigationGroup-Page1">
           <property name="items">
             <list>
-              <bean id="page4Section" parent="Uif-HorizontalBoxSection"/>
+              <bean p:headerText="Section Title 1" parent="Uif-HorizontalBoxSection"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-Page" p:id="page5">
+        <bean parent="Uif-Page" p:headerText="Page 2" p:style="height: 500px;" id="MenuNavigationGroup-Page2">
           <property name="items">
             <list>
-              <bean id="page5Section" parent="Uif-HorizontalBoxSection"/>
+              <bean p:headerText="Section Title 2" parent="Uif-HorizontalBoxSection"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-Page" p:headerText="Page 3" p:style="height: 500px;" id="MenuNavigationGroup-Page3">
+          <property name="items">
+            <list>
+              <bean p:headerText="Section Title 3" parent="Uif-HorizontalBoxSection"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-Page" p:headerText="Page 4" p:style="height: 500px;" id="MenuNavigationGroup-Page4">
+          <property name="items">
+            <list>
+              <bean p:headerText="Section Title 4" parent="Uif-HorizontalBoxSection"/>
             </list>
           </property>
         </bean>
@@ -125,14 +150,44 @@
     </property>
   </bean>
 
+  <!-- ex:Demo-NavigationGroup-Example2 start-->
   <bean id="NavigationMenu2" parent="Uif-MenuNavigationGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-HeaderTwo"/>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page4"/>
-        <bean parent="Uif-NavigationActionLink" p:navigateToPageId="page5"/>
+        <bean parent="Uif-HeaderTwo" p:headerText="Menu Title"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId="MenuNavigationGroup-Page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="MenuNavigationGroup-Page2"/>
       </list>
     </property>
   </bean>
+  <!-- ex:Demo-NavigationGroup-Example2 end-->
+
+  <bean id="MenuNavigationGroup-NavigationView2" parent="MenuNavigationGroup-NavigationView">
+    <property name="navigation">
+      <ref bean="NavigationMenu3"/>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-NavigationGroup-Example3 start-->
+  <bean id="NavigationMenu3" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId="MenuNavigationGroup-Page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="MenuNavigationGroup-Page2"/>
+        <bean parent="Uif-SidebarToggleMenu" p:toggleText="More Content">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 3"
+                    p:navigateToPageId="MenuNavigationGroup-Page3"/>
+              <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 4"
+                    p:navigateToPageId="MenuNavigationGroup-Page4"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Action Script4" p:actionScript="alert('Menu Script');"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-NavigationGroup-Example3 end-->
 
 </beans>

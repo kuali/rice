@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoLookupsAft extends DemoKitchenSinkBase {
+public class LabsLookupsAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=49dbef40-65ef-424a-ae8a-1741cf947fee&cacheKey=eu0yn3vhdhhb753reybcvd&pageId=UifCompView-Page6&lightbox=true#UifCompView-Page6";
 
@@ -67,7 +67,7 @@ public class DemoLookupsAft extends DemoKitchenSinkBase {
     	gotoIframeByXpath(IFRAME_XPATH);
     	waitAndClickByXpath(SEARCH_BTN_XPATH);
     	waitAndClickLinkContainingText("return value","");
-    	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/fieldset/div/span/a");
+    	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
     	gotoIframeByXpath(IFRAME_XPATH); 
     	waitAndClickByXpath(SEARCH_BTN_XPATH);
     	waitAndClickLinkContainingText("return value","");

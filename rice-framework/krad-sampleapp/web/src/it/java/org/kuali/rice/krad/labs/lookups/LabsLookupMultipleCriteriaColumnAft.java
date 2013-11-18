@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupMultipleCriteriaColumnAft extends DemoLabsLookupBase {
+public class LabsLookupMultipleCriteriaColumnAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-MultipleColumnsCriteriaView&hideReturnLink=true

@@ -43,21 +43,23 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
 
     protected void testLibraryElementsDropdownBasic() throws Exception {
         waitAndClickByLinkText("User thclark");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath(
+                "//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li[2]/a[contains(text(),'Logout')]");
     }
     
     protected void testLibraryElementsDropdownWithDivider() throws Exception {
         waitAndClickByLinkText("Dropdown with Divider");
         waitAndClickByLinkText("Action List");
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li/a[contains(text(),'Proposal #1034')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li[@class='uif-actionLink divider ui-corner-right']");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li[@class='divider']");
     }
     
     protected void testLibraryElementsDropdownWithHeader() throws Exception {
         waitAndClickByLinkText("Dropdown with Headers");
         waitAndClickByLinkText("Favorites");
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li/a[contains(text(),'Proposal')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li[@class='uif-actionLink dropdown-header ui-corner-right']");
+        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li[@class='dropdown-header']");
     }
     
     protected void testLibraryElementsDropdownWithDisabled() throws Exception {
@@ -79,25 +81,24 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
     }
 
-    @Test
-    public void testLibraryElementsDropdownBookmark() throws Exception {
+    private void testAllDropdowns() throws Exception {
         testLibraryElementsDropdownBasic();
         testLibraryElementsDropdownWithDivider();
         testLibraryElementsDropdownWithHeader();
         testLibraryElementsDropdownWithDisabled();
         testLibraryElementsDropdownWithActionOptions();
         testLibraryElementsDropdownWithToggleButton();
+    }
+
+    @Test
+    public void testLibraryElementsDropdownBookmark() throws Exception {
+        testAllDropdowns();
         passed();
     }
 
     @Test
     public void testLibraryElementsDropdownNav() throws Exception {
-        testLibraryElementsDropdownBasic();
-        testLibraryElementsDropdownWithDivider();
-        testLibraryElementsDropdownWithHeader();
-        testLibraryElementsDropdownWithDisabled();
-        testLibraryElementsDropdownWithActionOptions();
-        testLibraryElementsDropdownWithToggleButton();
+        testAllDropdowns();
         passed();
     }  
 }

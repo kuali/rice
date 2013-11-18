@@ -17,6 +17,8 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -84,7 +86,12 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     protected void testWidgetsBreadcrumbPreViewAndPrePage() throws Exception {
         waitAndClickByLinkText("preView and prePage");
         waitAndClickByLinkText("preView and prePage breadcrumbs");
-        assertNewWindow("5");
+        waitForPageToLoad();
+        switchToWindow(TARGET_PAGE_TITLE);
+        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "5"));
+        assertElementPresentByName(FIELD_TO_CHECK);
+        driver.close();
+        switchToWindow(START_PAGE_TITLE);
     }
 
     protected void testWidgetsBreadcrumbBreadcrumbLabel() throws Exception {
@@ -114,7 +121,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     protected void testWidgetsBreadcrumbOverrides() throws Exception {
         waitAndClickByLinkText("Overrides");
         waitAndClickByLinkText("Breadcrumb Overrides");
-        assertNewWindow("9");
+        assertNewWindow("9", "Demo Page", "Demo Page");
     }
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
@@ -124,16 +131,25 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     private void assertNewWindow(String urlNumber) throws InterruptedException {
+        assertNewWindow(urlNumber, "Page 1 Title", "Page 2 Title");
+    }
+
+    private void assertNewWindow(String urlNumber, String titleOne, String titleTwo) throws InterruptedException {
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
+        WebElement element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
+        assertTrue(element.getText().contains(titleOne));
+        waitAndClickByLinkText("Page 2");
+        Thread.sleep(4000);
+        element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
+        assertEquals(titleTwo, element.getText().trim());
         driver.close();
         switchToWindow(START_PAGE_TITLE);
     }
 
-    @Test
-    public void testWidgetsBreadcrumbBookmark() throws Exception {
+    private void testAllBreadcrumb() throws Exception {
         testWidgetsBreadcrumbDefault();
         testWidgetsBreadcrumbParentLocation();
         testWidgetsBreadcrumbParentLocationChain();
@@ -145,22 +161,17 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         testWidgetsBreadcrumbOverrides();
         testWidgetsBreadcrumbSiblingBreadcrumbs();
         driver.close();
+    }
+
+    @Test
+    public void testWidgetsBreadcrumbBookmark() throws Exception {
+        testAllBreadcrumb();
         passed();
     }
 
     @Test
     public void testWidgetsBreadcrumbNav() throws Exception {
-        testWidgetsBreadcrumbDefault();
-        testWidgetsBreadcrumbParentLocation();
-        testWidgetsBreadcrumbParentLocationChain();
-        testWidgetsBreadcrumbParentLocationPage();
-        testWidgetsBreadcrumbPreViewAndPrePage();
-        testWidgetsBreadcrumbBreadcrumbLabel();
-        testWidgetsBreadcrumbHomewardPath();
-        testWidgetsBreadcrumbPathBased();
-        testWidgetsBreadcrumbOverrides();
-        testWidgetsBreadcrumbSiblingBreadcrumbs();
-        driver.close();
+        testAllBreadcrumb();
         passed();
     }
 }

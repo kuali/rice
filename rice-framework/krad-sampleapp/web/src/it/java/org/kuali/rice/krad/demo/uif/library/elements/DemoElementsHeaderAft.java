@@ -98,8 +98,7 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-pageHeader clearfix uif-boxLayoutVerticalItem clearfix']/h2/span");
     }
 
-    @Test
-    public void testElementsHeaderBookmark() throws Exception {
+    private void testAllHeaders() throws Exception {
         testLibraryElementsHeaderBaseHeader();
         testLibraryElementsHeader1();
         testLibraryElementsHeader2();
@@ -114,15 +113,7 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
 
     @Test
     public void testElementsHeaderNav() throws Exception {
-        testLibraryElementsHeaderBaseHeader();
-        testLibraryElementsHeader1();
-        testLibraryElementsHeader2();
-        testLibraryElementsHeader3();
-        testLibraryElementsHeader4();
-        testLibraryElementsHeader5();
-        testLibraryElementsHeader6();
-        testLibraryElementsHeaderEditableHeader();
-        testLibraryElementsHeaderReadOnlyPageHeader();
+        testAllHeaders();
         passed();
     }  
 }

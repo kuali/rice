@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class LabsLookupDisabledWildcardsAft extends DemoLabsLookupBase {
+public class LabsLookupDisabledWildcardsAft extends LabsLookupBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-DisabledWildcardsView&hideReturnLink=true

@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DemoPerformanceMediumAft extends WebDriverLegacyITBase {
+public class LabsPerformanceMediumAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/labs?viewId=Lab-PerformanceMedium

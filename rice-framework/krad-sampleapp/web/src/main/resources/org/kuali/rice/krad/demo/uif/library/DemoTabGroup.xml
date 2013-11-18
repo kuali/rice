@@ -29,9 +29,9 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-TabGroup-Example1"/>
-        <ref bean="Demo-TabGroup-Example2"/>
+<!-- TODO add back in when tab alignments are working       <ref bean="Demo-TabGroup-Example2"/>
         <ref bean="Demo-TabGroup-Example3"/>
-        <ref bean="Demo-TabGroup-Example4"/>
+        <ref bean="Demo-TabGroup-Example4"/>-->
       </list>
     </property>
   </bean>

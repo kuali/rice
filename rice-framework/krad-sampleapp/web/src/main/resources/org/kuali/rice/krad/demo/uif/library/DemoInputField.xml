@@ -239,7 +239,7 @@
         <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField14">
           <property name="postInputAddons">
             <list>
-                 <bean parent="Uif-Message" p:messageText=".00"/>
+                 <bean parent="Uif-Message" p:messageText=".00" p:wrapperCssClasses="input-group-msg"/>
             </list>
           </property>
         </bean>

@@ -51,8 +51,8 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
     
     protected void testLibraryControlTextAreaTextExpand() throws Exception {
         waitAndClickByLinkText("Text expand");
-        assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example3']/textarea[@name='inputField2' and @rows='3' and @cols='40']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example3']/a[@title='Expand']");
+        assertElementPresentByXpath("//textarea[@name='inputField2' and @rows='3' and @cols='40']");
+        assertElementPresentByXpath("//a[@title='Expand']");
     }
     
     protected void testLibraryControlTextAreaDisabled() throws Exception {
@@ -84,6 +84,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Disable when changed");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40']");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField5']","a");
+        fireEvent("inputField5", "blur");
         waitAndClickByLinkText("Usage");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40' and @disabled]");
     }

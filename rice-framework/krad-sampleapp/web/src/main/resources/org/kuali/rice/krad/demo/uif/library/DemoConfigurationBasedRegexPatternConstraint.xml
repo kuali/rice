@@ -126,7 +126,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Time 12" p:propertyName="inputField5"
               p:constraintText="Accepts some basic 12 hour time format">
           <property name="validCharactersConstraint">
-            <bean parent="NoWhitespacePatternConstraint"/>
+            <bean parent="TimePatternConstraint"/>
           </property>
         </bean>
 
@@ -144,7 +144,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Time 24" p:propertyName="inputField6"
               p:constraintText="Accepts some basic 24 hour time format">
           <property name="validCharactersConstraint">
-            <bean parent="NoWhitespacePatternConstraint"/>
+            <bean parent="Time24HPatternConstraint"/>
           </property>
         </bean>
 
@@ -162,7 +162,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Timestamp" p:propertyName="inputField7"
               p:constraintText="Accepts timestamps in the yyyy-mm-dd hh:mm:ss.ms format only">
           <property name="validCharactersConstraint">
-            <bean parent="JavaClassPatternConstraint"/>
+            <bean parent="TimestampPatternConstraint"/>
           </property>
         </bean>
 
@@ -195,7 +195,7 @@
       <list>
         <!-- ex:Demo-ConfigurationBasedRegexPatternConstraint-Example9 start-->
 
-        <bean parent="Uif-InputField-LabelTop" p:label="Year" p:propertyName="inputField9"
+        <bean parent="Uif-InputField-LabelTop" p:label="Month" p:propertyName="inputField9"
               p:constraintText="Valid month numbers only">
           <property name="validCharactersConstraint">
             <bean parent="MonthPatternConstraint"/>
@@ -215,7 +215,7 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Zipcode" p:propertyName="inputField10"
               p:constraintText="any valid USA zipcode with or without additional dash and 4 number postfix">
           <property name="validCharactersConstraint">
-            <bean parent="MonthPatternConstraint"/>
+            <bean parent="ZipcodePatternConstraint"/>
           </property>
         </bean>
 

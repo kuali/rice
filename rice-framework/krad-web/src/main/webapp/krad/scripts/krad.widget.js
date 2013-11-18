@@ -254,7 +254,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
  */
 function markActiveMenuLink() {
     // Clear current active
-    jQuery("li." + kradVariables.ACTIVE_CLASS).removeClass(kradVariables.ACTIVE_CLASS);
+    jQuery("#" + kradVariables.NAVIGATION_ID + " li." + kradVariables.ACTIVE_CLASS).removeClass(kradVariables.ACTIVE_CLASS);
 
     // Select active
     var pageId = getCurrentPageId();

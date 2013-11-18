@@ -333,7 +333,6 @@ button img.rightActionImage, a img.rightActionImage {
   clear: both;
 }
 div.clearfix:after {
-  content: ".";
   display: block;
   height: 0;
   width: auto;
@@ -703,11 +702,11 @@ a.inlineBlock, span.inlineBlock {
 /** Block ui plugin customizations ***********************************************************************/
 
 div.blockOverlay {
-  background-color: black;
+  background-color: white;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 60) !important;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)" !important;
-  opacity: .60;
-  -moz-opacity: .60;
+  opacity: 0;
+  -moz-opacity: 0;
   z-index: 10100 !important;
 }
 div.blockElement {
@@ -718,7 +717,6 @@ div.blockElement {
   background-color: white;
   text-align: center;
   color: #000;
-  border: 3px solid #aaa;
   cursor: wait;
   z-index: 10101 !important;
 }
@@ -730,7 +728,6 @@ div.blockPage {
   left: 35%;
   text-align: center;
   color: #000;
-  border: 3px solid #aaa;
   background-color: white;
   cursor: wait;
   z-index: 10101 !important;
@@ -1272,10 +1269,10 @@ span.ui-spinner input {
   opacity: 0.4 !important;
 }
 /***** Syntax Highlighter *********************************************************************/
-/*div.uif-syntaxHighlighter {*/
-/*max-height: 400px;*/
-/*overflow: auto;*/
-/*}*/
+div.uif-syntaxHighlighter {
+  max-height: 400px;
+  overflow: auto;
+}
 
 .uif-syntaxHighlighter li {
   list-style: decimal outside none;
@@ -1289,11 +1286,10 @@ span.ui-spinner input {
   line-height: 20px;
   margin: 0 0 10px;
   padding: 9.5px;
-  overflow: auto;
-  max-height: 600px;
+  width: 1000px;
 }
 .uif-syntaxHighlighter pre.prettyprint {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .uif-syntaxHighlighter pre code {
   background-color: transparent;
@@ -1305,7 +1301,7 @@ span.ui-spinner input {
   box-shadow: 40px 0 0 #FBFBFC inset, 41px 0 0 #ECECF0 inset;
 }
 .uif-syntaxHighlighter ol.linenums {
-  margin: 0 0 0 33px;
+  margin: 0;
 }
 .uif-syntaxHighlighter ol.linenums li {
   color: #BEBEC5;
@@ -1328,7 +1324,7 @@ ol.linenums li:nth-of-type(2n+1) {
   height: 26px;
   overflow: hidden;
   position: absolute;
-  right: 0;
+  right: 18px;
   width: 26px;
 }
 .uif-syntaxHighlighter:hover .uif-copyPaste {

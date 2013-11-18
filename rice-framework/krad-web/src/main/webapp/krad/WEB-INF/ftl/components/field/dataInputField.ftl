@@ -96,6 +96,8 @@
                      <#list field.postInputAddons as postAddon>
                          <#if postAddon.wrapperCssClassesAsString?has_content>
                              <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                         <#else>
+                             <#local postAddonStyleClass=""/>
                          </#if>
 
                          <span ${postAddonStyleClass!}>

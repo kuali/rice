@@ -182,6 +182,12 @@ JavascriptKradVariables.prototype = {
         tail: { align: 'left', hidden: false },
         manageMouseEvents: false,
         themeName: 'popup-form'
+    },
+    EVENT_NAMESPACE: "uif",
+    EVENTS: {
+        DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
+        SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
+        UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE
     }
 }
 

@@ -106,7 +106,7 @@ input[type="text"], .uif-textAreaControl {
     padding: 15px;
 }
 
-.uif-lightbox{
+.uif-lightbox > div{
     width: 720px;
 }
 

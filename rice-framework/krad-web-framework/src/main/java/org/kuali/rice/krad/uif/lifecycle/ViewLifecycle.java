@@ -30,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -271,7 +272,12 @@ public class ViewLifecycle implements Serializable {
      */
     public static boolean isTrace() {
         if (trace == null) {
-            trace = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+            Config config = ConfigContext.getCurrentContextConfig();
+            if (config == null) {
+                return false;
+            }
+
+            trace = config.getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
         }
 

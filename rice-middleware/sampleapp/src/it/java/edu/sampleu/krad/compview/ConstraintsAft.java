@@ -40,6 +40,7 @@ public class ConstraintsAft extends WebDriverLegacyITBase {
         waitAndClickKRAD();
         waitAndClickByXpath(KITCHEN_SINK_XPATH);
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+        waitAndClickByXpath("//ul[@class='nav nav-list']/li[5]/a");
         waitAndClickByXpath("//a[@id='UifCompView-Navigation3']");
     }
 
@@ -368,7 +369,7 @@ public class ConstraintsAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test  Currently facing problem navigating
+    @Test
     public void testConstraintsNav() throws Exception {
         testConstraints();
         passed();

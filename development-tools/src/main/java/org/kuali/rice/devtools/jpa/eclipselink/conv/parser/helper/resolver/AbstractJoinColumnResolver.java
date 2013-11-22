@@ -65,7 +65,7 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
 
             final Collection<String> pks = OjbUtil.getPrimaryKeyNames(mappedClass, descriptorRepositories);
 
-            if (pks.size() == fks.size() && !pks.containsAll(fks) && !pks.isEmpty()) {
+            if ((!(pks.containsAll(fks) && fks.containsAll(pks)) && !pks.isEmpty()) || ((pks.containsAll(fks) && fks.containsAll(pks)) && cld != null)) {
 
                 final ClassDescriptor cd = OjbUtil.findClassDescriptor(mappedClass, descriptorRepositories);
                 final ClassDescriptor icd;
@@ -80,18 +80,20 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
                 }
 
                 final FieldDescriptor[] pfds = getForeignKeysDescr(cd, ord, cld);
-                final FieldDescriptor[] ipfds = icd.getPkFields();
-                for (int i = 0; i < pfds.length; i++) {
+
+                for (FieldDescriptor pfd : pfds) {
                     final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
 
-                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfds[i].getColumnName())));
-                    pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ipfds[i].getColumnName())));
-                    if (!isAnonymousFk(pfds[i])) {
+                    final FieldDescriptor ifd = icd.getFieldDescriptorByName(pfd.getAttributeName());
+
+                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfd.getColumnName())));
+                    pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ifd.getColumnName())));
+                    if (!isAnonymousFk(pfd)) {
                         pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
                         pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
                     }
 
-                    if (!isNullableFk(pfds[i])) {
+                    if (!isNullableFk(pfd)) {
                         pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
                     }
                     joinColumns.add(new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs));
@@ -109,7 +111,7 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
         if (ord != null) {
             return ord.getForeignKeyFields();
         } else if (cld != null) {
-            cld.getForeignKeyFields();
+            return cld.getForeignKeyFields();
         }
         return null;
     }
@@ -131,7 +133,7 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
         if (ord != null) {
             return ord.getItemClassName();
         } else if (cld != null) {
-            cld.getItemClassName();
+            return cld.getItemClassName();
         }
         return null;
     }

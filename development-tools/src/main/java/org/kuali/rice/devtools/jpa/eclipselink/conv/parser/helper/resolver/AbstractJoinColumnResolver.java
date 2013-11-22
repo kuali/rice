@@ -80,20 +80,26 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
                 }
 
                 final FieldDescriptor[] pfds = getForeignKeysDescr(cd, ord, cld);
+                final FieldDescriptor[] ipks = icd.getPkFields();
 
-                for (FieldDescriptor pfd : pfds) {
+                for (int i = 0; i < pfds.length; i ++) {
+                    final FieldDescriptor ifd;
                     final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
+                    if (cld != null) {
+                        ifd = icd.getFieldDescriptorByName(pfds[i].getAttributeName());
+                    } else {
+                        ifd = ipks[i];
+                    }
 
-                    final FieldDescriptor ifd = icd.getFieldDescriptorByName(pfd.getAttributeName());
 
-                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfd.getColumnName())));
+                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfds[i].getColumnName())));
                     pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ifd.getColumnName())));
-                    if (!isAnonymousFk(pfd)) {
+                    if (!isAnonymousFk(pfds[i])) {
                         pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
                         pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
                     }
 
-                    if (!isNullableFk(pfd)) {
+                    if (!isNullableFk(pfds[i])) {
                         pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
                     }
                     joinColumns.add(new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs));

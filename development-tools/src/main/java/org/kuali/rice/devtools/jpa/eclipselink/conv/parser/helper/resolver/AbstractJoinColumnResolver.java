@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver;
 
+import japa.parser.ast.expr.AnnotationExpr;
 import japa.parser.ast.expr.BooleanLiteralExpr;
 import japa.parser.ast.expr.Expression;
 import japa.parser.ast.expr.MemberValuePair;
@@ -33,11 +34,9 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-/**
- * this only does mappings for OneToOne at the field level for compound fks.
- */
 public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldResolver {
     private static final Log LOG = LogFactory.getLog(AbstractJoinColumnResolver.class);
 
@@ -52,103 +51,96 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
         final CollectionDescriptor cld = OjbUtil.findCollectionDescriptor(mappedClass, fieldName,
                 descriptorRepositories);
 
+        if (ord != null) {
+            return processReferenceField(enclosingClass, fieldName, mappedClass, ord);
+        } else if (cld != null) {
+            return processCollectionField(enclosingClass, fieldName, mappedClass, cld);
+        }
+
+        return Collections.emptyList();
+    }
+
+    private List<Expression> processReferenceField(String enclosingClass, String fieldName, String mappedClass, ObjectReferenceDescriptor ord) {
         final List<Expression> joinColumns = new ArrayList<Expression>();
+        final Collection<String> fks = ord.getForeignKeyFields();
+        if (fks == null || fks.isEmpty()) {
+            LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
+                    + " but does not have any foreign keys configured");
+            return joinColumns;
+        }
 
-        if (foundDescriptor(ord, cld) && !isMToN(cld)) {
+        final Collection<String> pks = OjbUtil.getPrimaryKeyNames(mappedClass, descriptorRepositories);
 
-            final Collection<String> fks = getForeignKeys(ord, cld);
-            if (fks == null || fks.isEmpty()) {
-                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
-                        + " but does not have any foreign keys configured");
-                return null;
-            }
+        //make sure it isn't a one to one
+        if (!(pks.containsAll(fks) && fks.containsAll(pks)) && !pks.isEmpty()) {
 
-            final Collection<String> pks = OjbUtil.getPrimaryKeyNames(mappedClass, descriptorRepositories);
+            final ClassDescriptor cd = OjbUtil.findClassDescriptor(mappedClass, descriptorRepositories);
+            final ClassDescriptor icd = getItemClassDescriptor(enclosingClass, fieldName, mappedClass, ord);
+            final FieldDescriptor[] fkDescs = ord.getForeignKeyFieldDescriptors(cd);
+            final FieldDescriptor[] pkDescs = icd.getPkFields();
 
-            if ((!(pks.containsAll(fks) && fks.containsAll(pks)) && !pks.isEmpty()) || ((pks.containsAll(fks) && fks.containsAll(pks)) && cld != null)) {
-
-                final ClassDescriptor cd = OjbUtil.findClassDescriptor(mappedClass, descriptorRepositories);
-                final ClassDescriptor icd;
-
-                final String itemClassName = getItemClass(ord, cld);
-                if (StringUtils.isBlank(itemClassName)) {
-                    LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
-                            + " but does not class name attribute");
-                    return null;
-                } else {
-                    icd = OjbUtil.findClassDescriptor(itemClassName, descriptorRepositories);
-                }
-
-                final FieldDescriptor[] pfds = getForeignKeysDescr(cd, ord, cld);
-                final FieldDescriptor[] ipks = icd.getPkFields();
-
-                for (int i = 0; i < pfds.length; i ++) {
-                    final FieldDescriptor ifd;
-                    final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
-                    if (cld != null) {
-                        ifd = icd.getFieldDescriptorByName(pfds[i].getAttributeName());
-                    } else {
-                        ifd = ipks[i];
-                    }
-
-
-                    pairs.add(new MemberValuePair("name", new StringLiteralExpr(pfds[i].getColumnName())));
-                    pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(ifd.getColumnName())));
-                    if (!isAnonymousFk(pfds[i])) {
-                        pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
-                        pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
-                    }
-
-                    if (!isNullableFk(pfds[i])) {
-                        pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
-                    }
-                    joinColumns.add(new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs));
-                }
+            for (int i = 0; i < fkDescs.length; i ++) {
+                joinColumns.add(createJoinColumn(fkDescs[i], pkDescs[i]));
             }
         }
         return joinColumns;
     }
 
-    private boolean foundDescriptor(ObjectReferenceDescriptor ord, CollectionDescriptor cld) {
-        return ord != null || cld != null;
-    }
+    private List<Expression> processCollectionField(String enclosingClass, String fieldName, String mappedClass, CollectionDescriptor cld) {
+        final List<Expression> joinColumns = new ArrayList<Expression>();
 
-    private List<String> getForeignKeys(ObjectReferenceDescriptor ord, CollectionDescriptor cld) {
-        if (ord != null) {
-            return ord.getForeignKeyFields();
-        } else if (cld != null) {
-            return cld.getForeignKeyFields();
-        }
-        return null;
-    }
-
-    private FieldDescriptor[] getForeignKeysDescr(ClassDescriptor cd, ObjectReferenceDescriptor ord, CollectionDescriptor cld) {
-        final List<String> fks = getForeignKeys(ord, cld);
-        if (fks != null) {
-            final List<FieldDescriptor> pfds = new ArrayList<FieldDescriptor>();
-            for (String fk : fks) {
-                pfds.add(cd.getFieldDescriptorByName(fk));
+        if (!cld.isMtoNRelation()) {
+            final Collection<String> fks = cld.getForeignKeyFields();
+            if (fks == null || fks.isEmpty()) {
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
+                        + " but does not have any inverse foreign keys configured");
+                return joinColumns;
             }
-            return pfds.toArray(new FieldDescriptor[] {});
-        }
 
-        return null;
+            final ClassDescriptor cd = OjbUtil.findClassDescriptor(mappedClass, descriptorRepositories);
+            final ClassDescriptor icd = getItemClassDescriptor(enclosingClass, fieldName, mappedClass, cld);
+            final FieldDescriptor[] fkDescs =  cld.getForeignKeyFieldDescriptors(icd);
+            final FieldDescriptor[] pkDescs = cd.getPkFields();
+
+            for (int i = 0; i < fkDescs.length; i ++) {
+                joinColumns.add(createJoinColumn(pkDescs[i], fkDescs[i]));
+            }
+        }
+        return joinColumns;
     }
 
-    private String getItemClass(ObjectReferenceDescriptor ord, CollectionDescriptor cld) {
-        if (ord != null) {
-            return ord.getItemClassName();
-        } else if (cld != null) {
-            return cld.getItemClassName();
+    private AnnotationExpr createJoinColumn(FieldDescriptor thisField, FieldDescriptor itemField) {
+        final List<MemberValuePair> pairs = new ArrayList<MemberValuePair>();
+
+        pairs.add(new MemberValuePair("name", new StringLiteralExpr(thisField.getColumnName())));
+        pairs.add(new MemberValuePair("referencedColumnName", new StringLiteralExpr(itemField.getColumnName())));
+        if (!isAnonymousFk(thisField)) {
+            pairs.add(new MemberValuePair("insertable", new BooleanLiteralExpr(false)));
+            pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
         }
-        return null;
+
+        if (!isNullableFk(thisField)) {
+            pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
+        }
+        return new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs);
     }
 
-    private boolean isMToN(CollectionDescriptor cld) {
-        if (cld != null) {
-            return cld.isMtoNRelation();
+    private ClassDescriptor getItemClassDescriptor(String enclosingClass, String fieldName, String mappedClass, CollectionDescriptor cld) {
+        return getItemClassDescriptor(enclosingClass, fieldName, mappedClass, cld.getItemClassName());
+    }
+
+    private ClassDescriptor getItemClassDescriptor(String enclosingClass, String fieldName, String mappedClass, ObjectReferenceDescriptor ord) {
+        return getItemClassDescriptor(enclosingClass, fieldName, mappedClass, ord.getItemClassName());
+    }
+
+    private ClassDescriptor getItemClassDescriptor(String enclosingClass, String fieldName, String mappedClass, String itemClassName) {
+        if (StringUtils.isBlank(itemClassName)) {
+            LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a reference descriptor for " + fieldName
+                    + " but does not class name attribute");
+            return null;
+        } else {
+            return OjbUtil.findClassDescriptor(itemClassName, descriptorRepositories);
         }
-        return false;
     }
 
     private boolean isAnonymousFk(FieldDescriptor fd) {

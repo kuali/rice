@@ -79,6 +79,11 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
             final FieldDescriptor[] fkDescs = ord.getForeignKeyFieldDescriptors(cd);
             final FieldDescriptor[] pkDescs = icd.getPkFields();
 
+            if (fkDescs.length != pkDescs.length) {
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
+                        + " with an foreign key that is not joined to all of the primary key fields. This is not supported in JPA.");
+            }
+
             for (int i = 0; i < fkDescs.length; i ++) {
                 joinColumns.add(createJoinColumn(fkDescs[i], pkDescs[i]));
             }
@@ -101,6 +106,11 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
             final ClassDescriptor icd = getItemClassDescriptor(enclosingClass, fieldName, mappedClass, cld);
             final FieldDescriptor[] fkDescs =  cld.getForeignKeyFieldDescriptors(icd);
             final FieldDescriptor[] pkDescs = cd.getPkFields();
+
+            if (fkDescs.length != pkDescs.length) {
+                LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has a collection descriptor for " + fieldName
+                + " with an inverse foreign key that is not joined to all of the primary key fields.  This is not supported in JPA.");
+            }
 
             for (int i = 0; i < fkDescs.length; i ++) {
                 joinColumns.add(createJoinColumn(pkDescs[i], fkDescs[i]));

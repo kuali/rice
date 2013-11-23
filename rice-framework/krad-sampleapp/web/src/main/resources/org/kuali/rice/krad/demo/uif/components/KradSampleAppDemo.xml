@@ -638,6 +638,12 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View"/>
         <bean parent="Uif-Link" p:linkText="Sticky Footer Options"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View"/>
+        <bean parent="Uif-Link" p:linkText="Read Only"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReadOnly-View"/>
+        <bean parent="Uif-Link" p:linkText="Authorization"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Authorization-View"/>
+        <!--<bean parent="Uif-Link" p:linkText="Validation Messages"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ValidationMessagesView"/>-->
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"
         p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IncidentPage-View"/>-->
       </list>

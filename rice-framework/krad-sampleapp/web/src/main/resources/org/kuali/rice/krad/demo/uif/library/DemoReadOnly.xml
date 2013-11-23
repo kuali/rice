@@ -1,0 +1,188 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  <!-- Readonly demo -->
+  <bean id="Demo-ReadOnly-View" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoReadOnly.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-ReadOnly-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ReadOnly-Example1" parent="Uif-VerticalBoxSection" p:headerText="Read-Only Example">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Read-Only Example"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReadOnly-View1&amp;methodToCall=start"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-ReadOnly-Example1 start-->
+  <bean id="Demo-ReadOnly-View1" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
+    <property name="headerText" value="ReadOnly Test"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:render="@{!#view.readOnly}"
+                    p:actionLabel="Make ReadOnly" p:methodToCall="makeReadOnly"/>
+              <ref bean="Demo-ReadOnlySection1"/>
+              <ref bean="Demo-ReadOnlySection2"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  </bean>
+
+  <bean id="Demo-ReadOnlySection1" p:headerText="Basic Functionality" parent="Uif-HorizontalBoxSection" p:readOnly="@{#view.readOnly}">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField1" p:label="Field 1">
+          <property name="control">
+            <bean parent="Uif-TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="Field 2">
+          <property name="control">
+            <bean parent="Uif-TextAreaControl"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField3" p:label="Field 3">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField4" p:label="Field 4">
+          <property name="control">
+            <bean parent="Uif-MultiSelectControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField5" p:label="Radio 1"
+              p:width="auto" p:instructionalText="RadioGroupControl using an optionsFinder">
+          <property name="control">
+            <bean parent="Uif-VerticalRadioControl" p:cssClasses="uif-verticalRadioControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="booleanField1" p:label="Checkbox"
+              p:defaultValue="true"
+              p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by
+            default">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl" p:checkboxLabel="Checkbox Label"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField6" p:label="Checkboxes 1"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyDisplayReplacement="@{#emptyList(inputField6)?'No Options Selected':''}">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:label="Date" p:propertyName="inputField7" p:required="true">
+          <property name="control">
+            <bean parent="Uif-DateControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ReadOnlySection2" p:headerText="Advanced Functionality" parent="Uif-HorizontalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField8" p:label="Break Delimiter"
+              p:readOnlyListDisplayType="BREAK">
+          <property name="control">
+            <bean parent="Uif-MultiSelectControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField9" p:label="Alternate Delimiter"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyListDisplayType="DELIMITED" p:readOnlyListDelimiter=" - ">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField1" p:label="Ordered List"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyListDisplayType="OL">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField2" p:label="Unordered List"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
+              p:readOnlyListDisplayType="UL">
+          <property name="control">
+            <bean parent="Uif-VerticalCheckboxesControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-ReadOnly-Example1 end-->
+</beans>

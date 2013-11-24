@@ -53,7 +53,7 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
         }
         jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
         jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
-		jpaProperties.put(PersistenceUnitProperties.WEAVING, "false");
+		// jpaProperties.put(PersistenceUnitProperties.WEAVING, "false");
 		LOG.info("EclipseLink JPA properties " + jpaProperties);
     }
 

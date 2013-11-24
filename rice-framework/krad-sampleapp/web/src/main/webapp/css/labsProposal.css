@@ -106,7 +106,7 @@ input[type="text"], .uif-textAreaControl {
     padding: 15px;
 }
 
-.uif-lightbox > div{
+.uif-lightbox{
     width: 720px;
 }
 
@@ -189,4 +189,4 @@ input[type="text"], .uif-textAreaControl {
 
 #LabsProposal-Page input[type="checkbox"] {
     margin-top: 8px;
-}
+}

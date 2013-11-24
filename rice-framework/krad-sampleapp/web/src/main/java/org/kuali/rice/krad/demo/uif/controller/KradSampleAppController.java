@@ -89,4 +89,21 @@ public class KradSampleAppController extends UifControllerBase {
             }
         }
     }
+
+    /**
+     * Changes the view to readOnly and returns.
+     *
+     * @param uifForm
+     * @param result
+     * @param request
+     * @param response
+     * @return readOnly View
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=makeReadOnly")
+    public ModelAndView makeReadOnly(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        //set View to readOnly
+        uifForm.getView().setReadOnly(true);
+        return getUIFModelAndView(uifForm);
+    }
 }

@@ -372,7 +372,7 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-wizard" parent="Uif-CssGridGroup"
+  <bean id="LabsProposal-wizard" parent="Uif-VerticalBoxGroup"
         class="org.kuali.rice.krad.labs.WizardGroup"
         p:resetDataOnRefresh="true" p:retrieveViaAjax="true">
     <property name="header">
@@ -435,19 +435,6 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:1"/>
-                      </list>
-                  </property>
-              </bean>
-          </property>
-          <property name="footer">
             <bean parent="Uif-FooterBase">
               <property name="items">
                 <list>
@@ -502,23 +489,23 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Go back"
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:0">
-                          </bean>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:2"/>
-                      </list>
-                  </property>
-              </bean>
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Go back"
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:0">
+                  </bean>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Continue..."
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:2"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-CssGridSection">
@@ -547,23 +534,23 @@
             </list>
           </property>
           <property name="footer">
-              <bean parent="Uif-FooterBase">
-                  <property name="items">
-                      <list>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Go back"
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:0">
-                          </bean>
-                          <bean parent="Uif-PrimaryActionButton"
-                                p:actionLabel="Continue..."
-                                p:refreshId="LabsProposal-wizard"
-                                p:methodToCall="refresh"
-                                p:actionParameters="LabsProposal-wizard.step:2"/>
-                      </list>
-                  </property>
-              </bean>
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Go back"
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:0">
+                  </bean>
+                  <bean parent="Uif-PrimaryActionButton"
+                        p:actionLabel="Continue..."
+                        p:refreshId="LabsProposal-wizard"
+                        p:methodToCall="refresh"
+                        p:actionParameters="LabsProposal-wizard.step:2"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
       </list>
@@ -639,4 +626,36 @@
     </property>
   </bean>
 
-</beans>
+  <bean id="LabsProposal-Lookup" parent="Uif-LookupView">
+    <property name="viewName" value="LabsProposal-Lookup"/>
+    <property name="headerText" value="Travel Account"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:uppercaseValue="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
+      </list>
+    </property>
+    <property name="additionalCssFiles">
+      <list merge="true">
+        <value>css/labsLookup.css</value>
+      </list>
+    </property>
+    <property name="additionalCssClasses" value="uif-lightbox"/>
+    <property name="criteriaGroup">
+      <bean id="Uif-LookupCriteriaGroup" parent="Uif-CssGridSection-1FieldLabelColumn" p:id="uLookupCriteria"
+            p:fieldBindingObjectPath="lookupCriteria"/>
+    </property>
+  </bean>
+
+</beans>

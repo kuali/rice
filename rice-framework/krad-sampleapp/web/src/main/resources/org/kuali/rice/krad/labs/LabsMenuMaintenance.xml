@@ -68,9 +68,8 @@
             <property name="items">
               <list>
                 <bean parent="Uif-Link" p:linkText="Maintenance Sample - Basic"
-                      p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR1C1"/>
-                <bean parent="Uif-Message" p:messageText="Simple maintenance documents for creating, editing and
-                 copying a record."/>
+                   p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+                <bean parent="Uif-Message" p:messageText="Basic Maintenance Document"/>
               </list>
             </property>
         </bean>

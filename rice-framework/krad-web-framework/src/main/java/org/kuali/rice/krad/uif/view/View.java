@@ -444,6 +444,14 @@ public class View extends ContainerBase {
         if (UifConstants.ViewPhases.FINALIZE.equals(phase.getViewPhase())) {
             pendingTasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, phase));
         }
+        
+        if (!isRendered()) {
+            // do indexing                               
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("clearing indexes for view: " + getId() + " before phase " + phase);
+            }
+            clearIndex();
+        }
     }
 
     /**
@@ -469,14 +477,6 @@ public class View extends ContainerBase {
             }
         }
 
-        if (!isRendered()) {
-            // do indexing                               
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("processing indexing for view: " + getId() + " after phase " + phase);
-            }
-            index();
-        }
-        
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
             ViewLifecycle.getHelper().performCustomViewFinalize(phase.getModel());
         }
@@ -1261,11 +1261,11 @@ public class View extends ContainerBase {
     /**
      * Invoked to produce a ViewIndex of the current view's components
      */
-    public void index() {
+    public void clearIndex() {
         if (this.viewIndex == null) {
             this.viewIndex = new ViewIndex();
         }
-        this.viewIndex.index(this);
+        this.viewIndex.clearIndex(this);
     }
 
     /**

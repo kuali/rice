@@ -81,27 +81,14 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Walks through the View tree and indexes all components found. All components are indexed by
-     * their IDs with the special indexing done for certain components
-     * 
-     * <p>
-     * <code>DataField</code> instances are indexed by the attribute path. This is useful for
-     * retrieving the InputField based on the incoming request parameter
-     * </p>
-     * 
-     * <p>
-     * <code>CollectionGroup</code> instances are indexed by the collection path. This is useful for
-     * retrieving the CollectionGroup based on the incoming request parameter
-     * </p>
+     * Clears view indexes, for reinitializing indexes at the start of each phase.
      */
-    protected void index(View view) {
+    protected void clearIndex(View view) {
         index = new HashMap<String, Component>();
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
-
-        indexComponent(view);
     }
 
     /**
@@ -115,10 +102,15 @@ public class ViewIndex implements Serializable {
      * </p>
      * 
      * <p>
-     * Special processing is done for DataField instances to register their property editor which
-     * will be used for form binding
+     * <code>DataField</code> instances are indexed by the attribute path. This is useful for
+     * retrieving the InputField based on the incoming request parameter
      * </p>
      * 
+     * <p>
+     * <code>CollectionGroup</code> instances are indexed by the collection path. This is useful for
+     * retrieving the CollectionGroup based on the incoming request parameter
+     * </p>
+
      * @param component component instance to index
      */
     public void indexComponent(Component component) {
@@ -154,10 +146,6 @@ public class ViewIndex implements Serializable {
             synchronized (collectionsIndex) {
                 collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
             }
-        }
-
-        for (Component nestedComponent : component.getComponentsForLifecycle().values()) {
-            indexComponent(nestedComponent);
         }
     }
 

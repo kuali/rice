@@ -48,6 +48,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -294,7 +295,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * @see Component#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
      */
     @Override
-    public void notifyCompleted(ViewLifecyclePhase phase) {}
+    public void notifyCompleted(ViewLifecyclePhase phase) {
+        ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
+        if (viewIndex != null) {
+            viewIndex.indexComponent(this);
+        }
+    }
 
     /**
      * Indicates whether the component has been initialized.
@@ -555,7 +561,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                 phase = UifConstants.ViewPhases.INITIALIZE;
             }
             
-            componentsForLifecycle = ComponentUtils.getComponentsForLifecycle(this, phase);
+            synchronized (this) {
+                if (componentsForLifecycle == null) {
+                    componentsForLifecycle = ComponentUtils.getComponentsForLifecycle(this, phase);
+                }
+            }
         }
         
         return componentsForLifecycle;

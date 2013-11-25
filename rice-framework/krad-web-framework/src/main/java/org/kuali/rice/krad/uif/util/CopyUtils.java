@@ -294,67 +294,69 @@ public final class CopyUtils {
             ProcessLogger.ntrace("clone:",":"+obj.getClass().getSimpleName(), 1000);
         }
 
-        // Create new mutable, cloneable instances of List/Map to replace wrappers
-        if (!(obj instanceof Cloneable)) {
-            if (obj instanceof List) {
-                return (T) new ArrayList<Object>((List<Object>) obj);
-            } else if (obj instanceof Map) {
-                return (T) new HashMap<Object, Object>((Map<Object, Object>) obj);
-            } else {
-                throw new UnsupportedOperationException(
-                        "Not cloneable, and not a supported collection.  This condition should not be reached.");
-            }
-        }
-
-        // Bypass reflection overhead for commonly used types.
-        // There is not need for these checks to be exhaustive - any Cloneable types
-        // that define a public clone method and aren't specifically noted below
-        // will be cloned by reflection.
-        if (obj instanceof Copyable) {
-            return (T) ((Copyable) obj).clone();
-        }
-
-        if (obj instanceof Object[]) {
-            return (T) ((Object[]) obj).clone();
-        }
-
-        if (obj instanceof ArrayList) {
-            return (T) ((ArrayList<?>) obj).clone();
-        }
-
-        if (obj instanceof LinkedList) {
-            return (T) ((LinkedList<?>) obj).clone();
-        }
-
-        if (obj instanceof HashSet) {
-            return (T) ((HashSet<?>) obj).clone();
-        }
-
-        if (obj instanceof HashMap) {
-            return (T) ((HashMap<?, ?>) obj).clone();
-        }
-
-        // Use reflection to invoke a public clone() method on the object, if available.
-        Method cloneMethod = getMetadata(obj.getClass()).cloneMethod;
-        if (cloneMethod == null) {
-            throw new CloneNotSupportedException(obj.getClass() + " does not define a public clone() method");
-        } else {
-            try {
-
-                return (T) cloneMethod.invoke(obj);
-
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Access error invoking clone()", e);
-            } catch (InvocationTargetException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
-                } else if (cause instanceof Error) {
-                    throw (Error) cause;
-                } else if (cause instanceof CloneNotSupportedException) {
-                    throw (CloneNotSupportedException) cause;
+        synchronized (obj) {
+            // Create new mutable, cloneable instances of List/Map to replace wrappers
+            if (!(obj instanceof Cloneable)) {
+                if (obj instanceof List) {
+                    return (T) new ArrayList<Object>((List<Object>) obj);
+                } else if (obj instanceof Map) {
+                    return (T) new HashMap<Object, Object>((Map<Object, Object>) obj);
                 } else {
-                    throw new IllegalStateException("Unexpected error invoking clone()", e);
+                    throw new UnsupportedOperationException(
+                            "Not cloneable, and not a supported collection.  This condition should not be reached.");
+                }
+            }
+
+            // Bypass reflection overhead for commonly used types.
+            // There is not need for these checks to be exhaustive - any Cloneable types
+            // that define a public clone method and aren't specifically noted below
+            // will be cloned by reflection.
+            if (obj instanceof Copyable) {
+                return (T) ((Copyable) obj).clone();
+            }
+
+            if (obj instanceof Object[]) {
+                return (T) ((Object[]) obj).clone();
+            }
+
+            if (obj instanceof ArrayList) {
+                return (T) ((ArrayList<?>) obj).clone();
+            }
+
+            if (obj instanceof LinkedList) {
+                return (T) ((LinkedList<?>) obj).clone();
+            }
+
+            if (obj instanceof HashSet) {
+                return (T) ((HashSet<?>) obj).clone();
+            }
+
+            if (obj instanceof HashMap) {
+                return (T) ((HashMap<?, ?>) obj).clone();
+            }
+
+            // Use reflection to invoke a public clone() method on the object, if available.
+            Method cloneMethod = getMetadata(obj.getClass()).cloneMethod;
+            if (cloneMethod == null) {
+                throw new CloneNotSupportedException(obj.getClass() + " does not define a public clone() method");
+            } else {
+                try {
+
+                    return (T) cloneMethod.invoke(obj);
+
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException("Access error invoking clone()", e);
+                } catch (InvocationTargetException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException) cause;
+                    } else if (cause instanceof Error) {
+                        throw (Error) cause;
+                    } else if (cause instanceof CloneNotSupportedException) {
+                        throw (CloneNotSupportedException) cause;
+                    } else {
+                        throw new IllegalStateException("Unexpected error invoking clone()", e);
+                    }
                 }
             }
         }

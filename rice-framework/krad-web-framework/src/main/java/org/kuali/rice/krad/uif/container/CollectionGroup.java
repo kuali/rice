@@ -352,7 +352,6 @@ public class CollectionGroup extends Group implements DataBinding {
 
         // TODO: is this necessary to call again?
         // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
-        resetComponentsForLifecycle();
         pushCollectionGroupToReference();
     }
 
@@ -371,7 +370,11 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        Collection<Component> components = getComponentsForLifecycle().values();
+        Collection<Component> components;
+        synchronized (this) {
+            resetComponentsForLifecycle();
+            components = getComponentsForLifecycle().values();
+        }
         ComponentUtils.pushObjectToContext(components,
                 UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 

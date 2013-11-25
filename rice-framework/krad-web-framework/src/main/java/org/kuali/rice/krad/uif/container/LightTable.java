@@ -176,7 +176,7 @@ public class LightTable extends Group implements DataBinding {
             ((Group) item).getLayoutManager().setId(ID_TOKEN + ((Group) item).getLayoutManager().getId() + ID_TOKEN);
         }
 
-        expressionMap = addChildExpressions(item.getComponentsForLifecycle(), expressionMap);
+        expressionMap = addChildExpressions(item.getComponentsForLifecycle().values(), expressionMap);
 
         for (String name : toRemove) {
             item.getExpressionGraph().remove(name);
@@ -243,7 +243,7 @@ public class LightTable extends Group implements DataBinding {
      * @param expressionMap the map to add expressions to
      * @return the map with child component expressions added
      */
-    protected Map<String, String> addChildExpressions(List<? extends Component> components,
+    protected Map<String, String> addChildExpressions(Collection<? extends Component> components,
             Map<String, String> expressionMap) {
         for (Component comp : components) {
             if (comp != null && (comp instanceof Action
@@ -298,17 +298,6 @@ public class LightTable extends Group implements DataBinding {
                 ((Collection<?>) collectionValue).isEmpty()) {
             emptyTable = true;
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richTable);
-        return components;
     }
 
     /**

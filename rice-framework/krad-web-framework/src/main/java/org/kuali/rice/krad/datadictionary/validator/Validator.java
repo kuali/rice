@@ -27,7 +27,9 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
@@ -155,8 +157,6 @@ public class Validator {
             object.completeValidation(tracer.getCopy());
 
             runValidationsOnLifecycle(object, tracer.getCopy());
-
-            runValidationsOnPrototype(object, tracer.getCopy());
         }
 
         compileFinalReport();
@@ -233,14 +233,6 @@ public class Validator {
                     "Exception " + e.getMessage()};
             tracerTemp.createError("Error Validating Bean Lifecycle", value);
         }
-
-        try {
-            runValidationsOnPrototype(component, tracer.getCopy());
-        } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentPrototypes().size() + "",
-                    "Exceptions : " + e.getLocalizedMessage()};
-            tracerTemp.createError("Error Validating Bean Prototypes", value);
-        }
     }
 
     /**
@@ -250,7 +242,8 @@ public class Validator {
      * @param tracer - The current bean trace for the validation line
      */
     private void runValidationsOnLifecycle(Component component, ValidationTrace tracer) {
-        List<Component> nestedComponents = component.getComponentsForLifecycle();
+        Map<String, Component> nestedComponents =
+                ComponentUtils.getComponentsForLifecycle(component, UifConstants.ViewPhases.INITIALIZE);
         if (nestedComponents == null) {
             return;
         }
@@ -258,7 +251,7 @@ public class Validator {
             return;
         }
         tracer.addBean(component);
-        for (Component temp : nestedComponents) {
+        for (Component temp : nestedComponents.values()) {
             if (temp == null) {
                 continue;
             }
@@ -268,35 +261,6 @@ public class Validator {
             if (temp.isRender()) {
                 temp.completeValidation(tracer.getCopy());
                 runValidationsOnLifecycle(temp, tracer.getCopy());
-            }
-        }
-    }
-
-    /**
-     * Runs the validations on a components prototypes
-     *
-     * @param component - The component whose prototypes are being checked
-     * @param tracer - The current bean trace for the validation line
-     */
-    private void runValidationsOnPrototype(Component component, ValidationTrace tracer) {
-        List<Component> componentPrototypes = component.getComponentPrototypes();
-        if (componentPrototypes == null) {
-            return;
-        }
-        if (!doValidationOnUIFBean(component)) {
-            return;
-        }
-        tracer.addBean(component);
-        for (Component temp : componentPrototypes) {
-            if (temp == null) {
-                continue;
-            }
-            if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
-            }
-            if (temp.isRender()) {
-                temp.completeValidation(tracer.getCopy());
-                runValidationsOnPrototype(temp, tracer.getCopy());
             }
         }
     }

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -43,18 +42,6 @@ public class TabGroup extends Group {
 
     public TabGroup() {
         super();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(tabsWidget);
-
-        return components;
     }
 
     @Override

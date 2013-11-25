@@ -756,7 +756,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
         }
 
-        for (Component nested : component.getComponentsForLifecycle()) {
+        for (Component nested : component.getComponentsForLifecycle().values()) {
             applyDefaultValues(nested);
         }
 

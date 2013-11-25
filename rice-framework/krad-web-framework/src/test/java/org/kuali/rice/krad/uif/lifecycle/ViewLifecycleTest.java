@@ -16,16 +16,11 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,7 +40,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
@@ -137,29 +131,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
     
     @Test
-    public void testComponentsForLifecycle() throws Throwable {
-        ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        View view = viewService.getViewById("TransactionView");
-        
-        List<Component> l1 = view.getComponentsForLifecycle();
-        Map<String, Component> m2 =
-                ComponentUtils.getComponentsForLifecycle(view, UifConstants.ViewPhases.APPLY_MODEL);
-        LOG.debug(l1.toString());
-        LOG.debug(m2.toString());
-        assertTrue(l1.size() >= m2.size());
-
-        Iterator<Entry<String, Component>> i2 = m2.entrySet().iterator();
-        while (i2.hasNext()) {
-            Entry<String, Component> e2 = i2.next();
-            assertTrue(e2.getKey(), l1.contains(e2.getValue()));
-            l1.remove(e2.getValue());
-        }
-        for (int i=0;i<l1.size();i++) {
-            assertNull(l1.get(i) == null ? null : l1.get(i).toString(), l1.get(i));
-        }
-    }
-    
-    @Test
     public void testTransactionInitPhase() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View transactionView = viewService.getViewById("TransactionView");
@@ -202,11 +173,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         form.setView(null);
 
         String tableId = view.getItems().get(0).getItems().get(1).getId();
-        if (ViewLifecycle.isUseReflection()) {
-            assertEquals("u1r73aam", tableId);
-        } else {
-            assertEquals("uwdv4lg", tableId);
-        }
+        assertEquals("u1r73aam", tableId);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

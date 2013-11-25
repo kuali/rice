@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -37,11 +42,6 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Field that presents an action that can be taken on the UI such as submitting
@@ -437,18 +437,6 @@ public class Action extends ContentElementBase {
         if (defaultValue == null || !value.equals(defaultValue)) {
             valueMap.put(key, value);
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(actionImage);
-
-        return components;
     }
 
     /**

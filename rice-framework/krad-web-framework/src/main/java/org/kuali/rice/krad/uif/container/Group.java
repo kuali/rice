@@ -228,19 +228,6 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(disclosure);
-        components.add(scrollpane);
-
-        return components;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
      */
     @Override

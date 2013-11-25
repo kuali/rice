@@ -167,21 +167,6 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richHeaderMessage);
-        components.add(upperGroup);
-        components.add(rightGroup);
-        components.add(lowerGroup);
-
-        return components;
-    }
-
-    /**
      * Text that should be displayed on the header
      *
      * @return header text

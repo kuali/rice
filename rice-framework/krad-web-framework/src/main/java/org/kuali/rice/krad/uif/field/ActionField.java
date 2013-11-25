@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.field;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -63,18 +62,6 @@ public class ActionField extends FieldBase {
                 this.getAction().getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getAction().getId());
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(action);
-
-        return components;
     }
 
     /**

@@ -38,19 +38,6 @@ public class NavigationBar extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(brandImage);
-        components.add(navigationBarGroup);
-
-        return components;
-    }
-
-    /**
      * Header text to use for the application branding.
      *
      * <p>Note either the branding text, or the {@link NavigationBar#getBrandImage()} should be set, but

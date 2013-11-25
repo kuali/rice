@@ -483,53 +483,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @ViewLifecycleRestriction
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(applicationHeader);
-        components.add(applicationFooter);
-        components.add(topGroup);
-        components.add(navigation);
-        components.add(breadcrumbs);
-        components.add(growls);
-        components.addAll(dialogs);
-        components.add(viewMenuLink);
-        components.add(navigationBlockUI);
-        components.add(refreshBlockUI);
-        components.add(breadcrumbItem);
-
-        if (parentLocation != null) {
-            components.add(parentLocation.getPageBreadcrumbItem());
-            components.add(parentLocation.getViewBreadcrumbItem());
-            for (BreadcrumbItem item : parentLocation.getResolvedBreadcrumbItems()) {
-                if (!components.contains(item)) {
-                    components.add(item);
-                }
-            }
-        }
-
-        // Note super items should be added after navigation and other view components so
-        // conflicting ids between nav and page do not occur on page navigation via ajax
-        components.addAll(super.getComponentsForLifecycle());
-
-        // remove all pages that are not the current page
-        if (!singlePageView && (this.getItems() != null)) {
-            for (Group group : this.getItems()) {
-                if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components
-                        .contains(group)) {
-                    components.remove(group);
-                }
-            }
-        }
-
-        return components;
-    }
-
-    /**
      * Gets all breadcrumb items related to this view's parent location. 
      * 
      * @return breadcrumb items

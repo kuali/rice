@@ -95,7 +95,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
         }
 
         // recursively update components
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle().values()) {
             convertToReplacement(nestedComponent, idSuffix);
         }
     }

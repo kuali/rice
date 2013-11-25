@@ -472,19 +472,6 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(inquiry);
-        components.add(help);
-
-        return components;
-    }
-
-    /**
      * Indicates whether the data field instance allows input, subclasses should override and set to
      * true if input is allowed
      *

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -104,7 +103,7 @@ public class PageGroup extends Group {
             prefixScript = this.getOnDocumentReadyScript();
         }
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
             this.setOnDocumentReadyScript(prefixScript + "\nsetupPage(true);");
         } else {
@@ -112,38 +111,6 @@ public class PageGroup extends Group {
         }
 
         breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(breadcrumbItem);
-
-        if (breadcrumbOptions != null) {
-            if (breadcrumbOptions.getHomewardPathBreadcrumbs() != null) {
-                components.addAll(breadcrumbOptions.getHomewardPathBreadcrumbs());
-            }
-
-            if (breadcrumbOptions.getPreViewBreadcrumbs() != null) {
-                components.addAll(breadcrumbOptions.getPreViewBreadcrumbs());
-            }
-
-            if (breadcrumbOptions.getPrePageBreadcrumbs() != null) {
-                components.addAll(breadcrumbOptions.getPrePageBreadcrumbs());
-            }
-
-            if (breadcrumbOptions.getBreadcrumbOverrides() != null) {
-                components.addAll(breadcrumbOptions.getBreadcrumbOverrides());
-            }
-        }
-
-        components.addAll(super.getComponentsForLifecycle());
-
-        return components;
     }
 
     public List<BreadcrumbItem> getHomewardPathBreadcrumbs() {

@@ -77,20 +77,6 @@ public class ViewHeader extends Header {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(areaTitleMessage);
-        components.add(supportTitleMessage);
-        components.add(metadataMessage);
-
-        return components;
-    }
-
-    /**
      * Represents the area in which this view and page exist (conceptially in the site);
      * this title appears above the view title.
      *

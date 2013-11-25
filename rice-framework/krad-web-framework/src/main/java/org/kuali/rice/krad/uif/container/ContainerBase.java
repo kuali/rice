@@ -31,7 +31,6 @@ import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -175,45 +174,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
                 && isProcessRemoteFieldHolders()) {
             pendingTasks.add(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, phase));
         }
-    }
-
-    /**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-	 */
-    @ViewLifecycleRestriction
-	@Override
-	public List<Component> getComponentsForLifecycle() {
-		List<Component> components = super.getComponentsForLifecycle();
-
-		components.add(header);
-		components.add(footer);
-		components.add(validationMessages);
-		components.add(help);
-		components.add(instructionalMessage);
-
-		for (Component component : getItems()) {
-			components.add(component);
-		}
-
-		if (layoutManager != null) {
-			components.addAll(layoutManager.getComponentsForLifecycle());
-		}
-
-		return components;
-	}
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        if (layoutManager != null) {
-            components.addAll(layoutManager.getComponentPrototypes());
-        }
-
-        return components;
     }
 
     /**

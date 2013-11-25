@@ -119,32 +119,16 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
         // initialize nested components
         int index = 0;
-        if (ViewLifecycle.isUseReflection()) {
-            for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
-                    getViewPhase()).entrySet()) {
-                String path = getPath();
-                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
-                Component nestedComponent = nestedComponentEntry.getValue();
 
-                if (nestedComponent != null && !nestedComponent.isInitialized()) {
-                    successors.offer(LifecyclePhaseFactory.initialize(
-                            nestedComponent, model, index++, nestedPath, null, null));
-                }
-            }
-        } else {
-            for (Component nestedComponent : component.getComponentsForLifecycle()) {
-                if (nestedComponent != null && !nestedComponent.isInitialized()) {
-                    successors.offer(LifecyclePhaseFactory.initialize(
-                            nestedComponent, model, index++, null, null, null));
-                }
-            }
+        for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
+                getViewPhase()).entrySet()) {
+            String path = getPath();
+            String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+            Component nestedComponent = nestedComponentEntry.getValue();
 
-            // initialize component prototypes
-            for (Component nestedComponent : component.getComponentPrototypes()) {
-                if (nestedComponent != null) {
-                    successors.add(LifecyclePhaseFactory.initialize(
-                            nestedComponent, model, index++, null, null, null));
-                }
+            if (nestedComponent != null && !nestedComponent.isInitialized()) {
+                successors.offer(LifecyclePhaseFactory.initialize(
+                        nestedComponent, model, index++, nestedPath, null, null));
             }
         }
     }

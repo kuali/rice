@@ -218,29 +218,11 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setTitle(String title);
 
     /**
-     * List of components that are contained within the component and should be sent through
-     * the lifecycle
-     *
-     * <p>
-     * Used by {@code ViewHelperService} for the various lifecycle callbacks
-     * </p>
-     *
-     * @return List<Component> child components
+     * Gets the child components for the next lifecycle phase.
+     * 
+     * @return child components
      */
-    List<Component> getComponentsForLifecycle();
-
-    /**
-     * List of components that are maintained by the component as prototypes for creating other component instances
-     *
-     * <p>
-     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
-     * are the fields in a collection group that are created for each collection record. They only participate in the
-     * initialize phase.
-     * </p>
-     *
-     * @return List<Component> child component prototypes
-     */
-    List<Component> getComponentPrototypes();
+    Map<String, Component> getComponentsForLifecycle();
 
     /**
      * List of components that are contained within the List of {@code PropertyReplacer} in component

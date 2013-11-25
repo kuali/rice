@@ -156,7 +156,7 @@ public class ViewIndex implements Serializable {
             }
         }
 
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle().values()) {
             indexComponent(nestedComponent);
         }
     }

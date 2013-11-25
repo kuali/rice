@@ -399,19 +399,6 @@ public class LookupView extends FormView {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.add(rangeFieldGroupPrototype);
-        components.add(rangedToMessage);
-
-        return components;
-    }
-
-    /**
      * Class for the data object the lookup applies to.
      *
      * <p>The object class name is used to pick up a dictionary entry which will feed the attribute field

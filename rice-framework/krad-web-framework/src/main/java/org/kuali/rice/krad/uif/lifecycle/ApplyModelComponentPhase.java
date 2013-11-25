@@ -207,24 +207,16 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
         // initialize nested components
         int index = 0;
-        if (ViewLifecycle.isUseReflection()) {
-            for (Entry<String, Component> nestedComponentEntry :
-                    ComponentUtils.getComponentsForLifecycle(component, getViewPhase()).entrySet()) {
-                String path = getPath();
-                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
-                Component nestedComponent = nestedComponentEntry.getValue();
-                
-                if (nestedComponent != null) {
-                    successors.offer(LifecyclePhaseFactory
-                            .applyModel(nestedComponent, model, index++, nestedPath, component, null, visitedIds));
-                }
-            }
-        } else {
-            for (Component nestedComponent : component.getComponentsForLifecycle()) {
-                if (nestedComponent != null) {
-                    successors.offer(LifecyclePhaseFactory
-                            .applyModel(nestedComponent, model, index++, null, component, null, visitedIds));
-                }
+
+        for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
+                getViewPhase()).entrySet()) {
+            String path = getPath();
+            String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+            Component nestedComponent = nestedComponentEntry.getValue();
+
+            if (nestedComponent != null) {
+                successors.offer(LifecyclePhaseFactory
+                        .applyModel(nestedComponent, model, index++, nestedPath, component, null, visitedIds));
             }
         }
     }

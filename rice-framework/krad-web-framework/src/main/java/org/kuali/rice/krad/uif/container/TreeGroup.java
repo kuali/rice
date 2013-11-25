@@ -196,44 +196,6 @@ public class TreeGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(tree);
-        addNodeComponents(treeGroups.getRootElement(), components);
-
-        return components;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        if (defaultNodePrototype != null) {
-            components.add(defaultNodePrototype.getLabelPrototype());
-            components.add(defaultNodePrototype.getDataGroupPrototype());
-        }
-
-        if (nodePrototypeMap != null) {
-            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
-                NodePrototype prototype = prototypeEntry.getValue();
-                if (prototype != null) {
-                    components.add(prototype.getLabelPrototype());
-                    components.add(prototype.getDataGroupPrototype());
-                }
-            }
-        }
-
-        return components;
-    }
-
-    /**
      * Retrieves the <code>Component</code> instances from the node for building the nested
      * components list
      *

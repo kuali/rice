@@ -142,20 +142,6 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (!isLabelRendered()) {
-            components.add(fieldLabel);
-        }
-
-        return components;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
     @BeanTagAttribute(name = "label")

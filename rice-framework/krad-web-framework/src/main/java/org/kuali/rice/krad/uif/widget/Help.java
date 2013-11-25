@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.widget;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -174,23 +173,12 @@ public class Help extends WidgetBase {
     protected void buildTooltipHelp(Component parent) {
         if (StringUtils.isNotBlank(tooltipHelpContent) && this.isRender()) {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
-            if ((parent instanceof Helpable) && (((Helpable) parent).getHelp() == this)) {
+            if (this.getToolTip() != null && (parent instanceof Helpable) 
+                    && (((Helpable) parent).getHelp() == this)) {
                 this.getToolTip().setTooltipContent(tooltipHelpContent);
                 ((Helpable) parent).setTooltipOfComponent(this.getToolTip());
             }
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(helpAction);
-
-        return components;
     }
 
     /**

@@ -106,22 +106,6 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (messageComponentStructure != null) {
-            for (Component component : messageComponentStructure) {
-                components.add(component);
-            }
-        }
-
-        return components;
-    }
-
-    /**
      * Override to render only if the message text has been given or there is a conditional expression on the
      * message text
      *

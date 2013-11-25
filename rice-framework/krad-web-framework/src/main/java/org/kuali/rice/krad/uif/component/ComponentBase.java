@@ -37,10 +37,10 @@ import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
@@ -172,6 +172,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private Map<String, String> dataAttributes;
 
+    @ReferenceCopy(referenceTransient = true)
+    private transient Map<String, Component> componentsForLifecycle;
+
     private String preRenderContent;
     private String postRenderContent;
 
@@ -267,6 +270,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         this.viewStatus = status;
+        resetComponentsForLifecycle();
     }
 
     /**
@@ -283,6 +287,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         this.viewStatus = phase.getEndViewStatus();
+        resetComponentsForLifecycle();
     }
 
     /**
@@ -440,7 +445,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
         if (skipInTabOrder) {
-            for (Component component : getComponentsForLifecycle()) {
+            for (Component component : getComponentsForLifecycle().values()) {
                 if (component != null && component instanceof ComponentBase) {
                     ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
                     if (component instanceof ControlBase) {
@@ -522,37 +527,42 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
         // TODO: migrate tasks
     }
-
+    
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
-    @ViewLifecycleRestriction
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(toolTip);
-
-        return components;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
-     */
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = new ArrayList<Component>();
-
-        if (componentModifiers != null) {
-            for (ComponentModifier modifier : componentModifiers) {
-                components.addAll(modifier.getComponentPrototypes());
+    @Override
+    public Map<String, Component> getComponentsForLifecycle() {
+        if (componentsForLifecycle == null) {
+            String phase;
+            
+            if (viewStatus == null
+                    || UifConstants.ViewStatus.CACHED.equals(viewStatus)
+                    || UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+                phase = UifConstants.ViewPhases.INITIALIZE;
+            
+            } else if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
+                phase = UifConstants.ViewPhases.APPLY_MODEL;
+                
+            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(viewStatus)) {
+                phase = UifConstants.ViewPhases.FINALIZE;
+                
+            } else if (UifConstants.ViewStatus.FINAL.equals(viewStatus)
+                   || UifConstants.ViewStatus.RENDERED.equals(viewStatus)) {
+                phase = UifConstants.ViewPhases.RENDER;
+            } else {
+                ViewLifecycle.reportIllegalState("Invalid view status " + viewStatus);
+                phase = UifConstants.ViewPhases.INITIALIZE;
             }
+            
+            componentsForLifecycle = ComponentUtils.getComponentsForLifecycle(this, phase);
         }
-
-        List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
-        if (propertyReplacerComponents != null) {
-            components.addAll(propertyReplacerComponents);
-        }
-
-        return components;
+        
+        return componentsForLifecycle;
+    }
+    
+    protected void resetComponentsForLifecycle() {
+        componentsForLifecycle = null;
     }
 
     /**
@@ -2211,6 +2221,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             copy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
+        copy.resetComponentsForLifecycle();
 
         return copy;
     }
@@ -2229,6 +2240,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         viewStatus = UifConstants.ViewStatus.CACHED;
+        resetComponentsForLifecycle();
     }
 
     /**
@@ -2250,6 +2262,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             componentCopy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
+        componentCopy.resetComponentsForLifecycle();
 
         List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
         if (copyAdditionalComponentsToRefresh != null) {

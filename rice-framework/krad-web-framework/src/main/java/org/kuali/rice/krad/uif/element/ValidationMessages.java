@@ -242,7 +242,7 @@ public class ValidationMessages extends ContentElementBase {
      * @param component
      */
     private void addNestedGroupKeys(Collection<String> keyList, Component component) {
-        for (Component c : component.getComponentsForLifecycle()) {
+        for (Component c : component.getComponentsForLifecycle().values()) {
             ValidationMessages ef = null;
             if (c instanceof ContainerBase) {
                 ef = ((ContainerBase) c).getValidationMessages();

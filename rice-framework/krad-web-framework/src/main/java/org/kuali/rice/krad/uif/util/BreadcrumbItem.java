@@ -69,21 +69,6 @@ public class BreadcrumbItem extends ContentElementBase {
     }
 
     /**
-     * Adds siblingBreadcrumbComponent to the components for the lifecycle
-     *
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(siblingBreadcrumbComponent);
-        components.addAll(super.getComponentsForLifecycle());
-
-        return components;
-    }
-
-    /**
      * The label for this breadcrumbItem.  The label is the textual content that will be displayed for the breadcrumb.
      *
      * @return the label

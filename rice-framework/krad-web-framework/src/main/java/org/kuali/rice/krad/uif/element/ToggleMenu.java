@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -22,9 +25,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
 import org.kuali.rice.krad.uif.container.Group;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Renders a toggle menu (aka sub menu, dropdown menu) of items.
@@ -77,22 +77,6 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
         if (StringUtils.isNotBlank(toggleText) && StringUtils.isBlank(toggleMessage.getMessageText())) {
             toggleMessage.setMessageText(toggleText);
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(toggleMessage);
-
-        if (menuGroup != null) {
-            components.add(menuGroup);
-        }
-
-        return components;
     }
 
     /**

@@ -17,10 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Spinner;
-
-import java.util.List;
 
 /**
  * Text control that as decorated with a spinner widget (allowing the control value to be modified using the
@@ -36,18 +33,6 @@ public class SpinnerControl extends TextControl {
 
     public SpinnerControl() {
         super();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(getSpinner());
-
-        return components;
     }
 
     /**

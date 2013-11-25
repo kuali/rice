@@ -60,7 +60,6 @@ public class ViewLifecycle implements Serializable {
     private static Boolean renderInLifecycle;
     private static Boolean asynchronousLifecycle;
     private static Boolean trace;
-    private static Boolean reflection;
 
     /**
      * Enumerates potential lifecycle events.
@@ -233,27 +232,6 @@ public class ViewLifecycle implements Serializable {
         }
 
         return asynchronousLifecycle;
-    }
-
-    /**
-     * Determine whether to use reflection to determine components for lifecycle, or to use the
-     * original implementation.
-     * 
-     * <p>
-     * This value is controlled by the configuration parameter
-     * &quot;krad.uif.lifecycle.reflection&quot;.
-     * </p>
-     * 
-     * @return true if view reflection should be used to determine lifecycle phases, false to use
-     *         {@link Component#getComponentsForLifecycle()}
-     */
-    public static boolean isUseReflection() {
-        if (reflection == null) {
-            reflection = ConfigContext.getCurrentContextConfig().getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_REFLECTION, false);
-        }
-
-        return reflection;
     }
 
     /**

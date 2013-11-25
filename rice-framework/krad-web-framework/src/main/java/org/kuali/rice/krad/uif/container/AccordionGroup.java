@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -39,18 +38,6 @@ public class AccordionGroup extends Group {
     private static final long serialVersionUID = 7230145606607506418L;
 
     private Accordion accordionWidget;
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(accordionWidget);
-
-        return components;
-    }
 
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View, Object,

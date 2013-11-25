@@ -481,7 +481,7 @@ public class RichMessageTest extends KRADTestCase {
 
         radioGroupControl.setOptions(options);
         performSimulatedLifecycle(radioGroupControl);
-        for (Component component : radioGroupControl.getComponentsForLifecycle()) {
+        for (Component component : radioGroupControl.getComponentsForLifecycle().values()) {
             performSimulatedLifecycle(component);
         }
 

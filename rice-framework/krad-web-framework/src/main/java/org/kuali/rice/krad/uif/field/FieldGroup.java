@@ -86,18 +86,6 @@ public class FieldGroup extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(group);
-
-        return components;
-    }
-
-    /**
      * <code>Group</code> instance that is contained within in the field
      *
      * @return Group instance

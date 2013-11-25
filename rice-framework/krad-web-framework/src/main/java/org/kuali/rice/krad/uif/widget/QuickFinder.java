@@ -35,8 +35,6 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -391,19 +389,6 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         if ((parameterValue != null) && StringUtils.isNotBlank(parameterValue.toString())) {
             quickfinderAction.addActionParameter(parameterName, parameterValue.toString());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(quickfinderAction);
-        components.add(lightBox);
-
-        return components;
     }
 
     /**

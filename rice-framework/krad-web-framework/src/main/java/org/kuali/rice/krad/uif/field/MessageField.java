@@ -49,18 +49,6 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(message);
-
-        return components;
-    }
-
-    /**
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's content
      *
      * @param view the view

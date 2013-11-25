@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
@@ -351,6 +352,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
         // TODO: is this necessary to call again?
         // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
+        resetComponentsForLifecycle();
         pushCollectionGroupToReference();
     }
 
@@ -369,10 +371,9 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = getComponentsForLifecycle();
-        components.addAll(getComponentPrototypes());
-
-        ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
+        Collection<Component> components = getComponentsForLifecycle().values();
+        ComponentUtils.pushObjectToContext(components,
+                UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
         List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
         for (Action action : actions) {
@@ -396,54 +397,6 @@ public class CollectionGroup extends Group implements DataBinding {
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             boolean clearExistingLine) {
         getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(addLineLabel);
-        components.add(collectionLookup);
-        components.add(addBlankLineAction);
-        components.add(addViaLightBoxAction);
-
-        // remove the containers items because we don't want them as children
-        // (they will become children of the layout manager as the rows are created)
-        for (Component item : getItems()) {
-            if (components.contains(item)) {
-                components.remove(item);
-            }
-        }
-
-        return components;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.addAll(lineActions);
-        components.addAll(addLineActions);
-        components.addAll(getItems());
-        components.addAll(getSubCollections());
-
-        // iterate through addLineItems to make sure we have not already
-        // added them as prototypes (they could have been copied from add lines)
-        if (addLineItems != null) {
-            for (Component addLineItem : addLineItems) {
-                if (!components.contains(addLineItem)) {
-                    components.add(addLineItem);
-                }
-            }
-        }
-
-        return components;
     }
 
     /**

@@ -107,19 +107,6 @@ public class Image extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(captionHeader);
-        components.add(cutlineMessage);
-
-        return components;
-    }
-
-    /**
      * returns the URL of this image
      *
      * @return the URL of this image.

@@ -23,7 +23,6 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
 
 /**
@@ -71,21 +70,6 @@ public class ComponentExhibit extends ContentElementBase {
                         && additionalDemoSourceCode2.get(0) != null){
             additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(0));
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(sourceCodeViewer);
-        components.add(additionalSourceCodeViewer1);
-        components.add(additionalSourceCodeViewer2);
-        components.add(tabGroup);
-
-        return components;
     }
 
     /**

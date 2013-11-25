@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -76,18 +74,6 @@ public class LinkField extends FieldBase {
         if (this.getFieldLabel() != null && this.getLink() != null && StringUtils.isNotBlank(this.getLink().getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getLink().getId());
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(link);
-
-        return components;
     }
 
     /**

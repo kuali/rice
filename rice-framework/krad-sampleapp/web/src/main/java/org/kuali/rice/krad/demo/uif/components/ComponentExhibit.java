@@ -74,21 +74,6 @@ public class ComponentExhibit extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(sourceCodeViewer);
-        components.add(additionalSourceCodeViewer1);
-        components.add(additionalSourceCodeViewer2);
-        components.add(tabGroup);
-
-        return components;
-    }
-
-    /**
      * Get the demoGroups demonstrating the component's features
      *
      * @return the demoGroups

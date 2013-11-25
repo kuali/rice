@@ -125,22 +125,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (richOptions != null) {
-            for (KeyMessage richOption : richOptions) {
-                components.add(richOption.getMessage());
-            }
-        }
-
-        return components;
-    }
-
-    /**
      * @see MultiValueControl#getOptions()
      */
     @BeanTagAttribute(name = "options", type = BeanTagAttribute.AttributeType.LISTBEAN)

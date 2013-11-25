@@ -52,18 +52,6 @@ public class DataTable extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richTable);
-
-        return components;
-    }
-
-    /**
      * Widget that will render the data table client side
      *
      * @return RichTable instance

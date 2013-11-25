@@ -209,6 +209,17 @@ public final class CopyUtils {
         // Use cloning when enabled.
         // The rest of this method supports the original copyProperties() implementation.
         if (isUseClone()) {
+            String cid = null;
+            if (ViewLifecycle.isTrace()) {
+                StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+                int i=3;
+                while (ComponentUtils.class.getName().equals(trace[i].getClassName())) i++;
+                StackTraceElement caller = trace[i];
+                cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
+                        + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
+                ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000);
+            }
+
             return (T) getDeepCopy(obj);
         }
 
@@ -277,6 +288,10 @@ public final class CopyUtils {
     public static <T> T getShallowCopy(T obj) throws CloneNotSupportedException {
         if (obj == null) {
             return null;
+        }
+        
+        if (ViewLifecycle.isTrace()) {
+            ProcessLogger.ntrace("clone:",":"+obj.getClass().getSimpleName(), 1000);
         }
 
         // Create new mutable, cloneable instances of List/Map to replace wrappers
@@ -697,6 +712,11 @@ public final class CopyUtils {
         @Override
         public Object get() {
             try {
+                ReferenceCopy ref = field.getAnnotation(ReferenceCopy.class);
+                if (ref != null && ref.referenceTransient()) {
+                    return null;
+                }
+
                 return field.get(source);
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException("Access error attempting to get from " + field, e);

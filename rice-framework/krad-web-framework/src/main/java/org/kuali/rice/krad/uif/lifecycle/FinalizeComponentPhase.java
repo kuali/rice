@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.List;
-import java.util.Queue;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -128,32 +127,20 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         Component component = getComponent();
         Object model = getModel();
 
-        List<Component> nestedComponents = component.getComponentsForLifecycle();
-
         // initialize nested components
         int index = 0;
-        if (ViewLifecycle.isUseReflection()) {
-            for (Entry<String, Component> nestedComponentEntry :
-                    ComponentUtils.getComponentsForLifecycle(component, getViewPhase()).entrySet()) {
-                String path = getPath();
-                String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
-                Component nestedComponent = nestedComponentEntry.getValue();
-                
-                if (nestedComponent != null) {
-                    FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                            nestedComponent, model, index, nestedPath, component);
-                    successors.add(nestedFinalizePhase);
-                    index++;
-                }
-            }
-        } else {
-            for (Component nestedComponent : nestedComponents) {
-                if (nestedComponent != null) {
-                    FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                            nestedComponent, model, index, null, component);
-                    successors.add(nestedFinalizePhase);
-                    index++;
-                }
+
+        for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
+                getViewPhase()).entrySet()) {
+            String path = getPath();
+            String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+            Component nestedComponent = nestedComponentEntry.getValue();
+
+            if (nestedComponent != null) {
+                FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
+                        nestedComponent, model, index, nestedPath, component);
+                successors.add(nestedFinalizePhase);
+                index++;
             }
         }
 

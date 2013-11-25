@@ -90,7 +90,7 @@ public interface LifecycleElement extends Serializable, Copyable {
      * @param pendingTasks The pending task queue.
      */
     void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks);
-
+    
     /**
      * Initializes the component
      *

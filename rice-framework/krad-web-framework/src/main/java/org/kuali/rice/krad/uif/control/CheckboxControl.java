@@ -67,18 +67,6 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richLabelMessage);
-
-        return components;
-    }
-
-    /**
      * The value that will be submitted when the checkbox control is checked
      *
      * <p>

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -199,7 +200,7 @@ public class ComponentUtils {
      * @param <T> the type of the components that are returned
      * @return List of matching components
      */
-    public static <T extends Component> List<T> getComponentsOfTypeDeep(List<? extends Component> items,
+    public static <T extends Component> List<T> getComponentsOfTypeDeep(Collection<? extends Component> items,
             Class<T> componentType) {
         if (items == null) {
             return Collections.emptyList();
@@ -224,7 +225,7 @@ public class ComponentUtils {
                 components.add(componentType.cast(currentComponent));
             }
             
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
         }
 
         return components;
@@ -292,9 +293,8 @@ public class ComponentUtils {
         }
 
         List<T> typeComponents = Collections.emptyList();
-        List<Component> nestedComponents = component.getComponentsForLifecycle();
 
-        for (Component nested : nestedComponents) {
+        for (Component nested : component.getComponentsForLifecycle().values()) {
             
             if (!componentType.isInstance(nested)) {
                 continue;
@@ -375,7 +375,7 @@ public class ComponentUtils {
                 components.add(currentComponent);
             }
 
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
         }
 
         return components;
@@ -424,7 +424,7 @@ public class ComponentUtils {
                 return child;
             }
 
-            componentQueue.addAll(child.getComponentsForLifecycle());
+            componentQueue.addAll(child.getComponentsForLifecycle().values());
         }
         
         return null;
@@ -449,7 +449,7 @@ public class ComponentUtils {
             prefixBindingPath((DataBinding) component, addBindingPrefix);
         }
 
-        for (Component nested : component.getComponentsForLifecycle()) {
+        for (Component nested : component.getComponentsForLifecycle().values()) {
             if (nested != null) {
                 prefixBindingPathNested(nested, addBindingPrefix);
             }
@@ -477,7 +477,7 @@ public class ComponentUtils {
     }
 
     public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
-        for (Component nested : component.getComponentsForLifecycle()) {
+        for (Component nested : component.getComponentsForLifecycle().values()) {
             if (nested != null) {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
@@ -557,7 +557,7 @@ public class ComponentUtils {
                 hash = generateId(((Container) component).getLayoutManager(), hash);
             }
 
-            for (Component nested : component.getComponentsForLifecycle()) {
+            for (Component nested : component.getComponentsForLifecycle().values()) {
                 if (nested != null) {
                     toClear.add(nested);
                 }
@@ -620,7 +620,7 @@ public class ComponentUtils {
                 continue;
             }
 
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
 
             Class<?> componentClass = currentComponent.getClass();
             if (skipTypes != null && skipTypes.contains(componentClass)) {
@@ -691,7 +691,7 @@ public class ComponentUtils {
      * @param contextName a value to be used as a key to retrieve the object
      * @param contextValue the value to be placed in the context
      */
-    public static void pushObjectToContext(List<? extends Component> components, String contextName,
+    public static void pushObjectToContext(Collection<? extends Component> components, String contextName,
             Object contextValue) {
         if (components == null || components.isEmpty()) {
             return;
@@ -716,7 +716,7 @@ public class ComponentUtils {
                 }
             }
             
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
         }
     }
 
@@ -768,7 +768,7 @@ public class ComponentUtils {
                 }
             }
             
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle());
+            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
         }
     }
 
@@ -907,7 +907,7 @@ public class ComponentUtils {
     public static List<InputField> getAllInputFieldsWithinContainer(Container container) {
         List<InputField> inputFields = new ArrayList<InputField>();
 
-        for (Component c : container.getComponentsForLifecycle()) {
+        for (Component c : container.getComponentsForLifecycle().values()) {
             if (c instanceof InputField) {
                 inputFields.add((InputField) c);
             } else if (c instanceof Container) {

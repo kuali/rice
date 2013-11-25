@@ -381,19 +381,6 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(getInquiryLink());
-        components.add(getDirectInquiryAction());
-
-        return components;
-    }
-
-    /**
      * Returns the URL for the inquiry for which parameters will be added
      *
      * <p>

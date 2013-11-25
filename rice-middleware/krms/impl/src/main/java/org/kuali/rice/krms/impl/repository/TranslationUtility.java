@@ -252,9 +252,6 @@ public class TranslationUtility implements TranslateBusinessMethods {
         if (proposition.getTypeId() != null) {
             naturalLanguageTemplate = this.ruleManagementService.findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(languageCode,
                     proposition.getTypeId(), naturalLanguageUsageId);
-            if (naturalLanguageTemplate == null) {
-                throw new RiceIllegalArgumentException(languageCode + "." + proposition.getTypeId() + "." + naturalLanguageUsageId);
-            }
         }
         return naturalLanguageTemplate;
     }

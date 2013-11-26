@@ -240,7 +240,41 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
             toUpdate = builder.build();
         }
 
-        businessObjectService.save(AgendaItemBo.from(toUpdate));
+        AgendaItemBo aiBo = AgendaItemBo.from(toUpdate);
+        updateActionAttributes(aiBo);
+        businessObjectService.save(aiBo);
+    }
+
+    private void updateActionAttributes(AgendaItemBo aiBo) {
+        if(aiBo.getRule()!=null){
+            updateActionAttributes(aiBo.getRule().getActions());
+        }
+        if(aiBo.getWhenTrue()!=null){
+            updateActionAttributes(aiBo.getWhenTrue());
+        }
+        if(aiBo.getWhenFalse()!=null){
+            updateActionAttributes(aiBo.getWhenFalse());
+        }
+        if(aiBo.getAlways()!=null){
+            updateActionAttributes(aiBo.getAlways());
+        }
+    }
+
+    private void updateActionAttributes(List<ActionBo> actionBos) {
+        for (ActionBo action : actionBos) {
+            for (ActionAttributeBo aa : action.getAttributeBos()) {
+                final Map<String, Object> map = new HashMap<String, Object>();
+                map.put("actionId", action.getId());
+
+                List<ActionAttributeBo> aaBos = (List<ActionAttributeBo>) businessObjectService.findMatching(ActionAttributeBo.class, Collections.unmodifiableMap(map));
+                for (ActionAttributeBo aaBo : aaBos) {
+                    if (aaBo.getAttributeDefinitionId().equals(aa.getAttributeDefinitionId())) {
+                        aa.setId(aaBo.getId());
+                        aa.setVersionNumber(aaBo.getVersionNumber());
+                    }
+                }
+            }
+        }
     }
 
     /**

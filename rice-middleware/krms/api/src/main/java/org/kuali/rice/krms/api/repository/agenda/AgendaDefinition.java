@@ -305,8 +305,9 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
 				this.attributes = Collections.emptyMap();
-			}
-			this.attributes = Collections.unmodifiableMap(attributes);
+			} else {
+                this.attributes = Collections.unmodifiableMap(attributes);
+            }
 		}
 		
 		/**
@@ -385,7 +386,7 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	 * when this object is marshalled to XML.
 	 */
 	public static class Elements {
-		final static String AGENDA_ID = "id";
+		public final static String AGENDA_ID = "id";
 		final static String NAME = "name";
 		final static String TYPE_ID = "typeId";
 		final static String CONTEXT_ID = "contextId";

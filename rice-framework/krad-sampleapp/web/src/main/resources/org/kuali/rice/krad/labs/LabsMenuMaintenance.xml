@@ -75,12 +75,13 @@
             </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row1-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:lookup">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+              <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable New and Copy"
                     p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR1C2"/>
-              <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+              <bean parent="Uif-Message" p:messageText="Shows the ability to block creation or copying of objects via
+               allowsNewOrCopy=false"/>
             </list>
           </property>
         </bean>
@@ -106,10 +107,11 @@
     </property>
     <property name="items">
       <list>
-        <bean id="LabsMenuMaintenance-Row2-Col1" parent="KradSampleAppDemo-DemoGroup">
+        <bean id="LabsMenuMaintenance-Row2-Col1" parent="KradSampleAppDemo-DemoGroup"
+              p:dataAttributes="type:maintenanceNew">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Sample - Configuring Help links"
+              <bean parent="Uif-Link" p:linkText="Maintenance Sample - Configuring Help Links"
                     p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR2C1"/>
               <bean parent="Uif-Message" p:messageText="Sample Maintenance document using Uif-Help to create help links"/>
             </list>

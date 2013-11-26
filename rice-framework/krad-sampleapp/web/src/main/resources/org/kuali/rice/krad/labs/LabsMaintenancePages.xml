@@ -55,11 +55,16 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR1C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Maintenance Sample - Disable New and Copy"
+              p:instructionalText="A simple maintenance document that has a lookup that has disabled creating or copying
+              records.  This is done by setting allowsNewOrCopy=false in the maintenance document entry.  Note that
+              because this sample maintenance document is not associated with a real workflow document that the
+              'Create New' will not show up anyway, but the allowsNewOrCopy=false also prevents 'copy' from showing
+              up, and this is demonstrated by performing a lookup and seeing that there is no option to copy.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Disable New and Copy"
+                    p:href="lookup?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelCompany"/>
             </list>
           </property>
         </bean>

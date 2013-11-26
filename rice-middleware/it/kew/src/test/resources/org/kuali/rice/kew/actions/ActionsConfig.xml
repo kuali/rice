@@ -94,7 +94,7 @@
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>BANotificationAttribute</name>
+			<name>SuperUserActionInvalidPostProcessor</name>
 			<description>SuperUserActionInvalidPostProcessor</description>
 			<label>SuperUserActionInvalidPostProcessor</label>
 			<postProcessorName>org.kuali.rice.kew.actions.SuperUserActionInvalidPostProcessor</postProcessorName>

@@ -43,6 +43,7 @@ public class SampleUifForm extends TransactionalDocumentFormBase {
         setViewTypeName(ViewType.DEFAULT);
     }
 
-
+    private static final long serialVersionUID = 1L;
+    private BookOrder newBookOrder;
 
 }

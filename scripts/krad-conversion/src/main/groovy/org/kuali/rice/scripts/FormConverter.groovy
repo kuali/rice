@@ -91,7 +91,7 @@ class FormConverter {
             }
             if (formFileList.size() > 0) {
                 // gather relevant data  and build form file
-                def formClassData = ClassParserUtils.parseClassFile(formFileList[0].text, true)
+                def formClassData = ClassParserUtils.parseClassFile(formFileList[0].text, false)
                 log.finer "processed form data: " + formClassData
                 buildUifFormFile(formClassData)
             }

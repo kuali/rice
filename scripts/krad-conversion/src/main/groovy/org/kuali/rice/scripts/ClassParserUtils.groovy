@@ -100,6 +100,7 @@ public class ClassParserUtils {
             field.fieldType = matchesField[0][3]
             field.fieldName = matchesField[0][4]
             field.fieldValue = matchesField[0][5]
+            field.text = lineText
         }
 
         return field

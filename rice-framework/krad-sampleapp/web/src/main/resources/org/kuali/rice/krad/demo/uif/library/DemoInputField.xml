@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- InputField demo -->
-  <bean id="Demo-InputField-View" parent="ComponentLibraryView">
+  <bean id="Demo-InputFieldView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInputField.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.InputField"/>
     <property name="docBookAnchor" value="d7339e4811"/>

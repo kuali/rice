@@ -442,17 +442,17 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Action Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionFieldView"/>
         <bean parent="Uif-Link" p:linkText="Data Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataFieldView"/>
         <bean parent="Uif-Link" p:linkText="Input Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputFieldView"/>
         <bean parent="Uif-Link" p:linkText="Image Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageFieldView"/>
         <bean parent="Uif-Link" p:linkText="Link Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkFieldView"/>
         <bean parent="Uif-Link" p:linkText="Message Field"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageField-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageFieldView"/>
       </list>
     </property>
   </bean>

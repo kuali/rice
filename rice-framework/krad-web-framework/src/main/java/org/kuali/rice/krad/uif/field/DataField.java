@@ -372,7 +372,10 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
         // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
         if (isApplyMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-            readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
+
+            if (getMaskFormatter() != null) {
+                readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
+            }
 
             return;
         }

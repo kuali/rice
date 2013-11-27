@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Breadcrumbs demo -->
-  <bean id="Demo-Breadcrumbs-View" parent="ComponentLibraryView">
+  <bean id="Demo-BreadcrumbsView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoBreadcrumbs.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.view.View"/>

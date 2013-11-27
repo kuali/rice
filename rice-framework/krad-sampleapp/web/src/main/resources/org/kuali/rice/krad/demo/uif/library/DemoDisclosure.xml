@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Disclosure demo -->
-  <bean id="Demo-Disclosure-View" parent="ComponentLibraryView">
+  <bean id="Demo-DisclosureView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoDisclosure.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.widget.Disclosure"/>

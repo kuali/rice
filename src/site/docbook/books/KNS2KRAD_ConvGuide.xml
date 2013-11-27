@@ -2864,7 +2864,7 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="MADV">
       <title>Additional display value</title>
       <para>In KNS <emphasis role="bold"> LookupDefinition.translateCode</emphasis>
         <emphasis role="bold"> FieldUtils.setAdditionalDisplayPropertyForCodes </emphasis> gave the
@@ -2879,14 +2879,14 @@
         relationship configured in the datadictionary file and set the name additional display value
         which will be displayed along with the code </para>
     </section>
-    <section>
+    <section xml:id="MODV">
       <title>Overriding default values</title>
       <para> In KNS <emphasis role="bold">Maintainable.setGenerateDefaultValues</emphasis> was used
         to set the default values for fields. However in KRAD this functionality is provided by
           <emphasis role="bold"> ViewHelperServiceImpl.applyDefaultValues</emphasis>. This is called
         during the finalize phase of the view cycle before the view is rendered. </para>
     </section>
-    <section>
+    <section xml:id="MCH">
       <title>Customization Hooks</title>
       <para>Customization hooks have been provided for the various actions that can be performed on
         a maintenance document. It involves overriding the specific methods related to that action
@@ -2925,7 +2925,7 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="MPBO">
       <title>Preparing the BO as part of document setup </title>
       <para> In KNS the business object was set up as part document setup using the
         Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
@@ -2936,7 +2936,7 @@
         </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document, 
     String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
     </section>
-    <section>
+    <section xml:id="MRR">
       <title>Refreshing references </title>
       <para>Specifying which reference objects to refresh on a document can be configured by using
         the <emphasis>referencesToRefresh</emphasis> property. It specifies primary keys of
@@ -3129,13 +3129,8 @@
             <listitem><para>KIM Roles - the same roles can be applied to either KNS or KRAD permissions. It is not necessary to create separate KRAD equivalent roles.</para></listitem>
           </itemizedlist></para>
         <section>
-          <para><emphasis role="bold">To Restrict an Inquiry to users assigned a supervisor role in KRAD:</emphasis>
-            <inlinemediaobject>
-              <imageobject>
-                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
-              </imageobject>
-            </inlinemediaobject>
-          </para>
+          <title><emphasis role="bold">To Restrict an Inquiry to users assigned a supervisor role in KRAD:</emphasis>
+          </title>
           <para><orderedlist>
             <listitem><para>Create a new KIM Permission Using the KR-KRAD Open View Template</para>
               <para><inlinemediaobject>
@@ -3158,19 +3153,25 @@
                 </imageobject>
               </inlinemediaobject>
               </para></listitem>
-          </orderedlist>
+            </orderedlist>
+            <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject>
           </para>
         </section>
         <section>
-          <para><emphasis role="bold">To make an inquiry available to all users in KRAD:</emphasis></para>
+          <title><emphasis role="bold">To make an inquiry available to all users in KRAD:</emphasis></title>
           <para><itemizedlist>
-            <listitem><para>Do Nothing!  <inlinemediaobject>
+            <listitem><para>Do Nothing!
+            </para></listitem>
+          </itemizedlist>
+            <inlinemediaobject>
               <imageobject>
                 <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
               </imageobject>
             </inlinemediaobject>
-            </para></listitem>
-          </itemizedlist>
           </para>
         </section>
       </section>
@@ -3199,9 +3200,11 @@
     </section>
     <section>
       <title>Lookup Permissions</title>
+      <para />
     </section>
     <section>
       <title>Maintenance Permissions</title>
+      <para />
     </section>
   </section>
 </article>

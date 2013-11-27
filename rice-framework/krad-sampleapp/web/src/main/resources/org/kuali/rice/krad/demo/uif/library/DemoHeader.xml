@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Header demo -->
-  <bean id="Demo-Header-View" parent="ComponentLibraryView">
+  <bean id="Demo-HeaderView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoHeader.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Header"/>
     <property name="docBookAnchor" value="d6813e7830"/>

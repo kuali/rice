@@ -370,27 +370,27 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Action"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Action-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionView"/>
         <bean parent="Uif-Link" p:linkText="Dropdown Menu"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenu-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenuView"/>
         <bean parent="Uif-Link" p:linkText="Header"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Header-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HeaderView"/>
         <bean parent="Uif-Link" p:linkText="Image"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Image-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ImageView"/>
         <bean parent="Uif-Link" p:linkText="Icon"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Icon-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IconView"/>
         <bean parent="Uif-Link" p:linkText="Space"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Space-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-SpaceView"/>
         <bean parent="Uif-Link" p:linkText="Iframe"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Iframe-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IframeView"/>
         <bean parent="Uif-Link" p:linkText="Link"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Link-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkView"/>
         <bean parent="Uif-Link" p:linkText="Label"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Label-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LabelView"/>
         <bean parent="Uif-Link" p:linkText="Data Table"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataTable-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataTableView"/>
         <bean parent="Uif-Link" p:linkText="Message"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Message-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageView"/>
       </list>
     </property>
   </bean>

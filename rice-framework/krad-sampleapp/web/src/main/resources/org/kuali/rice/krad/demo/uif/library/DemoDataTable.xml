@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- DataTable demo -->
-  <bean id="Demo-DataTable-View" parent="ComponentLibraryView">
+  <bean id="Demo-DataTableView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoDataTable.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.DataTable"/>
     <property name="docBookAnchor" value=""/>

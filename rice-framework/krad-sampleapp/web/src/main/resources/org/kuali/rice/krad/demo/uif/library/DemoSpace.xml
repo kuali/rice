@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Space demo -->
-  <bean id="Demo-Space-View" parent="ComponentLibraryView">
+  <bean id="Demo-SpaceView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoSpace.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Space"/>
     <property name="docBookAnchor" value="d6813e6909"/>

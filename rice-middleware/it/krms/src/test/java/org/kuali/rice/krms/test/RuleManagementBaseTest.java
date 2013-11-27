@@ -16,6 +16,7 @@
 
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.junit.Before;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -35,6 +36,7 @@ import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.ActionBoService;
@@ -48,6 +50,7 @@ import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +163,8 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      * @return {@link AgendaItemDefinition}
      */
     protected AgendaItemDefinition buildTestAgendaItemDefinition(String agendaItemId, String agendaId, String ruleId) {
-        AgendaItemDefinition.Builder agendaItemDefinitionBuilder = AgendaItemDefinition.Builder.create(agendaItemId, agendaId);
+        AgendaItemDefinition.Builder agendaItemDefinitionBuilder = AgendaItemDefinition.Builder.create(agendaItemId,
+                agendaId);
         agendaItemDefinitionBuilder.setRuleId(ruleId);
 
         String id = ruleManagementService.createAgendaItem(agendaItemDefinitionBuilder.build()).getId();
@@ -317,19 +321,26 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
     }
 
     /**
-     *   createKrmsTypeDefinition
+     * createKrmsTypeDefinition
      *
+     * @param typeId
      * @param nameSpace
      * @param typeName
      * @param serviceName
+     * @param typeAttributes
      *
      * @return {@link KrmsTypeDefinition}
      */
-    protected KrmsTypeDefinition createKrmsTypeDefinition(String typeId, String nameSpace, String typeName, String serviceName) {
+    protected KrmsTypeDefinition createKrmsTypeDefinition(String typeId, String nameSpace, String typeName, String serviceName, List<KrmsTypeAttribute.Builder> typeAttributes) {
         KrmsTypeDefinition krmsTypeDefinition =  krmsTypeRepository.getTypeByName(nameSpace, typeName);
 
         if (krmsTypeDefinition == null) {
             KrmsTypeDefinition.Builder krmsTypeDefnBuilder = KrmsTypeDefinition.Builder.create(typeName, nameSpace);
+
+            if (!CollectionUtils.isEmpty(typeAttributes)) {
+                krmsTypeDefnBuilder.setAttributes(typeAttributes);
+            }
+
             krmsTypeDefnBuilder.setId(typeId);
             krmsTypeDefnBuilder.setServiceName(serviceName);
             String id = krmsTypeRepository.createKrmsType(krmsTypeDefnBuilder.build()).getId();
@@ -337,6 +348,28 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         }
 
         return krmsTypeDefinition;
+    }
+
+    /**
+     * createKrmsTypeDefinition
+     *
+     * @param typeId
+     * @param nameSpace
+     * @param typeName
+     * @param serviceName
+     *
+     * @return {@link KrmsTypeDefinition}
+     */
+    protected KrmsTypeDefinition createKrmsTypeDefinition(String typeId, String nameSpace, String typeName, String serviceName) {
+        return createKrmsTypeDefinition(typeId, nameSpace, typeName, serviceName, null);
+    }
+
+    /**
+     * Creates a test agenda setting the createAttributes flag to false
+     * @see #createTestAgenda(String, boolean)
+     */
+    protected AgendaDefinition createTestAgenda(String objectDiscriminator) {
+        return createTestAgenda(objectDiscriminator, false);
     }
 
     /**
@@ -349,18 +382,34 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      *      where 0 represents a discriminator value
      *
      * @param objectDiscriminator
+     * @param createAttributes flag to have an attribute definition, a type attribute and an agenda attribute created
      *
      * @return {@link AgendaDefinition.Builder}
      */
-    protected AgendaDefinition createTestAgenda(String objectDiscriminator) {
+    protected AgendaDefinition createTestAgenda(String objectDiscriminator, boolean createAttributes) {
         String namespace =  "Namespace" + objectDiscriminator;
         String typeId = "TypeId" + objectDiscriminator;
         String typeName = "TypeName" + objectDiscriminator;
         String agendaId = "AgendaId" + objectDiscriminator;
         String agendaName = "AgendaName" + objectDiscriminator;
 
+        List<KrmsTypeAttribute.Builder> typeAttrs = Collections.emptyList();
+
+        String attrDefName = "AttrName" + objectDiscriminator;
+        String attrValue = "AttrVal" + objectDiscriminator;
+
+        if (createAttributes) {
+            // create an attribute definition
+            String attrDefId = "KRTEST" + objectDiscriminator;
+            String attrNamespace = "Namespace" + objectDiscriminator;
+
+            KrmsAttributeDefinition attrDef = createTestKrmsAttribute(attrDefId, attrDefName, attrNamespace);
+
+            typeAttrs = Collections.singletonList(KrmsTypeAttribute.Builder.create(null, attrDef.getId(), 1));
+        }
+
         // create a type
-        KrmsTypeDefinition krmsTypeDefinition = createKrmsTypeDefinition(typeId, namespace, typeName, null);
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsTypeDefinition(typeId, namespace, typeName, null, typeAttrs);
 
         // create a context
         ContextDefinition contextDefinition = buildTestContext(objectDiscriminator);
@@ -368,6 +417,11 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         // create an agenda (an agendaItem cannot be created without an existing agenda).
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(agendaId, agendaName,
                 krmsTypeDefinition.getId(), contextDefinition.getId());
+
+        if (createAttributes) {
+            agendaBuilder.setAttributes(Collections.singletonMap(attrDefName, attrValue));
+        }
+
         String id = ruleManagementService.createAgenda(agendaBuilder.build()).getId();
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(id);
 

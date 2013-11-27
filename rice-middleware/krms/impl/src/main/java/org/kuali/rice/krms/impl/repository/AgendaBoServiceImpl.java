@@ -141,15 +141,15 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public void deleteAgenda(String agendaId) {
         if (agendaId == null){ throw new RiceIllegalArgumentException("agendaId is null"); }
-        final AgendaDefinition existing = getAgendaByAgendaId(agendaId);
-        if (existing == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
+        final AgendaBo bo = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaId);
+        if (bo == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
 
-        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(existing.getId());
+        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(bo.getId());
         for( AgendaItemDefinition agendaItem : agendaItems) {
             businessObjectService.delete(AgendaItemBo.from(agendaItem));
         }
 
-        businessObjectService.delete(from(existing));
+        businessObjectService.delete(bo);
     }
 
     /**

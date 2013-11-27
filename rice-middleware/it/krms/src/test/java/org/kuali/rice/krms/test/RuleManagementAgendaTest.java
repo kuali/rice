@@ -66,7 +66,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
         String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
-        String agendaId = createTestAgenda(t0.object0).getId();
+        String agendaId = createTestAgenda(t0.object0, /* createAttributes */ true).getId();
         buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
@@ -272,16 +272,21 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testUpdateAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
-        createTestAgenda(t6.object0);
+        createTestAgenda(t6.object0, /* createAttributes */ true);
         // create krms type AGENDA
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t6.namespaceName, "AGENDA", null);
 
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t6.agenda_Id));
-        agendaBuilder.setTypeId(krmsType.getId());
+
+        // change attribute value
+        String attrKey = agendaBuilder.getAttributes().entrySet().iterator().next().getKey();
+        String newAttrValue = "newAttrVal" + t6.object0;
+        agendaBuilder.setAttributes(Collections.singletonMap(attrKey, newAttrValue));
+
         agendaBuilder.setActive(false);
         ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        assertEquals("Updated agendaType not found",krmsType.getId(), ruleManagementService.getAgenda(t6.agenda_Id).getTypeId());
+        assertEquals("Updated agenda attribute not found",newAttrValue, ruleManagementService.getAgenda(t6.agenda_Id).getAttributes().get(attrKey));
         assertEquals("Agenda should have been changed to inActive",false,
                 ruleManagementService.getAgenda(t6.agenda_Id).isActive());
     }
@@ -298,7 +303,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         assertNull("Agenda should not yet exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
-        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0, /* createAttributes */ true);
         assertNotNull("Agenda should exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
         ruleManagementService.deleteAgenda(t7.agenda_Id);

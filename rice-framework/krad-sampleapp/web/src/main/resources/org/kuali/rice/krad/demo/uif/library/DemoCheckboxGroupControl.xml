@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- CheckboxGroupControl demo -->
-  <bean id="Demo-CheckboxGroupControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-CheckboxGroupControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCheckboxGroupControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.CheckboxGroupControl"/>
     <property name="docBookAnchor" value="d7339e5431"/>

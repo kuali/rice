@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- RadioControl demo -->
-  <bean id="Demo-RadioControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-RadioControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoRadioControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.RadioGroupControl"/>
     <property name="docBookAnchor" value="d7339e5814"/>

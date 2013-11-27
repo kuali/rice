@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- SpinnerControl demo -->
-  <bean id="Demo-SpinnerControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-SpinnerControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoSpinnerControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.SpinnerControl"/>
     <property name="docBookAnchor" value="d7339e5648"/>

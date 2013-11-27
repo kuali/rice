@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
   <!-- SelectControl demo -->
-  <bean id="Demo-SelectControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-SelectControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoSelectControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.SelectControl"/>
     <property name="docBookAnchor" value="d7339e5838"/>

@@ -136,7 +136,7 @@
       they are virtually identical between KNS and KRAD. The following sections identify the
       Business Object bean properties, Validation Patterns, and Control Definitions which are
       converted by the script and those which require manual conversion.</para>
-    <section>
+    <section xml:id="DD10">
       <title>BusinessObjectEntry bean replaced by DataObjectEntry bean</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
       <para>
@@ -199,7 +199,7 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="AD2">
       <title>Attribute Definitions</title>
       <para>Attribute Definitions define the meta-data of an object and many of the Attribute
         Definition properties remain the same between KNS and KRAD. The major differences are in how
@@ -299,7 +299,7 @@
         </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="VP1">
       <title>Validation Patterns</title>
       <para>The KNS validation patterns are supported in KRAD, but the naming convention has changed
         for constraints and patterns even though the functionality is the same. KRAD also has
@@ -308,13 +308,13 @@
         demonstrates the differences in defining validation constraints using a single validation
         pattern and several such patterns are available.</para>
       <para>
-        <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
+        <emphasis role="bold">KRAD validationPattern property example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validationPattern">
   &lt;bean  parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
 &lt;/property></programlisting>
       </para>
       <para>
-        <emphasis role="bold">KRAD Attribute Definition code example:</emphasis>
+        <emphasis role="bold">KRAD validCharactersConstraint property example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validCharactersConstraint">
   &lt;bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
 &lt;/property></programlisting>
@@ -539,7 +539,7 @@
         </itemizedlist> See the <link xlink:show="new" xlink:href="KRAD_Guide.html">KRAD
           Guide</link> for more detail. </para>
     </section>
-    <section>
+    <section xml:id="CD0">
       <title>Controls</title>
       <para>Control components are defined to determine which HTML element(s) are rendered to
         represent the input field. Here is an example of a Text control within an Attribute
@@ -589,11 +589,10 @@
           </listitem>
         </itemizedlist>
       </para>
-      <section>
+      <section xml:id="CD1">
         <title>Button Control</title>
-        <para><emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115343-0700" comment="Add short summary of what button control does."?>KNS<?oxy_comment_end?>
-            Button Control example</emphasis>:
+        <para>An action component that is configured to render a button. The button element can include text (the label) along with an image.</para>
+        <para><emphasis role="bold">Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="ButtonControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -636,12 +635,11 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD6">
         <title>Checkbox Control</title>
-        <para><emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115319-0700" comment="Add short summary of what checkbox control does."?>KNS<?oxy_comment_end?>
-            Checkbox Control example:
-          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
+        <para>The Checkbox control renders an HTML input tag with type of “checkbox”. This control is used to toggle the state of a property between two values (usually the Booleans true and false).</para>
+        <para><emphasis role="bold">Checkbox Control example:</emphasis>
+          <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
 &lt;/property></programlisting></para>
         <para>
@@ -670,12 +668,10 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD3">
         <title>Currency Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115221-0700" comment="Add short summary of what currency control does."?>KNS<?oxy_comment_end?>
-            Currency control example:</emphasis>
+        <para>Same as a Text control, except has an added style class of 'uif-currencyControl' which adds a right aligh style to the control useful for diplaying currency.</para>
+        <para><emphasis role="bold">Currency control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
 &lt;/property></programlisting>
@@ -707,12 +703,12 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD13">
         <title>File Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115400-0700" comment="Add short summary of what file control does."?>KNS<?oxy_comment_end?>
-            File Control example:</emphasis>
+        <para>The File control is used to allow the user to select a file from their file system
+          whose contents will be submitted with the form. The server can then make use of the file
+          contents or simply store the file on the server (for example a note attachment).</para>
+        <para><emphasis role="bold">File Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -734,12 +730,13 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD10">
         <title>Hidden Control</title>
+        <para>The Hidden control is used to render an HTML input of type hidden. A hidden control is
+          not visible to the user, therefore its value can only be changed by script. These are often
+          used to hold some state that is needed when the page is posted back, or to provide data for scripting purposes.</para>
         <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115500-0700" comment="Add short summary of what hidden control does."?>KNS<?oxy_comment_end?>
-            Hidden control example:</emphasis>
+          <emphasis role="bold">Hidden control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -761,12 +758,16 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD11">
         <title>Kuali User Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115630-0700" comment="Add short summary of what Kuali User Control does. What&apos;s the difference between user control and Kim Person control?"?>KNS<?oxy_comment_end?>
-            Kuali User control example:</emphasis>
+        <para>The KIM User control is specifically tailored to represent a KIM user.
+          This control does several things for us. First like the group control,
+          it will configured a quickfinder for our field that is configured to invoke the KIM User lookup.
+          The lookup will then return the principal id, principal name (username), and person name (full name).
+          Also like the group control it will automatically add the principal id as a hidden field for us.
+          In addition, it sets up a field query (covered in later on in this chapter) that display the person
+          name under the control on return from the lookup or when tabbing out of the control.</para>
+        <para><emphasis role="bold">Kuali User control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -788,13 +789,13 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD9">
         <title>Link Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115702-0700" comment="Add short summary of what link control does."?>KNS<?oxy_comment_end?>
-            Link control example:
-          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
+        <para>The Link control generates the HTML a (link) tag. The a tag is used to link to another document
+          (the primary mechanism of navigation in the web). The link is presented to use by a label,
+          which when clicked on will take the user to the linked page.</para>
+        <para><emphasis role="bold">Link control example:</emphasis>
+          <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" 
         p:target="_blank" p:hrefText="click here" />
 &lt;/property></programlisting>
@@ -844,12 +845,12 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD4">
         <title>TextArea Control</title>
-        <para><emphasis role="bold">
-            <?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115732-0700" comment="Add short summary of what text area control does."?>KNS<?oxy_comment_end?>
-            TextArea control example:
-          </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
+        <para>The TextArea control is similar to the text control with the exception of providing
+          multiple lines for input. This control is used for entering longer strings of data such as a description.</para>
+        <para><emphasis role="bold">TextArea control example:</emphasis>
+          <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property></programlisting></para>
         <para>
@@ -870,12 +871,10 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD2">
         <title>Text Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T115757-0700" comment="Add short summary of what text control does."?>KNS<?oxy_comment_end?>
-            Text control example:</emphasis>
+        <para>The Text control renders the HTML input element with type of “text”. This is a single-line box that allows the user to type the value.</para>
+        <para><emphasis role="bold">Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -917,12 +916,10 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD7">
         <title>Radio Control Group</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135210-0700" comment="Add short summary of what radio control does."?>KNS<?oxy_comment_end?>
-            Radio Group control example:</emphasis>
+        <para>A radio control allows a user to choose only one of a predefined set of options.</para>
+        <para><emphasis role="bold">Radio Group control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="RadioControlDefinition" 
         p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
@@ -972,7 +969,7 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section  xml:id="CD8">
         <title>Select Control</title>
         <para>
           <emphasis role="bold"
@@ -1056,7 +1053,7 @@
           </itemizedlist>
         </para>
       </section>
-      <section>
+      <section xml:id="CD5">
         <title>Date Control</title>
         <para>
           <emphasis role="bold"

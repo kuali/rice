@@ -76,7 +76,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField4' and @rows='3' and @cols='40' and @disabled]");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField3']","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField4' and @rows='3' and @cols='40']");
     }
     
@@ -85,7 +85,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40']");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField5']","a");
         fireEvent("inputField5", "blur");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40' and @disabled]");
     }
     

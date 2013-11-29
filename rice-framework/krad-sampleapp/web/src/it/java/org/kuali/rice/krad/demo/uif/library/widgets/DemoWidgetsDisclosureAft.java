@@ -26,9 +26,9 @@ import org.openqa.selenium.WebElement;
 public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Disclosure-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DisclosureView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Disclosure-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DisclosureView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

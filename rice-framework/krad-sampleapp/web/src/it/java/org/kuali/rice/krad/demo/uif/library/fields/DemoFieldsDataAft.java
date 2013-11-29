@@ -31,9 +31,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsDataAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DataFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DataField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DataFieldView&methodToCall=start";
     public static final String DIV_DATA_LABEL_DATA_FIELD_1 = "div[data-label='DataField 1']";
 
     @Rule
@@ -143,12 +143,12 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 
     protected void testDataFieldApplyFullMask() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example9", "DataField 1");
-        Assert.assertEquals("*********", valueText);
+        Assert.assertEquals("https://jira.kuali.org/browse/KULRICE-11307", "*********", valueText);
     }
 
     protected void testDataFieldApplyPartialMask() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example10", "DataField 1");
-        Assert.assertEquals("**01", valueText);
+        Assert.assertEquals("https://jira.kuali.org/browse/KULRICE-11307", "**01", valueText);
     }
 
     protected void testDataFieldHideProperty() throws Exception {

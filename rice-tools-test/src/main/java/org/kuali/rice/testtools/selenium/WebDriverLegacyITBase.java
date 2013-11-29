@@ -1366,11 +1366,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected Boolean isTextPresent(String text) {
-        if (driver.getPageSource().contains(text)) {
-            return Boolean.TRUE;
-        }
-
-        return Boolean.FALSE;
+        return WebDriverUtils.isTextPresent(driver.getPageSource(), text);
     }
 
     protected void jGrowl(String message) {
@@ -4094,6 +4090,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
     }
 
+    protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {
+        waitAndClickLinkContainingText(linkText, "");
+    }
+
     protected void waitAndClickLinkContainingText(String linkText, String message) throws InterruptedException {
         jGrowl("Click link containing " + linkText + " .");
         waitAndClickByXpath("//a[contains(text(), '" + linkText + "')]", message);
@@ -4354,6 +4354,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitForElementPresentById(String id, String message) throws InterruptedException {
         jiraAwareWaitFor(By.id(id), message);
+    }
+
+    protected void waitForElementPresentById(String id, String message, int seconds) throws InterruptedException {
+        jiraAwareWaitFor(By.id(id), seconds, message);
     }
 
     protected void waitForElementsPresentById(String id, String message) throws InterruptedException {

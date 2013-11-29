@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlRadioAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-RadioControl-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-RadioControlView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-RadioControl-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-RadioControlView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {
@@ -80,7 +80,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='1']");
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='2']");
         waitAndTypeByName("inputField3","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @value='1']");
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @value='2']");
     }
@@ -90,7 +90,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField6' and @value='1']");
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField6' and @value='2']");
         waitAndTypeByName("inputField5","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@disabled]");
     }
     

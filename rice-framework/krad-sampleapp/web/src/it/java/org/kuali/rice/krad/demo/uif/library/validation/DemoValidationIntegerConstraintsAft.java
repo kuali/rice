@@ -47,10 +47,10 @@ public class DemoValidationIntegerConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationNumericConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","1.3");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        //Scenario-1
+        waitAndTypeByName("inputField1","1.3");
+        waitAndClickLinkContainingText("Library Navigation");
+        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
     
     protected void testValidationNumericConstraintsFlags() throws Exception {

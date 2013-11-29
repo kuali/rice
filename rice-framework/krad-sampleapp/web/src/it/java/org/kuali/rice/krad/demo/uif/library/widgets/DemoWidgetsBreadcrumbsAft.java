@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -26,9 +27,9 @@ import org.openqa.selenium.WebElement;
 public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
 
 	  /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-BreadcrumbsView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-BreadcrumbsView&methodToCall=start";
 
     /**
      * inputField9
@@ -61,6 +62,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsBreadcrumbDefault() throws Exception {
+        waitAndClickByLinkText("Default");
         waitAndClickByLinkText("Default Breadcrumbs");
         assertNewWindow("1");
     }
@@ -135,14 +137,14 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     private void assertNewWindow(String urlNumber, String titleOne, String titleTwo) throws InterruptedException {
-        waitForPageToLoad();
+        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
         WebElement element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         assertTrue(element.getText().contains(titleOne));
         waitAndClickByLinkText("Page 2");
-        Thread.sleep(4000);
+        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
         element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         assertEquals(titleTwo, element.getText().trim());
         driver.close();

@@ -12,9 +12,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsInputAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-InputFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-InputFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

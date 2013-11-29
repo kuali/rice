@@ -35,7 +35,19 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
 		navigateToKitchenSink("Other Fields");
 	}
 	
-	@Test
+    @Test
+    public void testAttributeSecurityBookmark() throws Exception {
+        testAttributeSecurity();
+        passed();
+    }
+
+    @Test
+    public void testAttributeSecurityNav() throws Exception {
+        testAttributeSecurity();
+        passed();
+    }
+
+    @Test
     public void testOtherFieldsBookmark() throws Exception {
         testOtherFields();
         passed();
@@ -47,8 +59,7 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testOtherFields() throws InterruptedException 
-    {
+    protected void testOtherFields() throws InterruptedException {
     	//Field Group
     	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup1' and @class='uif-verticalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup2' and @class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
@@ -63,16 +74,13 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter2']/div[@class='uif-syntaxHighlighter']");
     	assertElementPresentByXpath("//embed[@id='ZeroClipboardMovie_2']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter3']/div[@class='uif-syntaxHighlighter']");
-    	if(isElementPresentByXpath("//embed[@id='ZeroClipboardMovie_3']"))
-    	{
+    	if(isElementPresentByXpath("//embed[@id='ZeroClipboardMovie_3']")) {
     		fail("Copy is allowed.");
     	}
-    	
-    	//Attribute Security
-    	assertTextPresent("*********");
-    	assertTextPresent("*****tInfo111");
-    	
-    	//Image Fields
+
+        //testAttributeSecurity(); // currently failing commented out till fixed and the attribute security test methods removed
+
+        //Image Fields
     	assertElementPresentByXpath("//img[@alt='pdf image']");
     	assertTextPresent("Image cutline text here ");
     	assertElementPresentByXpath("//div[@id='UifCompView-ImageField2' and @title='computer programming']");
@@ -104,5 +112,37 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	//Scrollable Groups
     	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4']/div[@style='height: 100px;overflow: auto;']");
     	assertElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
+    }
+
+    private void testAttributeSecurity() {//Attribute Security
+        boolean fullMaskPassed = false;
+        String fullMaskedError = "";
+        if (isTextPresent("SecretInfo555")) {
+            fullMaskedError = "SecretInfo555 not masked!";
+        } else {
+            fullMaskPassed = true;
+        }
+
+        if (!isTextPresent("*********")) {
+            fullMaskPassed = false;
+            fullMaskedError = fullMaskedError + " SecretInfo555 not masked with stars";
+        }
+
+        boolean partialMaskPassed = false;
+        String partialMaskError = "";
+        if (isTextPresent("SecretInfo111")) {
+            partialMaskError = "SecretInfo111 not masked!";
+        } else {
+            partialMaskPassed = true;
+        }
+
+        if (!isTextPresent("*****tInfo111")) {
+            partialMaskPassed = false;
+            partialMaskError = partialMaskError + " SecretInfo111 not partially masked with stars";
+        }
+
+        if (!fullMaskPassed || !partialMaskPassed) {
+            jiraAwareFail("LabsOtherFieldsAft attribute security fail " + fullMaskedError + " " + partialMaskError);
+        }
     }
 }

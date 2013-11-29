@@ -12,9 +12,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsLinkAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-LinkField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-LinkFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LinkField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LinkFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

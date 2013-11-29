@@ -711,6 +711,14 @@ public class WebDriverUtils {
         }
     }
 
+    public static Boolean isTextPresent(String pageText, String text) {
+        if (pageText.contains(text)) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+
     /**
      * <p>
      * Display jGrowl.

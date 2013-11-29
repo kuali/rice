@@ -24,9 +24,9 @@ import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 public class DemoWidgetsGrowlAft extends DemoLibraryBase {
 
 	   /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Growls-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-GrowlsView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Growls-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-GrowlsView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

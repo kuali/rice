@@ -42,15 +42,16 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     }
 
     protected void testClientResponsivenessProgressiveDisclosure() throws Exception {
-       //Scenario-1
-      assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
-      waitAndClickByName("booleanField1");
-      assertIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
-      assertIsNotVisibleByXpath("//input[@name='inputField3']", "Is Visible");
-      waitAndTypeByName("inputField2", "show");
-      waitAndClickByLinkText("Usage");
-      Thread.sleep(2000);
-      assertIsVisibleByXpath("//input[@name='inputField3']","Not Visible");
+         //Scenario-1
+        waitAndClickByLinkText("Default");
+        assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
+        waitAndClickByName("booleanField1");
+        assertIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
+        assertIsNotVisibleByXpath("//input[@name='inputField3']", "Is Visible");
+        waitAndTypeByName("inputField2", "show");
+        waitAndClickByLinkText("<< Close Library Navigation");
+        Thread.sleep(2000);
+        assertIsVisibleByXpath("//input[@name='inputField3']", "testClientResponsivenessProgressiveDisclosure text input based disclosure not visible");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureAjaxRetrieval() throws Exception {
@@ -72,17 +73,17 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     
     @Test
     public void testClientResponsivenessProgressiveDisclosureBookmark() throws Exception {
-        testClientResponsivenessProgressiveDisclosure();
         testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
         testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
+        testClientResponsivenessProgressiveDisclosure();
         passed();
     }
 
     @Test
     public void testClientResponsivenessProgressiveDisclosureNav() throws Exception {
-        testClientResponsivenessProgressiveDisclosure();
         testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
         testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
+        testClientResponsivenessProgressiveDisclosure();
         passed();
     }  
 }

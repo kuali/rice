@@ -42,12 +42,12 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
     }
 
     protected void testValidationRegexBasedConstraintsPhone() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","1234567890");
-       waitAndClickByLinkText("Usage");
-       fireEvent("inputField1", "focus");
-       Thread.sleep(200);
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        //Scenario-1
+        waitAndTypeByName("inputField1","1234567890");
+        waitAndClickLinkContainingText("Library Navigation");
+        fireEvent("inputField1", "focus");
+        Thread.sleep(200);
+        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
     
     protected void testValidationRegexBasedConstraintsEmail() throws Exception {
@@ -55,7 +55,7 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField2","s1!@f.xoh");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
     }
     
@@ -64,7 +64,7 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField3","www.google.com");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
     }
     
@@ -73,7 +73,7 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField4","aw e");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//input[@name='inputField4' and @class='uif-textControl validChar-inputField40 dirty error']");
     }
     
@@ -82,8 +82,8 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField5","22:00");
-        waitAndClickByLinkText("Usage");
-        
+        waitAndClickLinkContainingText("Library Navigation");
+
         //Currently this field is not working
 		//assertElementPresentByXpath("//input[@name='inputField5' and @class='uif-textControl validChar-inputField50 dirty error']");
     }
@@ -93,8 +93,8 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField6","01:00AM");
-        waitAndClickByLinkText("Usage");
-        
+        waitAndClickLinkContainingText("Library Navigation");
+
         //Currently this field is not working
 		//assertElementPresentByXpath("//input[@name='inputField6' and @class='uif-textControl validChar-inputField60 dirty error']");
     }
@@ -104,36 +104,36 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField7","1234-12-30 23:23:23.23");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//input[@name='inputField7' and @class='uif-textControl validChar-inputField70 dirty error']");
     }
     
      protected void testValidationRegexBasedConstraintsYear() throws Exception {
-        waitAndClickByLinkText("Year");
+         waitAndClickByLinkText("Year");
         
-        //Scenario-1
-        waitAndTypeByName("inputField8","1599");
-        waitAndClickByLinkText("Usage");
-        assertElementPresentByXpath("//input[@name='inputField8' and @class='uif-textControl validChar-inputField80 dirty error']");
+         //Scenario-1
+         waitAndTypeByName("inputField8","1599");
+         waitAndClickLinkContainingText("Library Navigation");
+         assertElementPresentByXpath("//input[@name='inputField8' and @class='uif-textControl validChar-inputField80 dirty error']");
     }
     
      protected void testValidationRegexBasedConstraintsMonth() throws Exception {
-        waitAndClickByLinkText("Month");
+         waitAndClickByLinkText("Month");
         
-        //Scenario-1
-        waitAndTypeByName("inputField9","13");
-        waitAndClickByLinkText("Usage");
-        assertElementPresentByXpath("//input[@name='inputField9' and @class='uif-textControl validChar-inputField90 dirty error']");
+         //Scenario-1
+         waitAndTypeByName("inputField9","13");
+         waitAndClickLinkContainingText("Library Navigation");
+         assertElementPresentByXpath("//input[@name='inputField9' and @class='uif-textControl validChar-inputField90 dirty error']");
     }
     
      protected void testValidationRegexBasedConstraintsZipcode() throws Exception {
-        waitAndClickByLinkText("Zipcode");
+         waitAndClickByLinkText("Zipcode");
         
-        //Scenario-1
-        waitAndTypeByName("inputField10","94101");
-        waitAndClickByLinkText("Usage");
-        
-        //Currently not working
+         //Scenario-1
+         waitAndTypeByName("inputField10","94101");
+         waitAndClickLinkContainingText("Library Navigation");
+
+         //Currently not working
         //assertElementPresentByXpath("//input[@name='inputField10' and @class='uif-textControl validChar-inputField100 dirty error']");
     }
     
@@ -142,21 +142,21 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
         
         //Scenario-1
         waitAndTypeByName("inputField11","asdf");
-        waitAndClickByLinkText("Usage");
-        
+        waitAndClickLinkContainingText("Library Navigation");
+
         //Currently not working
         //assertElementPresentByXpath("//input[@name='inputField11' and @class='uif-textControl validChar-inputField110 dirty error']");
     }
     
      protected void testValidationRegexBasedConstraintsCustom() throws Exception {
-        waitAndClickByLinkText("Custom");
+         waitAndClickByLinkText("Custom");
         
-        //Scenario-1
-        waitAndTypeByName("inputField12","ab.9");
-        waitAndTypeByName("inputField13","Demo-hi hello");
-        waitAndClickByLinkText("Usage");
-        assertElementPresentByXpath("//input[@name='inputField12' and @class='uif-textControl validChar-inputField120 dirty error']");
-        assertElementPresentByXpath("//input[@name='inputField13' and @class='uif-textControl validChar-inputField130 dirty error']");
+         //Scenario-1
+         waitAndTypeByName("inputField12","ab.9");
+         waitAndTypeByName("inputField13","Demo-hi hello");
+         waitAndClickLinkContainingText("Library Navigation");
+         assertElementPresentByXpath("//input[@name='inputField12' and @class='uif-textControl validChar-inputField120 dirty error']");
+         assertElementPresentByXpath("//input[@name='inputField13' and @class='uif-textControl validChar-inputField130 dirty error']");
     }
     
     @Test

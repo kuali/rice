@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlHiddenAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-HiddenControl-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-HiddenControlView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-HiddenControl-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-HiddenControlView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

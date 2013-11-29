@@ -26,9 +26,9 @@ import org.openqa.selenium.WebElement;
 public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Suggest-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-SuggestView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Suggest-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SuggestView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

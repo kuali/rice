@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlTextAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TextControl-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-TextControlView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextControl-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextControlView&methodToCall=start";
 
     /**
      * //div[@id='Demo-TextControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField1']

@@ -536,9 +536,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroupView"/>
         <bean parent="Uif-Link" p:linkText="Application Header"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AppHeader-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AppHeaderView"/>
       </list>
     </property>
   </bean>

@@ -242,16 +242,16 @@
                 <property name="cssClasses" value="group_header"/>
                 <property name="items">
                   <list>
-                    <bean parent="TestInputField" p:propertyName="inputField17"/>
-                    <bean parent="TextAreaTestField" p:propertyName="inputField18"/>
-                    <bean parent="TestInputField" p:propertyName="inputField19"/>
-                    <bean parent="TextAreaTestField" p:propertyName="inputField20"/>
-                    <bean parent="TestInputField" p:propertyName="inputField21"/>
-                    <bean parent="TextAreaTestField" p:propertyName="inputField22"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:propertyName="inputField17"/>
+                    <bean parent="Demo-GridLayoutManager-TextAreaTestField" p:propertyName="inputField18"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:propertyName="inputField19"/>
+                    <bean parent="Demo-GridLayoutManager-TextAreaTestField" p:propertyName="inputField20"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:propertyName="inputField21"/>
+                    <bean parent="Demo-GridLayoutManager-TextAreaTestField" p:propertyName="inputField22"/>
                   </list>
                 </property>
               </bean>
-              <bean id="gridGroup-3" parent="Uif-GridSection">
+              <bean parent="Uif-GridSection">
                 <property name="headerText" value="Section Title"/>
                 <property name="layoutManager.numberOfColumns" value="4"/>
                 <property name="instructionalText"
@@ -260,11 +260,11 @@
                 <property name="cssClasses" value="group_header"/>
                 <property name="items">
                   <list>
-                    <bean parent="TestInputField" p:propertyName="inputField23"/>
-                    <bean parent="TextAreaTestField" p:propertyName="inputField24"/>
-                    <bean parent="TestInputField" p:instructionalText="Colspan 2" p:propertyName="inputField25" p:colSpan="2" p:fieldLabel.colSpan="2"/>
-                    <bean parent="TextAreaTestField" p:instructionalText="Colspan 3" p:propertyName="inputField26" p:colSpan="3" p:fieldLabel.colSpan="1"/>
-                    <bean parent="TestInputField" p:instructionalText="Colspan 2" p:propertyName="inputField27" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:propertyName="inputField23"/>
+                    <bean parent="Demo-GridLayoutManager-TextAreaTestField" p:propertyName="inputField24"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:instructionalText="Colspan 2" p:propertyName="inputField25" p:colSpan="2" p:fieldLabel.colSpan="2"/>
+                    <bean parent="Demo-GridLayoutManager-TextAreaTestField" p:instructionalText="Colspan 3" p:propertyName="inputField26" p:colSpan="3" p:fieldLabel.colSpan="1"/>
+                    <bean parent="Demo-GridLayoutManager-TestInputField" p:instructionalText="Colspan 2" p:propertyName="inputField27" p:colSpan="2" p:fieldLabel.colSpan="2"/>
                   </list>
                 </property>
               </bean>
@@ -276,14 +276,14 @@
     </property>
   </bean>
 
-  <bean id="TestInputField" parent="Uif-InputField-LabelTop" abstract="true" p:label="Field Label" p:required="true"
+  <bean id="Demo-GridLayoutManager-TestInputField" parent="Uif-InputField-LabelTop" abstract="true" p:label="Field Label" p:required="true"
         p:instructionalText="Instructions" p:constraintText="Constraint text">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Enter Data"/>
     </property>
   </bean>
 
-  <bean id="TextAreaTestField" parent="Uif-InputField"
+  <bean id="Demo-GridLayoutManager-TextAreaTestField" parent="Uif-InputField"
         abstract="true" p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"

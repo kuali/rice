@@ -181,6 +181,7 @@ public class JiraAwareFailureUtils {
 
             if (matcher.find()) {
                 failable.fail("\n" + JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
+                break;
             }
         }
 
@@ -190,6 +191,7 @@ public class JiraAwareFailureUtils {
             key = (String)iter.next();
             if (contents.contains(key)) {
                 failable.fail("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
+                break;
             }
         }
     }

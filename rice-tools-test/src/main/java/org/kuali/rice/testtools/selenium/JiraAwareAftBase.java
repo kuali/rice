@@ -216,6 +216,40 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    protected void assertLabeledTextNotPresent(String[][] labeledText) {
+        boolean allLabeledTextNotPresent = true;
+        String missingMessage = "";
+        for (int i = 0, s = labeledText.length; i < s; i++) {
+            if (isLabeledTextPresent(labeledText[i][0], labeledText[i][1])) {
+                allLabeledTextNotPresent = false;
+                missingMessage += "Text: " + labeledText[i][1] + " labeled by: " + labeledText[i][0] + " present. ";
+            }
+        }
+        if (!allLabeledTextNotPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertLabeledTextPresent(String[][] labeledText) {
+        boolean allLabeledTextPresent = true;
+        String missingMessage = "";
+        for (int i = 0, s = labeledText.length; i < s; i++) {
+            if (!isLabeledTextPresent(labeledText[i][0], labeledText[i][1])) {
+                allLabeledTextPresent = false;
+                missingMessage += "Text: " + labeledText[i][1] + " labeled by: " + labeledText[i][0] + " not present. ";
+            }
+        }
+        if (!allLabeledTextPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertLabeledTextPresent(String label, String text) {
+        if (!isLabeledTextPresent(label, text)) {
+            jiraAwareFail("Text: " + text + " labeled by: " + label + " not present");
+        }
+    }
+
     /**
      * <b>WARNING:</b> this only does a check against the page source.  The form url can have random character that match
      * simple text.  A narrowly scoped locator for {@see #assertTextPresent(String String String)}
@@ -334,6 +368,12 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             jiraAwareFail(by.toString(), e.getMessage(), e);
         }
         return null; // required by compiler, never reached
+    }
+
+    protected boolean isLabeledTextPresent(String label, String text) {
+        WebElement element = findElement(By.xpath("//tr/th/*/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
+        String labeledText = element.getText().trim();
+        return labeledText.contains(text);
     }
 
     protected boolean isVisible(String locator) {

@@ -23,8 +23,30 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 public abstract class DemoInquiryBase extends WebDriverLegacyITBase {
 
+    final String[][] LABELED_IAT_TEXT = {{"Travel Account Type Code:", "IAT"},
+                                         {"Account Type Name:", "Income"},
+                                         {"Account Type:", "IAT - Income"}};
+
     protected void navigateToInquiry(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Inquiries");
         waitAndClickByLinkText(screenLinkText);
+    }
+
+    protected void assertLabeledIatText() throws InterruptedException {
+        assertLabeledTextPresent(LABELED_IAT_TEXT);
+        clickCollapseAll();
+        assertLabeledTextNotPresent(LABELED_IAT_TEXT);
+        clickExpandAll();
+        assertLabeledTextPresent(LABELED_IAT_TEXT);
+    }
+
+    protected void clickCollapseAll() throws InterruptedException {
+        waitAndClickButtonByText("Collapse All");
+        Thread.sleep(1000);
+    }
+
+    protected void clickExpandAll() throws InterruptedException {
+        waitAndClickButtonByText("Expand All");
+        Thread.sleep(1000);
     }
 }

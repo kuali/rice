@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -40,10 +39,30 @@ public class DemoInquiryCustomLinkAft extends DemoInquiryBase {
 
     protected void testDemoInquiryCustomLink() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a Custom Link");
-    	Thread.sleep(2000);
-    	assertTextPresent("Income");
-    	assertTextPresent("IAT - Income");
-    	assertTextPresent("Travel Account Type Code");
+
+        assertLabeledIatText();
+
+        // Lightbox
+        waitAndClickLinkContainingText("IAT (Click for Example)");
+        gotoLightBox();
+        String[][] lightBoxLabeledText = {{"Travel Account Number:", "a3"},
+                                          {"Account Name:", "Travel Account 3"},
+                                          {"Account Type:", "IAT - Income"},
+                                          {"Subsidized Percent:", "20 percent"},
+//                                          {"Date Created:", ""}, // skip Date Created till a good way to handle empty strings is figured out
+                                          {"Fiscal Officer User ID:", "frank"},
+                                          {"Fiscal Officer Name:", "frank, frank"}};
+        assertLabeledTextPresent(lightBoxLabeledText);
+
+        clickCollapseAll();
+        assertLabeledTextNotPresent(lightBoxLabeledText);
+
+        clickExpandAll();
+        assertLabeledTextPresent(lightBoxLabeledText);
+
+        // Back opens previous page inside lightbox, is that correct behavior?
+        waitAndClickButtonByText("< Back");
+        assertLabeledIatText();
     }
 
     @Test

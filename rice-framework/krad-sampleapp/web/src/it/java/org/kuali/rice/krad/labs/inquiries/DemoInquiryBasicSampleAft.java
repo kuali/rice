@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,9 +38,7 @@ public class DemoInquiryBasicSampleAft extends DemoInquiryBase {
     }
 
     protected void testDemoInquiryBasicSample() throws InterruptedException {
-    	assertTextPresent("Income");
-    	assertTextPresent("IAT - Income");
-    	assertTextPresent("Travel Account Type Code");
+        assertLabeledIatText();
     }
 
     @Test

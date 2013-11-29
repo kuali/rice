@@ -1201,6 +1201,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
+    protected void gotoLightBox() {
+        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
+    }
+
     protected WebElement findButtonByText(String buttonText) {
         return WebDriverUtils.findButtonByText(driver, buttonText);
     }

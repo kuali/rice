@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- FieldGroup demo -->
-  <bean id="Demo-FieldGroup-View" parent="ComponentLibraryView">
+  <bean id="Demo-FieldGroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoFieldGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.FieldGroup"/>
     <property name="docBookAnchor" value="d6813e6638"/>

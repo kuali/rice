@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Group demo -->
-  <bean id="Demo-Group-View" parent="ComponentLibraryView">
+  <bean id="Demo-GroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoGroup.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.container.Group"/>

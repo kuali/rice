@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- LinkGroup demo -->
-  <bean id="Demo-LinkGroup-View" parent="ComponentLibraryView">
+  <bean id="Demo-LinkGroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoLinkGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.LinkGroup"/>
     <property name="docBookAnchor" value="d7339e8496"/>

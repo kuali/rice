@@ -461,25 +461,25 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Group-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GroupView"/>
         <bean parent="Uif-Link" p:linkText="Accordion Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AccordionGroupView"/>
         <bean parent="Uif-Link" p:linkText="Link Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkGroupView"/>
         <bean parent="Uif-Link" p:linkText="Tab Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TabGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TabGroupView"/>
         <bean parent="Uif-Link" p:linkText="Collection Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionGroupView"/>
         <bean parent="Uif-Link" p:linkText="Dialog Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DialogGroupView"/>
         <bean parent="Uif-Link" p:linkText="Navigation Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-NavigationGroupView"/>
         <bean parent="Uif-Link" p:linkText="Tree Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TreeGroupView"/>
         <bean parent="Uif-Link" p:linkText="Page Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PageGroupView"/>
         <bean parent="Uif-Link" p:linkText="Field Group"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FieldGroup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FieldGroupView"/>
       </list>
     </property>
   </bean>

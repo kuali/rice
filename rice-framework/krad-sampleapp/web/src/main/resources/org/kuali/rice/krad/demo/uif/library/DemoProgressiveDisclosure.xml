@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- ProgressiveDisclosure demo -->
-  <bean id="Demo-ProgressiveDisclosure-View" parent="ComponentLibraryView">
+  <bean id="Demo-ProgressiveDisclosureView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoProgressiveDisclosure.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.component.ComponentBase"/>

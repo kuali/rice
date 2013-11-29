@@ -614,15 +614,15 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Disable"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disable-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DisableView"/>
         <bean parent="Uif-Link" p:linkText="Progressive Disclosure"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosureView"/>
         <bean parent="Uif-Link" p:linkText="Conditional Refresh"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefresh-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ConditionalRefreshView"/>
         <bean parent="Uif-Link" p:linkText="AJAX Field Query"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AjaxFieldQuery-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AjaxFieldQueryView"/>
         <bean parent="Uif-Link" p:linkText="Events"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Events-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-EventsView"/>
       </list>
     </property>
   </bean>

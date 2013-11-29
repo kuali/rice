@@ -42,7 +42,7 @@
         <!-- Radio control which switches between cases (propertyName field10) -->
         <bean parent="Uif-InputField" p:label="Select Case" p:width="auto" p:propertyName="inputField10">
           <property name="control">
-            <bean id="caseConstraintSection-VerticalRadioControl" parent="Uif-VerticalRadioControl">
+            <bean parent="Uif-VerticalRadioControl">
               <property name="options">
                 <list>
                   <bean parent="Uif-KeyLabelPair" p:value="Make Field 1 Required" p:key="case1"/>

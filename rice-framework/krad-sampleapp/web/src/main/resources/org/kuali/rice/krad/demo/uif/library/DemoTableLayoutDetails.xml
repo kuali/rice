@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- TableLayoutDetails demo -->
-  <bean id="Demo-TableLayoutDetails-View" parent="ComponentLibraryView">
+  <bean id="Demo-TableLayoutDetailsView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutDetails.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.layout.TableLayoutManager"/>

@@ -547,29 +547,29 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Sequence Column"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequence-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSequenceView"/>
         <bean parent="Uif-Link" p:linkText="Row Css"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCss-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutRowCssView"/>
         <bean parent="Uif-Link" p:linkText="Row Details"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetails-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutDetailsView"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotaling-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotalingView"/>
         <bean parent="Uif-Link" p:linkText="Row Grouping"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGrouping-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutGroupingView"/>
         <bean parent="Uif-Link" p:linkText="Add Line"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLine-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLineView"/>
         <bean parent="Uif-Link" p:linkText="Select Line"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSelectLine-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionSelectLineView"/>
         <bean parent="Uif-Link" p:linkText="Action Placement"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionActionPlacement-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionActionPlacementView"/>
         <bean parent="Uif-Link" p:linkText="Inactive Filter"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilter-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionInactiveFilterView"/>
         <bean parent="Uif-Link" p:linkText="Multi-Value Lookup"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionLookup-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionLookupView"/>
         <bean parent="Uif-Link" p:linkText="Server Paging"
               p:href="@{#ConfigProperties['krad.url']}/serverpaging"/>
         <bean parent="Uif-Link" p:linkText="Light Table"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LightTable-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LightTableView"/>
       </list>
     </property>
   </bean>

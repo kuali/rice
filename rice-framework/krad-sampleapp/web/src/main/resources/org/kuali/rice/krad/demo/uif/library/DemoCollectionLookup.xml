@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- CollectionInactiveFilter demo -->
-  <bean id="Demo-CollectionLookup-View" parent="ComponentLibraryView">
+  <bean id="Demo-CollectionLookupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionLookup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
     <property name="docBookAnchor" value="d7339e8535"/>

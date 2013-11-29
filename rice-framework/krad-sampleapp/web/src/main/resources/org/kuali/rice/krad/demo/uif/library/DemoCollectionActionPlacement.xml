@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- CollectionActionPlacement demo -->
-  <bean id="Demo-CollectionActionPlacement-View" parent="ComponentLibraryView">
+  <bean id="Demo-CollectionActionPlacementView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionActionPlacement.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
     <property name="docBookAnchor" value="d6813e8513"/>

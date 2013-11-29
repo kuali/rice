@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- LightTable demo -->
-  <bean id="Demo-LightTable-View" parent="ComponentLibraryView">
+  <bean id="Demo-LightTableView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoLightTable.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.LightTable"/>
     <property name="docBookAnchor" value="d6813e6638"/>

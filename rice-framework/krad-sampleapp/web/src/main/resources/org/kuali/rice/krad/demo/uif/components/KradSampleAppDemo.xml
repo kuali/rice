@@ -488,17 +488,17 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GridLayoutManagerView"/>
         <bean parent="Uif-Link" p:linkText="Box Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-BoxLayoutManagerView"/>
         <bean parent="Uif-Link" p:linkText="Css Grid Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayoutManagerView"/>
         <bean parent="Uif-Link" p:linkText="List Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ListLayoutManagerView"/>
         <bean parent="Uif-Link" p:linkText="Stacked Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StackedLayoutManagerView"/>
         <bean parent="Uif-Link" p:linkText="Table Layout"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutManager-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutManagerView"/>
       </list>
     </property>
   </bean>

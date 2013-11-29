@@ -22,7 +22,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- ListLayoutManager demo -->
-  <bean id="Demo-StackedLayoutManager-View" parent="ComponentLibraryView">
+  <bean id="Demo-StackedLayoutManagerView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.StackedLayoutManager"/>
     <property name="docBookAnchor" value="d6813e6638"/>

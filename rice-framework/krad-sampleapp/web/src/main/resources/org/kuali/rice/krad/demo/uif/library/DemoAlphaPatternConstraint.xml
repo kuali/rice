@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- AlphaPatternConstraint demo -->
-  <bean id="Demo-AlphaPatternConstraint-View" parent="ComponentLibraryView">
+  <bean id="Demo-AlphaPatternConstraintView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAlphaPatternConstraint.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint"/>

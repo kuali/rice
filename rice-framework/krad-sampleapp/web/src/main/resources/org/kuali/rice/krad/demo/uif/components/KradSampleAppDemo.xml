@@ -631,17 +631,17 @@
     <property name="items">
       <list>
         <bean parent="Uif-Link" p:linkText="Rich Messages"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessages-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RichMessagesView"/>
         <bean parent="Uif-Link" p:linkText="Unified View Header"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeader-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeaderView"/>
         <bean parent="Uif-Link" p:linkText="Sticky Header Options"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeader-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeaderView"/>
         <bean parent="Uif-Link" p:linkText="Sticky Footer Options"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooter-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooterView"/>
         <bean parent="Uif-Link" p:linkText="Read Only"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReadOnly-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ReadOnlyView"/>
         <bean parent="Uif-Link" p:linkText="Authorization"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Authorization-View"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AuthorizationView"/>
         <!--<bean parent="Uif-Link" p:linkText="Validation Messages"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ValidationMessagesView"/>-->
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"

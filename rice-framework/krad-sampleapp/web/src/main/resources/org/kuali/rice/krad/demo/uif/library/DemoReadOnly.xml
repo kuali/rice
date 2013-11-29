@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Readonly demo -->
-  <bean id="Demo-ReadOnly-View" parent="ComponentLibraryView">
+  <bean id="Demo-ReadOnlyView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoReadOnly.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
     <property name="docBookAnchor" value="d7339e4811"/>

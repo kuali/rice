@@ -47,10 +47,10 @@ public class DemoValidationAlphaConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationAlphaConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","12");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        //Scenario-1
+        waitAndTypeByName("inputField1","12");
+        waitAndClickLinkContainingText("Library Navigation");
+        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
     }
     
     protected void testValidationAlphaConstraintsFlags() throws Exception {

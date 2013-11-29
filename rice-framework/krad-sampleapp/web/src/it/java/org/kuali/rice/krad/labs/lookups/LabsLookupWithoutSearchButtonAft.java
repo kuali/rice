@@ -52,7 +52,7 @@ public class LabsLookupWithoutSearchButtonAft extends LabsLookupBase {
     
     protected void testLabsLookupWithoutSearchButton()throws Exception {
         if(isElementPresentByXpath("//button[contains(text(), 'Search')]")) {
-            fail("LabsLookupWithoutSearchButton Search Button Present");
+            jiraAwareFail("LabsLookupWithoutSearchButton Search Button Present");
         }
     }
 }

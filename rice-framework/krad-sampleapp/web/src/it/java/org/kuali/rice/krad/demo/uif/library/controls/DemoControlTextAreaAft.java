@@ -24,9 +24,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TextAreaControl-View
+     * /kr-krad/kradsampleapp?viewId=Demo-TextAreaControlView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextAreaControl-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextAreaControlView";
 
     @Override
     protected String getBookmarkUrl() {
@@ -91,19 +91,17 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
     
     @Test
     public void testControlTextAreaBookmark() throws Exception {
-        testLibraryControlTextAreaDefault();
-        testLibraryControlTextAreaColsAndRowsSet();
-        testLibraryControlTextAreaTextExpand();
-        testLibraryControlTextAreaDisabled();
-        testLibraryControlTextAreaWatermarkText();
-        testLibraryControlTextAreaDisableOnKeyEvent();
-        testLibraryControlTextAreaEnableWhenChanged();
-        testLibraryControlTextAreaDisableWhenChanged();
+        testLibraryControlTextArea();
         passed();
     }
 
     @Test
     public void testControlTextAreaNav() throws Exception {
+        testLibraryControlTextArea();
+        passed();
+    }
+
+    private void testLibraryControlTextArea() throws Exception {
         testLibraryControlTextAreaDefault();
         testLibraryControlTextAreaColsAndRowsSet();
         testLibraryControlTextAreaTextExpand();
@@ -112,6 +110,5 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         testLibraryControlTextAreaDisableOnKeyEvent();
         testLibraryControlTextAreaEnableWhenChanged();
         testLibraryControlTextAreaDisableWhenChanged();
-        passed();
-    }  
+    }
 }

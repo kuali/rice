@@ -133,7 +133,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_TXT_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField8","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_TXT_FIELD_XPATH_AFTER);
     }
     
@@ -141,7 +141,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Disable when changed");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_TXT_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField10","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_TXT_FIELD_XPATH_AFTER);
     }
     

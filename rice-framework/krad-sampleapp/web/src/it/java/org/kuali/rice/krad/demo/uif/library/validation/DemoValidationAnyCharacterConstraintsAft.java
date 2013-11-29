@@ -46,7 +46,7 @@ public class DemoValidationAnyCharacterConstraintsAft extends WebDriverLegacyITB
         waitAndTypeByName("inputField1","a x u");
         waitAndClickLinkContainingText("Library Navigation");
         fireMouseOverEventByName("inputField1");
-        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        assertElementPresentByXpath("//input[@name='inputField1' and @class='form-control input-sm uif-textControl validChar-inputField10 dirty error']");
     }
     
     protected void testValidationAnyCharacterConstraintsAllowWhitespace() throws Exception {

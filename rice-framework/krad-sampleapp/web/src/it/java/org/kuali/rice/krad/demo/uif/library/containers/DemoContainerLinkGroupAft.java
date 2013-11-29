@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoContainerLinkGroupAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-LinkGroup-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-LinkGroupView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LinkGroup-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LinkGroupView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

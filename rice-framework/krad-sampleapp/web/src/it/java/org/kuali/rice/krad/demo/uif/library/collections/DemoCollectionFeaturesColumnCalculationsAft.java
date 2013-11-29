@@ -27,10 +27,10 @@ import org.openqa.selenium.By;
 public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-TableLayoutTotalingView&methodToCall=start
      */
     public static final String BOOKMARK_URL =
-            "/kr-krad/kradsampleapp?viewId=Demo-TableLayoutTotaling-View&methodToCall=start";
+            "/kr-krad/kradsampleapp?viewId=Demo-TableLayoutTotalingView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

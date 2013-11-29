@@ -28,9 +28,9 @@ import java.util.List;
 public class DemoCollectionSequenceAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CollectionSequence-View
+     * /kr-krad/kradsampleapp?viewId=Demo-CollectionSequenceView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionSequence-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionSequenceView";
 
     @Override
     protected String getBookmarkUrl() {

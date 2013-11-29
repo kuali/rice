@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CssGridLayoutManager-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-CssGridLayoutManagerView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CssGridLayoutManager-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CssGridLayoutManagerView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

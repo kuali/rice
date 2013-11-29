@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-LightTable-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-LightTableView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LightTable-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-LightTableView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

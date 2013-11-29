@@ -27,9 +27,9 @@ import org.openqa.selenium.WebElement;
 public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Disable-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DisableView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Disable-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DisableView&methodToCall=start";
    
     @Override
     protected String getBookmarkUrl() {

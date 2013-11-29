@@ -25,9 +25,9 @@ import org.openqa.selenium.By;
 public class DemoValidationAlphaNumericConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaNumericPatternConstraintView&methodToCall=start";
 
     /**
      *  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes

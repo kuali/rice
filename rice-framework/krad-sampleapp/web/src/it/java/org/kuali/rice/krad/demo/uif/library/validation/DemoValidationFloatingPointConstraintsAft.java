@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationFloatingPointConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-FloatingPointPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-FloatingPointPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-FloatingPointPatternConstraintView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-ProgressiveDisclosureView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ProgressiveDisclosure-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ProgressiveDisclosureView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

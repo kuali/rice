@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoLabsSessionPolicyBase extends WebDriverLegacyITBase {
+public abstract class LabsSessionPolicyBase extends WebDriverLegacyITBase {
 
     protected void navigateToSessionPolicy(String sessionPolicyText) throws InterruptedException {
         waitAndClickByLinkText(sessionPolicyText);

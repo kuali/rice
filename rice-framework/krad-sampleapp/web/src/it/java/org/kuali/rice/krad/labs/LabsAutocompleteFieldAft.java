@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoAutocompleteFieldAft extends WebDriverLegacyITBase {
+public class LabsAutocompleteFieldAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/uicomponents?viewId=Lab-NativeAutocomplete-DisableField

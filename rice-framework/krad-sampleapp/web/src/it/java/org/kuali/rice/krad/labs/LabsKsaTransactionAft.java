@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs.sessionpolicy;
+package org.kuali.rice.krad.labs;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoSessionPolicyMissingFormAft extends DemoLabsSessionPolicyBase {
+public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm
+     * /kr-krad/transaction?viewId=TransactionView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm";
+    public static final String BOOKMARK_URL = "/kr-krad/transaction?viewId=TransactionView";
 
     @Override
     protected String getBookmarkUrl() {
@@ -34,24 +35,27 @@ public class DemoSessionPolicyMissingFormAft extends DemoLabsSessionPolicyBase {
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToSessionPolicy("Session Policy Missing Form");
+    	waitAndClickByLinkText("KSA Transaction");
     }
 
-    protected void testDemoSessionPolicyMissingForm() throws InterruptedException {
-    	waitAndClickByLinkText("Post Missing Form");
-    	Thread.sleep(3000);
-    	assertTextPresent("Your Session has timed out and the request could not be completed.");
+    protected void testKsaTransaction() throws InterruptedException {
+    	waitAndTypeByName("testField","a");
+    	assertTextPresent("Charges");
+    	waitAndClickButtonByText("delete");
+    	assertTextPresent("Deleting Line");
+    	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
+    	//Currently throwing Freemarker error so furthur test cannot be processed.
     }
 
     @Test
-    public void testDemoSessionPolicyMissingFormBookmark() throws Exception {
-    	testDemoSessionPolicyMissingForm();
+    public void testKsaTransactionBookmark() throws Exception {
+    	testKsaTransaction();
         passed();
     }
 
-    @Test
-    public void testDemoSessionPolicyMissingFormNav() throws Exception {
-    	testDemoSessionPolicyMissingForm();
+//    @Test
+    public void testKsaTransactionNav() throws Exception {
+    	testKsaTransaction();
         passed();
     }
 }

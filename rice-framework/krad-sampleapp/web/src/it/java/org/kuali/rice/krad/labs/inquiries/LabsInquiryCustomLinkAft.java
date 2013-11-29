@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoInquiryCustomLinkAft extends DemoInquiryBase {
+public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=KradInquirySample-PageR4C1

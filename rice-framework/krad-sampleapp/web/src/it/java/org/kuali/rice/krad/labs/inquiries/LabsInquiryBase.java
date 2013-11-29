@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class DemoInquiryBase extends WebDriverLegacyITBase {
+public abstract class LabsInquiryBase extends WebDriverLegacyITBase {
 
     final String[][] LABELED_IAT_TEXT = {{"Travel Account Type Code:", "IAT"},
                                          {"Account Type Name:", "Income"},

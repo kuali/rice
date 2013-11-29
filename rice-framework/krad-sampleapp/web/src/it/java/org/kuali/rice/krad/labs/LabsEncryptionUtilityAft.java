@@ -21,12 +21,12 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoKSATransactionAft extends WebDriverLegacyITBase {
+public class LabsEncryptionUtilityAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/transaction?viewId=TransactionView
+     * /kr-krad/encryption?viewId=Lab-Encryption
      */
-    public static final String BOOKMARK_URL = "/kr-krad/transaction?viewId=TransactionView";
+    public static final String BOOKMARK_URL = "/kr-krad/encryption?viewId=Lab-Encryption";
 
     @Override
     protected String getBookmarkUrl() {
@@ -35,27 +35,26 @@ public class DemoKSATransactionAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("KSA Transaction");
+    	waitAndClickByLinkText("Encryption Utility");
     }
 
-    protected void testKSATransaction() throws InterruptedException {
-    	waitAndTypeByName("testField","a");
-    	assertTextPresent("Charges");
-    	waitAndClickButtonByText("delete");
-    	assertTextPresent("Deleting Line");
-    	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
-    	//Currently throwing Freemarker error so furthur test cannot be processed.
+    protected void testDemoEncryptionUtility() throws InterruptedException {
+    	waitAndTypeByXpath("//input[@name='input']","admin");
+    	waitAndClickByXpath("//button[contains(text(),'Encrypt')]");
+    	Thread.sleep(3000);
+    	assertTextPresent("kV12AH2uD5s=");
+    	assertTextPresent("admin");
     }
 
     @Test
-    public void testKSATransactionBookmark() throws Exception {
-    	testKSATransaction();
+    public void testDemoEncryptionUtilityBookmark() throws Exception {
+    	testDemoEncryptionUtility();
         passed();
     }
 
-//    @Test
-    public void testKSATransactionNav() throws Exception {
-    	testKSATransaction();
+    @Test
+    public void testDemoEncryptionUtilityNav() throws Exception {
+    	testDemoEncryptionUtility();
         passed();
     }
 }

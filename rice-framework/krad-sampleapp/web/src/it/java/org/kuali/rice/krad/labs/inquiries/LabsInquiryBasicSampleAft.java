@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs;
+package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoFileUploadAft extends WebDriverLegacyITBase {
+public class LabsInquiryBasicSampleAft extends LabsInquiryBase {
 
     /**
-     * /kr-krad/fileUploads?viewId=Lab-FileUploads
+     * /kr-krad/inquiry?methodToCall=start&accountTypeCode=IAT&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType
      */
-    public static final String BOOKMARK_URL = "/kr-krad/fileUploads?viewId=Lab-FileUploads";
+    public static final String BOOKMARK_URL = "/kr-krad/inquiry?methodToCall=start&accountTypeCode=IAT&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType";
 
     @Override
     protected String getBookmarkUrl() {
@@ -35,25 +34,22 @@ public class DemoFileUploadAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("File Upload View");
+    	navigateToInquiry("Inquiry Sample - Basic");
     }
 
-    protected void testDemoFileUpload() throws InterruptedException {
-    	waitForElementPresentByXpath("//input[@type='file' and @name='uploadOne']");
-    	assertElementPresentByXpath("//button[contains(text(),'Upload - Ajax')]");
-    	assertElementPresentByXpath("//input[@type='file' and @name='uploadTwo']");
-    	assertElementPresentByXpath("//button[contains(text(),'Upload - NonAjax')]");
+    protected void testDemoInquiryBasicSample() throws InterruptedException {
+        assertLabeledIatText();
     }
 
     @Test
-    public void testDemoFileUploadBookmark() throws Exception {
-    	testDemoFileUpload();
+    public void testDemoInquiryBasicSampleBookmark() throws Exception {
+    	testDemoInquiryBasicSample();
         passed();
     }
 
     @Test
-    public void testDemoFileUploadNav() throws Exception {
-    	testDemoFileUpload();
+    public void testDemoInquiryBasicSampleNav() throws Exception {
+    	testDemoInquiryBasicSample();
         passed();
     }
 }

@@ -20,13 +20,13 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoSessionPolicyRedirectHomeAft extends DemoLabsSessionPolicyBase {
+public class LabsSessionPolicyTimeoutViewAft extends LabsSessionPolicyBase {
 
     /**
-     * /kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-RedirectHome
+     * /kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-RedirectHome";
-    
+    public static final String BOOKMARK_URL = "/kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutView";
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -34,31 +34,31 @@ public class DemoSessionPolicyRedirectHomeAft extends DemoLabsSessionPolicyBase 
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToSessionPolicy("Session Policy Redirect Home");
+    	navigateToSessionPolicy("Session Policy Timeout View");
     }
 
-    protected void testDemoSessionPolicyRedirectHome() throws InterruptedException {
+    protected void testDemoSessionPolicyTimeoutView() throws InterruptedException {
     	waitForElementPresentByXpath("//button[contains(text(),'Kill Session')]");
     	assertElementPresentByXpath("//button[contains(text(),'Ajax Request')]");
     	assertElementPresentByXpath("//button[contains(text(),'NonAjax Request')]");
     	waitAndClickByXpath("//button[contains(text(),'Kill Session')]");
     	waitAndClickByXpath("//button[contains(text(),'Ajax Request')]");
     	Thread.sleep(3000);
-    	if(isElementPresentByXpath("//button[contains(text(),'Ajax Request')]"))
-    	{
-    		fail("Session not cleared out properly.");
-    	}
+    	waitAndTypeByName("login_user","admin");
+    	waitAndClickByXpath("//button[@id='Rice-LoginButton']");
+    	Thread.sleep(3000);
+    	assertTextPresent("Your Session has timed out and the request could not be completed.");
     }
 
     @Test
-    public void testDemoSessionPolicyRedirectHomeBookmark() throws Exception {
-    	testDemoSessionPolicyRedirectHome();
+    public void testDemoSessionPolicyTimeoutViewBookmark() throws Exception {
+    	testDemoSessionPolicyTimeoutView();
         passed();
     }
 
     @Test
-    public void testDemoSessionPolicyRedirectHomeNav() throws Exception {
-    	testDemoSessionPolicyRedirectHome();
+    public void testDemoSessionPolicyTimeoutViewNav() throws Exception {
+    	testDemoSessionPolicyTimeoutView();
         passed();
     }
 }

@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoJSONTemplateExampleAft extends WebDriverLegacyITBase {
+public class LabsJsonTemplateExampleAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/labs?methodToCall=jsonExample
@@ -38,20 +38,20 @@ public class DemoJSONTemplateExampleAft extends WebDriverLegacyITBase {
     	waitAndClickByLinkText("JSON Template Example");
     }
 
-    protected void testDemoJSONTemplateExample() throws InterruptedException {
+    protected void testDemoJsonTemplateExample() throws InterruptedException {
     	assertTextPresent("dataStoreConnUsageLimit");
     	assertTextPresent("maxUrlLength");
     }
 
     @Test
-    public void testDemoJSONTemplateExampleBookmark() throws Exception {
-    	testDemoJSONTemplateExample();
+    public void testDemoJsonTemplateExampleBookmark() throws Exception {
+    	testDemoJsonTemplateExample();
         passed();
     }
 
     @Test
-    public void testDemoJSONTemplateExampleNav() throws Exception {
-    	testDemoJSONTemplateExample();
+    public void testDemoJsonTemplateExampleNav() throws Exception {
+    	testDemoJsonTemplateExample();
         passed();
     }
 }

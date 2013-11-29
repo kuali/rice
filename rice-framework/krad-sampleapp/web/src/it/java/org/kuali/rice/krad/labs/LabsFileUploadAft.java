@@ -21,12 +21,12 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoEncryptionUtilityAft extends WebDriverLegacyITBase {
+public class LabsFileUploadAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/encryption?viewId=Lab-Encryption
+     * /kr-krad/fileUploads?viewId=Lab-FileUploads
      */
-    public static final String BOOKMARK_URL = "/kr-krad/encryption?viewId=Lab-Encryption";
+    public static final String BOOKMARK_URL = "/kr-krad/fileUploads?viewId=Lab-FileUploads";
 
     @Override
     protected String getBookmarkUrl() {
@@ -35,26 +35,25 @@ public class DemoEncryptionUtilityAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("Encryption Utility");
+    	waitAndClickByLinkText("File Upload View");
     }
 
-    protected void testDemoEncryptionUtility() throws InterruptedException {
-    	waitAndTypeByXpath("//input[@name='input']","admin");
-    	waitAndClickByXpath("//button[contains(text(),'Encrypt')]");
-    	Thread.sleep(3000);
-    	assertTextPresent("kV12AH2uD5s=");
-    	assertTextPresent("admin");
+    protected void testDemoFileUpload() throws InterruptedException {
+    	waitForElementPresentByXpath("//input[@type='file' and @name='uploadOne']");
+    	assertElementPresentByXpath("//button[contains(text(),'Upload - Ajax')]");
+    	assertElementPresentByXpath("//input[@type='file' and @name='uploadTwo']");
+    	assertElementPresentByXpath("//button[contains(text(),'Upload - NonAjax')]");
     }
 
     @Test
-    public void testDemoEncryptionUtilityBookmark() throws Exception {
-    	testDemoEncryptionUtility();
+    public void testDemoFileUploadBookmark() throws Exception {
+    	testDemoFileUpload();
         passed();
     }
 
     @Test
-    public void testDemoEncryptionUtilityNav() throws Exception {
-    	testDemoEncryptionUtility();
+    public void testDemoFileUploadNav() throws Exception {
+    	testDemoFileUpload();
         passed();
     }
 }

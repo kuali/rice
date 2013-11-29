@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoSessionPolicyRedirectURLAft extends DemoLabsSessionPolicyBase {
+public class LabsSessionPolicyRedirectURLAft extends LabsSessionPolicyBase {
 
     /**
      * /kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-RedirectUrl

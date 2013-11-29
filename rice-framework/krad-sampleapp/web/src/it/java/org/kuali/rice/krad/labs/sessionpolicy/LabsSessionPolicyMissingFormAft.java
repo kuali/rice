@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs.inquiries;
+package org.kuali.rice.krad.labs.sessionpolicy;
 
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoInquiryBasicSampleAft extends DemoInquiryBase {
+public class LabsSessionPolicyMissingFormAft extends LabsSessionPolicyBase {
 
     /**
-     * /kr-krad/inquiry?methodToCall=start&accountTypeCode=IAT&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType
+     * /kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm
      */
-    public static final String BOOKMARK_URL = "/kr-krad/inquiry?methodToCall=start&accountTypeCode=IAT&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType";
+    public static final String BOOKMARK_URL = "/kr-krad/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm";
 
     @Override
     protected String getBookmarkUrl() {
@@ -34,22 +34,24 @@ public class DemoInquiryBasicSampleAft extends DemoInquiryBase {
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToInquiry("Inquiry Sample - Basic");
+    	navigateToSessionPolicy("Session Policy Missing Form");
     }
 
-    protected void testDemoInquiryBasicSample() throws InterruptedException {
-        assertLabeledIatText();
+    protected void testDemoSessionPolicyMissingForm() throws InterruptedException {
+    	waitAndClickByLinkText("Post Missing Form");
+    	Thread.sleep(3000);
+    	assertTextPresent("Your Session has timed out and the request could not be completed.");
     }
 
     @Test
-    public void testDemoInquiryBasicSampleBookmark() throws Exception {
-    	testDemoInquiryBasicSample();
+    public void testDemoSessionPolicyMissingFormBookmark() throws Exception {
+    	testDemoSessionPolicyMissingForm();
         passed();
     }
 
     @Test
-    public void testDemoInquiryBasicSampleNav() throws Exception {
-    	testDemoInquiryBasicSample();
+    public void testDemoSessionPolicyMissingFormNav() throws Exception {
+    	testDemoSessionPolicyMissingForm();
         passed();
     }
 }

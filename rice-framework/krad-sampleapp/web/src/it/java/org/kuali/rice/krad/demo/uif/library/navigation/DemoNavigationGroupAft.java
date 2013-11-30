@@ -17,17 +17,17 @@ package org.kuali.rice.krad.demo.uif.library.navigation;
 
 import org.junit.Test;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoNavigationGroupAft extends WebDriverLegacyITBase {
+public class DemoNavigationGroupAft extends DemoLibraryNavigationBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroupView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroupView&methodToCall=start";
  
     @Override
     protected String getBookmarkUrl() {
@@ -46,6 +46,7 @@ public class DemoNavigationGroupAft extends WebDriverLegacyITBase {
        switchToWindow("Kuali :: Navigation View");
        waitForElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li");
        assertElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li[3]");
+       super.testNavigationView();
        switchToWindow("Kuali");
     }
     
@@ -53,12 +54,12 @@ public class DemoNavigationGroupAft extends WebDriverLegacyITBase {
         selectByName("exampleShown","Navigation Group Menu");
         waitAndClickByLinkText("Navigation Group Menu Example");
         switchToWindow("Kuali :: Navigation Menu View");
-        waitForElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper']");
-        waitAndClickByLinkText("<<");
-        waitForElementPresentByXpath("//div[@class='uif-navigationMenu-wrapper' and @style='display: none;']");
+        waitForElementPresentByXpath("//div[@class='uif-menuNavigationGroup']");
+        waitAndClick(By.className("icon-angle-left"));
+        waitForElementPresentByXpath("//div[@class='uif-menuNavigationGroup sidebar-collapsed']");
         switchToWindow("Kuali");
     }
-    
+
     @Test
     public void testGeneralFeaturesUnifiedViewHeaderBookmark() throws Exception {
         testNavigationView();

@@ -53,7 +53,6 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
     @Test
     public void testNavigationMenuBookmark() throws Exception {
         testNavigationTabs();
-        testNavigationView();
         passed();
     }
 
@@ -61,7 +60,6 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
     public void testNavigationMenuNav() throws Exception {
         navigateToLibraryDemo("Navigation", "Navigation Group");
         testNavigationTabs();
-        testNavigationView();
         passed();
     }
 }

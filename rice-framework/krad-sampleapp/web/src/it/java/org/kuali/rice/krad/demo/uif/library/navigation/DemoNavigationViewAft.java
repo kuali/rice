@@ -18,14 +18,16 @@ package org.kuali.rice.krad.demo.uif.library.navigation;
 import org.junit.Test;
 
 /**
+ * NOTE: The BOOKMARK_VIEW_URL is different than in DemoNavigationAft
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DemoNavigationViewAft extends DemoLibraryNavigationBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-NavigationView&methodToCall=start
      */
-    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=NavigationGroup-NavigationView&methodToCall=start&pageId=page1";
+    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-NavigationView&methodToCall=start&pageId=page1";
 
     @Override
     public String getBookmarkUrl() {
@@ -33,7 +35,7 @@ public class DemoNavigationViewAft extends DemoLibraryNavigationBase {
     }
 
     protected void navigate() throws Exception {
-        // no-op navigation test is done in DemoLibraryNavigationSmokeTest
+        // no-op navigation test is done in DemoNavigationAft
     }
 
     @Test

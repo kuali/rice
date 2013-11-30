@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,6 +40,7 @@ public class DemoWidgetsGrowlAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsGrowlServerSide() throws Exception {
+        selectByName("exampleShown","Server-side Growls");
 
         //check if growl text is present
         assertTextNotPresent("Sample Message Text. Data passed: none");
@@ -49,28 +51,38 @@ public class DemoWidgetsGrowlAft extends DemoLibraryBase {
         //give it a second to display
         Thread.sleep(1000);
 
+        // get growl text
+        String growlText = findElement(By.className("jGrowl-message")).getText();
+
         //check growl text is present
-        assertTextPresent("Sample Message Text. Data passed: none");
+        assertTrue(growlText.equals("Sample Message Text. Data passed: none"));
     }
 
     protected void testWidgetsGrowlClientSide() throws Exception {
         selectByName("exampleShown","Client-side Growls");
+
+        //create growl
         waitAndClickByXpath("//div[@id='Demo-Growls-Example2']/div[@class='uif-verticalBoxLayout clearfix']/button");
+
+        //give it a half second to display
         Thread.sleep(500);
-        assertTextPresent("This is a test growl message");
+
+        // get growl text and assert it is what we expect
+        String growlText = findElement(By.className("growlUI")).getText();
+        assertTrue(growlText.equals("Growl Test\nThis is a test growl message"));
     }
 
     @Test
     public void testWidgetsGrowlBookmark() throws Exception {
-        testWidgetsGrowlServerSide();
         testWidgetsGrowlClientSide();
+        testWidgetsGrowlServerSide();
         passed();
     }
 
     @Test
     public void testWidgetsGrowlNav() throws Exception {
-        testWidgetsGrowlServerSide();
         testWidgetsGrowlClientSide();
+        testWidgetsGrowlServerSide();
         passed();
     }
 }

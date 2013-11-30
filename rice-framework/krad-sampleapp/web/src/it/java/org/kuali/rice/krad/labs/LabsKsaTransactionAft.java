@@ -44,6 +44,7 @@ public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
     	waitAndClickButtonByText("delete");
     	assertTextPresent("Deleting Line");
     	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
+        waitAndClickById("rollupList1_detLink_line1");
     	//Currently throwing Freemarker error so furthur test cannot be processed.
     }
 

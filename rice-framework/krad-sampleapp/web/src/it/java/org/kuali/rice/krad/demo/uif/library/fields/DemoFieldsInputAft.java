@@ -264,8 +264,8 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         testInputFieldLabelTop();
         testInputFieldLabelRight();
         testInputFieldInquiry();
-        testInputFieldRequired();
         testInputFieldUppercase();
+        testInputFieldRequired();
         testInputFieldQuickfinder();
     }
 

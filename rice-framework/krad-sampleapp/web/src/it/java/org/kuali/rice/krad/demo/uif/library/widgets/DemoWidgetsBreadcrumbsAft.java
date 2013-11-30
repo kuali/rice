@@ -144,8 +144,13 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         WebElement element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         assertTrue(element.getText().contains(titleOne));
         waitAndClickByLinkText("Page 2");
-        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
         element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 3000;
+        while (!titleTwo.equals(element.getText().trim()) && secondsToWait > 0) {
+            Thread.sleep(1000);
+            secondsToWait -= 1000;
+            element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
+        }
         assertEquals(titleTwo, element.getText().trim());
         driver.close();
         switchToWindow(START_PAGE_TITLE);

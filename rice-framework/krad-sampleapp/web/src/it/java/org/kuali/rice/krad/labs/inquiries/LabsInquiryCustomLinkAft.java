@@ -37,7 +37,7 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
     	navigateToInquiry("Inquiry Custom Link");
     }
 
-    protected void testDemoInquiryCustomLink() throws InterruptedException {
+    protected void testInquiryCustomLink() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a Custom Link");
 
         assertLabeledIatText();
@@ -54,6 +54,11 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
                                           {"Fiscal Officer Name:", "frank, frank"}};
         assertLabeledTextPresent(lightBoxLabeledText);
 
+        String[][] dataTable = {{"sub1", "Sub Account 1"},
+                                {"sub2", "Sub Account 2"},
+                                {"sub3", "Sub Account 3"}};
+        assertDataTableContains(dataTable);
+
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);
 
@@ -66,14 +71,14 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testDemoInquiryCustomLinkBookmark() throws Exception {
-    	testDemoInquiryCustomLink();
+    public void testInquiryCustomLinkBookmark() throws Exception {
+    	testInquiryCustomLink();
         passed();
     }
 
     @Test
-    public void testDemoInquiryCustomLinkNav() throws Exception {
-    	testDemoInquiryCustomLink();
+    public void testInquiryCustomLinkNav() throws Exception {
+    	testInquiryCustomLink();
         passed();
     }
 }

@@ -79,6 +79,24 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         JiraAwareWebDriverUtils.assertButtonEnabledByText(getDriver(), buttonText, this);
     }
 
+    protected void assertDataTableContains(String[][] data) {
+        boolean dataPresent = true;
+        String missingMessage = "";
+        String dataTableRow;
+        for (int i = 0, s = data.length; i < s; i++) {
+            dataTableRow = findDataTableRow(data[i][0]).getText();
+            for (int j = 1, t = data[i].length; j < t; j++) {
+                if (!dataTableRow.contains(data[i][j])) {
+                    dataPresent = false;
+                    missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
+                }
+            }
+        }
+        if (!dataPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
     protected void assertElementPresentByName(String name) {
         assertElementPresentByName(name, "");
     }
@@ -342,6 +360,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         passed = false;
         WebDriverUtils.jGrowl(getDriver(), "Failure " + getClass().getSimpleName(), true, message);
         Assert.fail(message); // The final fail that JiraAwareFailure calls, do not change this to a JiraAwareFailure.
+    }
+
+    protected WebElement findDataTableRow(String keyText) {
+        WebElement element = findElement(By.className("dataTable"));
+        return findElement(By.xpath("./*/tr//*[contains(text(), '" + keyText + "')]/ancestor::tr"), element);
     }
 
     /**

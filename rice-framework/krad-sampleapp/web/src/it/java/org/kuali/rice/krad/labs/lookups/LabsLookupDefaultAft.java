@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -40,16 +42,18 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
 
     @Test
     public void testLabsLookupDefaultBookmark() throws Exception {
+        testLabsLookupDefaultEmpty();
         testLabsLookupDefault();
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultNav() throws Exception {
+        testLabsLookupDefaultEmpty();
         testLabsLookupDefault();
         passed();
     }
-    
+
     protected void testLabsLookupDefault()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
@@ -62,5 +66,11 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
         Thread.sleep(3000);
         assertTextPresent("Travel Account 1");
         assertTextPresent("a1");
+    }
+
+    protected void testLabsLookupDefaultEmpty()throws Exception {
+        waitAndClickButtonByText("Search");
+        Thread.sleep(3000);
+        findDataTableRow("Travel Account 1");
     }
 }

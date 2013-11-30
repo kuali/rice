@@ -65,13 +65,17 @@
                       <bean parent="Uif-HorizontalFieldGroup">
                         <property name="items">
                           <list>
-                            <bean id="UifCompView-OtherField4" parent="Uif-InputField" p:propertyName="field1"
+                            <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                                  p:instructionalText="Instructions 1"
                                   p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
-                            <bean id="UifCompView-OtherField5" parent="Uif-InputField" p:propertyName="field2"
+                            <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                                  p:instructionalText="Instructions 2"
                                   p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
-                            <bean id="UifCompView-OtherField6" parent="Uif-InputField" p:propertyName="field3"
+                            <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                                  p:instructionalText="Instructions 3"
                                   p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
-                            <bean id="UifCompView-OtherField7" parent="Uif-InputField" p:propertyName="field4"
+                            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+                                  p:instructionalText="Instructions 4"
                                   p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
                           </list>
                         </property>

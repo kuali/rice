@@ -39,9 +39,9 @@
         <bean parent="Uif-Page">
           <property name="items">
             <list>
-              <ref bean="page1"/>
-              <ref bean="page2"/>
-              <ref bean="page3"/>
+              <ref bean="Demo-PageGroup-Page1"/>
+              <ref bean="Demo-PageGroup-Page2"/>
+              <ref bean="Demo-PageGroup-Page3"/>
             </list>
           </property>
         </bean>
@@ -49,21 +49,21 @@
       </list>
     </property>
   </bean>
-  <bean id="page1" parent="Uif-VerticalBoxSection" p:header.render="false">
+  <bean id="Demo-PageGroup-Page1" parent="Uif-VerticalBoxSection" p:header.render="false">
     <property name="items">
       <list>
         <bean parent="Uif-Label" p:labelText="Page 1" />
       </list>
     </property>
   </bean>
-  <bean id="page2" parent="Uif-VerticalBoxSection" p:header.render="false">
+  <bean id="Demo-PageGroup-Page2" parent="Uif-VerticalBoxSection" p:header.render="false">
     <property name="items">
       <list>
         <bean parent="Uif-Label" p:labelText="Page 2" />
       </list>
     </property>
   </bean>
-  <bean id="page3" parent="Uif-VerticalBoxSection" p:header.render="false">
+  <bean id="Demo-PageGroup-Page3" parent="Uif-VerticalBoxSection" p:header.render="false">
     <property name="items">
       <list>
         <bean parent="Uif-Label" p:labelText="Page 3" />

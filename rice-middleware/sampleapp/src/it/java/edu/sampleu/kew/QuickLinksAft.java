@@ -25,43 +25,45 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoQuickLinksAft extends WebDriverLegacyITBase {
+public class QuickLinksAft extends WebDriverLegacyITBase {
 
     /**
-     *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Quicklinks&channelUrl="
-     *   + WebDriverUtils.getBaseUrlString() + "/kew/QuickLinks.do";
+     * AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Quicklinks&channelUrl="
+     * + WebDriverUtils.getBaseUrlString() + "/kew/QuickLinks.do";
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Quicklinks&channelUrl="
-            + WebDriverUtils.getBaseUrlString() + "/kew/QuickLinks.do";
+    public static final String BOOKMARK_URL =
+            AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Quicklinks&channelUrl=" + WebDriverUtils
+                    .getBaseUrlString() + "/kew/QuickLinks.do";
 
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickMainMenu(null);
-       waitAndClickByLinkText("Quicklinks");        
+        waitAndClickMainMenu();
+        waitAndClickByLinkText("Quicklinks");
     }
 
-    protected void testDemoQuickLinks() throws Exception { 
-      selectFrameIframePortlet();
-      assertTextPresent("Quick EDoc Search");
-      assertTextPresent("Created=");
-      assertTextPresent("Quick Action List");
-      assertTextPresent("ENROUTE");
-      assertElementPresentByXpath("//a[@href='RouteLog.do?documentId=3017']");
+    protected void testQuickLinks() throws Exception {
+        selectFrameIframePortlet();
+        assertTextPresent("Quick EDoc Search");
+        assertTextPresent("Created=");
+        assertTextPresent("Quick Action List");
+        assertTextPresent("ENROUTE");
+        assertElementPresentByXpath("//a[@href='RouteLog.do?documentId=3017']");
     }
 
     @Test
-    public void testDemoQuickLinksBookmark() throws Exception {
-        testDemoQuickLinks();
+    public void testQuickLinksBookmark() throws Exception {
+        testQuickLinks();
         passed();
     }
 
     @Test
-    public void testDemoQuickLinksNav() throws Exception {
-        testDemoQuickLinks();
+    public void testQuickLinksNav() throws Exception {
+        testQuickLinks();
         passed();
     }
 }

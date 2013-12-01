@@ -4042,6 +4042,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(3000);
     }
 
+    protected void waitAndClickAdministration() throws InterruptedException {
+        waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, this);
+    }
+
     /**
      * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable
@@ -4192,6 +4196,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickLogout(JiraAwareFailable failable) throws InterruptedException {
         selectTopFrame();
         waitAndClickByXpath(LOGOUT_XPATH, failable);
+    }
+
+    protected void waitAndClickMainMenu() throws InterruptedException {
+        waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, this);
     }
 
     /**

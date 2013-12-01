@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,7 +25,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoEmplyomentTypeAft extends WebDriverLegacyITBase {
+public class EmploymentTypeAft extends WebDriverLegacyITBase {
 
     /**
      *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Employment%20Type&channelUrl="
@@ -45,38 +43,32 @@ public class DemoEmplyomentTypeAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("Employment Type");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Employment Type");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoEmplyomentType() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("N");
-      assertTextPresent("O");
-      assertTextPresent("P");
-      waitAndTypeByName("lookupCriteria[code]","N");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("N");
-      if(isTextPresent("Other"))
-      {
-          fail("Conditions not working !");
-      }
+    protected void testEmploymentType() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickButtonByText("Search");
+        assertDataTableContains(new String[][]{{"N"}, {"O"}, {"P"}});
+        waitAndTypeByName("lookupCriteria[code]","N");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("Other");
+        assertTextPresent("N");
     }
 
     @Test
-    public void testDemoEmplyomentTypeBookmark() throws Exception {
-        testDemoEmplyomentType();
+    public void testEmploymentTypeBookmark() throws Exception {
+        testEmploymentType();
         passed();
     }
 
     @Test
-    public void testDemoEmplyomentTypeNav() throws Exception {
-        testDemoEmplyomentType();
+    public void testEmplyomentTypeNav() throws Exception {
+        testEmploymentType();
         passed();
     }
 }

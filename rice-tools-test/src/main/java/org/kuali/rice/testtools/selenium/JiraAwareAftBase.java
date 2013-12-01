@@ -79,12 +79,30 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         JiraAwareWebDriverUtils.assertButtonEnabledByText(getDriver(), buttonText, this);
     }
 
-    protected void assertDataTableContains(String[][] data) {
+    protected void assertDataTableContains(String[][] data) throws InterruptedException {
         boolean dataPresent = true;
         String missingMessage = "";
         String dataTableRow;
         for (int i = 0, s = data.length; i < s; i++) {
             dataTableRow = findDataTableRow(data[i][0]).getText();
+            for (int j = 1, t = data[i].length; j < t; j++) {
+                if (!dataTableRow.contains(data[i][j])) {
+                    dataPresent = false;
+                    missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
+                }
+            }
+        }
+        if (!dataPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertDataTableContains(String[][] data, String tableClass) throws InterruptedException {
+        boolean dataPresent = true;
+        String missingMessage = "";
+        String dataTableRow;
+        for (int i = 0, s = data.length; i < s; i++) {
+            dataTableRow = findDataTableRow(data[i][0], tableClass).getText();
             for (int j = 1, t = data[i].length; j < t; j++) {
                 if (!dataTableRow.contains(data[i][j])) {
                     dataPresent = false;
@@ -362,8 +380,13 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         Assert.fail(message); // The final fail that JiraAwareFailure calls, do not change this to a JiraAwareFailure.
     }
 
-    protected WebElement findDataTableRow(String keyText) {
-        WebElement element = findElement(By.className("dataTable"));
+    protected WebElement findDataTableRow(String keyText) throws InterruptedException {
+        return findDataTableRow(keyText, "dataTable");
+    }
+
+    protected WebElement findDataTableRow(String keyText, String className) throws InterruptedException {
+        jiraAwareWaitFor(By.className(className));
+        WebElement element = findElement(By.className(className));
         return findElement(By.xpath("./*/tr//*[contains(text(), '" + keyText + "')]/ancestor::tr"), element);
     }
 
@@ -511,6 +534,17 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         } catch (Exception e) {
             failable.jiraAwareFail(by.toString(), message, e);
         }
+    }
+
+    /**
+     * {@see WebDriverUtils#waitFor}.
+     *
+     * @param by to find
+     * @return WebElement found with given by
+     * @throws InterruptedException
+     */
+    protected WebElement jiraAwareWaitFor(By by) throws InterruptedException {
+        return jiraAwareWaitFor(by, "");
     }
 
     /**

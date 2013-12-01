@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,62 +25,56 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoEntityTypeAft extends WebDriverLegacyITBase {
+public class EmailTypeAft extends WebDriverLegacyITBase {
 
     /**
-     *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Entity%20Type&channelUrl="
+     *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Email%20Type&channelUrl="
      *   + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-     *   "org.kuali.rice.kim.impl.identity.EntityTypeBo&returnLocation="
+     *   "org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo&returnLocation="
      *   + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Entity%20Type&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Email%20Type&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-            "org.kuali.rice.kim.impl.identity.EntityTypeBo&returnLocation="
+            "org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
-          
+            
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("Entity Type");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Email Type");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoEntityType() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("PERSON");
-      assertTextPresent("SYSTEM");
-      waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      if(isTextPresent("PERSON"))
-      {
-          fail("Conditions not working !");
-      }
-      waitAndTypeByName("lookupCriteria[code]","PERSON");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("PERSON");
-      if(isTextPresent("SYSTEM"))
-      {
-          fail("Conditions not working !");
-      }
+    protected void testEmailType() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickButtonByText("Search");
+        Thread.sleep(3000);
+        String[][] data = {{"HM", "Home", "b"},
+                           {"OTH", "Other", "c"},
+                           {"WRK", "Work", "a"}};
+        assertDataTableContains(data);
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("HM");
+        waitAndTypeByName("lookupCriteria[code]","OTH");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("OTH");
     }
 
     @Test
-    public void testDemoEntityTypeBookmark() throws Exception {
-        testDemoEntityType();
+    public void testEmailTypeBookmark() throws Exception {
+        testEmailType();
         passed();
     }
 
     @Test
-    public void testDemoEntityTypeNav() throws Exception {
-        testDemoEntityType();
+    public void testEmailTypeNav() throws Exception {
+        testEmailType();
         passed();
     }
 }

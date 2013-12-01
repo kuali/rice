@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,7 +25,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoCitizenshipStatusAft extends WebDriverLegacyITBase {
+public class CitizenshipStatusAft extends WebDriverLegacyITBase {
 
     /**
      *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Citizenship%20Status&channelUrl="
@@ -45,13 +43,14 @@ public class DemoCitizenshipStatusAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("Citizenship Status");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Citizenship Status");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoCitizenshipStatus() throws Exception { 
+    protected void testCitizenshipStatus() throws Exception {
       selectFrameIframePortlet();
       waitAndClickButtonByText("Search");
       Thread.sleep(3000);
@@ -62,28 +61,26 @@ public class DemoCitizenshipStatusAft extends WebDriverLegacyITBase {
 //      waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
 //      waitAndClickButtonByText("Search");
 //      Thread.sleep(3000);
-//      if(isTextPresent("AFLT"))
-//      {
+//      if(isTextPresent("AFLT")) {
 //          fail("Conditions not working !");
 //      }
 //      waitAndTypeByName("lookupCriteria[code]","AFLT");
 //      waitAndClickButtonByText("Search");
 //      Thread.sleep(3000);
-//      if(isTextPresent("FCLTY"))
-//      {
+//      if(isTextPresent("FCLTY")) {
 //          fail("Conditions not working !");
 //      }
     }
 
     @Test
-    public void testDemoCitizenshipStatusBookmark() throws Exception {
-        testDemoCitizenshipStatus();
+    public void testCitizenshipStatusBookmark() throws Exception {
+        testCitizenshipStatus();
         passed();
     }
 
     @Test
-    public void testDemoCitizenshipStatusNav() throws Exception {
-        testDemoCitizenshipStatus();
+    public void testCitizenshipStatusNav() throws Exception {
+        testCitizenshipStatus();
         passed();
     }
 }

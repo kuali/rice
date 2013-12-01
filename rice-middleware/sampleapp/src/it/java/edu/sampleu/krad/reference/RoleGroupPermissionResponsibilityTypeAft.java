@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,17 +25,17 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoNameTypeAft extends WebDriverLegacyITBase {
+public class RoleGroupPermissionResponsibilityTypeAft extends WebDriverLegacyITBase {
 
     /**
-     *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Name%20Type&channelUrl="
+     *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Role/Group/Permission/Responsibility%20Type&channelUrl="
      *   + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-     *   "org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo&returnLocation="
+     *   "org.kuali.rice.kim.impl.type.KimTypeBo&returnLocation="
      *   + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Name%20Type&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Role/Group/Permission/Responsibility%20Type&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-            "org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo&returnLocation="
+            "org.kuali.rice.kim.impl.type.KimTypeBo&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
    
     @Override
@@ -45,37 +43,37 @@ public class DemoNameTypeAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("Name Type");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Role/Group/Permission/Responsibility Type");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoNameType() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("OTH");
-      assertTextPresent("PRFR");
-      waitAndTypeByName("lookupCriteria[code]","PRFR");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("PRFR");
-      if(isTextPresent("OTH"))
-      {
-          fail("Conditions not working !");
-      }
+    protected void testRoleGroupPermissionResponsibilityType() throws Exception {
+        selectFrameIframePortlet();
+        selectByName("lookupCriteria[namespaceCode]","KR-BUS - Service Bus");
+        waitAndClickButtonByText("Search");
+        Thread.sleep(3000);
+        assertTextPresent("No values match this search.");
+        waitAndClickButtonByText("Clear Values");
+        waitAndClickButtonByText("Search");
+        assertDataTableContains(new String[][]{{"KUALI"}, {"KR-NS"}});
+        waitAndTypeByName("lookupCriteria[name]","Permission");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("Namespace or Component");
+        assertTextPresent("KR-IDM");
     }
 
     @Test
-    public void testDemoNameTypeBookmark() throws Exception {
-        testDemoNameType();
+    public void testRoleGroupPermissionResponsibilityTypeBookmark() throws Exception {
+        testRoleGroupPermissionResponsibilityType();
         passed();
     }
 
     @Test
-    public void testDemoNameTypeNav() throws Exception {
-        testDemoNameType();
+    public void testRoleGroupPermissionResponsibilityTypeNav() throws Exception {
+        testRoleGroupPermissionResponsibilityType();
         passed();
     }
 }

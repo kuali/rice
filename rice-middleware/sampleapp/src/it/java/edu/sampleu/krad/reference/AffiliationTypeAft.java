@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,55 +25,52 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoExternalIdentifierTypeAft extends WebDriverLegacyITBase {
+public class AffiliationTypeAft extends WebDriverLegacyITBase {
 
     /**
-     *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=External%20Identifier%20Type&channelUrl="
+     *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Affiliation%20Type&channelUrl="
      *   + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-     *   "org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo&returnLocation="
+     *   "org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo&returnLocation="
      *   + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=External%20Identifier%20Type&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Affiliation%20Type&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-            "org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo&returnLocation="
+            "org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
-    
+  
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("External Identifier Type");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Affiliation Type");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoExternalIdentifierType() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("HR");
-      assertTextPresent("LICENSE");
-      waitAndTypeByName("lookupCriteria[code]","LICENSE");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("LICENSE");
-      if(isTextPresent("HR"))
-      {
-          fail("Conditions not working !");
-      }
+    protected void testAffiliationType() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickButtonByText("Search");
+        assertDataTableContains(new String[][]{{"AFLT"}, {"FCLTY"}, {"STAFF"}});
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("AFLT");
+        waitAndTypeByName("lookupCriteria[code]","AFLT");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("FCLTY");
     }
 
     @Test
-    public void testDemoExternalIdentifierTypeBookmark() throws Exception {
-        testDemoExternalIdentifierType();
+    public void testAffiliationTypeBookmark() throws Exception {
+        testAffiliationType();
         passed();
     }
 
     @Test
-    public void testDemoExternalIdentifierTypeNav() throws Exception {
-        testDemoExternalIdentifierType();
+    public void testAffiliationTypeNav() throws Exception {
+        testAffiliationType();
         passed();
     }
 }

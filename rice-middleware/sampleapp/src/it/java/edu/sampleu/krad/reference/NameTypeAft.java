@@ -15,8 +15,6 @@
  */
 package edu.sampleu.krad.reference;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -27,17 +25,17 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoPhoneTypeAft extends WebDriverLegacyITBase {
+public class NameTypeAft extends WebDriverLegacyITBase {
 
     /**
-     *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Phone%20Type&channelUrl="
+     *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Name%20Type&channelUrl="
      *   + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-     *   "org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo&returnLocation="
+     *   "org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo&returnLocation="
      *   + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Phone%20Type&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Name%20Type&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD +
-            "org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo&returnLocation="
+            "org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo&returnLocation="
             + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
    
     @Override
@@ -45,37 +43,32 @@ public class DemoPhoneTypeAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickKRAD();
-       waitAndClickByLinkText("Phone Type");        
+        waitAndClickKRAD();
+        waitAndClickByLinkText("Name Type");
     }
 
     //Code for KRAD Test Package.
-    protected void testDemoPhoneType() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("HM");
-      assertTextPresent("MBL");
-      waitAndTypeByName("lookupCriteria[code]","MBL");
-      waitAndClickButtonByText("Search");
-      Thread.sleep(3000);
-      assertTextPresent("MBL");
-      if(isTextPresent("HM"))
-      {
-          fail("Conditions not working !");
-      }
+    protected void testNameType() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickButtonByText("Search");
+        assertDataTableContains(new String[][]{{"OTH"}, {"PRFR"}});
+        waitAndTypeByName("lookupCriteria[code]","PRFR");
+        waitAndClickButtonByText("Search");
+        waitForTextNotPresent("OTH");
+        assertTextPresent("PRFR");
     }
 
     @Test
-    public void testDemoPhoneTypeBookmark() throws Exception {
-        testDemoPhoneType();
+    public void testNameTypeBookmark() throws Exception {
+        testNameType();
         passed();
     }
 
     @Test
-    public void testDemoPhoneTypeNav() throws Exception {
-        testDemoPhoneType();
+    public void testDemoNameTypeNav() throws Exception {
+        testNameType();
         passed();
     }
 }

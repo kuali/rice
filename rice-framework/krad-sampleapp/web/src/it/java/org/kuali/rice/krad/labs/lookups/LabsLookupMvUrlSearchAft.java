@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupMvUrlSearchAft extends LabsLookupBase {
 
     /**
@@ -51,10 +50,9 @@ public class LabsLookupMvUrlSearchAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupMVURLSearch()throws Exception {
-        if(isElementPresentByXpath("//button[contains(text(), 'Search')]"))
-        {
-            fail("Search Button Present");
+        if(isElementPresentByXpath("//button[contains(text(), 'Search')]")) {
+            jiraAwareFail("LabsLookupMvUrlSearchAft Search Button Present");
         }
-        assertTextPresent("4 items retrieved, displaying all items.");
+        assertResultCount("5");
     }
 }

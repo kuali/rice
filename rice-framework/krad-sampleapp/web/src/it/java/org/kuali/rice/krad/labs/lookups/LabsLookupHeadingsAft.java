@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupHeadingsAft extends LabsLookupBase {
 
     /**
@@ -52,7 +51,7 @@ public class LabsLookupHeadingsAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupHeadings()throws Exception {
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-upperGroup']/div[2]/span");
+        waitForElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-upperGroup']/div[2]/span");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-lowerGroup']/div[2]/span");
         assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-rightGroup']/div[2]/span");
     }//button[contains(text(), '" + buttonText + "')]

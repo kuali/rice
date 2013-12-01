@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupInquiryDisabledAft extends LabsLookupBase {
 
     /**
@@ -53,9 +52,8 @@ public class LabsLookupInquiryDisabledAft extends LabsLookupBase {
     protected void testLabsLookupInquiryDisabled()throws Exception {
         waitAndClickButtonByText("Search");
         Thread.sleep(2000);
-        if(isElementPresentByXpath("//a[contains(text(), 'a1')]"))
-        {
-            fail("Inquiry has not been disabled.");
+        if(isElementPresentByXpath("//a[contains(text(), 'a1')]")) {
+            jiraAwareFail("Inquiry has not been disabled. " + this.getClass().toString());
         }
     }
 }

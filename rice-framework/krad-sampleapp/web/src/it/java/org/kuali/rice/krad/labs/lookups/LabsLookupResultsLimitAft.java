@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupResultsLimitAft extends LabsLookupBase {
 
     /**
@@ -53,21 +52,17 @@ public class LabsLookupResultsLimitAft extends LabsLookupBase {
     protected void testLabsLookupResultsLimit()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a*");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("TRAVEL ACCOUNT 14");
-        assertTextPresent("a14");
+        assertDataTableContains(new String[][]{{"a14", "TRAVEL ACCOUNT 14"}});
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
-            fail("More than 2 results available");
+            jiraAwareFail("More than 2 results available for " + this.getClass().toString());
         }
         waitAndClickButtonByText("Clear Values");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("Travel Account 1");
-        assertTextPresent("a1");
+        assertDataTableContains(new String[][]{{"a1", "Travel Account 1"}});
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
-            fail("More than 2 results available");
+            jiraAwareFail("More than 2 results available for " + this.getClass().toString());
         }
     }
 }

@@ -286,6 +286,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    protected void assertResultCount(String count) throws InterruptedException {
+        jiraAwareWaitFor(By.cssSelector("li.uif-infoMessageItem"), "result count for " + this.getClass().toString());
+        assertTextPresent(count + " items retrieved, displaying all items.", "li.uif-infoMessageItem", this.getClass().toString());
+    }
+
     /**
      * <b>WARNING:</b> this only does a check against the page source.  The form url can have random character that match
      * simple text.  A narrowly scoped locator for {@see #assertTextPresent(String String String)}

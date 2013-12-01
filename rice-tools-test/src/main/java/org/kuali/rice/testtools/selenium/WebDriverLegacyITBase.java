@@ -4392,6 +4392,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jiraAwareWaitFors(By.xpath(xpathLocator), "");
     }
 
+    protected void waitForElementNotPresent(By by) throws InterruptedException {
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (isElementPresent(by) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (isElementPresent(by)) {
+            jiraAwareFail(by + " is still present");
+        }
+    }
+
     protected void waitForTextNotPresent(String text) throws InterruptedException {
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
         while (isTextPresent(text) && secondsToWait > 0) {

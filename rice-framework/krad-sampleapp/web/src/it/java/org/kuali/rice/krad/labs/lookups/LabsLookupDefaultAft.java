@@ -16,13 +16,10 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupDefaultAft extends LabsLookupBase {
 
     /**
@@ -70,7 +67,6 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
 
     protected void testLabsLookupDefaultEmpty()throws Exception {
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
         findDataTableRow("Travel Account 1");
     }
 }

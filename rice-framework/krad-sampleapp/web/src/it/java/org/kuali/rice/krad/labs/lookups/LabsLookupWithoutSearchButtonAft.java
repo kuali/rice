@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupWithoutSearchButtonAft extends LabsLookupBase {
 
     /**

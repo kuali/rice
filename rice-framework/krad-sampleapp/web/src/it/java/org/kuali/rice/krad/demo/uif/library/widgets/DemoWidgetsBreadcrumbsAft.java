@@ -64,25 +64,25 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     protected void testWidgetsBreadcrumbDefault() throws Exception {
         waitAndClickByLinkText("Default");
         waitAndClickByLinkText("Default Breadcrumbs");
-        assertNewWindow("1");
+        assertNewWindow("1", "Default");
     }
 
     protected void testWidgetsBreadcrumbParentLocation() throws Exception {
         waitAndClickByLinkText("ParentLocation");
         waitAndClickByLinkText("Home ParentLocation");
-        assertNewWindow("2");
+        assertNewWindow("2", "ParentLocation");
     }
 
     protected void testWidgetsBreadcrumbParentLocationChain() throws Exception {
         waitAndClickByLinkText("ParentLocation Chain");
         waitAndClickByLinkText("ParentLocation Chain/Trail");
-        assertNewWindow("3");
+        assertNewWindow("3", "ParentLocation Chain");
     }
 
     protected void testWidgetsBreadcrumbParentLocationPage() throws Exception {
         waitAndClickByLinkText("ParentLocation Page");
         waitAndClickByLinkText("ParentLocation View and Page");
-        assertNewWindow("4");
+        assertNewWindow("4", "ParentLocation Page");
     }
 
     protected void testWidgetsBreadcrumbPreViewAndPrePage() throws Exception {
@@ -90,7 +90,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         waitAndClickByLinkText("preView and prePage breadcrumbs");
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
-        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "5"));
+        assertTrue("preView and prePage", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "5"));
         assertElementPresentByName(FIELD_TO_CHECK);
         driver.close();
         switchToWindow(START_PAGE_TITLE);
@@ -99,13 +99,13 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     protected void testWidgetsBreadcrumbBreadcrumbLabel() throws Exception {
         waitAndClickByLinkText("Breadcrumb Label");
         waitAndClickByLinkText("Override Breadcrumb Label");
-        assertNewWindow("6");
+        assertNewWindow("6", "Breadcrumb Label");
     }
 
     protected void testWidgetsBreadcrumbHomewardPath() throws Exception {
         waitAndClickByLinkText("Homeward Path");
         waitAndClickByLinkText("Homeward Path Breadcrumbs");
-        assertNewWindow("7");
+        assertNewWindow("7", "Homeward Path");
     }
 
     protected void testWidgetsBreadcrumbPathBased() throws Exception {
@@ -113,7 +113,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         waitAndClickByLinkText("Path-based Breadcrumbs");
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
-        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
+        assertTrue("Path-based", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
         waitAndClickByLinkText("Page 2");
         assertElementPresentByName("inputField9");
         driver.close();
@@ -123,23 +123,23 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     protected void testWidgetsBreadcrumbOverrides() throws Exception {
         waitAndClickByLinkText("Overrides");
         waitAndClickByLinkText("Breadcrumb Overrides");
-        assertNewWindow("9", "Demo Page", "Demo Page");
+        assertNewWindow("9", "Demo Page", "Demo Page", "Overrides");
     }
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
         waitAndClickByXpath("//div[@class='uif-verticalBoxLayout clearfix']/a[contains(text(),'Sibling Breadcrumbs')]");
-        assertNewWindow("10");
+        assertNewWindow("10", "Sibling Breadcrumbs");
     }
 
-    private void assertNewWindow(String urlNumber) throws InterruptedException {
-        assertNewWindow(urlNumber, "Page 1 Title", "Page 2 Title");
+    private void assertNewWindow(String urlNumber, String message) throws InterruptedException {
+        assertNewWindow(urlNumber, "Page 1 Title", "Page 2 Title", message);
     }
 
-    private void assertNewWindow(String urlNumber, String titleOne, String titleTwo) throws InterruptedException {
+    private void assertNewWindow(String urlNumber, String titleOne, String titleTwo, String message) throws InterruptedException {
         Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
         switchToWindow(TARGET_PAGE_TITLE);
-        assertTrue(driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
+        assertTrue(message, driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
         WebElement element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         assertTrue(element.getText().contains(titleOne));

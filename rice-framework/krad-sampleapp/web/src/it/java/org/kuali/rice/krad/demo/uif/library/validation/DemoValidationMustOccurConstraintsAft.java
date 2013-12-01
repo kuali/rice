@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraintView&methodToCall=start";
 
     /**
      *   1-2 of the following must occur: (Field 1A) OR (Field 2A and Field 2B)

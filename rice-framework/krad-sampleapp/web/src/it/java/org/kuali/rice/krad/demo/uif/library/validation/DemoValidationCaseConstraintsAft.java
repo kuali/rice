@@ -26,9 +26,9 @@ import org.openqa.selenium.By;
 public class DemoValidationCaseConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CaseConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-CaseConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CaseConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CaseConstraintView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

@@ -26,9 +26,9 @@ import org.openqa.selenium.By;
 public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraintView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

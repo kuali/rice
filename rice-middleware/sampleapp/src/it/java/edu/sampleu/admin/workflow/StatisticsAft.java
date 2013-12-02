@@ -15,16 +15,12 @@
  */
 package edu.sampleu.admin.workflow;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- * Tests the Component section in Rice.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StatisticsAft extends WebDriverLegacyITBase {
@@ -41,30 +37,33 @@ public class StatisticsAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickAdministration(null);
-       waitAndClickByLinkText("Statistics");        
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Statistics");
     }
 
     protected void testStatistics() throws Exception { 
-      selectFrameIframePortlet();
-      Thread.sleep(2000);
-      assertTextPresent("Aggregates");
-      assertTextPresent("Number of Document Types:");
-      assertTextPresent("Number of Users:");
-      assertTextPresent("Number of Active Items In All Action Lists:");
-      assertTextPresent("Number of Documents Initiated in the Last 30 Days:");
-      assertTextPresent("Date Range");
-      assertTextPresent("Routing Status");
-      assertTextPresent("Number of Documents for Date Range");
-      assertTextPresent("CANCELED:");
-      assertTextPresent("DISAPPROVED:");
-      assertTextPresent("ENROUTE:");
-      assertTextPresent("EXCEPTION");
-      assertTextPresent("FINAL:");
-      assertTextPresent("INITIATED:");
-      assertTextPresent("PROCESSED:");
-      assertTextPresent("SAVED:");
+        selectFrameIframePortlet();
+        waitForElementPresentByXpath("//input[@src='images/buttonsmall_refresh.gif']");
+        assertTextPresent("Aggregates");
+        assertTextPresent("Number of Document Types:");
+        assertTextPresent("Number of Users:");
+        assertTextPresent("Number of Active Items In All Action Lists:");
+        assertTextPresent("Number of Documents Initiated in the Last 30 Days:");
+        assertTextPresent("Date Range");
+        assertTextPresent("Begin Date:");
+        assertTextPresent("End Date:");
+        assertTextPresent("Routing Status");
+        assertTextPresent("Number of Documents for Date Range");
+        assertTextPresent("CANCELED:");
+        assertTextPresent("DISAPPROVED:");
+        assertTextPresent("ENROUTE:");
+        assertTextPresent("EXCEPTION");
+        assertTextPresent("FINAL:");
+        assertTextPresent("INITIATED:");
+        assertTextPresent("PROCESSED:");
+        assertTextPresent("SAVED:");
     }
 
     @Test

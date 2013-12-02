@@ -15,16 +15,12 @@
  */
 package edu.sampleu.admin.workflow;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- * Tests the Component section in Rice.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentOperationAft extends WebDriverLegacyITBase {
@@ -41,23 +37,24 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickAdministration(null);
-       waitAndClickByLinkText("Document Operation");        
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Document Operation");
     }
 
     protected void testDocumentOperation() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndTypeByName("documentId","3010");
-      waitAndClickByName("methodToCall.getDocument");
-      Thread.sleep(3000);
-      assertTextPresent("Document Actions");
-      assertTextPresent("Queue Document");
-      assertTextPresent("Queue Action Invocation");
-      assertTextPresent("Document ID:");
-      assertTextPresent("3010");
-      assertTextPresent("Route Node Instance ID:");
-      assertTextPresent("2923");
+        selectFrameIframePortlet();
+        waitAndTypeByName("documentId","3010");
+        waitAndClickByName("methodToCall.getDocument");
+        waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
+        assertTextPresent("Document Actions");
+        assertTextPresent("Queue Document");
+        assertTextPresent("Queue Action Invocation");
+        assertTextPresent("Document ID:");
+        assertTextPresent("3010");
+        assertTextPresent("Route Node Instance ID:");
+        assertTextPresent("2923");
     }
 
     @Test

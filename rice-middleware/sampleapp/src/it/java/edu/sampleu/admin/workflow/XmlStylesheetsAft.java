@@ -15,19 +15,15 @@
  */
 package edu.sampleu.admin.workflow;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- * Tests the Component section in Rice.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XMLStylesheetAft extends WebDriverLegacyITBase {
+public class XmlStylesheetsAft extends WebDriverLegacyITBase {
 
     /**
      * AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=XML%20Stylesheets&channelUrl="+ WebDriverUtils
@@ -43,38 +39,38 @@ public class XMLStylesheetAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickAdministration(null);
-       waitAndClickByLinkText("XML Stylesheets");        
+        waitAndClickAdministration();
+        waitAndClickByLinkText("XML Stylesheets");
     }
 
-    protected void testXMLStylesheet() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickByXpath("//td/input[@name='methodToCall.search']");
-      Thread.sleep(2000);
-      assertTextPresent("eDoc.Example1.Style");
-      assertTextPresent("2009");
-      assertTextPresent("No");
-      waitAndClickByXpath("//input[@name='active' and @value='Y']");
-      waitAndClickByXpath("//td/input[@name='methodToCall.search']");
-      Thread.sleep(2000);
-      assertTextPresent("2020");
-      assertTextPresent("2021");
-      if(isTextPresent("2009"))
-      {
-          fail("Filter not working !");
-      }
+    protected void testXmlStylesheet() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        assertTextPresent("eDoc.Example1.Style");
+        assertTextPresent("2009");
+        assertTextPresent("No");
+        waitAndClickByXpath("//input[@name='active' and @value='Y']");
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        assertTextPresent("2020");
+        assertTextPresent("2021");
+        if(isTextPresent("2009"))  {
+            jiraAwareFail("Filter not working ! " + this.getClass().toString() );
+        }
     }
 
     @Test
-    public void testXMLStylesheetBookmark() throws Exception {
-        testXMLStylesheet();
+    public void testXxmlStylesheetBookmark() throws Exception {
+        testXmlStylesheet();
         passed();
     }
 
     @Test
-    public void testXMLStylesheetNav() throws Exception {
-        testXMLStylesheet();
+    public void testXmlStylesheetNav() throws Exception {
+        testXmlStylesheet();
         passed();
     }
 }

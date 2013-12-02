@@ -15,16 +15,12 @@
  */
 package edu.sampleu.admin.workflow;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- * Tests the Component section in Rice.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleTemplateAft extends WebDriverLegacyITBase {
@@ -43,17 +39,18 @@ public class RuleTemplateAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickAdministration(null);
-       waitAndClickByLinkText("Rule Template");        
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Rule Template");
     }
 
     protected void testRuleTemplate() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndTypeByName("name","a");
-      waitAndClickByXpath("//td/input[@name='methodToCall.search']");
-      Thread.sleep(2000);
-      assertTextPresent("No values match this search.");
+        selectFrameIframePortlet();
+        waitAndTypeByName("name","a");
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        assertTextPresent("No values match this search.");
     }
 
     @Test

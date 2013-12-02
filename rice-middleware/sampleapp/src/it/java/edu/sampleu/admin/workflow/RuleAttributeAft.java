@@ -15,16 +15,12 @@
  */
 package edu.sampleu.admin.workflow;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
-
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- * Tests the Component section in Rice.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleAttributeAft extends WebDriverLegacyITBase {
@@ -43,27 +39,27 @@ public class RuleAttributeAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    @Override
     protected void navigate() throws InterruptedException {
-       waitAndClickAdministration(null);
-       waitAndClickByLinkText("Rule Attribute");        
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Rule Attribute");
     }
 
     protected void testRuleAttribute() throws Exception { 
-      selectFrameIframePortlet();
-      waitAndClickByXpath("//td/input[@name='methodToCall.search']");
-      Thread.sleep(2000);
-      assertTextPresent("1000");
-      assertTextPresent("RuleRoutingAttribute");
-      selectByName("type","Rule Xml Attribute");
-      waitAndClickByXpath("//td/input[@name='methodToCall.search']");
-      Thread.sleep(2000);
-      assertTextPresent("1100");
-      assertTextPresent("EDL.Campus.Example");
-      assertTextPresent("RuleXmlAttribute");
-      if(isTextPresent("1000"))
-      {
-          fail("Select Filter not working !");
-      }
+        selectFrameIframePortlet();
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        assertTextPresent("1000");
+        assertTextPresent("RuleRoutingAttribute");
+        selectByName("type","Rule Xml Attribute");
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        assertTextPresent("1100");
+        assertTextPresent("EDL.Campus.Example");
+        assertTextPresent("RuleXmlAttribute");
+        if(isTextPresent("1000")) {
+            jiraAwareFail("Select Filter not working !");
+        }
     }
 
     @Test

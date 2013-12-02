@@ -666,6 +666,14 @@ public class WebDriverUtils {
         return null;
     }
 
+    public static void highlightElement(WebDriver webDriver, By by) {
+        List<WebElement> elements = webDriver.findElements(by);
+        for (WebElement element : elements) {
+            WebDriverUtils.highlightElement(webDriver, element);
+        }
+    }
+
+
     /**
      * <p>
      * Highlight given WebElement.

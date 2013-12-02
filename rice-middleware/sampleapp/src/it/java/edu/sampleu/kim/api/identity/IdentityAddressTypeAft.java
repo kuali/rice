@@ -51,7 +51,7 @@ public class IdentityAddressTypeAft extends AddressTypeAft {
 
     @Override
     protected void navigate() throws InterruptedException {
-        waitAndClickAdministration(this);
+        waitAndClickAdministration();
         waitAndClickByLinkText("Address Type");
     }
 }

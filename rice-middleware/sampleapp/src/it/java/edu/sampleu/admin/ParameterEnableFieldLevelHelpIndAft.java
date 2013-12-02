@@ -34,7 +34,7 @@ public class ParameterEnableFieldLevelHelpIndAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickAdministration(this);
+        waitAndClickAdministration();
         waitForPageToLoad();
     }
 
@@ -65,7 +65,7 @@ public class ParameterEnableFieldLevelHelpIndAft extends WebDriverLegacyITBase {
 
     private void setParameter(String parameterName, String parameterValue) throws Exception {
         selectTopFrame();
-        waitAndClickAdministration(this);
+        waitAndClickAdministration();
         waitAndClickByLinkText("Parameter");
 
         selectFrameIframePortlet();

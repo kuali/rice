@@ -310,6 +310,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         if (!pageSource.contains(text)) {
             jiraAwareFail(text + " not present " + message);
         }
+        WebDriverUtils.highlightElement(getDriver(), By.xpath("//*[contains(text(), '" + text + "')]"));
     }
 
     /**

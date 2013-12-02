@@ -90,7 +90,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      */
     protected void navigate(JiraAwareFailable failable) throws Exception {
         selectTopFrame();
-        waitAndClickAdministration(failable);
+        waitAndClickAdministration();
         waitForTitleToEqualKualiPortalIndex();
         waitAndClickXMLIngester(failable);
         selectFrameIframePortlet();

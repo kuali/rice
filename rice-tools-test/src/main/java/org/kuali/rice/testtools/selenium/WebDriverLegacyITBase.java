@@ -4054,7 +4054,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickAdministration(JiraAwareFailable failable) throws InterruptedException {
+    private void waitAndClickAdministration(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, failable);
     }
 
@@ -4218,7 +4218,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
+    private void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, failable);
     }
 

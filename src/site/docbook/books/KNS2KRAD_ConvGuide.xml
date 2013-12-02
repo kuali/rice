@@ -247,7 +247,7 @@
       </para>
       <para>
         <itemizedlist>
-          <listitem>
+          <listitem xml:id="DDAD1">
             <para>The property <emphasis role="keyword">validCharactersConstraint</emphasis> is used
               in KRAD in place of the KNS property <emphasis role="keyword"
                 >validationPattern</emphasis>. [KNS line: 11, KRAD line: 11] <inlinemediaobject>
@@ -256,7 +256,7 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
-          <listitem>
+          <listitem xml:id="DDAD2">
             <para>The constraint <emphasis role="keyword">AnyCharacterPatternConstraint</emphasis>
               replaces the KNS pattern <emphasis role="keyword"
                 >AnyCharacterValidationPattern</emphasis>. [KNS line: 12, KRAD line: 12] <inlinemediaobject>
@@ -265,7 +265,7 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
-          <listitem>
+          <listitem xml:id="DDAD3">
             <para>The property <emphasis role="keyword">controlField</emphasis> replaces the KNS
                 <emphasis role="keyword">control</emphasis> to define the control used to represent
               this field. [KNS line: 14, KRAD line: 14] <inlinemediaobject>
@@ -274,7 +274,7 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
-          <listitem>
+          <listitem xml:id="DDAD4">
             <para>The property <emphasis role="keyword">Uif-TextControl</emphasis> replaces the KNS
                 <emphasis role="keyword">TextControlDefinition</emphasis>. [KNS line: 5, KRAD line:
               15] <inlinemediaobject>
@@ -283,12 +283,12 @@
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
-          <listitem>
+          <listitem xml:id="DDAD5">
             <para>The property <emphasis role="keyword">forceUpperCase</emphasis> remains the same
               in KRAD, however you can also specify <emphasis role="keyword"
                 >@ForceUppercase</emphasis> annotation for a property in KRAD. </para>
           </listitem>
-          <listitem>
+          <listitem xml:id="DDAD6">
             <para>The size property and similar properties of TextControl are converted or carried
               over by the script. [KNS line: 15, KRAD line: 15] <inlinemediaobject>
                 <imageobject>

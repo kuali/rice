@@ -27,7 +27,10 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -263,7 +266,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t10 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t10");
 
-        AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t10);
+        buildComplexAgenda(t10);
 
         // validate default attributes before update
         AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
@@ -334,24 +337,27 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // update some of the agendaItem action attributes
         agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_7_Id);
         agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
-        List<ActionDefinition.Builder> actionBuilders = agendaItemBuilder.getRule().getActions();
-        assertEquals("Invalid ActionDefinition count",1,actionBuilders.size());
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(t10.actionAttribute_Key, t10.actionAttribute1_Value);
-        for (ActionDefinition.Builder actionBuilder : actionBuilders) {
+        for (ActionDefinition.Builder actionBuilder : agendaItemBuilder.getRule().getActions()) {
             actionBuilder.setAttributes(attributes);
         }
         ruleManagementService.updateAgendaItem(agendaItemBuilder.build());
         // check the update  ( should have changed the action attribute
         agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_7_Id);
-
         assertNotNull("Invalid AgendaItem Rule",agendaItem.getRule());
         assertNotNull("Invalid AgendaItem Rule Actions",agendaItem.getRule().getActions());
         assertEquals("Invalid AgendaItem Rule Actions count",1,agendaItem.getRule().getActions().size());
         for (ActionDefinition action : agendaItem.getRule().getActions()) {
-            String expectedAttribute = t10.actionAttribute1_Value;
-            String actualAttribute = action.getAttributes().get(t10.actionAttribute_Key);
-            assertEquals("Invalid AgendaItem Rule Actions attribute",expectedAttribute,actualAttribute);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("actionId", action.getId());
+            Collection<ActionAttributeBo> actionAttributes = businessObjectService.findMatching(ActionAttributeBo.class, map);
+            assertEquals("Invalid AgendaItem Rule Actions attribute count",1,actionAttributes.size());
+            for (ActionAttributeBo actionAttribute : actionAttributes) {
+                String expectedAttribute = t10.actionAttribute1_Value;
+                String actualAttribute = actionAttribute.getValue();
+                assertEquals("Invalid AgendaItem Rule Actions attribute",expectedAttribute,actualAttribute);
+            }
         }
     }
 

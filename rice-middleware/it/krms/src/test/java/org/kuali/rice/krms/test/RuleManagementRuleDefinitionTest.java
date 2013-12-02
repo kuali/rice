@@ -25,13 +25,19 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
@@ -159,7 +165,7 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         assertNotEquals("Rule Name Not Updated", t2.rule_0_Name, rule0.getName());
         assertEquals("Rule Name Not Updated", "updatedName", rule0.getName());
 
-        // build new rule to for test
+        // build new rule for test
         RuleDefinition.Builder ruleBuilder1 = RuleDefinition.Builder.create(buildTestRuleDefinition(t2.namespaceName,
                 t2.object1));
         assertEquals("Expected Proposition not found in Rule",t2.proposition_1_Descr,ruleBuilder1.getProposition().getDescription());
@@ -174,9 +180,45 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
 
         // Update Proposition in rule
         ruleManagementService.updateRule(ruleBuilder1.build());
-
         rule0 = ruleManagementService.getRule(ruleBuilder1.getId());
         assertEquals("Expected Proposition not found in Rule","PropNewId_simple_proposition",rule0.getProposition().getDescription());
+
+        // build new rule for test
+        RuleDefinition.Builder ruleBuilder2 = RuleDefinition.Builder.create(buildTestRuleDefinition(t2.namespaceName,t2.object7));
+        createTestKrmsAttribute(t2.actionAttribute, t2.actionAttribute_Key, t2.namespaceName);
+        Map<String, String> attributes = new HashMap<String, String>();
+        attributes.put(t2.actionAttribute_Key, t2.actionAttribute_Value);
+        List<ActionDefinition.Builder> actionBuilders = new ArrayList<ActionDefinition.Builder>();
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsActionTypeDefinition(t2.namespaceName);
+        ActionDefinition.Builder actionBuilder = ActionDefinition.Builder.create(t2.action_Id, t2.action_Name,
+                t2.namespaceName, krmsTypeDefinition.getId(), rule0.getId(), 1);
+        actionBuilder.setDescription(t2.action_Descr);
+        actionBuilder.setAttributes(attributes);
+        actionBuilders.add(actionBuilder);
+        ruleBuilder2.setActions(actionBuilders);
+        ruleManagementService.updateRule(ruleBuilder2.build());
+
+        // Update Action in rule
+        ruleBuilder2 = RuleDefinition.Builder.create(ruleManagementService.getRule(t2.rule_7_Id));
+        Map<String, String> newAttributes = new HashMap<String, String>();
+        newAttributes.put(t2.actionAttribute_Key, t2.actionAttribute1_Value);
+        for (ActionDefinition.Builder ruleActionBuilder : ruleBuilder2.getActions()) {
+            ruleActionBuilder.setAttributes(newAttributes);
+        }
+        ruleManagementService.updateRule(ruleBuilder2.build());
+        rule0 = ruleManagementService.getRule(t2.rule_7_Id);
+        assertEquals("Invalid AgendaItem Rule Actions count",1,rule0.getActions().size());
+        for (ActionDefinition action : rule0.getActions()) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("actionId", action.getId());
+            Collection<ActionAttributeBo> actionAttributes = businessObjectService.findMatching(ActionAttributeBo.class, map);
+            assertEquals("Invalid AgendaItem Rule Actions attribute count",1,actionAttributes.size());
+            for (ActionAttributeBo actionAttribute : actionAttributes) {
+                String expectedAttribute = t2.actionAttribute1_Value;
+                String actualAttribute = actionAttribute.getValue();
+                assertEquals("Invalid AgendaItem Rule Actions attribute",expectedAttribute,actualAttribute);
+            }
+        }
     }
 
     /**

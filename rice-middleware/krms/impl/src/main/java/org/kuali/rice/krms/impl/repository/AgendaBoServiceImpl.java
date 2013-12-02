@@ -263,10 +263,10 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     private void updateActionAttributes(List<ActionBo> actionBos) {
         for (ActionBo action : actionBos) {
             for (ActionAttributeBo aa : action.getAttributeBos()) {
-                final Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<String, Object>();
                 map.put("actionId", action.getId());
+                Collection<ActionAttributeBo> aaBos = businessObjectService.findMatching(ActionAttributeBo.class, map);
 
-                List<ActionAttributeBo> aaBos = (List<ActionAttributeBo>) businessObjectService.findMatching(ActionAttributeBo.class, Collections.unmodifiableMap(map));
                 for (ActionAttributeBo aaBo : aaBos) {
                     if (aaBo.getAttributeDefinitionId().equals(aa.getAttributeDefinitionId())) {
                         aa.setId(aaBo.getId());

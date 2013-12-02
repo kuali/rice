@@ -27,15 +27,15 @@ public class JiraAwareFailureUtilsTest implements JiraAwareFailable {
 
     @Test
     public void testJiraAwareFailureRegex() {
-        JiraAwareFailureUtils.regexJiraMatches.put("TEST.*NullPointerException.*TEST", "KULRICE-TEST");
-        JiraAwareFailureUtils.failOnMatchedJira("TEST NullPointerException InputField.performFinalize TEST", this);
+        JiraAwareFailureUtils.regexJiraMatches.put("TEST.*UNIQUE.*TEST", "KULRICE-TEST");
+        JiraAwareFailureUtils.failOnMatchedJira("TEST UNIQUE data for TEST", this);
         Assert.assertTrue(message.contains("KULRICE-TEST"));
     }
 
     @Test
     public void testJiraAwareFailureContains() {
-        JiraAwareFailureUtils.jiraMatches.put("TEST\u0020IndexOutOfBoundsExceptionException\u0020TEST", "KULRICE-TEST2");
-        JiraAwareFailureUtils.failOnMatchedJira("TEST IndexOutOfBoundsExceptionException TEST", this);
+        JiraAwareFailureUtils.jiraMatches.put("TEST\u0020UNIQUE\u0020TEST", "KULRICE-TEST2");
+        JiraAwareFailureUtils.failOnMatchedJira("TEST UNIQUE TEST", this);
         Assert.assertTrue(message.contains("KULRICE-TEST2"));
     }
 

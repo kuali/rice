@@ -57,9 +57,7 @@ public class ViewLifecycleFullBuild implements Runnable {
         ViewHelperService helper = ViewLifecycle.getHelper();
         UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
 
-        if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
-        }
+        ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
         
         // populate view from request parameters
         helper.populateViewFromRequestParameters(parameters);
@@ -77,9 +75,7 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null, null));
 
-        if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("initialize:" + view.getId());
-        }
+        ProcessLogger.trace("initialize:" + view.getId());
         
         // Apply Model Phase
         if (LOG.isInfoEnabled()) {
@@ -100,10 +96,8 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         processor.performPhase(LifecyclePhaseFactory.applyModel(view, model));
 
-        if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("apply-model:" + view.getId());
-        }
-
+        ProcessLogger.trace("apply-model:" + view.getId());
+            
         // Finalize Phase
         if (LOG.isInfoEnabled()) {
             LOG.info("performing finalize phase for view: " + view.getId());
@@ -115,9 +109,7 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null, null));
         
-        if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("finalize:" + view.getId());
-        }
+        ProcessLogger.trace("finalize:" + view.getId());
     }
     
 }

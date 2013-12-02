@@ -29,7 +29,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.CoreConstants
 import org.kuali.rice.core.api.config.property.Config
 import static org.junit.Assert.assertEquals
-import org.kuali.rice.krad.uif.field.InputField
+import org.kuali.rice.krad.uif.field.InputFieldBase
 
 class ClientValidationUtilsTest {
     static final def MOCK_ATTR_NAME = "mock_attr_name"
@@ -63,7 +63,7 @@ class ClientValidationUtilsTest {
  return this.optional(element) || /abc\\/123\\\\\\\\/.test(value);}, "NO MESSAGE");'''
 
         def constraint = new ValidCharactersConstraint(value: value)
-        def field = new InputField(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))
+        def field = new InputFieldBase(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))
         def javascript = ClientValidationUtils.getRegexMethod(field, constraint)
         assertEquals(expected_val, javascript.trim())
     }
@@ -77,7 +77,7 @@ class ClientValidationUtilsTest {
  if(doCheck === false){return true;}else{return this.optional(element) || /abc\\/123\\\\\\\\/.test(value);}}, "NO MESSAGE");'''
 
         def constraint = new ValidCharactersConstraint(value: value)
-        def field = new InputField(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))
+        def field = new InputFieldBase(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))
         def javascript = ClientValidationUtils.getRegexMethodWithBooleanCheck(field, constraint)
         assertEquals(expected_val, javascript.trim())
     }

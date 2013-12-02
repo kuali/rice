@@ -31,7 +31,7 @@ public interface Copyable extends Cloneable {
      * @see CopyUtils#copy(Object)
      */
     <T> T copy();
-    
+
     /**
      * Indicated that a given instance may not be modified until copied, if supported.
      */
@@ -46,5 +46,12 @@ public interface Copyable extends Cloneable {
      * @see Object#clone()
      */
     Object clone() throws CloneNotSupportedException;
+    
+    /**
+     * Get the innermost copyable instance, if wrapped by a proxy.  When not wrapped, return this.
+     * 
+     * @return wrapped instance
+     */
+    Copyable unwrap();
 
 }

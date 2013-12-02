@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -530,8 +531,8 @@ public class View extends ContainerBase {
      * @return Page instance
      */
     public PageGroup getCurrentPage() {
-        for (Group pageGroup : this.getItems()) {
-            if (StringUtils.equals(pageGroup.getId(), getCurrentPageId()) && pageGroup instanceof PageGroup) {
+        for (Component pageGroup : this.getItems()) {
+            if (pageGroup instanceof PageGroup && StringUtils.equals(pageGroup.getId(), getCurrentPageId())) {
                 return (PageGroup) pageGroup;
             }
         }
@@ -907,8 +908,10 @@ public class View extends ContainerBase {
             if (StringUtils.isNotBlank(entryPageId)) {
                 currentPageId = entryPageId;
             } else if ((getItems() != null) && !getItems().isEmpty()) {
-                Group firstPageGroup = getItems().get(0);
-                currentPageId = firstPageGroup.getId();
+                Component firstPageGroup = getItems().get(0);
+                if (firstPageGroup instanceof PageGroup) {
+                    currentPageId = firstPageGroup.getId();
+                }
             }
         }
 
@@ -1616,7 +1619,7 @@ public class View extends ContainerBase {
     @Override
     @ViewLifecycleRestriction
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Group> getItems() {
+    public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
             items = new LifecycleAwareList<Group>(this);
         }
@@ -2144,6 +2147,20 @@ public class View extends ContainerBase {
         }
         
         return preModelContext;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     */
+    @Override
+    public View clone() throws CloneNotSupportedException {
+        View viewCopy = (View) super.clone();
+        if (this.viewIndex != null) {
+            viewCopy.viewIndex = this.viewIndex.copy();
+        }
+        return viewCopy;
     }
 
     /**

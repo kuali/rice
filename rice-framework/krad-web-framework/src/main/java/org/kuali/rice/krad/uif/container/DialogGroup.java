@@ -68,7 +68,7 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
         @BeanTag(name = "true-false-dialogGroup-bean", parent = "Uif-True-False-DialogGroup"),
         @BeanTag(name = "checkbox-dialogGroup-bean", parent = "Uif-Checkbox-DialogGroup"),
         @BeanTag(name = "radioButton-dialogGroup-bean", parent = "Uif-RadioButton-DialogGroup")})
-public class DialogGroup extends Group {
+public class DialogGroup extends GroupBase {
     private static final long serialVersionUID = 1L;
 
     private String promptText;

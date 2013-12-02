@@ -44,7 +44,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 @BeanTags({@BeanTag(name = "treeGroup-bean", parent = "Uif-TreeGroup"),
         @BeanTag(name = "treeSection-bean", parent = "Uif-TreeSection"),
         @BeanTag(name = "treeSubSection-bean", parent = "Uif-TreeSubSection")})
-public class TreeGroup extends Group implements DataBinding {
+public class TreeGroup extends GroupBase implements DataBinding {
     private static final long serialVersionUID = 5841343037089286740L;
 
     private String propertyName;

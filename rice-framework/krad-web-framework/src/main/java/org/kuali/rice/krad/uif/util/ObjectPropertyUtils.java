@@ -404,6 +404,76 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Get the best known component type for a generic type.
+     * 
+     * <p>
+     * When the type is not parameterized or has no explicitly defined parameters, {@link Object} is
+     * returned.
+     * </p>
+     * 
+     * <p>
+     * When the type has multiple parameters, the right-most parameter is considered the component
+     * type. This facilitates identifying the value type of a Map.
+     * </p>
+     * 
+     * @param type The generic collection or map type.
+     * @return component or value type, resolved from the generic type
+     */
+    public static Type getComponentType(Type type) {
+        if (!(type instanceof ParameterizedType)) {
+            return Object.class;
+        }
+
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type[] params = parameterizedType.getActualTypeArguments();
+        if (params.length == 0) {
+            return Object.class;
+        }
+
+        Type valueType = params[params.length - 1];
+        return valueType;
+    }
+
+    /**
+     * Get the upper bound of a generic type.
+     * 
+     * <p>
+     * When the type is a class, the class is returned.
+     * </p>
+     * 
+     * <p>
+     * When the type is a wildcard, and the upper bound is a class, the upper bound of the wildcard
+     * is returned.
+     * </p>
+     * 
+     * <p>
+     * If the type has not been explicitly defined at compile time, {@link Object} is returned.
+     * </p>
+     * 
+     * @param type The generic collection or map type.
+     * @return component or value type, resolved from the generic type
+     */
+    public static Class<?> getUpperBound(Type valueType) {
+        if (valueType instanceof WildcardType) {
+            Type[] upperBounds = ((WildcardType) valueType).getUpperBounds();
+
+            if (upperBounds.length >= 1) {
+                valueType = upperBounds[0];
+            }
+        }
+
+        if (valueType instanceof ParameterizedType) {
+            valueType = ((ParameterizedType) valueType).getRawType();
+        }
+
+        if (valueType instanceof Class) {
+            return (Class<?>) valueType;
+        }
+
+        return Object.class;
+    }
+
+    /**
      * Private constructor - utility class only.
      */
     private ObjectPropertyUtils() {}

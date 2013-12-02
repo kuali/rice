@@ -350,7 +350,7 @@
 
   <!--
 
-   <bean id="Uif-FooterBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
+   <bean id="Uif-FooterBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.GroupBase" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
       <property name="renderHeader" value="false"/>
       <property name="layoutManager">

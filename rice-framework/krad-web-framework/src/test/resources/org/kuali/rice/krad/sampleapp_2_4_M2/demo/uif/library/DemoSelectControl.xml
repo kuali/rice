@@ -24,7 +24,7 @@
   <!-- SelectControl demo -->
   <bean id="Demo-SelectControl-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoSelectControl.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.SelectControl"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.SelectControlBase"/>
     <property name="docBookAnchor" value="d7339e5838"/>
     <property name="demoGroups">
       <list>

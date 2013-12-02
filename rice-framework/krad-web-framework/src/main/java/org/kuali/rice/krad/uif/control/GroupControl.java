@@ -36,7 +36,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "kimGroupControl-bean", parent = "Uif-KimGroupControl")
-public class GroupControl extends TextControl implements FilterableLookupCriteriaControl {
+public class GroupControl extends TextControlBase implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 5598459655735440981L;
 
     private String namespaceCodePropertyName;

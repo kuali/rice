@@ -17,12 +17,11 @@ package org.kuali.rice.krad.uif.view;
 
 import java.beans.PropertyEditor;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +30,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 
 /**
@@ -51,6 +47,7 @@ public class ViewIndex implements Serializable {
     protected Map<String, CollectionGroup> collectionsIndex;
 
     protected Map<String, Component> initialComponentStates;
+    protected Map<String, Component> unmodifiableInitialComponentStates;
 
     protected Map<String, PropertyEditor> fieldPropertyEditors;
     protected Map<String, PropertyEditor> secureFieldPropertyEditors;
@@ -71,6 +68,7 @@ public class ViewIndex implements Serializable {
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
+        unmodifiableInitialComponentStates = Collections.unmodifiableMap(initialComponentStates);
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
@@ -348,49 +346,9 @@ public class ViewIndex implements Serializable {
      *         instance
      */
     public Map<String, Component> getInitialComponentStates() {
-        return initialComponentStates;
+        return unmodifiableInitialComponentStates;
     }
 
-    /**
-     * Simple state helper for {@link ViewIndex#addInitialComponentStateIfNeeded(Component)} tree
-     * traversal.
-     * 
-     * @author Kuali Rice Team (rice.collab@kuali.org)
-     */
-    private static class ComponentState {
-        private Component original;
-        private Component copy;
-    }
-    
-    /**
-     * Gets a potentially recycled component state helper, for use with
-     * {@link ViewIndex#addInitialComponentStateIfNeeded(Component)}.
-     * 
-     * @param original The original component.
-     * @param copy The copy of the component, for storage as initial component.
-     * @return component state helper
-     */
-    private static ComponentState getComponentState(Component original, Component copy) {
-        ComponentState rv = RecycleUtils.getRecycledInstance(ComponentState.class);
-        if (rv == null) {
-            rv = new ComponentState();
-        }
-        rv.original = original;
-        rv.copy = copy;
-        return rv;
-    }
-
-    /**
-     * Recycles a component state helper for subsequent use.
-     * 
-     * @param state The component state helper to recycle.
-     */
-    private static void recycle(ComponentState state) {
-        state.original = null;
-        state.copy = null;
-        RecycleUtils.recycle(state);
-    }
-    
     /**
      * Adds a copy of the given component instance to the map of initial component states keyed
      * 
@@ -403,61 +361,39 @@ public class ViewIndex implements Serializable {
      * @param component component instance to add
      */
     public void addInitialComponentStateIfNeeded(Component component) {
-        if (StringUtils.isBlank(component.getBaseId())) {
-            
-            // If the base ID is blank but the component initial state has already 
-            // been indexed, just copy the id to baseId and return.
-            String compId = component.getId();
-            if (initialComponentStates.containsKey(compId)) {
-                component.setBaseId(compId);
-                return;
+        String compId = component.getId();
+        
+        if (StringUtils.isBlank(component.getBaseId())) {   
+            component.setBaseId(compId);
+        }
+
+        if (!initialComponentStates.containsKey(compId)) {
+            String viewStatus = component.getViewStatus();
+            if (viewStatus != null && !viewStatus.equals(UifConstants.ViewStatus.CACHED)) {
+                component = component.copy();
             }
 
-            // Recursively add component state for all child components that will be included
-            // in the component's lifecycle.  This traversal reduces superfluous copy overhead
-            // within child component lifecycles by reusing deep copy at the highest level
-            // possible.
-            Component copy = ComponentUtils.copy(component);
-            Queue<ComponentState> stateQueue = new LinkedList<ComponentState>();
-            stateQueue.add(getComponentState(component, copy));
-            while (!stateQueue.isEmpty()) {
-                ComponentState state = stateQueue.poll();
-
-                // Only add state if child component's base ID is null, and the
-                // component's initial state has not already been indexed.
-                if (StringUtils.isBlank(state.original.getBaseId())) {
-                    String id = state.original.getId();
-                    state.original.setBaseId(id);
-                    if (!initialComponentStates.containsKey(id)) {
-                        synchronized (initialComponentStates) {
-                            initialComponentStates.put(id, state.copy);
-                        }
-                    }
-                }
-
-                // Queue child components for initialize lifecycle phase.
-                for (Entry<String, Component> entry : ComponentUtils.getComponentsForLifecycle(state.original,
-                        UifConstants.ViewPhases.INITIALIZE).entrySet()) {
-                    Component nested = entry.getValue();
-                    if (nested != null) {
-                        Component nestedCopy = ObjectPropertyUtils
-                                .getPropertyValue(state.copy, entry.getKey());
-                        stateQueue.offer(getComponentState(nested, nestedCopy));
-                    }
-                }
-                
-                recycle(state);
+            synchronized (initialComponentStates) {
+                initialComponentStates.put(compId, component);
             }
         }
     }
 
     /**
-     * Setter for the map holding initial component states
+     * Updates the initial state of a component.
      * 
-     * @param initialComponentStates
+     * @param component component instance to add
      */
-    public void setInitialComponentStates(Map<String, Component> initialComponentStates) {
-        this.initialComponentStates = initialComponentStates;
+    public void updateInitialComponentState(Component component) {
+        String compId = component.getBaseId();
+        if (StringUtils.isBlank(compId)) {
+            compId = component.getId();
+            component.setBaseId(compId);
+        }
+
+        synchronized (initialComponentStates) {
+            initialComponentStates.put(compId, component);
+        }
     }
 
     /**
@@ -632,6 +568,7 @@ public class ViewIndex implements Serializable {
             }
 
             viewIndexCopy.initialComponentStates = initialComponentStatesCopy;
+            viewIndexCopy.unmodifiableInitialComponentStates = Collections.unmodifiableMap(initialComponentStatesCopy);
         }
 
         if (this.fieldPropertyEditors != null) {

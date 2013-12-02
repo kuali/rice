@@ -93,7 +93,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public boolean isMutable(boolean legalDuringInitialization) {
         return !cached;
     }
-    
+
     /**
      * @param mutable the mutable to set
      */

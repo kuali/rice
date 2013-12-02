@@ -143,6 +143,14 @@ public class AttributeQueryResult implements Serializable, Copyable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
+    /**
      * Copies the properties over for the copy method.
      *
      * @param attributeQuery The AttributeQuery to copy

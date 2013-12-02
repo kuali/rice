@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.element.ToggleMenu;
  */
 @BeanTags({@BeanTag(name = "sidebarNavigationGroup-bean", parent = "Uif-SidebarNavigationGroup"),
         @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup")})
-public class SidebarNavigationGroup extends Group {
+public class SidebarNavigationGroup extends GroupBase {
 
     private boolean renderCollapse;
     private String openedToggleIconClass;

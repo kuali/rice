@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.widget.Tabs;
 @BeanTags(
         {@BeanTag(name = "tabGroup-bean", parent = "Uif-TabGroup"), @BeanTag(name = "tabSection-bean", parent = "Uif-TabSection"),
                 @BeanTag(name = "tabSubSection-bean", parent = "Uif-TabSubSection")})
-public class TabGroup extends Group {
+public class TabGroup extends GroupBase {
     private static final long serialVersionUID = 3L;
 
     private Tabs tabsWidget;

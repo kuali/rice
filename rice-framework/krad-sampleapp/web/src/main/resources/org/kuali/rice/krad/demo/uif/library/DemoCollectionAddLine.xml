@@ -23,7 +23,7 @@
   <!-- CollectionAddLine demo -->
   <bean id="Demo-CollectionAddLine-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionAddLine.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroupBase"/>
     <property name="docBookAnchor" value="d6813e8513"/>
     <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">

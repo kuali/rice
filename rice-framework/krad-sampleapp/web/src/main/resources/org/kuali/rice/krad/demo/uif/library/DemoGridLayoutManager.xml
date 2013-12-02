@@ -24,7 +24,7 @@
   <bean id="Demo-GridLayoutManager-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoGridLayoutManager.xml"/>
     <property name="javaFullClassPath"
-              value="org.kuali.rice.krad.uif.layout.GridLayoutManager"/>
+              value="org.kuali.rice.krad.uif.layout.GridLayoutManagerBase"/>
     <property name="docBookAnchor" value="d7339e4811"/>
     <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">

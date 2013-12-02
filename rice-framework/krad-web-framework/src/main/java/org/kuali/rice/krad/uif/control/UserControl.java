@@ -42,7 +42,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "kimPersonControl-bean", parent = "Uif-KimPersonControl")
-public class UserControl extends TextControl implements FilterableLookupCriteriaControl {
+public class UserControl extends TextControlBase implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 7468340793076585869L;
 
     private String principalIdPropertyName;

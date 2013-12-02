@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,6 +55,7 @@ public final class CopyUtils {
     private static Logger LOG = LoggerFactory.getLogger(CopyUtils.class);
 
     private static Boolean useClone;
+    private static Boolean delay;
 
     /**
      * Determine whether or not to use cloning during deep copy.
@@ -93,6 +93,35 @@ public final class CopyUtils {
         }
 
         return useClone;
+    }
+
+    /**
+     * Determine whether or not to use a delayed copy proxy.
+     * 
+     * <p>
+     * When true, and {@link #isUseClone()} is also true, then deep copy operations will be
+     * truncated where a copyable represented by an interfaces is specified by the field, array,
+     * list or map involved indicated. Rather than copy the object directly, a proxy wrapping the
+     * original will be placed, which when used will invoke the copy operation.
+     * </p>
+     * 
+     * <p>
+     * This value is controlled by the parameter &quot;krad.uif.copyable.delay&quot;. By default,
+     * full deep copy will be used.
+     * </p>
+     * 
+     * @return True if deep copy will be truncated with a delayed copy proxy, false for full deep
+     *         copy.
+     */
+    public static boolean isDelay() {
+        if (delay == null) {
+            boolean defaultDelay = false;
+            Config config = ConfigContext.getCurrentContextConfig();
+            delay = config == null ? defaultDelay : config.getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_COPY_DELAY, defaultDelay);
+        }
+
+        return delay;
     }
 
     /**
@@ -366,12 +395,12 @@ public final class CopyUtils {
      * Helper for {@link #preventModification(Copyable)} and {@link #getDeepCopy(Object)} for
      * detecting whether or not to queue deep references from the current node.
      */
-    private static boolean isDeep(CopyReference ref, Object source) {
+    private static boolean isDeep(CopyReference<?> ref, Object source) {
         if (!(ref instanceof FieldReference)) {
             return true;
         }
 
-        FieldReference fieldRef = (FieldReference) ref;
+        FieldReference<?> fieldRef = (FieldReference<?>) ref;
         Field field = fieldRef.field;
         
         if (field.isAnnotationPresent(ReferenceCopy.class)) {
@@ -396,12 +425,12 @@ public final class CopyUtils {
      * Helper for {@link #getDeepCopy(Object)} to 
      * detect whether or not to copy the current node or to keep the cloned reference.
      */
-    private static boolean isCopy(CopyReference ref) {
+    private static boolean isCopy(CopyReference<?> ref) {
         if (!(ref instanceof FieldReference)) {
             return true;
         }
 
-        FieldReference fieldRef = (FieldReference) ref;
+        FieldReference<?> fieldRef = (FieldReference<?>) ref;
         Field field = fieldRef.field;
         ReferenceCopy refCopy = (ReferenceCopy) field.getAnnotation(ReferenceCopy.class);
 
@@ -421,12 +450,12 @@ public final class CopyUtils {
             copyState = new CopyState();
         }
 
-        SimpleReference topReference = getSimpleReference(obj);
+        SimpleReference<?> topReference = getSimpleReference(obj);
         try {
             copyState.queue.offer(topReference);
 
             while (!copyState.queue.isEmpty()) {
-                CopyReference toCache = copyState.queue.poll();
+                CopyReference<?> toCache = copyState.queue.poll();
                 Object source = toCache.get();
 
                 if (!isShallowCopyAvailable(source)) {
@@ -438,7 +467,7 @@ public final class CopyUtils {
                 }
 
                 if (isDeep(toCache, source)) {
-                    copyState.queueDeepCopyReferences(source, null);
+                    copyState.queueDeepCopyReferences(source, null, toCache);
                 }
 
                 if (toCache != topReference) {
@@ -465,19 +494,23 @@ public final class CopyUtils {
             copyState = new CopyState();
         }
 
-        SimpleReference topReference = getSimpleReference(obj);
+        SimpleReference<?> topReference = getSimpleReference(obj);
         try {
             copyState.queue.offer(topReference);
 
             while (!copyState.queue.isEmpty()) {
-                CopyReference toCopy = copyState.queue.poll();
+                CopyReference<?> toCopy = copyState.queue.poll();
                 Object source = toCopy.get();
 
                 if (!isShallowCopyAvailable(source) || !isCopy(toCopy)) {
                     continue;
                 }
+                
+                if (source instanceof Copyable) {
+                    source = ((Copyable) source).unwrap();
+                }
 
-                toCopy.set(copyState.getTarget(source, isDeep(toCopy, source)));
+                toCopy.set(copyState.getTarget(source, isDeep(toCopy, source), toCopy));
 
                 if (toCopy != topReference) {
                     recycle(toCopy);
@@ -497,7 +530,7 @@ public final class CopyUtils {
      */
     private static class CopyState {
 
-        private final Queue<CopyReference> queue = new LinkedList<CopyReference>();
+        private final Queue<CopyReference<?>> queue = new LinkedList<CopyReference<?>>();
         private final Map<Object, Object> cache = new IdentityHashMap<Object, Object>();
 
         /**
@@ -506,20 +539,29 @@ public final class CopyUtils {
          * @param source The original source object to copy.
          * @return A shallow copy of the source object.
          */
-        private Object getTarget(Object source, boolean queueDeepReferences) {
+        private Object getTarget(Object source, boolean queueDeepReferences, CopyReference<?> ref) {
             boolean useCache = source != Collections.EMPTY_LIST && source != Collections.EMPTY_MAP;
 
             Object target = useCache ? cache.get(source) : null;
 
             if (target == null) {
-                try {
-                    target = getShallowCopy(source);
-                } catch (CloneNotSupportedException e) {
-                    throw new IllegalStateException("Unexpected cloning error during shallow copy", e);
-                }
+                Class<?> targetClass = ref.getTargetClass();
 
-                if (queueDeepReferences) {
-                    queueDeepCopyReferences(source, target);
+                if (Copyable.class.isAssignableFrom(targetClass) && targetClass.isInterface()
+                        && isDelay()) {
+                    target = DelayedCopyableHandler.getDelayedCopy((Copyable) source);
+                    
+                } else {
+                    
+                    try {
+                        target = getShallowCopy(source);
+                    } catch (CloneNotSupportedException e) {
+                        throw new IllegalStateException("Unexpected cloning error during shallow copy", e);
+                    }
+
+                    if (queueDeepReferences) {
+                        queueDeepCopyReferences(source, target, ref);
+                    }
                 }
                 
                 if (useCache) {
@@ -536,8 +578,9 @@ public final class CopyUtils {
          * @param source The original source object at the current node.
          * @param target A shallow copy of the source object, to be analyzed for deep copy.
          */
-        private void queueDeepCopyReferences(Object source, Object target) {
+        private void queueDeepCopyReferences(Object source, Object target, CopyReference<?> ref) {
             Class<?> type = source.getClass();
+            Class<?> targetClass = ref.getTargetClass();
             if (!isDeepCopyAvailable(type)) {
                 return;
             }
@@ -559,25 +602,29 @@ public final class CopyUtils {
                 return;
             }
 
-            if (List.class.isAssignableFrom(type)) {
+            if (List.class.isAssignableFrom(targetClass)) {
                 List<?> sourceList = (List<?>) source;
                 List<?> targetList = (List<?>) target;
+                Type componentType = ObjectPropertyUtils.getComponentType(ref.getType());
+                Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (int i = 0; i < sourceList.size(); i++) {
-                    queue.offer(getListReference(sourceList, targetList, i));
+                    queue.offer(getListReference(sourceList, targetList, i, componentClass, componentType));
                 }
             }
 
-            if (Map.class.isAssignableFrom(type)) {
+            if (Map.class.isAssignableFrom(targetClass)) {
                 Map<?, ?> sourceMap = (Map<?, ?>) source;
                 Map<?, ?> targetMap = (Map<?, ?>) target;
+                Type componentType = ObjectPropertyUtils.getComponentType(ref.getType());
+                Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (Map.Entry<?, ?> sourceEntry : sourceMap.entrySet()) {
-                    queue.offer(getMapReference(sourceEntry, targetMap));
+                    queue.offer(getMapReference(sourceEntry, targetMap, componentClass, componentType));
                 }
             }
 
-            if (type.isArray()) {
+            if (targetClass.isArray()) {
                 for (int i = 0; i < Array.getLength(source); i++) {
                     queue.offer(getArrayReference(source, target, i));
                 }
@@ -597,7 +644,21 @@ public final class CopyUtils {
     /**
      * Represents a abstract reference to a targeted value for use during deep copying.
      */
-    private interface CopyReference {
+    private interface CopyReference<T> {
+        
+        /**
+         * Gets the type this reference refers to.
+         * 
+         * @return the class referred to
+         */
+        Class<T> getTargetClass();
+
+        /**
+         * Gets the generic type this reference refers to.
+         * 
+         * @return the generic type referred to
+         */
+        Type getType();
 
         /**
          * Retrieve the targeted value for populating the reference.
@@ -610,7 +671,7 @@ public final class CopyUtils {
          * 
          * @return The targeted value for populating the reference.
          */
-        Object get();
+        T get();
 
         /**
          * Modify the value targeted by the reference.
@@ -635,7 +696,7 @@ public final class CopyUtils {
     /**
      * Recycle a copy reference for later use, once the copy has been performed.
      */
-    private static void recycle(CopyReference ref) {
+    private static <T> void recycle(CopyReference<T> ref) {
         ref.clean();
         RecycleUtils.recycle(ref);
     }
@@ -644,33 +705,54 @@ public final class CopyUtils {
      * Simple copy reference for holding top-level value to be later inspected and returned. Values
      * held by this class will be modified in place.
      */
-    private static class SimpleReference implements CopyReference {
+    private static class SimpleReference<T> implements CopyReference<T> {
 
-        private Object value;
+        private T value;
+        private Class<T> targetClass;
 
         /**
-         * Get the value.
+         * Gets the target class.
          * 
-         * @return The value.
+         * @return target class
+         */
+        public Class<T> getTargetClass() {
+            return this.targetClass;
+        }
+
+        /**
+         * Gets the target class.
+         * 
+         * @return target class
          */
         @Override
-        public Object get() {
+        public Type getType() {
+            return this.targetClass;
+        }
+
+        /**
+         * Gets the value.
+         * 
+         * @return value
+         */
+        @Override
+        public T get() {
             return value;
         }
 
         /**
-         * Set the a value.
+         * Sets the a value.
          * 
          * @param obj The value to set.
          */
         @Override
         public void set(Object value) {
-            this.value = value;
+            this.value = targetClass.cast(value);
         }
 
         @Override
         public void clean() {
             this.value = null;
+            this.targetClass = null;
         }
     }
 
@@ -685,13 +767,15 @@ public final class CopyUtils {
      * 
      * @return A simple reference for temporary use while deep cloning.
      */
-    private static SimpleReference getSimpleReference(Object value) {
-        SimpleReference ref = RecycleUtils.getRecycledInstance(SimpleReference.class);
+    @SuppressWarnings("unchecked")
+    private static SimpleReference<?> getSimpleReference(Object value) {
+        SimpleReference<Object> ref = RecycleUtils.getRecycledInstance(SimpleReference.class);
 
         if (ref == null) {
-            ref = new SimpleReference();
+            ref = new SimpleReference<Object>();
         }
 
+        ref.targetClass = (Class<Object>) value.getClass();
         ref.value = value;
 
         return ref;
@@ -700,26 +784,48 @@ public final class CopyUtils {
     /**
      * Reference implementation for a field on an object.
      */
-    private static class FieldReference implements CopyReference {
+    private static class FieldReference<T> implements CopyReference<T> {
 
         private Object source;
         private Object target;
         private Field field;
 
         /**
+         * Gets the type of the field.
+         * 
+         * {@inheritDoc}
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<T> getTargetClass() {
+            return (Class<T>) field.getType();
+        }
+
+        /**
+         * Gets the generic type of this field.
+         * 
+         * {@inheritDoc}
+         */
+        @Override
+        public Type getType() {
+            return field.getGenericType();
+        }
+
+        /**
          * Get a value from the field on the source object.
          * 
          * @return The value referred to by the field on the source object.
          */
+        @SuppressWarnings("unchecked")
         @Override
-        public Object get() {
+        public T get() {
             try {
                 ReferenceCopy ref = field.getAnnotation(ReferenceCopy.class);
                 if (ref != null && ref.referenceTransient()) {
                     return null;
                 }
 
-                return field.get(source);
+                return (T) field.get(source);
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException("Access error attempting to get from " + field, e);
             }
@@ -761,11 +867,12 @@ public final class CopyUtils {
      * 
      * @return A field reference for temporary use while deep cloning.
      */
-    private static FieldReference getFieldReference(Object source, Object target, Field field) {
-        FieldReference ref = RecycleUtils.getRecycledInstance(FieldReference.class);
+    private static <T> FieldReference<T> getFieldReference(Object source, Object target, Field field) {
+        @SuppressWarnings("unchecked")
+        FieldReference<T> ref = RecycleUtils.getRecycledInstance(FieldReference.class);
 
         if (ref == null) {
-            ref = new FieldReference();
+            ref = new FieldReference<T>();
         }
 
         ref.source = source;
@@ -778,20 +885,42 @@ public final class CopyUtils {
     /**
      * Reference implementation for an entry in an array.
      */
-    private static class ArrayReference implements CopyReference {
+    private static class ArrayReference<T> implements CopyReference<T> {
 
         private Object source;
         private Object target;
         private int index = -1;
 
         /**
+         * Gets the component type of the array.
+         * 
+         * @return component type
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Class<T> getTargetClass() {
+            return (Class<T>) source.getClass().getComponentType();
+        }
+
+        /**
+         * Gets the component type of the array.
+         * 
+         * @return component type
+         */
+        @Override
+        public Type getType() {
+            return source.getClass().getComponentType();
+        }
+
+        /**
          * Get the value of the indicated entry in the source array.
          * 
          * @return The value of the indicated entry in the source array.
          */
+        @SuppressWarnings("unchecked")
         @Override
-        public Object get() {
-            return Array.get(source, index);
+        public T get() {
+            return (T) Array.get(source, index);
         }
 
         /**
@@ -825,11 +954,12 @@ public final class CopyUtils {
      * 
      * @return An array reference for temporary use while deep cloning.
      */
-    private static ArrayReference getArrayReference(Object source, Object target, int index) {
-        ArrayReference ref = RecycleUtils.getRecycledInstance(ArrayReference.class);
+    private static <T> ArrayReference<T> getArrayReference(Object source, Object target, int index) {
+        @SuppressWarnings("unchecked")
+        ArrayReference<T> ref = RecycleUtils.getRecycledInstance(ArrayReference.class);
 
         if (ref == null) {
-            ref = new ArrayReference();
+            ref = new ArrayReference<T>();
         }
 
         ref.source = source;
@@ -842,11 +972,33 @@ public final class CopyUtils {
     /**
      * Reference implementation for an item in a list.
      */
-    private static class ListReference implements CopyReference {
+    private static class ListReference<T> implements CopyReference<T> {
 
-        private List<Object> source;
-        private List<Object> target;
+        private Class<T> targetClass;
+        private Type type;
+        private List<T> source;
+        private List<T> target;
         private int index = -1;
+
+        /**
+         * Gets the item class for the list.
+         * 
+         * @return item class
+         */
+        @Override
+        public Class<T> getTargetClass() {
+            return targetClass;
+        }
+
+        /**
+         * Gets the generic item type for the list.
+         * 
+         * @return generic item type
+         */
+        @Override
+        public Type getType() {
+            return type;
+        }
 
         /**
          * Get the value of the indicated item in the source array.
@@ -854,8 +1006,8 @@ public final class CopyUtils {
          * @return The value of the indicated item in the source array.
          */
         @Override
-        public Object get() {
-            return source.get(index);
+        public T get() {
+            return targetClass.cast(source.get(index));
         }
 
         /**
@@ -865,11 +1017,13 @@ public final class CopyUtils {
          */
         @Override
         public void set(Object value) {
-            target.set(index, value);
+            target.set(index, targetClass.cast(value));
         }
 
         @Override
         public void clean() {
+            targetClass = null;
+            type = null;
             source = null;
             target = null;
             index = -1;
@@ -890,16 +1044,19 @@ public final class CopyUtils {
      * @return A list reference for temporary use while deep cloning.
      */
     @SuppressWarnings("unchecked")
-    private static ListReference getListReference(List<?> source, List<?> target, int index) {
-        ListReference ref = RecycleUtils.getRecycledInstance(ListReference.class);
+    private static ListReference<?> getListReference(List<?> source, List<?> target, int index,
+            Class<?> targetClass, Type type) {
+        ListReference<Object> ref = RecycleUtils.getRecycledInstance(ListReference.class);
 
         if (ref == null) {
-            ref = new ListReference();
+            ref = new ListReference<Object>();
         }
 
         ref.source = (List<Object>) source;
         ref.target = (List<Object>) target;
         ref.index = index;
+        ref.targetClass = (Class<Object>) targetClass;
+        ref.type = type;
 
         return ref;
     }
@@ -907,10 +1064,32 @@ public final class CopyUtils {
     /**
      * Reference implementation for an entry in a map.
      */
-    private static class MapReference implements CopyReference {
+    private static class MapReference<T> implements CopyReference<T> {
 
-        private Map.Entry<Object, Object> sourceEntry;
-        private Map<Object, Object> target;
+        private Class<T> targetClass;
+        private Type type;
+        private Map.Entry<Object, T> sourceEntry;
+        private Map<Object, T> target;
+
+        /**
+         * Gets the value class for the map.
+         * 
+         * @return value class
+         */
+        @Override
+        public Class<T> getTargetClass() {
+            return targetClass;
+        }
+
+        /**
+         * Gets the generic value type for the map.
+         * 
+         * @return generic value type
+         */
+        @Override
+        public Type getType() {
+            return type;
+        }
 
         /**
          * Get the value of the map entry.
@@ -918,7 +1097,7 @@ public final class CopyUtils {
          * @return The value of the map entry.
          */
         @Override
-        public Object get() {
+        public T get() {
             return sourceEntry.getValue();
         }
 
@@ -929,11 +1108,13 @@ public final class CopyUtils {
          */
         @Override
         public void set(Object value) {
-            target.put(sourceEntry.getKey(), value);
+            target.put(sourceEntry.getKey(), targetClass.cast(value));
         }
 
         @Override
         public void clean() {
+            targetClass = null;
+            type = null;
             sourceEntry = null;
             target = null;
         }
@@ -952,19 +1133,22 @@ public final class CopyUtils {
      * @return A map reference for temporary use while deep cloning.
      */
     @SuppressWarnings("unchecked")
-    private static MapReference getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target) {
-        MapReference ref = RecycleUtils.getRecycledInstance(MapReference.class);
+    private static MapReference<?> getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target,
+            Class<?> targetClass, Type type) {
+        MapReference<Object> ref = RecycleUtils.getRecycledInstance(MapReference.class);
 
         if (ref == null) {
-            ref = new MapReference();
+            ref = new MapReference<Object>();
         }
 
         ref.sourceEntry = (Map.Entry<Object, Object>) sourceEntry;
         ref.target = (Map<Object, Object>) target;
+        ref.targetClass = (Class<Object>) targetClass;
+        ref.type = type;
 
         return ref;
     }
-
+    
     /**
      * Internal field cache meta-data node, for reducing field lookup overhead.
      * 
@@ -1035,7 +1219,7 @@ public final class CopyUtils {
                         LOG.warn("copyProperties() method is restricted for " + currentClass, e);
                     }
                 }
-
+                
                 for (Field currentField : currentClass.getDeclaredFields()) {
                     if ((currentField.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
                         continue;
@@ -1055,17 +1239,10 @@ public final class CopyUtils {
                     if (!isList && !isMap) {
                         continue;
                     }
-
-                    Type genericType = currentField.getGenericType();
-                    Class<?> collectionType = Object.class;
-                    if (genericType instanceof ParameterizedType) {
-                        ParameterizedType parameterizedType = (ParameterizedType) genericType;
-                        Type valueType = parameterizedType.getActualTypeArguments()[isList ? 0 : 1];
-
-                        if (valueType instanceof Class) {
-                            collectionType = (Class<?>) valueType;
-                        }
-                    }
+                    
+                    Class<?> collectionType = ObjectPropertyUtils
+                            .getUpperBound(ObjectPropertyUtils
+                                    .getComponentType(currentField.getGenericType()));
 
                     if (collectionType.equals(Object.class) || isDeepCopyAvailable(collectionType)) {
                         collectionTypeMap.put(currentField, collectionType);

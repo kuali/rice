@@ -1257,4 +1257,18 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      */
     public void setPostRenderContent(String postRenderContent);
 
+    /**
+     * This method ...
+     * 
+     * @return
+     */
+    String getMethodToCallOnRefresh();
+
+    /**
+     * This method ...
+     * 
+     * @return
+     */
+    String getStyleClassesAsString();
+
 }

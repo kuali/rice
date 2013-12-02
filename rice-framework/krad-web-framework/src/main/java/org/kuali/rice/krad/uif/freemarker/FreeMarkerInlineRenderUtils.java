@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
@@ -214,7 +213,7 @@ public class FreeMarkerInlineRenderUtils {
             return;
         }
 
-        String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
+        String methodToCallOnRefresh = component.getMethodToCallOnRefresh();
         if (!StringUtils.hasText(methodToCallOnRefresh)) {
             methodToCallOnRefresh = "";
         }
@@ -339,23 +338,22 @@ public class FreeMarkerInlineRenderUtils {
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
     public static void renderAttrBuild(Component component, Writer out) throws IOException {
-        String s;
-        if (component instanceof ComponentBase) {
-            ComponentBase componentBase = (ComponentBase) component;
-            if (StringUtils.hasText(s = componentBase.getStyleClassesAsString())) {
-                out.write(" class=\"");
-                out.write(s);
-                out.write("\"");
-            }
+        String s = component.getStyleClassesAsString();
+        if (StringUtils.hasText(s)) {
+            out.write(" class=\"");
+            out.write(s);
+            out.write("\"");
         }
 
-        if (StringUtils.hasText(s = component.getStyle())) {
+        s = component.getStyle();
+        if (StringUtils.hasText(s)) {
             out.write(" style=\"");
             out.write(s);
             out.write("\"");
         }
 
-        if (StringUtils.hasText(s = component.getTitle())) {
+        s = component.getTitle();
+        if (StringUtils.hasText(s)) {
             out.write(" title=\"");
             out.write(s);
             out.write("\"");
@@ -594,13 +592,15 @@ public class FreeMarkerInlineRenderUtils {
         out.write(manager.getId());
         out.write("\"");
 
-        if (StringUtils.hasText(s = manager.getStyle())) {
+        s = manager.getStyle();
+        if (StringUtils.hasText(s)) {
             out.write(" style=\"");
             out.write(s);
             out.write("\"");
         }
 
-        if (StringUtils.hasText(s = manager.getStyleClassesAsString())) {
+        s = manager.getStyleClassesAsString();
+        if (StringUtils.hasText(s)) {
             out.write(" class=\"");
             out.write(s);
             out.write("\"");

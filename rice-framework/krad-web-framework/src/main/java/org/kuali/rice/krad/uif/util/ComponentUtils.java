@@ -1032,10 +1032,10 @@ public class ComponentUtils {
             
             LifecycleElement element = ObjectPropertyUtils.getPropertyValue(component, propertyName);
             if (element instanceof Component) {
-                components.put(propertyName, (Component) element);
+                components.put(propertyName, (Component) element.unwrap());
             } else if (element != null) {
-                for (Entry<String, Component> managerEntry :
-                        getComponentsForLifecycle(element, viewPhase).entrySet()) {
+                for (Entry<String, Component> managerEntry : getComponentsForLifecycle(
+                                (LifecycleElement) element.unwrap(), viewPhase).entrySet()) {
                     components.put(propertyName + "." + managerEntry.getKey(), managerEntry.getValue());
                 }
             }
@@ -1052,18 +1052,27 @@ public class ComponentUtils {
             Object componentCollection = ObjectPropertyUtils.getPropertyValue(component, propertyName);
             if (component.getClass().isArray()) {
                 for (int i = 0; i < Array.getLength(componentCollection); i++) {
-                    components.put(propertyName + "[" + i + "]",
-                            (Component) Array.get(componentCollection, i));
+                    Component collComponent = (Component) Array.get(componentCollection, i);
+                    if (collComponent != null) {
+                        collComponent = (Component) collComponent.unwrap();
+                    }
+                    components.put(propertyName + "[" + i + "]", collComponent);
                 }
             } else if (componentCollection instanceof List) {
                 for (int i = 0; i < ((List<?>) componentCollection).size(); i++) {
-                    components.put(propertyName + "[" + i + "]",
-                            (Component) ((List<?>) componentCollection).get(i));
+                    Component collComponent = (Component) ((List<?>) componentCollection).get(i);
+                    if (collComponent != null) {
+                        collComponent = (Component) collComponent.unwrap();
+                    }
+                    components.put(propertyName + "[" + i + "]", collComponent);
                 }
             } else if (componentCollection instanceof Map) {
                 for (Entry<?, ?> entry : ((Map<?, ?>) componentCollection).entrySet()) {
-                    components.put(propertyName + "[" + entry.getKey() + "]",
-                            (Component) entry.getValue());
+                    Component collComponent = (Component) entry.getValue();
+                    if (collComponent != null) {
+                        collComponent = (Component) collComponent.unwrap();
+                    }
+                    components.put(propertyName + "[" + entry.getKey() + "]", collComponent);
                 }
             }
         }

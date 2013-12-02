@@ -145,4 +145,13 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
 
         maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.oldBindingObjectPath);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
 }

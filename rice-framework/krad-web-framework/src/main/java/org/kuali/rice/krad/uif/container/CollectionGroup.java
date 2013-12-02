@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,374 +15,24 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
- * Group that holds a collection of objects and configuration for presenting the
- * collection in the UI. Supports functionality such as add line, line actions,
- * and nested collections.
- *
- * <p>
- * Note the standard header/footer can be used to give a header to the
- * collection as a whole, or to provide actions that apply to the entire
- * collection
- * </p>
- *
- * <p>
- * For binding purposes the binding path of each row field is indexed. The name
- * property inherited from <code>ComponentBase</code> is used as the collection
- * name. The collectionObjectClass property is used to lookup attributes from
- * the data dictionary.
- * </p>
- *
+ * TODO mark don't forget to fill this in. 
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "collectionGroup-bean", parent = "Uif-CollectionGroupBase"),
-        @BeanTag(name = "stackedCollectionGroup-bean", parent = "Uif-StackedCollectionGroup"),
-        @BeanTag(name = "stackedCollectionSection-bean", parent = "Uif-StackedCollectionSection"),
-        @BeanTag(name = "stackedCollectionSubSection-bean", parent = "Uif-StackedCollectionSubSection"),
-        @BeanTag(name = "stackedSubCollection-withinSection-bean", parent = "Uif-StackedSubCollection-WithinSection"),
-        @BeanTag(name = "stackedSubCollection-withinSubSection-bean",
-                parent = "Uif-StackedSubCollection-WithinSubSection"),
-        @BeanTag(name = "disclosure-stackedCollectionSection-bean", parent = "Uif-Disclosure-StackedCollectionSection"),
-        @BeanTag(name = "disclosure-stackedCollectionSubSection-bean",
-                parent = "Uif-Disclosure-StackedCollectionSubSection"),
-        @BeanTag(name = "disclosure-stackedSubCollection-withinSection-bean",
-                parent = "Uif-Disclosure-StackedSubCollection-WithinSection"),
-        @BeanTag(name = "disclosure-stackedSubCollection-withinSubSection-bean",
-                parent = "Uif-Disclosure-StackedSubCollection-WithinSubSection"),
-        @BeanTag(name = "tableCollectionGroup-bean", parent = "Uif-TableCollectionGroup"),
-        @BeanTag(name = "tableCollectionSection-bean", parent = "Uif-TableCollectionSection"),
-        @BeanTag(name = "tableCollectionSubSection-bean", parent = "Uif-TableCollectionSubSection"),
-        @BeanTag(name = "tableSubCollection-withinSection-bean", parent = "Uif-TableSubCollection-WithinSection"),
-        @BeanTag(name = "tableSubCollection-withinSubSection-bean", parent = "Uif-TableSubCollection-WithinSubSection"),
-        @BeanTag(name = "disclosure-tableCollectionSection-bean", parent = "Uif-Disclosure-TableCollectionSection"),
-        @BeanTag(name = "disclosure-tableCollectionSubSection-bean",
-                parent = "Uif-Disclosure-TableCollectionSubSection"),
-        @BeanTag(name = "disclosure-tableSubCollection-withinSection-bean",
-                parent = "Uif-Disclosure-TableSubCollection-WithinSection"),
-        @BeanTag(name = "disclosure-tableSubCollection-withinSubSection-bean",
-                parent = "Uif-Disclosure-TableSubCollection-WithinSubSection"),
-        @BeanTag(name = "listCollectionGroup-bean", parent = "Uif-ListCollectionGroup"),
-        @BeanTag(name = "listCollectionSection-bean", parent = "Uif-ListCollectionSection"),
-        @BeanTag(name = "listCollectionSubSection-bean", parent = "Uif-ListCollectionSubSection"),
-        @BeanTag(name = "documentNotesSection-bean", parent = "Uif-DocumentNotesSection"),
-        @BeanTag(name = "lookupResultsCollectionSection-bean", parent = "Uif-LookupResultsCollectionSection"),
-        @BeanTag(name = "maintenanceStackedCollectionSection-bean", parent = "Uif-MaintenanceStackedCollectionSection"),
-        @BeanTag(name = "maintenanceStackedSubCollection-withinSection-bean",
-                parent = "Uif-MaintenanceStackedSubCollection-WithinSection"),
-        @BeanTag(name = "maintenanceTableCollectionSection-bean", parent = "Uif-MaintenanceTableCollectionSection"),
-        @BeanTag(name = "maintenanceTableSubCollection-withinSection-bean",
-                parent = "Uif-MaintenanceTableSubCollection-WithinSection")})
-public class CollectionGroup extends Group implements DataBinding {
-    private static final long serialVersionUID = -6496712566071542452L;
-
-    private Class<?> collectionObjectClass;
-
-    private String propertyName;
-    private BindingInfo bindingInfo;
-
-    private boolean renderAddLine;
-    private String addLinePropertyName;
-    private BindingInfo addLineBindingInfo;
-
-    private Message addLineLabel;
-    private List<? extends Component> addLineItems;
-    private List<? extends Component> addLineActions;
-
-    private boolean renderLineActions;
-    private List<? extends Component> lineActions;
-
-    private boolean includeLineSelectionField;
-    private String lineSelectPropertyName;
-
-    private QuickFinder collectionLookup;
-
-    private boolean renderInactiveToggleButton;
-    @ClientSideState(variableName = "inactive")
-    private boolean showInactiveLines;
-    private CollectionFilter activeCollectionFilter;
-    private List<CollectionFilter> filters;
-
-    private List<BindingInfo> unauthorizedLineBindingInfos;
-
-    private List<CollectionGroup> subCollections;
-    private String subCollectionSuffix;
-
-    private CollectionGroupBuilder collectionGroupBuilder;
-
-    private int displayCollectionSize = -1;
-
-    private boolean highlightNewItems;
-    private boolean highlightAddItem;
-    private String newItemsCssClass;
-    private String addItemCssClass;
-
-    private boolean renderAddBlankLineButton;
-    private Action addBlankLineAction;
-    private String addLinePlacement;
-
-    private boolean renderSaveLineActions;
-    private boolean addViaLightBox;
-    private Action addViaLightBoxAction;
-
-    private boolean useServerPaging = false;
-    private int pageSize;
-    private int displayStart = -1;
-    private int displayLength = -1;
-    private int filteredCollectionSize = -1;
-
-    private List<String> totalColumns;
-
-    public CollectionGroup() {
-        renderAddLine = true;
-        renderLineActions = true;
-        renderInactiveToggleButton = true;
-        highlightNewItems = true;
-        highlightAddItem = true;
-        addLinePlacement = "TOP";
-
-        filters = Collections.emptyList();
-        lineActions = Collections.emptyList();
-        addLineItems = Collections.emptyList();
-        addLineActions = Collections.emptyList();
-        subCollections = Collections.emptyList();
-    }
-
-    /**
-     * Do not process remote field holders for collections. Collection items will be processed as
-     * the lines are built
-     * 
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#isProcessRemoteFieldHolders()
-     */
-    @Override
-    protected boolean isProcessRemoteFieldHolders() {
-        return false;
-    }
-
-    /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Set fieldBindModelPath to the collection model path (since the fields
-     * have to belong to the same model as the collection)</li>
-     * <li>Set defaults for binding</li>
-     * <li>Default add line field list to groups items list</li>
-     * <li>Sets default active collection filter if not set</li>
-     * <li>Sets the dictionary entry (if blank) on each of the items to the
-     * collection class</li>
-     * </ul>
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
-     */
-    @Override
-    public void performInitialization(Object model) {
-        setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
-
-        super.performInitialization(model);
-
-        View view = ViewLifecycle.getView();
-        
-        if (bindingInfo != null) {
-            bindingInfo.setDefaults(view, getPropertyName());
-        }
-
-        if (addLineBindingInfo != null) {
-            // add line binds to model property
-            if (StringUtils.isNotBlank(addLinePropertyName)) {
-                addLineBindingInfo.setDefaults(view, getPropertyName());
-                addLineBindingInfo.setBindingName(addLinePropertyName);
-                if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
-                    addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
-                }
-            }
-        }
-
-        for (Component item : getItems()) {
-            if (item instanceof DataField) {
-                DataField field = (DataField) item;
-
-                if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
-                    field.setDictionaryObjectEntry(collectionObjectClass.getName());
-                }
-            }
-        }
-
-        if ((addLineItems == null) || addLineItems.isEmpty()) {
-            addLineItems = getItems();
-        } else {
-            for (Component addLineField : addLineItems) {
-                if (!(addLineField instanceof DataField)) {
-                    continue;
-                }
-
-                DataField field = (DataField) addLineField;
-
-                if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
-                    field.setDictionaryObjectEntry(collectionObjectClass.getName());
-                }
-            }
-        }
-
-        // if active collection filter not set use default
-        if (this.activeCollectionFilter == null) {
-            activeCollectionFilter = new ActiveCollectionFilter();
-        }
-
-        // set static collection path on items
-        String collectionPath = "";
-        if (StringUtils.isNotBlank(getBindingInfo().getCollectionPath())) {
-            collectionPath += getBindingInfo().getCollectionPath() + ".";
-        }
-        if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
-            collectionPath += getBindingInfo().getBindByNamePrefix() + ".";
-        }
-        collectionPath += getBindingInfo().getBindingName();
-
-        List<DataField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(), DataField.class);
-        for (DataField collectionField : collectionFields) {
-            collectionField.getBindingInfo().setCollectionPath(collectionPath);
-        }
-
-        List<DataField> addLineCollectionFields = ComponentUtils.getComponentsOfTypeDeep(addLineItems, DataField.class);
-        for (DataField collectionField : addLineCollectionFields) {
-            collectionField.getBindingInfo().setCollectionPath(collectionPath);
-        }
-
-        for (CollectionGroup collectionGroup : getSubCollections()) {
-            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
-        }
-
-        // add collection entry to abstract classes
-        if (!view.getObjectPathToConcreteClassMapping().containsKey(collectionPath)) {
-            view.getObjectPathToConcreteClassMapping().put(collectionPath, getCollectionObjectClass());
-        }
-    }
-
-    /**
-     * Calls the configured <code>CollectionGroupBuilder</code> to build the
-     * necessary components based on the collection data
-     *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performApplyModel(Object model, Component parent) {
-        super.performApplyModel(model, parent);
-
-        // If we are using server paging, determine if a displayStart value has been set for this collection
-        // and used that value as the displayStart
-        if (model instanceof UifFormBase && this.isUseServerPaging()) {
-            Object displayStart = ((UifFormBase) model).getExtensionData().get(
-                    this.getId() + UifConstants.PageRequest.DISPLAY_START_PROP);
-
-            if (displayStart != null) {
-                this.setDisplayStart(((Integer) displayStart).intValue());
-            }
-        }
-
-        View view = ViewLifecycle.getView();
-        
-        // adds the script to the add line buttons to keep collection on the same page
-        if (this.renderAddBlankLineButton) {
-            if (this.addBlankLineAction == null) {
-                this.addBlankLineAction = (Action) ComponentFactory.getNewComponentInstance(
-                        ComponentFactory.ADD_BLANK_LINE_ACTION);
-                ViewLifecycle.spawnSubLifecyle(model, this.addBlankLineAction, this);
-            }
-
-            if (addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
-                this.addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
-            } else {
-                this.addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
-            }
-        } else if (this.addViaLightBox) {
-            if (this.addViaLightBoxAction == null) {
-                this.addViaLightBoxAction = (Action) ComponentFactory.getNewComponentInstance(
-                        ComponentFactory.ADD_VIA_LIGHTBOX_ACTION);
-                ViewLifecycle.spawnSubLifecyle(model, this.addViaLightBoxAction, this);
-            }
-
-            if (this.addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
-                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
-            } else {
-                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
-            }
-        }
-
-        pushCollectionGroupToReference();
-
-        // if rendering the collection group, build out the lines
-        if (isRender()) {
-            getCollectionGroupBuilder().build(view, model, this);
-        }
-
-        // TODO: is this necessary to call again?
-        // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
-        pushCollectionGroupToReference();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        super.initializePendingTasks(phase, pendingTasks);
-
-        // TODO (moved from ViewHelperServiceImpl): Add task to initialize from dictionary
-    }
-
-    /**
-     * Sets a reference in the context map for all nested components to the collection group
-     * instance, and sets name as parameter for an action fields in the group
-     */
-    protected void pushCollectionGroupToReference() {
-        Collection<Component> components;
-        synchronized (this) {
-            resetComponentsForLifecycle();
-            components = getComponentsForLifecycle().values();
-        }
-        ComponentUtils.pushObjectToContext(components,
-                UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
-
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
-        for (Action action : actions) {
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
-        }
-    }
+public interface CollectionGroup extends Group, DataBinding {
 
     /**
      * New collection lines are handled in the framework by maintaining a map on
@@ -397,19 +47,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * @param clearExistingLine boolean that indicates whether the line should be set to a
      * new instance if it already exists
      */
-    public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
-            boolean clearExistingLine) {
-        getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @Override
-    public List<? extends Component> getItems() {
-        return super.getItems();
-    }
+    void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
+            boolean clearExistingLine);
 
     /**
      * Object class the collection maintains. Used to get dictionary information
@@ -417,57 +56,21 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return collection object class
      */
-    @BeanTagAttribute(name = "collectionObjectClass")
-    public Class<?> getCollectionObjectClass() {
-        return this.collectionObjectClass;
-    }
+    Class<?> getCollectionObjectClass();
 
     /**
      * Setter for the collection object class
      *
      * @param collectionObjectClass
      */
-    public void setCollectionObjectClass(Class<?> collectionObjectClass) {
-        this.collectionObjectClass = collectionObjectClass;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
-     */
-    @BeanTagAttribute(name = "propertyName")
-    public String getPropertyName() {
-        return this.propertyName;
-    }
+    void setCollectionObjectClass(Class<?> collectionObjectClass);
 
     /**
      * Setter for the collections property name
      *
      * @param propertyName
      */
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    /**
-     * Determines the binding path for the collection. Used to get the
-     * collection value from the model in addition to setting the binding path
-     * for the collection attributes
-     *
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
-     */
-    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BindingInfo getBindingInfo() {
-        return this.bindingInfo;
-    }
-
-    /**
-     * Setter for the binding info instance
-     *
-     * @param bindingInfo
-     */
-    public void setBindingInfo(BindingInfo bindingInfo) {
-        this.bindingInfo = bindingInfo;
-    }
+    void setPropertyName(String propertyName);
 
     /**
      * Action fields that should be rendered for each collection line. Example
@@ -475,20 +78,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return line action fields
      */
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Component> getLineActions() {
-        return this.lineActions;
-    }
+    List<? extends Component> getLineActions();
 
     /**
      * Setter for the line action fields list
      *
      * @param lineActions
      */
-    public void setLineActions(List<? extends Component> lineActions) {
-        this.lineActions = lineActions;
-    }
+    void setLineActions(List<? extends Component> lineActions);
 
     /**
      * Indicates whether the action column for the collection should be rendered
@@ -496,19 +93,14 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return true if the actions should be rendered, false if not
      * @see #getLineActions()
      */
-    @BeanTagAttribute(name = "renderLineActions")
-    public boolean isRenderLineActions() {
-        return this.renderLineActions;
-    }
+    boolean isRenderLineActions();
 
     /**
      * Setter for the render line actions indicator
      *
      * @param renderLineActions
      */
-    public void setRenderLineActions(boolean renderLineActions) {
-        this.renderLineActions = renderLineActions;
-    }
+    void setRenderLineActions(boolean renderLineActions);
 
     /**
      * Indicates whether an add line should be rendered for the collection
@@ -516,19 +108,14 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return true if add line should be rendered, false if it should
      *         not be
      */
-    @BeanTagAttribute(name = "renderAddLine")
-    public boolean isRenderAddLine() {
-        return this.renderAddLine;
-    }
+    boolean isRenderAddLine();
 
     /**
      * Setter for the render add line indicator
      *
      * @param renderAddLine
      */
-    public void setRenderAddLine(boolean renderAddLine) {
-        this.renderAddLine = renderAddLine;
-    }
+    void setRenderAddLine(boolean renderAddLine);
 
     /**
      * Convenience getter for the add line label field text. The text is used to
@@ -544,24 +131,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return add line label
      */
-    public String getAddLabel() {
-        if (getAddLineLabel() != null) {
-            return getAddLineLabel().getMessageText();
-        }
-
-        return null;
-    }
+    String getAddLabel();
 
     /**
      * Setter for the add line label text
      *
      * @param addLabelText
      */
-    public void setAddLabel(String addLabelText) {
-        if (getAddLineLabel() != null) {
-            getAddLineLabel().setMessageText(addLabelText);
-        }
-    }
+    void setAddLabel(String addLabelText);
 
     /**
      * <code>Message</code> instance for the add line label
@@ -569,10 +146,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return add line Message
      * @see #getAddLabel
      */
-    @BeanTagAttribute(name = "addLineLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Message getAddLineLabel() {
-        return this.addLineLabel;
-    }
+    Message getAddLineLabel();
 
     /**
      * Setter for the <code>Message</code> instance for the add line label
@@ -580,9 +154,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * @param addLineLabel
      * @see #getAddLabel
      */
-    public void setAddLineLabel(Message addLineLabel) {
-        this.addLineLabel = addLineLabel;
-    }
+    void setAddLineLabel(Message addLineLabel);
 
     /**
      * Name of the property that contains an instance for the add line. If set
@@ -592,19 +164,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return add line property name
      */
-    @BeanTagAttribute(name = "addLinePropertyName")
-    public String getAddLinePropertyName() {
-        return this.addLinePropertyName;
-    }
+    String getAddLinePropertyName();
 
     /**
      * Setter for the add line property name
      *
      * @param addLinePropertyName
      */
-    public void setAddLinePropertyName(String addLinePropertyName) {
-        this.addLinePropertyName = addLinePropertyName;
-    }
+    void setAddLinePropertyName(String addLinePropertyName);
 
     /**
      * <code>BindingInfo</code> instance for the add line property used to
@@ -616,19 +183,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return BindingInfo add line binding info
      */
-    @BeanTagAttribute(name = "addLineBindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public BindingInfo getAddLineBindingInfo() {
-        return this.addLineBindingInfo;
-    }
+    BindingInfo getAddLineBindingInfo();
 
     /**
      * Setter for the add line binding info
      *
      * @param addLineBindingInfo
      */
-    public void setAddLineBindingInfo(BindingInfo addLineBindingInfo) {
-        this.addLineBindingInfo = addLineBindingInfo;
-    }
+    void setAddLineBindingInfo(BindingInfo addLineBindingInfo);
 
     /**
      * List of <code>Component</code> instances that should be rendered for the
@@ -638,20 +200,14 @@ public class CollectionGroup extends Group implements DataBinding {
      * @return add line field list
      * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
-    @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Component> getAddLineItems() {
-        return this.addLineItems;
-    }
+    List<? extends Component> getAddLineItems();
 
     /**
      * Setter for the add line field list
      *
      * @param addLineItems
      */
-    public void setAddLineItems(List<? extends Component> addLineItems) {
-        this.addLineItems = addLineItems;
-    }
+    void setAddLineItems(List<? extends Component> addLineItems);
 
     /**
      * Component fields that should be rendered for the add line.
@@ -662,20 +218,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return add line action fields
      */
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Component> getAddLineActions() {
-        return this.addLineActions;
-    }
+    List<? extends Component> getAddLineActions();
 
     /**
      * Setter for the add line action components fields
      *
      * @param addLineActions
      */
-    public void setAddLineActions(List<? extends Component> addLineActions) {
-        this.addLineActions = addLineActions;
-    }
+    void setAddLineActions(List<? extends Component> addLineActions);
 
     /**
      * Indicates whether lines of the collection group should be selected by rendering a
@@ -688,19 +238,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return true if select field should be rendered, false if not
      */
-    @BeanTagAttribute(name = "includeLineSelectionField")
-    public boolean isIncludeLineSelectionField() {
-        return includeLineSelectionField;
-    }
+    boolean isIncludeLineSelectionField();
 
     /**
      * Setter for the render selected field indicator
      *
      * @param includeLineSelectionField
      */
-    public void setIncludeLineSelectionField(boolean includeLineSelectionField) {
-        this.includeLineSelectionField = includeLineSelectionField;
-    }
+    void setIncludeLineSelectionField(boolean includeLineSelectionField);
 
     /**
      * When {@link #isIncludeLineSelectionField()} is true, gives the name of the property the select field
@@ -720,19 +265,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return property name for select field
      */
-    @BeanTagAttribute(name = "lineSelectPropertyName")
-    public String getLineSelectPropertyName() {
-        return lineSelectPropertyName;
-    }
+    String getLineSelectPropertyName();
 
     /**
      * Setter for the property name that will bind to the select field
      *
      * @param lineSelectPropertyName
      */
-    public void setLineSelectPropertyName(String lineSelectPropertyName) {
-        this.lineSelectPropertyName = lineSelectPropertyName;
-    }
+    void setLineSelectPropertyName(String lineSelectPropertyName);
 
     /**
      * Instance of the <code>QuickFinder</code> widget that configures a multi-value lookup for the collection
@@ -745,19 +285,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return instance configured for the collection lookup
      */
-    @BeanTagAttribute(name = "collectionLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public QuickFinder getCollectionLookup() {
-        return collectionLookup;
-    }
+    QuickFinder getCollectionLookup();
 
     /**
      * Setter for the collection lookup quickfinder instance
      *
      * @param collectionLookup
      */
-    public void setCollectionLookup(QuickFinder collectionLookup) {
-        this.collectionLookup = collectionLookup;
-    }
+    void setCollectionLookup(QuickFinder collectionLookup);
 
     /**
      * Indicates whether inactive collections lines should be displayed
@@ -771,19 +306,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return true to show inactive records, false to not render inactive records
      */
-    @BeanTagAttribute(name = "showInactiveLines")
-    public boolean isShowInactiveLines() {
-        return showInactiveLines;
-    }
+    boolean isShowInactiveLines();
 
     /**
      * Setter for the show inactive indicator
      *
      * @param showInactiveLines boolean show inactive
      */
-    public void setShowInactiveLines(boolean showInactiveLines) {
-        this.showInactiveLines = showInactiveLines;
-    }
+    void setShowInactiveLines(boolean showInactiveLines);
 
     /**
      * Collection filter instance for filtering the collection data when the
@@ -791,10 +321,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionFilter
      */
-    @BeanTagAttribute(name = "activeCollectionFilter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public CollectionFilter getActiveCollectionFilter() {
-        return activeCollectionFilter;
-    }
+    CollectionFilter getActiveCollectionFilter();
 
     /**
      * Setter for the collection filter to use for filter inactive records from the
@@ -802,9 +329,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param activeCollectionFilter CollectionFilter instance
      */
-    public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
-        this.activeCollectionFilter = activeCollectionFilter;
-    }
+    void setActiveCollectionFilter(CollectionFilter activeCollectionFilter);
 
     /**
      * List of {@link CollectionFilter} instances that should be invoked to filter the collection before
@@ -812,33 +337,24 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return List<CollectionFilter>
      */
-    @BeanTagAttribute(name = "filters", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<CollectionFilter> getFilters() {
-        return filters;
-    }
+    List<CollectionFilter> getFilters();
 
     /**
      * Setter for the List of collection filters for which the collection will be filtered against
      *
      * @param filters
      */
-    public void setFilters(List<CollectionFilter> filters) {
-        this.filters = filters;
-    }
+    void setFilters(List<CollectionFilter> filters);
 
     /**
      *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
      */
-    public List<BindingInfo> getUnauthorizedLineBindingInfos() {
-        return this.unauthorizedLineBindingInfos;
-    }
+    List<BindingInfo> getUnauthorizedLineBindingInfos();
 
     /**
      * @see CollectionGroup#getUnauthorizedLineBindingInfos()
      */
-    public void setUnauthorizedLineBindingInfos(List<BindingInfo> unauthorizedLineBindingInfos) {
-        this.unauthorizedLineBindingInfos = unauthorizedLineBindingInfos;
-    }
+    void setUnauthorizedLineBindingInfos(List<BindingInfo> unauthorizedLineBindingInfos);
 
     /**
      * List of <code>CollectionGroup</code> instances that are sub-collections
@@ -846,20 +362,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return sub collections
      */
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<CollectionGroup> getSubCollections() {
-        return this.subCollections;
-    }
+    List<CollectionGroup> getSubCollections();
 
     /**
      * Setter for the sub collection list
      *
      * @param subCollections
      */
-    public void setSubCollections(List<CollectionGroup> subCollections) {
-        this.subCollections = subCollections;
-    }
+    void setSubCollections(List<CollectionGroup> subCollections);
 
     /**
      * Suffix for IDs that identifies the collection line the sub-collection belongs to
@@ -870,9 +380,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return id suffix for sub-collection
      */
-    public String getSubCollectionSuffix() {
-        return subCollectionSuffix;
-    }
+    String getSubCollectionSuffix();
 
     /**
      * Setter for the sub-collection suffix (used by framework, should not be
@@ -880,79 +388,41 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param subCollectionSuffix
      */
-    public void setSubCollectionSuffix(String subCollectionSuffix) {
-        this.subCollectionSuffix = subCollectionSuffix;
-    }
+    void setSubCollectionSuffix(String subCollectionSuffix);
 
     /**
      * Collection Security object that indicates what authorization (permissions) exist for the collection
      *
      * @return CollectionGroupSecurity instance
      */
-    public CollectionGroupSecurity getCollectionGroupSecurity() {
-        return (CollectionGroupSecurity) super.getComponentSecurity();
-    }
+    CollectionGroupSecurity getCollectionGroupSecurity();
 
     /**
      * Override to assert a {@link CollectionGroupSecurity} instance is set
      *
      * @param componentSecurity instance of CollectionGroupSecurity
      */
-    @Override
-    public void setComponentSecurity(ComponentSecurity componentSecurity) {
-        if ((componentSecurity != null) && !(componentSecurity instanceof CollectionGroupSecurity)) {
-            throw new RiceRuntimeException(
-                    "Component security for CollectionGroup should be instance of CollectionGroupSecurity");
-        }
-
-        super.setComponentSecurity(componentSecurity);
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
-     */
-    @Override
-    protected void initializeComponentSecurity() {
-        if (getComponentSecurity() == null) {
-            setComponentSecurity(DataObjectUtils.newInstance(CollectionGroupSecurity.class));
-        }
-    }
+    void setComponentSecurity(ComponentSecurity componentSecurity);
 
     /**
      * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#isEditLineAuthz()
      */
-    public boolean isEditLineAuthz() {
-        initializeComponentSecurity();
-
-        return getCollectionGroupSecurity().isEditLineAuthz();
-    }
+    boolean isEditLineAuthz();
 
     /**
      * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#setEditLineAuthz(boolean)
      */
-    public void setEditLineAuthz(boolean editLineAuthz) {
-        initializeComponentSecurity();
-
-        getCollectionGroupSecurity().setEditLineAuthz(editLineAuthz);
-    }
+    void setEditLineAuthz(boolean editLineAuthz);
 
     /**
      * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#isViewLineAuthz()
      */
-    public boolean isViewLineAuthz() {
-        initializeComponentSecurity();
-
-        return getCollectionGroupSecurity().isViewLineAuthz();
-    }
+    boolean isViewLineAuthz();
 
     /**
      * @see org.kuali.rice.krad.uif.container.CollectionGroupSecurity#setViewLineAuthz(boolean)
      */
-    public void setViewLineAuthz(boolean viewLineAuthz) {
-        initializeComponentSecurity();
-
-        getCollectionGroupSecurity().setViewLineAuthz(viewLineAuthz);
-    }
+    void setViewLineAuthz(boolean viewLineAuthz);
 
     /**
      * <code>CollectionGroupBuilder</code> instance that will build the
@@ -960,132 +430,94 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return CollectionGroupBuilder instance
      */
-    @BeanTagAttribute(name = "collectionGroupBuilder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public CollectionGroupBuilder getCollectionGroupBuilder() {
-        if (this.collectionGroupBuilder == null) {
-            this.collectionGroupBuilder = new CollectionGroupBuilder();
-        }
-        return this.collectionGroupBuilder;
-    }
+    CollectionGroupBuilder getCollectionGroupBuilder();
 
     /**
      * Setter for the collection group building instance
      *
      * @param collectionGroupBuilder
      */
-    public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {
-        this.collectionGroupBuilder = collectionGroupBuilder;
-    }
+    void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder);
 
     /**
      * @param renderInactiveToggleButton the showHideInactiveButton to set
      */
-    public void setRenderInactiveToggleButton(boolean renderInactiveToggleButton) {
-        this.renderInactiveToggleButton = renderInactiveToggleButton;
-    }
+    void setRenderInactiveToggleButton(boolean renderInactiveToggleButton);
 
     /**
      * @return the showHideInactiveButton
      */
-    @BeanTagAttribute(name = "renderInactiveToggleButton")
-    public boolean isRenderInactiveToggleButton() {
-        return renderInactiveToggleButton;
-    }
+    boolean isRenderInactiveToggleButton();
 
     /**
      * The number of records to display for a collection
      *
      * @return int
      */
-    @BeanTagAttribute(name = "displayCollectionSize")
-    public int getDisplayCollectionSize() {
-        return this.displayCollectionSize;
-    }
+    int getDisplayCollectionSize();
 
     /**
      * Setter for the display collection size
      *
      * @param displayCollectionSize
      */
-    public void setDisplayCollectionSize(int displayCollectionSize) {
-        this.displayCollectionSize = displayCollectionSize;
-    }
+    void setDisplayCollectionSize(int displayCollectionSize);
 
     /**
      * Indicates whether new items should be styled with the #newItemsCssClass
      *
      * @return true if new items must be highlighted
      */
-    @BeanTagAttribute(name = "highlightNewItems")
-    public boolean isHighlightNewItems() {
-        return highlightNewItems;
-    }
+    boolean isHighlightNewItems();
 
     /**
      * Setter for the flag that allows for different styling of new items
      *
      * @param highlightNewItems
      */
-    public void setHighlightNewItems(boolean highlightNewItems) {
-        this.highlightNewItems = highlightNewItems;
-    }
+    void setHighlightNewItems(boolean highlightNewItems);
 
     /**
      * The css style class that will be added on new items
      *
      * @return the new items css style class
      */
-    @BeanTagAttribute(name = "newItemsCssClass")
-    public String getNewItemsCssClass() {
-        return newItemsCssClass;
-    }
+    String getNewItemsCssClass();
 
     /**
      * Setter for the new items css style class
      *
      * @param newItemsCssClass
      */
-    public void setNewItemsCssClass(String newItemsCssClass) {
-        this.newItemsCssClass = newItemsCssClass;
-    }
+    void setNewItemsCssClass(String newItemsCssClass);
 
     /**
      * The css style class that will be added on the add item group or row
      *
      * @return the add item group or row css style class
      */
-    @BeanTagAttribute(name = "addItemCssClass")
-    public String getAddItemCssClass() {
-        return addItemCssClass;
-    }
+    String getAddItemCssClass();
 
     /**
      * Setter for the add item css style class
      *
      * @param addItemCssClass
      */
-    public void setAddItemCssClass(String addItemCssClass) {
-        this.addItemCssClass = addItemCssClass;
-    }
+    void setAddItemCssClass(String addItemCssClass);
 
     /**
      * Indicates whether the add item group or row should be styled with the #addItemCssClass
      *
      * @return true if add item group or row must be highlighted
      */
-    @BeanTagAttribute(name = "highlightAddItem")
-    public boolean isHighlightAddItem() {
-        return highlightAddItem;
-    }
+    boolean isHighlightAddItem();
 
     /**
      * Setter for the flag that allows for different styling of the add item group or row
      *
      * @param highlightAddItem
      */
-    public void setHighlightAddItem(boolean highlightAddItem) {
-        this.highlightAddItem = highlightAddItem;
-    }
+    void setHighlightAddItem(boolean highlightAddItem);
 
     /**
      * Indicates that a button will be rendered that allows the user to add blank lines to the collection
@@ -1097,38 +529,28 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "renderAddBlankLineButton")
-    public boolean isRenderAddBlankLineButton() {
-        return renderAddBlankLineButton;
-    }
+    boolean isRenderAddBlankLineButton();
 
     /**
      * Setter for the flag indicating that the add blank line button must be rendered
      *
      * @param renderAddBlankLineButton
      */
-    public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
-        this.renderAddBlankLineButton = renderAddBlankLineButton;
-    }
+    void setRenderAddBlankLineButton(boolean renderAddBlankLineButton);
 
     /**
      * The add blank line {@link Action} field rendered when renderAddBlankLineButton is true
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "addBlankLineAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Action getAddBlankLineAction() {
-        return addBlankLineAction;
-    }
+    Action getAddBlankLineAction();
 
     /**
      * Setter for the add blank line {@link Action} field
      *
      * @param addBlankLineAction
      */
-    public void setAddBlankLineAction(Action addBlankLineAction) {
-        this.addBlankLineAction = addBlankLineAction;
-    }
+    void setAddBlankLineAction(Action addBlankLineAction);
 
     /**
      * Indicates the add line placement
@@ -1141,103 +563,74 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return the add blank line action placement
      */
-    @BeanTagAttribute(name = "addLinePlacement")
-    public String getAddLinePlacement() {
-        return addLinePlacement;
-    }
+    String getAddLinePlacement();
 
     /**
      * Setter for the add line placement
      *
      * @param addLinePlacement add line placement string
      */
-    public void setAddLinePlacement(String addLinePlacement) {
-        this.addLinePlacement = addLinePlacement;
-    }
+    void setAddLinePlacement(String addLinePlacement);
 
     /**
      * Indicates whether the save line actions should be rendered
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "renderSaveLineActions")
-    public boolean isRenderSaveLineActions() {
-        return renderSaveLineActions;
-    }
+    boolean isRenderSaveLineActions();
 
     /**
      * Setter for the flag indicating whether the save actions should be rendered
      *
      * @param renderSaveLineActions
      */
-    public void setRenderSaveLineActions(boolean renderSaveLineActions) {
-        this.renderSaveLineActions = renderSaveLineActions;
-    }
+    void setRenderSaveLineActions(boolean renderSaveLineActions);
 
     /**
      * Indicates that a add action should be rendered and that the add group be displayed in a lightbox
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "addViaLightBox")
-    public boolean isAddViaLightBox() {
-        return addViaLightBox;
-    }
+    boolean isAddViaLightBox();
 
     /**
      * Setter for the flag to indicate that add groups should be displayed in a light box
      *
      * @param addViaLightBox
      */
-    public void setAddViaLightBox(boolean addViaLightBox) {
-        this.addViaLightBox = addViaLightBox;
-    }
+    void setAddViaLightBox(boolean addViaLightBox);
 
     /**
      * The {@link Action} that will be displayed that will open the add line group in a lightbox
      *
      * @return Action
      */
-    @BeanTagAttribute(name = "addViaLightBoxAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Action getAddViaLightBoxAction() {
-        return addViaLightBoxAction;
-    }
+    Action getAddViaLightBoxAction();
 
     /**
      * Setter for the add line via lightbox {@link Action}
      *
      * @param addViaLightBoxAction
      */
-    public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
-        this.addViaLightBoxAction = addViaLightBoxAction;
-    }
+    void setAddViaLightBoxAction(Action addViaLightBoxAction);
 
     /**
      * Gets useServerPaging, the flag that indicates whether server side paging is enabled.  Defaults to false.
      *
      * @return true if server side paging is enabled.
      */
-    @BeanTagAttribute(name = "useServerPaging")
-    public boolean isUseServerPaging() {
-        return useServerPaging;
-    }
+    boolean isUseServerPaging();
 
     /**
      * Sets useServerPaging, the flag indicating whether server side paging is enabled.
      *
      * @param useServerPaging the useServerPaging value to set
      */
-    public void setUseServerPaging(boolean useServerPaging) {
-        this.useServerPaging = useServerPaging;
-    }
+    void setUseServerPaging(boolean useServerPaging);
 
-    public int getPageSize() {
-        return pageSize;
-    }
+    int getPageSize();
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+    void setPageSize(int pageSize);
 
     /**
      * Gets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
@@ -1246,18 +639,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return the index of the first item to display, or -1 if unset
      */
-    public int getDisplayStart() {
-        return displayStart;
-    }
+    int getDisplayStart();
 
     /**
      * Sets the displayStart, the index of the first item to display on the page (assuming useServerPaging is enabled).
      *
      * @param displayStart the displayStart to set
      */
-    public void setDisplayStart(int displayStart) {
-        this.displayStart = displayStart;
-    }
+    void setDisplayStart(int displayStart);
 
     /**
      * Gets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
@@ -1266,18 +655,14 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return the number of items to display on the page, or -1 if unset
      */
-    public int getDisplayLength() {
-        return displayLength;
-    }
+    int getDisplayLength();
 
     /**
      * Sets the displayLength, the number of items to display on the page (assuming useServerPaging is enabled).
      *
      * @param displayLength the displayLength to set
      */
-    public void setDisplayLength(int displayLength) {
-        this.displayLength = displayLength;
-    }
+    void setDisplayLength(int displayLength);
 
     /**
      * Gets the number of un-filtered elements from the model collection.
@@ -1286,9 +671,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @return the filtered collection size, or -1 if unset
      */
-    public int getFilteredCollectionSize() {
-        return filteredCollectionSize;
-    }
+    int getFilteredCollectionSize();
 
     /**
      * Sets the number of un-filtered elements from the model collection.
@@ -1297,148 +680,17 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param filteredCollectionSize the filtered collection size
      */
-    public void setFilteredCollectionSize(int filteredCollectionSize) {
-        this.filteredCollectionSize = filteredCollectionSize;
-    }
-
-    /**
-     * @return list of total columns
-     */
-    @BeanTagAttribute(name = "addTotalColumns")
-    protected List<String> getTotalColumns() {
-        return totalColumns;
-    }
-
-    /**
-     * Setter for the total columns
-     *
-     * @param totalColumns
-     */
-    protected void setTotalColumns(List<String> totalColumns) {
-        this.totalColumns = totalColumns;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CollectionGroup collectionGroupCopy = (CollectionGroup) component;
-
-        collectionGroupCopy.setDisplayCollectionSize(this.displayCollectionSize);
-        collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
-
-        if (this.addBlankLineAction != null) {
-            collectionGroupCopy.setAddBlankLineAction((Action) this.addBlankLineAction.copy());
-        }
-
-        collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
-
-        if (addLineItems != null && !addLineItems.isEmpty()) {
-            List<Component> addLineItemsCopy = ComponentUtils.copy(new ArrayList<Component>(addLineItems));
-            collectionGroupCopy.setAddLineItems(addLineItemsCopy);
-        }
-
-        if (addLineActions != null && !addLineActions.isEmpty()) {
-            List<? extends Component> addLineActionsCopy = ComponentUtils.copy(addLineActions);
-            collectionGroupCopy.setAddLineActions(addLineActionsCopy);
-        }
-
-        if (this.addLineBindingInfo != null) {
-            collectionGroupCopy.setAddLineBindingInfo((BindingInfo) this.addLineBindingInfo.copy());
-        }
-
-        if (this.addLineLabel != null) {
-            collectionGroupCopy.setAddLineLabel((Message) this.addLineLabel.copy());
-        }
-
-        collectionGroupCopy.setAddLinePlacement(this.addLinePlacement);
-        collectionGroupCopy.setAddLinePropertyName(this.addLinePropertyName);
-        collectionGroupCopy.setAddViaLightBox(this.addViaLightBox);
-
-        if (this.addViaLightBoxAction != null) {
-            collectionGroupCopy.setAddViaLightBoxAction((Action) this.addViaLightBoxAction.copy());
-        }
-
-        if (this.bindingInfo != null) {
-            collectionGroupCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
-        }
-
-        if (this.collectionLookup != null) {
-            collectionGroupCopy.setCollectionLookup((QuickFinder) this.collectionLookup.copy());
-        }
-
-        collectionGroupCopy.setCollectionObjectClass(this.collectionObjectClass);
-        
-        if (this.filters != null && !this.filters.isEmpty()) {
-            collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
-        }
-        
-        collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
-        collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
-        collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
-        collectionGroupCopy.setUseServerPaging(this.useServerPaging);
-        collectionGroupCopy.setPageSize(this.pageSize);
-        collectionGroupCopy.setDisplayStart(this.displayStart);
-        collectionGroupCopy.setDisplayLength(this.displayLength);
-
-        if (lineActions != null && !lineActions.isEmpty()) {
-            List<? extends Component> lineActionsCopy = ComponentUtils.copy(lineActions);
-            collectionGroupCopy.setLineActions(lineActionsCopy);
-        }
-        
-        collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
-        collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
-        collectionGroupCopy.setPropertyName(this.propertyName);
-        collectionGroupCopy.setRenderAddBlankLineButton(this.renderAddBlankLineButton);
-        collectionGroupCopy.setRenderAddLine(this.renderAddLine);
-        collectionGroupCopy.setRenderInactiveToggleButton(this.renderInactiveToggleButton);
-        collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
-        collectionGroupCopy.setFilters(this.filters);
-
-        collectionGroupCopy.setRenderLineActions(this.renderLineActions);
-        collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
-        collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
-
-        if (this.unauthorizedLineBindingInfos != null && !this.unauthorizedLineBindingInfos.isEmpty()) {
-            List<BindingInfo> unauthorizedLineBindingInfosCopy = new ArrayList<BindingInfo>();
-
-            for (BindingInfo bindingInfo : this.unauthorizedLineBindingInfos) {
-                unauthorizedLineBindingInfosCopy.add((BindingInfo) bindingInfo.copy());
-            }
-
-            collectionGroupCopy.setUnauthorizedLineBindingInfos(unauthorizedLineBindingInfosCopy);
-        }
-
-        if (subCollections != null && !subCollections.isEmpty()) {
-            List<CollectionGroup> subCollectionsCopy = ComponentUtils.copy(subCollections);
-            collectionGroupCopy.setSubCollections(subCollectionsCopy);
-        }
-        collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);
-
-        if (this.totalColumns != null) {
-            collectionGroupCopy.setTotalColumns(new ArrayList<String>(this.totalColumns));
-        }
-    }
+    void setFilteredCollectionSize(int filteredCollectionSize);
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
-    @Override
-    public void completeValidation(ValidationTrace tracer) {
-        tracer.addBean(this);
+    void completeValidation(ValidationTrace tracer);
 
-        // Checking if collectionObjectClass is set
-        if (getCollectionObjectClass() == null) {
-            if (Validator.checkExpressions(this, "collectionObjectClass")) {
-                String currentValues[] = {"collectionObjectClass = " + getCollectionObjectClass()};
-                tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",
-                        currentValues);
-            }
-        }
+    /**
+     * This method ...
+     * 
+     */
+    void pushCollectionGroupToReference();
 
-        super.completeValidation(tracer.getCopy());
-    }
 }

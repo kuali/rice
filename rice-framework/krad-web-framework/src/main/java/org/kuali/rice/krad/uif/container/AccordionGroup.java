@@ -33,7 +33,7 @@ import org.kuali.rice.krad.uif.widget.Accordion;
         @BeanTag(name = "accordionSubSection-bean", parent = "Uif-AccordionSubSection"),
         @BeanTag(name = "disclosure-accordionSection-bean", parent = "Uif-Disclosure-AccordionSection"),
         @BeanTag(name = "disclosure-accordionSubSection-bean", parent = "Uif-Disclosure-AccordionSubSection")})
-public class AccordionGroup extends Group {
+public class AccordionGroup extends GroupBase {
 
     private static final long serialVersionUID = 7230145606607506418L;
 

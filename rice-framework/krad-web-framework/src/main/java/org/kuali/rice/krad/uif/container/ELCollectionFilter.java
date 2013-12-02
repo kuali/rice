@@ -125,6 +125,14 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
+    /**
      * Copies the properties over for the copy method.
      *
      * @param eLCollectionFilter ELCollectionFilter instance to copy properties to

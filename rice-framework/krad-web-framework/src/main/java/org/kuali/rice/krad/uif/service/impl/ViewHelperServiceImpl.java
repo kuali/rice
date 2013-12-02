@@ -23,10 +23,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -50,6 +52,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -59,9 +62,11 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -279,6 +284,147 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void performCustomViewInitialization(Object model) {
         
+    }
+
+    /**
+     * Simple state helper for {@link ViewIndex#addInitialComponentStateIfNeeded(Component)} tree
+     * traversal.
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class ComponentState {
+        private int hash = -1;
+        private String path;
+        private Component component;
+    }
+    
+    /**
+     * Gets a potentially recycled component state helper, for use with
+     * {@link ViewHelperServiceImpl#preprocessView(View)}
+     * 
+     * @param original The original component.
+     * @param copy The copy of the component, for storage as initial component.
+     * @return component state helper
+     */
+    private static ComponentState getComponentState(int hash, String path, Component component) {
+        ComponentState rv = RecycleUtils.getRecycledInstance(ComponentState.class);
+        if (rv == null) {
+            rv = new ComponentState();
+        }
+        rv.hash = hash;
+        rv.path = path;
+        rv.component = component;
+        return rv;
+    }
+
+    /**
+     * Recycles a component state helper for subsequent use.
+     * 
+     * @param state The component state helper to recycle.
+     */
+    private static void recycle(ComponentState state) {
+        state.hash = -1;
+        state.path = null;
+        state.component = null;
+        RecycleUtils.recycle(state);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void preprocessView(View view) {
+        @SuppressWarnings("unchecked")
+        Queue<ComponentState> tailQueue = RecycleUtils.getInstance(LinkedList.class);
+        
+        // Calculate a hash code based on the path to the top of the phase tree
+        // without building a string.
+        final int prime = 6971; // Seed prime for hashing
+
+        ViewIndex viewIndex = view.getViewIndex();
+        try {
+            // Start with the current phase.
+            tailQueue.offer(getComponentState(view.getClass().getName().hashCode(), "", view));
+            while (!tailQueue.isEmpty()) {
+
+                // Poll the queue for the next phase to calculate
+                ComponentState componentState = tailQueue.poll();
+
+                // Include the class name and ID of the component
+                // at the current phase to the hash
+                Component component = componentState.component;
+                int hash = componentState.hash * prime;
+                hash += componentState.path.hashCode();
+
+                if (component != null) {
+                    hash *= prime;
+                    hash += component.getClass().getName().hashCode();
+
+                    String id = component.getId();
+                    if (id != null) {
+                        hash *= prime;
+                        hash += id.hashCode();
+                    } else {
+                        do {
+                            // Iteratively take the product of the hash and another large prime
+                            hash *= 4507; // until a unique ID has been generated.
+                            // The use of large primes will minimize collisions, reducing the
+                            // likelihood of race conditions leading to components coming out
+                            // with different IDs on different server instances and/or test runs.
+
+                            // Eliminate negatives without losing precision, and express in base-36
+                            id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
+
+                            // Use the view index to detect collisions, keep looping until an
+                            // id unique to the current view has been generated.
+                        } while (!viewIndex.observeAssignedId(id));
+
+                        // Set the ID on the component, if not already set.
+                        component.setId(UifConstants.COMPONENT_ID_PREFIX + id);
+                        viewIndex.addInitialComponentStateIfNeeded(component);
+                    }
+                    
+                    if (component instanceof Container) {
+                        LayoutManager manager = ((Container) component).getLayoutManager();
+                        if (manager != null) {
+                            id = manager.getId();
+                            if (id == null) {
+                                do {
+                                    // Iteratively take the product of the hash and another large prime
+                                    hash *= 4507; // until a unique ID has been generated.
+                                    // The use of large primes will minimize collisions, reducing the
+                                    // likelihood of race conditions leading to components coming out
+                                    // with different IDs on different server instances and/or test runs.
+
+                                    // Eliminate negatives without losing precision, and express in base-36
+                                    id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
+
+                                    // Use the view index to detect collisions, keep looping until an
+                                    // id unique to the current view has been generated.
+                                } while (!viewIndex.observeAssignedId(id));
+
+                                // Set the ID on the component, if not already set.
+                                manager.setId(UifConstants.COMPONENT_ID_PREFIX + id);
+                            }
+                        }
+                    }
+                }
+                
+                for (Entry<String, Component> nestedEntry : component.getComponentsForLifecycle().entrySet()) {
+                    tailQueue.offer(getComponentState(hash, componentState.path 
+                            + (StringUtils.isEmpty(componentState.path) ? "" : ".")
+                            + nestedEntry.getKey(), nestedEntry.getValue()));
+                }
+                
+                recycle(componentState);
+            }
+        } finally {
+            // Ensure that the recursion queue is clear to prevent
+            // corruption by pooled thread reuse.
+            tailQueue.clear();
+            RecycleUtils.recycle(tailQueue);
+        }
+
     }
 
     /**

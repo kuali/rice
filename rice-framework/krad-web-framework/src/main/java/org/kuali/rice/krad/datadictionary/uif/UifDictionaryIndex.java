@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CopyUtils;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -116,10 +117,16 @@ public class UifDictionaryIndex implements Runnable {
                 throw new DataDictionaryException("Unable to find View with id: " + viewId);
             }
 
+            ProcessLogger.trace("view:init:" + viewId);
             View view = ddBeans.getBean(beanName, View.class);
             
+            ProcessLogger.trace("view:getBean");
+            view.getViewHelperService().preprocessView(view);
+            
+            ProcessLogger.trace("view:preProcess");
             CopyUtils.preventModification(view);
 
+            ProcessLogger.trace("view:preventModification");
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Updating view status to CREATED for view: " + view.getId());
             }
@@ -131,8 +138,10 @@ public class UifDictionaryIndex implements Runnable {
                 synchronized (viewCache) {
                     viewCache.put(viewId, view);
                 }
+                ProcessLogger.trace("view:cache");
             } else if ( LOG.isDebugEnabled() ) {
                 LOG.debug( "DEV MODE - View " + viewId + " will not be cached");
+                ProcessLogger.trace("view:dev-mode");
             }
             
             cachedView = view;

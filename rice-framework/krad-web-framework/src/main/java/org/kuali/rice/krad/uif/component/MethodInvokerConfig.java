@@ -139,6 +139,14 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
+    /**
      * Modification is not controlled at this level.
      * 
      * @see Copyable#preventModification()

@@ -23,7 +23,7 @@
   <!-- InputField demo -->
   <bean id="Demo-DataField-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoDataField.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.DataField"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.DataFieldBase"/>
     <property name="docBookAnchor" value="d7339e4811"/>
     <property name="demoGroups">
       <list>

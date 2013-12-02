@@ -82,7 +82,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 @BeanTags({@BeanTag(name = "lightTableGroup-bean", parent = "Uif-LightTableGroup"),
         @BeanTag(name = "lightTableSection-bean", parent = "Uif-LightTableSection"),
         @BeanTag(name = "lightTableSubSection-bean", parent = "Uif-LightTableSubSection")})
-public class LightTable extends Group implements DataBinding {
+public class LightTable extends GroupBase implements DataBinding {
     private static final long serialVersionUID = -8930885219866835711L;
 
     private static final String VALUE_TOKEN = "@v@";

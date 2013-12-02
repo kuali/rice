@@ -306,8 +306,13 @@ public class Action extends ContentElementBase {
             Component initialComponent = view.getViewIndex().getInitialComponentStates().get(
                     refreshComponent.getBaseId());
             if (initialComponent != null) {
+                String viewStatus = initialComponent.getViewStatus();
+                if (viewStatus != null && !viewStatus.equals(UifConstants.ViewStatus.CACHED)) {
+                    initialComponent = initialComponent.copy();
+                }
+                
                 initialComponent.setRefreshedByAction(true);
-                view.getViewIndex().getInitialComponentStates().put(refreshComponent.getBaseId(), initialComponent);
+                view.getViewIndex().updateInitialComponentState(initialComponent);
             }
         }
     }

@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.InputFieldBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
@@ -45,7 +46,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "lookupCriteriaInputField-bean", parent = "Uif-LookupCriteriaInputField")
-public class LookupInputField extends InputField {
+public class LookupInputField extends InputFieldBase {
     private static final long serialVersionUID = -8294275596836322699L;
 
     private boolean disableWildcardsAndOperators;

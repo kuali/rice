@@ -47,7 +47,7 @@ import org.kuali.rice.krad.uif.view.View;
         @BeanTag(name = "inquiryPage-bean", parent = "Uif-InquiryPage"),
         @BeanTag(name = "lookupPage-bean", parent = "Uif-LookupPage"),
         @BeanTag(name = "maintenancePage-bean", parent = "Uif-MaintenancePage")})
-public class PageGroup extends Group {
+public class PageGroup extends GroupBase {
     private static final long serialVersionUID = 7571981300587270274L;
 
     private boolean autoFocus = false;

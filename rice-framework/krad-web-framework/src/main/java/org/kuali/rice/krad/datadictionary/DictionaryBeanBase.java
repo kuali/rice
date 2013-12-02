@@ -93,6 +93,14 @@ public abstract class DictionaryBeanBase implements DictionaryBean, Copyable {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
+    /**
      * Copies properties for copy()
      *
      * @param dictionaryBeanBase base bean

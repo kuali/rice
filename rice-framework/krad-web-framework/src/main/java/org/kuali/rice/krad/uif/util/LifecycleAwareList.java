@@ -357,4 +357,12 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         return super.clone();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
 }

@@ -181,4 +181,12 @@ public class LifecycleAwareMap<K, V> implements Map<K, V>, UifCloneable, Copyabl
         return super.clone();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
 }

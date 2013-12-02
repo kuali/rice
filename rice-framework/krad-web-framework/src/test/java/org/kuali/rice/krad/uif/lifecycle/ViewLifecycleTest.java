@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -102,13 +104,16 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         ViewCleaner.cleanView(dummyLogin);
     }
 
-    private View testFormView(UifFormBase form, String viewName) throws Throwable {
+    private View testFormView(UifFormBase form, String viewName, String initialStateId) throws Throwable {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setParameter(UifParameters.VIEW_ID, viewName);
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
         View view = form.getView();
+        if (initialStateId != null) {
+            assertNotNull(view.getViewIndex().getInitialComponentStates().get(initialStateId));
+        }
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
         ViewCleaner.cleanView(view);
         return view;
@@ -116,12 +121,12 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testKitchenSinkView() throws Throwable {
-        testFormView(new UifComponentsTestForm(), "UifCompView");
+        testFormView(new UifComponentsTestForm(), "UifCompView", null);
     }
     
     @Test
     public void testTransactionView() throws Throwable {
-        testFormView(new TransactionForm(), "TransactionView");
+        testFormView(new TransactionForm(), "TransactionView", null);
     }
     
     @Test
@@ -161,19 +166,19 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Test
     public void testComponentLibraryHome() throws Throwable {
         KradSampleAppForm form = new KradSampleAppForm();
-        testFormView(form, "ComponentLibraryHome");
+        testFormView(form, "ComponentLibraryHome", null);
     }
     
     @Test
     public void testPerformanceMediumAll() throws Throwable {
         KradLabsForm form = new KradLabsForm();
-        View view = testFormView(form, "Lab-PerformanceMedium");
+        View view = testFormView(form, "Lab-PerformanceMedium", "u1qlk5z1");
 
         form.setPostedView(view);
         form.setView(null);
 
-        String tableId = view.getItems().get(0).getItems().get(1).getId();
-        assertEquals("u1r73aam", tableId);
+        String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();
+        assertEquals("u1qlk5z1", tableId);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,16 +43,21 @@ public class DemoValidationPrerequisiteConstraintsAft extends WebDriverLegacyITB
     }
 
     protected void testValidationPrerequisiteConstraintsRequired() throws Exception {
-       waitAndTypeByName("inputField1","a");
-       waitAndTypeByName("inputField2","");
-       waitAndTypeByName("inputField3","");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl dependsOn-inputField1 required error']");
-       assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl dependsOn-inputField1 prConstraint-inputField31 required error']");
-       clearTextByName("inputField1");
-       waitAndTypeByName("inputField3","a");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl dependsOn-inputField2 dependsOn-inputField3 required error']");
+        waitAndClickByLinkText("Basic Example");
+
+        waitAndTypeByName("inputField1","a");
+        waitAndTypeByName("inputField2","");
+        waitAndTypeByName("inputField3","");
+        waitAndTypeByName("inputField1","");
+        String id2 = findElement(By.name("inputField2")).getAttribute("id");
+        assertTrue(findElement(By.id(id2)).getAttribute("class").contains("error"));
+        String id3 = findElement(By.name("inputField3")).getAttribute("id");
+        assertTrue(findElement(By.id(id3)).getAttribute("class").contains("error"));
+        clearTextByName("inputField1");
+        waitAndTypeByName("inputField3","a");
+        waitAndTypeByName("inputField1","");
+        String id1 = findElement(By.name("inputField1")).getAttribute("id");
+        assertTrue(findElement(By.id(id1)).getAttribute("class").contains("error"));
     }
     
     @Test

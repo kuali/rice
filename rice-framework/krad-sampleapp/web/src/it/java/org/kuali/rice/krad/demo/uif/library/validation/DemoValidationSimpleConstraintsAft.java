@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,32 +43,27 @@ public class DemoValidationSimpleConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationSimpleConstraintsRequired() throws Exception {
-       waitAndTypeByName("inputField1","");
-       waitAndTypeByName("inputField2","");
-       waitAndTypeByName("inputField3","");
-       Thread.sleep(1000);
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl required error']");
-       assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl required error']");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl required error']");
+        waitAndClickByLinkText("Required");
+
+        assertFocusTypeBlurError("inputField1", "");
+        assertFocusTypeBlurError("inputField2", "");
+        assertFocusTypeBlurError("inputField3", "");
     }
     
     protected void testValidationSimpleConstraintsMinMaxLength() throws Exception {
         waitAndClickByLinkText("Min/Max Length");
+
         waitAndTypeByName("inputField4","deepmoteria");
-        waitAndTypeByName("inputField5","de");
-        waitAndTypeByName("inputField4","");
         Thread.sleep(1000);
-        assertElementPresentByXpath("//input[@name='inputField5' and @class='uif-textControl dirty error']");
+        assertEquals("deepm", findElement(By.name("inputField4")).getAttribute("value"));
+        assertFocusTypeBlurError("inputField5", "de");
     }
 
     protected void testValidationSimpleConstraintsMinMaxValue() throws Exception {
         waitAndClickByLinkText("Min/Max Value");
-        waitAndTypeByName("inputField6","21");
-        waitAndTypeByName("inputField7","2");
-        waitAndTypeByName("inputField6","");
-        assertElementPresentByXpath("//input[@name='inputField6' and @class='uif-textControl dirty error']");
-        assertElementPresentByXpath("//input[@name='inputField7' and @class='uif-textControl dirty error']");
+
+        assertFocusTypeBlurError("inputField6","21");
+        assertFocusTypeBlurError("inputField7","2");
     }
     
     @Test

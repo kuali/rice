@@ -50,9 +50,8 @@ public class LabsLookupResultsLimitAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupResultsLimit()throws Exception {
-        waitAndTypeByName("lookupCriteria[number]","a*");
         waitAndClickButtonByText("Search");
-        assertDataTableContains(new String[][]{{"a14", "TRAVEL ACCOUNT 14"}});
+        assertDataTableContains(new String[][]{{"a10", "Travel Account 10"}});
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
             jiraAwareFail("More than 2 results available for " + this.getClass().toString());

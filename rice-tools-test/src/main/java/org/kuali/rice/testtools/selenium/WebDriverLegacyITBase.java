@@ -4356,6 +4356,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return jiraAwareWaitFor(By.className(name), message);
     }
 
+    protected WebElement waitForElementPresentByClassName(String name, int seconds) throws InterruptedException {
+        return jiraAwareWaitFor(By.className(name), seconds, "");
+    }
+
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFors(By.className(name), message);
     }

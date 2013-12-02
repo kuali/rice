@@ -20,7 +20,6 @@ import org.kuali.rice.testtools.selenium.breadcrumb.BreadcrumbAftBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsBreadcrumbAft extends BreadcrumbAftBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";

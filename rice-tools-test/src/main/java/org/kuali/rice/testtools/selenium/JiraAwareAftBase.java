@@ -416,7 +416,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             WebDriverUtils.highlightElement(getDriver(), found);
             return found;
         } catch (Exception e) {
-            jiraAwareFail(by.toString(), e.getMessage(), e);
+            jiraAwareFail(by.toString(), e.getMessage() + " " + this.getClass().toString(), e);
         }
         return null; // required by compiler, never reached
     }
@@ -564,7 +564,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             return WebDriverUtils.waitFor(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
+            jiraAwareFail(by, message + " " + this.getClass().toString(), t);
         }
         return null; // required, but the jiraAwareFail will will end test before this statement is reached
     }

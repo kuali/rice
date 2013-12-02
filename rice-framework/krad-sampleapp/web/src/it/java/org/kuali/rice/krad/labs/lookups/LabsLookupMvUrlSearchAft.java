@@ -53,6 +53,6 @@ public class LabsLookupMvUrlSearchAft extends LabsLookupBase {
         if(isElementPresentByXpath("//button[contains(text(), 'Search')]")) {
             jiraAwareFail("LabsLookupMvUrlSearchAft Search Button Present");
         }
-        assertResultCount("5");
+        assertResultCount("4");
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.testtools.selenium.breadcrumb;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -66,7 +65,7 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
         // The Second selection of the second ▼
         // you can't just click by link text as the same clickable text is on the left navigation.
         waitAndClickByXpath(SECOND_BREADCRUMB_NAV_XPATH +"/li[" + pageNumber + "]/a");
-        waitForElementPresentById("TopLink" + pageNumber, "Breadcrumb number " + pageNumber + " failure", 15); // bottom jump to top link
+        waitForElementPresentById("TopLink" + pageNumber, "Breadcrumb number " + pageNumber + " failure", 30); // bottom jump to top link
         driver.getCurrentUrl().contains("pageId=UifCompView-Page" + pageNumber);
     }
 

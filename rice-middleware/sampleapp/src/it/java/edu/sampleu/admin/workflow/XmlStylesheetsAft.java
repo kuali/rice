@@ -63,7 +63,7 @@ public class XmlStylesheetsAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testXxmlStylesheetBookmark() throws Exception {
+    public void testXmlStylesheetBookmark() throws Exception {
         testXmlStylesheet();
         passed();
     }

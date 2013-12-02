@@ -141,15 +141,19 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR2C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Sample"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR2C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page from the Copy link from Search Result"
+              p:instructionalText="Ability to copy another business object by clicking
+              a link from the lookup. Copies all the attributes except for the primary key,
+              ver number, and object ID fields by default.&lt;br&gt;&lt;br&gt; Clink on the following link and then
+              the Search button to see Copy actions Link&lt;br&gt;">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Copy from Search Result"
+                    p:href="lookup?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>

@@ -539,6 +539,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     @After
     public void tearDown() {
         try {
+            if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
+                waitAndClickLogoutIfPresent();
+            }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
@@ -549,9 +552,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             try {
                 closeAndQuitWebDriver();
             } catch (Throwable t) {
-                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
+                System.out.println(t.getMessage() + " occurred during tearDown, ignoring to avoid killing test run.");
                 t.printStackTrace();
-                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
+                System.out.println(t.getMessage() + " occurred during tearDown, ignoring to avoid killing test run.");
             }
         }
     }
@@ -4194,8 +4197,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickLogout(JiraAwareFailable failable) throws InterruptedException {
+        jGrowl("Logging out");
         selectTopFrame();
         waitAndClickByXpath(LOGOUT_XPATH, failable);
+    }
+
+    protected void waitAndClickLogoutIfPresent() throws InterruptedException {
+        selectTopFrame();
+        if (isElementPresentByXpath(LOGOUT_XPATH)) {
+            waitAndClickLogout(this);
+        }
     }
 
     protected void waitAndClickMainMenu() throws InterruptedException {

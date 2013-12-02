@@ -119,13 +119,14 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row2-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit">
           <property name="items">
-          <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
-                  p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR2C2"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
-          </list>
+            <list>
+              <bean parent="Uif-Link" p:linkText="Maintenance Sample - Presentation Controller"
+                    p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR2C2"/>
+              <bean parent="Uif-Message" p:messageText="Shows the ability to use a presentation controller to change the
+                behavior of sections."/>
+            </list>
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row2-Col3" parent="KradSampleAppDemo-DemoGroup"

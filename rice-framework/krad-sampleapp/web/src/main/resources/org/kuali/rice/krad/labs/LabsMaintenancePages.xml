@@ -124,11 +124,15 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR2C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Maintenance Sample - Presentation Controller"
+              p:instructionalText="A simple maintenance document that references an extension of
+              MaintenanceViewPresentationControllerBase.  This extension allows both making sections read-only or
+              completely hiding them through business logic.  Note that the Account Information section is read-only and
+              the Sub Account section is hidden.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Presentation Controller"
+                    p:href="maintenance?methodToCall=maintenanceEdit&amp;number=a14&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-PresentationControllerView"/>
             </list>
           </property>
         </bean>

@@ -43,10 +43,10 @@ public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBa
     }
 
     protected void testValidationDatePatternConstraints() throws Exception {
+        waitAndClickByLinkText("Default");
+
         //Scenario-1
-        waitAndTypeByName("inputField1","2 June 2012");
-        waitAndClickLinkContainingText("Library Navigation");
-        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        assertFocusTypeBlurError("inputField1","2 June 2012");
     }
     
     protected void testValidationDatePatternConstraintsBasicDate() throws Exception {

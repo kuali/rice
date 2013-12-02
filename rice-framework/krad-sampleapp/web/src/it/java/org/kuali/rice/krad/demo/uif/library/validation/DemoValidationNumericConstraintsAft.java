@@ -47,21 +47,18 @@ public class DemoValidationNumericConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationNumericConstraints() throws Exception {
+        waitAndClickByLinkText("Default");
+
         //Scenario-1
-        waitAndTypeByName("inputField1","a");
-        waitAndClickLinkContainingText("Library Navigation");
-        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        assertFocusTypeBlurError("inputField1","a");
     }
     
     protected void testValidationNumericConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","a s");
-        waitAndTypeByName("inputField3","a#s");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+        assertFocusTypeBlurError("inputField2","a s");
+        assertFocusTypeBlurError("inputField3","a#s");
     }
     
     protected void testValidationNumericConstraintsPreconfiguredBeans() throws Exception {

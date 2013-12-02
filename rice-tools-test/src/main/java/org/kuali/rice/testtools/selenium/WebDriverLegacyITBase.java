@@ -679,7 +679,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
         fireEvent(field, "blur");
-        Thread.sleep(200);
+        Thread.sleep(500);
         assertAttributeClassRegexMatches(field, REGEX_ERROR);
     }
 
@@ -4241,28 +4241,28 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         select(By.name(name), selectText);
     }
 
-    protected void waitAndType(By by, String text) throws InterruptedException {
-        waitAndType(by, text,  "");
+    protected WebElement waitAndType(By by, String text) throws InterruptedException {
+        return waitAndType(by, text,  "");
     }
 
-    protected void waitAndType(String selector, String text) throws InterruptedException {
-        waitAndType(By.cssSelector(selector), text);
+    protected WebElement waitAndType(String selector, String text) throws InterruptedException {
+        return waitAndType(By.cssSelector(selector), text);
     }
 
-    protected void waitAndTypeById(String id, String text) throws InterruptedException {
-        waitAndType(By.id(id), text);
+    protected WebElement waitAndTypeById(String id, String text) throws InterruptedException {
+        return waitAndType(By.id(id), text);
     }
 
-    protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
-        waitAndType(By.xpath(locator), text);
+    protected WebElement waitAndTypeByXpath(String locator, String text) throws InterruptedException {
+        return waitAndType(By.xpath(locator), text);
     }
 
-    protected void waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
-        waitAndType(By.xpath(locator), text, message);
+    protected WebElement waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
+        return waitAndType(By.xpath(locator), text, message);
     }
 
-    protected void waitAndTypeByName(String name, String text) throws InterruptedException {
-        waitAndType(By.name(name), text);
+    protected WebElement waitAndTypeByName(String name, String text) throws InterruptedException {
+        return waitAndType(By.name(name), text);
     }
 
     protected void waitAndCreateNew() throws InterruptedException {

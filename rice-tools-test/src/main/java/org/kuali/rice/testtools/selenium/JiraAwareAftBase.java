@@ -671,12 +671,13 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         WebDriverUtils.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
     }
 
-    protected void waitAndType(By by, String text, String message) throws InterruptedException {
+    protected WebElement waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
             WebDriverUtils.highlightElement(getDriver(), element);
             element.sendKeys(text);
+            return element;
         } catch (Exception e) {
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
             jiraAwareFail(e.getMessage()
@@ -691,5 +692,6 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                     + "\n"
                     + AutomatedFunctionalTestUtils.deLinespace(getDriver().getPageSource()));
         }
+        return null;
     }
 }

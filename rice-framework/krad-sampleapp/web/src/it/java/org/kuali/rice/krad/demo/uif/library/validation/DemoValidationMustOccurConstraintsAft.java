@@ -72,6 +72,8 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
     }
 
     protected void testValidationMustOccurConstraintsExample1() throws Exception {
+        waitAndClickByLinkText("Example 1");
+
        //Scenario-1
        waitAndTypeByName("inputField4","a");
        waitAndTypeByName("inputField1","");

@@ -43,43 +43,48 @@ public class DemoValidationCaseConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationCaseConstraintsBasic() throws Exception {
-       //Scenario-1
-       waitAndClickByXpath("//input[@type='radio' and @value='case1']");
-       waitAndTypeByName("inputField1","");
-       waitAndTypeByName("inputField2","");
-       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
+        waitAndClickByLinkText("Basic Examples");
+
+        //Scenario-1
+        waitAndClickByXpath("//input[@type='radio' and @value='case1']");
+        waitAndTypeByName("inputField1","");
+        waitAndTypeByName("inputField2","");
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
       
-       //Scenario-2
-       waitAndClickByXpath("//input[@type='radio' and @value='case2']");
-       waitAndTypeByName("inputField1","a_+");
-       waitAndTypeByName("inputField2","");
-       fireMouseOverEventByName("inputField1");
-       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
-       
-       //Scenario-3
-       waitAndClickByXpath("//input[@type='radio' and @value='case3']");
-       waitAndTypeByName("inputField2","567823");
-       waitAndTypeByName("inputField1","");
-       fireMouseOverEventByName("inputField2");
+        //Scenario-2
+        waitAndClickByXpath("//input[@type='radio' and @value='case2']");
+        waitAndTypeByName("inputField1","a_+");
+        waitAndTypeByName("inputField2","");
+        fireMouseOverEventByName("inputField1");
         isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
        
-       //Scenario-4
-       waitAndClickByXpath("//input[@type='radio' and @value='case4']");
-       waitAndTypeByName("inputField3","a");
-       waitAndTypeByName("inputField4","");
-       waitAndTypeByName("inputField3","");
-       fireMouseOverEventByName("inputField4");
-       isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
+        //Scenario-3
+        waitAndClickByXpath("//input[@type='radio' and @value='case3']");
+        waitAndTypeByName("inputField2","567823");
+        waitAndTypeByName("inputField1","");
+        fireMouseOverEventByName("inputField2");
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
+       
+        //Scenario-4
+        waitAndClickByXpath("//input[@type='radio' and @value='case4']");
+        waitAndTypeByName("inputField3","a");
+        waitAndTypeByName("inputField4","");
+        waitAndTypeByName("inputField3","");
+        fireMouseOverEventByName("inputField4");
+        isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
     }
     
     protected void testValidationCaseConstraintsNested() throws Exception {
-       waitAndClickByLinkText("Nested Example");
+        waitAndClickByLinkText("Nested Example");
        
-       //Scenario-1
-       waitAndTypeByName("inputField5","a");
-       waitAndTypeByName("inputField7","");
-       waitAndTypeByName("inputField6","");
-       assertElementPresentByXpath("//input[@name='inputField7' and @class='uif-textControl dependsOn-inputField5 dependsOn-inputField6 error']");
+        //Scenario-1
+        waitAndTypeByName("inputField5","a");
+        waitAndTypeByName("inputField6","");
+        String id = waitAndTypeByName("inputField7","").getAttribute("id");
+        fireEvent("inputField7", "blur");
+        fireMouseOverEventByName("inputField7");
+        Thread.sleep(1000);
+        assertTrue(findElement(By.id(id)).getAttribute("class").contains("error"));
     }
     
     @Test

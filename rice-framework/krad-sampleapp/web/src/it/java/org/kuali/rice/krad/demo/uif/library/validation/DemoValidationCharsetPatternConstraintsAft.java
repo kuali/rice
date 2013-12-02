@@ -42,12 +42,9 @@ public class DemoValidationCharsetPatternConstraintsAft extends WebDriverLegacyI
     }
 
     protected void testValidationCharsetPatternConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","d");
-       waitAndTypeByName("inputField2","c");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1", "d");
+        assertFocusTypeBlurError("inputField2", "c");
     }
     
     @Test

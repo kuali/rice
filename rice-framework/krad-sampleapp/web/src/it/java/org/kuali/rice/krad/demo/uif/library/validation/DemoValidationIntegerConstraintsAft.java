@@ -47,23 +47,23 @@ public class DemoValidationIntegerConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationNumericConstraints() throws Exception {
+        waitAndClickByLinkText("Default");
+
         //Scenario-1
-        waitAndTypeByName("inputField1","1.3");
-        waitAndClickLinkContainingText("Library Navigation");
-        assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        assertFocusTypeBlurError("inputField1","1.3");
     }
     
     protected void testValidationNumericConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","1.2");
-        waitAndTypeByName("inputField3","-0");
-        waitAndTypeByName("inputField4","0");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
-        waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField4' and @class='uif-textControl validChar-inputField40 dirty error']");
+        assertFocusTypeBlurError("inputField2","1.2");
+        assertFocusTypeBlurError("inputField3","-0");
+        assertFocusTypeBlurError("inputField4","0");
+//        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+//        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+//        waitAndTypeByName("inputField2","");
+//        assertElementPresentByXpath("//input[@name='inputField4' and @class='uif-textControl validChar-inputField40 dirty error']");
     }
     
     @Test

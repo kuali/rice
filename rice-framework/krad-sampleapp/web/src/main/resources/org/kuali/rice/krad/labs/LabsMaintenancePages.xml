@@ -73,21 +73,33 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR1C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-MaintenanceSampleView</value>
+      </list>
+    </property>
+    <property name="page.headerText" value="Maintenance View - Defaulting values"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR1C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Maintenance Sample - Using overrideKeys"
+              p:instructionalText="In this example the travel company name is defaulted to 'Acme Travel Inc'.  This is
+              done with the querystring parameters in the url.  The methodToCall parameter is set to
+              maintenanceNewWithExisting.  The overrideKeys parameter is set to travelCompanyName.  A travelCompanyName
+              parameter allows us to set the default value of the travel company name.  If you need to default more than
+              one value, you can add multiple values in the overrideKeys parameter, separating them with commas.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:style="margin:20px 0 20px 0;"
+                    p:linkText="Travel Company Maintenance Sample - New Document with Defaulted
+              Travel Company Name." p:href="maintenance?methodToCall=maintenanceNewWithExisting&amp;overrideKeys=travelCompanyName&amp;travelCompanyName=Acme%20Travel%20Inc&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>
       </list>
     </property>
   </bean>
+
 
   <bean id="KradMaintenanceSample-PageR2C1" parent="KradSampleAppView">
     <property name="page.headerText" value="Maintenance Sample - Configuring help links in section headers"/>

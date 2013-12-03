@@ -16,13 +16,16 @@
 
 MAVEN_REPO=$HOME/.m2/repository
 
-groovy GroovyWrapperScript.groovy \
-     --destfile  OJB_to_JPA_Annotations.jar \
-     --mainclass Main \
-     --addjar    $MAVEN_REPO/commons-io/commons-io/2.1/commons-io-2.1.jar \
-     --addjar    $MAVEN_REPO/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar \
-     --addjar    $MAVEN_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar \
-     --addjar    $MAVEN_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar \
-     --addjar    $MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar
+groovy \
+	-classpath ../../../target/classes:$MAVEN_REPO/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar:$MAVEN_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar \
+	GroovyWrapperScript.groovy \
+    --destfile  OJB_to_JPA_Annotations.jar \
+    --groovyc \
+    --mainclass Main \
+    --addjar    $MAVEN_REPO/commons-io/commons-io/2.1/commons-io-2.1.jar \
+    --addjar    $MAVEN_REPO/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar \
+    --addjar    $MAVEN_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar \
+    --addjar    $MAVEN_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar \
+    --addjar    $MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar
 
      

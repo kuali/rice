@@ -26,12 +26,59 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.visitor.EntityVisitor
 
 import groovy.util.ConfigSlurper
 
-println "Looking for config.groovy at ${this.class.classLoader.getResource("config.groovy")}"
+def cli = new CliBuilder()
+cli.h( longOpt: 'help', required: false, 'show usage information' )
+cli.c( longOpt: 'config', required: true, argName:"config file", args:1, 'Location of groovy configuration file' )
+cli.b( longOpt: 'base', required: true, argName:"base directory", args:1, 'Absolute path to the base directory for the conversion.' )
+cli.n( longOpt: 'dryrun', required: false, 'If set, the script will dump the resulting java files to the console instead of updating the existing files.' )
+cli._( longOpt: 'replace', required: false, 'Replace all existing JPA annotations on classes referenced by OJB files.')
 
-c = new ConfigSlurper().parse(this.class.classLoader.getResource("config.groovy"))
+def opt = cli.parse(args)
+if (!opt) {
+    return
+}
+if (opt.h) {
+    cli.usage();
+    return
+}
+println ""
+File baseDirectory = new File(opt.b)
+println "Using Base Directory $baseDirectory.canonicalPath"
 
-println c
+if ( !baseDirectory.exists() || !baseDirectory.isDirectory() ) {
+    println "ERROR: Specified base directory does not exist or is not a directory - aborting."
+    return
+}
 
+File configFile = new File(opt.c)
+println "Loading configuration file: $configFile.canonicalPath"
+if ( !configFile.exists() ) {
+    println "ERROR: Configuration file does not exist - aborting."
+    return
+}
+c = new ConfigSlurper().parse( configFile.text )
+
+if ( opt.n ) {
+    c.project.dryrun = true
+}
+
+if ( c.project.dryrun ) {
+    println "**************************************************"
+    println "Project in Dry Run Mode - no files will be updated"
+    println "**************************************************"
+}
+
+if ( opt.replace ) {
+    c.project.replaceExistingAnnotations = true
+}
+
+if ( c.project.replaceExistingAnnotations ) {
+    println "**************************************************"
+    println "Configured to replace all existing JPA annotations"
+    println "**************************************************"
+}
+
+//println c
 //BasicConfigurator.configure()
 
 /*
@@ -42,49 +89,55 @@ println c
  */
 def rootLoader = this.class.classLoader.getRootLoader()
 if ( !rootLoader ) {
-    println "ERROR!  RootLoader is null - unable to add additional classes to the classpath.  This happens when running Groovy from within Eclipse."
-} else {
-    //Thread.currentThread().setContextClassLoader(rootLoader);
+    println "ERROR!  RootLoader is null - unable to add additional classes to the classpath.  This happens when running Groovy from within Eclipse.  Process will fail unless it is able to access the RootLoader."
+    return
 }
 println "RootLoader: $rootLoader"
 
 // add additional items to the classpath
 for ( classpathDir in c.project.classpathDirectories ) {
     // NOTE: That trailing slash is absolutely required.  Otherwise it just adds the directory to the path as if it's a file and does not scan inside
-    def classpathUrl = new URL("file://"+new File( c.project.homeDirectory + "/" + classpathDir ).canonicalPath + "/")
-    println "Adding Classpath URL: $classpathUrl"
+    def classpathUrl = new URL("file://"+new File( baseDirectory, classpathDir ).canonicalPath + "/")
+    //println "Adding Classpath URL: $classpathUrl"
     rootLoader.addURL( classpathUrl )
 }
 
-for ( jarDir in c.project.classpathJarDirectories ) {
+for ( jarPath in c.project.classpathJarDirectories ) {
+    File jarDir = new File( baseDirectory, jarPath )
+    println "Scanning $jarDir.canonicalPath for JAR files."
     def jars   = jarDir.listFiles().findAll { it.name.endsWith('.jar') } 
     jars.each { 
         println "Adding Classpath URL: ${it.toURI().toURL()}"
         rootLoader.addURL(it.toURI().toURL()) 
     }
-    rootLoader.addURL( classpathUrl )
 }
 
+println "\n**************************************************"
+println "\n\nRootLoader Path URLs:\n${rootLoader.getURLs().join( '\n' )}"
+println "**************************************************"
 
-println rootLoader.getURLs()
+fullSourcePaths = c.project.sourceDirectories.collect { new File( baseDirectory, it ).canonicalPath }
+fullOjbPaths = c.ojb.repositoryFiles.collect { new File( baseDirectory, it ).canonicalPath }
 
-
-fullSourcePaths = c.project.sourceDirectories.collect { c.project.homeDirectory + "/" + it }
-fullOjbPaths = c.ojb.repositoryFiles.collect { c.project.homeDirectory + "/" + it }
-
+println "\n**************************************************"
 println "\n\nSource Directories: \n${fullSourcePaths.join( '\n' )}"
+println "**************************************************"
 
 fullSourcePaths.each {
     if ( !new File( it ).exists() ) {
-        throw new RuntimeException( "ERROR: $it does not exist.  Aborting.")
+        println "ERROR: $it does not exist.  Aborting."
+        return
     }
 }
 
-println "\n\nScanning OJB Files: \n${fullOjbPaths.join( '\n' )}"
+println "\n**************************************************"
+println "\n\nOJB Files: \n${fullOjbPaths.join( '\n' )}"
+println "**************************************************"
 
 fullOjbPaths.each {
     if ( !new File( it ).exists() ) {
-        throw new RuntimeException( "ERROR: $it does not exist.  Aborting.")
+        println "ERROR: $it does not exist.  Aborting."
+        return
     }
 }
 
@@ -97,13 +150,15 @@ println "\n\n"
 
 def mappedJavaFiles = convertClassesToJavaFiles(ojbMappedClasses)
 
+println "\n**************************************************"
 println "\n\nJava Files: \n${mappedJavaFiles.values().join( '\n' )}"
+println "**************************************************"
 
 println "\n\n************************************************************"
 println "*** Starting Conversion"
 println "************************************************************\n\n"
 
-entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.removeExistingAnnotations, c.project.upperCaseDbArtifactNames)
+entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.replaceExistingAnnotations, c.project.upperCaseDbArtifactNames)
 
 for (String className : mappedJavaFiles.keySet()) {
     File ojbMappedFile = mappedJavaFiles[className]

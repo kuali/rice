@@ -15,16 +15,14 @@
  */
 
 project {
-    // This is the base directory for the project.  All other paths will be relative to this one
-    homeDirectory = "/Users/jonathan/dev/projects/rice-20"
+    
     // Directories which will be added to the classpath for the purpose of finding the OJB-mapped classes 
     classpathDirectories = [
           "rice-framework/krad-app-framework/target/classes/"
         , "rice-framework/krad-data/target/classes/"
         , "rice-framework/krad-development-tools/target/classes/"
         , "rice-framework/krad-it/target/classes/"
-        , "rice-framework/krad-sampleapp/target/classes/"
-        , "rice-framework/krad-sampleapp-data-model/target/classes/"
+        , "rice-framework/krad-sampleapp/impl/target/classes/"
         , "rice-framework/krad-service-impl/target/classes/"
         , "rice-framework/krad-theme-builder/target/classes/"
         , "rice-framework/krad-web/target/classes/"
@@ -67,26 +65,34 @@ project {
         , "rice-middleware/standalone/target/classes/"
         , "rice-middleware/web/target/classes/"
         ]
+    
     // Directories which contain jar files.  Each jar file will be added to the classpath
-    classpathJarDirectories = []
+    // This should be set to the lib directory of your project so that all referenced libraries
+    // will be present on the classpath.
+    classpathJarDirectories = [
+        "rice-framework/krad-sampleapp/web/target/rice-krad-sampleapp-web-2.4.0-M3-SNAPSHOT/WEB-INF/lib"
+        ]
 
     // Set this to true to make the application dump the resulting class files to the console instead of updating the existing files
+    // This can be set to true if you want to make sure that you are not updating anything until this file is changed.
+    // This option is set to true if you use the -d/--dryrun parameter of the script. 
     dryRun = false    
         
     // Set this property to true if you want to wipe out all existing JPA annotations on target classes
-    removeExistingAnnotations = true
+    // Can also be set to true by the --replace script parameter.
+    replaceExistingAnnotations = false
 
     // Set this property to true if you want to automatically upper case all database names such as column, table, and sequence names
     upperCaseDbArtifactNames = true
     
     // Project source directories.  These directories will be scanned in order to find the source
-    // files for the classes which need JPA annotation
+    // files for the classes which need JPA annotation.  The first matching java file found in these 
+    // directories will be the one updated.
     sourceDirectories = [
           "rice-framework/krad-app-framework/src/main/java"
         , "rice-framework/krad-data/src/main/java"
         , "rice-framework/krad-development-tools/src/main/java"
-        , "rice-framework/krad-sampleapp/src/main/java"
-        , "rice-framework/krad-sampleapp-data-model/src/main/java"
+        , "rice-framework/krad-sampleapp/impl/src/main/java"
         , "rice-framework/krad-service-impl/src/main/java"
         , "rice-framework/krad-theme-builder/src/main/java"
         , "rice-framework/krad-web-framework/src/main/java"

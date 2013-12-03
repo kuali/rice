@@ -129,9 +129,12 @@ public abstract class AbstractJoinColumnResolver extends AbstractMappedFieldReso
             pairs.add(new MemberValuePair("updatable", new BooleanLiteralExpr(false)));
         }
 
-        if (!isNullableFk(thisField)) {
-            pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
-        }
+        // Per this page: https://forums.oracle.com/message/3923913
+        // the nullable attribute is a hint to the DDL generation, especially on fields like this.
+        // Commenting this flag out for now as it's just "noise" in the annotation definitions
+//        if (!isNullableFk(thisField)) {
+//            pairs.add(new MemberValuePair("nullable", new BooleanLiteralExpr(false)));
+//        }
         return new NormalAnnotationExpr(new NameExpr("JoinColumn"), pairs);
     }
 

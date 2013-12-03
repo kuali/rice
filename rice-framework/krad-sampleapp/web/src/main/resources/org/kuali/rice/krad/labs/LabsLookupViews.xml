@@ -259,4 +259,45 @@
     </property>
   </bean>
 
+  <bean id="LabsLookup-PerDiemExpenseDisabledWildcardsView" parent="Uif-LookupView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
+    <property name="viewName" value="LabsLookup-PerDiemExpenseDisabledWildcardsView"/>
+    <property name="headerText" value="Lookup Sample without Wildcards and Operators"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="travelPerDiemExpenseId"  p:disableWildcardsAndOperators="true"
+              p:label='Id   (Warning on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="travelAuthorizationDocumentId" p:disableWildcardsAndOperators="true"
+              p:label='Authorization DocumentId   (Warning on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="breakfastValue" p:disableWildcardsAndOperators="true"
+              p:label='Breakfast Value   (Error on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="lunchValue" p:disableWildcardsAndOperators="true"
+              p:label='Lunch Value   (Error on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="dinnerValue" p:disableWildcardsAndOperators="true"
+              p:label='Dinner Value   (Error on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="incidentalsValue" p:disableWildcardsAndOperators="true"
+              p:label='Amount estimated for incidentals   (Error on wildcard use)'/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="estimatedMileage" p:disableWildcardsAndOperators="true"
+              p:label='Number of estimated miles   (Error on wildcard use)'/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="travelPerDiemExpenseId"/>
+        <bean parent="Uif-DataField" p:propertyName="travelAuthorizationDocumentId"/>
+        <bean parent="Uif-DataField" p:propertyName="travelDestinationId"/>
+        <bean parent="Uif-DataField" p:propertyName="perDiemDate"/>
+        <bean parent="Uif-DataField" p:propertyName="breakfastValue"/>
+        <bean parent="Uif-DataField" p:propertyName="lunchValue"/>
+        <bean parent="Uif-DataField" p:propertyName="dinnerValue"/>
+        <bean parent="Uif-DataField" p:propertyName="incidentalsValue"/>
+        <bean parent="Uif-DataField" p:propertyName="mileageRateId"/>
+        <bean parent="Uif-DataField" p:propertyName="estimatedMileage"/>
+      </list>
+    </property>
+  </bean>
+
 </beans>

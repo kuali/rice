@@ -1389,9 +1389,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String multiValueResultCount() throws InterruptedException {
-        List<WebElement> resultLi = waitAndGetElementsByAttributeValue("class", "uif-infoMessageItem");
-        String resultsCount = resultLi.get(0).getText();
-        resultsCount = resultsCount.substring(0, resultsCount.indexOf((" ")));
+        WebElement dataTableInfo = waitAndGetElementByAttributeValue("class", "dataTables_info");
+        String resultsCount = dataTableInfo.getText();
+        resultsCount = resultsCount.substring(resultsCount.indexOf(" of ") + 4, resultsCount.indexOf(" entries")).trim();
         return resultsCount;
     }
 

@@ -155,13 +155,13 @@ ojb {
     // If the JPA converter value is blank, no converter will be added.  This assumes that there is
     // a default converter in place.
     converterMappings = [
-          "OjbCharBooleanConversion" : ""
+          "OjbCharBooleanConversion" : "org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter"
         , "OjbCharBooleanConversionTF" : "org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter"
         , "OjbKualiDecimalFieldConversion" : ""
-        , "OjbKualiEncryptDecryptFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.EncryptionConverter"
-        , "OjbKualiHashFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.HashConverter"
         , "OjbKualiIntegerFieldConversion" : ""
         , "OjbKualiPercentFieldConversion" : ""
+        , "OjbKualiEncryptDecryptFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.EncryptionConverter"
+        , "OjbKualiHashFieldConversion" : "org.kuali.rice.krad.data.jpa.converters.HashConverter"
         , "OjbAccountActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
         , "OjbPendingBCAppointmentFundingActiveIndicatorConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"
         , "OjbCharBooleanFieldInverseConversion" : "org.kuali.rice.krad.data.jpa.converters.InverseBooleanYNConverter"

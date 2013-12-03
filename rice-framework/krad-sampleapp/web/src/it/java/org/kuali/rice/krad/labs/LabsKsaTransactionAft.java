@@ -54,7 +54,7 @@ public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testKsaTransactionNav() throws Exception {
     	testKsaTransaction();
         passed();

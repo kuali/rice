@@ -27,4 +27,9 @@ public abstract class LabsLookupBase extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Lookups");
         waitAndClickByLinkText(screenLinkText);
     }
+    
+    protected void navigateToCreateNew() throws InterruptedException
+    {
+    	waitAndClickByLinkText("Create New");
+    }
 }

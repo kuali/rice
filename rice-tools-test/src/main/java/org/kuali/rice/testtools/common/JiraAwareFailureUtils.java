@@ -164,9 +164,24 @@ public class JiraAwareFailureUtils {
      * @param failable to fail with the jiraMatches value if the jiraMatches key is contained in the contents
      */
     public static void failOnMatchedJira(String contents, JiraAwareFailable failable) {
+        String match = findMatchedJira(contents);
+        if (match != null && !match.equals("")) {
+            failable.fail(match);
+        }
+    }
+
+    /**
+     * <p>
+     * Returns the value from the properties files for the key matching the contents or an empty string if no match is found.
+     * </p>
+     *
+     * @param contents to search for key in from properties file
+     * @return value for key which matches contents
+     */
+    public static String findMatchedJira(String contents) {
         if (regexJiraMatches == null || regexJiraMatches.keySet() == null || jiraMatches == null || jiraMatches.keySet() == null) {
-            System.out.println("WARNING JiraAwareFailureUtils properties empty, JiraAwareFailures not available.");
-            return;
+            System.out.println("WARNING JiraAwareFailureUtils properties empty, findMatchesJira not available.");
+            return "";
         }
         String key = null;
         Pattern pattern = null;
@@ -180,8 +195,7 @@ public class JiraAwareFailureUtils {
             matcher = pattern.matcher(contents);
 
             if (matcher.find()) {
-                failable.fail("\n" + JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
-                break;
+                return("\n" + JIRA_BROWSE_URL + regexJiraMatches.get(key) + "\n\n" + contents);
             }
         }
 
@@ -190,9 +204,9 @@ public class JiraAwareFailureUtils {
         while (iter.hasNext()) {
             key = (String)iter.next();
             if (contents.contains(key)) {
-                failable.fail("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
-                break;
+                return("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
             }
         }
+        return "";
     }
 }

@@ -44,26 +44,52 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     }
 
     @Test
+    public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountBookmark() throws Exception {
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
+        passed();
+    }
+
+    @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveNav() throws Exception {
         testLabsLookupDefaultCreateNewBlanketApprove();
         passed();
     }
 
+    @Test
+    public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountNav() throws Exception {
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
+        passed();
+    }
+
     protected void testLabsLookupDefaultCreateNewBlanketApprove()throws Exception {
         navigateToCreateNew();
-        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","A");
-        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
-        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input[2]","Sub Account");
-        //By adding this it is generating Freemarker Error.
-        //        waitAndClickButtonByText("add");
+        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created ");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName", "A");
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin, admin");
-        //Document not being able to create if we add Adhoc (Showing missing Person Network ID which is not preesnt on page)
-        //        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
+        waitAndClickButtonByText("blanket approve");
+        waitForElementPresentByXpath("//img[@src='/krad/images/validation/info.png']");
+        assertTextPresent("Document was successfully approved.");
+        assertTextPresent("ENROUTE");
+    }
+
+    protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount()throws Exception {
+        navigateToCreateNew();
+        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","A");
+        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
+        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input[2]","Sub Account");
+        waitAndClickButtonByText("add");
+        waitAndClickByLinkText("Notes and Attachments (0)");
+        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
+        waitAndClickByXpath("//button[@title='Add a Note']");
+        waitAndClickByLinkText("Ad Hoc Recipients");
+        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin, admin");
+        //Document not being able to create if we add Adhoc (Showing missing Person Network ID which is not present on page)
+        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
         waitForElementPresentByXpath("//img[@src='/krad/images/validation/info.png']");
         assertTextPresent("Document was successfully approved.");

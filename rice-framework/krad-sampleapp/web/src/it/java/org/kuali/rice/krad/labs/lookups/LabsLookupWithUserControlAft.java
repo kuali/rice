@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupWithUserControlAft extends LabsLookupBase {
 
     /**
@@ -51,15 +50,15 @@ public class LabsLookupWithUserControlAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupWithUserControl()throws Exception {
-       waitAndTypeByName("lookupCriteria[myPrincipalName]","admin");
-       waitAndClickButtonByText("Search");
-       Thread.sleep(3000);
-       assertTextPresent("1100");
-       assertTextPresent("admin");
-       waitAndClickButtonByText("Clear Values");
-       Thread.sleep(2000);
-       waitAndClickButtonByText("Search");
-       Thread.sleep(3000);
-       assertTextPresent("Showing 1 to 10 of");
+        waitAndTypeByName("lookupCriteria[myPrincipalName]","admin");
+        waitAndClickButtonByText("Search");
+        waitForElementPresentByClassName("dataTables_info");
+        assertTextPresent("1100");
+        assertTextPresent("admin");
+        waitAndClickButtonByText("Clear Values");
+        Thread.sleep(2000);
+        waitAndClickButtonByText("Search");
+        Thread.sleep(3000);
+        assertTextPresent("Showing 1 to 10 of");
     }
 }

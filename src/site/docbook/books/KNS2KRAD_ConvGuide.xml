@@ -2768,7 +2768,21 @@
     <section xml:id="MBC">
       <title>Base Maintenance Class</title>
       <para>Custom documents that extended <emphasis role="keyword">org.kuali.rice.kns.document.MaintenanceDocumentBase</emphasis>
-        will need to reparent to <emphasis role="keyword">org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</emphasis>
+        will need to reparent to <emphasis role="keyword">org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</emphasis>.
+        <inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
+      </para>
+    </section>
+    <section xml:id="MSC">
+      <title>Section Customization</title>
+      <para>The KNS provided the hook <emphasis role="keyword">Maintainable.getSections</emphasis>
+        to allow tweaking the section objects to be read only or hidden.  Now that KRAD provides
+        dynamic fields on the Uif, this functionality is deprecated in favor of the dynamic fields.
+        These should be used to configure when a given section is read only or hidden.  An example
+        of this would be to specify <emphasis role="keyword">p:readOnly="@{#dp.propertyName eq null}"</emphasis>.
         <inlinemediaobject>
           <imageobject>
             <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -2784,6 +2798,21 @@
         allows customizing the property names and <emphasis role="keyword">BindingInfo</emphasis>
         via <emphasis role="keyword">CollectionGroup.addLinePropertyName</emphasis> and
         <emphasis role="keyword">CollectionGroup.addLineBindingInfo</emphasis>.
+      </para>
+    </section>
+    <section xml:id="MRC">
+      <title>Rule Customization</title>
+      <para>The KNS provided methods for setting up convenience objects to process the rules.  These
+        methods, <emphasis role="keyword">org.kuali.rice.kns.rules.MaintenanceDocumentRule.setupBaseConvenienceObjects</emphasis>
+        and <emphasis role="keyword">org.kuali.rice.kns.rules.MaintenanceDocumentRule.setupConvenienceObjects</emphasis>
+        haved been reparented and can now be overridden in <emphasis role="keyword">org.kuali.rice.krad.rules.MaintenanceDocumentRule.setupBaseConvenienceObjects</emphasis>
+        and <emphasis role="keyword">org.kuali.rice.krad.rules.MaintenanceDocumentRule.setupConvenienceObjects</emphasis>,
+        respectively.
+        <inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
       </para>
     </section>
     <section>
@@ -3005,10 +3034,26 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
         Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
         MaintenanceDocumentService.setupMaintenanceObject.</para>
       <para><emphasis role="bold">KNS BO
-          Preparation:</emphasis><programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);         </programlisting><emphasis
-          role="bold">KRAD BO Preparation:
-        </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document, 
-    String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
+        Preparation:</emphasis><programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);         </programlisting><emphasis
+              role="bold">KRAD BO Preparation:
+      </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document,
+        String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
+    </section>
+    <section xml:id="MPEBO">
+      <title>Preparing the BO from an external source</title>
+      <para> In KNS an external business object was set up using
+        <emphasis role="bold">org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>.
+        In KRAD this functionality has been moved to <emphasis role="bold">org.kuali.rice.krad.maintenance.Maintainable</emphasis>
+        and replaced.  Different methods should be overridden depending on whether
+        the external BO being loaded is from the database or not.</para>
+      <para><emphasis role="bold">KNS BO Preparation:</emphasis>
+        <programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);</programlisting>
+        <emphasis role="bold">KRAD Database BO Preparation:</emphasis>
+        <programlisting linenumbering="numbered">public boolean isExternalBusinessObject();
+public void prepareExternalBusinessObject(BusinessObject businessObject);</programlisting>
+        <emphasis role="bold">KRAD Non-Database BO Preparation:</emphasis>
+        <programlisting linenumbering="numbered">public void retrieveObjectForEditOrCopy(MaintenanceDocument document, Map&lt;String, String> dataObjectKeys);</programlisting>
+      </para>
     </section>
     <section xml:id="MRR">
       <title>Refreshing references </title>
@@ -3095,6 +3140,18 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
               JSP to Freemarker.  KRAD does however address natively many of the typical non-standard
               layouts previously addressed by this feature, and implementers can always choose to
               create custom components to address any other requirements.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MOF2">
+            <para>To enable Externalizable Business Objects, users of the KNS would often override
+              the indicator <emphasis role="keyword">org.kuali.rice.kns.maintenance.Maintainable.isExternalBusinessObject</emphasis>.
+              In KRAD, this has been moved to <emphasis role="keyword">org.kuali.rice.krad.maintenance.Maintainable.isExternalBusinessObject</emphasis>.
+              If this has been implemented in an old KNS class, then the logic must be moved to the new KRAD class.
               <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>

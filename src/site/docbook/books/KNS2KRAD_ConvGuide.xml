@@ -2765,6 +2765,81 @@
         </itemizedlist>
       </para>
     </section>
+    <section>
+      <title>Data Dictionary Features</title>
+      <para>
+        <itemizedlist>
+          <listitem xml:id="MDD1">
+            <para>In order to customize how the backing form populated after a lookup or refresh,
+              the KNS provided <emphasis role="keyword">DerivedValuesSetter.setDerivedValues</emphasis>
+              which could update other objects on the form when one object was updated via the request.
+              KRAD provides a Uif property to do this: <emphasis role="keyword">p:refreshWhenChangedPropertyNames="field1, field2"</emphasis>.
+              so that when an <emphasis role="keyword">InputField</emphasis> specifying this property
+              is updated, <emphasis role="keyword">field1</emphasis> and <emphasis role="keyword">field2</emphasis>
+              are refreshed as well.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD2">
+            <para>The KNS <emphasis role="keyword">PromptBeforeValidation</emphasis> class was used to
+              prompt the user with a question before continuing on with routing.  This has been deprecated
+              in KRAD in favor of the new Dialog framework.  To implement this, first override the base
+              Maintenance controller, call the dialog right before routing, and get the dialog response from
+              <emphasis role="keyword">getBooleanDialogResponse</emphasis>.  Next in the Uif, add the
+              dialog to the <emphasis role="keyword">MaintenanceView.dialogs</emphasis> property.
+              <programlisting linenumbering="numbered">&lt;property name="dialogs">
+  &lt;list>
+    &lt;bean id="routeConfirmationDialog" parent="Uif-OK-Cancel-DialogGroup" p:promptText="Would you like to route?"/>
+  &lt;/list>
+&lt;/property></programlisting>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD3">
+            <para>The KNS <emphasis role="keyword">LookupReadonlyControlDefinition</emphasis> which only
+              had a quickfinder icon and no text field has been replaced with other fields on the generic
+              <emphasis role="keyword">InputField</emphasis>.
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:widgetInputOnly="true">
+  &lt;property name="quickfinder">
+    &lt;bean parent="Uif-QuickFinder"/>
+  &lt;/property>
+&lt;/bean></programlisting>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD4">
+            <para>While default values can be specified via finders, they can also be specified directly on
+              the Uif with complete expression support.
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:defaultValue="@{field2}"/></programlisting>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD5">
+            <para>Several fields have been removed in favor of the new conditional <emphasis role="keyword">readOnly</emphasis>.
+              The <emphasis role="keyword">p:unconditionallyReadOnly="true"</emphasis> can be replaced directly
+              by <emphasis role="keyword">p:readOnly="true"</emphasis>, while <emphasis role="keyword">p:readOnlyAfterAdd="true"</emphasis>
+              can be replaced with <emphasis role="keyword">p:readOnly="@{!#isAddLine}"</emphasis>.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
     <section xml:id="MBC">
       <title>Base Maintenance Class</title>
       <para>Custom documents that extended <emphasis role="keyword">org.kuali.rice.kns.document.MaintenanceDocumentBase</emphasis>

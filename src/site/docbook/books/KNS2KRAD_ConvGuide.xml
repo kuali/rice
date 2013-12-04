@@ -2443,70 +2443,6 @@
       </para>
     </section>
     <section>
-      <title>Multiple Value Lookups</title>
-      <para>Multiple value lookups allow for a collection on a maintenance document to be populated
-        with multiple results at once, rather than forcing the user to iteratively add results one
-        after another. For a maintenance document to use a multiple value lookup, the maintenance
-        document must contain a collection, and a collection lookup must be configured for that
-        collection. </para>
-      <para><emphasis role="bold">KNS code example:</emphasis>
-        <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
-  &lt;property name="name" value="categories"/>
-  &lt;property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="includeMultipleLookupLine" value="true"/>
-  ... 
-&lt;/bean></programlisting>
-        <emphasis role="bold">KRAD code example:</emphasis>
-      </para>
-      <para>
-        <programlisting linenumbering="numbered">&lt;bean parent="Uif-TableCollectionSection">
-  &lt;property name="collectionObjectClass" 
-            value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="propertyName" value="categories"/>
-  &lt;property name="collectionLookup">
-      &lt;bean parent="Uif-CollectionQuickFinder"
-            p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo"
-            p:fieldConversions="id:id,name:name,namespace:namespace"/>
-  &lt;/property>
-  ...
-&lt;/bean></programlisting>
-      </para>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>The in KNS the <emphasis role="keyword"
-                >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
-              maintenance document. With KRAD one of the Uif collection groups is used. [KNS line:
-              1, KRAD line: 1]</para>
-          </listitem>
-          <listitem>
-            <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
-              was set to true to enable multiple value lookups on the collection. In KRAD this
-              property does no longer exist, instead the <emphasis role="keyword"
-                >collectionLookup</emphasis> property is initialized with the <emphasis
-                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
-                >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
-              to be specified if the collectionObjectClass of the collection group is the same as
-              the dataObjectClassName of the multi value lookup:</para>
-            <itemizedlist>
-              <listitem>
-                <para>dataObjectClassName - the data object that should be looked up</para>
-              </listitem>
-              <listitem>
-                <para>fieldConversions - from-to mapping of the returned data
-                  (&lt;lookup-field>:&lt;maintenance-collection-field>)</para>
-              </listitem>
-              <listitem>
-                <para>viewName - name of the lookup view (only needed if multible views for the
-                  dataObjectClassName exists)</para>
-              </listitem>
-            </itemizedlist>
-            <para>[KNS line: , KRAD line: 4-8]</para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </section>
-    <section>
       <title>Other Lookup Features</title>
       <para>
         <itemizedlist>
@@ -2836,6 +2772,110 @@
                 </imageobject>
               </inlinemediaobject>
             </para>
+          </listitem>
+          <listitem xml:id="MDD6">
+            <para>When the document is in read only mode, an alternate property can be displayed for a field.
+              The KNS property <emphasis role="keyword">p:alternateDisplayAttributeName="field"</emphasis>
+              has been replaced with the KRAD equivalent <emphasis role="keyword">p:readOnlyDisplayReplacementPropertyName="field"</emphasis>.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD7">
+            <para>When the document is in read only mode, an additional property can be displayed with a field.
+              The KNS property <emphasis role="keyword">p:additionalDisplayAttributeName="field"</emphasis>
+              has been replaced with the KRAD equivalent <emphasis role="keyword">p:readOnlyDisplaySuffixPropertyName="field"</emphasis>.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD8">
+            <para>In order to control whether the add line in a collection should be shown, the KNS provided
+              <emphasis role="keyword">&lt;property name="includeAddLine" value="false"/></emphasis>.  The setup
+              in KRAD is a bit more complex but a lot more flexible as it allows implementers to control the
+              exactly when the line should be shown or not depending on an expression.
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-MaintenanceStackedCollectionSection">
+  &lt;property name="addLineActions">
+    &lt;list>
+      &lt;bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="addLine" p:actionLabel="add" p:hidden="true"/>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+    <section xml:id="MMVL">
+      <title>Maintenance Multiple Value Lookups</title>
+      <para>Multiple value lookups allow for a collection on a maintenance document to be populated
+        with multiple results at once, rather than forcing the user to iteratively add results one
+        after another. For a maintenance document to use a multiple value lookup, the maintenance
+        document must contain a collection, and a collection lookup must be configured for that
+        collection. </para>
+      <para><emphasis role="bold">KNS code example:</emphasis>
+        <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
+  &lt;property name="name" value="categories"/>
+  &lt;property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+  &lt;property name="includeMultipleLookupLine" value="true"/>
+  ...
+&lt;/bean></programlisting>
+        <emphasis role="bold">KRAD code example:</emphasis>
+      </para>
+      <para>
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-TableCollectionSection">
+  &lt;property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+  &lt;property name="propertyName" value="categories"/>
+  &lt;property name="collectionLookup">
+    &lt;bean parent="Uif-CollectionQuickFinder"
+             p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo"
+             p:fieldConversions="id:id,name:name,namespace:namespace"/>
+  &lt;/property>
+  ...
+&lt;/bean></programlisting>
+      </para>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>The in KNS the <emphasis role="keyword"
+                    >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
+              maintenance document. With KRAD one of the Uif collection groups is used. [KNS line:
+              1, KRAD line: 1]</para>
+          </listitem>
+          <listitem>
+            <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
+              was set to true to enable multiple value lookups on the collection. In KRAD this
+              property does no longer exist, instead the <emphasis role="keyword"
+                      >collectionLookup</emphasis> property is initialized with the <emphasis
+                      role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
+                      >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
+              to be specified if the collectionObjectClass of the collection group is the same as
+              the dataObjectClassName of the multi value lookup:</para>
+            <itemizedlist>
+              <listitem>
+                <para>dataObjectClassName - the data object that should be looked up</para>
+              </listitem>
+              <listitem>
+                <para>fieldConversions - from-to mapping of the returned data
+                  (&lt;lookup-field>:&lt;maintenance-collection-field>)</para>
+              </listitem>
+              <listitem>
+                <para>viewName - name of the lookup view (only needed if multible views for the
+                  dataObjectClassName exists)</para>
+              </listitem>
+            </itemizedlist>
+            <para>[KNS line: , KRAD line: 4-8]</para>
           </listitem>
         </itemizedlist>
       </para>

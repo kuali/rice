@@ -3272,7 +3272,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
             moved to the new method. A new permission which extends the KR-KRAD <emphasis>View Field
               template</emphasis> will have to be created. </para>
         </listitem>
-        <listitem xml:id="MPC6">
+        <listitem xml:id="MPC7">
           <para>Perform Custom Maintenance Document Function - In KNS this was accomplished using the
             <emphasis>
               BusinessObjectAuthorizationServiceImpl.considerCustomButtonFieldAuthorization

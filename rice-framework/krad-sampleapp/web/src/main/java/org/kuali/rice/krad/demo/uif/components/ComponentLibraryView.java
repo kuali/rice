@@ -743,10 +743,18 @@ public class ComponentLibraryView extends FormView {
         this.largeExampleFieldId = largeExampleFieldId;
     }
 
+    /**
+     * Html code viewer SyntaxHighlighter for displaying the html output by each example
+     *
+     * @return the SyntaxHighlighter
+     */
     public SyntaxHighlighter getHtmlCodeViewer() {
         return htmlCodeViewer;
     }
 
+    /**
+     * @see org.kuali.rice.krad.demo.uif.components.ComponentLibraryView#getHtmlCodeViewer()
+     */
     public void setHtmlCodeViewer(SyntaxHighlighter htmlCodeViewer) {
         this.htmlCodeViewer = htmlCodeViewer;
     }

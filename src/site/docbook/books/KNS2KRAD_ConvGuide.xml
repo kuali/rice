@@ -2809,7 +2809,35 @@
 &lt;/bean></programlisting>
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD9">
+            <para>To control whether or not to have a multiple value lookup, the KNS provided the
+              property <emphasis role="keyword">p:includeMultipleLookupLine="false"</emphasis>.  This
+              has been replaced with the KRAD equivalent <emphasis role="keyword">p:includeLineSelectionField="false"</emphasis>.
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
+          <listitem xml:id="MDD10">
+            <para>To specify whether items can be deleted from a collection, the KNS provided the
+              property <emphasis role="keyword">p:alwaysAllowCollectionDeletion="true"</emphasis>.  This
+              has been removed in KRAD but has an equivalent replacement:
+              <programlisting linenumbering="numbered">&lt;property name="lineActions">
+  &lt;list>
+    &lt;bean parent="Uif-DeleteLineAction" p:render="@{isAddedCollectionItem(#line)}"/>
+    &lt;bean parent="Uif-SaveLineAction"/>
+  &lt;/list>
+&lt;/property></programlisting>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>

@@ -128,7 +128,7 @@
     <property name="fieldBindingObjectPath" value="lookupCriteria"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
-      <bean parent="Uif-LookupCriteriaFooter" p:render="@{!#view.hideCriteriaOnSearch}"/>
+      <bean parent="Uif-LookupCriteriaFooter"/>
     </property>
   </bean>
 

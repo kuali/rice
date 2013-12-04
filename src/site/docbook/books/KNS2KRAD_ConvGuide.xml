@@ -2776,6 +2776,16 @@
         </inlinemediaobject>
       </para>
     </section>
+    <section xml:id="MCC">
+      <title>Collection Customization</title>
+      <para>The KNS provided the container <emphasis role="keyword">Maintainable.newCollectionLines</emphasis>
+        for lines being added to a collection to prevent them from being persisted until added.  KRAD
+        provides a similar <emphasis role="keyword">UifFormBase.newCollectionLines</emphasis> but also
+        allows customizing the property names and <emphasis role="keyword">BindingInfo</emphasis>
+        via <emphasis role="keyword">CollectionGroup.addLinePropertyName</emphasis> and
+        <emphasis role="keyword">CollectionGroup.addLineBindingInfo</emphasis>.
+      </para>
+    </section>
     <section>
       <title>MaintenanceDocumentPresentationController</title>
         <para>KRAD splits the <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
@@ -2812,62 +2822,48 @@
         </listitem>
       </itemizedlist>
     </section>
-    <section>
+    <section xml:id="MJS">
       <title>Specifying a javascript function to call on tab out from a field</title>
-      <para>
-        <itemizedlist>
-          <listitem xml:id="MBA1">
-            <para> In KNS this was achieved using <emphasis role="bold">
-                MaintainableFieldDefinition. webUILeaveFieldFunction</emphasis>.
-              <programlisting linenumbering="numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="false"
-      p:webUILeaveFieldFunction="alert('you are out')"/></programlisting>
-              However in KRAD Component classes include properties for events that are applicable to
-              the generate HTML elements. The same functionality can be obtained using the <emphasis
-                role="bold">ComponentBase.onBlurScript</emphasis>
-              <programlisting>&lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
-  &lt;property name="onBlurScript" 
-            value="jq(this).stop().animate({'height':'-=50px'},100);"/>
+      <para> In KNS this was achieved using <emphasis role="bold">MaintainableFieldDefinition.webUILeaveFieldFunction</emphasis>.
+        <programlisting linenumbering="numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="false"
+  p:webUILeaveFieldFunction="alert('you are out')"/></programlisting>
+        However in KRAD Component classes include properties for events that are applicable to
+        the generate HTML elements. The same functionality can be obtained using the <emphasis
+        role="bold">ComponentBase.onBlurScript</emphasis>
+        <programlisting>&lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
+  &lt;property name="onBlurScript" value="jq(this).stop().animate({'height':'-=50px'},100);"/>
 &lt;/bean></programlisting>
-            </para>
-          </listitem>
-        </itemizedlist>
       </para>
     </section>
-    <section>
+    <section xml:id="MHF">
       <title>Specifying help URL on a per-field basis</title>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para> In KNS <emphasis role="bold"> System parameter ENABLE_FIELD_LEVEL_HELP_IND
-                enables help on all fields</emphasis> enables help on all fields. You could set help
-              at the field\BO\document page level. In KRAD the <emphasis role="bold">Help
-                widget</emphasis> is used to render tooltip help and/or external help. Help can be
-              configured at the view, page, section or sub-section, or at the field level. Tooltip
-              help content is defined in the data dictionary.
-              <programlisting linenumbering="numbered">&lt;bean parent="Uif-TextControl">
+      <para> In KNS <emphasis role="bold"> System parameter ENABLE_FIELD_LEVEL_HELP_IND enables
+        help on all fields</emphasis> enables help on all fields. You could set help at the
+        field\BO\document page level. In KRAD the <emphasis role="bold">Help widget</emphasis>
+        is used to render tooltip help and/or external help. Help can be configured at the view,
+        page, section or sub-section, or at the field level. Tooltip help content is defined
+        in the data dictionary.<programlisting linenumbering="numbered">&lt;bean parent="Uif-TextControl">
   &lt;property name="help">
     &lt;bean parent="Uif-Help" p:tooltipHelpContent="This is my help text"/>
   &lt;/property>
 &lt;/bean></programlisting>
-              External Help can be specified via the data dictionary, or through a system parameter. <programlisting linenumbering="numbered">&lt;bean parent="Uif-View">
+        External Help can be specified via the data dictionary, or through a system parameter.
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-View">
   &lt;property name="help">
     &lt;bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
   &lt;/property>
 &lt;/bean></programlisting>
-            <programlisting linenumbering="numbered">&lt;bean parent="Uif-View"&gt;
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-View"&gt;
   &lt;property name="help">
     &lt;bean parent="Uif-Help">
       &lt;property name="helpDefinition">
-        &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" 
-              p:parameterName="TEST_PARAM" 
-              p:parameterDetailType="TEST_COMPONENT"/>
+        &lt;bean parent="HelpDefinition" p:parameterNamespace="KR-SAP"
+                 p:parameterName="TEST_PARAM"
+                 p:parameterDetailType="TEST_COMPONENT"/>
       &lt;/property>
     &lt;/bean>
   &lt;/property>
 &lt;/bean></programlisting>
-            </para>
-          </listitem>
-        </itemizedlist>
       </para>
     </section>
     <section xml:id="MADV">

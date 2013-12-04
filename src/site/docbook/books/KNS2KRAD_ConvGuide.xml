@@ -308,7 +308,7 @@
         demonstrates the differences in defining validation constraints using a single validation
         pattern and several such patterns are available.</para>
       <para>
-        <emphasis role="bold">KRAD validationPattern property example:</emphasis>
+        <emphasis role="bold">KNS validationPattern property example:</emphasis>
         <programlisting linenumbering="numbered">&lt;property name="validationPattern">
   &lt;bean  parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
 &lt;/property></programlisting>
@@ -592,7 +592,7 @@
       <section xml:id="CD1">
         <title>Button Control</title>
         <para>An action component that is configured to render a button. The button element can include text (the label) along with an image.</para>
-        <para><emphasis role="bold">Button Control example</emphasis>:
+        <para><emphasis role="bold">KNS Button Control example</emphasis>:
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="ButtonControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -638,7 +638,7 @@
       <section xml:id="CD6">
         <title>Checkbox Control</title>
         <para>The Checkbox control renders an HTML input tag with type of “checkbox”. This control is used to toggle the state of a property between two values (usually the Booleans true and false).</para>
-        <para><emphasis role="bold">Checkbox Control example:</emphasis>
+        <para><emphasis role="bold">KNS Checkbox Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CheckboxControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -671,7 +671,7 @@
       <section xml:id="CD3">
         <title>Currency Control</title>
         <para>Same as a Text control, except has an added style class of 'uif-currencyControl' which adds a right aligh style to the control useful for diplaying currency.</para>
-        <para><emphasis role="bold">Currency control example:</emphasis>
+        <para><emphasis role="bold">KNS Currency control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="CurrencyControlDefinition" p:formattedMaxLength="26" p:size="10"/>
 &lt;/property></programlisting>
@@ -708,7 +708,7 @@
         <para>The File control is used to allow the user to select a file from their file system
           whose contents will be submitted with the form. The server can then make use of the file
           contents or simply store the file on the server (for example a note attachment).</para>
-        <para><emphasis role="bold">File Control example:</emphasis>
+        <para><emphasis role="bold">KNS File Control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="FileControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -736,7 +736,7 @@
           not visible to the user, therefore its value can only be changed by script. These are often
           used to hold some state that is needed when the page is posted back, or to provide data for scripting purposes.</para>
         <para>
-          <emphasis role="bold">Hidden control example:</emphasis>
+          <emphasis role="bold">KNS Hidden control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="HiddenControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -767,7 +767,7 @@
           Also like the group control it will automatically add the principal id as a hidden field for us.
           In addition, it sets up a field query (covered in later on in this chapter) that display the person
           name under the control on return from the lookup or when tabbing out of the control.</para>
-        <para><emphasis role="bold">Kuali User control example:</emphasis>
+        <para><emphasis role="bold">KNS Kuali User control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="KualiUserControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -794,7 +794,7 @@
         <para>The Link control generates the HTML a (link) tag. The a tag is used to link to another document
           (the primary mechanism of navigation in the web). The link is presented to use by a label,
           which when clicked on will take the user to the linked page.</para>
-        <para><emphasis role="bold">Link control example:</emphasis>
+        <para><emphasis role="bold">KNS Link control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="LinkControlDefinition" p:styleClass="globalLinks" 
         p:target="_blank" p:hrefText="click here" />
@@ -827,7 +827,7 @@
             </listitem>
             <listitem>
               <para>The sub-property <emphasis role="keyword">linkText</emphasis> replaces the KNS
-                  <emphasis role="keyword">jrefText</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
+                  <emphasis role="keyword">hrefText</emphasis> property.[KNS line: 2, KRAD line: 2]<inlinemediaobject>
                   <imageobject>
                     <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                   </imageobject>
@@ -849,7 +849,7 @@
         <title>TextArea Control</title>
         <para>The TextArea control is similar to the text control with the exception of providing
           multiple lines for input. This control is used for entering longer strings of data such as a description.</para>
-        <para><emphasis role="bold">TextArea control example:</emphasis>
+        <para><emphasis role="bold">KNS TextArea control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -874,7 +874,7 @@
       <section xml:id="CD2">
         <title>Text Control</title>
         <para>The Text control renders the HTML input element with type of “text”. This is a single-line box that allows the user to type the value.</para>
-        <para><emphasis role="bold">Text control example:</emphasis>
+        <para><emphasis role="bold">KNS Text control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextControlDefinition"/>
 &lt;/property></programlisting></para>
@@ -919,7 +919,7 @@
       <section xml:id="CD7">
         <title>Radio Control Group</title>
         <para>A radio control allows a user to choose only one of a predefined set of options.</para>
-        <para><emphasis role="bold">Radio Group control example:</emphasis>
+        <para><emphasis role="bold">KNS Radio Group control example:</emphasis>
           <programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="RadioControlDefinition" 
         p:valuesFinderClass="org.kuali.rice.krad.keyvalues.DelegateRuleValuesFinder"/>
@@ -971,10 +971,9 @@
       </section>
       <section  xml:id="CD8">
         <title>Select Control</title>
-        <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135250-0700" comment="Add short summary of what select control does."?>KNS<?oxy_comment_end?>
-            Select control example:
+        <para>A select control provides a drop-down list of options. It is essentially an alternative to radio buttons.
+          Or a checkbox group if set to allow multiple selected values</para>
+        <para><emphasis role="bold">KNS Select control example:
           </emphasis><programlisting linenumbering="numbered">&lt;bean id="BookOrder-bookId" parent="BookOrder-bookId-parentBean"/>
 &lt;bean id="BookOrder-bookId-parentBean" abstract="true" parent="AttributeDefinition">
   &lt;property name="name" value="bookId"/>
@@ -1043,7 +1042,7 @@
             <listitem>
               <para>The property <emphasis role="keyword">Uif-MultiSelectControl</emphasis> also
                 replaces the KNS <emphasis role="keyword">MultiselectControlDefinition</emphasis>
-                You may also specify multi value select capability from a Uif-DropdownContro, by
+                You may also specify multi value select capability from a Uif-DropdownControl, by
                 setting property <emphasis role="keyword">multiple</emphasis> to true.<inlinemediaobject>
                   <imageobject>
                     <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
@@ -1055,10 +1054,9 @@
       </section>
       <section xml:id="CD5">
         <title>Date Control</title>
+        <para>A date control is an input element with a type attribute of "date" and represents a control for setting the element's value to a string representing a date.</para>
         <para>
-          <emphasis role="bold"
-            ><?oxy_comment_start author="jessicacoltrin" timestamp="20131015T135315-0700" comment="Add short summary of what date control does."?>KNS<?oxy_comment_end?>
-            Date control example:
+          <emphasis role="bold">KNS Date control example:
           </emphasis><programlisting linenumbering="numbered">&lt;property name="control">
   &lt;bean parent="TextareaControlDefinition"/>
 &lt;/property></programlisting>

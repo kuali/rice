@@ -2765,6 +2765,17 @@
         </itemizedlist>
       </para>
     </section>
+    <section xml:id="MBC">
+      <title>Base Maintenance Class</title>
+      <para>Custom documents that extended <emphasis role="keyword">org.kuali.rice.kns.document.MaintenanceDocumentBase</emphasis>
+        will need to reparent to <emphasis role="keyword">org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</emphasis>
+        <inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
+      </para>
+    </section>
     <section>
       <title>MaintenanceDocumentPresentationController</title>
         <para>KRAD splits the <emphasis role="keyword">MaintenanceDocumentPresentationController</emphasis>
@@ -2873,6 +2884,78 @@
         only display. <emphasis role="bold">setAlternateAndAdditionalDisplayValue</emphasis> get the
         relationship configured in the datadictionary file and set the name additional display value
         which will be displayed along with the code </para>
+    </section>
+    <section xml:id="MA">
+      <title>Attachments</title>
+      <para> The KNS provided a way to download an attachment from a Maintenance Document.  Typically
+        this was specified both in the business object and the data dictionary as follows:
+        <programlisting linenumbering="numbered">private String fileName;
+private String contentType;
+private byte[] attachmentContent;
+private transient FormFile attachmentFile;</programlisting>
+        <programlisting linenumbering="numbered">&lt;bean id ="AttachmentSample-attachmentFile" parent="AttributeDefinition">
+  &lt;property name="name" value="attachmentFile" />
+  &lt;property name="label" value="Attachment File" />
+  &lt;property name="control">
+    &lt;bean parent="FileControlDefinition" p:size="50" />
+  &lt;/property>
+&lt;/bean></programlisting>
+        In KRAD, because of the transition to Spring, this configuration needs to be changed with
+        some additional setup.  The Struts <emphasis role="bold">FormFile</emphasis> should change
+        to <emphasis role="bold">MultipartFile</emphasis> but should include some additional setup
+        to make sure that all of the rest of the variables are set on the form.  KRAD also provides
+        an intelligent way to display the attachments depending on whether the attachment is null or
+        not.  When the attachment exists, then this setup allows downloading the attachment via a
+        button.  When the attachment is null, the <emphasis role="bold">Uif-ConditionalBeanPropertyReplacer</emphasis>
+        replaces the button with a simple <emphasis role="bold">Uif-FileControl</emphasis>.
+        <programlisting linenumbering="numbered">private String fileName;
+private String contentType;
+private byte[] attachmentContent;
+private transient MultipartFile attachmentFile;
+
+public void setAttachmentFile(MultipartFile attachmentFile) {
+  if (attachmentFile != null) {
+    setContentType(attachmentFile.getContentType());
+    setFileName(attachmentFile.getOriginalFilename());
+    try {
+      setAttachmentContent(attachmentFile.getBytes());
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+}</programlisting>
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-VerticalFieldGroup" p:label="Attachment File">
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:fieldLabel.render="false" p:propertyName="fileName" />
+      &lt;bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadBOAttachment"
+               p:actionLabel="download attachment" p:title="download attachment"
+               p:ajaxSubmit="false" p:disableBlocking="true"
+               p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
+        &lt;property name="actionParameters">
+          &lt;map>
+            &lt;entry key="selectedLineIndex" value="@{#index}"/>
+          &lt;/map>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="propertyReplacers">
+    &lt;list>
+      &lt;bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items" p:condition="@{#dp.fileName eq null}">
+        &lt;property name="replacement">
+          &lt;list>
+            &lt;bean parent="Uif-InputField" p:propertyName="attachmentFile" p:fieldLabel.render="false">
+              &lt;property name="control">
+                &lt;bean parent="Uif-FileControl" p:size="50"/>
+              &lt;/property>
+            &lt;/bean>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting></para>
     </section>
     <section xml:id="MODV">
       <title>Overriding default values</title>

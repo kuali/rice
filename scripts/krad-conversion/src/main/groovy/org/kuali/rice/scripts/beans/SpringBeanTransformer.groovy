@@ -398,6 +398,11 @@ class SpringBeanTransformer {
      * @return
      */
     def renameProperties(Node beanNode, Map<String, String> renamedPropertyNames) {
+        beanNode.attributes().entrySet().each { attributeProperty ->
+            if (attributeProperty.key instanceof QName && renamedPropertyNames.containsKey(attributeProperty.key.localPart)) {
+                attributeProperty.key.localPart = renamedPropertyNames.get(attributeProperty.key.localPart)
+            }
+        }
         beanNode.property.findAll { renamedPropertyNames.containsKey(it.@name) }.each { beanProperty -> beanProperty.@name = renamedPropertyNames.get(beanProperty.@name) }
     }
 
@@ -410,6 +415,12 @@ class SpringBeanTransformer {
      * @return
      */
     def renameProperties(NodeBuilder builderDelegate, Node beanNode, Map<String, String> renamedPropertyNames) {
+        beanNode.attributes().entrySet().each { attributeProperty ->
+            if (attributeProperty.key instanceof QName && renamedPropertyNames.containsKey(attributeProperty.key.localPart)) {
+                attributeProperty.key.localPart = renamedPropertyNames.get(attributeProperty.key.localPart)
+                builderDelegate.currentNode.attributes().put(attributeProperty.key, attributeProperty.value);
+            }
+        }
         beanNode.property.each { beanProperty ->
             if (renamedPropertyNames.containsKey(beanProperty.@name)) {
                 builderDelegate.property(name: renamedPropertyNames.get(beanProperty.@name), value: beanProperty.@value)

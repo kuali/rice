@@ -26,10 +26,41 @@ jQuery(function () {
     }
     jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
         handleTabSwap("input#Demo-CurrentExampleIndex_control");
+        updateHtmlViewer();
     });
 });
 
+/**
+ * Update the html code viewer with the html output for the example being viewed
+ */
+function updateHtmlViewer(){
+    var content = jQuery("[data-parent='ComponentLibrary-TabGroup']:visible > .uif-verticalBoxLayout");
 
+    // If the content has a single child, and that child is a link opening another view, then don't show the html
+    // because this is showing an example outside of the scope of what should be shown here
+    var anchor = content.find("a");
+    if (content.children().length === 1 && anchor.length === 1
+            && anchor.attr("href") != null && anchor.attr("href").indexOf("viewId") !== -1 ) {
+        jQuery("div#ComponentLibrary-HtmlCodeViewer").hide();
+        return;
+    }
+
+    // Otherwise retrieve and show the html content
+    var exampleHtml = content.html();
+
+    if (exampleHtml){
+        exampleHtml = exampleHtml.trim();
+        exampleHtml = formatHtml(exampleHtml);
+
+        var htmlSourcePreElement = jQuery("<pre class='prettyprint linenums prettyprinted'></pre>");
+        htmlSourcePreElement.text(exampleHtml);
+
+        jQuery("div#ComponentLibrary-HtmlCodeViewer > div > pre").replaceWith(htmlSourcePreElement);
+        prettyPrint();
+    }
+
+    jQuery("div#ComponentLibrary-HtmlCodeViewer").show();
+}
 
 /**
  * Setup call for exhibit tabs, adds a handler for the tabsactivate event to switch the source in the syntaxHighlighter
@@ -40,6 +71,7 @@ function setupExhibitHandlers() {
         var tabIndex = ui.newTab.index();
         jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
 
+        //alert("got here");
         //main source code viewer
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         if (source != null && source.length) {
@@ -47,6 +79,7 @@ function setupExhibitHandlers() {
         }
 
         showAdditionalSource(tabIndex);
+        updateHtmlViewer();
     });
 }
 

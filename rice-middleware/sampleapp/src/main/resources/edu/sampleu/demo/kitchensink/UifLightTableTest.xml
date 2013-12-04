@@ -77,7 +77,7 @@
             <bean parent="Uif-DropdownControl" p:options-ref="test-options"/>
           </property>
         </bean>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group" p:group.validationMessages.render="false">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group" p:group.validationMessages.displayMessages="false">
           <property name="items">
             <list>
               <bean parent="Uif-Action" p:actionLabel="edit"

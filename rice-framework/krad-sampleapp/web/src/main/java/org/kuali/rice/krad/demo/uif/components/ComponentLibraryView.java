@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
+import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
 import org.springframework.util.StringUtils;
 
 /**
@@ -66,6 +67,7 @@ public class ComponentLibraryView extends FormView {
     private String description;
     private String usage;
     private String largeExampleFieldId;
+    private SyntaxHighlighter htmlCodeViewer;
 
     public static enum ExampleSize {
         SMALL, LARGE, XLARGE, WINDOW;
@@ -93,29 +95,8 @@ public class ComponentLibraryView extends FormView {
         //set page name
         this.getPage().setHeaderText(this.getComponentName());
 
-        Group tabGroup = ComponentFactory.getVerticalBoxSection();
-       // TabGroup tabGroup = ComponentFactory.getTabGroup();
+        TabGroup tabGroup = ComponentFactory.getTabGroup();
         List<Component> tabItems = new ArrayList<Component>();
-
-        //TODO add back in when we have content for usage and description
-/*        //Description processing
-        Group descriptionGroup = ComponentFactory.getVerticalBoxGroup();
-
-        //Description header
-        Header descriptionHeader = (Header) ComponentFactory.getNewComponentInstance("Uif-SubSectionHeader");
-        descriptionHeader.setHeaderLevel("H3");
-        descriptionHeader.setHeaderText(messageService.getMessageText("KR-SAP", null, "componentLibrary.description"));
-        descriptionHeader.setRender(false);
-        descriptionGroup.setHeader(descriptionHeader);
-
-        //Description message
-        List<Component> descriptionItems = new ArrayList<Component>();
-        Message descriptionMessage = ComponentFactory.getMessage();
-        descriptionMessage.setMessageText(description);
-        descriptionItems.add(descriptionMessage);
-        descriptionGroup.setItems(descriptionItems);
-
-        tabItems.add(descriptionGroup);
 
         //Usage processing
         Group usageGroup = ComponentFactory.getVerticalBoxGroup();
@@ -132,9 +113,10 @@ public class ComponentLibraryView extends FormView {
         Message usageMessage = ComponentFactory.getMessage();
         usageMessage.setMessageText(usage);
         usageItems.add(usageMessage);
+        usageItems.add(htmlCodeViewer);
         usageGroup.setItems(usageItems);
 
-        tabItems.add(usageGroup);*/
+        tabItems.add(usageGroup);
 
         //Documentation processing
         if (javaFullClassPath != null) {
@@ -761,6 +743,14 @@ public class ComponentLibraryView extends FormView {
         this.largeExampleFieldId = largeExampleFieldId;
     }
 
+    public SyntaxHighlighter getHtmlCodeViewer() {
+        return htmlCodeViewer;
+    }
+
+    public void setHtmlCodeViewer(SyntaxHighlighter htmlCodeViewer) {
+        this.htmlCodeViewer = htmlCodeViewer;
+    }
+
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
      */
@@ -780,6 +770,10 @@ public class ComponentLibraryView extends FormView {
         libraryViewCopy.setUsage(this.usage);
         libraryViewCopy.setLargeExampleFieldId(this.largeExampleFieldId);
         libraryViewCopy.setExampleSize(this.exampleSize);
+
+        if (this.htmlCodeViewer != null) {
+            libraryViewCopy.setHtmlCodeViewer((SyntaxHighlighter) this.htmlCodeViewer.copy());
+        }
 
         if (this.detailsGroup != null) {
             libraryViewCopy.setDetailsGroup((Group) this.detailsGroup.copy());

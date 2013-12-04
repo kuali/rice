@@ -450,7 +450,6 @@ public class FreeMarkerInlineRenderUtils {
                 out.write(Boolean.toString(disclosure.isDefaultOpen()));
                 out.write("\" class=\"uif-disclosureContent\">");
             }
-            renderTemplate(env, group.getValidationMessages(), null, false, false, null);
             renderTemplate(env, group.getInstructionalMessage(), null, false, false, null);
         }
     }

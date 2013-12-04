@@ -273,6 +273,9 @@
     <property name="rootJavadocAddress" value="http://site.kuali.org/rice/latest/apidocs/"/>
     <property name="rootDocBookAddress" value="http://site.origin.kuali.org/rice/latest/reference/html/KRAD_Guide.html"/>
     <property name="largeExampleFieldId" value="Demo-LargeExampleDropdown"/>
+    <property name="htmlCodeViewer">
+      <bean id="ComponentLibrary-HtmlCodeViewer" parent="ComponentLibrary-CodeViewer" p:header.headerText="HTML Output"/>
+    </property>
     <property name="cssClasses">
       <list merge="true">
         <value>demo-componentLibView</value>

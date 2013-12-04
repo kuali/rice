@@ -176,7 +176,7 @@
         <bean parent="Uif-DataField" p:label="Field 2" p:propertyName="field2"/>
         <bean parent="Uif-LinkField" p:label="Field 4" p:link.linkText="@{#lp.field4}"
               p:link.href="@{#ConfigProperties['krad.url']}/uicomponents?methodToCall=start&amp;viewId=UifCompView&amp;field1=@{#lp.field2}"/>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group" p:group.validationMessages.render="false">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group" p:group.validationMessages.displayMessages="false">
           <property name="items">
             <list>
               <bean parent="Uif-Action" p:actionLabel="edit"

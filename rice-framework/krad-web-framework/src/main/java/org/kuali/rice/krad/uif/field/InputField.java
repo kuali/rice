@@ -360,6 +360,11 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         }
 
         ClientValidationUtils.processAndApplyConstraints(this, view, model);
+
+        // Generate validation messages
+        if (validationMessages != null) {
+            validationMessages.generateMessages(true, view, model, this);
+        }
     }
 
     /**
@@ -504,7 +509,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         // update ids so they all match the attribute
 
         setNestedComponentIdAndSuffix(getControl(), UifConstants.IdSuffixes.CONTROL);
-        setNestedComponentIdAndSuffix(getValidationMessages(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
         setNestedComponentIdAndSuffix(getInstructionalMessage(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
@@ -636,7 +640,6 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
         components.add(instructionalMessage);
         components.add(constraintMessage);
         components.add(control);
-        components.add(validationMessages);
         components.add(quickfinder);
         components.add(suggest);
 

@@ -136,9 +136,6 @@
         </#if>
 
         <#if !readOnly>
-            <#-- render error container for field -->
-            <@krad.template component=field.validationMessages/>
-
             <#-- render field constraint -->
             <@krad.template component=field.constraintMessage/>
         </#if>

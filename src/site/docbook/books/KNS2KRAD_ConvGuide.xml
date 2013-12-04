@@ -3210,9 +3210,10 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
     <section>
       <title>Permission Checks</title>
       <para>Permission checks for maintenance documents in KRAD can be setup the same way as
-        specified in the Other Lookup Features. Examples below.</para>
+        specified in the Other Lookup Features. Note that if any implementers are extending
+        a KNS base class, they need to move that logic over to a KRAD base class.  Examples below.</para>
       <itemizedlist>
-        <listitem>
+        <listitem xml:id="MPC1">
           <para> Partial Unmask Field checks if a security-masked field can be partially displayed.
             In KNS this was checked using the
               <emphasis>BusinessObjectAuthorizationServiceImpl.canPartiallyUnmaskField.</emphasis>
@@ -3222,7 +3223,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
             object of the data. Implementers will have manually do the conversion and move any
             custom logic in the new method. </para>
         </listitem>
-        <listitem>
+        <listitem xml:id="MPC2">
           <para> Full Unmask Field checks if a security-masked field can be displayed in the clear.
             In KNS this was checked using the
               <emphasis>BusinessObjectAuthorizationServiceImpl.canFullyUnmaskField.</emphasis> In
@@ -3231,7 +3232,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
             security object of the data. Implementers will have manually do the conversion and move
             any custom logic in the new method. </para>
         </listitem>
-        <listitem>
+        <listitem xml:id="MPC3">
           <para>Modify Maintenance Document Section - In KNS this was accomplished using the
               <emphasis>
               BusinessObjectAuthorizationServiceImpl.considerMaintenanceDocumentAuthorizer
@@ -3240,6 +3241,56 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
               <emphasis>ViewAuthorizer.canEditGroup.</emphasis> Any custom logic will need to be
             moved to the new method. A new permission which extends the KR-KRAD <emphasis>Edit Group
               template</emphasis> will have to be created. </para>
+        </listitem>
+        <listitem xml:id="MPC4">
+          <para>View Inquiry or Maintenance Document Section - In KNS this was accomplished using the
+            <emphasis>
+              BusinessObjectAuthorizationServiceImpl.considerInquiryOrMaintenanceDocumentAuthorizer
+            </emphasis> and a permission extending the KR-NS <emphasis>View Inquiry or Maintenance
+              Document Section.</emphasis> In KRAD the method has changed to
+            <emphasis>ViewAuthorizer.canViewGroup.</emphasis> Any custom logic will need to be
+            moved to the new method. A new permission which extends the KR-KRAD <emphasis>View Group
+              template</emphasis> will have to be created. </para>
+        </listitem>
+        <listitem xml:id="MPC5">
+          <para>Modify Maintenance Document Field - In KNS this was accomplished using the
+            <emphasis>
+              BusinessObjectAuthorizationServiceImpl.considerBusinessObjectFieldModifyAuthorization
+            </emphasis> and a permission extending the KR-NS <emphasis>Modify Maintenance Document
+              Field.</emphasis> In KRAD the method has changed to
+            <emphasis>ViewAuthorizer.canEditField.</emphasis> Any custom logic will need to be
+            moved to the new method. A new permission which extends the KR-KRAD <emphasis>Edit Field
+              template</emphasis> will have to be created. </para>
+        </listitem>
+        <listitem xml:id="MPC6">
+          <para>View Inquiry or Maintenance Document Field - In KNS this was accomplished using the
+            <emphasis>
+              BusinessObjectAuthorizationServiceImpl.considerBusinessObjectFieldViewAuthorization
+            </emphasis> and a permission extending the KR-NS <emphasis>View Inquiry or Maintenance
+              Document Field.</emphasis> In KRAD the method has changed to
+            <emphasis>ViewAuthorizer.canViewField.</emphasis> Any custom logic will need to be
+            moved to the new method. A new permission which extends the KR-KRAD <emphasis>View Field
+              template</emphasis> will have to be created. </para>
+        </listitem>
+        <listitem xml:id="MPC6">
+          <para>Perform Custom Maintenance Document Function - In KNS this was accomplished using the
+            <emphasis>
+              BusinessObjectAuthorizationServiceImpl.considerCustomButtonFieldAuthorization
+            </emphasis> and a permission extending the KR-NS <emphasis>Perform Custom Maintenance
+              Document Function.</emphasis> In KRAD the logic has moved to the Uif under
+            <emphasis>Uif-ActionSecurity.</emphasis> Any custom logic will need to be
+            moved to the new definition below. A new permission which extends the KR-KRAD <emphasis>Perform Action
+              template</emphasis> will have to be created.
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-ActionField" p:label="Button">
+  &lt;property name="action">
+    &lt;bean parent="Uif-PrimaryActionButton" p:id="button" p:actionLabel="Button" p:methodToCall="Button">
+      &lt;property name="componentSecurity">
+        &lt;bean parent="Uif-ActionSecurity" p:performActionAuthz="true" />
+      &lt;/property>
+    &lt;/bean>
+  &lt;/property>
+&lt;/bean></programlisting>
+          </para>
         </listitem>
       </itemizedlist>
     </section>

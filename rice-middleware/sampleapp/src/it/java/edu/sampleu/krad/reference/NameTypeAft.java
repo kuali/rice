@@ -53,7 +53,7 @@ public class NameTypeAft extends WebDriverLegacyITBase {
     protected void testNameType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
-        assertDataTableContains(new String[][]{{"OTH"}, {"PRFR"}});
+        assertTextPresent(new String[][]{{"OTH"}, {"PRFR"}});
         waitAndTypeByName("lookupCriteria[code]","PRFR");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("OTH");

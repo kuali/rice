@@ -99,6 +99,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String CANCEL2_XPATH = "//a[contains(text(), 'ancel')]";
 
     /**
+     * "//a[@title='cancel']"
+     */
+    public static final String CANCEL3_XPATH = "//a[@title='cancel']";
+
+    /**
      * //*[@title='close this window']
      */
     public static final String CLOSE_WINDOW_XPATH_TITLE = "//*[@title='close this window']";
@@ -652,8 +657,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
         assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
-                regex));
+        assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(regex));
     }
 
     protected void assertBlanketApproveButtonsPresent() {
@@ -755,6 +759,29 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(pageSource.contains("Field 3"));
         assertTrue(pageSource.contains("Field 4"));
         assertTrue(pageSource.contains("Actions"));
+    }
+
+    protected void assertTextPresent(String [][] text) throws InterruptedException {
+        StringBuilder missingText = new StringBuilder("");
+        boolean present = true;
+        for (int i = 0, s = text.length; i < s; i++) {
+            for (int j = 0, t = text[i].length; j < t; j++) {
+                if (i == 0 && j == 0) {
+                    present = waitForIsTextPresent(text[0][0]); // wait for the first check
+                    if (!present) {
+                        missingText.append(text[0][0]);
+                    }
+                } else {
+                    if (!isTextPresent(text[i][j])) {
+                        present = false;
+                        missingText.append(" " + text[i][j]);
+                    }
+                }
+            }
+        }
+        if (!present) {
+            jiraAwareFail(missingText + " not present for " + this.getClass().toString());
+        }
     }
 
     protected void back() {
@@ -1523,7 +1550,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(2000);
         String adHocWrkGrp = null;
         if (isTextPresent("No values match this search.")) {
-            waitAndClickCancel();
+            waitAndClickByXpath(CANCEL3_XPATH);
         } else {
             waitAndClickReturnValue();
             waitAndClickByName("methodToCall.insertAdHocRouteWorkgroup");
@@ -4371,6 +4398,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
+    protected boolean waitForIsTextPresent(String text) throws InterruptedException {
+        boolean present = false;
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (isTextPresent(text)) {
+            present = true;
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        return present;
+    }
+
     protected void waitForTextPresent(String text) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
@@ -4379,7 +4421,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             Thread.sleep(1000);
         }
         if (!isTextPresent(text)) {
-            jiraAwareFail(text + " is not present");
+            jiraAwareFail(text + " is not present for " + this.getClass().toString());
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
@@ -4392,7 +4434,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             Thread.sleep(1000);
         }
         if (isTextPresent(text)) {
-            jiraAwareFail(text + " is still present");
+            jiraAwareFail(text + " is still present for " + this.getClass().toString());
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }

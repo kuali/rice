@@ -53,7 +53,7 @@ public class EntityTypeAft extends WebDriverLegacyITBase {
     protected void testEntityType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
-        assertDataTableContains(new String[][]{{"PERSON"}, {"SYSTEM"}});
+        assertTextPresent(new String[][]{{"PERSON"}, {"SYSTEM"}});
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("PERSON");

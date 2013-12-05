@@ -57,7 +57,7 @@ public class EmailTypeAft extends WebDriverLegacyITBase {
         String[][] data = {{"HM", "Home", "b"},
                            {"OTH", "Other", "c"},
                            {"WRK", "Work", "a"}};
-        assertDataTableContains(data);
+        assertTextPresent(data);
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("HM");

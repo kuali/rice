@@ -329,7 +329,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text the text to search for
      */
     protected void assertTextNotPresent(String text) {
-        assertTextNotPresent(text, "");
+        assertTextNotPresent(text, this.getClass().toString());
     }
 
     /**
@@ -338,7 +338,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param message the message to add to the failure
      */
     protected void assertTextNotPresent(String text, String message) {
-        if (getDriver().getPageSource().contains(text)) {
+        String contents = getDriver().getPageSource();
+        if (contents.contains(text)) {
             jiraAwareFail(text + " is present and should not be " + message);
         }
     }

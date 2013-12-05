@@ -53,7 +53,7 @@ public class EmploymentTypeAft extends WebDriverLegacyITBase {
     protected void testEmploymentType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
-        assertDataTableContains(new String[][]{{"N"}, {"O"}, {"P"}});
+        assertTextPresent(new String[][]{{"N"}, {"O"}, {"P"}});
         waitAndTypeByName("lookupCriteria[code]","N");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("Other");

@@ -53,7 +53,7 @@ public class PhoneTypeAft extends WebDriverLegacyITBase {
     protected void testPhoneType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
-        assertDataTableContains(new String[][]{{"HM"}, {"MBL"}});
+        assertTextPresent(new String[][]{{"HM"}, {"MBL"}});
         waitAndTypeByName("lookupCriteria[code]","MBL");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("HM");

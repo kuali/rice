@@ -41,10 +41,6 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText("Search");
     }
 
-    protected String getDataTableClass() {
-        return "dataTable";
-    }
-
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -64,23 +60,39 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
         String[][] data = {{"HM", "Home", "b"},
                            {"OTH", "Other", "c"},
                            {"WRK", "Work", "a"}};
-        assertDataTableContains(data, getDataTableClass());
+        assertTextPresent(data);
+    }
 
+    protected void testAddressTypeNoResults() throws Exception {
+        selectFrameIframePortlet();
         waitAndClickByXpath("//input[@value='N']");
         clickSearch();
-
-        waitForTextNotPresent("HM");
+        waitForTextPresent("No values match this search.");
     }
 
     @Test
     public void testAddressTypeBookmark() throws Exception {
         testAddressType();
+        assertTextPresent("return value"); // bookmark should have return values as BOOKMARK_URL has renderReturnLink=true
+        passed();
+    }
+
+    @Test
+    public void testAddressTypeNoResultsBookmark() throws Exception {
+        testAddressTypeNoResults();
         passed();
     }
 
     @Test
     public void testAddressTypeNav() throws Exception {
         testAddressType();
+        assertTextNotPresent("return value"); // navigation should not have return values
+        passed();
+    }
+
+    @Test
+    public void testAddressTypeNoResultsNav() throws Exception {
+        testAddressTypeNoResults();
         passed();
     }
 }

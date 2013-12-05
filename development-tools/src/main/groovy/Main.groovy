@@ -18,6 +18,7 @@ import japa.parser.JavaParser
 import japa.parser.ast.CompilationUnit
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.ojb.broker.metadata.DescriptorRepository
@@ -31,6 +32,7 @@ cli.h( longOpt: 'help', required: false, 'show usage information' )
 cli.c( longOpt: 'config', required: true, argName:"config file", args:1, 'Location of groovy configuration file' )
 cli.b( longOpt: 'base', required: true, argName:"base directory", args:1, 'Absolute path to the base directory for the conversion.' )
 cli.n( longOpt: 'dryrun', required: false, 'If set, the script will dump the resulting java files to the console instead of updating the existing files.' )
+cli.e( longOpt: 'errorsonly', required: false, 'If set, the script will only report any errors or warnings it will encounter and *not* update any files.' )
 cli._( longOpt: 'replace', required: false, 'Replace all existing JPA annotations on classes referenced by OJB files.')
 
 def opt = cli.parse(args)
@@ -66,6 +68,17 @@ if ( c.project.dryrun ) {
     println "**************************************************"
     println "Project in Dry Run Mode - no files will be updated"
     println "**************************************************"
+}
+
+if ( opt.e ) {
+    c.project.errorsonly = true
+    c.project.dryrun = true
+}
+
+if ( c.project.errorsonly ) {
+    println "******************************************************"
+    println "Project in Errors Only Mode - no files will be updated"
+    println "******************************************************"
 }
 
 if ( opt.replace ) {
@@ -154,23 +167,6 @@ println "\n**************************************************"
 println "\n\nJava Files: \n${mappedJavaFiles.values().join( '\n' )}"
 println "**************************************************"
 
-println "\n\n************************************************************"
-println "*** Starting Conversion"
-println "************************************************************\n\n"
-
-entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.replaceExistingAnnotations, c.project.upperCaseDbArtifactNames)
-
-for (String className : mappedJavaFiles.keySet()) {
-    File ojbMappedFile = mappedJavaFiles[className]
-	processJavaFile(ojbMappedFile, className)
-    
-    Collection<String> superClasses = OjbUtil.getSuperClasses(className, "org.kuali.rice");
-    for (String superClass : superClasses) {
-        processJavaFile(convertClassToFile(superClass), className)
-    }
-
-}
-
 def void processJavaFile( File ojbMappedFile, String subclassName ) {
     println "Processing File: $ojbMappedFile"
     if ( ojbMappedFile == null ) return;
@@ -179,7 +175,9 @@ def void processJavaFile( File ojbMappedFile, String subclassName ) {
     entityVisitor.visit(unit, subclassName)
 
     if ( c.project.dryRun ) {
-        println unit.toString()
+        if ( !c.project.errorsonly ) {
+            println unit.toString()
+        }
     } else {
         ojbMappedFile.delete()
         ojbMappedFile << unit.toString()
@@ -212,3 +210,23 @@ def Map<String,File> convertClassesToJavaFiles(Collection<String> mappedClasses)
     return javaFiles
 }
 
+println "\n\n************************************************************"
+println "*** Starting Conversion"
+println "************************************************************\n\n"
+
+entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.replaceExistingAnnotations, c.project.upperCaseDbArtifactNames)
+
+if ( c.project.errorsonly ) {
+    
+}
+
+for (String className : mappedJavaFiles.keySet()) {
+    File ojbMappedFile = mappedJavaFiles[className]
+    processJavaFile(ojbMappedFile, className)
+    
+    Collection<String> superClasses = OjbUtil.getSuperClasses(className, "org.kuali.rice");
+    for (String superClass : superClasses) {
+        processJavaFile(convertClassToFile(superClass), className)
+    }
+
+}

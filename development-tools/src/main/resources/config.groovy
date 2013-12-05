@@ -77,7 +77,13 @@ project {
     // This can be set to true if you want to make sure that you are not updating anything until this file is changed.
     // This option is set to true if you use the -d/--dryrun parameter of the script. 
     dryRun = false    
-        
+    
+    // If this property is set, it will skip all file updates and only report the messages which would appear 
+    // during the processing of the files.  Useful for pre-testing the conversion to make any needed changes 
+    // to the OJB descriptors or class files before running the conversion.
+    // Also can alert you to places where you may need to make manual modifications after the conversion.    
+    errorsonly = false
+    
     // Set this property to true if you want to wipe out all existing JPA annotations on target classes
     // Can also be set to true by the --replace script parameter.
     replaceExistingAnnotations = false

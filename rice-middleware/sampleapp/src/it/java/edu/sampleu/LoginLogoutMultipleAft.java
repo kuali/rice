@@ -15,7 +15,6 @@
  */
 package edu.sampleu;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -50,16 +49,14 @@ public class LoginLogoutMultipleAft extends WebDriverLegacyITBase {
     }
 
     public void testMultipleLoginLogout() throws Exception {
-        SeleneseTestBase.assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
-        SeleneseTestBase.assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        assertEquals("Logged in User: admin",getTextByXpath("//div[@id='login-info']/strong[1]"));
+        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndTypeByName("backdoorId", "employee");
         waitAndClickByXpath("//input[@value='Login']");
-        waitForPageToLoad();
-        assertElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH);
-        SeleneseTestBase.assertEquals("  Impersonating User: employee",getTextByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        waitForElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH);
+        assertEquals("  Impersonating User: employee",getTextByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
-        SeleneseTestBase.assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
+        assertEquals(Boolean.FALSE, isElementPresentByXpath(LOGIN_INFO_STRONG_2_XPATH));
         waitAndClickLogout();
-        passed();
     }
 }

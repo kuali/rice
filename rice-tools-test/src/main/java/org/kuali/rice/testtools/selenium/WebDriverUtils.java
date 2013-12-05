@@ -507,35 +507,6 @@ public class WebDriverUtils {
         return true;
     }
 
-    private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
-        String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
-        String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-        docId = docId.substring(0, docId.indexOf("</span>"));
-        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
-
-        String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-        viewId = viewId.substring(0, viewId.indexOf("</span>"));
-        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
-
-        String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("<span id=\"") + 3, stackTrace.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("\">") + 2, stackTrace.indexOf("</span>"));
-
-        return "\nIncident report "+ message+ " navigating to "+ linkLocator+ " : View Id: "+ viewId.trim()+ " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
-    }
-
-    private static String extractIncidentReportKim(String contents, String linkLocator, String message) {
-        String chunk =  contents.substring(contents.indexOf("id=\"headerarea\""), contents.lastIndexOf("</div>") );
-        String docIdPre = "type=\"hidden\" value=\"";
-        String docId = chunk.substring(chunk.indexOf(docIdPre) + docIdPre.length(), chunk.indexOf("\" name=\"documentId\""));
-
-        String stackTrace = chunk.substring(chunk.lastIndexOf("name=\"displayMessage\""), chunk.length());
-        String stackTracePre = "value=\"";
-        stackTrace = stackTrace.substring(stackTrace.indexOf(stackTracePre) + stackTracePre.length(), stackTrace.indexOf("name=\"stackTrace\"") - 2);
-
-        return "\nIncident report "+ message+ " navigating to "+ linkLocator + " Doc Id: "+ docId.trim()+ "\nStackTrace: "+ stackTrace.trim();
-    }
-
     /**
      * <p>
      * Find Button by text.

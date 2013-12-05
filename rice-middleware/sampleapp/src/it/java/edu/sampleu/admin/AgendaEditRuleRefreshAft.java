@@ -48,10 +48,8 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
         //        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
-        Thread.sleep(3000);
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
                 "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");
-        Thread.sleep(3000);
         waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']"); // jiraAwareWaitAndClick("//li[@id='473_node_0_parent_root']/a");
         waitAndClickByXpath("//li/a[@class='agendaNode logicNode whenTrueNode']");
         waitAndClickByLinkText("[-] collapse all");

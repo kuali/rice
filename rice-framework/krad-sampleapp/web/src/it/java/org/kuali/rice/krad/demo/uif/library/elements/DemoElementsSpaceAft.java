@@ -42,8 +42,7 @@ public class DemoElementsSpaceAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsSpace() throws Exception {
-        waitForPageToLoad();
-        assertTextPresent("Before space");
+        waitForTextPresent("Before space");
         assertTextPresent("nbsp");
         assertTextPresent("After space");
     }

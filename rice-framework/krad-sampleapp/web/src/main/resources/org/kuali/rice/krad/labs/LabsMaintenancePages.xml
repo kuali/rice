@@ -167,8 +167,8 @@
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C1" parent="Uif-VerticalBoxSection"
               p:headerText="Demo of a Maintenance Page with 'restricted' field in the authorizer"
-              p:instructionalText="Upon copy, fields determined to be 'restricted' based on input from the document
-              authorizer are shown as blank.">
+              p:instructionalText="Upon copy, fields determined to be 'restricted' (hidden or read-only) based on input
+              from the document authorizer are shown as blank.">
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Copy with restricted field"

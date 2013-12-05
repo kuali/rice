@@ -37,8 +37,10 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -1498,47 +1500,83 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testAddingBrownGroup() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitForPageToLoad();
         String docId = waitForDocId();
+        String random = RandomStringUtils.randomNumeric(4);
+        String organizationDocumentNumber = "ORD" + random;
+        String groupDescription = "GD" + random;
+        String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String nameSpace = "KR-IDM";
+        Date now = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        String today = sdf.format(now);
+        Calendar nextYearCal = Calendar.getInstance();
+        nextYearCal.add(Calendar.YEAR, 1);
+        String nextYear = sdf.format(nextYearCal.getTime());
 
         //Enter details for BrownGroup.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
-        selectOptionByName("document.groupNamespace", "KR-IDM");
-        waitForPageToLoad();
-        String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByName("document.documentHeader.organizationDocumentNumber", organizationDocumentNumber);
+        selectOptionByName("document.groupNamespace", nameSpace);
         waitAndTypeByName("document.groupName", groupName);
+        waitAndTypeByName("document.groupDescription", groupDescription);
+
+        // Add Ad hoc Recipient
+        waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        selectOptionByName("newAdHocRoutePerson.actionRequested", "F");
+        waitAndTypeByName("newAdHocRoutePerson.id", "dev1");
+        waitAndTypeByName("member.activeFromDate", today);
+        waitAndTypeByName("member.activeToDate", nextYear);
+        waitAndClickByName("methodToCall.insertAdHocRoutePerson");
+
+        // Add Ad hoc Workgroup
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForElementPresentByXpath(SEARCH_XPATH);
+        selectOptionByName("namespaceCode", nameSpace);
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        String adHocWrkGrp = null;
+        if (isTextPresent("No values match this search.")) {
+            waitAndClickCancel();
+        } else {
+            waitAndClickByLinkText("return value");
+            waitAndClickByName("methodToCall.insertAdHocRouteWorkgroup");
+            adHocWrkGrp = findElement(By.name("adHocRouteWorkgroup[0].recipientName")).getAttribute("value");
+        }
+
         checkByName("document.active");
         waitAndClickByXpath(SAVE_XPATH_2);
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH,"Document is not saved successfully");
+        waitForTextPresent("Document was successfully saved.");
         checkForIncidentReport();
 
         //checks it is saved and initiator is admin.
         assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
         assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitForPageToLoad();
         waitAndClickSearch();
-        waitForPageToLoad();
         waitAndClickReturnValue();
-        waitForPageToLoad();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
-        waitForPageToLoad();
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");
-        waitForPageToLoad();
         waitAndClickByLinkText("Group");
-        waitForPageToLoad();
         selectFrameIframePortlet();
         waitAndTypeByName("name", groupName);
         waitAndClickSearch();
-        isElementPresentByLinkText(groupName);
+        waitForElementPresent(By.linkText(groupName), docId + " with groupName "+ groupName + " not present!");
+        waitAndClickByLinkText("edit");
+        waitAndClickByName("methodToCall.showAllTabs");
+        waitForTextPresent("admin admin");
+        assertTextPresent("Adding Brown Group");
+        assertTextPresent("I want to add Brown Group to test KIM");
+        assertTextPresent(organizationDocumentNumber);
+        assertTextPresent(groupDescription);
+        assertTextPresent("One, Developer");
+        if (adHocWrkGrp != null ) {
+            assertTextPresent(adHocWrkGrp);
+        }
     }
 
     protected void testAttributeDefinitionLookUp() throws Exception {
@@ -4408,6 +4446,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementNotPresent(By by) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
         while (isElementPresent(by) && secondsToWait > 0) {
             secondsToWait -= 1000;
@@ -4416,9 +4455,24 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (isElementPresent(by)) {
             jiraAwareFail(by + " is still present");
         }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
+    protected void waitForTextPresent(String text) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (!isTextPresent(text)) {
+            jiraAwareFail(text + " is not present");
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     protected void waitForTextNotPresent(String text) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
         while (isTextPresent(text) && secondsToWait > 0) {
             secondsToWait -= 1000;
@@ -4427,6 +4481,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (isTextPresent(text)) {
             jiraAwareFail(text + " is still present");
         }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {

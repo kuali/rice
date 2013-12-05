@@ -685,13 +685,18 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Handles modal dialog interactions for a view controller When a controller method wishes to prompt the user
-     * for additional information before continuing to process the request.
+     * Handles a modal dialog interaction with the client user when a @{boolean} response is desired
      *
      * <p>
-     * If this modal dialog has not yet been presented to the user, a redirect back to the client
-     * is performed to display the modal dialog as a Lightbox. The DialogGroup identified by the
-     * dialogId is used as the Lightbox content.
+     * If this modal dialog has not yet been presented to the user, a runtime exception is thrown.   Use the following
+     * code in the view controller to ensure the dialog has been displayed and answered:
+     * <pre>{@code
+     *  DialogManager dm = form.getDialogManager();
+     *  if (!dm.hasDialogBeenAnswered(dialogId)) {
+     *      return showDialog(dialogId, form, request, response);
+     *  }
+     *  answer = getBooleanDialogResponse(dialogId, form, request, response);
+     * }</pre>
      * </p>
      *
      * <p>
@@ -704,15 +709,16 @@ public abstract class UifControllerBase {
      * @param request - the http request
      * @param response - the http response
      * @return boolean - true if user chose affirmative response, false if negative response was chosen
+     * @throws RiceRuntimeException when dialog has not been answered.
      */
     protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
-            showDialog(dialogId, form, request, response);
 
-            // throw an exception until showDialog is able to complete request.
-            // until then, programmers should check hasDialogBeenAnswered
+            // ToDo: It would be nice if showDialog could be called here and avoid this exception.
+            //       This would also remove the need of having to call showDialog explicitly.
+
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }
@@ -721,28 +727,40 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Handles a modal dialog interaction with the client user when a String response is desired
+     * Handles a modal dialog interaction with the client user when a @{code String} response is desired
      *
      * <p>
-     * Similar to askYesOrNoQuestion() but returns a string instead of a boolean.  The string value is the key
-     * string of the key/value pair assigned to the button that the user chose.
+     * If this modal dialog has not yet been presented to the user, a runtime exception is thrown.   Use the following
+     * code in the view controller to ensure the dialog has been displayed and answered:
+     * <pre>{@code
+     *  DialogManager dm = form.getDialogManager();
+     *  if (!dm.hasDialogBeenAnswered(dialogId)) {
+     *      return showDialog(dialogId, form, request, response);
+     *  }
+     *  answer = getBooleanDialogResponse(dialogId, form, request, response);
+     * }</pre>
+     * </p>
+     *
+     * <p>
+     * If the dialog has already been answered by the user.  The string value is the key string of the key/value pair
+     * assigned to the button that the user chose.
      * </p>
      *
      * @param dialogId - identifier of the dialog group
      * @param form - form instance containing the request data
      * @param request - the http request
      * @param response - the http response
-     * @return
-     * @throws Exception
+     * @return the key string of the response button
+     * @throws RiceRuntimeException when dialog has not been answered.
      */
+
     protected String getStringDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
         DialogManager dm = form.getDialogManager();
         if (!dm.hasDialogBeenAnswered(dialogId)) {
-            showDialog(dialogId, form, request, response);
+            // ToDo: It would be nice if showDialog could be called here and avoid this exception.
+            //       This would also remove the need of having to call showDialog explicitly.
 
-            // throw an exception until showDialog is able to complete request.
-            // until then, programmers should check hasDialogBeenAnswered
             throw new RiceRuntimeException("Dialog has not yet been answered by client. "
                     + "Check that hasDialogBeenAnswered(id) returns true.");
         }

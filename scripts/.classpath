@@ -3,12 +3,6 @@
 	<classpathentry kind="src" path="jpaconverter"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Ant"/>
-	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT">
-		<attributes>
-			<attribute name="minimal" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/commons-io-2.1.jar"/>
-	<classpathentry kind="lib" path="../development-tools/target/classes"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

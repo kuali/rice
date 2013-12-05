@@ -1722,8 +1722,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1752,8 +1751,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1793,8 +1791,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1824,8 +1821,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1880,8 +1876,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1899,8 +1894,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testEditParameter(String docId, String parameterName) throws Exception
-    {
+    protected List<String> testEditParameter(String docId, String parameterName) throws Exception {
         selectFrameIframePortlet();
         waitAndClickEdit();
         waitForPageToLoad();
@@ -1910,8 +1904,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.value", "N");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -2393,12 +2386,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
         checkByName("document.newMaintainableObject.active");
         waitAndClickSave();
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
         assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2428,8 +2419,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Editing Permission removeme");
         uncheckByName("document.newMaintainableObject.active");
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
@@ -2483,8 +2473,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -3022,8 +3011,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkByName("document.newMaintainableObject.active");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT  + message);
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT  + message);
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -3064,8 +3052,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -3091,7 +3078,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickSubmit();
         waitForPageToLoad();
         checkForDocError();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();

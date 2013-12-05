@@ -166,11 +166,13 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page with 'restricted' field in the authorizer"
+              p:instructionalText="Upon copy, fields determined to be 'restricted' based on input from the document
+              authorizer are shown as blank.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Copy with restricted field"
+                    p:href="maintenance?methodToCall=maintenanceCopy&amp;number=a14&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-AuthorizerView"/>
             </list>
           </property>
         </bean>
@@ -183,11 +185,13 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page with an external JavaScript file added."
+              p:instructionalText="External JavaScript files can be added using the 'additionalScriptFiles' property on
+              the view.  In this demo, the external JavaScript files causes an alert() on the document load.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Inclusion of external JavaScript"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-ExternalJavaScriptView"/>
             </list>
           </property>
         </bean>

@@ -69,4 +69,20 @@
     <property name="viewName" value="LabsMaintenance-PresentationControllerView"/>
     <property name="presentationControllerClass" value="org.kuali.rice.krad.labs.maintenance.LabsTravelAccountPresentationController"/>
   </bean>
+
+  <bean id="LabsMaintenance-AuthorizerView" parent="LabsMaintenance-DefaultView">
+    <property name="viewName" value="LabsMaintenance-AuthorizerView"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.labs.maintenance.LabsTravelAccountViewAuthorizer"/>
+  </bean>
+
+  <bean id="LabsMaintenance-ExternalJavaScriptView" parent="LabsMaintenance-DefaultView">
+    <property name="viewName" value="LabsMaintenance-ExternalJavaScriptView"/>
+    <property name="additionalScriptFiles">
+      <list merge="true">
+        <value>scripts/testAlert.js</value>
+      </list>
+    </property>
+  </bean>
+
+
 </beans>

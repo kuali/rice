@@ -14,17 +14,17 @@
 # limitations under the License.
 #
 
-MAVEN_REPO=$HOME/.m2/repository
+#MAVEN_REPO=$HOME/.m2/repository
+#groovy \
+#-cp .:../resources:../../../target/classes:\
+#$MAVEN_REPO/commons-io/commons-io/2.1/commons-io-2.1.jar:\
+#$MAVEN_REPO/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar:\
+#$MAVEN_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar:\
+#$MAVEN_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:\
+#$MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar \
+#Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
 
-groovy \
--cp .:../resources:../../../target/classes:\
-$MAVEN_REPO/commons-io/commons-io/2.1/commons-io-2.1.jar:\
-$MAVEN_REPO/com/google/code/javaparser/javaparser/1.0.9/javaparser-1.0.9.jar:\
-$MAVEN_REPO/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar:\
-$MAVEN_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:\
-$MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar \
-Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
-
+groovy Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
 
 
 #cat *.log

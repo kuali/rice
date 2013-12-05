@@ -153,22 +153,22 @@
     <property name="items">
       <list>
         <bean id="LabsMenuMaintenance-Row3-Col1" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Copy with 'restricted' fields in authorizer."
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C1"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Shows how fields marked as 'restricted' by the authorizer are hidden during copy"/>
           </list>
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row3-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Adding external JavaScript file"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C2"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Shows adding a external .js file to a Maintenance view."/>
           </list>
           </property>
         </bean>

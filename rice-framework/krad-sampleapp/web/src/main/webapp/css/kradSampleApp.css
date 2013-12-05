@@ -696,6 +696,11 @@ width: 100%;
 }
 
 
+#ComponentLibrary-MainCodeViewer .uif-syntaxHighlighter .prettyprint.linenums {
+    width: 682px;
+}
+
+
 
 
 

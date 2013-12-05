@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
@@ -55,6 +56,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private int defaultItemPosition;
 
 	private Help help;
+	
+	@DelayedCopyRestriction
 	private LayoutManager layoutManager;
 
 	private Header header;

@@ -36,6 +36,7 @@ import java.util.WeakHashMap;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -479,6 +480,60 @@ public final class CopyUtils {
             recycle(topReference);
             copyState.recycle();
         }
+        
+    }
+
+    /**
+     * Prepare a copyable object for caching by calling {@link Copyable#preventModification()} on
+     * all copyable instances located by a deep traversal of the object.
+     * 
+     * @param obj The object to prepare for caching.
+     * @return A deep copy of the object.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Copyable> T unwrapDeep(Copyable obj) {
+        CopyState copyState = RecycleUtils.getRecycledInstance(CopyState.class);
+        if (copyState == null) {
+            copyState = new CopyState();
+        }
+
+        Copyable unwrappedObj = obj.unwrap();
+        SimpleReference<?> topReference = getSimpleReference(unwrappedObj);
+        try {
+            copyState.queue.offer(topReference);
+
+            while (!copyState.queue.isEmpty()) {
+                CopyReference<?> toUnwrap = copyState.queue.poll();
+                Object source = toUnwrap.get();
+
+                if (!isShallowCopyAvailable(source)) {
+                    continue;
+                }
+
+                Object unwrapped = source;
+                if (source instanceof Copyable) {
+                    unwrapped = ((Copyable) source).unwrap();
+                    if (source != unwrapped) {
+                        toUnwrap.set(unwrapped);
+                    }
+                }
+
+                if (isDeep(toUnwrap, unwrapped)) {
+                    copyState.queueDeepCopyReferences(unwrapped, unwrapped, toUnwrap);
+                    copyState.cache.put(unwrapped, unwrapped);
+                }
+
+                if (toUnwrap != topReference) {
+                    recycle(toUnwrap);
+                }
+            }
+
+        } finally {
+            recycle(topReference);
+            copyState.recycle();
+        }
+        
+        return (T) unwrappedObj;
     }
 
     /**
@@ -548,7 +603,7 @@ public final class CopyUtils {
                 Class<?> targetClass = ref.getTargetClass();
 
                 if (Copyable.class.isAssignableFrom(targetClass) && targetClass.isInterface()
-                        && isDelay()) {
+                        && ref.isDelayAvailable() && isDelay()) {
                     target = DelayedCopyableHandler.getDelayedCopy((Copyable) source);
                     
                 } else {
@@ -609,7 +664,8 @@ public final class CopyUtils {
                 Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (int i = 0; i < sourceList.size(); i++) {
-                    queue.offer(getListReference(sourceList, targetList, i, componentClass, componentType));
+                    queue.offer(getListReference(sourceList, targetList,
+                            i, componentClass, componentType, ref.isDelayAvailable()));
                 }
             }
 
@@ -620,13 +676,14 @@ public final class CopyUtils {
                 Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (Map.Entry<?, ?> sourceEntry : sourceMap.entrySet()) {
-                    queue.offer(getMapReference(sourceEntry, targetMap, componentClass, componentType));
+                    queue.offer(getMapReference(sourceEntry, targetMap,
+                            componentClass, componentType, ref.isDelayAvailable()));
                 }
             }
 
             if (targetClass.isArray()) {
                 for (int i = 0; i < Array.getLength(source); i++) {
-                    queue.offer(getArrayReference(source, target, i));
+                    queue.offer(getArrayReference(source, target, i, ref.isDelayAvailable()));
                 }
             }
         }
@@ -652,6 +709,14 @@ public final class CopyUtils {
          * @return the class referred to
          */
         Class<T> getTargetClass();
+        
+        /**
+         * Determines whether or not a delayed copy proxy should be considered on this reference.
+         * 
+         * @return True if a delayed copy proxy may be used with this reference, false to always
+         *         perform deep copy.
+         */
+        boolean isDelayAvailable();
 
         /**
          * Gets the generic type this reference refers to.
@@ -717,6 +782,14 @@ public final class CopyUtils {
          */
         public Class<T> getTargetClass() {
             return this.targetClass;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isDelayAvailable() {
+            return false;
         }
 
         /**
@@ -799,6 +872,14 @@ public final class CopyUtils {
         @Override
         public Class<T> getTargetClass() {
             return (Class<T>) field.getType();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isDelayAvailable() {
+            return !field.isAnnotationPresent(DelayedCopyRestriction.class);
         }
 
         /**
@@ -890,6 +971,7 @@ public final class CopyUtils {
         private Object source;
         private Object target;
         private int index = -1;
+        private boolean delayAvailable;
 
         /**
          * Gets the component type of the array.
@@ -900,6 +982,14 @@ public final class CopyUtils {
         @Override
         public Class<T> getTargetClass() {
             return (Class<T>) source.getClass().getComponentType();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isDelayAvailable() {
+            return delayAvailable;
         }
 
         /**
@@ -938,6 +1028,7 @@ public final class CopyUtils {
             source = null;
             target = null;
             index = -1;
+            delayAvailable = false;
         }
     }
 
@@ -954,7 +1045,8 @@ public final class CopyUtils {
      * 
      * @return An array reference for temporary use while deep cloning.
      */
-    private static <T> ArrayReference<T> getArrayReference(Object source, Object target, int index) {
+    private static <T> ArrayReference<T> getArrayReference(
+            Object source, Object target, int index, boolean delayAvailable) {
         @SuppressWarnings("unchecked")
         ArrayReference<T> ref = RecycleUtils.getRecycledInstance(ArrayReference.class);
 
@@ -965,6 +1057,7 @@ public final class CopyUtils {
         ref.source = source;
         ref.target = target;
         ref.index = index;
+        ref.delayAvailable = delayAvailable;
 
         return ref;
     }
@@ -979,6 +1072,7 @@ public final class CopyUtils {
         private List<T> source;
         private List<T> target;
         private int index = -1;
+        private boolean delayAvailable;
 
         /**
          * Gets the item class for the list.
@@ -989,6 +1083,14 @@ public final class CopyUtils {
         public Class<T> getTargetClass() {
             return targetClass;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean isDelayAvailable() {
+            return this.delayAvailable;
+        }
+
 
         /**
          * Gets the generic item type for the list.
@@ -1027,6 +1129,7 @@ public final class CopyUtils {
             source = null;
             target = null;
             index = -1;
+            delayAvailable = false;
         }
     }
 
@@ -1045,7 +1148,7 @@ public final class CopyUtils {
      */
     @SuppressWarnings("unchecked")
     private static ListReference<?> getListReference(List<?> source, List<?> target, int index,
-            Class<?> targetClass, Type type) {
+            Class<?> targetClass, Type type, boolean delayAvailable) {
         ListReference<Object> ref = RecycleUtils.getRecycledInstance(ListReference.class);
 
         if (ref == null) {
@@ -1057,6 +1160,7 @@ public final class CopyUtils {
         ref.index = index;
         ref.targetClass = (Class<Object>) targetClass;
         ref.type = type;
+        ref.delayAvailable = delayAvailable;
 
         return ref;
     }
@@ -1070,6 +1174,7 @@ public final class CopyUtils {
         private Type type;
         private Map.Entry<Object, T> sourceEntry;
         private Map<Object, T> target;
+        private boolean delayAvailable;
 
         /**
          * Gets the value class for the map.
@@ -1079,6 +1184,13 @@ public final class CopyUtils {
         @Override
         public Class<T> getTargetClass() {
             return targetClass;
+        }
+
+        /**
+         * @return the delayAvailable
+         */
+        public boolean isDelayAvailable() {
+            return this.delayAvailable;
         }
 
         /**
@@ -1117,6 +1229,7 @@ public final class CopyUtils {
             type = null;
             sourceEntry = null;
             target = null;
+            delayAvailable = false;
         }
     }
 
@@ -1134,7 +1247,7 @@ public final class CopyUtils {
      */
     @SuppressWarnings("unchecked")
     private static MapReference<?> getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target,
-            Class<?> targetClass, Type type) {
+            Class<?> targetClass, Type type, boolean delayAvailable) {
         MapReference<Object> ref = RecycleUtils.getRecycledInstance(MapReference.class);
 
         if (ref == null) {
@@ -1145,6 +1258,7 @@ public final class CopyUtils {
         ref.target = (Map<Object, Object>) target;
         ref.targetClass = (Class<Object>) targetClass;
         ref.type = type;
+        ref.delayAvailable = delayAvailable;
 
         return ref;
     }

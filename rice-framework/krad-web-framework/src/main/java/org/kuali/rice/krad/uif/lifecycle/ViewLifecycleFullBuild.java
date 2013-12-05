@@ -97,7 +97,7 @@ public class ViewLifecycleFullBuild implements Runnable {
         processor.performPhase(LifecyclePhaseFactory.applyModel(view, model));
 
         ProcessLogger.trace("apply-model:" + view.getId());
-            
+        
         // Finalize Phase
         if (LOG.isInfoEnabled()) {
             LOG.info("performing finalize phase for view: " + view.getId());

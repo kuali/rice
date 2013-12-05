@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -62,9 +62,11 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.ParentLocation;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
@@ -152,6 +154,7 @@ public class View extends ContainerBase {
     @RequestParameter
     private String currentPageId;
 
+    @DelayedCopyRestriction
     private Group navigation;
 
     private Class<?> formClass;
@@ -345,7 +348,7 @@ public class View extends ContainerBase {
         super.performFinalize(model, parent);
         
         assert this == ViewLifecycle.getView();
-
+        
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
             preLoadScript = this.getPreLoadScript();

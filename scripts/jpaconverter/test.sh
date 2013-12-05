@@ -24,7 +24,7 @@
 #$MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar \
 #Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
 
-groovy Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
+groovy JpaConverter.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
 
 
 #cat *.log

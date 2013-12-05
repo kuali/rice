@@ -24,19 +24,16 @@ import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.visitor.EntityVisitor
 
-//import groovy.grape.Grape;
 import groovy.util.ConfigSlurper
 
-//Grape.grab(group:"org.kuali.rice",module:"rice-development-tools",version:"2.4.0-M3-SNAPSHOT")
-
-//@GrabConfig(systemClassLoader=true)
 @Grapes([
 	@Grab(group="org.kuali.rice",module="rice-development-tools",version="2.4.0-M3-SNAPSHOT")
     ,@GrabExclude('commons-transaction:commons-transaction')
     ,@GrabExclude('commons-beanutils:commons-beanutils')
+    ,@GrabExclude('org.codehaus.groovy:groovy-all')
     ,@GrabConfig(initContextClassLoader=true)
 	])
-class Main {
+class JpaConverter {
 
     static void processJavaFile( entityVisitor, File ojbMappedFile, String subclassName, boolean dryRun, boolean errorsonly ) {
         println "Processing File: $ojbMappedFile"
@@ -156,7 +153,7 @@ class Main {
          * 
          * In Eclipse (and Groovy 2.1.5), this will be: ${groovy_home}/lib/groovy-all-2.1.5.jar
          */
-        def rootLoader = Main.class.classLoader.getRootLoader()
+        def rootLoader = JpaConverter.class.classLoader.getRootLoader()
         if ( !rootLoader ) {
             println "ERROR!  RootLoader is null - unable to add additional classes to the classpath.  This happens when running Groovy from within Eclipse.  Process will fail unless it is able to access the RootLoader."
             return

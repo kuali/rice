@@ -3398,7 +3398,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
                 Open VIew permission.
                 <inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/KRAD_ConvGuide/KNS_InquiryIntoRecords_permission.png" contentdepth="15"/>
+                    <imagedata fileref="../images/KRAD_ConvGuide/KNS_InquireIntoRecords_Permission.png" contentdepth="15"/>
                   </imageobject>
                 </inlinemediaobject>
               </para>

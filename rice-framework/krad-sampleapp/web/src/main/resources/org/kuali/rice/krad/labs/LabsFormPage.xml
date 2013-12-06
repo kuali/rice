@@ -52,7 +52,7 @@
     </property>
   </bean>
 
-  <bean id="Lab-PageForm-Page1" parent="Uif-Page" p:headerText="Page 1"  p:formPostUrl="http://localhost:8080/krad-dev/kr-krad/chickens"
+  <bean id="Lab-PageForm-Page1" parent="Uif-Page" p:headerText="Page 1"  p:formPostUrl="http://localhost:8080/krad-dev/kr-krad/labs2"
         p:instructionalText="View for testing page form">
   <!--<bean id="Lab-PageForm-Page1" parent="Uif-Page" p:headerText="Page 1" p:instructionalText="View for testing page form">-->
     <property name="items">
@@ -109,7 +109,7 @@
   </bean>
 
   <bean id="Lab-PageForm-Page2" parent="Uif-Page" p:headerText="Page 2"
-        p:instructionalText="View for testing page form">
+        p:instructionalText="View for testing page form" p:formPostUrl="http://localhost:8080/krad-dev/kr-krad/labs3">
     <property name="items">
       <list>
 

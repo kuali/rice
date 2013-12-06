@@ -20,7 +20,7 @@
     <#local isOpen=widget.defaultOpen/>
 
     <@krad.script value="createDisclosure('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen?string},
-          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed},
-          ${widget.renderImage?string}, ${widget.ajaxRetrievalWhenOpened?string});"/>
+          '${widget.collapsedIconClass}', '${widget.expandedIconClass}', ${widget.animationSpeed},
+          ${widget.renderIcon?string}, ${widget.ajaxRetrievalWhenOpened?string});"/>
 
 </#macro>

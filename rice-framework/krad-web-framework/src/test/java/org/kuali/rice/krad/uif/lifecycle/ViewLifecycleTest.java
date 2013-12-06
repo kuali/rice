@@ -200,8 +200,8 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         form.setPostedView(view);
         form.setView(null);
 
-        assertEquals("uwdv4lg", view.getItems().get(0).getItems().get(1).getId());
-        String tableId = "uwdv4lg";
+        assertEquals("uu3q2a9", view.getItems().get(0).getItems().get(1).getId());
+        String tableId = "uu3q2a9";
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

@@ -15,9 +15,16 @@
     limitations under the License.
 
 -->
-<#macro uif_validationMessages element>
+<#--
+    Simple Layout Manager:
 
-    <@krad.div component=element>
-    </@krad.div>
+      Renders each component one after another
+ -->
+
+<#macro uif_simpleLayout items manager container>
+
+    <#list items as item>
+        <@krad.template component=item/>
+    </#list>
 
 </#macro>

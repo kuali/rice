@@ -16,9 +16,6 @@
 
 -->
 <html>
-    <#-- need to render the pages errors since the component could have added errors for the page -->
-    <@krad.template component=view.currentPage.validationMessages includeSrc=true/>
-
     <#-- now render the updated component (or page) wrapped in an update div -->
     <div id="${Component.id}_update">
         <@krad.template componentUpdate=true component=Component/>

@@ -23,10 +23,11 @@
 
         <@krad.fieldLbl field=field>
 
-            <#if field.renderFieldset>
-                <fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
-                    <legend style="display: none">${field.label!}</legend>
-            </#if>
+            <#-- TODO: verify removal -->
+            <#--<#if field.renderFieldset>-->
+                <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
+                    <#--<legend style="display: none">${field.label!}</legend>-->
+            <#--</#if>-->
 
             <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
@@ -75,42 +76,66 @@
 
             <#else>
 
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                    <div class="input-group">
+                </#if>
+
                 <#-- render field instructional text -->
                 <@krad.template component=field.instructionalMessage/>
 
                 <#-- render control for input -->
                 <@krad.template component=field.control field=field/>
 
+                <#if field.helperText?has_content>
+                    <div class="uif-helperText">
+                        ${field.helperText}
+                    </div>
+                </#if>
+
+                <#if field.postInputAddons??>
+                     <#list field.postInputAddons as postAddon>
+                         <#if postAddon.wrapperCssClassesAsString?has_content>
+                             <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                         <#else>
+                             <#local postAddonStyleClass=""/>
+                         </#if>
+
+                         <span ${postAddonStyleClass!}>
+                             <@krad.template component=postAddon/>
+                         </span>
+                     </#list>
+                </#if>
+
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                    </div>
+                </#if>
             </#if>
 
             <#-- render field quickfinder -->
-            <#if field.inputAllowed>
-                <@krad.template component=field.quickfinder componentId="${field.id}"/>
-            </#if>
+            <#--<#if field.inputAllowed>-->
+                <#--<@krad.template component=field.quickfinder componentId="${field.id}"/>-->
+            <#--</#if>-->
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
             <#if !readOnly && (field.inquiry.render)!false>
+
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
 
             <#-- render field help -->
             <@krad.template component=field.help/>
 
-            <#if field.renderFieldset>
-                </fieldset>
-            </#if>
+            <#--<#if field.renderFieldset>-->
+                <#--</fieldset>-->
+            <#--</#if>-->
 
         </@krad.fieldLbl>
 
-        <!-- placeholder for dynamic field markers -->
         <#if field.renderMarkerIconSpan>
             <span id="${field.id}_markers"></span>
         </#if>
 
         <#if !readOnly>
-            <#-- render error container for field -->
-            <@krad.template component=field.validationMessages/>
-
             <#-- render field constraint -->
             <@krad.template component=field.constraintMessage/>
         </#if>

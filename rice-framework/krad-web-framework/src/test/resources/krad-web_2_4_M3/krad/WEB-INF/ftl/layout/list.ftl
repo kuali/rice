@@ -47,15 +47,16 @@
                 <#local inList=true/>
             </#if>
 
-            <#-- if item is list aware, pull its classes and style to the list element -->
-            <#if HelperMethods.isListAware(item.getClass())>
-                <#if item.styleClassesAsString?has_content>
-                     <#local itemStyleClass="class=\"${item.styleClassesAsString}\""/>
-                </#if>
+            <#if item.wrapperCssClassesAsString?has_content>
+                <#local itemStyleClass="class=\"${item.wrapperCssClassesAsString}\""/>
+            <#else>
+                <#local itemStyleClass=""/>
+            </#if>
 
-                <#if item.style?has_content>
-                    <#local itemStyle="style=\"${item.style}\""/>
-                </#if>
+            <#if item.wrapperStyle?has_content>
+                <#local itemStyle="style=\"${item.wrapperStyle}\""/>
+            <#else>
+                <#local itemStyle=""/>
             </#if>
 
             <li ${itemStyle!} ${itemStyleClass!}>

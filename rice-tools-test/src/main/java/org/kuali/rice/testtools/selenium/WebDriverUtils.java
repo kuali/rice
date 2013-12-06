@@ -690,8 +690,9 @@ public class WebDriverUtils {
         }
     }
 
-    public static Boolean isTextPresent(String pageText, String text) {
+    public static Boolean isTextPresent(WebDriver driver, String pageText, String text) {
         if (pageText.contains(text)) {
+            WebDriverUtils.highlightElement(driver, By.xpath("//*[contains(text(), '" + text + "')]"));
             return Boolean.TRUE;
         }
 

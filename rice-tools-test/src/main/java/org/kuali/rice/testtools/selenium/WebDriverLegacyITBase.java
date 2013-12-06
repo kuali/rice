@@ -761,7 +761,28 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(pageSource.contains("Actions"));
     }
 
-    protected void assertTextPresent(String [][] text) throws InterruptedException {
+    protected void assertTextPresent(String[] text) throws InterruptedException {
+        StringBuilder missingText = new StringBuilder("");
+        boolean present = true;
+        for (int i = 0, s = text.length; i < s; i++) {
+            if (i == 0) {
+                present = waitForIsTextPresent(text[0]); // wait for the first check
+                if (!present) {
+                    missingText.append(text[0]);
+                }
+            } else {
+                if (!isTextPresent(text[i])) {
+                    present = false;
+                    missingText.append(" " + text[i]);
+                }
+            }
+        }
+        if (!present) {
+            jiraAwareFail(missingText + " not present for " + this.getClass().toString());
+        }
+    }
+
+    protected void assertTextPresent(String[][] text) throws InterruptedException {
         StringBuilder missingText = new StringBuilder("");
         boolean present = true;
         for (int i = 0, s = text.length; i < s; i++) {
@@ -1396,7 +1417,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected Boolean isTextPresent(String text) {
-        return WebDriverUtils.isTextPresent(driver.getPageSource(), text);
+        return WebDriverUtils.isTextPresent(driver, driver.getPageSource(), text);
     }
 
     protected void jGrowl(String message) {

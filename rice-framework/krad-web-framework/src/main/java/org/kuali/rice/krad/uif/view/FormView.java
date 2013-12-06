@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +90,34 @@ public class FormView extends View {
     @BeanTagAttribute(name = "validateServerSide")
     public boolean isValidateServerSide() {
         return this.validateServerSide;
+    }
+
+    /**
+     * The following is performed:
+     *
+     * <ul>
+     * <li>Adds to its document ready script the setupValidator js function for setting
+     * up the validator for this view</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
+
+        UifFormBase form = (UifFormBase) model;
+
+        PageGroup page = getCurrentPage();
+
+        if (StringUtils.isNotBlank(page.getFormPostUrl())) {
+            form.setFormPostUrl(page.getFormPostUrl());
+        }
+        else if (StringUtils.isNotBlank(formPostUrl)) {
+            form.setFormPostUrl(formPostUrl);
+        }
     }
 
     /**

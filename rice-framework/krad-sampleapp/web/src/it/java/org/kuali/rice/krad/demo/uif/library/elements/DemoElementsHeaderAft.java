@@ -27,7 +27,7 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Header-View&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Header-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-HeaderView";
 
     @Override
     protected String getBookmarkUrl() {
@@ -82,12 +82,17 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[1]/div/button[@class='btn btn-default btn-sm uif-collapseDisclosuresButton uif-boxLayoutHorizontalItem']");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example12']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-verticalBoxGroup uif-header-lowerGroup']/div[@class='uif-verticalBoxLayout clearfix']/div[2]/div/span[@class='uif-requiredInstructionsMessage uif-boxLayoutHorizontalItem']");
     }
+    
+    protected void testLibraryElementsHeaderDisclosureHeader() throws Exception {
+        waitAndClickByLinkText("Disclosure Header");
+        assertElementPresentByXpath("//div[@id='Demo-Header-Example13']/div[@class='uif-verticalBoxLayout clearfix']/div/div/h2/span");
+    }
 
     protected void testLibraryElementsHeaderImageCaptionHeader() throws Exception {
         waitAndClickByLinkText("ImageCaption Header");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example14']/div[@class='uif-verticalBoxLayout clearfix']/div/div/h4/span");
     }
-
+   
     protected void testLibraryElementsHeaderGroupsHeader() throws Exception {
         waitAndClickByLinkText("Header Groups");
         assertElementPresentByXpath("//div[@id='Demo-Header-Example15']/div[@class='uif-verticalBoxLayout clearfix']/div/div/div[1]/div[@class='uif-horizontalBoxLayout clearfix']/span");
@@ -104,6 +109,7 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
         testLibraryElementsHeader5();
         testLibraryElementsHeader6();
         testLibraryElementsHeaderEditableHeader();
+        testLibraryElementsHeaderDisclosureHeader();
         testLibraryElementsHeaderImageCaptionHeader();
         testLibraryElementsHeaderGroupsHeader();
         passed();
@@ -111,6 +117,12 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
 
     @Test
     public void testElementsHeaderNav() throws Exception {
+        testAllHeaders();
+        passed();
+    }  
+    
+    @Test
+    public void testElementsHeaderBookmark() throws Exception {
         testAllHeaders();
         passed();
     }  

@@ -28,7 +28,9 @@
 
   <bean id="AttachmentSampleMaintenanceDocument-parentBean" abstract="true"
         parent="MaintenanceDocumentEntry" p:businessObjectClass="edu.sampleu.travel.bo.AttachmentSample"
-        p:maintainableClass="org.kuali.rice.kns.maintenance.KualiMaintainableImpl">
+        p:maintainableClass="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"
+        p:businessRulesClass="org.kuali.rice.kns.maintenance.SampleRuleImpl">
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.maintenance.DocumentAuthorizerImpl" />
     <property name="maintainableSections">
       <list>
         <ref bean="AttachmentSampleMaintenanceDocument-DocumentMaintenance"/>

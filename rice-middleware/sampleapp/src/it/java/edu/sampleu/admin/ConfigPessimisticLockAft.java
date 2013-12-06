@@ -46,18 +46,18 @@ public class ConfigPessimisticLockAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testLookUpFancyBookmark() throws Exception {
-        testLookUpFancy();
+    public void testPessimisticLockBookmark() throws Exception {
+        testPessimisticLock();
         passed();
     }
 
     @Test
-    public void testLookUpFancyNav() throws Exception {
-        testLookUpFancy();
+    public void testPessimisticLockNav() throws Exception {
+        testPessimisticLock();
         passed();
     }
     
-    protected void testLookUpFancy() throws InterruptedException {
+    protected void testPessimisticLock() throws InterruptedException {
         selectFrameIframePortlet();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForTextPresent("No values match this search.");

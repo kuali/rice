@@ -26,7 +26,7 @@ public class DemoLookUpFancyAft extends WebDriverLegacyITBase {
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&hideReturnLink=true
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&hideReturnLink=true";
+    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=FancyLookupSampleView&hideReturnLink=true";
     
     @Override
     public String getBookmarkUrl() {
@@ -40,13 +40,11 @@ public class DemoLookUpFancyAft extends WebDriverLegacyITBase {
     }
 
     protected void testLookUpFancy() throws InterruptedException {
-    	waitAndTypeByName("lookupCriteria[name]","*");
+        waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
         waitAndClickButtonByText("Search");
         assertResultCount("6");
-        assertTextPresent("Actions");
-        assertTextPresent("edit");
-        assertTextPresent("copy");
+        assertTextPresent(new String[] {"Actions", "edit", "copy"});
     }
 
     @Test

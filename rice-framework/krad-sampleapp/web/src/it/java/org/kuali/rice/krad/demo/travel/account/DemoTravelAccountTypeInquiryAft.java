@@ -53,9 +53,6 @@ public class DemoTravelAccountTypeInquiryAft extends WebDriverLegacyITBase {
     
     protected void testTravelAccountTypeInquiry() throws Exception {
         waitForElementPresentByXpath("//a[contains(text(),'IAT')]");
-        assertTextPresent("Travel Account Type Code:");
-        assertTextPresent("Account Type Name:");
-        assertTextPresent("Account Type:");
-        assertTextPresent("IAT - Income");
+        assertTextPresent(new String[] {"Travel Account Type Code:", "Account Type Name:", "Account Type:", "IAT - Income"});
      }
 }

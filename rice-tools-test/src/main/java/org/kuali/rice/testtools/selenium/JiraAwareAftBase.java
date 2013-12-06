@@ -116,7 +116,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertElementPresentByName(String name) {
-        assertElementPresentByName(name, "");
+        assertElementPresentByName(name, this.getClass().toString());
     }
 
     protected void assertElementPresentByName(String name, String message) {
@@ -128,7 +128,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertElementPresentByXpath(String locator) {
-        assertElementPresentByXpath(locator, "");
+        assertElementPresentByXpath(locator, this.getClass().toString());
     }
 
     protected void assertElementPresentByXpath(String locator, String message) {
@@ -143,7 +143,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             findElement(By.linkText(linkText));
         } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(linkText), "", e);
+            jiraAwareFail(By.cssSelector(linkText), this.getClass().toString(), e);
         }
 
     }
@@ -152,7 +152,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             findElement(By.cssSelector(locator));
         } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(locator), "", e);
+            jiraAwareFail(By.cssSelector(locator), this.getClass().toString(), e);
         }
     }
 
@@ -225,7 +225,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertIsNotVisible(By by) {
-        assertIsNotVisible(by, "");
+        assertIsNotVisible(by, this.getClass().toString());
     }
 
     protected void assertIsNotVisible(By by, String message) {
@@ -298,7 +298,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text
      */
     protected void assertTextPresent(String text) {
-        assertTextPresent(text, "");
+        assertTextPresent(text, this.getClass().toString());
     }
 
     /**
@@ -551,7 +551,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @throws InterruptedException
      */
     protected WebElement jiraAwareWaitFor(By by) throws InterruptedException {
-        return jiraAwareWaitFor(by, "");
+        return jiraAwareWaitFor(by, this.getClass().toString());
     }
 
     /**

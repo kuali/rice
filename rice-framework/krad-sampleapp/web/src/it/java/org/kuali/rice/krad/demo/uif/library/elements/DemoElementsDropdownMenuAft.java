@@ -42,43 +42,43 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsDropdownBasic() throws Exception {
+        waitAndClickByLinkText("Basic Dropdown");
         waitAndClickByLinkText("User thclark");
-        assertElementPresentByXpath(
-                "//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example1']/div[3]/div/ul/li[2]/a[contains(text(),'Logout')]");
+        assertElementPresentByXpath("//a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath("//a[contains(text(),'Logout')]");
     }
     
     protected void testLibraryElementsDropdownWithDivider() throws Exception {
         waitAndClickByLinkText("Dropdown with Divider");
         waitAndClickByLinkText("Action List");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li/a[contains(text(),'Proposal #1034')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example2']/div[3]/div/ul/li[@class='divider']");
+        assertElementPresentByXpath("//a[contains(text(),'Proposal #1034')]");
+        assertElementPresentByXpath("//li[@class='divider']");
     }
     
     protected void testLibraryElementsDropdownWithHeader() throws Exception {
         waitAndClickByLinkText("Dropdown with Headers");
         waitAndClickByLinkText("Favorites");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li/a[contains(text(),'Proposal')]");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example3']/div[3]/div/ul/li[@class='dropdown-header']");
+        assertElementPresentByXpath("//a[contains(text(),'Proposal')]");
+        assertElementPresentByXpath("//li[@class='dropdown-header']");
     }
     
     protected void testLibraryElementsDropdownWithDisabled() throws Exception {
         waitAndClickByLinkText("Dropdown with Disabled");
-        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example4']/div[3]/div/a");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example4']/div[3]/div/ul/li/a[@class='uif-actionLink']");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example4']/div[3]/div/ul/li/a[@class='uif-actionLink disabled']");
+        waitAndClickByXpath("//a[contains(text(),'Select Action')]");
+        assertElementPresentByXpath("//a[contains(text(),'Approve') and @class='uif-actionLink']");
+        assertElementPresentByXpath("//a[contains(text(),'Disapprove') and @class='uif-actionLink disabled']");
     }
     
     protected void testLibraryElementsDropdownWithActionOptions() throws Exception {
         waitAndClickByLinkText("Dropdown with Action Options");
-        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example5']/div[3]/div/a");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example5']/div[3]/div/ul/li/a[contains(text(),'Refresh Section')]");
+        waitAndClickByXpath("//a[contains(text(),'Select Action Options')]");
+        assertElementPresentByXpath("//a[contains(text(),'Refresh Section')]");
     }
     
     protected void testLibraryElementsDropdownWithToggleButton() throws Exception {
         waitAndClickByLinkText("Dropdown with Toggle Button");
-        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/a/span[@class='caret']");
-        assertElementPresentByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[3]/div/ul/li/a[contains(text(),'Preferences')]");
+        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div/div/a/span[@class='caret']");
+        assertElementPresentByXpath("//a[contains(text(),'Preferences')]");
     }
 
     private void testAllDropdowns() throws Exception {

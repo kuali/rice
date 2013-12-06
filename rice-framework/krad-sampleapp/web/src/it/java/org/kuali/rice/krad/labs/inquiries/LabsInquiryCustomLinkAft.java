@@ -54,9 +54,9 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
                                           {"Fiscal Officer Name:", "frank, frank"}};
         assertLabeledTextPresent(lightBoxLabeledText);
 
-        String[][] dataTable = {{"sub1", "Sub Account 1"},
-                                {"sub2", "Sub Account 2"},
-                                {"sub3", "Sub Account 3"}};
+        String[][] dataTable = {{"SUB1", "Sub Account 1"},
+                                {"SUB2", "Sub Account 2"},
+                                {"SUB3", "Sub Account 3"}};
         assertDataTableContains(dataTable);
 
         clickCollapseAll();

@@ -548,6 +548,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         try {
             if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 waitAndClickLogoutIfPresent();
+            } else {
+                System.out.println("Last AFT URL: " + driver.getCurrentUrl());
             }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
@@ -674,7 +676,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
-        jiraAwareWaitFor(By.linkText("spreadsheet"), "");
+        jiraAwareWaitFor(By.linkText("spreadsheet"), this.getClass().toString());
 
         if (isElementPresent(By.linkText(docId))) {
             assertEquals(DOC_STATUS_FINAL, getDocStatus());
@@ -933,11 +935,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void checkForIncidentReport() {
-        checkForIncidentReport("", "");
+        checkForIncidentReport("", this.getClass().toString());
     }
 
     protected void checkForIncidentReport(String locator) {
-        checkForIncidentReport(locator, "");
+        checkForIncidentReport(locator, this.getClass().toString());
     }
 
     protected void checkForIncidentReport(String locator, String message) {
@@ -1110,7 +1112,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String[] waitAndGetText(By by) throws InterruptedException {
-        WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, "");
+        WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, this.getClass().toString());
         List<WebElement> found = findElements(by);
         String[] texts = new String[found.size()];
         int i = 0;
@@ -2975,7 +2977,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String testCreateNewComponent(String componentName, String componentCode) throws Exception {
-        return testCreateNewComponent(componentName, componentCode, "");
+        return testCreateNewComponent(componentName, componentCode, this.getClass().toString());
     }
 
     protected String testCreateNewComponent(String componentName, String componentCode, String message) throws Exception {
@@ -4061,11 +4063,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClick(By by) throws InterruptedException {
-        jiraAwareWaitAndClick(by, "");
+        jiraAwareWaitAndClick(by, this.getClass().toString());
     }
 
     protected void waitAndClick(By by, JiraAwareFailable failable) throws InterruptedException {
-        jiraAwareWaitAndClick(by, "", failable);
+        jiraAwareWaitAndClick(by, this.getClass().toString(), failable);
     }
 
     protected void waitAndClick(String locator, String message) throws InterruptedException {
@@ -4073,7 +4075,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickById(String id) throws InterruptedException {
-        jiraAwareWaitAndClick(By.id(id), "");
+        jiraAwareWaitAndClick(By.id(id), this.getClass().toString());
     }
 
     protected void waitAndClickById(String id, String message) throws InterruptedException {
@@ -4081,7 +4083,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
-        waitAndClickByLinkText(text, "");
+        waitAndClickByLinkText(text, this.getClass().toString());
     }
 
     protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
@@ -4089,7 +4091,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByLinkText(String text, JiraAwareFailable failable) throws InterruptedException {
-        waitAndClickByLinkText(text, "", failable);
+        waitAndClickByLinkText(text, this.getClass().toString(), failable);
     }
 
     protected void waitAndClickByLinkText(String text, String message, JiraAwareFailable failable) throws InterruptedException {
@@ -4098,7 +4100,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {
-        waitAndClickLinkContainingText(linkText, "");
+        waitAndClickLinkContainingText(linkText, this.getClass().toString());
     }
 
     protected void waitAndClickLinkContainingText(String linkText, String message) throws InterruptedException {
@@ -4107,7 +4109,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
-        jiraAwareWaitAndClick(By.name(name), "");
+        jiraAwareWaitAndClick(By.name(name), this.getClass().toString());
     }
 
     protected void waitAndClickByValue(String value) throws InterruptedException {
@@ -4131,7 +4133,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
-        waitAndClickButtonByText(buttonText, "");
+        waitAndClickButtonByText(buttonText, this.getClass().toString());
     }
 
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
@@ -4249,7 +4251,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitAndType(By by, String text) throws InterruptedException {
-        return waitAndType(by, text,  "");
+        return waitAndType(by, text, this.getClass().toString());
     }
 
     protected WebElement waitAndType(String selector, String text) throws InterruptedException {
@@ -4273,7 +4275,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
-        waitAndCreateNew("");
+        waitAndCreateNew(this.getClass().toString());
     }
 
     protected void waitAndCreateNew(String message) throws InterruptedException {
@@ -4287,7 +4289,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickCreateNew() throws InterruptedException {
-        waitAndClickCreateNew("");
+        waitAndClickCreateNew(this.getClass().toString());
     }
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
@@ -4343,7 +4345,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresent(By by) throws InterruptedException {
-        return jiraAwareWaitFor(by, "");
+        return jiraAwareWaitFor(by, this.getClass().toString());
     }
 
     protected WebElement waitForElementPresent(By by, String message) throws InterruptedException {
@@ -4351,11 +4353,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresent(String locator) throws InterruptedException {
-        return jiraAwareWaitFor(By.cssSelector(locator), "");
+        return jiraAwareWaitFor(By.cssSelector(locator), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByClassName(String name) throws InterruptedException {
-        return jiraAwareWaitFor(By.className(name), "");
+        return jiraAwareWaitFor(By.className(name), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByClassName(String name, String message) throws InterruptedException {
@@ -4363,7 +4365,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentByClassName(String name, int seconds) throws InterruptedException {
-        return jiraAwareWaitFor(By.className(name), seconds, "");
+        return jiraAwareWaitFor(By.className(name), seconds, this.getClass().toString());
     }
 
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
@@ -4371,7 +4373,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentById(String id) throws InterruptedException {
-        return jiraAwareWaitFor(By.id(id), "");
+        return jiraAwareWaitFor(By.id(id), this.getClass().toString());
     }
 
     protected void waitForElementPresentById(String id, String message) throws InterruptedException {
@@ -4387,7 +4389,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentByName(String name) throws InterruptedException {
-        return waitForElementPresentByName(name, "");
+        return waitForElementPresentByName(name, this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByName(String name, String message) throws InterruptedException {
@@ -4395,7 +4397,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentByXpath(String xpath) throws InterruptedException {
-        return jiraAwareWaitFor(By.xpath(xpath), "");
+        return jiraAwareWaitFor(By.xpath(xpath), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByXpath(String xpath, String message) throws InterruptedException {
@@ -4403,7 +4405,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementsPresentByXpath(String xpathLocator) throws InterruptedException {
-        jiraAwareWaitFors(By.xpath(xpathLocator), "");
+        jiraAwareWaitFors(By.xpath(xpathLocator), this.getClass().toString());
     }
 
     protected void waitForElementNotPresent(By by) throws InterruptedException {
@@ -4461,7 +4463,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
-        waitForTitleToEqualKualiPortalIndex("");
+        waitForTitleToEqualKualiPortalIndex(this.getClass().toString());
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {
@@ -4598,7 +4600,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
-        waitAndClick(locator, "");
+        waitAndClick(locator, this.getClass().toString());
     }
 
     /**
@@ -4610,7 +4612,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitFor(By by) throws InterruptedException {
-        return jiraAwareWaitFor(by, "");
+        return jiraAwareWaitFor(by, this.getClass().toString());
     }
 
     /**

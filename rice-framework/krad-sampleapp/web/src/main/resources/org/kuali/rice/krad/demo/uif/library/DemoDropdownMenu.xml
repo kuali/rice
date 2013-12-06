@@ -141,7 +141,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DropdownMenu-Example5 start-->
-        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action">
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action Options">
           <property name="menuItems">
             <list>
               <bean parent="Uif-MenuAction" p:actionLabel="Refresh Section" p:methodToCall="refresh"

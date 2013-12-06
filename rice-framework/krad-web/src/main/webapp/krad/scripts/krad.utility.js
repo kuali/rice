@@ -895,9 +895,15 @@ function openHelpWindow(url) {
     var windowUrl = url;
     var windowName = 'HelpWindow';
     var windowOptions = 'width=' + windowWidth + ',height=' + windowHeight + ',top=' + windowPositionX + ',left=' + windowPositionY + ',scrollbars=yes,resizable=yes';
+    var myWindow;
 
-    var myWindow = window.open('', windowName);
-    myWindow.close();
+    /* chrome will not allow a open,close,open */
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    if(!is_chrome) {
+        myWindow = window.open('', windowName);
+        myWindow.close();
+    }
+
     myWindow = window.open(windowUrl, windowName, windowOptions);
 }
 

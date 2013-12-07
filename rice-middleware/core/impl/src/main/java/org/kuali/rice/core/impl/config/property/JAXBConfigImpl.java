@@ -190,12 +190,16 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * passed in
      */
     protected void replaceVariables(Properties properties) {
+        replaceVariables("", properties);
+    }
+
+    protected void replaceVariables(String prefix, Properties properties) {
         SortedSet<String> keys = new TreeSet<String>(properties.stringPropertyNames());
         for (String key : keys) {
             String originalValue = properties.getProperty(key);
             String replacedValue = replaceVariable(key, originalValue);
             logPropertyChange("", key, null, originalValue, replacedValue);
-            this.setProperty(key, replacedValue);
+            this.setProperty(prefix, key, replacedValue);
         }
     }
 
@@ -314,17 +318,18 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             } else if (p.isSystem()) {
                 doSystem(p);
             } else if (p.isOverride() || !rawProperties.containsKey(p.getName())) {
-                doSetProperty(p);
+                doSetProperty(prefix + "  --- ", p);
             }
         }
-        LOG.debug(prefix + "- Parsed config: " + filename);
+        LOG.info(prefix + "- Parsed  config: [" + filename + "]");
     }
 
     protected void loadProperties(InputStream in, String prefix, String filename) throws IOException {
         LOG.info(prefix + "+ Loading properties: [" + filename + "]");
         Properties properties = new Properties();
         properties.load(in);
-        replaceVariables(properties);
+        replaceVariables(prefix + "  --- ", properties);
+        LOG.info(prefix + "- Loaded  properties: [" + filename + "]");
     }
 
     protected boolean isPropertiesFile(String filename) {
@@ -333,11 +338,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     protected void doSetProperty(Param p) {
+        doSetProperty("", p);
+    }
+
+    protected void doSetProperty(String prefix, Param p) {
         String name = p.getName();
         if (p.isRandom()) {
             String randStr = String.valueOf(generateRandomInteger(p.getValue()));
-            this.setProperty(p.getName(), randStr);
-            LOG.info("generating random string " + randStr + " for property " + p.getName());
+            this.setProperty(prefix, p.getName(), randStr);
+            LOG.info(prefix + "generating random string " + randStr + " for property " + p.getName());
         } else {
             /*
              * myProp = dog We have a case where you might want myProp = ${myProp}:someOtherStuff:${foo} This would normally overwrite the existing myProp with
@@ -346,11 +355,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
              */
             String value = replaceVariable(name, p.getValue());
 
-            this.setProperty(name, value);
+            this.setProperty(prefix, name, value);
         }
     }
 
     protected void doSystem(Param p) {
+        doSystem("", p);
+    }
+
+    protected void doSystem(String prefix, Param p) {
         // If override is false and the system property is already set, we can't override it
         boolean skip = !p.isOverride() && System.getProperty(p.getName()) != null;
         if (skip) {
@@ -362,8 +375,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         if (p.isRandom()) {
             String randStr = String.valueOf(generateRandomInteger(p.getValue()));
             System.setProperty(name, randStr);
-            this.setProperty(p.getName(), randStr);
-            LOG.info("generating random string " + randStr + " for system property " + p.getName());
+            this.setProperty(prefix + "  ", p.getName(), randStr);
+            LOG.info(prefix + "  --- " + "generating random string " + randStr + " for system property " + p.getName());
         } else {
             // resolve and set system params immediately so they can override
             // existing system params. Add to rawProperties resolved as well to
@@ -372,7 +385,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             set.add(p.getName());
             String value = parseValue(p.getValue(), set);
             System.setProperty(name, value);
-            this.setProperty(name, value);
+            this.setProperty(prefix + "  ", name, value);
         }
     }
 
@@ -381,12 +394,18 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         parseConfig(configLocation, unmarshaller, depth + 1);
     }
 
-    /*
-     * This will set the property. No logic checking so what you pass in gets set. We use this as a focal point for debugging the raw config changes.
+    /**
+     * This will set the property. No logic checking so what you pass in gets set. We use this as a
+     * focal point for debugging the raw config changes.
      */
     protected void setProperty(String name, String value) {
+        setProperty("", name, value);
+    }
+
+    protected void setProperty(String prefix, String name, String value) {
         String oldValue = rawProperties.getProperty(name);
-        logPropertyChange("Raw Config Override: ", name, null, oldValue, value);
+        String msg = (prefix == null) ? "Raw Config Override: " : prefix + "Raw Config Override: ";
+        logPropertyChange(msg, name, null, oldValue, value);
         rawProperties.setProperty(name, value);
     }
 
@@ -553,8 +572,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     protected void logPropertyChange(String msg, String key, String rawValue, String oldValue, String newValue) {
 
-        // We are not in debug mode, we are done
-        if (!LOG.isDebugEnabled()) {
+        // If INFO level logging is not enabled, we are done
+        if (!LOG.isInfoEnabled()) {
             return;
         }
 
@@ -574,9 +593,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
         // Log what happened to this property value
         if (StringUtils.contains(rawValue, "$")) {
-            LOG.debug(msg + key + "(" + rawValue + ")=[" + displayOld + "]->[" + displayNew + "]");
+            LOG.info(msg + key + "(" + rawValue + ")=[" + displayOld + "]->[" + displayNew + "]");
         } else {
-            LOG.debug(msg + key + "=[" + displayOld + "]->[" + displayNew + "]");
+            LOG.info(msg + key + "=[" + displayOld + "]->[" + displayNew + "]");
         }
     }
 
@@ -595,6 +614,16 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * @return a random integer in the range specified by the specifier, in the format: min-max
      */
     protected int generateRandomInteger(String rangeSpec) {
+        return generateRandomInteger("", rangeSpec);
+    }
+
+    /**
+     * Generates a random integer in the range specified by the specifier, in the format: min-max
+     * 
+     * @param rangeSpec a range specification, 'min-max'
+     * @return a random integer in the range specified by the specifier, in the format: min-max
+     */
+    protected int generateRandomInteger(String prefix, String rangeSpec) {
         String[] range = rangeSpec.split("-");
         if (range.length != 2) {
             throw new IllegalArgumentException("Invalid range specifier: " + rangeSpec);
@@ -610,7 +639,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         // not very random huh...
         if (from == to) {
             num = from;
-            LOG.info("from==to, so not generating random value for property.");
+            LOG.info(prefix + "  --- from==to, so not generating random value for property.");
         } else {
             num = from + RANDOM.nextInt((to - from) + 1);
         }

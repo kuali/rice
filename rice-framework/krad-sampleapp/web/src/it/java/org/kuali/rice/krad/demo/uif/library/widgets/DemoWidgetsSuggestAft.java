@@ -107,31 +107,78 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         }
     }
 
-    @Test
-    public void testWidgetsTooltipBookmark() throws Exception {
+    protected void testTooltips() throws Exception {
         testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
         testWidgetsSuggestHelperMethod2();
         testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
         testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+    }
+
+    @Test
+    public void testWidgetsTooltipBookmark() throws Exception {
+        testTooltips();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipAutoQueryBookmark() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipCustomSelectionBookmark() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipRichTextBookmark() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggestRichText();
-        driver.close();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipServiceSortingBookmark() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipNav() throws Exception {
-        testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
-        testWidgetsSuggestHelperMethod2();
-        testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
-        testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+        testTooltips();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipAutoQueryNav() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
-        testWidgetsSuggestRichText();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipCustomSelectionNav() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
-        driver.close();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipRichTextNav() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggestRichText();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipServiceSortingNav() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         passed();
     }
 }

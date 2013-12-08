@@ -63,7 +63,7 @@ public class EmailTypeAft extends WebDriverLegacyITBase {
         waitForTextNotPresent("HM");
         waitAndTypeByName("lookupCriteria[code]","OTH");
         waitAndClickButtonByText("Search");
-        waitForTextNotPresent("OTH");
+        waitForTextPresent("Other");
     }
 
     @Test

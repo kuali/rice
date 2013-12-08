@@ -50,16 +50,12 @@ public class RoutingReportAft extends WebDriverLegacyITBase {
     protected void testRoutingReport() throws Exception {
         selectFrameIframePortlet();
         selectByName("ruleTemplateId", "WorkflowDocumentDelegationTemplate");
-        Thread.sleep(3000);
         //      selectFrameIframePortlet();
-        assertTextPresent("Enter Routing Data");
-        assertTextPresent("Effective Date:");
-        assertTextPresent("Document Type:");
+        assertTextPresent(new String[] {"Enter Routing Data", "Effective Date:", "Document Type:"});
         assertElementPresentByXpath("//input[@name='methodToCall.calculateRoute']");
         selectByName("ruleTemplateId", "TravelRequest-DestinationRouting");
-        Thread.sleep(3000);
         //      selectFrameIframePortlet();
-        assertTextPresent("Destination:");
+        waitForTextPresent("Destination:");
     }
 
     @Test

@@ -42,9 +42,6 @@ public class DemoLookUpFancyAft extends WebDriverLegacyITBase {
     protected void testLookUpFancy() throws InterruptedException {
         waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
-        waitAndClickButtonByText("Search");
-        assertResultCount("6");
-        assertTextPresent(new String[] {"Actions", "edit", "copy"});
     }
 
     @Test

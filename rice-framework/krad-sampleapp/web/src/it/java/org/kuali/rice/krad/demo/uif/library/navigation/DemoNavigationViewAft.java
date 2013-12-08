@@ -27,7 +27,7 @@ public class DemoNavigationViewAft extends DemoLibraryNavigationBase {
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-NavigationView&methodToCall=start
      */
-    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-NavigationView&methodToCall=start&pageId=page1";
+    public static final String BOOKMARK_VIEW_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-NavigationView&methodToCall=start&pageId=Demo-NavigationGroup-Page1";
 
     @Override
     public String getBookmarkUrl() {

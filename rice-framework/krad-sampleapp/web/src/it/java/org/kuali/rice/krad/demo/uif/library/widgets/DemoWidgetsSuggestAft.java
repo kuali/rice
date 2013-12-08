@@ -50,7 +50,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         waitAndTypeByName(inputFieldName, search);
 
         //verify expect suggest results
-        waitForElementPresent(By.linkText(result), "Library Widget Suggest, CAT not suggested");
+        waitForElementPresent(By.linkText(result), "Library Widget Suggest, " + result + " not suggested");
         assertElementPresentByLinkText(result);
         waitAndClickByLinkText(result);
 
@@ -109,27 +109,27 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
     @Test
     public void testWidgetsTooltipBookmark() throws Exception {
-        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
         testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
         testWidgetsSuggestHelperMethod2();
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
-        testWidgetsSuggestRichText();
         testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
+        testWidgetsSuggestRichText();
         driver.close();
         passed();
     }
 
     @Test
     public void testWidgetsTooltipNav() throws Exception {
-        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
         testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
         testWidgetsSuggestHelperMethod2();
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
-        testWidgetsSuggestRichText();
         testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
+        testWidgetsSuggestRichText();
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
         driver.close();
         passed();

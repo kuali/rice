@@ -55,14 +55,10 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("TRAVEL ACCOUNT 14");
-        assertTextPresent("a14");
+        assertTextPresent(new String[] {"Travel Account 14", "a14"});
         waitAndClickButtonByText("Clear Values");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("Travel Account 1");
-        assertTextPresent("a1");
+        assertTextPresent(new String[] {"Travel Account 1", "a1"});
     }
 
     protected void testLabsLookupDefaultEmpty()throws Exception {

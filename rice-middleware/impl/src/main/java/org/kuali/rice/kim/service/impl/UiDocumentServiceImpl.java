@@ -248,30 +248,35 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
 			}
 		}
-		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
-		List <RoleMemberBo>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
-		List <DelegateTypeBo> personDelegations = populateDelegations(identityManagementPersonDocument);
-		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
-		List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
-		List <RoleMemberAttributeDataBo> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
-		bos.add(kimEntity);
-		//if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
-		//	bos.add(kimEntity.getPrivacyPreferences());
-		bos.addAll(groupPrincipals);
-		bos.addAll(rolePrincipals);
-		bos.addAll(roleRspActions);
-		bos.addAll(personDelegations);
-		// boservice.save(bos) does not handle deleteawarelist
-		getBusinessObjectService().save(bos);
 
-		if (!blankRoleMemberAttrs.isEmpty()) {
-			getBusinessObjectService().delete(blankRoleMemberAttrs);
-		}
-		if ( inactivatingPrincipal ) {
-			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KimImplServiceLocator.getRoleInternalService().principalInactivated(
+		// Save the kim entity changes here.
+        getBusinessObjectService().save(kimEntity);
+
+		// If person is being inactivated, do not bother populating roles, groups etc for this member since
+		// none of this is reinstated on activation.
+	    if ( !inactivatingPrincipal ) {
+	        List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
+	        List <RoleMemberBo>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
+	        List <DelegateTypeBo> personDelegations = populateDelegations(identityManagementPersonDocument);
+	        List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
+	        List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
+	        //if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
+	        //	bos.add(kimEntity.getPrivacyPreferences());
+	        bos.addAll(groupPrincipals);
+	        bos.addAll(rolePrincipals);
+	        bos.addAll(roleRspActions);
+	        bos.addAll(personDelegations);
+	     // boservice.save(bos) does not handle deleteawarelist
+            getBusinessObjectService().save(bos);
+	        List <RoleMemberAttributeDataBo> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
+	        if (!blankRoleMemberAttrs.isEmpty()) {
+	            getBusinessObjectService().delete(blankRoleMemberAttrs);
+	        }
+	    } else {
+	        //when a person is inactivated, inactivate their group, role, and delegation memberships
+	        KimImplServiceLocator.getRoleInternalService().principalInactivated(
                     identityManagementPersonDocument.getPrincipalId());
-		}
+	    }
 	}
 
 	private String getInitiatorPrincipalId(Document document){

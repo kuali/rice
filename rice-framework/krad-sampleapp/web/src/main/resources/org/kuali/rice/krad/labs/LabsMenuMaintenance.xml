@@ -176,7 +176,7 @@
               p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable delete through data dictionary"
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable Delete"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C3"/>
             <bean parent="Uif-Message" p:messageText="Show attempt to delete company when allowsRecordDeletion is
             set to false within the data dictinary."/>

@@ -200,15 +200,21 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR3C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Sample Maintenance Delete Disabled"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of disabling delete through the data dictionary"
-              p:instructionalText="placeholder">
+              p:headerText="Demo of disabling delete record through the data dictionary."
+              p:instructionalText="To disable the ability to delete records of a specific business object, set the
+              allowsRecordDeletion property to false in the Maintenance Document Entry .xml for the object.  In this
+              example, TravelCompanyMaintenance.xml was modified.  The first link below attempts to delete a travelCompany record.
+              After blanket approving the document, you can use the second link to test that the document still exists.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Delete"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceDelete&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Edit"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>

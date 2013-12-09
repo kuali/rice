@@ -384,6 +384,6 @@
         DOC_TYP_DESC="Parent Document Type for all Travel Documents"
         DOC_TYP_ID="KRSAP1000" DOC_TYP_NM="TravelDocument"
         DOC_TYP_VER_NBR="0" LBL="Travel Document"
-        OBJ_ID="ED129AFC276ADBE2E0406E0AC31D7CDE" PARNT_ID="2680"
+        OBJ_ID="ED1FE114DF4B416DE0406E0AC31D21F3" PARNT_ID="2680"
         RTE_VER_NBR="2" VER_NBR="1"/>
 </dataset>

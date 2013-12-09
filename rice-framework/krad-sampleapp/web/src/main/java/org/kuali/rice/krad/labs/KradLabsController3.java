@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 
-@RequestMapping(value = "/labs2")
-public class KradLabsController2 extends UifControllerBase {
+@RequestMapping(value ="/labs3")
+public class KradLabsController3 extends UifControllerBase {
 
     @Override
     protected KradLabsForm createInitialForm(HttpServletRequest request) {

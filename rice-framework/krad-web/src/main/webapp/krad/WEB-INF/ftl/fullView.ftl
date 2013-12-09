@@ -41,7 +41,7 @@
         <@krad.backdoor/>
     </#if>
 
-    <@krad.form render=view.renderForm postUrl="${view.formPostUrl!KualiForm.formPostUrl}"
+    <@krad.form render=view.renderForm postUrl="${KualiForm.formPostUrl}"
     onSubmitScript="${view.onSubmitScript!}" disableNativeAutocomplete=view.disableNativeAutocomplete>
         <@krad.template component=view/>
 

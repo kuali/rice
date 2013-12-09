@@ -27,7 +27,7 @@ KradResponse.prototype = {
     responseContents: null,
 
     // maps return types to handler function names
-    handlerMapping: {"update-page": "updatePageHandler", "update-component": "updateComponentHandler",
+    handlerMapping: {"update-form": "updateFormHandler", "update-page": "updatePageHandler", "update-component": "updateComponentHandler",
         "update-view": "updateViewHandler", "redirect": "redirectHandler",
         "display-lightbox": "displayLightBoxHandler", "update-dialog":"updateDialogHandler"},
 
@@ -210,5 +210,16 @@ KradResponse.prototype = {
     // displays the response contents in a lightbox
     displayLightBoxHandler: function (content, dataAttr) {
         showLightboxContent(content);
+    },
+
+    // replaces the form action with the given content
+    updateFormHandler: function (content, dataAttr) {
+
+        var action = jQuery(content).html();
+        // update form action with content
+
+        jQuery("form#" + kradVariables.KUALI_FORM).attr('action', jQuery.trim(action));
+
+
     }
 }

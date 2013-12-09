@@ -80,7 +80,7 @@ class JpaConverter {
 
     static void main( args ) {
     
-        def cli = new CliBuilder()
+        def cli = new CliBuilder(usage:'groovy JpaConverter.groovy [options]')
         cli.h( longOpt: 'help', required: false, 'show usage information' )
         cli.c( longOpt: 'config', required: true, argName:"config file", args:1, 'Location of groovy configuration file' )
         cli.b( longOpt: 'base', required: true, argName:"base directory", args:1, 'Absolute path to the base directory for the conversion.' )

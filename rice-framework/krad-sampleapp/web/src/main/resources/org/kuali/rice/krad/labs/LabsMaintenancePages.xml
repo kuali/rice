@@ -204,8 +204,8 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of disabling delete through the data dictionary"
+              p:instructionalText="placeholder">
           <property name="items">
             <list>
 

@@ -173,12 +173,13 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row3-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable delete through data dictionary"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C3"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Show attempt to delete company when allowsRecordDeletion is
+            set to false within the data dictinary."/>
           </list>
           </property>
         </bean>

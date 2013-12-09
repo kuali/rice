@@ -52,6 +52,10 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Dropdown with Divider");
         waitAndClickByLinkText("Action List");
         assertElementPresentByXpath("//a[contains(text(),'Proposal #1034')]");
+        assertElementPresentByXpath("//a[contains(text(),'Proposal #1035')]");
+        assertElementPresentByXpath("//a[contains(text(),'Proposal #1036')]");
+        assertElementPresentByXpath("//a[contains(text(),'Proposal #1037')]");
+        assertElementPresentByXpath("//a[contains(text(),'Full Action List')]");
         assertElementPresentByXpath("//li[@class='divider']");
     }
     
@@ -59,6 +63,8 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Dropdown with Headers");
         waitAndClickByLinkText("Favorites");
         assertElementPresentByXpath("//a[contains(text(),'Proposal')]");
+        assertElementPresentByXpath("//a[contains(text(),'Budget')]");
+        assertElementPresentByXpath("//a[contains(text(),'Yearly Budget')]");
         assertElementPresentByXpath("//li[@class='dropdown-header']");
     }
     
@@ -67,18 +73,29 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//a[contains(text(),'Select Action')]");
         assertElementPresentByXpath("//a[contains(text(),'Approve') and @class='uif-actionLink']");
         assertElementPresentByXpath("//a[contains(text(),'Disapprove') and @class='uif-actionLink disabled']");
+        assertElementPresentByXpath("//a[contains(text(),'Approve')]");
     }
     
     protected void testLibraryElementsDropdownWithActionOptions() throws Exception {
         waitAndClickByLinkText("Dropdown with Action Options");
         waitAndClickByXpath("//a[contains(text(),'Select Action Options')]");
         assertElementPresentByXpath("//a[contains(text(),'Refresh Section')]");
+        assertElementPresentByXpath("//a[contains(text(),'Action Script')]");
+        assertElementPresentByXpath("//a[contains(text(),'Pre-Submit Script')]");
     }
     
     protected void testLibraryElementsDropdownWithToggleButton() throws Exception {
         waitAndClickByLinkText("Dropdown with Toggle Button");
         waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div/div/a/span[@class='caret']");
         assertElementPresentByXpath("//a[contains(text(),'Preferences')]");
+        assertElementPresentByXpath("//a[contains(text(),'Logout')]");
+    }
+    
+    protected void testLibraryElementsDropdownWithTable() throws Exception {
+        waitAndClickByLinkText("Dropdown with Table");
+        waitAndClickByLinkText("more...");
+        assertTextPresent(new String[] {"Doc Nbr:","Initiator:","Status:","PI:","Created:","Updated:","Proposal Nbr:","Sponsor Name:"});
+        assertTextPresent(new String[] {"2743","thrclark","In Progress","Ken Graves","04:27pm 07/09/2013","12:22pm 07/12/2013","#23533","NIH"});
     }
 
     private void testAllDropdowns() throws Exception {
@@ -88,6 +105,7 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
         testLibraryElementsDropdownWithDisabled();
         testLibraryElementsDropdownWithActionOptions();
         testLibraryElementsDropdownWithToggleButton();
+        testLibraryElementsDropdownWithTable();
     }
 
     @Test

@@ -29,8 +29,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -473,6 +475,53 @@ public final class ObjectPropertyUtils {
         return Object.class;
     }
 
+    /**
+     * Locate the generic type declaration for a given target class in the generic type hierarchy of
+     * the source class.
+     * 
+     * @param sourceClass The class representing the generic type hierarchy to scan.
+     * @param targetClass The class representing the generic type declaration to locate within the
+     *        source class' hierarchy.
+     * @return The generic type representing the target class within the source class' generic
+     *         hierarchy.
+     */
+    public static Type findGenericType(Class<?> sourceClass, Class<?> targetClass) {
+        if (!targetClass.isAssignableFrom(sourceClass)) {
+            throw new IllegalArgumentException(targetClass + " is not assignable from " + sourceClass);
+        }
+
+        if (sourceClass.equals(targetClass)) {
+            return sourceClass;
+        }
+        
+        @SuppressWarnings("unchecked")
+        Queue<Type> typeQueue = RecycleUtils.getInstance(LinkedList.class);
+        typeQueue.offer(sourceClass);
+        while (!typeQueue.isEmpty()) {
+            Type type = typeQueue.poll();
+            
+            Class<?> upperBound = getUpperBound(type);
+            if (targetClass.equals(upperBound)) {
+                return type;
+            }
+
+            Type genericSuper = upperBound.getGenericSuperclass();
+            if (genericSuper != null) {
+                typeQueue.offer(genericSuper);
+            }
+
+            Type[] genericInterfaces = upperBound.getGenericInterfaces();
+            for (int i=0; i<genericInterfaces.length; i++) {
+                if (genericInterfaces[i] != null) {
+                    typeQueue.offer(genericInterfaces[i]);
+                }
+            }
+        }
+        
+        throw new IllegalStateException(targetClass + " is assignable from " + sourceClass
+                + " but could not be found in the generic type hierarchy");
+    }
+    
     /**
      * Private constructor - utility class only.
      */

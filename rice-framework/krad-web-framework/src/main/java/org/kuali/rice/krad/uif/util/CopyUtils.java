@@ -20,7 +20,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
@@ -649,7 +651,7 @@ public final class CopyUtils {
 
             if (Copyable.class.isAssignableFrom(type)) {
                 for (Field field : getMetadata(type).cloneFields) {
-                    queue.offer(getFieldReference(source, target, field));
+                    queue.offer(getFieldReference(source, target, field, ref));
                 }
 
                 // Used fields for deep copying, even if List or Map is implemented.
@@ -661,11 +663,19 @@ public final class CopyUtils {
                 List<?> sourceList = (List<?>) source;
                 List<?> targetList = (List<?>) target;
                 Type componentType = ObjectPropertyUtils.getComponentType(ref.getType());
+                
+                if (componentType instanceof TypeVariable<?>) {
+                    TypeVariable<?> tvar = (TypeVariable<?>) componentType;
+                    if (ref.getTypeVariables().containsKey(tvar.getName())) {
+                        componentType = ref.getTypeVariables().get(tvar.getName());
+                    }
+                }
+                
                 Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (int i = 0; i < sourceList.size(); i++) {
                     queue.offer(getListReference(sourceList, targetList,
-                            i, componentClass, componentType, ref.isDelayAvailable()));
+                            i, componentClass, componentType, ref));
                 }
             }
 
@@ -677,13 +687,13 @@ public final class CopyUtils {
 
                 for (Map.Entry<?, ?> sourceEntry : sourceMap.entrySet()) {
                     queue.offer(getMapReference(sourceEntry, targetMap,
-                            componentClass, componentType, ref.isDelayAvailable()));
+                            componentClass, componentType, ref));
                 }
             }
 
             if (targetClass.isArray()) {
                 for (int i = 0; i < Array.getLength(source); i++) {
-                    queue.offer(getArrayReference(source, target, i, ref.isDelayAvailable()));
+                    queue.offer(getArrayReference(source, target, i, ref));
                 }
             }
         }
@@ -724,6 +734,13 @@ public final class CopyUtils {
          * @return the generic type referred to
          */
         Type getType();
+
+        /**
+         * Gets the type variable mapping.
+         * 
+         * @return the type variable mapping.
+         */
+        Map<String, Type> getTypeVariables();
 
         /**
          * Retrieve the targeted value for populating the reference.
@@ -803,6 +820,14 @@ public final class CopyUtils {
         }
 
         /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Map<String, Type> getTypeVariables() {
+            return Collections.emptyMap();
+        }
+
+        /**
          * Gets the value.
          * 
          * @return value
@@ -862,6 +887,7 @@ public final class CopyUtils {
         private Object source;
         private Object target;
         private Field field;
+        private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
          * Gets the type of the field.
@@ -890,6 +916,14 @@ public final class CopyUtils {
         @Override
         public Type getType() {
             return field.getGenericType();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Map<String, Type> getTypeVariables() {
+            return typeVariables;
         }
 
         /**
@@ -931,6 +965,7 @@ public final class CopyUtils {
             source = null;
             target = null;
             field = null;
+            typeVariables.clear();
         }
 
     }
@@ -948,7 +983,8 @@ public final class CopyUtils {
      * 
      * @return A field reference for temporary use while deep cloning.
      */
-    private static <T> FieldReference<T> getFieldReference(Object source, Object target, Field field) {
+    private static <T> FieldReference<T> getFieldReference(Object source, Object target, Field field,
+            CopyReference<T> pref) {
         @SuppressWarnings("unchecked")
         FieldReference<T> ref = RecycleUtils.getRecycledInstance(FieldReference.class);
 
@@ -959,7 +995,44 @@ public final class CopyUtils {
         ref.source = source;
         ref.target = target;
         ref.field = field;
+        
+        Map<String, Type> pTypeVars = pref.getTypeVariables();
+        
+        if (pTypeVars != null && source != null) {
+            Class<?> sourceType = source.getClass();
+            Class<?> targetClass = pref.getTargetClass();
+            Type targetType = ObjectPropertyUtils.findGenericType(sourceType, targetClass);
+            if (targetType instanceof ParameterizedType) {
+                ParameterizedType parameterizedTargetType = (ParameterizedType) targetType;
+                Type[] params = parameterizedTargetType.getActualTypeArguments();
+                for (int j = 0; j < params.length; j++) {
+                    if (params[j] instanceof TypeVariable<?>) {
+                        Type pType = pTypeVars.get(targetClass.getTypeParameters()[j].getName());
+                        ref.typeVariables.put(((TypeVariable<?>) params[j]).getName(), pType);
+                    }
+                }
+            }
+        }
 
+        Class<?> rawType = field.getType();
+        Type genericType = field.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+            TypeVariable<?>[] typeParams = rawType.getTypeParameters();
+            Type[] params = parameterizedType.getActualTypeArguments();
+            assert params.length == typeParams.length;
+            for (int i=0; i < params.length; i++) {
+                Type paramType = params[i];
+                if (paramType instanceof TypeVariable<?>) {
+                    Type fType = ref.typeVariables.get(((TypeVariable<?>) paramType).getName());
+                    if (fType != null) {
+                        paramType = fType;
+                    }
+                }
+                ref.typeVariables.put(typeParams[i].getName(), paramType);
+            }
+        }
+        
         return ref;
     }
 
@@ -972,6 +1045,7 @@ public final class CopyUtils {
         private Object target;
         private int index = -1;
         private boolean delayAvailable;
+        private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
          * Gets the component type of the array.
@@ -1003,6 +1077,13 @@ public final class CopyUtils {
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public Map<String, Type> getTypeVariables() {
+            return this.typeVariables;
+        }
+
+        /**
          * Get the value of the indicated entry in the source array.
          * 
          * @return The value of the indicated entry in the source array.
@@ -1029,6 +1110,7 @@ public final class CopyUtils {
             target = null;
             index = -1;
             delayAvailable = false;
+            typeVariables.clear();
         }
     }
 
@@ -1046,7 +1128,7 @@ public final class CopyUtils {
      * @return An array reference for temporary use while deep cloning.
      */
     private static <T> ArrayReference<T> getArrayReference(
-            Object source, Object target, int index, boolean delayAvailable) {
+            Object source, Object target, int index, CopyReference<?> pref) {
         @SuppressWarnings("unchecked")
         ArrayReference<T> ref = RecycleUtils.getRecycledInstance(ArrayReference.class);
 
@@ -1057,8 +1139,9 @@ public final class CopyUtils {
         ref.source = source;
         ref.target = target;
         ref.index = index;
-        ref.delayAvailable = delayAvailable;
-
+        ref.delayAvailable = pref.isDelayAvailable();
+        ref.typeVariables.putAll(pref.getTypeVariables());
+        
         return ref;
     }
 
@@ -1073,6 +1156,7 @@ public final class CopyUtils {
         private List<T> target;
         private int index = -1;
         private boolean delayAvailable;
+        private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
          * Gets the item class for the list.
@@ -1103,6 +1187,13 @@ public final class CopyUtils {
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public Map<String, Type> getTypeVariables() {
+            return this.typeVariables;
+        }
+
+        /**
          * Get the value of the indicated item in the source array.
          * 
          * @return The value of the indicated item in the source array.
@@ -1130,6 +1221,7 @@ public final class CopyUtils {
             target = null;
             index = -1;
             delayAvailable = false;
+            typeVariables.clear();
         }
     }
 
@@ -1148,7 +1240,7 @@ public final class CopyUtils {
      */
     @SuppressWarnings("unchecked")
     private static ListReference<?> getListReference(List<?> source, List<?> target, int index,
-            Class<?> targetClass, Type type, boolean delayAvailable) {
+            Class<?> targetClass, Type type, CopyReference<?> pref) {
         ListReference<Object> ref = RecycleUtils.getRecycledInstance(ListReference.class);
 
         if (ref == null) {
@@ -1160,7 +1252,8 @@ public final class CopyUtils {
         ref.index = index;
         ref.targetClass = (Class<Object>) targetClass;
         ref.type = type;
-        ref.delayAvailable = delayAvailable;
+        ref.delayAvailable = pref.isDelayAvailable();
+        ref.typeVariables.putAll(pref.getTypeVariables());
 
         return ref;
     }
@@ -1175,6 +1268,7 @@ public final class CopyUtils {
         private Map.Entry<Object, T> sourceEntry;
         private Map<Object, T> target;
         private boolean delayAvailable;
+        private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
          * Gets the value class for the map.
@@ -1204,6 +1298,13 @@ public final class CopyUtils {
         }
 
         /**
+         * {@inheritDoc}
+         */
+        public Map<String, Type> getTypeVariables() {
+            return this.typeVariables;
+        }
+
+        /**
          * Get the value of the map entry.
          * 
          * @return The value of the map entry.
@@ -1230,6 +1331,7 @@ public final class CopyUtils {
             sourceEntry = null;
             target = null;
             delayAvailable = false;
+            typeVariables.clear();
         }
     }
 
@@ -1247,7 +1349,7 @@ public final class CopyUtils {
      */
     @SuppressWarnings("unchecked")
     private static MapReference<?> getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target,
-            Class<?> targetClass, Type type, boolean delayAvailable) {
+            Class<?> targetClass, Type type, CopyReference<?> pref) {
         MapReference<Object> ref = RecycleUtils.getRecycledInstance(MapReference.class);
 
         if (ref == null) {
@@ -1258,7 +1360,8 @@ public final class CopyUtils {
         ref.target = (Map<Object, Object>) target;
         ref.targetClass = (Class<Object>) targetClass;
         ref.type = type;
-        ref.delayAvailable = delayAvailable;
+        ref.delayAvailable = pref.isDelayAvailable();
+        ref.typeVariables.putAll(pref.getTypeVariables());
 
         return ref;
     }

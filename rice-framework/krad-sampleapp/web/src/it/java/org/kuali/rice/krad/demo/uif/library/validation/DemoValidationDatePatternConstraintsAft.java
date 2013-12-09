@@ -26,9 +26,9 @@ import org.openqa.selenium.By;
 public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DatePatternConstraintView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {
@@ -43,10 +43,10 @@ public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBa
     }
 
     protected void testValidationDatePatternConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","2 June 2012");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        waitAndClickByLinkText("Default");
+
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1","2 June 2012");
     }
     
     protected void testValidationDatePatternConstraintsBasicDate() throws Exception {
@@ -63,9 +63,9 @@ public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBa
     protected void testValidationDatePatternCustomize() throws Exception {
         waitAndClickByLinkText("Customize");
        
-       //Scenario-1
-       waitAndTypeByName("inputField4","23/12/13");
-       waitAndClickByLinkText("Usage");
+        //Scenario-1
+        waitAndTypeByName("inputField4","23/12/13");
+        waitAndClickLinkContainingText("Library Navigation");
         isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
     

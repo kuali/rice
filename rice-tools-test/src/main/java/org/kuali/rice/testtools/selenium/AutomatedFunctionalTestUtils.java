@@ -371,9 +371,13 @@ public class AutomatedFunctionalTestUtils {
         if (contents.contains("more<")) {
             ftlStackTrace = contents.substring(contents.indexOf("----------"), contents.indexOf("more<") - 1);
         } else if (contents.contains("at java.lang.Thread.run(Thread.java:")) {
-            ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
+            if (contents.indexOf("Error: on line") > -1) {
+                ftlStackTrace = contents.substring(contents.indexOf("Error: on line"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
+            } else {
+                ftlStackTrace = contents.substring(contents.indexOf("FreeMarker template error:"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
+            }
         }
-        JiraAwareFailureUtils.failOnMatchedJira(ftlStackTrace, failable);
+        JiraAwareFailureUtils.failOnMatchedJira(ftlStackTrace, linkLocator, failable);
         failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim());
     }
 

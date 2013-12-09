@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- FixedPointPatternConstraint demo -->
-  <bean id="Demo-FixedPointPatternConstraint-View" parent="ComponentLibraryView">
+  <bean id="Demo-FixedPointPatternConstraintView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoFixedPointPatternConstraint.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint"/>

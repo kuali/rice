@@ -186,3 +186,7 @@ input[type="text"], .uif-textAreaControl {
 .btn {
     border-radius: 0 !important;
 }
+
+#LabsProposal-Page input[type="checkbox"] {
+    margin-top: 8px;
+}

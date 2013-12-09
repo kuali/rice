@@ -37,8 +37,10 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -95,6 +97,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * Different cancel than CANCEL_NAME
      */
     public static final String CANCEL2_XPATH = "//a[contains(text(), 'ancel')]";
+
+    /**
+     * "//a[@title='cancel']"
+     */
+    public static final String CANCEL3_XPATH = "//a[@title='cancel']";
 
     /**
      * //*[@title='close this window']
@@ -539,6 +546,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     @After
     public void tearDown() {
         try {
+            if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
+                waitAndClickLogoutIfPresent();
+            } else {
+                System.out.println("Last AFT URL: " + driver.getCurrentUrl());
+            }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
@@ -549,9 +561,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             try {
                 closeAndQuitWebDriver();
             } catch (Throwable t) {
-                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
+                System.out.println(t.getMessage() + " occurred during tearDown, ignoring to avoid killing test run.");
                 t.printStackTrace();
-                System.out.println(t.getMessage() + " occured during tearDown, ignoring to avoid killing test run.");
+                System.out.println(t.getMessage() + " occurred during tearDown, ignoring to avoid killing test run.");
             }
         }
     }
@@ -647,8 +659,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
         assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(
-                regex));
+        assertTrue("attribute " + attribute + " doesn't match regex " + regex, attribute.matches(regex));
     }
 
     protected void assertBlanketApproveButtonsPresent() {
@@ -665,7 +676,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
-        jiraAwareWaitFor(By.linkText("spreadsheet"), "");
+        jiraAwareWaitFor(By.linkText("spreadsheet"), this.getClass().toString());
 
         if (isElementPresent(By.linkText(docId))) {
             assertEquals(DOC_STATUS_FINAL, getDocStatus());
@@ -679,7 +690,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
         fireEvent(field, "blur");
-        Thread.sleep(200);
+        Thread.sleep(500);
         assertAttributeClassRegexMatches(field, REGEX_ERROR);
     }
 
@@ -752,14 +763,56 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(pageSource.contains("Actions"));
     }
 
+    protected void assertTextPresent(String[] text) throws InterruptedException {
+        StringBuilder missingText = new StringBuilder("");
+        boolean present = true;
+        for (int i = 0, s = text.length; i < s; i++) {
+            if (i == 0) {
+                present = waitForIsTextPresent(text[0]); // wait for the first check
+                if (!present) {
+                    missingText.append(text[0]);
+                }
+            } else {
+                if (!isTextPresent(text[i])) {
+                    present = false;
+                    missingText.append(" " + text[i]);
+                }
+            }
+        }
+        if (!present) {
+            jiraAwareFail(missingText + " not present for " + this.getClass().toString());
+        }
+    }
+
+    protected void assertTextPresent(String[][] text) throws InterruptedException {
+        StringBuilder missingText = new StringBuilder("");
+        boolean present = true;
+        for (int i = 0, s = text.length; i < s; i++) {
+            for (int j = 0, t = text[i].length; j < t; j++) {
+                if (i == 0 && j == 0) {
+                    present = waitForIsTextPresent(text[0][0]); // wait for the first check
+                    if (!present) {
+                        missingText.append(text[0][0]);
+                    }
+                } else {
+                    if (!isTextPresent(text[i][j])) {
+                        present = false;
+                        missingText.append(" " + text[i][j]);
+                    }
+                }
+            }
+        }
+        if (!present) {
+            jiraAwareFail(missingText + " not present for " + this.getClass().toString());
+        }
+    }
+
     protected void back() {
         driver.navigate().back();
     }
 
     private void blanketApproveAssert() throws InterruptedException {
         checkForDocError();
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), DOC_SEARCH_XPATH,
-                "Blanket Approve failure", this);
         waitAndClickDocSearch();
         waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
         assertEquals("Kuali Portal Index", driver.getTitle());
@@ -768,10 +821,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, "", this);
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
-        Thread.sleep(2000);
     }
 
     /**
@@ -782,7 +833,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void blanketApproveTest() throws InterruptedException {
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), BLANKET_APPROVE_NAME, "", this);
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -830,7 +880,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * Uses Selenium's findElements method which does not throw a test exception if not found.
      */
     public void checkForDocError() {
-        checkForIncidentReport();
         if (hasDocError()) {
             String errorText = extractErrorText();
             jiraAwareFail(errorText);
@@ -886,11 +935,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void checkForIncidentReport() {
-        checkForIncidentReport("", "");
+        checkForIncidentReport("", this.getClass().toString());
     }
 
     protected void checkForIncidentReport(String locator) {
-        checkForIncidentReport(locator, "");
+        checkForIncidentReport(locator, this.getClass().toString());
     }
 
     protected void checkForIncidentReport(String locator, String message) {
@@ -1063,7 +1112,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String[] waitAndGetText(By by) throws InterruptedException {
-        WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, "");
+        WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, this.getClass().toString());
         List<WebElement> found = findElements(by);
         String[] texts = new String[found.size()];
         int i = 0;
@@ -1199,6 +1248,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
         }
+    }
+
+    protected void gotoLightBox() {
+        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
     }
 
     protected WebElement findButtonByText(String buttonText) {
@@ -1366,11 +1419,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected Boolean isTextPresent(String text) {
-        if (driver.getPageSource().contains(text)) {
-            return Boolean.TRUE;
-        }
-
-        return Boolean.FALSE;
+        return WebDriverUtils.isTextPresent(driver, driver.getPageSource(), text);
     }
 
     protected void jGrowl(String message) {
@@ -1386,9 +1435,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String multiValueResultCount() throws InterruptedException {
-        List<WebElement> resultLi = waitAndGetElementsByAttributeValue("class", "uif-infoMessageItem");
-        String resultsCount = resultLi.get(0).getText();
-        resultsCount = resultsCount.substring(0, resultsCount.indexOf((" ")));
+        WebElement dataTableInfo = waitAndGetElementByAttributeValue("class", "dataTables_info");
+        String resultsCount = dataTableInfo.getText();
+        resultsCount = resultsCount.substring(resultsCount.indexOf(" of ") + 4, resultsCount.indexOf(" entries")).trim();
         return resultsCount;
     }
 
@@ -1468,8 +1517,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testAddingNamespace(JiraAwareFailable failable) throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_XPATH_2, "save button does not exist on the page");
+        waitForElementPresentByXpath(SAVE_XPATH_2, "save button does not exist on the page");
 
         //Enter details for Namespace.
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding PEANUTS");
@@ -1478,70 +1526,97 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
         checkByXpath("//input[@id='document.newMaintainableObject.active']");
         waitAndClickByXpath(SAVE_XPATH_2);
-        waitForPageToLoad();
-        checkForIncidentReport();
-        assertDocumentStatusSaved();
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH, "Document is not saved successfully");
 
         //checks it is saved and initiator is admin.
         assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
         assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
-    }
-
-    protected void assertDocumentStatusSaved() {
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH,
-                "Document is not saved successfully");
     }
 
     protected void testAddingBrownGroup() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        waitForPageToLoad();
         String docId = waitForDocId();
+        String random = RandomStringUtils.randomNumeric(4);
+        String organizationDocumentNumber = "ORD" + random;
+        String groupDescription = "GD" + random;
+        String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String nameSpace = "KR-IDM";
+        Date now = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        String today = sdf.format(now);
+        Calendar nextYearCal = Calendar.getInstance();
+        nextYearCal.add(Calendar.YEAR, 1);
+        String nextYear = sdf.format(nextYearCal.getTime());
 
         //Enter details for BrownGroup.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Brown Group");
         waitAndTypeByName("document.documentHeader.explanation", "I want to add Brown Group to test KIM");
-        selectOptionByName("document.groupNamespace", "KR-IDM");
-        waitForPageToLoad();
-        String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByName("document.documentHeader.organizationDocumentNumber", organizationDocumentNumber);
+        selectOptionByName("document.groupNamespace", nameSpace);
         waitAndTypeByName("document.groupName", groupName);
+        waitAndTypeByName("document.groupDescription", groupDescription);
+
+        // Add Ad hoc Recipient
+        waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        selectOptionByName("newAdHocRoutePerson.actionRequested", "F");
+        waitAndTypeByName("newAdHocRoutePerson.id", "dev1");
+        waitAndTypeByName("member.activeFromDate", today);
+        waitAndTypeByName("member.activeToDate", nextYear);
+        waitAndClickByName("methodToCall.insertAdHocRoutePerson");
+
+        // Add Ad hoc Workgroup
+        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+        waitForElementPresentByXpath(SEARCH_XPATH);
+        selectOptionByName("namespaceCode", nameSpace);
+        waitAndClickSearch();
+        Thread.sleep(2000);
+        String adHocWrkGrp = null;
+        if (isTextPresent("No values match this search.")) {
+            waitAndClickByXpath(CANCEL3_XPATH);
+        } else {
+            waitAndClickReturnValue();
+            waitAndClickByName("methodToCall.insertAdHocRouteWorkgroup");
+            adHocWrkGrp = findElement(By.name("adHocRouteWorkgroup[0].recipientName")).getAttribute("value");
+        }
+
         checkByName("document.active");
         waitAndClickByXpath(SAVE_XPATH_2);
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH,"Document is not saved successfully");
-        checkForIncidentReport();
+        waitForTextPresent("Document was successfully saved.");
 
         //checks it is saved and initiator is admin.
         assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
         assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitForPageToLoad();
         waitAndClickSearch();
-        waitForPageToLoad();
         waitAndClickReturnValue();
-        waitForPageToLoad();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
-        waitForPageToLoad();
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickByLinkText("Administration");
-        waitForPageToLoad();
         waitAndClickByLinkText("Group");
-        waitForPageToLoad();
         selectFrameIframePortlet();
         waitAndTypeByName("name", groupName);
         waitAndClickSearch();
-        isElementPresentByLinkText(groupName);
+        waitForElementPresent(By.linkText(groupName), docId + " with groupName "+ groupName + " not present!");
+        waitAndClickByLinkText("edit");
+        waitAndClickByName("methodToCall.showAllTabs");
+        waitForTextPresent("admin admin");
+        assertTextPresent("Adding Brown Group");
+        assertTextPresent("I want to add Brown Group to test KIM");
+        assertTextPresent(organizationDocumentNumber);
+        assertTextPresent(groupDescription);
+        assertTextPresent("One, Developer");
+        if (adHocWrkGrp != null ) {
+            assertTextPresent(adHocWrkGrp);
+        }
     }
 
     protected void testAttributeDefinitionLookUp() throws Exception {
         waitForPageToLoad();
         selectFrameIframePortlet();
-        checkForIncidentReport("testAttributeDefinitionLookUp");
         waitAndClickByXpath("//button[contains(.,'earch')]");
         Thread.sleep(3000);
         waitForPageToLoad();
@@ -1578,7 +1653,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testConfigParamaterBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew("Probably KULRICE-10766 Parameter 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.parameter.ParameterBo");
+        waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Parameter ");
         assertBlanketApproveButtonsPresent();
@@ -1614,7 +1689,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
         waitAndClickByXpath("//div[2]/button");
-        waitForPageToLoad();
         waitAndClickByXpath("//div[2]/button[3]");
         waitForPageToLoad();
         selectTopFrame();
@@ -1637,7 +1711,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForPageToLoad();
         Thread.sleep(2000);
         waitAndClickSearch();
-        waitForPageToLoad();
         waitAndClickReturnValue();
         String docTypeName = "TestDocType" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitForElementPresentByXpath("//input[@id='document.newMaintainableObject.name']");
@@ -1681,8 +1754,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.evaluationOperatorCode' and @value='A']");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1711,8 +1783,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1752,8 +1823,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterName);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1783,8 +1853,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1806,10 +1875,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testDocTypeLookup() throws Exception {
         selectFrameIframePortlet();
         waitAndClickByXpath("//input[@title='Search Parent Name']");
-        waitForPageToLoad();
         waitAndClickByXpath(SAVE_XPATH_3);
         waitAndClickByXpath("//table[@id='row']/tbody/tr[contains(td[3],'RiceDocument')]/td[1]/a");
-        waitForPageToLoad();
         waitAndClickByXpath(SAVE_XPATH_3);
         assertEquals("RiceDocument", getTextByXpath("//table[@id='row']/tbody/tr/td[4]/a"));
         waitAndClickByName("methodToCall.clearValues");
@@ -1839,8 +1906,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", parameterType);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1858,8 +1924,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testEditParameter(String docId, String parameterName) throws Exception
-    {
+    protected List<String> testEditParameter(String docId, String parameterName) throws Exception {
         selectFrameIframePortlet();
         waitAndClickEdit();
         waitForPageToLoad();
@@ -1869,8 +1934,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.value", "N");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1892,15 +1956,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndClickSearch();
-        waitForPageToLoad();
-        Thread.sleep(3000);
         waitAndClickEdit();
         waitForPageToLoad();
         Thread.sleep(3000);
         assertTrue(isElementPresentByName(CANCEL_NAME));
         waitAndClickCancel();
-        waitForPageToLoad();
-        Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();
         passed();
@@ -1908,7 +1968,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testFiscalOfficerInfoMaintenanceNew() throws Exception {
         selectFrameIframePortlet();
-        checkForIncidentReport("", "https://jira.kuali.org/browse/KULRICE-7723 FiscalOfficerInfoMaintenanceNewIT.testUntitled need a better name and user permission error");
+        checkForIncidentReport();
         String docId = getTextByXpath("//*[@id='u13_control']");
         waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']", "New FO Doc");
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.dataObject.id']", "5");
@@ -2080,25 +2140,26 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
         selectFrameIframePortlet();
+        String randomCode = searchForAvailableCode(2);
+
         waitAndCreateNew();
         String docId = waitForDocId();
-        assertBlanketApproveButtonsPresent();
-        String twoUpperCaseLetters = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        String countryName = "Validation Test Country " + AutomatedFunctionalTestUtils
-                .createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String countryName = "Validation Test Country " + randomCode + " " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, countryName);
-        waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters);
+        waitAndTypeByXpath(DOC_CODE_XPATH, randomCode);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + twoUpperCaseLetters);
-        int attemptCount = 0;
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + randomCode);
+
+        finishBlanketApprovalTest(docId);
+    }
+
+    private void finishBlanketApprovalTest(String docId) throws InterruptedException {
+        assertBlanketApproveButtonsPresent();
         blanketApproveCheck();
-        while (hasDocError("same primary key already exists") && attemptCount < 25) {
-            clearTextByXpath(DOC_CODE_XPATH);
-            waitAndTypeByXpath(DOC_CODE_XPATH, twoUpperCaseLetters.substring(0, 1) + Character.toString((char) ('A' + attemptCount++)));
-            blanketApproveCheck();
+        if (!hasDocError("same primary key already exists")) { // don't fail as to still have the same key after 25 sequential attempts we've created many today already
+            blanketApproveAssert();
+            assertDocFinal(docId);
         }
-        blanketApproveAssert();
-        assertDocFinal(docId);
     }
 
     protected void testLocationCountyBlanketApprove() throws Exception {
@@ -2129,7 +2190,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testLocationPostBlanketApprove() throws Exception {
         selectFrameIframePortlet();
-        waitAndCreateNew("Probably KULRICE-10768 Postal Code 500 Error Lookup not defined for business object class org.kuali.rice.location.impl.postalcode.PostalCodeBo");
+        waitAndCreateNew();
         String docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Postal Code");
         assertBlanketApproveButtonsPresent();
@@ -2181,13 +2242,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // Mixed capitalization
         waitAndClick(By.xpath(SEARCH_XPATH_3));
         waitAndClickByLinkText(EDIT_LINK_TEXT, "edit button not present does user " + user + " have permission?");
-        Thread.sleep(3000);
-        checkForIncidentReport("submit");
-        assertTextPresent("ubmit");
+        waitForTextPresent("ubmit");
         assertTextPresent("ave");
         assertTextPresent("pprove");
         assertTextPresent("lose");
         assertTextPresent("ancel");
+    }
+
+    protected void testReferenceCampusTypeBlanketApprove() throws Exception {
+        selectFrameIframePortlet();
+        String randomCode = searchForAvailableCode(1);
+
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + randomCode + " " + dtsTwo);
+        waitAndTypeByXpath(DOC_CODE_XPATH, randomCode);
+        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis"  + randomCode + dtsTwo);
+
+        finishBlanketApprovalTest(docId);
     }
 
     protected void performParameterInquiry(String parameterField) throws Exception {
@@ -2217,7 +2290,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected List<String> testLookUpParameter(String docId, String parameterName) throws Exception {
         performParameterInquiry(parameterName);
-        checkForIncidentReport();
         assertEquals(parameterName, getTextByXpath(
                 "//div[@class='tab-container']/table//span[@id='name.div']").trim());
         assertEquals("Y", getTextByXpath("//div[@class='tab-container']/table//span[@id='value.div']")
@@ -2238,7 +2310,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // waitAndCreateNew();
         // waitForPageToLoad();
         jGrowl("Create New");
-        checkForIncidentReport();
         waitAndClickByLinkText("Create New");
 
         //jiraAwareWaitAndClick(By.linkText("Create New"));
@@ -2330,18 +2401,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testCreateNewPermission(String docId, String permissionName) throws Exception
-    {
+    protected List<String> testCreateNewPermission(String docId, String permissionName) throws Exception {
         waitForPageToLoad();
         Thread.sleep(2000);
         docId = waitForDocId();
         waitAndClickSave();
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(.,'Document Description (Description) is a required field.')]/img[@alt='error']");
+        waitForElementPresentByXpath("//div[contains(.,'Document Description (Description) is a required field.')]/img[@alt='error']");
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding Permission removeme");
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[@class='error']");
+        waitForElementPresentByXpath("//div[@class='error']");
         assertElementPresentByXpath("//div[contains(.,'Template (Template) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Namespace (Permission Namespace) is a required field.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'Permission Name (Permission Name) is a required field.')]/img[@alt='error']");
@@ -2352,12 +2420,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.description", "namespaceCode=KR*");
         checkByName("document.newMaintainableObject.active");
         waitAndClickSave();
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
         assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2366,9 +2432,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testLookUpPermission(String docId, String permissionName) throws Exception
-    {
-        waitForPageToLoad();
+    protected List<String> testLookUpPermission(String docId, String permissionName) throws Exception {
         waitAndTypeByName("name", permissionName);
         waitAndClickSearch();
         isElementPresentByLinkText(permissionName);
@@ -2379,16 +2443,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testEditPermission(String docId, String permissionName) throws Exception
-    {
+    protected List<String> testEditPermission(String docId, String permissionName) throws Exception {
         waitAndClickEdit();
-        waitForPageToLoad();
-        Thread.sleep(2000);
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Editing Permission removeme");
         uncheckByName("document.newMaintainableObject.active");
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         List<String> params = new ArrayList<String>();
         params.add(docId);
         params.add(permissionName);
@@ -2396,9 +2456,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testVerifyPermission(String docId, String permissionName) throws Exception
-    {
-        waitForPageToLoad();
+    protected List<String> testVerifyPermission(String docId, String permissionName) throws Exception {
         waitAndTypeByName("name", permissionName);
         waitAndClickByXpath("//input[@title='Active Indicator - No']");
         waitAndClickSearch();
@@ -2410,8 +2468,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testCreateNewPerson(String docId, String personName) throws Exception
-    {
+    protected List<String> testCreateNewPerson(String docId, String personName) throws Exception  {
         waitForPageToLoad();
         docId = waitForDocId();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding Charlie Brown");
@@ -2421,29 +2478,23 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         personName = "cbrown" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.principalName", personName);
         waitAndClickSave();
-        waitForPageToLoad();
-        assertElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
         assertEquals(DOC_STATUS_SAVED, getTextByXpath(DOC_STATUS_XPATH));
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
+        waitForElementPresentByXpath("//div[contains(.,'At least one affiliation must be entered.')]/img[@alt='error']");
         assertElementPresentByXpath("//div[contains(.,'At least one name must be entered.')]/img[@alt='error']");
         selectOptionByName("newAffln.affiliationTypeCode", "STDNT");
         selectOptionByName("newAffln.campusCode", "BL");
         checkByName("newAffln.dflt");
         waitAndClickByName("methodToCall.addAffln.anchor");
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        selectOptionByName("newName.nameCode", "PRM");
+        waitAndSelectByName("newName.nameCode", "PRM");
         selectOptionByName("newName.namePrefix", "Mr");
         waitAndTypeByName("newName.firstName", "Charlie");
         waitAndTypeByName("newName.lastName", "Brown");
         checkByName("newName.dflt");
         waitAndClickByName("methodToCall.addName.anchor");
-        waitForPageToLoad();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         assertEquals(DOC_STATUS_ENROUTE, getTextByXpath(DOC_STATUS_XPATH));
         List<String> params = new ArrayList<String>();
         params.add(docId);
@@ -2452,9 +2503,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testLookUpPerson(String docId, String personName) throws Exception
-    {
-        waitForPageToLoad();
+    protected List<String> testLookUpPerson(String docId, String personName) throws Exception {
         waitAndTypeByName("principalName", personName);
         waitAndClickSearch();
         isElementPresentByLinkText(personName);
@@ -2492,14 +2541,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
         waitAndClickByName("methodToCall.showAllTabs");
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
+        waitForElementPresentByXpath("//table[@class='tab']//input[@title='close Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Contact']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Privacy Preferences']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='close Membership']");
         waitAndClickByName("methodToCall.hideAllTabs");
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//table[@class='tab']//input[@title='open Overview']");
+        waitForElementPresentByXpath("//table[@class='tab']//input[@title='open Overview']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Contact']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Privacy Preferences']");
         assertElementPresentByXpath("//table[@class='tab']//input[@title='open Membership']");
@@ -2586,8 +2633,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testSubCollectionSize() throws Exception {
-        checkForIncidentReport(COLLECTIONS_LINK_TEXT);
-
         // click on collections page link
         waitAndClickByLinkText(COLLECTIONS_LINK_TEXT);
 
@@ -2765,19 +2810,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkByName("fundedBy");
         waitAndTypeByName("addText", "Note Added.");
         waitAndClickByXpath("//td[@class='datacell']/div/img");
-        waitForPageToLoad();
         waitAndClickByXpath("//input[@value='submit']");
         assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
         assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
-        assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='cancel']"));
+        assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='cancel']"));
         waitForPageToLoad();
         selectTopFrame();
         waitAndClickDocSearch();
         waitForPageToLoad();
         selectFrameIframePortlet();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
-        waitForPageToLoad();
-        isElementPresent(By.linkText(docId));
+        waitForElementPresent(By.linkText(docId));
     }
 
     protected void testTermLookUp() throws Exception {
@@ -2796,37 +2839,30 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         // click on the create new button
         waitAndClickCreateNew();
-        waitForPageToLoad();
 
         // lookup on the Document Type Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        waitForPageToLoad();
 
         // type in the name field the text RoutingRuleDocument
         waitAndTypeByName("name", "RoutingRuleDocument");
 
         // click the search button
         waitAndClickSearch();
-        waitForPageToLoad();
 
         // click the return value link
         waitAndClickReturnValue();
-        waitForPageToLoad();
 
         // lookup on the Rule Template Name
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        waitForPageToLoad();
 
         // type in the name field the text RuleRoutingTemplate
         waitAndTypeByName("name", "RuleRoutingTemplate");
 
         // click the search button
         waitAndClickSearch();
-        waitForPageToLoad();
 
         // click the return value link
         waitAndClickReturnValue("testWorkFlowRouteRulesBlanketApp");
-        waitForPageToLoad();
 
         // click the create new button
         waitAndClickByName("methodToCall.createRule");
@@ -2851,15 +2887,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // lookup on Person
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
-        waitForPageToLoad();
 
         // click the search button
         waitAndClickSearch();
-        waitForPageToLoad();
 
         // click the return value
         waitAndClickReturnValue();
-        waitForPageToLoad();
 
         // select from the Action Request ACKNOWLEDGE
         selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
@@ -2871,8 +2904,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // click the add button
         waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
         waitForPageToLoad();
-
-        checkForIncidentReport(BLANKET_APPROVE_NAME);
 
         // click Blanket Approve
         waitAndClickByName(BLANKET_APPROVE_NAME);
@@ -2902,25 +2933,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {
         selectFrameIframePortlet();
         waitAndClick("img[alt=\"create new\"]");
-        waitForPageToLoad();
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-        waitForPageToLoad();
         waitAndClickByXpath("//td[@class='infoline']/input[@name='methodToCall.search']");
-        waitForPageToLoad();
         waitAndClick("a[title=\"return valueRule Id=1046 \"]");
-        waitForPageToLoad();
         waitAndClickByName("parentResponsibilityId");
         waitAndClickByName("methodToCall.createDelegateRule");
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        checkForIncidentReport();
         waitAndClickCancel();
-        waitForPageToLoad();
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();
         driver.switchTo().defaultContent();
         waitAndClickByXpath("(//input[@name='imageField'])[2]");
-        waitForPageToLoad();
         passed();
     }
 
@@ -2930,15 +2952,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndClickCreateNew();
-        waitForPageToLoad();
-        Thread.sleep(3000);
         waitAndClickByName(CANCEL_NAME,"https://jira.kuali.org/browse/KULRICE-8161 Work Flow Route Rules cancel new yields 404 not found");
 
         // KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        waitAndClickByName("methodToCall.processAnswer.button0",
-                "https://jira.kuali.org/browse/KULRICE-7753 : WorkFlowRouteRulesIT cancel confirmation missing from create new Route Rules.");
+        waitAndClickByName("methodToCall.processAnswer.button0");
         passed();
     }
 
@@ -2950,23 +2967,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForPageToLoad();
         assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
-        Thread.sleep(3000);
-        checkForIncidentReport();
         waitAndClickSearch();
         waitAndClickEdit();
         waitForPageToLoad();
         selectFrameIframePortlet();
-        Thread.sleep(3000);
-        checkForIncidentReport();
         waitAndClickCancel();
-        waitForPageToLoad();
-        Thread.sleep(3000);
         waitAndClickByName("methodToCall.processAnswer.button0");
         passed();
     }
 
     protected String testCreateNewComponent(String componentName, String componentCode) throws Exception {
-        return testCreateNewComponent(componentName, componentCode, "");
+        return testCreateNewComponent(componentName, componentCode, this.getClass().toString());
     }
 
     protected String testCreateNewComponent(String componentName, String componentCode, String message) throws Exception {
@@ -2981,8 +2992,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkByName("document.newMaintainableObject.active");
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT  + message);
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT  + message);
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -3023,8 +3033,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.newMaintainableObject.name", componentName);
         waitAndClickSave();
         waitAndClickSubmit();
-        waitForPageToLoad();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -3050,7 +3059,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickSubmit();
         waitForPageToLoad();
         checkForDocError();
-        assertElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH,"Document is not submitted successfully");
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -3381,7 +3390,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for Display only fields\"]"), "HelpWindow", "http://www.kuali.org/?sub_section");
 
         // test external help of display only data field
-        assertPopUpWindowUrl(By.xpath("//div[@id='display-field-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
+        assertPopUpWindowUrl(By.xpath(
+                "//div[@id='display-field-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
                 "http://www.kuali.org/?display_field");
     }
 
@@ -3406,24 +3416,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertFalse(isElementPresentByXpath("//div[@id='standalone-external-help-missing']"));
     }
 
-    protected void testReferenceCampusTypeBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        assertBlanketApproveButtonsPresent();
-        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Campus Type " + dtsTwo);
-        waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(1));
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "Indianapolis" + dtsTwo);
+    private String searchForAvailableCode(int codeLength) throws InterruptedException {
+        String randomCode = RandomStringUtils.randomAlphabetic(codeLength).toUpperCase();
+        waitAndTypeByName("code", randomCode);
+        waitAndClickSearch();
         int attemptCount = 1;
-        blanketApproveCheck();
-        while (hasDocError("same primary key already exists") && attemptCount < 25) {
-            clearTextByXpath(DOC_CODE_XPATH);
-            waitAndTypeByXpath(DOC_CODE_XPATH, Character.toString((char) ('A' + attemptCount++)));
-            blanketApproveCheck();
+        waitForTextPresent("You have entered the primary key for this table");
+        while (!isTextPresent("No values match this search.") && attemptCount < 25) {
+            randomCode = Character.toString((char) (randomCode.toCharArray()[0] + attemptCount++));
+            clearTextByName("code");
+            waitAndTypeByName("code", randomCode);
+            waitAndClickSearch();
+            waitForTextPresent("You have entered the primary key for this table");
         }
-        blanketApproveAssert();
-        assertDocFinal(docId);
+        return randomCode;
     }
 
     protected void testSearchEditCancel() throws InterruptedException {
@@ -3435,9 +3441,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testServerErrorsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
-        waitForPageToLoad();
-        Thread.sleep(5000);
-        assertElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
+        waitForElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
         waitIsVisibleByXpath("//div[@data-header_for='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
@@ -3445,7 +3449,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         assertElementPresent(".uif-errorMessageItem-field");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
-        Thread.sleep(2000);
         waitIsVisible(".jquerybubblepopup-innerHtml");
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems");
         waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
@@ -3637,7 +3640,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testVerifyAddDeleteFiscalOfficerLegacy() throws Exception {
         selectFrameIframePortlet();
-        checkForIncidentReport("testVerifyAddDeleteFiscalOfficerLegacy");
         waitAndTypeByName("document.documentHeader.documentDescription", AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.fiscalOfficer.accounts'].number","1234567890");
@@ -4042,27 +4044,30 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(3000);
     }
 
+    protected void waitAndClickAdministration() throws InterruptedException {
+        waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, this);
+    }
+
     /**
      * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickAdministration(JiraAwareFailable failable) throws InterruptedException {
+    private void waitAndClickAdministration(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, failable);
     }
 
     protected void waitAndCancelConfirmation() throws InterruptedException {
         waitAndClickCancel();
-        checkForIncidentReport("methodToCall.processAnswer.button0");
         waitAndClickByName("methodToCall.processAnswer.button0");
     }
 
     protected void waitAndClick(By by) throws InterruptedException {
-        jiraAwareWaitAndClick(by, "");
+        jiraAwareWaitAndClick(by, this.getClass().toString());
     }
 
     protected void waitAndClick(By by, JiraAwareFailable failable) throws InterruptedException {
-        jiraAwareWaitAndClick(by, "", failable);
+        jiraAwareWaitAndClick(by, this.getClass().toString(), failable);
     }
 
     protected void waitAndClick(String locator, String message) throws InterruptedException {
@@ -4070,7 +4075,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickById(String id) throws InterruptedException {
-        jiraAwareWaitAndClick(By.id(id), "");
+        jiraAwareWaitAndClick(By.id(id), this.getClass().toString());
     }
 
     protected void waitAndClickById(String id, String message) throws InterruptedException {
@@ -4078,7 +4083,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByLinkText(String text) throws InterruptedException {
-        waitAndClickByLinkText(text, "");
+        waitAndClickByLinkText(text, this.getClass().toString());
     }
 
     protected void waitAndClickByLinkText(String text, String message) throws InterruptedException {
@@ -4086,12 +4091,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByLinkText(String text, JiraAwareFailable failable) throws InterruptedException {
-        waitAndClickByLinkText(text, "", failable);
+        waitAndClickByLinkText(text, this.getClass().toString(), failable);
     }
 
     protected void waitAndClickByLinkText(String text, String message, JiraAwareFailable failable) throws InterruptedException {
         jGrowl("Click " + text + " link.");
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
+    }
+
+    protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {
+        waitAndClickLinkContainingText(linkText, this.getClass().toString());
     }
 
     protected void waitAndClickLinkContainingText(String linkText, String message) throws InterruptedException {
@@ -4100,7 +4109,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
-        jiraAwareWaitAndClick(By.name(name), "");
+        jiraAwareWaitAndClick(By.name(name), this.getClass().toString());
     }
 
     protected void waitAndClickByValue(String value) throws InterruptedException {
@@ -4124,7 +4133,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
-        waitAndClickButtonByText(buttonText, "");
+        waitAndClickButtonByText(buttonText, this.getClass().toString());
     }
 
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
@@ -4186,8 +4195,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickLogout(JiraAwareFailable failable) throws InterruptedException {
+        jGrowl("Logging out");
         selectTopFrame();
         waitAndClickByXpath(LOGOUT_XPATH, failable);
+    }
+
+    protected void waitAndClickLogoutIfPresent() throws InterruptedException {
+        selectTopFrame();
+        if (isElementPresentByXpath(LOGOUT_XPATH)) {
+            waitAndClickLogout(this);
+        }
+    }
+
+    protected void waitAndClickMainMenu() throws InterruptedException {
+        waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, this);
     }
 
     /**
@@ -4195,7 +4216,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @param failable
      * @throws InterruptedException
      */
-    protected void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
+    private void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, failable);
     }
 
@@ -4229,36 +4250,35 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         select(By.name(name), selectText);
     }
 
-    protected void waitAndType(By by, String text) throws InterruptedException {
-        waitAndType(by, text,  "");
+    protected WebElement waitAndType(By by, String text) throws InterruptedException {
+        return waitAndType(by, text, this.getClass().toString());
     }
 
-    protected void waitAndType(String selector, String text) throws InterruptedException {
-        waitAndType(By.cssSelector(selector), text);
+    protected WebElement waitAndType(String selector, String text) throws InterruptedException {
+        return waitAndType(By.cssSelector(selector), text);
     }
 
-    protected void waitAndTypeById(String id, String text) throws InterruptedException {
-        waitAndType(By.id(id), text);
+    protected WebElement waitAndTypeById(String id, String text) throws InterruptedException {
+        return waitAndType(By.id(id), text);
     }
 
-    protected void waitAndTypeByXpath(String locator, String text) throws InterruptedException {
-        waitAndType(By.xpath(locator), text);
+    protected WebElement waitAndTypeByXpath(String locator, String text) throws InterruptedException {
+        return waitAndType(By.xpath(locator), text);
     }
 
-    protected void waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
-        waitAndType(By.xpath(locator), text, message);
+    protected WebElement waitAndTypeByXpath(String locator, String text, String message) throws InterruptedException {
+        return waitAndType(By.xpath(locator), text, message);
     }
 
-    protected void waitAndTypeByName(String name, String text) throws InterruptedException {
-        waitAndType(By.name(name), text);
+    protected WebElement waitAndTypeByName(String name, String text) throws InterruptedException {
+        return waitAndType(By.name(name), text);
     }
 
     protected void waitAndCreateNew() throws InterruptedException {
-        waitAndCreateNew("");
+        waitAndCreateNew(this.getClass().toString());
     }
 
     protected void waitAndCreateNew(String message) throws InterruptedException {
-        checkForIncidentReport();
         selectFrameIframePortlet();
         jGrowl("Create New");
         waitAndClickCreateNew(message);
@@ -4269,7 +4289,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickCreateNew() throws InterruptedException {
-        waitAndClickCreateNew("");
+        waitAndClickCreateNew(this.getClass().toString());
     }
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
@@ -4325,7 +4345,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresent(By by) throws InterruptedException {
-        return jiraAwareWaitFor(by, "");
+        return jiraAwareWaitFor(by, this.getClass().toString());
     }
 
     protected WebElement waitForElementPresent(By by, String message) throws InterruptedException {
@@ -4333,15 +4353,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresent(String locator) throws InterruptedException {
-        return jiraAwareWaitFor(By.cssSelector(locator), "");
+        return jiraAwareWaitFor(By.cssSelector(locator), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByClassName(String name) throws InterruptedException {
-        return jiraAwareWaitFor(By.className(name), "");
+        return jiraAwareWaitFor(By.className(name), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByClassName(String name, String message) throws InterruptedException {
         return jiraAwareWaitFor(By.className(name), message);
+    }
+
+    protected WebElement waitForElementPresentByClassName(String name, int seconds) throws InterruptedException {
+        return jiraAwareWaitFor(By.className(name), seconds, this.getClass().toString());
     }
 
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
@@ -4349,11 +4373,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentById(String id) throws InterruptedException {
-        return jiraAwareWaitFor(By.id(id), "");
+        return jiraAwareWaitFor(By.id(id), this.getClass().toString());
     }
 
     protected void waitForElementPresentById(String id, String message) throws InterruptedException {
         jiraAwareWaitFor(By.id(id), message);
+    }
+
+    protected void waitForElementPresentById(String id, String message, int seconds) throws InterruptedException {
+        jiraAwareWaitFor(By.id(id), seconds, message);
     }
 
     protected void waitForElementsPresentById(String id, String message) throws InterruptedException {
@@ -4361,11 +4389,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebElement waitForElementPresentByName(String name) throws InterruptedException {
-        return jiraAwareWaitFor(By.name(name), "");
+        return waitForElementPresentByName(name, this.getClass().toString());
+    }
+
+    protected WebElement waitForElementPresentByName(String name, String message) throws InterruptedException {
+        return jiraAwareWaitFor(By.name(name), message);
     }
 
     protected WebElement waitForElementPresentByXpath(String xpath) throws InterruptedException {
-        return jiraAwareWaitFor(By.xpath(xpath), "");
+        return jiraAwareWaitFor(By.xpath(xpath), this.getClass().toString());
     }
 
     protected WebElement waitForElementPresentByXpath(String xpath, String message) throws InterruptedException {
@@ -4373,11 +4405,65 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementsPresentByXpath(String xpathLocator) throws InterruptedException {
-        jiraAwareWaitFors(By.xpath(xpathLocator), "");
+        jiraAwareWaitFors(By.xpath(xpathLocator), this.getClass().toString());
+    }
+
+    protected void waitForElementNotPresent(By by) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (isElementPresent(by) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (isElementPresent(by)) {
+            jiraAwareFail(by + " is still present");
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
+    protected boolean waitForIsTextPresent(String text) throws InterruptedException {
+        boolean present = false;
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (isTextPresent(text)) {
+            present = true;
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        return present;
+    }
+
+    protected void waitForTextPresent(String text) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (!isTextPresent(text)) {
+            jiraAwareFail(text + " is not present for " + this.getClass().toString());
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
+    protected void waitForTextNotPresent(String text) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        while (isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (isTextPresent(text)) {
+            jiraAwareFail(text + " is still present for " + this.getClass().toString());
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
-        waitForTitleToEqualKualiPortalIndex("");
+        waitForTitleToEqualKualiPortalIndex(this.getClass().toString());
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {
@@ -4514,15 +4600,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClick(String locator) throws InterruptedException {
-        waitAndClick(locator, "");
+        waitAndClick(locator, this.getClass().toString());
     }
 
+    /**
+     * {@deprecated} use any of the various wait methods over this, waitForElementPresent for example.
+     * @throws InterruptedException
+     */
     protected void waitForPageToLoad() throws InterruptedException {
         Thread.sleep(5000);
     }
 
     protected WebElement waitFor(By by) throws InterruptedException {
-        return jiraAwareWaitFor(by, "");
+        return jiraAwareWaitFor(by, this.getClass().toString());
     }
 
     /**

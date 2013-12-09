@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- ConfigurationBasedRegexPatternConstraint demo -->
-  <bean id="Demo-ConfigurationBasedRegexPatternConstraint-View" parent="ComponentLibraryView">
+  <bean id="Demo-ConfigurationBasedRegexPatternConstraintView" parent="ComponentLibraryView">
     <property name="xmlFilePath"
               value="/org/kuali/rice/krad/demo/uif/library/DemoConfigurationBasedRegexPatternConstraint.xml"/>
     <property name="javaFullClassPath"

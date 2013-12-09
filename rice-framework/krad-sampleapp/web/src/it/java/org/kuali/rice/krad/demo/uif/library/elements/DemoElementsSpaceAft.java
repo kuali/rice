@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoElementsSpaceAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Space-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-SpaceView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Space-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SpaceView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {
@@ -42,8 +42,7 @@ public class DemoElementsSpaceAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsSpace() throws Exception {
-        waitForPageToLoad();
-        assertTextPresent("Before space");
+        waitForTextPresent("Before space");
         assertTextPresent("nbsp");
         assertTextPresent("After space");
     }

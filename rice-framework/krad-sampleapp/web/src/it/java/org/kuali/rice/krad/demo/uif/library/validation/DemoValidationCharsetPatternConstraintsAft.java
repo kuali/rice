@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationCharsetPatternConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CharsetPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-CharsetPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CharsetPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CharsetPatternConstraintView&methodToCall=start";
     
     @Override
     protected String getBookmarkUrl() {
@@ -42,12 +42,9 @@ public class DemoValidationCharsetPatternConstraintsAft extends WebDriverLegacyI
     }
 
     protected void testValidationCharsetPatternConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","d");
-       waitAndTypeByName("inputField2","c");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1", "d");
+        assertFocusTypeBlurError("inputField2", "c");
     }
     
     @Test

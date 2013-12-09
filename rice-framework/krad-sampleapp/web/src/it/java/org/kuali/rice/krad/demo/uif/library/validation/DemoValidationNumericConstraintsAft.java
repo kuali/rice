@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationNumericConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NumericPatternConstraintView&methodToCall=start";
    
     /**
      *  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes
@@ -47,21 +47,18 @@ public class DemoValidationNumericConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationNumericConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","a");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        waitAndClickByLinkText("Default");
+
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1","a");
     }
     
     protected void testValidationNumericConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","a s");
-        waitAndTypeByName("inputField3","a#s");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+        assertFocusTypeBlurError("inputField2","a s");
+        assertFocusTypeBlurError("inputField3","a#s");
     }
     
     protected void testValidationNumericConstraintsPreconfiguredBeans() throws Exception {
@@ -69,7 +66,7 @@ public class DemoValidationNumericConstraintsAft extends WebDriverLegacyITBase {
         
         //Scenario-1
         waitAndTypeByName("inputField4","1@2");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         fireMouseOverEventByName("inputField4");
         assertTextPresent(ERROR_MSG);
      }

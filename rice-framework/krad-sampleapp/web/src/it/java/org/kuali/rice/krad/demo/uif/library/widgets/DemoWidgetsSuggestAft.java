@@ -26,9 +26,9 @@ import org.openqa.selenium.WebElement;
 public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Suggest-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-SuggestView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Suggest-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SuggestView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {
@@ -50,7 +50,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         waitAndTypeByName(inputFieldName, search);
 
         //verify expect suggest results
-        waitForElementPresent(By.linkText(result), "Library Widget Suggest, CAT not suggested");
+        waitForElementPresent(By.linkText(result), "Library Widget Suggest, " + result + " not suggested");
         assertElementPresentByLinkText(result);
         waitAndClickByLinkText(result);
 
@@ -107,31 +107,78 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         }
     }
 
-    @Test
-    public void testWidgetsTooltipBookmark() throws Exception {
-        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
+    protected void testTooltips() throws Exception {
         testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
         testWidgetsSuggestHelperMethod2();
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
-        testWidgetsSuggestRichText();
         testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+    }
+
+    @Test
+    public void testWidgetsTooltipBookmark() throws Exception {
+        testTooltips();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipAutoQueryBookmark() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipCustomSelectionBookmark() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
-        driver.close();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipRichTextBookmark() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggestRichText();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipServiceSortingBookmark() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipNav() throws Exception {
+        testTooltips();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipAutoQueryNav() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
-        testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
-        testWidgetsSuggestHelperMethod2();
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
-        testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
-        testWidgetsSuggestRichText();
-        testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipCustomSelectionNav() throws Exception {
+        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
-        driver.close();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipRichTextNav() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggestRichText();
+        passed();
+    }
+
+    @Test
+    public void testWidgetsTooltipServiceSortingNav() throws Exception {
+        // pulled out due to failure
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
         passed();
     }
 }

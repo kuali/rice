@@ -46,12 +46,9 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
 		waitForPageToLoad();
 		selectFrame("iframeportlet");
 		waitAndClick("td.infoline > input[name=\"methodToCall.search\"]");
-		waitForPageToLoad();
 	//	selectFrame("relative=top");
 		driver.switchTo().defaultContent();
 		waitAndClickByLinkText("Main Menu");
-        waitForPageToLoad();
-		//setSpeed("2000");
 		waitAndClickByLinkText("People Flow");
 		waitForPageToLoad();
 		selectFrame("iframeportlet");

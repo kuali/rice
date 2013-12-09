@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupDirectInquiryDisabledAft extends LabsLookupBase {
 
     /**
@@ -51,9 +50,8 @@ public class LabsLookupDirectInquiryDisabledAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupDirectInquiryDisabled()throws Exception {
-        if(isElementPresentByXpath("//input[@type='image' and @title='Direct Inquiry']"))
-        {
-            fail("Inquiry has not been disabled.");
+        if(isElementPresentByXpath("//input[@type='image' and @title='Direct Inquiry']")) {
+            jiraAwareFail("Inquiry has not been disabled. " + this.getClass().toString());
         }
     }
 }

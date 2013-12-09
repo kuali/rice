@@ -27,7 +27,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-PasswordControl-View&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-PasswordControl-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-PasswordControlView&methodToCall=start";
     
     /**
      * //div[@id='Demo-PasswordControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']
@@ -113,7 +113,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField3","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER);
     }
     
@@ -121,7 +121,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Disable when changed");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField5","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER);
     }
     

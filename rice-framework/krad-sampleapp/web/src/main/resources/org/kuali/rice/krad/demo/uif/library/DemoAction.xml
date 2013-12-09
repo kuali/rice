@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Action demo -->
-  <bean id="Demo-Action-View" parent="ComponentLibraryView">
+  <bean id="Demo-ActionView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAction.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Action"/>
     <property name="docBookAnchor" value="d6813e6638"/>

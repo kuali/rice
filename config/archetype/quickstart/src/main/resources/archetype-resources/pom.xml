@@ -77,8 +77,8 @@
     <!-- other properties -->
     <jetty.port>8080</jetty.port>
     <maven.failsafe.skip>true</maven.failsafe.skip>
-    <plugin.compiler.source>${kuali.compile.source}</plugin.compiler.source>
-    <plugin.compiler.target>${kuali.compile.target}</plugin.compiler.target>
+    <plugin.compiler.source>1.7</plugin.compiler.source>
+    <plugin.compiler.target>1.7</plugin.compiler.target>
   </properties>
 
   <build>

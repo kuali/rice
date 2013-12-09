@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-StickyHeader-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-StickyHeaderView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-StickyHeader-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-StickyHeaderView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

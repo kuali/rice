@@ -69,8 +69,8 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	//PreRequisite constraint
     	waitAndTypeByName("field6","a");
     	waitAndClickButtonByText("Save");
-    	waitForElementPresentByXpath("//input[@name='field7' and @class='uif-textControl dependsOn-field6 required error']");
-    	waitForElementPresentByXpath("//input[@name='field8' and @class='uif-textControl dependsOn-field6 prConstraint-field81 required error']");
+    	waitForElementPresentByXpath("//input[@name='field7' and @class='form-control input-sm uif-textControl dependsOn-field6 required error']");
+    	waitForElementPresentByXpath("//input[@name='field8' and @class='form-control input-sm uif-textControl dependsOn-field6 prConstraint-field81 required error']");
     
     	//Must Occur Constraints
     	waitAndTypeByName("field14","a");
@@ -88,6 +88,6 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	waitAndClickByXpath("//input[@name='field24' and @value='case1']");
     	waitAndTypeByName("field25","");
     	waitAndTypeByName("field26","");
-    	assertElementPresentByXpath("//input[@name='field25' and @class='uif-textControl dependsOn-field24 error']");
+    	assertElementPresentByXpath("//input[@name='field25' and @class='form-control input-sm uif-textControl dependsOn-field24 error']");
     }
 }

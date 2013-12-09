@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- iFrame demo -->
-  <bean id="Demo-Iframe-View" parent="ComponentLibraryView">
+  <bean id="Demo-IframeView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoIframe.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Iframe"/>
     <property name="docBookAnchor" value="d6813e7158"/>

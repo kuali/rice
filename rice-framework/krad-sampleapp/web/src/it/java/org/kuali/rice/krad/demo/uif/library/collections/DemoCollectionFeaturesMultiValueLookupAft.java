@@ -25,9 +25,9 @@ import org.openqa.selenium.By;
 public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-LightTable-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-LightTableView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionLookup-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionLookupView&methodToCall=start";
 
     @Override
     protected String getBookmarkUrl() {

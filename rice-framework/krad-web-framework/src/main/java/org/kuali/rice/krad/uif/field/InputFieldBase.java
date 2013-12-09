@@ -52,6 +52,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -355,6 +356,11 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         ClientValidationUtils.processAndApplyConstraints(this, view, model);
+
+        // Generate validation messages
+        if (validationMessages != null) {
+            validationMessages.generateMessages(true, view, model, this);
+        }
     }
 
     /**
@@ -499,7 +505,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         // update ids so they all match the attribute
 
         setNestedComponentIdAndSuffix(getControl(), UifConstants.IdSuffixes.CONTROL);
-        setNestedComponentIdAndSuffix(getValidationMessages(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getFieldLabel(), UifConstants.IdSuffixes.LABEL);
         setNestedComponentIdAndSuffix(getInstructionalMessage(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessage(), UifConstants.IdSuffixes.CONSTRAINT);
@@ -651,6 +656,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * 
      * @see org.kuali.rice.krad.uif.field.InputField#getValidationMessages()
      */
+    @ViewLifecycleRestriction
     @Override
     @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidationMessages getValidationMessages() {

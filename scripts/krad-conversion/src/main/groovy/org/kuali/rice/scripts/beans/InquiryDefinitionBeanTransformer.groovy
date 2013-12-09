@@ -175,6 +175,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
         def attributes = gatherIdAttribute(beanNode) + [parent: 'Uif-StackedCollectionSection'];
         builder.bean(attributes) {
             renameProperties(builder, beanNode, ["title": "headerText", "defaultOpen": "disclosure.defaultOpen"]);
+            transformNumberOfColumns(builder, beanNode);
             def inquiryFieldsPropertyNode = beanNode.property.find { it.@name == "inquiryFields" }
             if (inquiryFieldsPropertyNode != null) {
                 inquiryFieldsPropertyNode.list.'*'.each { beanOrRefNode ->

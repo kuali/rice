@@ -73,7 +73,7 @@ public class JAXBConfigImplTest {
         String path = config.getProperty("path");
         Assert.assertEquals("/usr/bin;/usr/local/bin;", path);
 
-        logger.info("Displaying " + p.size() + "properties\n\n" + config.getPropertyValuesAsString(p));
+        logger.info("Displaying " + p.size() + " properties\n\n" + config.getPropertyValuesAsString(p));
         logger.info(config.toString());
 
     }

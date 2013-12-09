@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2013 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.junit.Test;
@@ -12,9 +27,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsInputAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-InputFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-InputField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-InputFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {
@@ -182,14 +197,8 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         findElement(By.cssSelector("#" + travelAccountNumberControlId), travelAccountNumberField).sendKeys("a1");
         waitAndClickSearch3();
         waitAndClickReturnValue();
-
-        acceptAlertIfPresent();
-        selectTopFrame();
-
-        WebElement element = findElement(By.className("uif-headerText-span"));
-        assertTrue("Library Fields Input Quickfinder return value loads Default tab", element.getText().contains("Quickfinder"));
-        assertIsVisible("#" + controlId);
-        assertTextPresent("a1", "Control text did not appear");
+        waitAndClickByLinkText("Quickfinder");
+        assertElementPresentByXpath("//input[@name='inputField7' and @value='a1']");
     }
 
     protected void testInputFieldInquiry() throws Exception {
@@ -215,6 +224,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
 
         waitAndClickButtonByText("Close");
+        selectTopFrame();
     }
 
     protected void testInputFieldRequired() throws Exception {
@@ -233,8 +243,9 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         assertIsVisible("#" + controlId);
 
         waitAndClick(By.cssSelector("#" + controlId));
+        Thread.sleep(3000);
         waitAndClick(By.cssSelector("#" + fieldId));
-        fireMouseOverEventByName("inputField10");
+        fireMouseOverEventByName("inputField11");
         if (!field.getAttribute("class").contains("uif-hasError")) {
             fail("Control does not show error class");
         }
@@ -255,6 +266,37 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         assertTextNotPresent("TEST INPUTFIELD", "Control text did not appear as uppercase");
     }
 
+    protected void testInputFieldWidgetInputOnlyWithQuickFinder() throws Exception {
+        //There is nothing under this section on which tests can be applied.
+    	waitAndClickByLinkText("widgetInputOnly with Quickfinder");
+    }
+    
+    protected void testInputFieldWidgetInputOnlyWithInquiry() throws Exception {
+    	waitAndClickByLinkText("widgetInputOnly with Inquiry");
+    	waitAndClickByXpath("//div[@data-parent='Demo-InputField-Example10']/span/input[@type='image' and @title='Direct Inquiry']");
+    	gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+    	waitForTextPresent("a2");
+    	waitForTextPresent("Travel Account 2");
+    	waitForTextPresent("EAT - Expense");
+    	waitForTextPresent("fran");
+    	waitAndClickButtonByText("Close");
+    	selectTopFrame();
+    }
+    
+    protected void testInputFieldDisableNativeAutocomplete() throws Exception {
+    	waitAndClickByLinkText("Disable Native Autocomplete");
+    	waitForElementPresentByXpath("//input[@name='inputField13' and @autocomplete='off']");
+    }
+    
+    protected void testInputFieldInputAddons() throws Exception {
+    	waitAndClickByLinkText("Input Addons");
+    	waitForTextPresent(".00 ");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-InputField-Example14']/div/span/a");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-InputField-Example14']/div/span/a[@class='uif-actionLink icon-facebook3']");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-InputField-Example14']/div/span/a[@class='uif-actionLink icon-twitter3']");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-InputField-Example14']/div/span/a[@class='uif-actionLink icon-youtube']");
+    }
+    
     protected void testInputFieldExamples() throws Exception {
         testInputFieldDefault();
         testInputFieldAltControl();
@@ -262,10 +304,13 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         testInputFieldConstraintText();
         testInputFieldLabelTop();
         testInputFieldLabelRight();
+        testInputFieldQuickfinder();
+        testInputFieldWidgetInputOnlyWithQuickFinder();
         testInputFieldInquiry();
         testInputFieldRequired();
         testInputFieldUppercase();
-        testInputFieldQuickfinder();
+        testInputFieldDisableNativeAutocomplete();
+        testInputFieldInputAddons();
     }
 
     @Test

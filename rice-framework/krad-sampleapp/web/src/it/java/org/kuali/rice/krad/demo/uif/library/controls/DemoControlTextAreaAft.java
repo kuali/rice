@@ -24,9 +24,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TextAreaControl-View
+     * /kr-krad/kradsampleapp?viewId=Demo-TextAreaControlView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextAreaControl-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextAreaControlView";
 
     @Override
     protected String getBookmarkUrl() {
@@ -76,7 +76,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField4' and @rows='3' and @cols='40' and @disabled]");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField3']","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example9']/textarea[@name='inputField4' and @rows='3' and @cols='40']");
     }
     
@@ -85,25 +85,23 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40']");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField5']","a");
         fireEvent("inputField5", "blur");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example10']/textarea[@name='inputField6' and @rows='3' and @cols='40' and @disabled]");
     }
     
     @Test
     public void testControlTextAreaBookmark() throws Exception {
-        testLibraryControlTextAreaDefault();
-        testLibraryControlTextAreaColsAndRowsSet();
-        testLibraryControlTextAreaTextExpand();
-        testLibraryControlTextAreaDisabled();
-        testLibraryControlTextAreaWatermarkText();
-        testLibraryControlTextAreaDisableOnKeyEvent();
-        testLibraryControlTextAreaEnableWhenChanged();
-        testLibraryControlTextAreaDisableWhenChanged();
+        testLibraryControlTextArea();
         passed();
     }
 
     @Test
     public void testControlTextAreaNav() throws Exception {
+        testLibraryControlTextArea();
+        passed();
+    }
+
+    private void testLibraryControlTextArea() throws Exception {
         testLibraryControlTextAreaDefault();
         testLibraryControlTextAreaColsAndRowsSet();
         testLibraryControlTextAreaTextExpand();
@@ -112,6 +110,5 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         testLibraryControlTextAreaDisableOnKeyEvent();
         testLibraryControlTextAreaEnableWhenChanged();
         testLibraryControlTextAreaDisableWhenChanged();
-        passed();
-    }  
+    }
 }

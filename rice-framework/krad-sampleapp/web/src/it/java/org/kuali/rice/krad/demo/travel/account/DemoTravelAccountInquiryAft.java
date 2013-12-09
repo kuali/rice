@@ -57,31 +57,27 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
 
     protected void testInquiryBackButton() throws Exception {
         waitAndClickButtonByText("Back");
-        Thread.sleep(2000); // seems to take a while to load
         waitForElementPresentByXpath("//a[contains(text(), 'Account Inquiry')]", "Expected Demo - Travel Application did back work?");
         assertTextPresent("Demo - Travel Application", "Expected Demo - Travel Application did back work?");
     }
 
     protected void testInquiryBackToLoginButton() throws Exception {
         waitAndClickButtonByText("Back");
-        Thread.sleep(2000); // seems to take a while to load
         waitForElementPresentById("Rice-LoginButton", "Expected Login - Travel Application Bookmark back work?");
     }
 
     protected void testCollapseExpand() throws InterruptedException {
         waitForElementPresentByClassName("demo-contactInfo");
-        assertTextPresent("Travel Account Number:");
-        assertTextPresent(EXPAND_ALL);
-        assertTextPresent(COLLAPSE_ALL);
+        assertTextPresent(new String[] {"Travel Account Number:", EXPAND_ALL, COLLAPSE_ALL});
 //        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, ""); // sub accounts removed
 
         waitAndClickButtonByText(COLLAPSE_ALL);
         Thread.sleep(2000);
-        assertIsNotVisible(By.linkText("a"), " after clicking " + COLLAPSE_ALL);
+        assertIsNotVisible(By.linkText("A"), " after clicking " + COLLAPSE_ALL);
 
         waitAndClickButtonByText(EXPAND_ALL);
         Thread.sleep(2000);
-        assertIsVisible(By.linkText("a"), " after clicking " + EXPAND_ALL);
+        assertIsVisible(By.linkText("A"), " after clicking " + EXPAND_ALL);
     }
 
     protected void testInquiryLightBox() throws Exception {

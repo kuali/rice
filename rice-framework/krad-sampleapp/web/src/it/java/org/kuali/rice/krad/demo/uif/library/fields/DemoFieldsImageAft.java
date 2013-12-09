@@ -11,9 +11,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsImageAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-ImageField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-ImageFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ImageField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ImageFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

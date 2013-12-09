@@ -147,11 +147,7 @@ public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
             } else if (inputControls[i].equalsIgnoreCase("dropDown")) {
                 tag = "select";
             }
-            try {
-                verifyStaticDataAttributes(tag, inputControls[i] + testIdSuffix + UifConstants.IdSuffixes.CONTROL);
-            } catch (AssertionError ae) {
-                assertTrue("KULRICE-7752 : UifDataAttributesIT testDataAttributesPresentInControls textInputField_attrs_control: complex data attributes script not found", false);
-            }
+            verifyStaticDataAttributes(tag, inputControls[i] + testIdSuffix + UifConstants.IdSuffixes.CONTROL);
         }
         // these controls allow for simple attributes on the tag and complex attributes via js
         Map<String, String[]> otherControlsMap = new HashMap<String, String[]>();

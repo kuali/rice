@@ -52,16 +52,12 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForTitleToEqualKualiPortalIndex();
         selectFrame("iframeportlet");
         waitAndClickByXpath("//img[contains(@alt,'create new')]");
-        waitForPageToLoad();
-        Thread.sleep(2000);
-        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
+        waitForElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         docId = driver.findElement(By.xpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]")).getText();
         waitAndTypeByXpath("//input[@id='document.documentHeader.documentDescription']", "Creating new Document Type");
         String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
-        waitForPageToLoad();
-        //Thread.sleep(2000);
         waitAndClickByXpath("//input[@name='methodToCall.search' and @value='search']");
         waitForPageToLoad();
         parentName= driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[3]")).getText();
@@ -102,8 +98,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         assertEquals("", driver.findElement(By.xpath("//input[@name='rangeLowerBoundKeyPrefix_dateCreated']")).getAttribute("value"));
         assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
-        waitForPageToLoad();
-        passed();
     }
     
     @Ignore // TODO fix
@@ -117,8 +111,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='detailed search']");
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']");
         //waitAndTypeByName("documentTypeName", parentName);
         waitAndTypeByName("initiatorPrincipalName", "admin");
         //waitAndTypeByName("documentId", docId);
@@ -142,7 +135,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         //assertEquals("", driver.findElement(By.xpath("//input[@name='rangeLowerBoundKeyPrefix_dateCreated']")).waitAndGetAttribute("value"));
         //assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).waitAndGetAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
-        waitForPageToLoad();
         passed();
     }
     
@@ -156,10 +148,8 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
-        waitForPageToLoad();
-        assertElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
-        waitForPageToLoad();
         waitAndClickByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a");
         selectTopFrame();
         Thread.sleep(3000);
@@ -168,14 +158,11 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         //Thread.sleep(4000);
 
         waitAndClickByXpath("//input[@src='images/buttonsmall_complete.gif']");
-        waitForPageToLoad();
-        assertElementPresentByName("methodToCall.approve","approve button does not exist on the page");
+        waitForElementPresentByName("methodToCall.approve","approve button does not exist on the page");
         assertElementPresentByName("methodToCall.disapprove","disapprove button does not exist on the page");
         assertElementPresentByName("methodToCall.cancel","cancel button does not exist on the page");
         waitAndClickByName("methodToCall.approve","approve button does not exist on the page");
-        waitForPageToLoad();
         waitAndClickByXpath("//a[@href='DocumentSearch.do']/img[@alt='cancel']");
-        waitForPageToLoad();
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitForPageToLoad();
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());
@@ -211,8 +198,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndTypeByName("documentTypeName", "KualiNotification");
         Thread.sleep(2000);
         fireEvent("documentTypeName", "blur");
-        Thread.sleep(1000);
-        assertElementPresentByName("documentAttribute.notificationContentType");
+        waitForElementPresentByName("documentAttribute.notificationContentType");
         assertElementPresentByName("documentAttribute.notificationChannel");
         assertElementPresentByName("documentAttribute.notificationProducer");
         assertElementPresentByName("documentAttribute.notificationPriority");

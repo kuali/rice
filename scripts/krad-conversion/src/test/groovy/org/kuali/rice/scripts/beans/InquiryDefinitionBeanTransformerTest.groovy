@@ -16,9 +16,12 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
+import groovy.xml.XmlUtil
+import org.codehaus.plexus.util.FileUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.scripts.ConversionUtils
 
 /**
  * Tests for the {@link org.kuali.rice.scripts.beans.InquiryDefinitionBeanTransformer} class.
@@ -76,14 +79,35 @@ class InquiryDefinitionBeanTransformerTest extends BeanTransformerTestBase {
     public void testTransformInquirySectionDefinitionBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def inquiryDefinitionBean = ddRootNode.bean.find { inquiryDefinitionBeanType.equals(it.@parent) };
-        def beanNode = inquiryDefinitionBean.property.list.bean.find { "InquirySectionDefinition".equals(it.@parent) };
+        def beanNodes = inquiryDefinitionBean.property.list.bean.findAll { "InquirySectionDefinition".equals(it.@parent) };
+        def beanNode = beanNodes.get(0);
 
         Node resultNode = beanNode.replaceNode {
             inquiryDefinitionBeanTransformer.transformInquirySectionDefinitionBean(delegate, beanNode)
         };
 
         Assert.assertTrue("results contains grid section", "Uif-Disclosure-GridSection".equals(resultNode.@parent));
+        checkBeanPropertyExists(resultNode, "headerText");
         checkBeanPropertyExists(resultNode, "layoutManager.numberOfColumns");
+        checkBeanPropertyExists(resultNode, "items");
+    }
+
+    @Test
+    public void testTransformInquiryCollectionDefinitionBean() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def inquiryDefinitionBean = ddRootNode.bean.find { inquiryDefinitionBeanType.equals(it.@parent) };
+        def beanNodes = inquiryDefinitionBean.property.list.bean.findAll { "InquirySectionDefinition".equals(it.@parent) };
+        def beanNode = beanNodes.get(1);
+
+        Node resultNode = beanNode.replaceNode {
+            inquiryDefinitionBeanTransformer.transformInquiryCollectionDefinitionBean(delegate, beanNode)
+        };
+
+        Assert.assertTrue("results contains grid section", "Uif-StackedCollectionSection".equals(resultNode.@parent));
+        checkBeanPropertyExists(resultNode, "headerText");
+        checkBeanPropertyExists(resultNode, "layoutManager.numberOfColumns");
+        checkBeanPropertyExists(resultNode, "collectionObjectClass");
+        checkBeanPropertyExists(resultNode, "propertyName");
         checkBeanPropertyExists(resultNode, "items");
     }
 

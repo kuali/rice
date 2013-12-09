@@ -29,6 +29,7 @@
         <value>travelCompanyId</value>
       </list>
     </property>
+    <property name="allowsRecordDeletion" value="true" />
   </bean>
 
   <bean id="TravelCompany-MaintenanceView" parent="Uif-MaintenanceView">

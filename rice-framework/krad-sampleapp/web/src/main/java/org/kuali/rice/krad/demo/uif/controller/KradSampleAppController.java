@@ -30,6 +30,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.PropertyEditor;
+import java.util.Map;
 
 /**
  * Basic controller for the KRAD sample application
@@ -105,5 +107,22 @@ public class KradSampleAppController extends UifControllerBase {
         //set View to readOnly
         uifForm.getView().setReadOnly(true);
         return getUIFModelAndView(uifForm);
+    }
+
+    /**
+     * Adds errors to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addStandardSectionsErrors")
+    public ModelAndView addStandardSectionsErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+            GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section1", "errorSectionTest");
+            GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section2", "errorSectionTest");
+
+        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
+        for (String key : propertyEditors.keySet()) {
+            GlobalVariables.getMessageMap().putError(key, "error1Test");
+        }
+
+        return getUIFModelAndView(form);
     }
 }

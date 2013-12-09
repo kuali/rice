@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Link demo -->
-  <bean id="Demo-Icon-View" parent="ComponentLibraryView">
+  <bean id="Demo-IconView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoIcon.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Icon"/>
     <!--<property name="docBookAnchor" value="linkAndLinkField"/>-->

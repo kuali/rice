@@ -73,21 +73,33 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR1C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-MaintenanceSampleView</value>
+      </list>
+    </property>
+    <property name="page.headerText" value="Maintenance View - Defaulting values"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR1C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Maintenance Sample - Using overrideKeys"
+              p:instructionalText="In this example the travel company name is defaulted to 'Acme Travel Inc'.  This is
+              done with the querystring parameters in the url.  The methodToCall parameter is set to
+              maintenanceNewWithExisting.  The overrideKeys parameter is set to travelCompanyName.  A travelCompanyName
+              parameter allows us to set the default value of the travel company name.  If you need to default more than
+              one value, you can add multiple values in the overrideKeys parameter, separating them with commas.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:style="margin:20px 0 20px 0;"
+                    p:linkText="Travel Company Maintenance Sample - New Document with Defaulted
+              Travel Company Name." p:href="maintenance?methodToCall=maintenanceNewWithExisting&amp;overrideKeys=travelCompanyName&amp;travelCompanyName=Acme%20Travel%20Inc&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>
       </list>
     </property>
   </bean>
+
 
   <bean id="KradMaintenanceSample-PageR2C1" parent="KradSampleAppView">
     <property name="page.headerText" value="Maintenance Sample - Configuring help links in section headers"/>
@@ -112,11 +124,15 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR2C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Maintenance Sample - Presentation Controller"
+              p:instructionalText="A simple maintenance document that references an extension of
+              MaintenanceViewPresentationControllerBase.  This extension allows both making sections read-only or
+              completely hiding them through business logic.  Note that the Account Information section is read-only and
+              the Sub Account section is hidden.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Presentation Controller"
+                    p:href="maintenance?methodToCall=maintenanceEdit&amp;number=a14&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-PresentationControllerView"/>
             </list>
           </property>
         </bean>
@@ -125,15 +141,19 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR2C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Sample"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR2C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page from the Copy link from Search Result"
+              p:instructionalText="Ability to copy another business object by clicking
+              a link from the lookup. Copies all the attributes except for the primary key,
+              ver number, and object ID fields by default.&lt;br&gt;&lt;br&gt; Clink on the following link and then
+              the Search button to see Copy actions Link&lt;br&gt;">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Copy from Search Result"
+                    p:href="lookup?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>
@@ -146,11 +166,13 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page with 'restricted' field in the authorizer"
+              p:instructionalText="Upon copy, fields determined to be 'restricted' (hidden or read-only) based on input
+              from the document authorizer are shown as blank.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Copy with restricted field"
+                    p:href="maintenance?methodToCall=maintenanceCopy&amp;number=a14&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-AuthorizerView"/>
             </list>
           </property>
         </bean>
@@ -163,11 +185,13 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a Maintenance Page with an external JavaScript file added."
+              p:instructionalText="External JavaScript files can be added using the 'additionalScriptFiles' property on
+              the view.  In this demo, the external JavaScript files causes an alert() on the document load.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Inclusion of external JavaScript"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-ExternalJavaScriptView"/>
             </list>
           </property>
         </bean>

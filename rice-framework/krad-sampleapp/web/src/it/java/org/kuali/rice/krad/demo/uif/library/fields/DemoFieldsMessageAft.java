@@ -11,9 +11,9 @@ import org.openqa.selenium.WebElement;
 public class DemoFieldsMessageAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-MessageField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-MessageFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MessageField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MessageFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

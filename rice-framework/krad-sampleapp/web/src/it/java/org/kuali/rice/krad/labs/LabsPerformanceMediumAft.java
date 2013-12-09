@@ -47,7 +47,6 @@ public class LabsPerformanceMediumAft extends WebDriverLegacyITBase {
 
     private void navigateToSecondPage() throws InterruptedException {
         waitAndClickByLinkText("Page 2");
-        jiraAwareWaitFor(By.xpath("//div[@class='blockUI blockMsg blockPage']"),11,"Timeout 11s - Page is taking too long to load.");
         waitForBottomButton();
     }
 
@@ -57,5 +56,13 @@ public class LabsPerformanceMediumAft extends WebDriverLegacyITBase {
 
     protected void testPerformanceMedium()throws Exception {
         waitForBottomButton();
+        selectByName("inputField6","Option 2");
+        selectByName("inputField7","Option 2");
+        assertElementPresentByXpath("//select[@name='inputField8' and @disabled]");
+        assertElementPresentByXpath("//button[contains(text(),'add')]");
+        assertElementPresentByXpath("//button[contains(text(),'delete')]");
+        assertTextPresent("null ( ab extra )");
+        assertElementPresentByXpath("//input[@name='mediumCollection2[0].field1' and @value='ab extra']");
+        assertTextPresent("SubCollection 1");
     }
 }

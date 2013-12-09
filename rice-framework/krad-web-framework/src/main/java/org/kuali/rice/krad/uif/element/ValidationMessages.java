@@ -27,6 +27,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
@@ -56,7 +57,7 @@ import org.kuali.rice.krad.util.MessageMap;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "validationMessages-bean", parent = "Uif-ValidationMessagesBase")
-public class ValidationMessages extends ContentElementBase {
+public class ValidationMessages extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 780940788435330077L;
 
     private List<String> additionalKeysToMatch;
@@ -67,23 +68,6 @@ public class ValidationMessages extends ContentElementBase {
     private List<String> errors;
     private List<String> warnings;
     private List<String> infos;
-
-    /**
-     * PerformFinalize will generate the messages and counts used by the
-     * errorsField based on the keys that were matched from the MessageMap for
-     * this ValidationMessages. It will also set up nestedComponents of its
-     * parentComponent correctly based on the flags that were chosen for this
-     * ValidationMessages.
-     *
-     * @see org.kuali.rice.krad.uif.field.FieldBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performFinalize(Object model, Component parent) {
-        super.performFinalize(model, parent);
-
-        generateMessages(true, ViewLifecycle.getActiveLifecycle().getView(), model, parent);
-    }
 
     /**
      * Generates the messages based on the content in the messageMap
@@ -130,9 +114,6 @@ public class ValidationMessages extends ContentElementBase {
                 parentContainerId = ((Component) parentContainer).getId();
             }
         }
-
-        //Add identifying data attributes
-        this.addDataAttribute(UifConstants.DataAttributes.MESSAGES_FOR, parent.getId());
 
         if ((parent.getDataAttributes() == null) || (parent.getDataAttributes().get(UifConstants.DataAttributes.PARENT)
                 == null)) {

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,9 +26,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-MustOccurConstraintView&methodToCall=start";
 
     /**
      *   1-2 of the following must occur: (Field 1A) OR (Field 2A and Field 2B)
@@ -47,17 +48,17 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
     /**
      * //input[@name='inputField4' and @class='uif-textControl dependsOn-inputField1 dependsOn-inputField2 dependsOn-inputField3 dirty error']
      */
-    private static final String EXAMPLE1_ERROR_XPATH="//input[@name='inputField4' and @class='uif-textControl dependsOn-inputField1 dependsOn-inputField2 dependsOn-inputField3 dirty error']";
+    private static final String EXAMPLE1_ERROR_XPATH="//input[@name='inputField4' and @class='error']";
     
     /**
      * //input[@name='inputField8' and @class='uif-textControl dependsOn-inputField5 dependsOn-inputField6 dependsOn-inputField7 dirty error']
      */
-    private static final String EXAMPLE2_ERROR_XPATH="//input[@name='inputField8' and @class='uif-textControl dependsOn-inputField5 dependsOn-inputField6 dependsOn-inputField7 dirty error']";
+    private static final String EXAMPLE2_ERROR_XPATH="//input[@name='inputField8' and @class='error']";
     
     /**
      * //input[@name='inputField13' and @class='uif-textControl dependsOn-inputField9 dependsOn-inputField10 dependsOn-inputField11 dependsOn-inputField12 dirty error']
      */
-    private static final String EXAMPLE3_ERROR_XPATH="//input[@name='inputField13' and @class='uif-textControl dependsOn-inputField9 dependsOn-inputField10 dependsOn-inputField11 dependsOn-inputField12 dirty error']";
+    private static final String EXAMPLE3_ERROR_XPATH="//input[@name='inputField13' and @class='error']";
  
     @Override
     protected String getBookmarkUrl() {
@@ -72,43 +73,43 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
     }
 
     protected void testValidationMustOccurConstraintsExample1() throws Exception {
+        waitAndClickByLinkText("Example 1");
+
        //Scenario-1
-       waitAndTypeByName("inputField4","a");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath(EXAMPLE1_ERROR_XPATH);
-       fireMouseOverEventByName("inputField4");
-       assertTextPresent(EXAMPLE1_VALIDATION_MESSAGE);
+        assertFocusTypeBlurError("inputField4", "a");
+        fireMouseOverEventByName("inputField4");
+        assertTextPresent(EXAMPLE1_VALIDATION_MESSAGE);
        
-       //Scenario-2
-       waitAndTypeByName("inputField1","a");
-       waitAndTypeByName("inputField2","");
-       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
-           fail("Criteria Not Satisfied");
-       }
+        //Scenario-2
+        waitAndTypeByName("inputField1","a");
+        waitAndTypeByName("inputField2","");
+        if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
+        }
        
-       //Scenario-3
-       clearTextByName("inputField1");
-       waitAndTypeByName("inputField2","a");
-       waitAndTypeByName("inputField1","");
-       assertElementPresentByXpath(EXAMPLE1_ERROR_XPATH);
-       fireMouseOverEventByName("inputField4");
-       assertTextPresent(EXAMPLE1_VALIDATION_MESSAGE);
+        //Scenario-3
+        clearTextByName("inputField1");
+        waitAndTypeByName("inputField2", "a");
+        waitAndTypeByName("inputField1","");
+        String id = findElement(By.name("inputField4")).getAttribute("id");
+        assertTrue(findElement(By.id(id)).getAttribute("class").contains("error"));
+        fireEvent("inputField1", "blur");
+        fireMouseOverEventByName("inputField4");
+        assertTextPresent(EXAMPLE1_VALIDATION_MESSAGE);
        
-       //Scenario-4
-       waitAndTypeByName("inputField3","a");
-       waitAndTypeByName("inputField1","");
-       if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
-           fail("Criteria Not Satisfied");
-       }
+        //Scenario-4
+        waitAndTypeByName("inputField3","a");
+        waitAndTypeByName("inputField1","");
+        if(isElementPresentByXpath(EXAMPLE1_ERROR_XPATH)) {
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
+        }
     }
     
     protected void testValidationMustOccurConstraintsExample2() throws Exception {
         waitAndClickByLinkText("Example 2");
         
         //Scenario-1
-        waitAndTypeByName("inputField8","a");
-        waitAndTypeByName("inputField5","");
-        assertElementPresentByXpath(EXAMPLE2_ERROR_XPATH);
+        assertFocusTypeBlurError("inputField8","a");
         fireMouseOverEventByName("inputField8");
         assertTextPresent(EXAMPLE2_VALIDATION_MESSAGE);
         
@@ -116,14 +117,16 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField5","a");
         waitAndTypeByName("inputField6","");
         if(isElementPresentByXpath(EXAMPLE2_ERROR_XPATH)) {
-            fail("Criteria Not Satisfied");
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
         }
         
         //Scenario-3
         clearTextByName("inputField5");
         waitAndTypeByName("inputField6","a");
         waitAndTypeByName("inputField5","");
-        assertElementPresentByXpath(EXAMPLE2_ERROR_XPATH);
+        String id = findElement(By.name("inputField8")).getAttribute("id");
+        assertTrue(findElement(By.id(id)).getAttribute("class").contains("error"));
+        fireEvent("inputField5", "blur");
         fireMouseOverEventByName("inputField8");
         assertTextPresent(EXAMPLE2_VALIDATION_MESSAGE);
         
@@ -131,25 +134,23 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField7","a");
         waitAndTypeByName("inputField5","");
         if (isElementPresentByXpath(EXAMPLE2_ERROR_XPATH)){
-            fail("Criteria Not Satisfied");
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
         }
         
         //Scenario-5
         waitAndTypeByName("inputField5","a");
         waitAndTypeByName("inputField8","a");
-        assertElementPresentByXpath(EXAMPLE2_ERROR_XPATH);
+        assertTrue(findElement(By.id(id)).getAttribute("class").contains("error"));
+        fireEvent("inputField8", "blur");
         fireMouseOverEventByName("inputField8");
-        assertTextPresent(EXAMPLE1_VALIDATION_MESSAGE);
+        assertTextPresent(EXAMPLE2_VALIDATION_MESSAGE);
     }
 
     protected void testValidationMustOccurConstraintsExample3() throws Exception {
         waitAndClickByLinkText("Example 3");
         
         //Scenario-1
-        waitAndTypeByName("inputField13","a");
-        waitAndTypeByName("inputField9","");
-        Thread.sleep(1000);
-        assertElementPresentByXpath(EXAMPLE3_ERROR_XPATH);
+        assertFocusTypeBlurError("inputField13","a");
         fireMouseOverEventByName("inputField13");
         assertTextPresent(EXAMPLE3_VALIDATION_MESSAGE);
         
@@ -157,7 +158,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField9","a");
         waitAndTypeByName("inputField13","");
         if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
-            fail("Criteria Not Satisfied");
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
         }
         clearTextByName("inputField9");
         
@@ -165,7 +166,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField10","a");
         waitAndTypeByName("inputField13","");
         if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
-            fail("Criteria Not Satisfied");
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
         }
         clearTextByName("inputField10");
         
@@ -174,7 +175,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField12","a");
         waitAndTypeByName("inputField13","");
         if (isElementPresentByXpath(EXAMPLE3_ERROR_XPATH)) {
-            fail("Criteria Not Satisfied");
+            jiraAwareFail("Criteria Not Satisfied " + this.getClass().toString());
         }
     }
     

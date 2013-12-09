@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationFixedPointConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-FixedPointPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-FixedPointPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-FixedPointPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-FixedPointPatternConstraintView&methodToCall=start";
     
     @Override
     protected String getBookmarkUrl() {
@@ -42,21 +42,18 @@ public class DemoValidationFixedPointConstraintsAft extends WebDriverLegacyITBas
     }
 
     protected void testValidationFixedPointConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","1234.12");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        waitAndClickByLinkText("Basic Example");
+
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1","1234.12");
     }
     
     protected void testValidationFixedPointConstraintsAdditional() throws Exception {
         waitAndClickByLinkText("Additional Examples");
         
         //Scenario-1
-        waitAndTypeByName("inputField2","12.3");
-        waitAndTypeByName("inputField3","2334.89");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+        assertFocusTypeBlurError("inputField2","12.3");
+        assertFocusTypeBlurError("inputField3","2334.89");
     }
     
     @Test

@@ -21,9 +21,9 @@ import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 public class DemoValidationSimpleConstraintsRequiredAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SimpleConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SimpleConstraintView&methodToCall=start";
 
     /**
      * //div[@id='Demo-SimpleConstraint-Example1_tab']

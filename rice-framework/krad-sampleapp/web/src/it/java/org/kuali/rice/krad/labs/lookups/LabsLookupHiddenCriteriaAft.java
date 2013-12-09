@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupHiddenCriteriaAft extends LabsLookupBase {
 
     /**
@@ -51,9 +50,8 @@ public class LabsLookupHiddenCriteriaAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupHiddenCriteria()throws Exception {
-        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']"))
-        {
-            fail("Criteria not hidden.");
+        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']")) {
+            jiraAwareFail("Criteria not hidden. " + this.getClass().toString());
         }
     }
 }

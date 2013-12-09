@@ -31,7 +31,9 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -156,7 +158,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 			layoutManager.performFinalize(model, this);
 		}
 
-	}
+        // Generate validation messages
+        if (validationMessages != null) {
+            validationMessages.generateMessages(true, ViewLifecycle.getView(), model, this);
+        }
+ 	}
 
 	/**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
@@ -196,6 +202,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@Override
     @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+	@ViewLifecycleRestriction
 	public ValidationMessages getValidationMessages() {
 		return this.validationMessages;
 	}

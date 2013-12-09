@@ -25,9 +25,9 @@ import org.openqa.selenium.By;
 public class DemoElementsActionAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-ActionView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Action-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ActionView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

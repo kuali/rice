@@ -31,15 +31,6 @@
   <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ValidationMessages"
         scope="prototype">
-    <property name="template" value="/krad/WEB-INF/ftl/components/element/validationMessages.ftl"/>
-    <property name="templateName" value="uif_validationMessages"/>
-    <!--By default not displayed - all display is handled by the framework - do not change-->
-    <property name="style" value="display: none;"/>
-    <property name="cssClasses">
-      <list>
-        <value>uif-validationMessages</value>
-      </list>
-    </property>
     <property name="displayMessages" value="true"/>
   </bean>
 
@@ -89,11 +80,6 @@
   <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
   <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.element.GroupValidationMessages">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-groupValidationMessages</value>
-      </list>
-    </property>
     <property name="displayFieldLabelWithMessages" value="true"/>
     <property name="collapseAdditionalFieldLinkMessages" value="true"/>
     <property name="displayHeaderMessageSummary" value="true"/>
@@ -104,11 +90,6 @@
         class="org.kuali.rice.krad.uif.element.PageValidationMessages">
     <property name="displayHeaderMessageSummary" value="false"/>
     <property name="showPageSummaryHeader" value="true"/>
-    <property name="cssClasses">
-      <list merge="true">
-        <value>uif-pageValidationMessages</value>
-      </list>
-    </property>
     <property name="additionalKeysToMatch">
       <list>
         <value>GLOBAL_ERRORS</value>

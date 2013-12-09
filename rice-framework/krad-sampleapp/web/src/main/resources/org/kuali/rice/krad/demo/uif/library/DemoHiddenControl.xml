@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- HiddenControl demo -->
-  <bean id="Demo-HiddenControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-HiddenControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoHiddenControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.HiddenControl"/>
     <property name="docBookAnchor" value="d7339e5479"/>

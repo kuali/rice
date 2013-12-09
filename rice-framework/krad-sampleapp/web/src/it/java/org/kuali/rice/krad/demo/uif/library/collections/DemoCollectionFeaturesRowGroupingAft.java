@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoCollectionFeaturesRowGroupingAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TableLayoutGrouping-View
+     * /kr-krad/kradsampleapp?viewId=Demo-TableLayoutGroupingView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TableLayoutGrouping-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TableLayoutGroupingView";
 
     @Override
     protected String getBookmarkUrl() {

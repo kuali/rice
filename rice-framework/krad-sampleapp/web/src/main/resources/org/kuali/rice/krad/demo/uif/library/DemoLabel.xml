@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- Label demo -->
-  <bean id="Demo-Label-View" parent="ComponentLibraryView">
+  <bean id="Demo-LabelView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoLabel.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Label"/>
     <property name="docBookAnchor" value="d6813e4605"/>

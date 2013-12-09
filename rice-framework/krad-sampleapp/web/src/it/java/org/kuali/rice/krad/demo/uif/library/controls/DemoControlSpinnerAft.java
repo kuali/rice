@@ -24,9 +24,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlSpinnerAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-SpinnerControl-View
+     * /kr-krad/kradsampleapp?viewId=Demo-SpinnerControlView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SpinnerControl-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-SpinnerControlView";
 
     @Override
     protected String getBookmarkUrl() {

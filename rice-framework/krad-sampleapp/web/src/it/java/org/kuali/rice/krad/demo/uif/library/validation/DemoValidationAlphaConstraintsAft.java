@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.validation;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -25,9 +26,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoValidationAlphaConstraintsAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraintView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraint-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AlphaPatternConstraintView&methodToCall=start";
 
     /**
      *  Can only be alpha characters, whitespace, newlines, periods, parentheses, forward slashes, double quotes, apostrophes, colons, semi-colons, question marks, exclaimation marks, dashes
@@ -47,29 +48,24 @@ public class DemoValidationAlphaConstraintsAft extends WebDriverLegacyITBase {
     }
 
     protected void testValidationAlphaConstraints() throws Exception {
-       //Scenario-1
-       waitAndTypeByName("inputField1","12");
-       waitAndClickByLinkText("Usage");
-       assertElementPresentByXpath("//input[@name='inputField1' and @class='uif-textControl validChar-inputField10 dirty error']");
+        //Scenario-1
+        assertFocusTypeBlurError("inputField1", "12");
     }
     
     protected void testValidationAlphaConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
-        //Scenario-1
-        waitAndTypeByName("inputField2","1 2");
-        waitAndTypeByName("inputField3","1,2");
-        assertElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']");
-        waitAndTypeByName("inputField2","");
-        assertElementPresentByXpath("//input[@name='inputField3' and @class='uif-textControl validChar-inputField30 dirty error']");
+        //Scenario-2
+        assertFocusTypeBlurError("inputField2", "1 2");
+        assertFocusTypeBlurError("inputField3", "1,2");
     }
     
     protected void testValidationAlphaConstraintsPreconfiguredBeans() throws Exception {
         waitAndClickByLinkText("Preconfigured Bean(s)");
         
-        //Scenario-1
+        //Scenario-3
         waitAndTypeByName("inputField4","as=-0");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         fireMouseOverEventByName("inputField4");
         assertTextPresent(ERROR_MSG);
      }

@@ -27,9 +27,9 @@ import org.openqa.selenium.WebElement;
 public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-Disable-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-DisableView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-Disable-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DisableView&methodToCall=start";
    
     @Override
     protected String getBookmarkUrl() {
@@ -77,7 +77,7 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
         waitAndTypeByName("inputField13","disable");
         assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']");
         fireEvent("inputField13", "blur");
-        waitAndClickByLinkText("Usage");
+        waitAndClickByLinkText("<< Close Library Navigation");
         assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-primaryActionButton uif-boxLayoutHorizontalItem disabled']");
      }
     
@@ -115,9 +115,9 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
     public void testClientResponsivenessDisableNav() throws Exception {
         testClientResponsivenessDisable();
         testClientResponsivenessDisableOnChange();
-        testClientResponsivenessDisableOnKeyUp();
         testClientResponsivenessDisableInCollections();
         testClientResponsivenessDisableColl();
+        testClientResponsivenessDisableOnKeyUp();
         passed();
     }  
 }

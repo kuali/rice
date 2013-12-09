@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- TabGroup demo -->
-  <bean id="Demo-TabGroup-View" parent="ComponentLibraryView">
+  <bean id="Demo-TabGroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTabGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.TabGroup"/>
     <property name="docBookAnchor" value=""/>

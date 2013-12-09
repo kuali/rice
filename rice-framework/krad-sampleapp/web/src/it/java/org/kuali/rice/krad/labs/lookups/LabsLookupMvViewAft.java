@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupMvViewAft extends LabsLookupBase {
 
     /**
@@ -53,7 +52,6 @@ public class LabsLookupMvViewAft extends LabsLookupBase {
     protected void testLabsLookupMVView()throws Exception {
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","fr*");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("5 items retrieved, displaying all items.");
+        assertResultCount("5");
     }
 }

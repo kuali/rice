@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupWithoutSearchButtonAft extends LabsLookupBase {
 
     /**
@@ -52,7 +51,7 @@ public class LabsLookupWithoutSearchButtonAft extends LabsLookupBase {
     
     protected void testLabsLookupWithoutSearchButton()throws Exception {
         if(isElementPresentByXpath("//button[contains(text(), 'Search')]")) {
-            fail("Search Button Present");
+            jiraAwareFail("LabsLookupWithoutSearchButton Search Button Present");
         }
     }
 }

@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- CssGridLayoutManager demo -->
-  <bean id="Demo-CssGridLayoutManager-View" parent="ComponentLibraryView">
+  <bean id="Demo-CssGridLayoutManagerView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCssGridLayoutManager.xml"/>
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"/>

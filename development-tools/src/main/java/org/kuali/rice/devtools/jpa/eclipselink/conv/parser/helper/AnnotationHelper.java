@@ -70,7 +70,7 @@ public class AnnotationHelper extends VoidVisitorHelperBase<String> {
     private void addAnnotation(final BodyDeclaration n, final String mappedClass, Level level) {
         for (AnnotationResolver resolver : resolvers) {
             if (resolver.getLevel() == level) {
-                LOG.info("Evaluating resolver " + ClassUtils.getShortClassName(resolver.getClass()) + " for " + getTypeOrFieldNameForMsg(n) + ".");
+                LOG.debug("Evaluating resolver " + ClassUtils.getShortClassName(resolver.getClass()) + " for " + getTypeOrFieldNameForMsg(n) + ".");
 
                 final String fullyQualifiedName = resolver.getFullyQualifiedName();
 

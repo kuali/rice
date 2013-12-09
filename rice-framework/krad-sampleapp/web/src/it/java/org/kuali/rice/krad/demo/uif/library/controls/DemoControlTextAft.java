@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoControlTextAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-TextControl-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-TextControlView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextControl-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-TextControlView&methodToCall=start";
 
     /**
      * //div[@id='Demo-TextControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField1']
@@ -133,7 +133,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_TXT_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField8","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_TXT_FIELD_XPATH_AFTER);
     }
     
@@ -141,7 +141,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Disable when changed");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_TXT_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField10","a");
-        waitAndClickByLinkText("Usage");
+        waitAndClickLinkContainingText("Library Navigation");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_TXT_FIELD_XPATH_AFTER);
     }
     

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,15 +50,15 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     protected void testKitchenSinkEventExamples() throws InterruptedException 
     {
     	//OnClick examples on various components
-    	waitAndClickByXpath("//div[@id='UifCompView-WindowEvents-Group1']/div[@class='uif-horizontalBoxLayout clearfix']/div/input[@name='field100' and @class='uif-textControl']");
+        waitAndClickByName("field100"); // Field Label
     	alertAccept();
-    	waitAndClickByXpath("//div[@id='UifCompView-WindowEvents-Group1']/div[@class='uif-horizontalBoxLayout clearfix']/div/input[@name='field112' and @class='uif-dateControl hasDatepicker']");
+        waitAndClickByName("field112"); // Date 1
     	alertAccept();
-    	waitAndClickByXpath("//div[@data-parent='UifCompView-WindowEvents-Group1']/fieldset/span/input[@name='field118' and @value='blue']");
+    	waitAndClickByXpath("//div[@data-parent='UifCompView-WindowEvents-Group1']/fieldset/span/input[@name='field118' and @value='blue']"); // Radio OnClick Example: blue
     	waitForElementPresentByXpath("//div[@style='border: 1px solid rgb(153, 153, 153); width: auto; background-color: rgb(0, 0, 255);']");
-    	waitAndClickByXpath("//div[@data-parent='UifCompView-WindowEvents-Group1']/input[@type='checkbox' and @name='bField1']");
+    	waitAndClickByXpath("//div[@data-parent='UifCompView-WindowEvents-Group1']/input[@type='checkbox' and @name='bField1']"); // Checkbox:
     	alertAccept();
-    	waitAndClickByXpath("//input[@type='checkbox' and @name='field115' and @value='1']");
+    	waitAndClickByXpath("//input[@type='checkbox' and @name='field115' and @value='1']"); // Checkboxes 2: Option 1
     	alertAccept();
     	
     	//Other Window Events: OnChange, onFocus, onBlur
@@ -66,7 +67,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     	fireEvent("field110", "focus");
     	waitAndClickById("Group2-principalName_control");
     	alertAccept();
-    	waitAndClickByXpath("//input[@class='uif-spinnerControl ui-spinner-input']");
+        waitAndClickByName("field131"); // Spinner Control
     	alertAccept();
     	
     	//Click on image element
@@ -86,7 +87,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     	waitForElementPresentByXpath("//div[@style='background-color: rgb(255, 255, 255); height: 200px; width: 300px;']");
     	
     	//OnKeyPress, KeyUp, KeyDown
-    	waitAndTypeByXpath("//div[@id='UifCompView-KeyEventsGroup_disclosureContent']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-horizontalBoxLayout clearfix']/div/input[@name='field100' and @class='uif-textControl']","a");
-    	alertAccept();
+        waitAndTypeByXpath("(//input[@name='field100'])[3]", "a"); // Field Label:
+        alertAccept();
     }
 }

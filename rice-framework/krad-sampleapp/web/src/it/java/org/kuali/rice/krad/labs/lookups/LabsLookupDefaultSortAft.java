@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupDefaultSortAft extends LabsLookupBase {
 
     /**
@@ -52,8 +51,7 @@ public class LabsLookupDefaultSortAft extends LabsLookupBase {
     
     protected void testLabsLookupDefaultSort()throws Exception {
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td/div/span/a[contains(text(), 'a9')]");
+        waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td/div/span/a[contains(text(), 'a9')]");
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]/td/div/span/a[contains(text(), 'a8')]");
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[4]/td/div/span/a[contains(text(), 'a6')]");
     }

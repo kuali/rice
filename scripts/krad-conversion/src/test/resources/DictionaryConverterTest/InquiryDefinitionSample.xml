@@ -50,13 +50,13 @@
         <ref bean="TravelerDetail-versionNumber" />
       </list>
     </property>
-    <!--    <property name="collections">
-          <list>
-            <bean parent="CollectionDefinition" p:name="emergencyContacts"
-                  p:label="emergencyContacts" p:shortLabel="emergencyContacts"
-                  p:elementLabel="emergencyContacts" />
-          </list>
-        </property>-->
+    <property name="collections">
+      <list>
+        <bean parent="CollectionDefinition" p:name="emergencyContacts"
+              p:label="emergencyContacts" p:shortLabel="emergencyContacts"
+              p:elementLabel="emergencyContacts" />
+      </list>
+    </property>
     <!--<property name="relationships">
       <list>
         <bean parent="RelationshipDefinition">
@@ -384,6 +384,25 @@
               <bean parent="FieldDefinition" p:attributeName="countryCode" />
               <bean parent="FieldDefinition" p:attributeName="emailAddress" />
               <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+            </list>
+          </property>
+        </bean>
+        <bean parent="InquirySectionDefinition" p:title="Traveler Detail Emergency Contacts Inquiry">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields">
+            <list>
+              <bean parent="InquiryCollectionDefinition" p:attributeName="emergencyContacts" p:businessObjectClass="edu.sampleu.travel.approval.dataobject.TravelerDetailEmergencyContact">
+                <property name="inquiryFields">
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="id" />
+                    <bean parent="FieldDefinition" p:attributeName="documentNumber" />
+                    <bean parent="FieldDefinition" p:attributeName="financialDocumentLineNumber" />
+                    <bean parent="FieldDefinition" p:attributeName="contactRelationTypeCode" />
+                    <bean parent="FieldDefinition" p:attributeName="contactName" />
+                    <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

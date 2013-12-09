@@ -20,7 +20,6 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupDefaultAft extends LabsLookupBase {
 
     /**
@@ -40,27 +39,30 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
 
     @Test
     public void testLabsLookupDefaultBookmark() throws Exception {
+        testLabsLookupDefaultEmpty();
         testLabsLookupDefault();
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultNav() throws Exception {
+        testLabsLookupDefaultEmpty();
         testLabsLookupDefault();
         passed();
     }
-    
+
     protected void testLabsLookupDefault()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("TRAVEL ACCOUNT 14");
-        assertTextPresent("a14");
+        assertTextPresent(new String[] {"Travel Account 14", "a14"});
         waitAndClickButtonByText("Clear Values");
         waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("Travel Account 1");
-        assertTextPresent("a1");
+        assertTextPresent(new String[] {"Travel Account 1", "a1"});
+    }
+
+    protected void testLabsLookupDefaultEmpty()throws Exception {
+        waitAndClickButtonByText("Search");
+        findDataTableRow("Travel Account 1");
     }
 }

@@ -23,13 +23,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 
 @Entity
 @Table(name="TRV_SUB_ACCT")
-@UifAutoCreateViews(UifAutoCreateViewType.INQUIRY)
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
 public class TravelSubAccount extends DataObjectBase implements Serializable {
 	private static final long serialVersionUID = 5768156680246084251L;
 
@@ -39,6 +40,7 @@ public class TravelSubAccount extends DataObjectBase implements Serializable {
 	private String travelAccountNumber;
 
 	@Id
+    @ForceUppercase
 	@Column(name="SUB_ACCT",length=10)
 	@Label("Travel Sub Account Number")
 	private String subAccount;

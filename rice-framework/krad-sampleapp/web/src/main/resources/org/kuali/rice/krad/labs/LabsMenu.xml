@@ -74,6 +74,8 @@
                               p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
                         <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"
                               p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal"/>
+                        <bean parent="Uif-Link" p:linkText="Page Form Post URL" p:target="_self"
+                              p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PageForm"/>
                       </list>
                   </property>
               </bean>

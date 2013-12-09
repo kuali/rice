@@ -77,7 +77,7 @@
       <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:applyDefaultCellWidths="false"/>
     </property>
     <property name="fieldBindingObjectPath" value="document"/>
-    <property name="validationMessages.render" value="false"/>
+    <property name="validationMessages.displayMessages" value="false"/>
   </bean>
 
   <bean id="Uif-DocumentOverviewSection" parent="Uif-Disclosure-GridSection" p:layoutManager.numberOfColumns="4"

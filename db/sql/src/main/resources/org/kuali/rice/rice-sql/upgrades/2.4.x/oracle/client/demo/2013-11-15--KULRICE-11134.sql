@@ -19,7 +19,7 @@
 
 
 INSERT INTO KRIM_PERM_T (PERM_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, OBJ_ID, VER_NBR)
-VALUES('KRSAP2100', '27', 'KR-SYS', 'Full Unmask TravelerDetail Phone', 'Authorizes users to view the entire Phone Number on the Travel Detail document and inquiry.','Y', sys_guid(), 1)
+VALUES('KRSAP2100', '27', 'KR-SAP', 'Full Unmask TravelerDetail Phone', 'Authorizes users to view the entire Phone Number on the Travel Detail document and inquiry.','Y', sys_guid(), 1)
 /
 
 INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, OBJ_ID, VER_NBR)
@@ -31,7 +31,7 @@ VALUES('KRSAP2102', 'KRSAP2100', '11', '6', 'phoneNumber', sys_guid(), 1)
 /
 
 INSERT INTO KRIM_PERM_T (PERM_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, OBJ_ID, VER_NBR)
-VALUES('KRSAP2200', '28', 'KR-SYS', 'Partial Unmask TravelerDetail Phone', 'Authorizes users to paritally view the Phone Number on the Travel Detail document and inquiry.','Y', sys_guid(), 1)
+VALUES('KRSAP2200', '28', 'KR-SAP', 'Partial Unmask TravelerDetail Phone', 'Authorizes users to partially view the Phone Number on the Travel Detail document and inquiry.','Y', sys_guid(), 1)
 /
 
 INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, OBJ_ID, VER_NBR)

@@ -1,0 +1,186 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  <!-- Validation Messages demo -->
+  <bean id="Demo-ValidationMessagesView" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoValidationMessages.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-ValidationMessages-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id ="Demo-ValidationMessages-Buttons" parent="Uif-HorizontalBoxGroup">
+    <property name="items">
+      <list>
+        <bean id="Demo-ValidationMessages-AddErrors" parent="Uif-PrimaryActionButton" p:actionLabel="Get Error Messages"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Warning Messages" p:methodToCall="addWarnings"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Info Messages" p:methodToCall="addInfo"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Error+Warning+Info Messages"
+              p:methodToCall="addAllMessages"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Error+Warning Messages"
+              p:methodToCall="addErrorWarnMessages"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Error+Info Messages"
+              p:methodToCall="addErrorInfoMessages"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Warning+Info Messages"
+              p:methodToCall="addWarnInfoMessages"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Single Group Error"
+              p:methodToCall="addSingleErrorMessage"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ValidationMessages-Example1" parent="Uif-VerticalBoxSection" p:headerText="Sections - Default">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ValidationMessages-Example1 start-->
+        <bean parent="Demo-ValidationMessages-Buttons">
+          <property name="items">
+            <list>
+              <bean parent="Demo-ValidationMessages-AddErrors">
+                <property name="methodToCall" value="addStandardSectionsErrors"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-ValidationMessages-StandardSectionsPage" parent="Uif-Page" p:headerText="Standard Sections Page">
+          <!--<property name="help">
+            <bean parent="Uif-Help">
+              <property name="externalHelpUrl" value="http://www.kuali.org"/>
+              <property name="tooltipHelpContent" value="Page help"/>
+            </bean>
+          </property>-->
+          <property name="items">
+            <list>
+              <bean id="Demo-ValidationMessages-Section1" parent="Uif-Disclosure-HorizontalBoxSection">
+                <!--<property name="help">
+                  <bean parent="Uif-Help">
+                    <property name="externalHelpUrl" value="http://www.kuali.org"/>
+                    <property name="tooltipHelpContent" value="Section help"/>
+                  </bean>
+                </property>-->
+                <property name="headerText" value="Section 1 Title"/>
+                <property name="instructionalText" value="Fields are direct children of this section"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField1" p:label="Field 1">
+                      <!--<property name="help">
+                        <bean parent="Uif-Help">
+                          <property name="externalHelpUrl" value="http://www.kuali.org"/>
+                        </bean>
+                      </property>-->
+                      <property name="control">
+                        <bean parent="Uif-TextAreaControl"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField2" p:label="Field 2">
+                      <property name="control">
+                        <bean parent="Uif-TextControl"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField3" p:label="Field 3">
+                      <property name="control">
+                        <bean parent="Uif-DropdownControl"/>
+                      </property>
+                      <property name="optionsFinder">
+                        <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField4" p:label="Field 4">
+                      <property name="control">
+                        <bean parent="Uif-MultiSelectControl"/>
+                      </property>
+                      <property name="optionsFinder">
+                        <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField5" p:label="Radio 1"
+                          p:width="auto"
+                          p:instructionalText="RadioGroupControl using an optionsFinder">
+                      <property name="control">
+                        <bean parent="Uif-VerticalRadioControl"/>
+                      </property>
+                      <property name="optionsFinder">
+                        <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="booleanField1" p:label="Checkbox"
+                          p:defaultValue="true"
+                          p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
+                      <property name="control">
+                        <bean parent="Uif-CheckboxControl" p:checkboxLabel="Checkbox Label"/>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField6" p:label="Checkboxes 1"
+                          p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
+                      <property name="control">
+                        <bean parent="Uif-VerticalCheckboxesControl"/>
+                      </property>
+                      <property name="optionsFinder">
+                        <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                      </property>
+                    </bean>
+                 </list>
+                </property>
+              </bean>
+              <bean id="Demo-ValidationMessages-Section2" parent="Uif-VerticalBoxSection">
+                <property name="headerText" value="Section 2 Title"/>
+                <property name="instructionalText" value="Fields are direct children of this section"/>
+                <!--<property name="help">
+                  <bean parent="Uif-Help">
+                    <property name="externalHelpUrl" value="http://www.kuali.org"/>
+                    <property name="tooltipHelpContent" value="Section help"/>
+                  </bean>
+                </property>-->
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField7" p:label="Field 5">
+                      <property name="control">
+                        <bean parent="Uif-TextAreaControl">
+                        </bean>
+                      </property>
+                    </bean>
+
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField8" p:label="Field 6">
+                      <property name="control">
+                        <bean parent="Uif-TextControl"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ValidationMessages-Example1 end-->
+      </list>
+    </property>
+  </bean>
+</beans>

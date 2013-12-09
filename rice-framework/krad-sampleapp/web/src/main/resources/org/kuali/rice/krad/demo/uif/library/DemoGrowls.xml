@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Growls demo -->
-  <bean id="Demo-Growls-View" parent="ComponentLibraryView">
+  <bean id="Demo-GrowlsView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoGrowls.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.widget.Growls"/>
     <property name="docBookAnchor" value="d6813e8513"/>

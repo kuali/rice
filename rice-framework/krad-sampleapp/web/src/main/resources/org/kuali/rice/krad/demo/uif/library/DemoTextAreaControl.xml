@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- TextAreaControl demo -->
-  <bean id="Demo-TextAreaControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-TextAreaControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTextAreaControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.TextAreaControl"/>
     <property name="docBookAnchor" value="d7339e5587"/>

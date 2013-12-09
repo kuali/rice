@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
+
 @RequestMapping(value = "/labs")
 public class KradLabsController extends UifControllerBase {
 

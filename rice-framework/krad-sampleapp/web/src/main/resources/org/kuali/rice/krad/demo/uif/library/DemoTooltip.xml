@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Tooltip demo -->
-  <bean id="Demo-Tooltip-View" parent="ComponentLibraryView">
+  <bean id="Demo-TooltipView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTooltip.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.widget.Tooltip"/>
     <property name="docBookAnchor" value="d6813e8513"/>

@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- FileControl demo -->
-  <bean id="Demo-FileControl-View" parent="ComponentLibraryView">
+  <bean id="Demo-FileControlView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoFileControl.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.control.FileControl"/>
     <property name="docBookAnchor" value="d7339e5453"/>

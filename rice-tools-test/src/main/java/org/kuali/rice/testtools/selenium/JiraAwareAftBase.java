@@ -79,8 +79,44 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         JiraAwareWebDriverUtils.assertButtonEnabledByText(getDriver(), buttonText, this);
     }
 
+    protected void assertDataTableContains(String[][] data) throws InterruptedException {
+        boolean dataPresent = true;
+        String missingMessage = "";
+        String dataTableRow;
+        for (int i = 0, s = data.length; i < s; i++) {
+            dataTableRow = findDataTableRow(data[i][0]).getText();
+            for (int j = 1, t = data[i].length; j < t; j++) {
+                if (!dataTableRow.contains(data[i][j])) {
+                    dataPresent = false;
+                    missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
+                }
+            }
+        }
+        if (!dataPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertDataTableContains(String[][] data, String tableClass) throws InterruptedException {
+        boolean dataPresent = true;
+        String missingMessage = "";
+        String dataTableRow;
+        for (int i = 0, s = data.length; i < s; i++) {
+            dataTableRow = findDataTableRow(data[i][0], tableClass).getText();
+            for (int j = 1, t = data[i].length; j < t; j++) {
+                if (!dataTableRow.contains(data[i][j])) {
+                    dataPresent = false;
+                    missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
+                }
+            }
+        }
+        if (!dataPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
     protected void assertElementPresentByName(String name) {
-        assertElementPresentByName(name, "");
+        assertElementPresentByName(name, this.getClass().toString());
     }
 
     protected void assertElementPresentByName(String name, String message) {
@@ -92,7 +128,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertElementPresentByXpath(String locator) {
-        assertElementPresentByXpath(locator, "");
+        assertElementPresentByXpath(locator, this.getClass().toString());
     }
 
     protected void assertElementPresentByXpath(String locator, String message) {
@@ -107,7 +143,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             findElement(By.linkText(linkText));
         } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(linkText), "", e);
+            jiraAwareFail(By.cssSelector(linkText), this.getClass().toString(), e);
         }
 
     }
@@ -116,7 +152,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             findElement(By.cssSelector(locator));
         } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(locator), "", e);
+            jiraAwareFail(By.cssSelector(locator), this.getClass().toString(), e);
         }
     }
 
@@ -189,7 +225,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertIsNotVisible(By by) {
-        assertIsNotVisible(by, "");
+        assertIsNotVisible(by, this.getClass().toString());
     }
 
     protected void assertIsNotVisible(By by, String message) {
@@ -216,6 +252,45 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    protected void assertLabeledTextNotPresent(String[][] labeledText) {
+        boolean allLabeledTextNotPresent = true;
+        String missingMessage = "";
+        for (int i = 0, s = labeledText.length; i < s; i++) {
+            if (isLabeledTextPresent(labeledText[i][0], labeledText[i][1])) {
+                allLabeledTextNotPresent = false;
+                missingMessage += "Text: " + labeledText[i][1] + " labeled by: " + labeledText[i][0] + " present. ";
+            }
+        }
+        if (!allLabeledTextNotPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertLabeledTextPresent(String[][] labeledText) {
+        boolean allLabeledTextPresent = true;
+        String missingMessage = "";
+        for (int i = 0, s = labeledText.length; i < s; i++) {
+            if (!isLabeledTextPresent(labeledText[i][0], labeledText[i][1])) {
+                allLabeledTextPresent = false;
+                missingMessage += "Text: " + labeledText[i][1] + " labeled by: " + labeledText[i][0] + " not present. ";
+            }
+        }
+        if (!allLabeledTextPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
+    protected void assertLabeledTextPresent(String label, String text) {
+        if (!isLabeledTextPresent(label, text)) {
+            jiraAwareFail("Text: " + text + " labeled by: " + label + " not present");
+        }
+    }
+
+    protected void assertResultCount(String count) throws InterruptedException {
+        jiraAwareWaitFor(By.cssSelector("li.uif-infoMessageItem"), "result count for " + this.getClass().toString());
+        assertTextPresent(count + " items retrieved, displaying all items.", "li.uif-infoMessageItem", this.getClass().toString());
+    }
+
     /**
      * <b>WARNING:</b> this only does a check against the page source.  The form url can have random character that match
      * simple text.  A narrowly scoped locator for {@see #assertTextPresent(String String String)}
@@ -223,7 +298,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text
      */
     protected void assertTextPresent(String text) {
-        assertTextPresent(text, "");
+        assertTextPresent(text, this.getClass().toString());
     }
 
     /**
@@ -235,6 +310,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         if (!pageSource.contains(text)) {
             jiraAwareFail(text + " not present " + message);
         }
+        WebDriverUtils.highlightElement(getDriver(), By.xpath("//*[contains(text(), '" + text + "')]"));
     }
 
     /**
@@ -253,7 +329,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text the text to search for
      */
     protected void assertTextNotPresent(String text) {
-        assertTextNotPresent(text, "");
+        assertTextNotPresent(text, this.getClass().toString());
     }
 
     /**
@@ -262,7 +338,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param message the message to add to the failure
      */
     protected void assertTextNotPresent(String text, String message) {
-        if (getDriver().getPageSource().contains(text)) {
+        String contents = getDriver().getPageSource();
+        if (contents.contains(text)) {
             jiraAwareFail(text + " is present and should not be " + message);
         }
     }
@@ -310,6 +387,16 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         Assert.fail(message); // The final fail that JiraAwareFailure calls, do not change this to a JiraAwareFailure.
     }
 
+    protected WebElement findDataTableRow(String keyText) throws InterruptedException {
+        return findDataTableRow(keyText, "dataTable");
+    }
+
+    protected WebElement findDataTableRow(String keyText, String className) throws InterruptedException {
+        jiraAwareWaitFor(By.className(className));
+        WebElement element = findElement(By.className(className));
+        return findElement(By.xpath("./*/tr//*[contains(text(), '" + keyText + "')]/ancestor::tr"), element);
+    }
+
     /**
      * {@see WebDriverUtils#findElement}.
      *
@@ -331,9 +418,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             WebDriverUtils.highlightElement(getDriver(), found);
             return found;
         } catch (Exception e) {
-            jiraAwareFail(by.toString(), e.getMessage(), e);
+            jiraAwareFail(by.toString(), e.getMessage() + " " + this.getClass().toString(), e);
         }
         return null; // required by compiler, never reached
+    }
+
+    protected boolean isLabeledTextPresent(String label, String text) {
+        WebElement element = findElement(By.xpath("//tr/th/*/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
+        String labeledText = element.getText().trim();
+        return labeledText.contains(text);
     }
 
     protected boolean isVisible(String locator) {
@@ -454,6 +547,17 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * {@see WebDriverUtils#waitFor}.
      *
      * @param by to find
+     * @return WebElement found with given by
+     * @throws InterruptedException
+     */
+    protected WebElement jiraAwareWaitFor(By by) throws InterruptedException {
+        return jiraAwareWaitFor(by, this.getClass().toString());
+    }
+
+    /**
+     * {@see WebDriverUtils#waitFor}.
+     *
+     * @param by to find
      * @param message on failure
      * @return WebElement found with given by
      * @throws InterruptedException
@@ -462,7 +566,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             return WebDriverUtils.waitFor(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
         } catch (Throwable t) {
-            jiraAwareFail(by, message, t);
+            jiraAwareFail(by, message + " " + this.getClass().toString(), t);
         }
         return null; // required, but the jiraAwareFail will will end test before this statement is reached
     }
@@ -569,12 +673,13 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         WebDriverUtils.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
     }
 
-    protected void waitAndType(By by, String text, String message) throws InterruptedException {
+    protected WebElement waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
             WebDriverUtils.highlightElement(getDriver(), element);
             element.sendKeys(text);
+            return element;
         } catch (Exception e) {
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
             jiraAwareFail(e.getMessage()
@@ -589,5 +694,6 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                     + "\n"
                     + AutomatedFunctionalTestUtils.deLinespace(getDriver().getPageSource()));
         }
+        return null;
     }
 }

@@ -68,8 +68,9 @@
         <bean id="KradInquirySampleItems-PageR1C3" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Inquiry with forceUppercase" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;accountTypeCode=IAT&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+              <bean parent="Uif-Link" p:linkText="Inquiry with forceUppercase (subAccount=a&amp;travelAccountNumber=a14)" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?subAccount=a&amp;travelAccountNumber=a14
+                    &amp;methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount"/>
             </list>
           </property>
         </bean>

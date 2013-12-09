@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -73,30 +74,27 @@ public class LabsLookUpConditionalCriteriaAft extends LabsLookupBase {
     }
 
     protected void testLookUpConditionalCriteria() throws InterruptedException {
+        //Case 2 - Date field read only by number a2
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a2");
+        waitAndTypeByName(LOOKUP_CRITERIA_NAME_NAME,"");
+        waitForElementNotPresent(By.name(LOOKUP_CRITERIA_DATE_NAME));
+
+        //Case 3 - Date field hide by number a3
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a3");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextNotPresent(DATE_CREATED_LABEL);
+
         //Case 1 - Date field required by number a1
         //It requires "Search" to be clicked twice, for the date required message to show.
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(10000); // If we don't wait long enough we'll get concurrency issues.
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
         assertTextPresent(DATE_REQUIRED_MESSAGE);
-        
-        //Case 2 - Date field read only by number a2
-        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a2");
-        waitAndTypeByName(LOOKUP_CRITERIA_NAME_NAME,"");
-        Thread.sleep(2000);
-        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME)) {
-            fail(FAILURE_MESSAGE);
-        }
-        
-        //Case 3 - Date field hide by number a3
-        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a3");
-        waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
-        assertTextNotPresent(DATE_CREATED_LABEL);
     }
 
     @Test

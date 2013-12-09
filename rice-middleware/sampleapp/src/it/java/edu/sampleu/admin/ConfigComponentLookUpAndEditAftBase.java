@@ -60,7 +60,7 @@ public abstract class ConfigComponentLookUpAndEditAftBase extends AdminTmplMthdA
     
     public void testConfigComponentLookUpAndEdit() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]", "Probably KULRICE-10763 500 Error Lookup not defined for business object class org.kuali.rice.coreservice.impl.component.ComponentBo");
+        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component");
         waitAndClickByName("methodToCall.route");

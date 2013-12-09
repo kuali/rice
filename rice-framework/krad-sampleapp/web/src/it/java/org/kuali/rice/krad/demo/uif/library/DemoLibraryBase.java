@@ -51,7 +51,7 @@ public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
      * @throws Exception
      */
     public WebElement navigateToExample(String exampleId) throws Exception {
-        waitForElementPresentByClassName("demo-contactInfo"); // wait for page to load
+        waitForElementPresentByClassName("demo-contactInfo", WebDriverUtils.configuredImplicityWait() * 2000); // wait for page to load
         WebElement exampleTab;
         String tabId = "#" + exampleId + UifConstants.IdSuffixes.TAB;
 

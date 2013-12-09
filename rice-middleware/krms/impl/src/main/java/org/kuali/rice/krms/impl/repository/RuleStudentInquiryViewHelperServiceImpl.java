@@ -149,7 +149,6 @@ public class RuleStudentInquiryViewHelperServiceImpl extends InquirableImpl {
 
     private static Group getPropositionGroup() {
         Group group = (Group) ComponentFactory.getGroupGridBodyOnly();
-        group.getValidationMessages().setId(String.valueOf(ID++));
         group.getDisclosure().setId(String.valueOf(ID++));
         return group;
     }

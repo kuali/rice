@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoContainerAccordionAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-AccordionGroup-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-AccordionGroupView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AccordionGroup-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-AccordionGroupView&methodToCall=start";
  
     @Override
     protected String getBookmarkUrl() {

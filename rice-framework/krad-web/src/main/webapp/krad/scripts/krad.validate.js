@@ -322,6 +322,13 @@ function writeMessagesAtField(id) {
         }
 
         var messagesDiv = jQuery("[data-messages_for='" + id + "']");
+        var createMessagesDiv = messagesDiv.length === 0;
+
+        if (createMessagesDiv){
+            messagesDiv = jQuery("<div id='" + id +
+                    "_errors' class='uif-validationMessages' data-messages_for='" + id + "' style='display: none;'>");
+        }
+
         //ensure the messagesDiv is hidden and empty
         if (data.useTooltip) {
             messagesDiv.hide();
@@ -346,10 +353,20 @@ function writeMessagesAtField(id) {
         var hasServerMessages = false;
         //only append if messages exist
         if (jQuery(clientMessages).find("ul").children().length) {
+            if (createMessagesDiv){
+                field.append(messagesDiv);
+                createMessagesDiv = false;
+            }
+
             jQuery(clientMessages).appendTo(messagesDiv);
         }
 
         if (jQuery(serverMessages).find("ul").children().length) {
+            if (createMessagesDiv){
+                field.append(messagesDiv);
+                createMessagesDiv = false;
+            }
+
             jQuery(serverMessages).appendTo(messagesDiv);
             hasServerMessages = true;
         }
@@ -392,7 +409,7 @@ function writeMessagesAtField(id) {
                 data.tooltipTheme = "kr-error-ss";
             }
             else {
-                data.tooltipTheme = "kr-error-cs"
+                data.tooltipTheme = "kr-error-cs";
             }
 
             handleTabStyle(id, true, false, false);
@@ -410,7 +427,7 @@ function writeMessagesAtField(id) {
                 data.tooltipTheme = "kr-warning-ss";
             }
             else {
-                data.tooltipTheme = "kr-warning-cs"
+                data.tooltipTheme = "kr-warning-cs";
             }
 
             handleTabStyle(id, false, true, false);
@@ -428,7 +445,7 @@ function writeMessagesAtField(id) {
                 data.tooltipTheme = "kr-info-ss";
             }
             else {
-                data.tooltipTheme = "kr-info-cs"
+                data.tooltipTheme = "kr-info-cs";
             }
 
             handleTabStyle(id, false, false, true);
@@ -465,7 +482,7 @@ function handleMessagesAtField(id, pageSetupPhase) {
         skipBubble = true;
     }
 
-    if (!(skip == "yes")) {
+    if (skip !== "yes") {
         var data = getValidationData(field);
         if (data) {
             if (!pageSetupPhase || (pageSetupPhase && data.hasOwnMessages)) {
@@ -517,7 +534,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
         }
 
         //retrieve header for section
-        if (data.isSection == undefined) {
+        if (data.isSection === undefined) {
             var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
             data.isSection = sectionHeader.length;
         }
@@ -546,7 +563,8 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
  * @param forceWrite forces the group write to be processed
  */
 function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
-    var parent = jQuery("#" + id).data("parent");
+    var group = jQuery("#" + id);
+    var parent = group.data("parent");
 
     if (data) {
         var messageMap = data.messageMap;
@@ -555,7 +573,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
         var sections = data.sections;
 
         //retrieve header for section
-        if (data.isSection == undefined) {
+        if (data.isSection === undefined) {
             var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
             data.isSection = sectionHeader.length;
         }
@@ -564,15 +582,15 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
         var showMessages = data.isSection || data.forceShow;
 
         //TabGroups rely on tab error indication to indicate messages - don't show messages here
-        var type = jQuery("#" + id).data("type");
-        if (type && type == kradVariables.TAB_GROUP_CLASS) {
+        var type = group.data("type");
+        if (type && type === kradVariables.TAB_GROUP_CLASS) {
             showMessages = false;
         }
 
         //if this group is in a tab in a tab group show your messages because TabGroups will not
         if (parent) {
             var parentType = jQuery("#" + parent).data("type");
-            if (parentType && parentType == kradVariables.TAB_GROUP_CLASS) {
+            if (parentType && parentType === kradVariables.TAB_GROUP_CLASS) {
                 showMessages = true;
             }
         }
@@ -613,6 +631,27 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
 
                 var messageBlock = jQuery("[data-messages_for='" + id + "']");
 
+                if (messageBlock.length === 0) {
+                    var cssClasses = "uif-validationMessages uif-groupValidationMessages";
+                    if (pageLevel){
+                        cssClasses = cssClasses + " uif-pageValidationMessages";
+                    }
+
+                    messageBlock = jQuery("<div id='" + id + "_messages' class='"
+                            + cssClasses + "' data-messages_for='" + id + "' "
+                            + "style='display: none;'>");
+
+                    var disclosureBlock = group.find("#" + id + "_disclosureContent");
+                    if (disclosureBlock.length) {
+                        disclosureBlock.prepend(messageBlock);
+                    } else if (!data.isSection) {
+                        group.prepend(messageBlock);
+                    } else if (data.isSection) {
+                        var header = group.find("> .uif-header-contentWrapper");
+                        header.after(messageBlock);
+                    }
+                }
+
                 //remove old block styling
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS);
@@ -633,10 +672,11 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 clearMessages(id, false);
                 handleTabStyle(id, data.errorTotal, data.warningTotal, data.infoTotal);
                 writeMessages(id, newList);
+
                 //page level validation messsage header handling
                 if (pageLevel) {
                     if (newList.children().length) {
-                        var messagesDiv = jQuery("[data-messages_for='" + id + "']");
+
                         var countMessage = generateCountString(data.errorTotal, data.warningTotal,
                                 data.infoTotal);
 
@@ -677,7 +717,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                             pageValidationHeader.addClass("uif-pageValidationMessage-single")
                         }
 
-                        messagesDiv.prepend(pageValidationHeader);
+                        messageBlock.prepend(pageValidationHeader);
 
                         //Handle special classes
                         pageValidationHeader.parent().removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
@@ -689,8 +729,8 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                             pageValidationHeader.hide();
                         }
 
-                        messagesDiv.find(".uif-validationMessagesList").attr("id", "pageValidationList");
-                        messagesDiv.find(".uif-validationMessagesList").attr("aria-labelledby",
+                        messageBlock.find(".uif-validationMessagesList").attr("id", "pageValidationList");
+                        messageBlock.find(".uif-validationMessagesList").attr("aria-labelledby",
                                 "pageValidationHeader");
                     }
                 }

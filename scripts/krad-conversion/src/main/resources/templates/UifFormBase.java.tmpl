@@ -41,6 +41,6 @@ public class ${className} extends ${parentClass} {
         setViewTypeName(ViewType.DEFAULT);
     }
 
-<% for (member in members) { %><% } %>
-<% for (method in methods) { %><% } %>
+<% for (member in members) { %>${member.text}
+<% } %><% for (method in methods) {  %><% } %>
 }

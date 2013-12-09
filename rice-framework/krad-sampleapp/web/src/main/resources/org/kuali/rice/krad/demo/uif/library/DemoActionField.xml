@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- ActionField demo -->
-  <bean id="Demo-ActionField-View" parent="ComponentLibraryView">
+  <bean id="Demo-ActionFieldView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoActionField.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.ActionField"/>
     <property name="docBookAnchor" value="linkAndLinkField"/>

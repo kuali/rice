@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoCollectionFeaturesSelectLineAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CollectionSelectLine-View
+     * /kr-krad/kradsampleapp?viewId=Demo-CollectionSelectLineView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionSelectLine-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionSelectLineView";
 
     @Override
     protected String getBookmarkUrl() {

@@ -27,9 +27,9 @@ import org.openqa.selenium.WebElement;
 public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
+     * /kr-krad/kradsampleapp?viewId=Demo-CheckboxControlView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CheckboxControl-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CheckboxControlView";
 
     @Override
     public String getBookmarkUrl() {

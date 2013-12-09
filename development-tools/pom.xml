@@ -27,66 +27,22 @@
     <version>2.4.0-M3-SNAPSHOT</version>
   </parent>
   <artifactId>rice-development-tools</artifactId>
-  <profiles>
-    <profile>
-      <id>oracle</id>
-      <dependencies>
-        <dependency>
-          <groupId>com.oracle</groupId>
-          <artifactId>${oracle.jdbc.artifactId}</artifactId>
-          <version>${oracle.jdbc.version}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
   <properties>
     <generateReports>false</generateReports>
     <codemodel.version>2.4.1</codemodel.version>
     <javaparser.version>1.0.9</javaparser.version>
-    <groovy.version>2.1.5</groovy.version>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-framework</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-data</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.kuali.db.ojb</groupId>
       <artifactId>db-ojb</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.kuali.commons</groupId>
-      <artifactId>commons-beanutils</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
+     <dependency>
       <groupId>com.sun.codemodel</groupId>
       <artifactId>codemodel</artifactId>
       <version>${codemodel.version}</version>
@@ -96,24 +52,9 @@
       <artifactId>filemonitor</artifactId>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>${mysql.jdbc.artifactId}</artifactId>
-      <version>${mysql.jdbc.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.google.code.javaparser</groupId>
       <artifactId>javaparser</artifactId>
       <version>${javaparser.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${groovy.version}</version><!--$NO-MVN-MAN-VER$-->
     </dependency>
 
   </dependencies>

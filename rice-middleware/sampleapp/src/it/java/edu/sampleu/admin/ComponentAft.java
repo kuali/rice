@@ -49,7 +49,7 @@ public class ComponentAft extends WebDriverLegacyITBase {
     }
 
     protected void navigate() throws InterruptedException {
-        waitAndClickAdministration(this);
+        waitAndClickAdministration();
         waitForTitleToEqualKualiPortalIndex();
         checkForIncidentReport("Component");
         selectFrameIframePortlet();

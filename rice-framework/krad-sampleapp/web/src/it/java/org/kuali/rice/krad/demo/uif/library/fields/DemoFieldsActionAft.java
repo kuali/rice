@@ -38,9 +38,9 @@ import static org.junit.Assert.assertEquals;
 public class DemoFieldsActionAft extends DemoLibraryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-ActionField-View&methodToCall=start
+     * /kr-krad/kradsampleapp?viewId=Demo-ActionFieldView&methodToCall=start
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ActionField-View&methodToCall=start";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-ActionFieldView&methodToCall=start";
 
     @Override
     public String getBookmarkUrl() {

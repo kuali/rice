@@ -33,7 +33,7 @@ public class LoginLogoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickMainMenu(this);
+        waitAndClickMainMenu();
         waitForPageToLoad();
     }
 

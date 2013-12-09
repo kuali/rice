@@ -23,9 +23,9 @@ import org.junit.Test;
 public class DemoNavigationAft extends DemoLibraryNavigationBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=ComponentLibraryHome
+     * /kr-krad/kradsampleapp?viewId=Demo-NavigationGroupView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroup-View";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-NavigationGroupView";
 
     @Override
     public String getBookmarkUrl() {
@@ -53,7 +53,6 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
     @Test
     public void testNavigationMenuBookmark() throws Exception {
         testNavigationTabs();
-        testNavigationView();
         passed();
     }
 
@@ -61,7 +60,6 @@ public class DemoNavigationAft extends DemoLibraryNavigationBase {
     public void testNavigationMenuNav() throws Exception {
         navigateToLibraryDemo("Navigation", "Navigation Group");
         testNavigationTabs();
-        testNavigationView();
         passed();
     }
 }

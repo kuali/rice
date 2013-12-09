@@ -245,6 +245,8 @@ public final class RiceKeyConstants {
             "info.wildcards.and.operators.treated.literally";
     public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE =
             "error.document.identityManagementPerson.qualifier.valueNotUnique";
+    public static final String ERROR_NEGATIVES_NOT_ALLOWED_ON_FIELD =
+            "error.negatives.not.allowed.on.field";
 
     // PeopleFlow
     public static final String PEOPLEFLOW_DUPLICATE = "peopleFlow.duplicate";

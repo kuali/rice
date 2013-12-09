@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -29,6 +27,8 @@ import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+
+import java.util.List;
 
 /**
  * A PageGroup represents a page of a View.
@@ -55,6 +55,8 @@ public class PageGroup extends GroupBase {
     private PageBreadcrumbOptions breadcrumbOptions;
     private BreadcrumbItem breadcrumbItem;
     private boolean stickyFooter;
+    private String formPostUrl;
+
 
     /**
      * Setup various breadcrumbOptions inherited from view if not explicitly set.
@@ -238,6 +240,7 @@ public class PageGroup extends GroupBase {
 
         pageGroupCopy.setAutoFocus(this.autoFocus);
         pageGroupCopy.setStickyFooter(this.stickyFooter);
+        pageGroupCopy.setFormPostUrl(formPostUrl);
 
         if (breadcrumbOptions != null) {
             pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions) this.breadcrumbOptions.copy());
@@ -266,4 +269,30 @@ public class PageGroup extends GroupBase {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * Specifies the URL the view's form should post to
+     *
+     * <p>
+     * Any valid form post URL (full or relative) can be specified. If left
+     * empty, the form will be posted to the same URL of the preceding request
+     * URL.
+     * </p>
+     *
+     * @return post URL
+     */
+    @BeanTagAttribute(name = "formPostUrl")
+    public String getFormPostUrl() {
+        return formPostUrl;
+    }
+
+    /**
+     * Setter for the form post URL
+     *
+     * @param formPostUrl
+     */
+    public void setFormPostUrl(String formPostUrl) {
+        this.formPostUrl = formPostUrl;
+    }
+
 }

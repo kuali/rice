@@ -20,14 +20,20 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -83,8 +89,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         buildComplexAgenda(t1);
         List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t1.contextId);
 
-        // the complex agendas created should have 7 agendaItems associated with it
-        assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
+        // the complex agendas created should have 8 agendaItems associated with it
+        assertEquals("Invalid number of agendaItems created", 8, agendaItems.size());
     }
 
     /**
@@ -119,7 +125,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         // check agendaItem count of associated items
         List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t2.contextId);
-        assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
+        assertEquals("Invalid number of agendaItems created", 8, agendaItems.size());
 
         AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
         assertNull("AgendaItem is not null", junkAgendaItem);
@@ -144,8 +150,8 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         // get agendaItems for all agendas of this type
         // these complex agendas are both of type namespaceType
-        // each complex agenda has 7 agendaItems
-        assertEquals("Incorrect number of agendaItems found",14,
+        // each complex agenda has 8 agendaItems
+        assertEquals("Incorrect number of agendaItems found",16,
                 ruleManagementService.getAgendaItemsByType(t3.namespaceType).size());
     }
 
@@ -165,9 +171,9 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         buildComplexAgenda(t6);
 
         // get agendaItems for all agendas with this Context
-        // each complex agenda has 7 agendaItems
+        // each complex agenda has 8 agendaItems
         // each complex agenda has a unique Context
-        assertEquals("Incorrect number of agendaItems returned", 7, ruleManagementService.getAgendaItemsByContext(t5.contextId).size());
+        assertEquals("Incorrect number of agendaItems returned", 8, ruleManagementService.getAgendaItemsByContext(t5.contextId).size());
         assertEquals("No agendaItems should have been returned",0,
                 ruleManagementService.getAgendaItemsByContext("junk").size());
     }
@@ -188,12 +194,12 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         createComplexAgenda(t8.namespaceName, t7.namespaceType, t8);
 
         // get agendaItems for all agendas of this type with this Context
-        // each complex agenda has 7 agendaItems
+        // each complex agenda has 8 agendaItems
         // complex agendas are of type "firstNamespaceType"
         // each complex agenda has a unique Context
-        assertEquals("Incorrect number of agendaItems returned",7,
+        assertEquals("Incorrect number of agendaItems returned",8,
                 ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,t8.contextId).size());
-        assertEquals("Incorrect number of agendaItems returned",7,
+        assertEquals("Incorrect number of agendaItems returned",8,
                 ruleManagementService.getAgendaItemsByTypeAndContext(t7.namespaceType,t7.contextId).size());
         assertEquals("Incorrect number of agendaItems returned",0,
                 ruleManagementService.getAgendaItemsByTypeAndContext("badType",t7.contextId).size());
@@ -232,18 +238,18 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t9 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t9");
 
-        // each complex agenda has 7 agendaItems
+        // each complex agenda has 8 agendaItems
         AgendaDefinition.Builder agendaBuilder4900 = buildComplexAgenda(t9);
         // check the number created before delete
         List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(t9.contextId);
-        assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
+        assertEquals("Invalid number of agendaItems created", 8, agendaItems.size());
 
-        // delete one of the seven agendaItems
+        // delete one of the eight agendaItems
         ruleManagementService.deleteAgendaItem(t9.agendaItem_0_Id);
 
         // check agendaItem count of items for Agenda, one should now be deleted
         agendaItems = ruleManagementService.getAgendaItemsByContext(t9.contextId);
-        assertEquals("Invalid number of agendaItems created", 6, agendaItems.size());
+        assertEquals("Invalid number of agendaItems created", 7, agendaItems.size());
 
         // look for a agendaItem which does not exist
         AgendaItemDefinition junkAgendaItem = ruleManagementService.getAgendaItem("junk");
@@ -260,7 +266,7 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t10 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t10");
 
-        AgendaDefinition.Builder agendaBuilder = buildComplexAgenda(t10);
+        buildComplexAgenda(t10);
 
         // validate default attributes before update
         AgendaItemDefinition agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_0_Id);
@@ -327,6 +333,32 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenTrueId());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenFalse());
         assertEquals("Invalid AgendaItem value",null,agendaItem.getWhenFalseId());
+
+        // update some of the agendaItem action attributes
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_7_Id);
+        agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItem);
+        Map<String, String> attributes = new HashMap<String, String>();
+        attributes.put(t10.actionAttribute_Key, t10.actionAttribute1_Value);
+        for (ActionDefinition.Builder actionBuilder : agendaItemBuilder.getRule().getActions()) {
+            actionBuilder.setAttributes(attributes);
+        }
+        ruleManagementService.updateAgendaItem(agendaItemBuilder.build());
+        // check the update  ( should have changed the action attribute
+        agendaItem = ruleManagementService.getAgendaItem(t10.agendaItem_7_Id);
+        assertNotNull("Invalid AgendaItem Rule",agendaItem.getRule());
+        assertNotNull("Invalid AgendaItem Rule Actions",agendaItem.getRule().getActions());
+        assertEquals("Invalid AgendaItem Rule Actions count",1,agendaItem.getRule().getActions().size());
+        for (ActionDefinition action : agendaItem.getRule().getActions()) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("actionId", action.getId());
+            Collection<ActionAttributeBo> actionAttributes = businessObjectService.findMatching(ActionAttributeBo.class, map);
+            assertEquals("Invalid AgendaItem Rule Actions attribute count",1,actionAttributes.size());
+            for (ActionAttributeBo actionAttribute : actionAttributes) {
+                String expectedAttribute = t10.actionAttribute1_Value;
+                String actualAttribute = actionAttribute.getValue();
+                assertEquals("Invalid AgendaItem Rule Actions attribute",expectedAttribute,actualAttribute);
+            }
+        }
     }
 
     /**

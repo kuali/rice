@@ -19,6 +19,7 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
@@ -80,6 +81,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
 	     
 		// copy all updateable fields to bo
 		RuleBo boToUpdate = RuleBo.from(toUpdate);
+        updateActionAttributes(boToUpdate.getActions());
 
 		// delete any old, existing attributes
 		Map<String,String> fields = new HashMap<String,String>(1);
@@ -214,6 +216,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
         ruleBo.setVersionNumber(rule.getVersionNumber());
         // TODO collections, etc.
 //        Set<RuleAttributeBo> attributes = buildAttributeBo(rule);
+        ruleBo.setActions(buildActionBoList(rule));
         ruleBo.setAttributeBos(buildAttributeBoList(rule));
         return ruleBo;
     }
@@ -283,6 +286,35 @@ public final class RuleBoServiceImpl implements RuleBoService {
         }
         return attributes;
     }
+
+    private List<ActionBo> buildActionBoList(RuleDefinition im) {
+        List<ActionBo> actions = new LinkedList<ActionBo>();
+
+        for (ActionDefinition actionDefinition : im.getActions()) {
+            actions.add(ActionBo.from(actionDefinition));
+        }
+        updateActionAttributes(actions);
+
+        return actions;
+    }
+
+    private void updateActionAttributes(List<ActionBo> actionBos) {
+        for (ActionBo action : actionBos) {
+            for (ActionAttributeBo aa : action.getAttributeBos()) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("actionId", action.getId());
+                Collection<ActionAttributeBo> aaBos = businessObjectService.findMatching(ActionAttributeBo.class, map);
+
+                for (ActionAttributeBo aaBo : aaBos) {
+                    if (aaBo.getAttributeDefinitionId().equals(aa.getAttributeDefinitionId())) {
+                        aa.setId(aaBo.getId());
+                        aa.setVersionNumber(aaBo.getVersionNumber());
+                    }
+                }
+            }
+        }
+    }
+
     /**
 	 * Sets the businessObjectService attribute value.
 	 *

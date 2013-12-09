@@ -16,6 +16,8 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -27,6 +29,7 @@ import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.TranslateBusinessMethods;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -44,13 +47,12 @@ import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.impl.repository.language.SimpleNaturalLanguageTemplater;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
@@ -74,6 +76,16 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     private TermRepositoryService termRepositoryService = new TermBoServiceImpl();
     private SequenceAccessorService sequenceAccessorService = null;
     private TranslateBusinessMethods translationBusinessMethods = null;
+
+    /**
+     * Fields to ignore when calling reflection-based equals in
+     * {@link #isSame(org.kuali.rice.krms.api.repository.agenda.AgendaDefinition, org.kuali.rice.krms.api.repository.agenda.AgendaDefinition)}
+     */
+    private static final List<String> isSameIgnoreFields = Arrays.asList(
+            AgendaDefinition.Elements.AGENDA_ID,
+            CoreConstants.CommonElements.VERSION_NUMBER,
+            CoreConstants.CommonElements.FUTURE_ELEMENTS
+    );
 
     /**
      * get the {@link ReferenceObjectBindingBoService}
@@ -424,68 +436,16 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         return this.getAgenda(existing.getId());
     }
 
+    /**
+     * Compares two {@link AgendaDefinition}s for equality, ignoring certain fields defined by
+     * {@link #isSameIgnoreFields}.
+     *
+     * @param agenda one agenda
+     * @param existing another agenda
+     * @return true if the two agendas are considered to be the same
+     */
     private boolean isSame(AgendaDefinition agenda, AgendaDefinition existing) {
-        if (!this.isSame(agenda.isActive(), existing.isActive())) {
-            return false;
-        }
-
-        if (!this.isSame(agenda.getAttributes(), existing.getAttributes())) {
-            return false;
-        }
-
-        if (!this.isSame(agenda.getContextId(), existing.getContextId())) {
-            return false;
-        }
-
-        if (!this.isSame(agenda.getFirstItemId(), existing.getFirstItemId())) {
-            return false;
-        }
-
-        if (!this.isSame(agenda.getName(), existing.getName())) {
-            return false;
-        }
-
-        if (!this.isSame(agenda.getTypeId(), existing.getTypeId())) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isSame(boolean o1, boolean o2) {
-        if (o1 && !o2) {
-            return false;
-        }
-
-        if (!o1 && o2) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isSame(Map<String, String> o1, Map<String, String> o2) {
-        if (o1 == null && o2 != null) {
-            return false;
-        }
-
-        if (o1 != null && o2 == null) {
-            return false;
-        }
-
-        return o1.equals(o2);
-    }
-
-    private boolean isSame(String o1, String o2) {
-        if (o1 == null && o2 != null) {
-            return false;
-        }
-
-        if (o1 != null && o2 == null) {
-            return false;
-        }
-
-        return o1.equals(o2);
+        return EqualsBuilder.reflectionEquals(agenda, existing, isSameIgnoreFields);
     }
 
     @Override

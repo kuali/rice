@@ -59,6 +59,16 @@ public class RuleManagementBaseTestObjectNames {
     protected String action4_Name;
     protected String action4_Descr;
 
+    protected String actionAttribute;
+    protected String actionAttribute_Key;
+    protected String actionAttribute_Value;
+    protected String actionAttribute0;
+    protected String actionAttribute0_Key;
+    protected String actionAttribute0_Value;
+    protected String actionAttribute1;
+    protected String actionAttribute1_Key;
+    protected String actionAttribute1_Value;
+
     protected String agenda_Id;
     protected String agenda_Name;
     protected String agendaItem_Id;
@@ -183,6 +193,16 @@ public class RuleManagementBaseTestObjectNames {
         action4_Id = "ActionId" + object4;
         action4_Name = "ActionName" + object4;
         action4_Descr = "ActionDesc" + object4;
+
+        actionAttribute = "ActionAttribute" + object0;
+        actionAttribute_Key = "ActionAttributeKey" + object0;
+        actionAttribute_Value = "ActionAttributeValue" + object0;
+        actionAttribute0 = "ActionAttribute" + object0;
+        actionAttribute0_Key = "ActionAttributeKey" + object0;
+        actionAttribute0_Value = "ActionAttributeValue" + object0;
+        actionAttribute1 = "ActionAttribute" + object1;
+        actionAttribute1_Key = "ActionAttributeKey" + object1;
+        actionAttribute1_Value = "ActionAttributeValue" + object1;
 
         agenda_Id = "AgendaId" + object0;
         agenda_Name = "AgendaName" + object0;

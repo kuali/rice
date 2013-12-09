@@ -28,11 +28,15 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContra
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl;
 import org.springmodules.orm.ojb.OjbOperationException;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -62,7 +66,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         RuleManagementBaseTestObjectNames t0 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t0");
 
         String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
-        String agendaId = createTestAgenda(t0.object0).getId();
+        String agendaId = createTestAgenda(t0.object0, /* createAttributes */ true).getId();
         buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
@@ -90,9 +94,10 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         String agendaId = createTestAgenda(t1.object0).getId();
         buildTestAgendaItemDefinition(t1.agendaItem_Id, agendaId, ruleId);
 
-        AgendaDefinition agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,t1.contextId);
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,
+                t1.contextId);
 
-        assertEquals("Invalid agendaId name found",t1.agenda_Id,agendaDefinition.getId());
+        assertEquals("Invalid agendaId name found", t1.agenda_Id, agendaDefinition.getId());
         assertEquals("Invalid contextId found",t1.contextId,agendaDefinition.getContextId());
         assertEquals("Invalid typeId found", t1.typeId,agendaDefinition.getTypeId());
         assertEquals("Incorrect agendaName found",t1.agenda_Name,agendaDefinition.getName());
@@ -130,8 +135,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         RuleManagementBaseTestObjectNames t2 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t2");
 
         // create a context
-        ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(
-                t2.namespaceName, t2.contextName);
+        ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(t2.namespaceName,
+                t2.contextName);
         contextDefinitionBuilder.setId(t2.contextId);
         ContextDefinition contextDefinition = contextDefinitionBuilder.build();
         contextDefinition = ruleManagementService.findCreateContext(contextDefinition);
@@ -267,16 +272,21 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
     public void testUpdateAgenda() {
         // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
         RuleManagementBaseTestObjectNames t6 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t6");
-        createTestAgenda(t6.object0);
+        createTestAgenda(t6.object0, /* createAttributes */ true);
         // create krms type AGENDA
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t6.namespaceName, "AGENDA", null);
 
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t6.agenda_Id));
-        agendaBuilder.setTypeId(krmsType.getId());
+
+        // change attribute value
+        String attrKey = agendaBuilder.getAttributes().entrySet().iterator().next().getKey();
+        String newAttrValue = "newAttrVal" + t6.object0;
+        agendaBuilder.setAttributes(Collections.singletonMap(attrKey, newAttrValue));
+
         agendaBuilder.setActive(false);
         ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        assertEquals("Updated agendaType not found",krmsType.getId(), ruleManagementService.getAgenda(t6.agenda_Id).getTypeId());
+        assertEquals("Updated agenda attribute not found",newAttrValue, ruleManagementService.getAgenda(t6.agenda_Id).getAttributes().get(attrKey));
         assertEquals("Agenda should have been changed to inActive",false,
                 ruleManagementService.getAgenda(t6.agenda_Id).isActive());
     }
@@ -293,7 +303,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         assertNull("Agenda should not yet exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
-        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0);
+        AgendaDefinition agendaDefinition = createTestAgenda(t7.object0, /* createAttributes */ true);
         assertNotNull("Agenda should exist", ruleManagementService.getAgenda(t7.agenda_Id));
 
         ruleManagementService.deleteAgenda(t7.agenda_Id);
@@ -383,7 +393,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         agendaBuilder.setContextId(ruleManagementService.getAgenda(t10.agenda_Id).getContextId());
         ruleManagementService.updateAgenda(agendaBuilder.build());
 
-        List<AgendaDefinition> agendas = ruleManagementService.getAgendasByTypeAndContext(krmsType.getId(),t10.contextId);
+        List<AgendaDefinition> agendas = ruleManagementService.getAgendasByTypeAndContext(krmsType.getId(),
+                t10.contextId);
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
 
         List<String> agendaIds = Arrays.asList(t10.agenda_Id, t11.agenda_Id);
@@ -487,6 +498,156 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         buildTestAgendaItemDefinition(t15.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
 
         verifyFullAgenda(t15);
+    }
+
+    /**
+     * Builds a prototype AgendaDefinition for use in testing the isSame method in RuleManagementServiceImpl.  Note
+     * that the values that are be set for FK properties have no actual relationships to other persisted entities.
+     * @return the prototype AgendaDefinition
+     */
+    private AgendaDefinition getPrototypeAgendaDefinition() {
+        // Create a prototype AgendaDefinition that we'll tweak to test equality
+        AgendaDefinition.Builder protoBuilder = AgendaDefinition.Builder.create("123", "name", "typeId", "contextId");
+        protoBuilder.setActive(true);
+        protoBuilder.setAttributes(Collections.singletonMap("attrKey", "attrValue"));
+        protoBuilder.setFirstItemId("234");
+        protoBuilder.setVersionNumber(1l);
+        AgendaDefinition prototype = protoBuilder.build();
+
+        return prototype;
+    }
+
+    /**
+     * Call the private method
+     * {@link org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl#isSame(org.kuali.rice.krms.api.repository.agenda.AgendaDefinition, org.kuali.rice.krms.api.repository.agenda.AgendaDefinition)}
+     * for white box testing purposes
+     *
+     * @param ad1 first agenda definition to compare
+     * @param ad2 second agenda definition to compare
+     * @return whether these agenda definitions are considered the same
+     * @throws Exception if there are reflection-related issues with accessing and calling the method
+     */
+    private boolean callIsSame(AgendaDefinition ad1, AgendaDefinition ad2) throws Exception {
+        RuleManagementServiceImpl ruleManagementServiceImpl = new RuleManagementServiceImpl();
+
+        Method equalityMethod = ruleManagementServiceImpl.getClass().getDeclaredMethod("isSame", AgendaDefinition.class,
+                AgendaDefinition.class);
+        equalityMethod.setAccessible(true);
+
+        return (Boolean) equalityMethod.invoke(ruleManagementServiceImpl, ad1, ad2);
+    }
+
+    /**
+     * White box test of RuleManagementServiceImpl agenda comparison logic, verifying that an identical copy is
+     * considered equal
+     */
+    @Test
+    public void testAgendaDefinitionComparisonLogic_nonNullEquality() throws Exception {
+        RuleManagementServiceImpl ruleManagementServiceImpl = new RuleManagementServiceImpl();
+
+        AgendaDefinition prototype = getPrototypeAgendaDefinition();
+
+        // need to test boolean, Map, and String equality to cover the cases in RuleManagementServiceImpl.isSame
+
+        AgendaDefinition identicalCopy = AgendaDefinition.Builder.create(prototype).build();
+
+        assertTrue("isSame should return true for identical copy", callIsSame(prototype, identicalCopy));
+        assertTrue("isSame should return true for identical copy", callIsSame(identicalCopy, prototype));
+    }
+
+    /**
+     * White box test of RuleManagementServiceImpl agenda comparison logic, verifying that a copy with a mutated boolean
+     * field is not considered equal
+     */
+    @Test
+    public void testAgendaDefinitionComparisonLogic_booleanEquality() throws Exception {
+        AgendaDefinition prototype = getPrototypeAgendaDefinition();
+
+        // test in both directions that the different boolean field results in a false equality result
+        AgendaDefinition.Builder protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setActive(false);
+        AgendaDefinition agendaDefinitionInactive = protoBuilder.build();
+
+        assertFalse("isSame should return false for copy with mutated active flag",
+                callIsSame(prototype, agendaDefinitionInactive));
+        assertFalse("isSame should return false for copy with mutated active flag",
+                callIsSame(agendaDefinitionInactive, prototype));
+    }
+
+    /**
+     * White box test of RuleManagementServiceImpl agenda comparison logic, verifying that a copy with a mutated String
+     * field is not considered equal
+     */
+    @Test
+    public void testAgendaDefinitionComparisonLogic_stringEquality() throws Exception {
+        AgendaDefinition prototype = getPrototypeAgendaDefinition();
+
+        AgendaDefinition.Builder protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setTypeId(null);
+        AgendaDefinition agendaDefinitionNullType = protoBuilder.build();
+
+        // test in both directions that the nulled out field results in a false equality result
+        assertFalse("isSame should return false for copy with nulled out typeId",
+                callIsSame(prototype, agendaDefinitionNullType));
+        assertFalse("isSame should return false for copy with nulled out typeId",
+                callIsSame(agendaDefinitionNullType, prototype));
+
+        // test that two nulled out string fields are considered equal
+        assertTrue("isSame should return true for two copies with nulled out typeIds",
+                callIsSame(agendaDefinitionNullType, AgendaDefinition.Builder.create(agendaDefinitionNullType).build()));
+
+        // test that unequal strings are recognized and we get a false equality result
+        protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setTypeId("dIepyt");
+        AgendaDefinition agendaDefinitionDiffType = protoBuilder.build();
+
+        assertFalse("isSame should return false for copy with mutated typeId",
+                callIsSame(prototype, agendaDefinitionDiffType));
+        assertFalse("isSame should return false for copy with mutated typeId",
+                callIsSame(agendaDefinitionDiffType, prototype));
+    }
+
+    /**
+     * White box test of RuleManagementServiceImpl agenda comparison logic, verifying that a copy with a mutated Map
+     * field is not considered equal
+     */
+    @Test
+    public void testAgendaDefinitionComparisonLogic_mapEquality() throws Exception {
+        AgendaDefinition prototype = getPrototypeAgendaDefinition();
+
+        // test that a null map is detected as non-equal to the prototype map
+        AgendaDefinition.Builder protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setAttributes(null);
+        AgendaDefinition agendaDefinitionNullAttrs = protoBuilder.build();
+
+        assertFalse("isSame should return false for copy with nulled attributes map",
+                callIsSame(prototype, agendaDefinitionNullAttrs));
+        assertFalse("isSame should return false for copy with nulled attributes map",
+                callIsSame(agendaDefinitionNullAttrs, prototype));
+
+        // test that two null maps are considered equal
+        assertTrue("isSame should return true for two instances with nulled attributes map",
+                callIsSame(agendaDefinitionNullAttrs, AgendaDefinition.Builder.create(agendaDefinitionNullAttrs).build()));
+
+        // test that unequal maps result in a false equality result
+        protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setAttributes(Collections.<String,String>emptyMap());
+        AgendaDefinition agendaDefinitionEmptyAttrs = protoBuilder.build();
+
+        assertFalse("isSame should return false for copy with empty attributes map",
+                callIsSame(prototype, agendaDefinitionEmptyAttrs));
+        assertFalse("isSame should return false for copy with empty attributes map",
+                callIsSame(agendaDefinitionEmptyAttrs, prototype));
+
+        // test that different types of map but with equal key value pairs are considered equal
+        protoBuilder = AgendaDefinition.Builder.create(prototype);
+        protoBuilder.setAttributes(new TreeMap<String,String>());
+        AgendaDefinition agendaDefinitionEmptyTreeMapAttrs = protoBuilder.build();
+
+        assertTrue("isSame should return true for two empty attributes maps, even of different classes", callIsSame(
+                agendaDefinitionEmptyAttrs, agendaDefinitionEmptyTreeMapAttrs));
+        assertTrue("isSame should return true for two empty attributes maps, even of different classes", callIsSame(
+                agendaDefinitionEmptyTreeMapAttrs, agendaDefinitionEmptyAttrs));
     }
 
     private void verifyEmptyAgenda(RuleManagementBaseTestObjectNames t) {

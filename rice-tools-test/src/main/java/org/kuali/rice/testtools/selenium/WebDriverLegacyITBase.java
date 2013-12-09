@@ -2932,12 +2932,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {
         selectFrameIframePortlet();
+
+        // Create new Routing Rules Delegation
         waitAndClick("img[alt=\"create new\"]");
+
+        // Lookup parent rule, click lookup icon
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.RuleBaseValues!!).(((id:parentRuleId))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
+
+        // Search
         waitAndClickByXpath("//td[@class='infoline']/input[@name='methodToCall.search']");
+
+        // return value for 1046 TravelRequest.Destination.LasVegas TravelRequest-DestinationRouting
         waitAndClick("a[title=\"return valueRule Id=1046 \"]");
+
+        // Select the parent rule we just returned
         waitAndClickByName("parentResponsibilityId");
+
+        // Click continue
         waitAndClickByName("methodToCall.createDelegateRule");
+
         waitAndClickCancel();
         waitAndClickByName("methodToCall.processAnswer.button0");
         waitForPageToLoad();

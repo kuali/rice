@@ -72,11 +72,47 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
             fail("Disclosure did not open");
         }
     }
+    
+    protected void testWidgetsDisclosureAnimationSpeed() throws Exception {
+    	waitAndClickByLinkText("Animation Speed");
+    	assertElementPresentByName("inputField7");
+    	assertElementPresentByName("inputField10");
+    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example3']/div/div/h3/a/span");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-Disclosure-Example3']/div[@style='display: none;']");
+    }
+    
+    protected void testWidgetsDisclosureRenderImage() throws Exception {
+    	waitAndClickByLinkText("Render Image");
+    	assertElementPresentByName("inputField11");
+    	assertElementPresentByName("inputField12");
+    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example4']/div/div/h3/a/span");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-Disclosure-Example4']/div[@style='display: none;']");
+    }
+    
+    protected void testWidgetsDisclosureChangeImage() throws Exception {
+    	waitAndClickByLinkText("Change Image");
+    	waitForElementPresentByXpath("//span[@class='icon-folder-open']");
+    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example5']/div/div/h3/a/span");
+    	waitForElementPresentByXpath("//span[@class='icon-folder-open' and @style='display: none;']");
+    	waitForElementPresentByXpath("//span[@class='icon-folder']");
+    }
+    
+    protected void testWidgetsDisclosureAjaxRetrieval() throws Exception {
+    	waitAndClickByLinkText("Ajax Retrieval");
+    	waitAndClickByLinkText("Disclosure Section (ajax retrieval)");
+    	waitForTextPresent("Loading..");
+    	waitForTextPresent("Field 1");
+    	waitForTextPresent("Field 2");
+    }
 
     @Test
     public void testWidgetsDisclosureBookmark() throws Exception {
         testWidgetsDisclosureDefault();
         testWidgetsDisclosureClosed();
+        testWidgetsDisclosureAnimationSpeed();
+        testWidgetsDisclosureRenderImage();
+        testWidgetsDisclosureChangeImage();
+        testWidgetsDisclosureAjaxRetrieval();
         driver.close();
         passed();
     }
@@ -85,6 +121,10 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
     public void testWidgetsDisclosureNav() throws Exception {
         testWidgetsDisclosureDefault();
         testWidgetsDisclosureClosed();
+        testWidgetsDisclosureAnimationSpeed();
+        testWidgetsDisclosureRenderImage();
+        testWidgetsDisclosureChangeImage();
+        testWidgetsDisclosureAjaxRetrieval();
         driver.close();
         passed();
     }

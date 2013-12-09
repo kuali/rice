@@ -124,7 +124,7 @@
     </property>
     <property name="items">
       <list>
-        <bean id="KradSampleAppHome-MainGraphicPlaceholder" parent="Uif-VerticalBoxGroup"
+        <bean id="KradSampleAppHome-MainGraphicPlaceholder" parent="Uif-Div"
               p:cssClasses="demo-mainGraphic"/>
         <bean id="KradSampleAppHome-TryItButton" parent="Uif-Action" p:cssClasses="demo-tryItButton"
               p:actionScript="document.location=jQuery('#Demo-LibraryLink').attr('href'); return false;"/>

@@ -376,13 +376,10 @@
   </bean>
 
   <!-- TODO: figure out how to style this without using kr-footer -->
-  <bean id="AgendaEditorView-TreeViewControls" parent="Uif-VerticalBoxSection"
+  <bean id="AgendaEditorView-TreeViewControls" parent="Uif-HorizontalBoxSection"
         p:cssClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
     <property name="headerText" value="Rules"/>
-    <property name="layoutManager">
-      <bean parent="Uif-HorizontalBoxLayout"/>
-    </property>
     <property name="onDocumentReadyScript" value="loadControlsInit();"/>
 
     <property name="items">
@@ -412,13 +409,10 @@
   </bean>
 
   <!-- TODO: figure out how to style this without using kr-footer -->
-  <bean id="AgendaEditorView-TreeEditControls" parent="Uif-VerticalBoxSection"
+  <bean id="AgendaEditorView-TreeEditControls" parent="Uif-HorizontalBoxSection"
         p:cssClasses="krms-rulesButtonBar">
     <property name="renderHeader" value="true"/>
     <property name="headerText" value="Rules"/>
-    <property name="layoutManager">
-      <bean parent="Uif-HorizontalBoxLayout" />
-    </property>
 
     <property name="items">
       <list>

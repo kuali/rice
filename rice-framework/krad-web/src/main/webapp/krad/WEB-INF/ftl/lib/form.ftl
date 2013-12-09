@@ -34,7 +34,6 @@
 
       <form id="kualiForm" action="${postUrl}" method="post" accept-charset="UTF-8"
             ${onSubmitAttribute} ${disableAutocompleteAttr!}>
-          <a id="topOfForm"></a>
 
           <#nested/>
 

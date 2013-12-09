@@ -648,6 +648,9 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                         group.prepend(messageBlock);
                     } else if (data.isSection) {
                         var header = group.find("> .uif-header-contentWrapper");
+                        if (header.length === 0){
+                            header = group.find("> [data-header_for='" + id + "']");
+                        }
                         header.after(messageBlock);
                     }
                 }

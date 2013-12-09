@@ -15,24 +15,10 @@
     limitations under the License.
 
 -->
-<#macro uif_group group>
+<#macro uif_div element>
 
-    <#-- Return if no content exists for this group -->
-    <#if (!group.items?? || !group.items?has_content) && !group.header?? && !group.instructionalMessage??
-        && !group.footer??>
-        <#return>
-    </#if>
-
-    <@krad.groupWrap group=group>
-
-        <#if group.items?has_content>
-            <#-- invoke layout manager -->
-            <#local templateName=".main.${group.layoutManager.templateName}"/>
-            <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
-
-            <#dyncall templateName templateParms/>
-        </#if>
-
-    </@krad.groupWrap>
+    <@krad.div component=element>
+        <#-- empty div -->
+    </@krad.div>
 
 </#macro>

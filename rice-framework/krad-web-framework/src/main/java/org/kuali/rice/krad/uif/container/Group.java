@@ -209,6 +209,16 @@ public class Group extends ContainerBase {
     }
 
     /**
+     * Sets the group to not render if it contains no content
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void performFinalize(Object model, Component parent) {
+        super.performFinalize(model, parent);
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override

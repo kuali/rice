@@ -74,10 +74,13 @@ public class Header extends ContentElementBase {
     private Group rightGroup;
     private Group lowerGroup;
 
+    private boolean renderWrapper;
+
     public Header() {
         super();
 
         headerTagCssClasses = new ArrayList<String>();
+        renderWrapper = true;
     }
 
     /**

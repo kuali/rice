@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.testtools.selenium;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,13 +41,19 @@ public class JiraIssueCreation {
 
     WebDriver driver;
     String jiraBase;
-//    File inputFile;
+    List<File> jiraDataDirs = new LinkedList();
     boolean passed = false;
 
     @Before
     public void setUp() throws MalformedURLException, InterruptedException {
         jiraBase = System.getProperty("jira.base.url", "https://jira.kuali.org");
-//        inputFile = new File(System.getProperty("jira.input.file"));
+        File inputDir = new File(System.getProperty("jira.input.dir", "."));
+        File listDir[] = inputDir.listFiles();
+        for (int i = 0; i < listDir.length; i++) {
+            if (listDir[i].isDirectory()) {
+                jiraDataDirs.add(listDir[i]);
+            }
+        }
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         FirefoxProfile profile = new FirefoxProfile();
@@ -59,16 +71,6 @@ public class JiraIssueCreation {
         driver.findElement(By.id("password")).sendKeys(System.getProperty("cas.password"));
         driver.findElement(By.name("submit")).click();
 
-        // Jira
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("create_link"), this.getClass().toString());
-        driver.get("/secure/CreateIssue!default.jspa");
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("project-field"),
-                this.getClass().toString()).sendKeys("Kuali Rice Development");
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issuetype-field"),
-                this.getClass().toString()).sendKeys("Bug Fix");
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issue-create-submit"),
-                this.getClass().toString()).click();
-
         passed = true;
     }
 
@@ -78,21 +80,91 @@ public class JiraIssueCreation {
     }
 
     @Test
-    public void testCreateJira() throws InterruptedException {
-        // uncheck include in release notes
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("customfield_11621-1"),
-                this.getClass().toString()).click();
+    public void testCreateJira() throws InterruptedException, IOException {
+        List<JiraData> jiraDatas = new LinkedList();
+        String summary;
+        StringBuilder description = null;
 
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("components-textarea"),
-                this.getClass().toString()).sendKeys("Regression Development");
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
-                this.getClass().toString()).sendKeys("Critical");
+        for (File dir: jiraDataDirs) {
+
+            File[] inputFiles = dir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.endsWith(".jira");
+                }
+            });
+
+            for (int i = 0, s = inputFiles.length; i < s; i++) {
+                jiraDatas.add(parseJiraData(inputFiles[i]));
+            }
+
+            // Jira
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("create_link"), this.getClass().toString());
+            driver.get("/secure/CreateIssue!default.jspa");
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("project-field"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.project", "Kuali Rice Development"));
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issuetype-field"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.issuetype", "Bug Fix"));
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issue-create-submit"),
+                    this.getClass().toString()).click();
+
+            // uncheck include in release notes
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("customfield_11621-1"),
+                    this.getClass().toString()).click();
+
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("components-textarea"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.component", "Regression,Development").replaceAll(",", " "));
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.priority", "Critical"));
 
 
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("versions-textarea"),
-                this.getClass().toString()).sendKeys("2.4.0-m3");
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
-                this.getClass().toString()).sendKeys("2.4");
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("versions-textarea"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.versions", "2.4.0-m3").replaceAll(",",
+                    " "));
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+
+
+            if (jiraDatas.size() > 1) {
+                description = new StringBuilder("AFT Failures");
+            } else {
+                description = new StringBuilder("AFT Failure");
+            }
+
+            summary = description + jiraDatas.get(0).errorMessage;
+            if (summary.length() > 80) {
+                summary = summary.substring(0, 79);
+            }
+
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("summary"),
+                    this.getClass().toString()).sendKeys(summary);
+
+            for (JiraData jiraData : jiraDatas) {
+                description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
+                description.append(jiraData.testUrl).append("\n");
+            }
+
+            description.append("{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}");
+
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("description"),
+                    this.getClass().toString()).sendKeys(description);
+
+            WebDriverUtils.waitFor(driver, 600000, By.id("issue-create-submit"), this.getClass().toString());
+        }
+    }
+
+    protected JiraData parseJiraData(File inputFile) throws IOException {
+        String rawData = FileUtils.readFileToString(inputFile, null);
+        JiraData jiraData = new JiraData();
+        jiraData.shortTestName = rawData.substring(15, rawData.indexOf("Full test name: ")).trim(); // Abbreviated test name:
+        jiraData.fullTestName = rawData.substring(rawData.indexOf("Full test name: ") + 16, rawData.indexOf("Test results url: ")).trim();
+        jiraData.testUrl = rawData.substring(rawData.indexOf("Test results url: ") + 18, rawData.indexOf("Error Message: ")).trim();
+        jiraData.errorMessage = rawData.substring(rawData.indexOf("Error Message: ") + 15, rawData.indexOf("Test Details: ")).trim();
+        jiraData.testDetails = rawData.substring(rawData.indexOf("Test Details: ") + 14, rawData.length()).trim();
+        return jiraData;
     }
 
     private void closeAndQuitWebDriver() {
@@ -111,5 +183,13 @@ public class JiraIssueCreation {
         } else {
             System.out.println("WebDriver is null for " + this.getClass().toString());
         }
+    }
+
+    class JiraData {
+        String shortTestName;
+        String fullTestName;
+        String testUrl;
+        String errorMessage;
+        String testDetails;
     }
 }

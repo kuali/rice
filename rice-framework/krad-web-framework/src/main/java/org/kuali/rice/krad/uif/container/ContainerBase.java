@@ -25,7 +25,6 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
-import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
@@ -59,7 +58,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	private Help help;
 	
-	@DelayedCopyRestriction
 	private LayoutManager layoutManager;
 
 	private Header header;
@@ -101,8 +99,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     @Override
 	public void performInitialization(Object model) {
 		super.performInitialization(model);
-
-        sortItems(model);
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage == null)) {
@@ -191,7 +187,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * @param view view instance containing the container
      * @param model model object containing the view data
      */
-    protected void sortItems(Object model) {
+    @Override
+    public void sortItems() {
         // sort items list by the order property
         List<? extends Component> sortedItems = ComponentUtils.sort(getItems(), defaultItemPosition);
         setItems(sortedItems);

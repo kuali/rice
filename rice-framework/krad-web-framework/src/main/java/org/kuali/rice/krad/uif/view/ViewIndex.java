@@ -564,7 +564,11 @@ public class ViewIndex implements Serializable {
         if (this.initialComponentStates != null) {
             Map<String, Component> initialComponentStatesCopy = new HashMap<String, Component>();
             for (Map.Entry<String, Component> indexEntry : this.initialComponentStates.entrySet()) {
-                initialComponentStatesCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                Component initialState = indexEntry.getValue();
+                if (!UifConstants.ViewStatus.CACHED.equals(initialState.getViewStatus())) {
+                    initialState = initialState.copy();
+                }
+                initialComponentStatesCopy.put(indexEntry.getKey(), initialState);
             }
 
             viewIndexCopy.initialComponentStates = initialComponentStatesCopy;

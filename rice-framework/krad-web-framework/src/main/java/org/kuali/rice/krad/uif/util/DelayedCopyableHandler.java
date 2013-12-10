@@ -34,6 +34,8 @@ import org.kuali.rice.krad.datadictionary.Copyable;
  */
 public class DelayedCopyableHandler implements InvocationHandler {
 
+    private static final String COPY = "copy";
+    
     private final Copyable original;
     private Copyable copy;
 
@@ -49,10 +51,17 @@ public class DelayedCopyableHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         String methodName = method.getName();
+        Class<?> returnType = method.getReturnType();
+        boolean atomic = copy == null && (COPY.equals(methodName) ||
+                ((methodName.startsWith("get") || methodName.startsWith("is"))
+                        && !Copyable.class.isAssignableFrom(returnType)
+                        && !List.class.isAssignableFrom(returnType)
+                        && !Map.class.isAssignableFrom(returnType)
+                        && !returnType.isArray()));
+        ProcessLogger.ntrace("delay-" + (copy != null ? "dup" : atomic ? "atomic" : "copy") +
+                ":", ":"+methodName+":"+original.getClass().getSimpleName(), 1000);
         
-        ProcessLogger.ntrace("delay:", ":"+methodName+":"+original.getClass().getSimpleName(), 1000);
-
-        if (copy == null) {
+        if (copy == null && !atomic) {
             copy = original.copy();
         }
         
@@ -67,6 +76,21 @@ public class DelayedCopyableHandler implements InvocationHandler {
         }
     }
 
+    public static boolean isPendingDelayedCopy(Copyable source) {
+        Class<?> sourceClass = source.getClass();
+        
+        // Unwrap proxied source objects from an existing delayed copy handler, if applicable
+        if (Proxy.isProxyClass(sourceClass)) {
+            InvocationHandler handler = Proxy.getInvocationHandler(source);
+            if (handler instanceof DelayedCopyableHandler) {
+                DelayedCopyableHandler sourceHandler = (DelayedCopyableHandler) handler;
+                return sourceHandler.copy == null;
+            }
+        }
+        
+        return false;
+    }
+    
     /**
      * Get a proxy instance providing delayed copy behavior on a source component.
      */

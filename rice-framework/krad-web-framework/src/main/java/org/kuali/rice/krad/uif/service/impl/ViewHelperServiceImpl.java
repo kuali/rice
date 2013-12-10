@@ -381,11 +381,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
                         // Set the ID on the component, if not already set.
                         component.setId(UifConstants.COMPONENT_ID_PREFIX + id);
-                        viewIndex.addInitialComponentStateIfNeeded(component);
                     }
                     
                     if (component instanceof Container) {
-                        LayoutManager manager = ((Container) component).getLayoutManager();
+                        Container container = (Container) component;
+                        container.sortItems();
+                        LayoutManager manager = container.getLayoutManager();
                         if (manager != null) {
                             id = manager.getId();
                             if (id == null) {
@@ -415,7 +416,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                             + (StringUtils.isEmpty(componentState.path) ? "" : ".")
                             + nestedEntry.getKey(), nestedEntry.getValue()));
                 }
-                
+
+                component.setBaseId(component.getId());
+                component.preventModification();
+                viewIndex.addInitialComponentStateIfNeeded(component);
+
                 recycle(componentState);
             }
         } finally {
@@ -905,14 +910,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (Component nested : component.getComponentsForLifecycle().values()) {
             applyDefaultValues(nested);
         }
-
-        // if view, need to add all pages since only one will be on the lifecycle
-        if (component instanceof View) {
-            for (Component nested : ((View) component).getItems()) {
-                applyDefaultValues(nested);
-            }
-        }
-
     }
 
     /**

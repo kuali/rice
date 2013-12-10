@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -118,6 +119,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private BindingInfo addLineBindingInfo;
 
     private Message addLineLabel;
+    @DelayedCopy
     private List<? extends Component> addLineItems;
     private List<? extends Component> addLineActions;
 
@@ -137,6 +139,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
     private List<BindingInfo> unauthorizedLineBindingInfos;
 
+    @DelayedCopy
     private List<CollectionGroup> subCollections;
     private String subCollectionSuffix;
 

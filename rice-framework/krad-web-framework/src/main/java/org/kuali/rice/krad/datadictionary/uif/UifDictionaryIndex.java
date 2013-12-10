@@ -119,10 +119,10 @@ public class UifDictionaryIndex implements Runnable {
 
             ProcessLogger.trace("view:init:" + viewId);
             View view = ddBeans.getBean(beanName, View.class);
-            
+
             ProcessLogger.trace("view:getBean");
             view.getViewHelperService().preprocessView(view);
-            
+
             ProcessLogger.trace("view:preProcess");
             CopyUtils.preventModification(view);
 

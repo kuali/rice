@@ -23,7 +23,7 @@
   <!-- PageGroup demo -->
   <bean id="Demo-PageGroup-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoPageGroup.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.PageGroup"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.PageGroupBase"/>
     <property name="docBookAnchor" value="d6813e6638"/>
     <property name="demoGroups">
       <list>

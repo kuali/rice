@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -62,11 +62,9 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.ParentLocation;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
@@ -154,7 +152,6 @@ public class View extends ContainerBase {
     @RequestParameter
     private String currentPageId;
 
-    @DelayedCopyRestriction
     private Group navigation;
 
     private Class<?> formClass;
@@ -198,7 +195,9 @@ public class View extends ContainerBase {
 
     private String preLoadScript;
 
-    private List<Group> items;
+    @DelayedCopy
+    private List<? extends Component> items;
+    
     private List<String> viewTemplates;
     
     private Class<? extends ViewHelperService> viewHelperServiceClass;
@@ -548,9 +547,9 @@ public class View extends ContainerBase {
      * will get pushed into the configured page and sorted through the page
      */
     @Override
-    protected void sortItems(Object model) {
+    public void sortItems() {
         if (!singlePageView) {
-            super.sortItems(model);
+            super.sortItems();
         }
     }
 
@@ -1624,7 +1623,7 @@ public class View extends ContainerBase {
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
-            items = new LifecycleAwareList<Group>(this);
+            items = new LifecycleAwareList<Component>(this);
         }
         
         return items;
@@ -1644,7 +1643,7 @@ public class View extends ContainerBase {
             items = Collections.emptyList();
         } else {
             // TODO: Fix this unchecked condition.
-            this.items = new LifecycleAwareList<Group>(this, (List<Group>) items);
+            this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
         }
     }
 

@@ -112,7 +112,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         UifControllerHelper.prepareViewForRendering(request, response, form);
         View view = form.getView();
         if (initialStateId != null) {
-            assertNotNull(view.getViewIndex().getInitialComponentStates().get(initialStateId));
+            assertNotNull(initialStateId, view.getViewIndex().getInitialComponentStates().get(initialStateId));
         }
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
         ViewCleaner.cleanView(view);
@@ -127,6 +127,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Test
     public void testTransactionView() throws Throwable {
         testFormView(new TransactionForm(), "TransactionView", null);
+    }
+    
+    @Test
+    public void testLabsMenuView() throws Throwable {
+        testFormView(new TransactionForm(), "LabsMenuView", null);
     }
     
     @Test
@@ -172,13 +177,13 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Test
     public void testPerformanceMediumAll() throws Throwable {
         KradLabsForm form = new KradLabsForm();
-        View view = testFormView(form, "Lab-PerformanceMedium", "u1qlk5z1");
+        View view = testFormView(form, "Lab-PerformanceMedium", "u9f5hlk");
 
         form.setPostedView(view);
         form.setView(null);
 
         String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();
-        assertEquals("u1qlk5z1", tableId);
+        assertEquals("u9f5hlk", tableId);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

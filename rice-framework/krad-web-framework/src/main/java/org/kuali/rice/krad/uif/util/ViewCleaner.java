@@ -107,6 +107,10 @@ public class ViewCleaner {
         if (component.isForceSessionPersistence()) {
             return;
         }
+        
+        if (DelayedCopyableHandler.isPendingDelayedCopy(component)) {
+            return;
+        }
 
         component.setViewStatus(UifConstants.ViewStatus.CREATED);
         component.setTemplate(null);

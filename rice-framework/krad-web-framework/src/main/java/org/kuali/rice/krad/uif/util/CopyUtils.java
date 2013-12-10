@@ -38,7 +38,7 @@ import java.util.WeakHashMap;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.Copyable;
-import org.kuali.rice.krad.uif.component.DelayedCopyRestriction;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -185,8 +185,6 @@ public final class CopyUtils {
                         if (phase != null) {
                             ViewLifecycleTask task = phase.getCurrentTask();
                             phaseTask += "-" + phase.getViewPhase()
-//                                    + "-" + phase.getComponent().getId()
-//                                    + "-" + phase.getPath()
                                     + "-" + obj.getClass().getSimpleName()
                                     + (task == null ? "" : "-" + task.getClass().getSimpleName());
                         }
@@ -887,6 +885,7 @@ public final class CopyUtils {
         private Object source;
         private Object target;
         private Field field;
+        private boolean delayAvailable;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -905,7 +904,7 @@ public final class CopyUtils {
          */
         @Override
         public boolean isDelayAvailable() {
-            return !field.isAnnotationPresent(DelayedCopyRestriction.class);
+            return delayAvailable;
         }
 
         /**
@@ -965,6 +964,7 @@ public final class CopyUtils {
             source = null;
             target = null;
             field = null;
+            delayAvailable = false;
             typeVariables.clear();
         }
 
@@ -995,7 +995,11 @@ public final class CopyUtils {
         ref.source = source;
         ref.target = target;
         ref.field = field;
-        
+
+        DelayedCopy delayedCopy = field.getAnnotation(DelayedCopy.class);
+        ref.delayAvailable = delayedCopy != null &&
+                (!delayedCopy.inherit() || pref.isDelayAvailable());
+
         Map<String, Type> pTypeVars = pref.getTypeVariables();
         
         if (pTypeVars != null && source != null) {

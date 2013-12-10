@@ -121,10 +121,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private Message addLineLabel;
     @DelayedCopy
     private List<? extends Component> addLineItems;
-    private List<? extends Component> addLineActions;
+    private List<Action> addLineActions;
 
     private boolean renderLineActions;
-    private List<? extends Component> lineActions;
+    private List<Action> lineActions;
 
     private boolean includeLineSelectionField;
     private String lineSelectPropertyName;
@@ -476,7 +476,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Component> getLineActions() {
+    public List<Action> getLineActions() {
         return this.lineActions;
     }
 
@@ -486,7 +486,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * @see org.kuali.rice.krad.uif.container.CollectionGroup#setLineActions(java.util.List)
      */
     @Override
-    public void setLineActions(List<? extends Component> lineActions) {
+    public void setLineActions(List<Action> lineActions) {
         this.lineActions = lineActions;
     }
 
@@ -651,7 +651,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Component> getAddLineActions() {
+    public List<Action> getAddLineActions() {
         return this.addLineActions;
     }
 
@@ -661,7 +661,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddLineActions(java.util.List)
      */
     @Override
-    public void setAddLineActions(List<? extends Component> addLineActions) {
+    public void setAddLineActions(List<Action> addLineActions) {
         this.addLineActions = addLineActions;
     }
 
@@ -1355,7 +1355,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
 
         if (addLineActions != null && !addLineActions.isEmpty()) {
-            List<? extends Component> addLineActionsCopy = ComponentUtils.copy(addLineActions);
+            List<Action> addLineActionsCopy = ComponentUtils.copy(addLineActions);
             collectionGroupCopy.setAddLineActions(addLineActionsCopy);
         }
 
@@ -1398,7 +1398,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         collectionGroupCopy.setDisplayLength(this.displayLength);
 
         if (lineActions != null && !lineActions.isEmpty()) {
-            List<? extends Component> lineActionsCopy = ComponentUtils.copy(lineActions);
+            List<Action> lineActionsCopy = ComponentUtils.copy(lineActions);
             collectionGroupCopy.setLineActions(lineActionsCopy);
         }
         

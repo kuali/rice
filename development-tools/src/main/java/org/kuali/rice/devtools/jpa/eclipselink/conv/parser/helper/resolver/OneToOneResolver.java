@@ -20,6 +20,7 @@ import japa.parser.ast.Comment;
 import japa.parser.ast.ImportDeclaration;
 import japa.parser.ast.LineComment;
 import japa.parser.ast.expr.ArrayInitializerExpr;
+import japa.parser.ast.expr.BooleanLiteralExpr;
 import japa.parser.ast.expr.Expression;
 import japa.parser.ast.expr.MemberValuePair;
 import japa.parser.ast.expr.NameExpr;
@@ -109,6 +110,7 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
                     LOG.warn(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to link, unsupported conversion to CascadeType");
                 } else if (autoDelete == ObjectReferenceDescriptor.CASCADE_OBJECT) {
                     cascadeTypes.add(new NameExpr("CascadeType.REMOVE"));
+                    pairs.add(new MemberValuePair("orphanRemoval", new BooleanLiteralExpr(true)));
                 } else {
                     LOG.error(ResolverUtil.logMsgForField(enclosingClass, fieldName, mappedClass) + " field has auto-delete set to an invalid value");
                 }

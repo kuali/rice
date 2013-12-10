@@ -223,15 +223,19 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR4C1" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Document Controls"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR4C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Maintenance page with inherited control"
+              p:instructionalText="This demonstration uses the Travel Account object
+              (org.kuali.rice.krad.demo.travel.dataobject.TravelAccount).  The data dictionary file (TravelAccount.xml)
+              has a control defined in the attribute definition for the subsidized percent.  This control is passed
+              through to the maintenance document as seen in the link below. ">
           <property name="items">
             <list>
-
+                <bean parent="Uif-Link" p:linkText="Travel Account Maintenance (New Account)"
+                      p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
             </list>
           </property>
         </bean>

@@ -42,6 +42,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
@@ -116,6 +117,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     private boolean uppercaseValue;
     private boolean disableNativeAutocomplete;
 
+    @DelayedCopy
     private ValidationMessages validationMessages;
 
     // messages

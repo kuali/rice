@@ -78,14 +78,14 @@ public interface CollectionGroup extends Group, DataBinding {
      *
      * @return line action fields
      */
-    List<Action> getLineActions();
+    List<? extends Component> getLineActions();
 
     /**
      * Setter for the line action fields list
      *
      * @param lineActions
      */
-    void setLineActions(List<Action> lineActions);
+    void setLineActions(List<? extends Component> lineActions);
 
     /**
      * Indicates whether the action column for the collection should be rendered
@@ -218,14 +218,14 @@ public interface CollectionGroup extends Group, DataBinding {
      *
      * @return add line action fields
      */
-    List<Action> getAddLineActions();
+    List<? extends Component> getAddLineActions();
 
     /**
      * Setter for the add line action components fields
      *
      * @param addLineActions
      */
-    void setAddLineActions(List<Action> addLineActions);
+    void setAddLineActions(List<? extends Component> addLineActions);
 
     /**
      * Indicates whether lines of the collection group should be selected by rendering a

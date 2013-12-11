@@ -29,6 +29,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -127,6 +128,7 @@ public class GroupBase extends ContainerBase implements Group {
     private String fieldBindByNamePrefix;
     private String fieldBindingObjectPath;
 
+    @DelayedCopy
     private Disclosure disclosure;
     private Scrollpane scrollpane;
 

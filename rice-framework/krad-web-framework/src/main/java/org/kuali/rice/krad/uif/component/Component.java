@@ -172,6 +172,19 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param template
      */
     void setTemplate(String template);
+    
+    /**
+     * Gets additional templates that will be required during the rendering of this component.
+     * 
+     * <p>
+     * If a parent or sibling component is referred to by this component's template,
+     * include that component's template here to ensure that it has been compiled already during
+     * bottom-up inline rendering.
+     * </p>
+     * 
+     * @return additional templates required during rendering
+     */
+    List<String> getAdditionalTemplates();
 
     /**
      * The name for which the template can be invoked by

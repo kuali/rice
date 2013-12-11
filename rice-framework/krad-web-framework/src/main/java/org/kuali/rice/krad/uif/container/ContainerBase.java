@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
@@ -66,6 +68,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private String instructionalText;
 	private Message instructionalMessage;
 
+    @DelayedCopy
     private ValidationMessages validationMessages;
 
 	/**
@@ -179,6 +182,24 @@ public abstract class ContainerBase extends ComponentBase implements Container {
                 && isProcessRemoteFieldHolders()) {
             pendingTasks.add(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, phase));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        List<String> additionalTemplates = super.getAdditionalTemplates();
+
+        if (layoutManager != null) {
+            if (additionalTemplates.isEmpty()) {
+                return Collections.singletonList(layoutManager.getTemplate());
+            } else {
+                additionalTemplates.add(layoutManager.getTemplate());
+            }
+        }
+        
+        return additionalTemplates;
     }
 
     /**

@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
@@ -56,13 +54,9 @@ public class RenderComponentTask extends ViewLifecycleTaskBase {
         renderingContext.clearRenderingBuffer();
 
         renderingContext.importTemplate(component.getTemplate());
-        
-        if (component instanceof Container) {
-            LayoutManager manager = ((Container) component).getLayoutManager();
-            
-            if (manager != null && manager.getTemplate() != null) {
-                renderingContext.importTemplate(manager.getTemplate());
-            }
+
+        for (String additionalTemplate : component.getAdditionalTemplates()) {
+            renderingContext.importTemplate(additionalTemplate);
         }
         
         try {

@@ -17,8 +17,6 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
@@ -52,14 +50,9 @@ public class AddViewTemplatesTask extends ViewLifecycleTaskBase {
         if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate())) {
             String template = component.getTemplate();
             view.addViewTemplate(template);
-        }
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if (layoutManager != null) {
-                String template = layoutManager.getTemplate();
-                view.addViewTemplate(template);
+            
+            for (String additionalTemplate : component.getAdditionalTemplates()) {
+                view.addViewTemplate(additionalTemplate);
             }
         }
     }

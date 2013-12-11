@@ -123,6 +123,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
 
+    @DelayedCopy
     private Tooltip toolTip;
 
     private int order;
@@ -639,6 +640,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setTemplate(String template) {
         checkMutable(true);
         this.template = template;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        return Collections.emptyList();
     }
 
     /**

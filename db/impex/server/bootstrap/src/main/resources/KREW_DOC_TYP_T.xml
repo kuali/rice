@@ -253,7 +253,7 @@
         DOC_TYP_NM="TravelerDetailMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Traveler Detail Maintenance Document"
-        OBJ_ID="ED3975FAD688F646E0406E0AC31D5D93" PARNT_ID="KRSAP1000"
+        OBJ_ID="ED4B10AC9ABAA180E0406E0AC31D3F16" PARNT_ID="KRSAP1000"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

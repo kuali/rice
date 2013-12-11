@@ -357,6 +357,16 @@
         DOC_TYP_DESC="Parent Document Type for all Travel Documents"
         DOC_TYP_ID="KRSAP1000" DOC_TYP_NM="TravelDocument"
         DOC_TYP_VER_NBR="0" LBL="Travel Document"
-        OBJ_ID="ED22BE76561B215FE0406E0AC31D42EB" PARNT_ID="2680"
+        OBJ_ID="ED3975FAD658F646E0406E0AC31D5D93" PARNT_ID="2680"
+        RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
+        DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail"
+        DOC_TYP_DESC="Create a Traveler Detail Maintenance Document"
+        DOC_TYP_ID="KRSAP1001"
+        DOC_TYP_NM="TravelerDetailMaintenanceDocument"
+        DOC_TYP_VER_NBR="0"
+        LBL="Travel Traveler Detail Maintenance Document"
+        OBJ_ID="ED3975FAD688F646E0406E0AC31D5D93" PARNT_ID="KRSAP1000"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

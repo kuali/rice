@@ -246,4 +246,14 @@
         OBJ_ID="e9e0086b-30ce-4a9b-a2d6-564772076a1e" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
+        DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail"
+        DOC_TYP_DESC="Create a Traveler Detail Maintenance Document"
+        DOC_TYP_ID="KRSAP1001"
+        DOC_TYP_NM="TravelerDetailMaintenanceDocument"
+        DOC_TYP_VER_NBR="0"
+        LBL="Travel Traveler Detail Maintenance Document"
+        OBJ_ID="ED3975FAD688F646E0406E0AC31D5D93" PARNT_ID="KRSAP1000"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

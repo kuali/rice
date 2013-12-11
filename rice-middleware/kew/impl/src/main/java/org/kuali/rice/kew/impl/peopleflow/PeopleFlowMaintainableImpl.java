@@ -61,8 +61,8 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             ((List) collection).add(0, addLine);
             if (addLine instanceof PeopleFlowMemberBo) {
 
-                // actionrequestpolicy is only valid for MemberType.ROLE
-                PeopleFlowMemberBo member =  (PeopleFlowMemberBo) addLine;
+                // action request policy is only valid for MemberType.ROLE
+                PeopleFlowMemberBo member = (PeopleFlowMemberBo) addLine;
                 if (member.getMemberType() != MemberType.ROLE) {
                     member.setActionRequestPolicyCode(null);
                 }

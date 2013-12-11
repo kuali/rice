@@ -306,6 +306,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text
      */
     protected void assertTextPresent(String text, String message) {
+        WebDriverUtils.jGrowl(getDriver(), "Assert Text Present", false, "Assert text '" + text + "' is present.");
         String pageSource = getDriver().getPageSource();
         if (!pageSource.contains(text)) {
             jiraAwareFail(text + " not present " + message);

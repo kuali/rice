@@ -42,36 +42,36 @@ public class DemoElementsLabelAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsLabel() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Label-Example1']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
-        assertTextPresent("Default Label:");
+        waitAndClickByLinkText("Default");
+        assertLabelWithTextPresent("Default Label:");
     }
 
     protected void testLibraryElementsLabelNoColon() throws Exception {
         waitAndClickByLinkText("No Colon Label");
-        assertElementPresentByXpath("//div[@id='Demo-Label-Example2']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
-        assertTextPresent("No Colon Label");
-        assertTextNotPresent("No Colon Label:");
+        assertLabelWithTextPresent("No Colon Label");
+        assertTextNotPresent("No Colon Label:"); // make sure Colon is not present
     }
 
     protected void testLibraryElementsLabelRequiredText() throws Exception {
         waitAndClickByLinkText("Required Message");
-        assertElementPresentByXpath("//div[@id='Demo-Label-Example2']/div[@class='uif-verticalBoxLayout clearfix']/span/label");
-        assertTextPresent("This is required");
+        assertLabelWithTextPresent("Label with required message:");
+    }
+
+    private void testLabels() throws Exception {
+        testLibraryElementsLabel();
+        testLibraryElementsLabelNoColon();
+        testLibraryElementsLabelRequiredText();
     }
 
     @Test
     public void testLibraryElementsLabelBookmark() throws Exception {
-        testLibraryElementsLabel();
-        testLibraryElementsLabelNoColon();
-        testLibraryElementsLabelRequiredText();
+        testLabels();
         passed();
     }
 
     @Test
     public void testLibraryElementsLabelNav() throws Exception {
-        testLibraryElementsLabel();
-        testLibraryElementsLabelNoColon();
-        testLibraryElementsLabelRequiredText();
+        testLabels();
         passed();
-    }  
+    }
 }

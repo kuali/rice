@@ -512,6 +512,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
+            WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
             loginKradOrKns(driver, user, this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
@@ -715,6 +716,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             assertFocusTypeBlurValid(field, validInput);
             clearTextByName(field);
         }
+    }
+
+    protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {
+        jGrowl("Assert Label containing the text " + labelText + " is present");
+        waitForElementPresentByXpath("//label[contains(text(), '" + labelText + "')]");
     }
 
     protected void assertLabelFor(String forElementId, String labelText) {

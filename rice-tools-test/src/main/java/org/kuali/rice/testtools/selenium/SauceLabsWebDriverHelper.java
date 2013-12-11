@@ -314,6 +314,8 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
         capabilities.setCapability("disable-popup-handler", System.getProperty(SAUCE_POPUP_PROPERTY, "false"));
         capabilities.setCapability("public", System.getProperty(SAUCE_SHARE_PROPERTY, "public restricted"));
 
+        System.out.println("Requesting Saucelabs RemoteWebDriver with DesiredCapabilities of " + capabilities.toString());
+
         this.driver = new RemoteWebDriver(
                 new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"),
                 capabilities);

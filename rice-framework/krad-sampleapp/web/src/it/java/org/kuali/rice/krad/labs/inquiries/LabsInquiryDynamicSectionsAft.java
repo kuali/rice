@@ -43,22 +43,11 @@ public class LabsInquiryDynamicSectionsAft extends LabsInquiryBase {
     	// Lightbox
         waitAndClickByLinkText("IAT");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Travel Account Type Code:", "IAT"},
-                                          {"Account Type Name:", "Income"},
-                                          {"Account Type:", "IAT - Income"}};
-        assertLabeledTextPresent(lightBoxLabeledText);
-        clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
-        clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
+        assertLabeledIatText();
         waitAndClickButtonByText("Close");
         selectTopFrame();
-        assertLabeledTextPresent(lightBoxLabeledText);
-        clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
-        clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
-        
+        assertLabeledIatText();
+
         //Dynamically Added 
         String[][] LabeledTextDynamic = {{"Dynamically Added Field:", "This is a dynamically set value."}};
         assertLabeledTextPresent(LabeledTextDynamic);

@@ -41,12 +41,12 @@ public class LabsInquiryPresentationControllerAft extends LabsInquiryBase {
     	waitAndClickByLinkText("Link to Inquiry with Authorizer configured");
         
     	// Lightbox
-        waitAndClickByXpath("//a[@title='Travel Per Diem Expense ']");
+        waitAndClickByLinkText("10000");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"ID:", "10000"},
                 {"Travel Authorization Document Id:", "10000"},
                 {"Primary Destination:", "10000"},
-                //{"Date of Use:", "12/09/2013"}, //As dates are changed
+                {"Date of Use:", getTodaysDate()},
                 {"Breakfast Value:", "10"}, 
                 {"Lunch Value:", "10"},
                 {"Dinner Value:", "15"},
@@ -62,7 +62,7 @@ public class LabsInquiryPresentationControllerAft extends LabsInquiryBase {
         selectTopFrame();
         String[][] LabeledText = {{"ID:", "10000"},
                 {"Primary Destination:", "10000"},
-                //{"Date of Use:", "12/09/2013"}
+                {"Date of Use:", getTodaysDate()}
                 };
         assertLabeledTextPresent(LabeledText);
         clickCollapseAll();

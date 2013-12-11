@@ -91,6 +91,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                     missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
                 }
             }
+            WebDriverUtils.jGrowl(getDriver(), "Assert DataTable Row", false, "Assert datatable row '" + dataTableRow
+                    + "' contains '" + data[i] + "' " + dataPresent);
         }
         if (!dataPresent) {
             jiraAwareFail(missingMessage);
@@ -427,6 +429,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected boolean isLabeledTextPresent(String label, String text) {
         WebElement element = findElement(By.xpath("//tr/th/*/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
         String labeledText = element.getText().trim();
+        WebDriverUtils.jGrowl(getDriver(), "Is Labeled Text Present", false, "Is text '" + text + "' present for label '" + label + "'? " + labeledText.contains(text));
         return labeledText.contains(text);
     }
 

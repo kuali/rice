@@ -43,17 +43,10 @@ public class LabsInquiryCustomHeaderAft extends LabsInquiryBase {
     	// Lightbox
         waitAndClickByLinkText("IAT");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Travel Account Type Code:", "IAT"},
-                                          {"Account Type Name:", "Income"},
-                                          {"Account Type:", "IAT - Income"}};
-        assertLabeledTextPresent(lightBoxLabeledText);
-        clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
-        clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
+        assertLabeledIatText();
         waitAndClickButtonByText("Close");
         selectTopFrame();
-        assertLabeledTextPresent(lightBoxLabeledText);
+        assertLabeledTextPresent(LABELED_IAT_TEXT);
         assertTextPresent("Account Type Information");
     }
 

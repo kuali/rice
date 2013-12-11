@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,7 +50,8 @@ public class LabsInquiryCollectionOfInactivaTablesAft extends LabsInquiryBase {
         String[][] dataTableAfter = {{"1", "10000", "Value Rentals","true"},
         		{"2", "10001", "AAA Travel","false"}};
         assertDataTableContains(dataTableBefore);
-        waitAndClickByXpath("//div[@data-parent='TravelCompanyCategory-InquiryView-CompanyTable']/button");
+        waitAndClickButtonByText("show inactive"); // now the second show inactive button as the first is hide inactive at this point
+//        waitAndClickByXpath("//div[@data-parent='TravelCompanyCategory-InquiryView-CompanyTable']/button");
         assertDataTableContains(dataTableAfter);
     }
 

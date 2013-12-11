@@ -58,7 +58,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         String[][] LabeledText = {{"ID:", "10000"},
                 {"Travel Authorization Document Id:", "10000"},
                 {"Primary Destination:", "10000"},
-                {"Date of Use:", "12/09/2013"},
+                {"Date of Use:", getTodaysDate()},
                 {"Breakfast Value:", "10"}, 
                 {"Lunch Value:", "10"},
                 {"Dinner Value:", "15"},

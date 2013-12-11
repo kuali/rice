@@ -1548,11 +1548,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String groupDescription = "GD" + random;
         String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         String nameSpace = "KR-IDM";
-        Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
-        String today = sdf.format(now);
+        String today = getTodaysDate();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         String nextYear = sdf.format(nextYearCal.getTime());
 
         //Enter details for BrownGroup.
@@ -1618,6 +1617,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (adHocWrkGrp != null ) {
             assertTextPresent(adHocWrkGrp);
         }
+    }
+
+    protected String getTodaysDate() {Date now = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        return sdf.format(now);
     }
 
     protected void testAttributeDefinitionLookUp() throws Exception {

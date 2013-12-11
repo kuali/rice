@@ -16,6 +16,7 @@
 package org.kuali.rice.ksb.messaging.bam;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,19 +35,21 @@ import javax.persistence.Table;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KRSB_BAM_PARM_T")
-//@Sequence(name="KRSB_BAM_PARM_S", property="bamParamId")
+@Table(name = "KRSB_BAM_PARM_T")
 public class BAMParam {
 
 	@Id
-	@GeneratedValue(generator="KRSB_BAM_PARM_S")
-	@Column(name="BAM_PARM_ID")
+	@GeneratedValue(generator = "KRSB_BAM_PARM_S")
+    @PortableSequenceGenerator(name = "KRSB_BAM_PARM_S")
+    @Column(name = "BAM_PARM_ID")
 	private Long bamParamId;
-	@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="BAM_ID")
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "BAM_ID")
 	private BAMTargetEntry bamTargetEntry;
+
 	@Lob
-	@Column(name="PARM")
+	@Column(name = "PARM")
 	private String param;
 		
 	public BAMTargetEntry getBamTargetEntry() {

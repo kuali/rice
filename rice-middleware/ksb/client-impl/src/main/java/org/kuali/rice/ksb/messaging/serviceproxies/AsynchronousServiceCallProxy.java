@@ -97,7 +97,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
                 message = PersistedMessageBO.buildMessage(serviceConfiguration, methodCall);
                 message.setValue1(this.value1);
                 message.setValue2(this.value2);
-                saveMessage(message);
+                message = saveMessage(message);
                 executeMessage(message);
                 // only do one iteration if this is a queue. The load balancing
                 // will be handled when the service is
@@ -126,9 +126,9 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
         return builder.toString();
     }
 
-    protected void saveMessage(PersistedMessageBO message) {
+    protected PersistedMessageBO saveMessage(PersistedMessageBO message) {
         message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-        KSBServiceLocator.getMessageQueueService().save(message);
+        return KSBServiceLocator.getMessageQueueService().save(message);
     }
 
     protected void executeMessage(PersistedMessageBO message) throws Exception {

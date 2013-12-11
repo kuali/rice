@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.remotedservices;
 
-import java.util.List;
-import java.util.Map;
-
 public interface EchoService {
 
 	public String echo(String string);

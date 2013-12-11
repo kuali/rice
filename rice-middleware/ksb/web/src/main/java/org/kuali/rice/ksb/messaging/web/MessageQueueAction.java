@@ -164,7 +164,7 @@ public class MessageQueueAction extends KSBAction {
 	existingMessage.setServiceName(message.getServiceName());
 	existingMessage.setValue1(message.getValue1());
 	existingMessage.setValue2(message.getValue2());
-	KSBServiceLocator.getMessageQueueService().save(existingMessage);
+	existingMessage = KSBServiceLocator.getMessageQueueService().save(existingMessage);
 	return existingMessage;
     }
 
@@ -177,11 +177,11 @@ public class MessageQueueAction extends KSBAction {
          * @param message
          *                The populated message to be requeued.
          */
-    protected void quickRequeueMessage(PersistedMessageBO message) {
+    protected PersistedMessageBO quickRequeueMessage(PersistedMessageBO message) {
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	message.setQueueDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 	message.setRetryCount(new Integer(0));
-	getRouteQueueService().save(message);
+	return getRouteQueueService().save(message);
     }
 
     public ActionForward quickRequeueMessage(ActionMapping mapping, ActionForm form, HttpServletRequest request,
@@ -192,7 +192,7 @@ public class MessageQueueAction extends KSBAction {
 	}
 
 	PersistedMessageBO message = routeQueueForm.getMessageQueueFromDatabase();
-	quickRequeueMessage(message);
+	message = quickRequeueMessage(message);
 	KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 
 	ActionMessages messages = new ActionMessages();

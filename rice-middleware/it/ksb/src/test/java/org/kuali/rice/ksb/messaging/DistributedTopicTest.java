@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import static org.junit.Assert.assertTrue;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -45,11 +45,11 @@ public class DistributedTopicTest extends KSBTestCase {
 		KsbApiServiceLocator.getServiceBus().synchronize();
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+		KSBJavaService testJavaAsyncService = KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		
-		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Client1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
+		assertTrue("Test harness topic never called", (ServiceCallInformationHolder.flags.get("TestHarnessCalled")).booleanValue());
+		assertTrue("Client1 app topic never called", (ServiceCallInformationHolder.flags.get("Client1Called")).booleanValue());
 	}
 	
 	@Test public void testCallingAsyncTopics() throws Exception {
@@ -58,7 +58,7 @@ public class DistributedTopicTest extends KSBTestCase {
 		QName serviceName = new QName("testAppsSharedTopic", "sharedTopic");
 		
 		SimpleCallback simpleCallback = new SimpleCallback();
-		KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
+		KSBJavaService testJavaAsyncService = KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, simpleCallback);
 		synchronized (simpleCallback) {
 		    testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 		    simpleCallback.waitForAsyncCall();
@@ -68,15 +68,16 @@ public class DistributedTopicTest extends KSBTestCase {
 		
 		int i = 0;
 		while (i < 100) {
-		    if (ServiceCallInformationHolder.stuff.get("Client1Called") != null) {
+		    if (ServiceCallInformationHolder.flags.get("Client1Called") != null) {
 			break;
 		    }
 		    Thread.sleep(1000);
 		    i++;
 		}
 	
-		assertTrue("Test harness topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Client1 app topic never called", ((Boolean)ServiceCallInformationHolder.stuff.get("Client1Called")).booleanValue());
+		assertTrue("Test harness topic never called", (ServiceCallInformationHolder.flags.get("TestHarnessCalled")).booleanValue());
+		assertTrue("Client1 app topic never called", (ServiceCallInformationHolder.flags.get("Client1Called"))
+                .booleanValue());
 	
 	}
 	

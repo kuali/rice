@@ -57,6 +57,7 @@ public class MessageFetcherTest extends KSBTestCase {
     @Override
     public void tearDown() throws Exception {
         TestHarnessSharedTopic.CALL_COUNT = 0;
+        super.tearDown();
     }
 
     @Test

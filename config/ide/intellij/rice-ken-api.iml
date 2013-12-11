@@ -9,8 +9,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/maven-status" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/ken/api/target/wsdl" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

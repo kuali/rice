@@ -79,7 +79,7 @@ public class QuartzQueueAction extends KSBAction {
      if(message != null){
 	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 
-        KSBServiceLocator.getMessageQueueService().save(message);
+        message = KSBServiceLocator.getMessageQueueService().save(message);
         KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());
      }
     request.setAttribute(RENDER_LIST_OVERRIDE, new Object());

@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TesetHarnessExplodingQueue implements KSBJavaService {
+public class TestHarnessExplodingQueue implements KSBJavaService {
 	
 	public static int NUM_CALLS = 0;
 

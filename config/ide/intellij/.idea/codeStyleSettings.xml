@@ -37,12 +37,6 @@
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
-        <ADDITIONAL_INDENT_OPTIONS fileType="rb">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="CONTINUATION_INDENT_SIZE" value="4" />
-          <option name="TAB_SIZE" value="2" />
-          <option name="USE_RELATIVE_INDENTS" value="true" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="scala">
           <option name="INDENT_SIZE" value="2" />
           <option name="CONTINUATION_INDENT_SIZE" value="2" />
@@ -63,12 +57,6 @@
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="CoffeeScript">
-          <option name="KEEP_LINE_BREAKS" value="false" />
-          <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
-          <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
-          <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
-          <option name="METHOD_PARAMETERS_WRAP" value="1" />
-          <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="ECMA Script Level 4">
@@ -161,7 +149,6 @@
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="SQL">
-          <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="XML">
@@ -169,6 +156,12 @@
             <option name="INDENT_SIZE" value="2" />
             <option name="TAB_SIZE" value="2" />
           </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="ruby">
+          <option name="KEEP_LINE_BREAKS" value="false" />
+          <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+          <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+          <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
       </value>
     </option>

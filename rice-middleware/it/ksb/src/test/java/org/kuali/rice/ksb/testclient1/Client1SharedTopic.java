@@ -25,7 +25,7 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 public class Client1SharedTopic implements KSBJavaService {
 
 	public void invoke(Serializable payLoad) {
-		ServiceCallInformationHolder.stuff.put("Client1Called", Boolean.TRUE);
+		ServiceCallInformationHolder.flags.put("Client1Called", Boolean.TRUE);
 	}
 
 }

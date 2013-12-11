@@ -89,8 +89,7 @@ public class BaseballCardCollectionServiceImpl implements BaseballCardCollection
     public List<BaseballCard> getAll() {
         // excuse me while we exploit this service to test service call version headers
         // annotations on impl not supported by RESTServiceExporter/RestServiceDefinition
-        //ServiceCallInformationHolder.stuff.put("capturedHeaders", headers.getRequestHeaders());
-        ServiceCallInformationHolder.stuff.put("capturedHeaders", PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS));
+        ServiceCallInformationHolder.multiValues = (Map<String, List<String>>)PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS);
         return new ArrayList<BaseballCard>(cards.values());
     }
 

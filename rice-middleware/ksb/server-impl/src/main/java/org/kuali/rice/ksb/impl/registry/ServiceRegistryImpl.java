@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
@@ -30,21 +28,22 @@ import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
 /**
  * Reference implementation of the {@link ServiceRegistry} which is backed by a
  * data access object that handles reading and writing data related to registry
  * entries from a backend datastore.
- * 
- * <p>In order for this class to function properly, a valid {@link ServiceRegistryDao}
- * must be injected into it via the {@link #setServiceRegistryDao(ServiceRegistryDao)}
- * method.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ServiceRegistryImpl implements ServiceRegistry {
-
-	private ServiceRegistryDao serviceRegistryDao;
 
 	@Override
 	public List<ServiceInfo> getOnlineServicesByName(QName serviceName)
@@ -52,19 +51,29 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (serviceName == null) {
 			throw new RiceIllegalArgumentException("serviceName cannot be null");
 		}
-		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getOnlineServiceInfosByName(serviceName);
+
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("serviceName",serviceName.toString()),
+                                equal("statusCode",ServiceEndpointStatus.ONLINE.getCode()));
+		List<ServiceInfoBo> serviceInfoBos = getDataObjectService().findMatching(
+                ServiceInfoBo.class,builder.build()).getResults();
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
 
 	@Override
 	public List<ServiceInfo> getAllOnlineServices() {
-		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllOnlineServiceInfos();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("statusCode",ServiceEndpointStatus.ONLINE.getCode()));
+        List<ServiceInfoBo> serviceInfoBos = getDataObjectService().findMatching(
+                ServiceInfoBo.class,builder.build()).getResults();
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
 	
 	@Override
 	public List<ServiceInfo> getAllServices() {
-		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfos();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        List<ServiceInfoBo> serviceInfoBos = getDataObjectService().findMatching(
+                ServiceInfoBo.class,builder.build()).getResults();
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
 	
@@ -73,7 +82,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (StringUtils.isBlank(instanceId)) {
 			throw new RiceIllegalArgumentException("instanceId cannot be blank");
 		}
-		List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfosForInstance(instanceId);
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("instanceId",instanceId));
+        List<ServiceInfoBo> serviceInfoBos = getDataObjectService().findMatching(
+                ServiceInfoBo.class,builder.build()).getResults();
 		return convertServiceInfoBoList(serviceInfoBos);
 	}
 
@@ -82,7 +94,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
         if (StringUtils.isBlank(applicationId)) {
             throw new RiceIllegalArgumentException("applicationId cannot be blank");
         }
-        List<ServiceInfoBo> serviceInfoBos = serviceRegistryDao.getAllServiceInfosForApplication(applicationId);
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("applicationId",applicationId));
+        List<ServiceInfoBo> serviceInfoBos = getDataObjectService().findMatching(
+                ServiceInfoBo.class,builder.build()).getResults();
         return convertServiceInfoBoList(serviceInfoBos);
     }
 
@@ -92,7 +107,8 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (StringUtils.isBlank(serviceDescriptorId)) {
 			throw new RiceIllegalArgumentException("serviceDescriptorId cannot be blank");
 		}
-		ServiceDescriptorBo serviceDescriptorBo = serviceRegistryDao.getServiceDescriptor(serviceDescriptorId);
+		ServiceDescriptorBo serviceDescriptorBo = getDataObjectService().find(
+                ServiceDescriptorBo.class,serviceDescriptorId);
 		return ServiceDescriptorBo.to(serviceDescriptorBo);
 	}
 
@@ -122,9 +138,9 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		ServiceDescriptorBo serviceDescriptorBo = ServiceDescriptorBo.from(serviceDescriptor);
 		ServiceInfo serviceInfo = serviceEndpoint.getInfo();
 		ServiceInfoBo serviceInfoBo = ServiceInfoBo.from(serviceInfo);
-		serviceDescriptorBo = serviceRegistryDao.saveServiceDescriptor(serviceDescriptorBo);
+		serviceDescriptorBo = getDataObjectService().save(serviceDescriptorBo);
 		serviceInfoBo.setServiceDescriptorId(serviceDescriptorBo.getId());
-		serviceRegistryDao.saveServiceInfo(serviceInfoBo);
+        getDataObjectService().save(serviceInfoBo);
 		
 		
 		return ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
@@ -150,13 +166,20 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (StringUtils.isBlank(serviceId)) {
 			throw new RiceIllegalArgumentException("serviceId cannot be blank");
 		}
-		ServiceInfoBo serviceInfoBo = serviceRegistryDao.getServiceInfo(serviceId);
+		ServiceInfoBo serviceInfoBo = getDataObjectService().find(ServiceInfoBo.class, serviceId);
 		if (serviceInfoBo != null) {
-			ServiceDescriptorBo serviceDescriptorBo = serviceRegistryDao.getServiceDescriptor(serviceInfoBo.getServiceDescriptorId());
+			ServiceDescriptorBo serviceDescriptorBo = getDataObjectService().find(
+                    ServiceDescriptorBo.class,serviceInfoBo.getServiceDescriptorId());
 			ServiceEndpoint endpointPriorRemoval = ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
 					ServiceDescriptor.Builder.create(serviceDescriptorBo)).build();
-			serviceRegistryDao.removeServiceInfo(serviceInfoBo.getServiceId());
-			serviceRegistryDao.removeServiceDescriptor(serviceInfoBo.getServiceDescriptorId());
+
+            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+            builder.setPredicates(equal("serviceId",serviceInfoBo.getServiceId()));
+            getDataObjectService().deleteMatching(ServiceInfoBo.class,builder.build());
+
+            builder = QueryByCriteria.Builder.create();
+            builder.setPredicates(equal("descriptor",serviceInfoBo.getServiceDescriptorId()));
+            getDataObjectService().deleteMatching(ServiceDescriptorBo.class,builder.build());
 			return endpointPriorRemoval;
 		}
 		return null;
@@ -197,7 +220,13 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (status == null) {
 			throw new RiceIllegalArgumentException("status cannot be null");
 		}
-		return serviceRegistryDao.updateStatus(serviceId, status.getCode());
+        ServiceInfoBo serviceInfoBo = getDataObjectService().find(ServiceInfoBo.class,serviceId);
+        if (serviceInfoBo == null) {
+            return false;
+        }
+        serviceInfoBo.setStatusCode(status.getCode());
+        getDataObjectService().save(serviceInfoBo);
+        return true;
 	}
 
 	@Override
@@ -223,7 +252,13 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (StringUtils.isBlank(instanceId)) {
 			throw new RiceIllegalArgumentException("instanceId cannot be blank");
 		}
-		serviceRegistryDao.updateStatusForInstanceId(instanceId, ServiceEndpointStatus.OFFLINE.getCode());
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(equal("instanceId", instanceId));
+        QueryResults<ServiceInfoBo> results = getDataObjectService().findMatching(ServiceInfoBo.class, builder.build());
+        for (ServiceInfoBo serviceInfo : results.getResults()) {
+            serviceInfo.setStatusCode(ServiceEndpointStatus.OFFLINE.getCode());
+            getDataObjectService().save(serviceInfo);
+        }
 	}
 
 	private List<ServiceInfo> convertServiceInfoBoList(List<ServiceInfoBo> serviceInfoBos) {
@@ -237,9 +272,10 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		}
 		return Collections.unmodifiableList(serviceInfos);
 	}
-	
-	public void setServiceRegistryDao(ServiceRegistryDao serviceRegistryDao) {
-		this.serviceRegistryDao = serviceRegistryDao;
-	}
+
+    public DataObjectService getDataObjectService() {
+        return KRADServiceLocator.getDataObjectService();
+    }
+
 	
 }

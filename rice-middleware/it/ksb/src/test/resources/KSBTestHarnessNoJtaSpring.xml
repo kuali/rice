@@ -200,9 +200,9 @@
 
 	<bean id="testHarnessSharedTopic" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic" />
 	<bean id="testRepeatMessageQueue" class="org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue" />
-	<bean id="testExplodingQueueTimeLimit" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
-	<bean id="testExplodingRetryCount" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
-	<bean id="testExplodingServiceWithDefaults" class="org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue" />
+	<bean id="testExplodingQueueTimeLimit" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessExplodingQueue" />
+	<bean id="testExplodingRetryCount" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessExplodingQueue" />
+	<bean id="testExplodingServiceWithDefaults" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessExplodingQueue" />
 	<bean id="testLocalServiceFavoriteCall" class="org.kuali.rice.ksb.messaging.remotedservices.GenericTestService" />
 	<bean id="soapService" class="org.kuali.rice.ksb.messaging.remotedservices.SOAPServiceImpl" />
 

@@ -34,15 +34,15 @@ import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
  */
 public interface MessageQueueService {
 
-    public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName);
+    List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName);
 
-    public void delete(PersistedMessageBO routeQueue);
+    void delete(PersistedMessageBO routeQueue);
 
-    public void save(PersistedMessageBO routeQueue);
+    PersistedMessageBO save(PersistedMessageBO routeQueue);
 
-    public List<PersistedMessageBO> findAll();
+    List<PersistedMessageBO> findAll();
 
-    public List<PersistedMessageBO> findAll(int maxRows);
+    List<PersistedMessageBO> findAll(int maxRows);
 
     /**
      * Finds the PersistedMessageBO identified by the passed-in primary key, if one is
@@ -52,7 +52,7 @@ public interface MessageQueueService {
      * @return A populated PersistedMessageBO instance, if the routeQueueId exists, otherwise
      *         a null object.
      */
-    public PersistedMessageBO findByRouteQueueId(Long routeQueueId);
+    PersistedMessageBO findByRouteQueueId(Long routeQueueId);
 
 //    public List getNextDocuments();
 
@@ -60,9 +60,9 @@ public interface MessageQueueService {
      * Returns a List of RouteQueue documents which are queued for routing.  Will not
      * return more RouteQueues than the value of maxDocuments.
      */
-    public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments);
+    List<PersistedMessageBO> getNextDocuments(Integer maxDocuments);
 
-    public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
+    PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
     
     /**
      * Finds the persisted messages that match the values passed into the 
@@ -75,7 +75,7 @@ public interface MessageQueueService {
      * @return A populated (or empty) list containing the results of the search.  If no matches are made, 
      *         an empty list will be returned.
      */
-    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows);
+    List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows);
 
     /**
      * Used to determine the maximum number of retries allowed by the system before the 
@@ -83,6 +83,6 @@ public interface MessageQueueService {
      * 
      * @return The max retry attempts set in the system.
      */
-    public Integer getMaxRetryAttempts();
+    Integer getMaxRetryAttempts();
 
 }

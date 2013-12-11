@@ -27,7 +27,7 @@ public interface MessageQueueDAO {
 
     public void remove(PersistedMessageBO routeQueue);
 
-    public void save(PersistedMessageBO routeQueue);
+    public PersistedMessageBO save(PersistedMessageBO routeQueue);
 
     public PersistedMessageBO findByRouteQueueId(Long routeQueueId);
 

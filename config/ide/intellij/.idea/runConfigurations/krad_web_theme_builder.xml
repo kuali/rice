@@ -16,7 +16,6 @@
           <option name="profilesMap">
             <map />
           </option>
-          <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$/../../../rice-framework/krad-web" />
         </MavenRunnerParameters>
       </option>

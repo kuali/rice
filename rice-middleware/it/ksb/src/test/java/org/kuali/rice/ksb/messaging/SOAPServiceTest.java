@@ -15,20 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.httpclient.URI;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -38,6 +32,9 @@ import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -69,19 +66,19 @@ public class SOAPServiceTest extends KSBTestCase {
 	@Test public void testSimpleSOAPService() throws Exception{
  
 		
-		EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
+		EchoService echoService = GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
 		String result = echoService.trueEcho("Yo yo yo");
 		assertNotNull(result);
 		
 		QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
-		SOAPService soapService = (SOAPService) GlobalResourceLoader.getService(serviceName);
+		SOAPService soapService = GlobalResourceLoader.getService(serviceName);
 		soapService.doTheThing("hello");
 	}
 	
 	@Test
 	public void testJaxWsSOAPService(){	
 		
-		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
+		JaxWsEchoService jaxwsEchoService = GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
 		String result = jaxwsEchoService.doEcho("Fi Fi Fo Fum");
 		assertTrue(("Fi Fi Fo Fum").equals(result));
 	}
@@ -111,7 +108,7 @@ public class SOAPServiceTest extends KSBTestCase {
 		}
 		
 		//Now try a secure client
-		echoService = (EchoService)GlobalResourceLoader.getService(new QName("urn:TestCl1", "soap-echoServiceSecure"));
+		echoService = GlobalResourceLoader.getService(new QName("urn:TestCl1", "soap-echoServiceSecure"));
 		String result = echoService.echo("I can echo");
 		assertTrue("I can echo".equals(result));		
 	}
@@ -119,16 +116,16 @@ public class SOAPServiceTest extends KSBTestCase {
 	@Test
 	public void testWsdlGeneration() throws Exception {
 		//This is similar to a KEW test, but good to have it as part of KSB tests.
-		
-		DynamicClientFactory dcf = DynamicClientFactory.newInstance(KSBServiceLocator.getCXFBus());
-		
+
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+
 		Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
 		client.getInInterceptors().add(new LoggingInInterceptor());
 		client.getOutInterceptors().add(new LoggingOutInterceptor());
-		Object[] results = client.invoke("trueEcho", new Object[] { "testing" });
+		Object[] results = client.invoke("echo", new Object[] { "testing" });
 		assertNotNull(results);
-		assertTrue(results.length > 0);
-		
+		assertEquals(1, results.length);
+        assertEquals("testing", results[0]);
 	}
 
 }

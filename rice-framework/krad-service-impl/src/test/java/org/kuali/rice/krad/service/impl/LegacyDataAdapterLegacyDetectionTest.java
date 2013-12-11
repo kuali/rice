@@ -145,6 +145,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
         // make sure these calls return something because they are inevitably followed by deferences
         when(dataObjectService.findMatching(any(Class.class), any(QueryByCriteria.class))).thenReturn(mock(QueryResults.class));
         when(dataObjectService.wrap(any(Class.class))).thenReturn(wrap);
+        when(dataObjectService.getMetadataRepository()).thenReturn(metadataRepository);
         when(metadataRepository.getMetadata(any(Class.class))).thenReturn(mock(DataObjectMetadata.class));
         when(lookupCriteriaGenerator.generateCriteria(any(Class.class), anyMap(), anyBoolean())).thenReturn(
                 QueryByCriteria.Builder.create());

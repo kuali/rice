@@ -25,9 +25,8 @@ import org.springframework.transaction.support.TransactionCallback;
 
 /**
  * Fetches messages from the db. Marks as 'R'. Gives messages to ThreadPool for execution
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class MessageFetcher implements Runnable {
 
@@ -37,74 +36,75 @@ public class MessageFetcher implements Runnable {
     private Long routeQueueId;
 
     public MessageFetcher(Integer maxMessages) {
-	this.maxMessages = maxMessages;
+        this.maxMessages = maxMessages;
     }
 
     public MessageFetcher(Long routeQueueId) {
-	this.routeQueueId = routeQueueId;
+        this.routeQueueId = routeQueueId;
     }
 
     public void run() {
-    	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.MESSAGE_PERSISTENCE, false)) {
-    		try {
-    			requeueDocument();
-    			requeueMessages();
-    		} catch (Throwable t) {
-    			LOG.error("Failed to fetch messages.", t);
-    		}
-    	}
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.MESSAGE_PERSISTENCE,
+                false)) {
+            try {
+                requeueDocument();
+                requeueMessages();
+            } catch (Throwable t) {
+                LOG.error("Failed to fetch messages.", t);
+            }
+        }
     }
 
     private void requeueMessages() {
-	if (this.routeQueueId == null) {
-	    try {
-		for (final PersistedMessageBO message : getRouteQueueService().getNextDocuments(maxMessages)) {
-		    markEnrouteAndSaveMessage(message);
-		    executeMessage(message);
-		}
-	    } catch (Throwable t) {
-		LOG.error("Failed to fetch or process some messages during requeueMessages", t);
-	    }
-	}
+        if (this.routeQueueId == null) {
+            try {
+                for (PersistedMessageBO message : getRouteQueueService().getNextDocuments(maxMessages)) {
+                    message = markEnrouteAndSaveMessage(message);
+                    executeMessage(message);
+                }
+            } catch (Throwable t) {
+                LOG.error("Failed to fetch or process some messages during requeueMessages", t);
+            }
+        }
     }
 
     private void requeueDocument() {
-	try {
-	    if (this.routeQueueId != null) {
-		PersistedMessageBO message = getRouteQueueService().findByRouteQueueId(this.routeQueueId);
-		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-		getRouteQueueService().save(message);
-		executeMessage(message);
-	    }
-	} catch (Throwable t) {
-	    LOG.error("Failed to fetch or process some messages during requeueDocument", t);
-	}
+        try {
+            if (this.routeQueueId != null) {
+                PersistedMessageBO message = getRouteQueueService().findByRouteQueueId(this.routeQueueId);
+                message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
+                message = getRouteQueueService().save(message);
+                executeMessage(message);
+            }
+        } catch (Throwable t) {
+            LOG.error("Failed to fetch or process some messages during requeueDocument", t);
+        }
     }
 
     private void executeMessage(PersistedMessageBO message) {
-	try {
-	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
-	} catch (Throwable t) {
-	    LOG.error("Failed to place message " + message + " in thread pool for execution", t);
-	}
+        try {
+            KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
+        } catch (Throwable t) {
+            LOG.error("Failed to place message " + message + " in thread pool for execution", t);
+        }
     }
 
-    private void markEnrouteAndSaveMessage(final PersistedMessageBO message) {
-	try {
-	    KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
-		public Object doInTransaction(TransactionStatus status) {
-		    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-		    getRouteQueueService().save(message);
-		    return null;
-		}
-	    });
-	} catch (Throwable t) {
-	    LOG.error("Caught error attempting to mark message " + message + " as R", t);
-	}
+    private PersistedMessageBO markEnrouteAndSaveMessage(final PersistedMessageBO message) {
+        try {
+            return KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback<PersistedMessageBO>() {
+                public PersistedMessageBO doInTransaction(TransactionStatus status) {
+                    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
+                    return getRouteQueueService().save(message);
+                }
+            });
+        } catch (Throwable t) {
+            LOG.error("Caught error attempting to mark message " + message + " as R", t);
+        }
+        return message;
     }
 
     private MessageQueueService getRouteQueueService() {
-	return KSBServiceLocator.getMessageQueueService();
+        return KSBServiceLocator.getMessageQueueService();
     }
 
 }

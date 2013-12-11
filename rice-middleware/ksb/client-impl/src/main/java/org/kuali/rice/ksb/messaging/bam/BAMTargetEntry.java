@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging.bam;
 
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,44 +36,54 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * An entry in the BAM representing a service method invocation.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="KRSB_BAM_T")
-//@Sequence(name="KRSB_BAM_S", property="bamId")
+@Table(name = "KRSB_BAM_T")
 public class BAMTargetEntry implements Serializable {
 
 	private static final long serialVersionUID = -8376674801367598316L;
 
 	@Id
-	@GeneratedValue(generator="KRSB_BAM_S")
-	@Column(name="BAM_ID")
+	@GeneratedValue(generator = "KRSB_BAM_S")
+    @PortableSequenceGenerator(name = "KRSB_BAM_S")
+	@Column(name = "BAM_ID")
 	private Long bamId;
-	@Column(name="SVC_NM")
+
+	@Column(name = "SVC_NM")
 	private String serviceName;
-	@Column(name="MTHD_NM")
+
+	@Column(name = "MTHD_NM")
 	private String methodName;
-	@Column(name="THRD_NM")
+
+	@Column(name = "THRD_NM")
 	private String threadName;
-	@Column(name="CALL_DT")
+
+	@Column(name = "CALL_DT")
 	private Timestamp callDate;
-	@Column(name="SVC_URL")
+
+	@Column(name = "SVC_URL")
 	private String serviceURL;
-	@Column(name="TGT_TO_STR")
+
+	@Column(name = "TGT_TO_STR")
 	private String targetToString;
-	@Column(name="EXCPN_TO_STR")
+
+	@Column(name = "EXCPN_TO_STR")
 	private String exceptionToString;
+
 	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(name="EXCPN_MSG", length=4000)
+	@Basic(fetch = FetchType.LAZY)
+	@Column(name = "EXCPN_MSG", length=4000)
 	private String exceptionMessage;
-	@Column(name="SRVR_IND")
+
+	@Column(name = "SRVR_IND")
+    @Convert(converter = Boolean01Converter.class)
 	private Boolean serverInvocation;
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="bamParamId")
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "bamTargetEntry")
 	private List<BAMParam> bamParams = new ArrayList<BAMParam>();
 	
 	//for async calls not bam

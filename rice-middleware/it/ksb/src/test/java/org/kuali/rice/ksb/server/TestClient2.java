@@ -51,8 +51,11 @@ public class TestClient2 extends BaseTestServer {
 		LOG.debug("#  Starting Client2 using web root " + location);
 		LOG.debug("#");
 		LOG.debug("#####################################");
-		WebAppContext context = new WebAppContext(location, CONTEXT);	
-		server.setHandler(context);
+
+		WebAppContext context = new WebAppContext(location, CONTEXT);
+        context.setThrowUnavailableOnStartupException(true);
+        context.setClassLoader(new KsbTestClientClassLoader());
+        server.setHandler(context);
 		return server;
 	}
 	

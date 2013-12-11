@@ -393,7 +393,7 @@ public class LookupView extends FormView {
         fieldGroupItems.add(toDate);
         rangeFieldGroup.setItems(fieldGroupItems);
 
-        getViewIndex().getInitialComponentStates().put(rangeFieldGroup.getBaseId(), rangeFieldGroup);
+        getViewIndex().updateInitialComponentState(rangeFieldGroup);
 
         return rangeFieldGroup;
     }

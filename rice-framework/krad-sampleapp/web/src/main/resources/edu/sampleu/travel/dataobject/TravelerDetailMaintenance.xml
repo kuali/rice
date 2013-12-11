@@ -43,6 +43,22 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="id" p:defaultValue="@{ #sequence('TRVL_TRAVELER_DTL_ID_S') }" />
+              <bean parent="Uif-InputField" p:propertyName="firstName" />
+              <bean parent="Uif-InputField" p:propertyName="middleName" />
+              <bean parent="Uif-InputField" p:propertyName="lastName" />
+              <bean parent="Uif-InputField" p:propertyName="streetAddressLine1" />
+              <bean parent="Uif-InputField" p:propertyName="streetAddressLine2" />
+              <bean parent="Uif-InputField" p:propertyName="cityName" />
+              <bean parent="Uif-InputField" p:propertyName="stateCode" />
+              <bean parent="Uif-InputField" p:propertyName="zipCode" />
+              <bean parent="Uif-InputField" p:propertyName="countryCode" />
+              <bean parent="Uif-InputField" p:propertyName="emailAddress" />
+              <bean parent="Uif-InputField" p:propertyName="phoneNumber" />
+              <bean parent="Uif-InputField" p:propertyName="travelerTypeCode" />
+              <bean parent="Uif-InputField" p:propertyName="customerNumber" />
+              <bean parent="Uif-InputField" p:propertyName="driversLicenseNumber" />
+              <bean parent="Uif-InputField" p:propertyName="liabilityInsurance" />
+              <bean parent="Uif-InputField" p:propertyName="citizenship" />
             </list>
           </property>
         </bean>

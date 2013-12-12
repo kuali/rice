@@ -37,8 +37,8 @@
   <bean id="TravelMileageRate-id" parent="TravelMileageRate-id-parentBean" />
   <bean id="TravelMileageRate-id-parentBean" parent="AttributeDefinition">
     <property name="name" value="mileageRateId" />
-    <property name="label" value="ID" />
-    <property name="shortLabel" value="ID" />
+    <property name="label" value="Id" />
+    <property name="shortLabel" value="Id" />
     <property name="maxLength" value="40" />
     <property name="required" value="true" />
     <property name="summary" value="Id" />
@@ -59,6 +59,7 @@
     <property name="maxLength" value="40" />
     <property name="summary" value="Unique identifier for mileage rate" />
     <property name="description" value="Unique identifier for mileage rate" />
+    <property name="required" value="true"/>
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="40" />
     </property>
@@ -75,6 +76,7 @@
     <property name="maxLength" value="40" />
     <property name="summary" value="Name of rate (i.e Domestic)" />
     <property name="description" value="Name of rate (i.e Domestic)" />
+    <property name="required" value="true" />
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="40" />
     </property>

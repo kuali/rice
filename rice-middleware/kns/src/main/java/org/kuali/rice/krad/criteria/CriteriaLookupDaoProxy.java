@@ -52,22 +52,13 @@ public class CriteriaLookupDaoProxy implements CriteriaLookupDao {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
                 } else {
-                    if (!LegacyUtils.useLegacy(clazz)) {
-                        throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
-					} else {
-						CriteriaLookupDaoOjb classSpecificLookupDaoOjb = new CriteriaLookupDaoOjb();
-                        classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
-                        lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
-                        return classSpecificLookupDaoOjb;
-                    }
+        			CriteriaLookupDaoOjb classSpecificLookupDaoOjb = new CriteriaLookupDaoOjb();
+                    classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
+                    lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
+                    return classSpecificLookupDaoOjb;
                 }
 
             }
-        }
-        //return lookupDaoJpa;
-
-        if (!LegacyUtils.useLegacy(clazz)) {
-            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
         }
         return criteriaLookupDaoOjb;
     }

@@ -53,24 +53,15 @@ public class PersistenceDaoProxy implements PersistenceDao {
                 if (persistenceDaoValues.get(dataSourceName) != null) {
                     return persistenceDaoValues.get(dataSourceName);
                 } else {
-                	if (!LegacyUtils.useLegacy(clazz)) {
-                        throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
-                    } else {
-                        //using OJB
-                        PersistenceDaoOjb persistDaoOjb = new PersistenceDaoOjb();
-                        persistDaoOjb.setJcdAlias(dataSourceName);
-                
-                        persistenceDaoValues.put(dataSourceName, persistDaoOjb);
-                        return persistDaoOjb;
-                    }
+                    //using OJB
+                    PersistenceDaoOjb persistDaoOjb = new PersistenceDaoOjb();
+                    persistDaoOjb.setJcdAlias(dataSourceName);
 
+                    persistenceDaoValues.put(dataSourceName, persistDaoOjb);
+                    return persistDaoOjb;
                 }
 
             }
-        }
-
-        if (!LegacyUtils.useLegacy(clazz)) {
-            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
         }
     	return persistenceDaoOjb;
     }

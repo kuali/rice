@@ -186,17 +186,17 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void retrieveNonKeyFields(Object persistableObject) {
-        throw new UnsupportedOperationException("retrieveNonKeyFields not supported in KRAD");
+        // retrieveNonKeyFields does nothing for now...
     }
 
     @Override
     public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
-        throw new UnsupportedOperationException("retrieveReferenceObject not supported in KRAD");
+        // retrieveReferenceObject does nothing for now...
     }
 
     @Override
     public void refreshAllNonUpdatingReferences(Object persistableObject) {
-        throw new UnsupportedOperationException("refreshAllNonUpdatingReferences not supported in KRAD");
+        // refreshAllNonUpdatingReferences does nothing for now...
     }
 
     @Override

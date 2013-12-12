@@ -53,9 +53,6 @@ public class DocumentDaoProxy implements DocumentDao {
                 if (documentDaoValues.get(dataSourceName) != null) {
                     return documentDaoValues.get(dataSourceName);
                 }
-                if (!LegacyUtils.useLegacy(clazz)) {
-                    throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
-                }
                 //using OJB
                 DocumentDaoOjb documentDaoOjbInstance =
                 	new DocumentDaoOjb(
@@ -70,10 +67,6 @@ public class DocumentDaoProxy implements DocumentDao {
 
                 }
 
-        }
-
-        if (!LegacyUtils.useLegacy(clazz)) {
-            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
         }
 
         return documentDaoOjb;

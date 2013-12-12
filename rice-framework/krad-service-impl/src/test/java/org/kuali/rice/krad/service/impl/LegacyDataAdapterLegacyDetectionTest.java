@@ -330,17 +330,13 @@ public class LegacyDataAdapterLegacyDetectionTest {
         verify(dataObjectService, never()).wrap(obj);
     }
 
-
     @Test
     public void testRetrieveNonKeyFields() {
         Object obj = new Object();
-        try{
-            lda.retrieveNonKeyFields(obj);
-            Assert.fail("Retrieve non key fields should not be called in non legacy contexts");
-        } catch(UnsupportedOperationException e){
-            verify(persistenceService, never()).retrieveNonKeyFields(any());
-        }
+        lda.retrieveNonKeyFields(obj);
+        verify(persistenceService, never()).retrieveNonKeyFields(any());
     }
+
     @Test
     public void testLegacyRetrieveNonKeyFields() {
         enableLegacyFramework();
@@ -354,13 +350,10 @@ public class LegacyDataAdapterLegacyDetectionTest {
     public void testRetrieveReferenceObject() {
         Object obj = new Object();
         String name = "";
-        try{
-            lda.retrieveReferenceObject(obj, name);
-            Assert.fail("Retrieve reference object is not supported in non legacy context");
-        } catch(UnsupportedOperationException e){
-            verify(persistenceService, never()).retrieveReferenceObject(any(), anyString());
-        }
+        lda.retrieveReferenceObject(obj, name);
+        verify(persistenceService, never()).retrieveReferenceObject(any(), anyString());
     }
+
     @Test
     public void testLegacyRetrieveReferenceObject() {
         enableLegacyFramework();
@@ -374,14 +367,10 @@ public class LegacyDataAdapterLegacyDetectionTest {
     @Test
     public void testRefreshAllNonUpdatingReferences() {
         Object obj = new Object();
-        try{
-            lda.refreshAllNonUpdatingReferences(obj);
-            Assert.fail("Refresh all non updating references should fall in non legacy context");
-        } catch(UnsupportedOperationException e){
-            verify(persistenceService, never()).refreshAllNonUpdatingReferences(any(PersistableBusinessObject.class));
-        }
-
+        lda.refreshAllNonUpdatingReferences(obj);
+        verify(persistenceService, never()).refreshAllNonUpdatingReferences(any(PersistableBusinessObject.class));
     }
+
     @Test
     public void testLegacyRefreshAllNonUpdatingReferences() {
         enableLegacyFramework();

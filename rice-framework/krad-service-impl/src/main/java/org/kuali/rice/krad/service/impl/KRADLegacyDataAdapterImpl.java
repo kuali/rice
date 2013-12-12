@@ -36,6 +36,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
@@ -502,7 +503,13 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public PersistableBusinessObjectExtension getExtension(
             Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
-        throw new UnsupportedOperationException("getExtension not supported in KRAD");
+        DataObjectMetadata metadata = dataObjectService.getMetadataRepository().getMetadata(businessObjectClass);
+        DataObjectRelationship extensionRelationship = metadata.getRelationship("extension");
+        if (extensionRelationship != null) {
+            Class<?> extensionType = extensionRelationship.getRelatedType();
+            return (PersistableBusinessObjectExtension)extensionType.newInstance();
+        }
+        return null;
     }
 
     @Override

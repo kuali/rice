@@ -18,25 +18,67 @@ package org.kuali.rice.krad.jpa;
 
 import org.junit.Test;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.test.KRADTestCase;
-import static org.junit.Assert.*;
+import org.kuali.rice.krad.test.document.bo.Account;
+import org.kuali.rice.krad.test.document.bo.AccountExtension;
 
-public class LegacyDataAdapterTest extends KRADTestCase{
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+public class LegacyDataAdapterTest extends KRADTestCase {
+
+    private LegacyDataAdapter legacyDataAdapter;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+    }
+
     @Test
     public void testGetPropertyType() throws Exception {
         //Confirm simple nested property type works
         ParameterBo param = DataObjectUtils.newInstance(ParameterBo.class);
-        Class propertyType = KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(param,"namespaceCode");
+        Class propertyType = legacyDataAdapter.getPropertyType(param, "namespaceCode");
         assertTrue("PropertyType is String",propertyType.isAssignableFrom(String.class));
         //Confirm simple nested property type works
-        propertyType = KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(param,"component.name");
+        propertyType = legacyDataAdapter.getPropertyType(param, "component.name");
         assertTrue("PropertyType is String",propertyType.isAssignableFrom(String.class));
         //Confirm double nested property type works
-        propertyType =  KRADServiceLocatorWeb.getLegacyDataAdapter().getPropertyType(param,"component.namespace.name");
+        propertyType =  legacyDataAdapter.getPropertyType(param, "component.namespace.name");
         assertTrue("PropertyType is String",propertyType.isAssignableFrom(String.class));
+    }
+
+    /**
+     * Verifies that new instances of the extension object are created properly when in Legacy mode.
+     * The {@link org.kuali.rice.krad.test.document.bo.Account} object has it's extension mapped both using the
+     * legacy KNS and non-Legacy KRAD approaches and it extends from PersistableBusinessObjectBase.
+     */
+    @Test
+    @Legacy
+    public void testGetExtension_Legacy() throws Exception {
+        testGetExtension();
+    }
+
+    /**
+     * Verifies that new instances of the extension object are created properly when using KRAD.
+     * The {@link org.kuali.rice.krad.test.document.bo.Account} object has it's extension mapped both using the
+     * legacy KNS and non-Legacy KRAD approaches and it extends from PersistableBusinessObjectBase.
+     */
+    @Test
+    public void testGetExtension() throws Exception {
+        Account account = new Account();
+        PersistableBusinessObjectExtension extension = account.getExtension();
+        assertNotNull(extension);
+        assertTrue(extension instanceof AccountExtension);
+
+        extension = legacyDataAdapter.getExtension(Account.class);
+        assertNotNull(extension);
+        assertTrue(extension instanceof AccountExtension);
     }
 
 }

@@ -88,6 +88,8 @@
 
   <import resource="classpath:org/kuali/rice/ksb/config/KsbJpaRegistrySpringBeans.xml"/>
 
-  <bean id="rice.ksb.serviceRegistry" class="org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl"/>
+  <bean id="rice.ksb.serviceRegistry"
+        class="org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl"
+        p:dataObjectService-ref="rice.ksb.registry.dataObjectService"/>
 
 </beans>

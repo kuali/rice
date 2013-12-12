@@ -20,13 +20,13 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.ksb.api.registry.RemoveAndPublishResult;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceEndpoint;
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceRegistry;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -44,6 +44,8 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
  *
  */
 public class ServiceRegistryImpl implements ServiceRegistry {
+
+    private DataObjectService dataObjectService;
 
 	@Override
 	public List<ServiceInfo> getOnlineServicesByName(QName serviceName)
@@ -274,8 +276,14 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	}
 
     public DataObjectService getDataObjectService() {
-        return KRADServiceLocator.getDataObjectService();
+        return dataObjectService;
     }
 
-	
+    @Required
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+
+
 }

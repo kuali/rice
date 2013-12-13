@@ -21,6 +21,7 @@ import java.util.Map;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
+import org.springframework.dao.DataAccessException;
 
 /**
  * Wraps a data object and it's associated metadata. Provides additional utility methods to access portions of the data
@@ -85,6 +86,19 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
     Map<String, Object> getPrimaryKeyValues();
 
     /**
+     * Returns the value of the primary key for the wrapped data object, or null if the wrapped object has no value for
+     * it's primary key.
+     *
+     * <p>If the primary key consists of multiple values, this method will return an instance of {@link CompoundKey},
+     * otherwise the single primary key value will be returned. If the primary key consists of multiple values but
+     * those values are only partially populated, this method will return null.</p>
+     *
+     * @return the single primary key value for the wrapped data object, or null if it has no fully-populated primary
+     *         key value
+     */
+    Object getPrimaryKeyValue();
+
+    /**
      * Determines if the given data object is equal to the data object wrapped by this accessor based on primary key
      * values only. If the given object is null, then this method will always return false.
      *
@@ -109,6 +123,46 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
 	List<String> getUnpopulatedPrimaryKeyAttributeNames();
 
     /**
+     * Returns the value of the foreign key for the specified relationship on the wrapped data object, or null if the
+     * wrapped object has no value for the requested foreign key.
+     *
+     * <p>If the foreign key is a compound/composite and consists of multiple values, this method will return an
+     * instance of {@link CompoundKey}, otherwise the single foreign key value will be returned. If the foreign key is
+     * compound/composite but
+     * those values are only partially populated, this method will return null.</p>
+     *
+     * <p>It is common that a data object may have more than one field or set of fields that constitute a specific
+     * foreign key for the specified relationship. In such cases there would be an attribute (or attributes) which
+     * represent the foreign key as well as the related object itself. For example, consider the following
+     * scenario:</p>
+     *
+     * <pre>
+     * {@code
+     * public class One {
+     *     String twoId;
+     *     Two two;
+     * }
+     * }
+     * </pre>
+     *
+     * <p>In this case, {@code twoId} is an attribute that serves as a foreign key to {@code Two}, but the {@code two}
+     * attribute would contain an internal {@code twoId} attribute which is the primary key value for {@code Two} and
+     * represents the foreign key in this case.</p>
+     *
+     * <p>In cases like above, the {@code twoId} attribute on the {@code One} class would take precedence unless it
+     * contains a null value, in which case this method will attempt to extract a non-null foreign key value from the
+     * related object.</p>
+     *
+     * @param relationshipName the name of the relationship on the wrapped data object for which to determine the
+     * foreign key value
+     * @return the single foreign key value on the wrapped data object for the given relationship name, or null if it
+     *         has no fully-populated foreign key value
+     * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
+     * data object
+     */
+    Object getForeignKeyValue(String relationshipName);
+
+    /**
      * Get property type for property name on object, this can be a nested property and method will
      * recursively use the metadata to find type.
      * @param objectType - Root object type
@@ -116,4 +170,23 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
      * @return Class of propertyName
      */
     Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName);
+
+    /**
+     * Refreshes the value for the relationship with the given name on the wrapped data object.
+     *
+     * <p>This is done by identifying the current foreign key value for the relationship using the algorithm described
+     * on {@link #getForeignKeyValue(String)} and then loading the related object using that foreign key, updating the
+     * value on the wrapped data object. If the foreign key value is null, this method will do nothing. If the
+     * loading of the related object using the foreign key does not find a valid related object, this method also does
+     * nothing.</p>
+     *
+     * <p>After the refresh is complete, if the wrapped data object has a foreign key attribute to the related object
+     * which is null, it will be populated with the primary key value from the refreshed object.</p>
+     *
+     * @param relationshipName the name of the relationship on the wrapped data object to refresh
+     * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
+     * data object
+     * @throws DataAccessException if there is a data access problem when attempting to refresh the relationship
+     */
+    void refreshRelationship(String relationshipName);
 }

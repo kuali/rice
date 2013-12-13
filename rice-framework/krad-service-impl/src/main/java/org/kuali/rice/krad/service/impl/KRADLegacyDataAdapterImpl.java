@@ -514,7 +514,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
-        throw new UnsupportedOperationException("refreshReferenceObject not supported in KRAD");
+        dataObjectService.wrap(businessObject).refreshRelationship(referenceObjectName);
     }
 
     @Override

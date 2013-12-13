@@ -76,8 +76,7 @@ public class DemoCollectionSequenceAft extends DemoLibraryBase {
         return false;
     }
     
-    private void testAutoSequence() throws InterruptedException
-    {
+    private void testAutoSequence() throws InterruptedException{
     	for(short i=1; i<10 ; i++)
     	{
     		if(i==2)
@@ -86,14 +85,12 @@ public class DemoCollectionSequenceAft extends DemoLibraryBase {
     	}
     }
     
-    private void testFieldSequence() throws InterruptedException
-    {
+    private void testFieldSequence() throws InterruptedException{
     	//Cant test all in loop as the value differs a lot.
     	waitForElementPresentByXpath("//div[@data-parent='Demo-CollectionSequence-Example2']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span[contains(text(),'3')]");
     }
     
-    private void testNoSequence() throws InterruptedException
-    {
+    private void testNoSequence() throws InterruptedException{
     	waitForElementNotPresent(By.xpath("//div[@data-parent='Demo-CollectionSequence-Example3']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span"));
     }
 

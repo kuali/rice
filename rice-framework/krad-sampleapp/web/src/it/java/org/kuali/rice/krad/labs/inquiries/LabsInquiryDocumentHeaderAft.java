@@ -47,7 +47,7 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText(CLOSE);
     }
 
     @Test

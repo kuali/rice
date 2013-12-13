@@ -58,7 +58,7 @@ public class LabsInquiryPresentationControllerAft extends LabsInquiryBase {
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         String[][] LabeledText = {{"ID:", "10000"},
                 {"Primary Destination:", "10000"},

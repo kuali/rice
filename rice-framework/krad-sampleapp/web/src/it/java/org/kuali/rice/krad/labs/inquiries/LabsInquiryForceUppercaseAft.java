@@ -51,7 +51,7 @@ public class LabsInquiryForceUppercaseAft extends LabsInquiryBase {
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();

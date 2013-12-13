@@ -23,6 +23,8 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 public abstract class LabsInquiryBase extends WebDriverLegacyITBase {
 
+	final String CLOSE="Close";
+	
     final String[][] LABELED_IAT_TEXT = {{"Travel Account Type Code:", "IAT"},
                                          {"Account Type Name:", "Income"},
                                          {"Account Type:", "IAT - Income"}};

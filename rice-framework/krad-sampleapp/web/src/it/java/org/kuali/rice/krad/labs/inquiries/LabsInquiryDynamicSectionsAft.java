@@ -44,7 +44,7 @@ public class LabsInquiryDynamicSectionsAft extends LabsInquiryBase {
         waitAndClickByLinkText("IAT");
         gotoLightBox();
         assertLabeledIatText();
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         assertLabeledIatText();
 

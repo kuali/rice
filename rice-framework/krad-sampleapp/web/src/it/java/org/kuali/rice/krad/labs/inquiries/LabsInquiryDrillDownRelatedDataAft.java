@@ -53,7 +53,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         String[][] LabeledText = {{"ID:", "10000"},
                 {"Travel Authorization Document Id:", "10000"},

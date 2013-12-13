@@ -244,15 +244,18 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR4C2" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Document BO Attachment"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR4C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a business object attachment."
+              p:instructionalText="This demo shows how an attachment can be configured directly to the business object.
+              From the link, create a new object, with an attached file.  After clicking 'blanket approve', you can download the saved
+              file using the button.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Sample BO Attachment"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachment"/>
             </list>
           </property>
         </bean>

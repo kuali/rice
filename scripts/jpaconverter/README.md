@@ -49,6 +49,10 @@ usage: groovy JpaConverter.groovy -b <project base directory> -c <location of co
                               classes referenced by OJB files.
 ```
 
+## Recommendations
+
+1. Upon first run, use the `--errorsonly` flag.  This will give you the smallest output and allow you to review any expected problems with the translation by altering the classes or OJB mapping files.
+
 ## Configuration Options
 
 All the elements below should be set in the Groovy configuration file.  See the provided `config-sample.groovy` for examples and use it as a starting point.

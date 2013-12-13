@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash
 #
 # Copyright 2005-2013 The Kuali Foundation
 #

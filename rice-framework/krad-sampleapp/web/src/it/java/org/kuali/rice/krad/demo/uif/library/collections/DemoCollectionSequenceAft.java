@@ -43,9 +43,22 @@ public class DemoCollectionSequenceAft extends DemoLibraryBase {
     }
 
     protected void changeSequenceView() throws Exception {
+    	
+    	//Auto Sequence
+        assert(isOptionSelected("exampleShown", "Demo-CollectionSequence-Example1"));
+        testAutoSequence();
+        
+        //Field Sequence
         selectOptionByName("exampleShown","Demo-CollectionSequence-Example2");
         waitForPageToLoad();
         assert(isOptionSelected("exampleShown", "Demo-CollectionSequence-Example2"));
+        testFieldSequence();
+        
+        //No Sequence
+        selectOptionByName("exampleShown","Demo-CollectionSequence-Example3");
+        waitForPageToLoad();
+        assert(isOptionSelected("exampleShown", "Demo-CollectionSequence-Example3"));
+        testNoSequence();
     }
 
     protected void testCollectionSequenceExamples() throws Exception {
@@ -61,6 +74,27 @@ public class DemoCollectionSequenceAft extends DemoLibraryBase {
             }
         }
         return false;
+    }
+    
+    private void testAutoSequence() throws InterruptedException
+    {
+    	for(short i=1; i<10 ; i++)
+    	{
+    		if(i==2)
+    			i++;
+    		waitForElementPresentByXpath("//div[@data-parent='Demo-CollectionSequence-Example1']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span[contains(text(),'"+i+"')]");
+    	}
+    }
+    
+    private void testFieldSequence() throws InterruptedException
+    {
+    	//Cant test all in loop as the value differs a lot.
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-CollectionSequence-Example2']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span[contains(text(),'3')]");
+    }
+    
+    private void testNoSequence() throws InterruptedException
+    {
+    	waitForElementNotPresent(By.xpath("//div[@data-parent='Demo-CollectionSequence-Example3']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span"));
     }
 
     @Test

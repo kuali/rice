@@ -34,6 +34,8 @@ public abstract class ConfigComponentCreateNewAftBase extends AdminTmplMthdAftNa
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation="+
             AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
+    String fourLetters;
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -57,20 +59,28 @@ public abstract class ConfigComponentCreateNewAftBase extends AdminTmplMthdAftNa
     public void testConfigComponentCreateNewNav(JiraAwareFailable failable) throws Exception {
         testConfigComponentCreateNew();
         passed();
-    }    
-    
-    public void testConfigComponentCreateNew() throws Exception
-    {
-        selectFrameIframePortlet();
-        waitAndClickByXpath(CREATE_NEW_XPATH);
-        String fourLetters = RandomStringUtils.randomAlphabetic(4);
+    }
+
+    protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component create new");
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
         waitAndTypeByName("document.newMaintainableObject.code","Test1" + fourLetters);
         waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode" + fourLetters);
+    }
+
+    public void testConfigComponentCreateNew() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickByXpath(CREATE_NEW_XPATH);
+        fourLetters = RandomStringUtils.randomAlphabetic(4);
+        createNewEnterDetails();
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");
         waitAndClickByName("methodToCall.processAnswer.button1");        
+    }
+
+    public void testConfigComponentCreateNewFull() throws Exception {
+        fourLetters = RandomStringUtils.randomAlphabetic(4);
+        createNewTemplateMethod();
     }
 }

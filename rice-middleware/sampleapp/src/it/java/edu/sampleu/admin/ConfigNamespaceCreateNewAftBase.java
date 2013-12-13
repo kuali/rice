@@ -58,19 +58,30 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
         passed();
     }    
     
-    public void testConfigNamespaceCreateNew() throws Exception
-    {
+    public void testConfigNamespaceCreateNew() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath(CREATE_NEW_XPATH);        
+        waitAndCreateNew();
+//        waitAndClickByXpath(CREATE_NEW_XPATH);
+        String docId = waitForDocId();
+
         waitAndTypeByName("document.documentHeader.documentDescription", "Test description of Namespace create new " + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());
         waitAndTypeByName("document.newMaintainableObject.code", "KR-SYS3" + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 3");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
+
+        addAdHocRecipients(new String[] {getUserName(), "A"});
+
         waitAndClickByName("methodToCall.route");
+
+        assertActionList(docId, "A");
+
         checkForDocError();
-        waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+
+        assertDocSearch(docId, DOC_STATUS_FINAL);
+
+//        waitAndClickByName("methodToCall.close");
+//        waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

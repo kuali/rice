@@ -541,6 +541,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message, failable);
             WebElement element = findElement(by);
+//            String name = element.getAttribute("name");
+//            if (name == null || "".equals(name)) {
+//                name = element.getAttribute("id");
+//            }
+//            WebDriverUtils.jGrowl(getDriver(), "Click " + name, false, "Click " + name);
             element.click();
         } catch (Exception e) {
             failable.jiraAwareFail(by.toString(), message, e);
@@ -649,6 +654,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         WebElement select1 = findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
+        String name = select1.getAttribute("name");
+
         if (options == null || options.size() == 0) {
             jiraAwareFail("No options for select "
                     + select1.toString()
@@ -660,6 +667,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
         for (WebElement option : options) {
             if (option.getAttribute("value").equals(optionValue)) {
+                WebDriverUtils.jGrowl(getDriver(), "Select " + option.getText(), false, "Select " + option.getText() + " from " + name);
                 option.click();
                 break;
             }
@@ -681,6 +689,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
+            String name = element.getAttribute("name");
+            WebDriverUtils.jGrowl(getDriver(), "Type", false, "Type into " + name + " the text: " + text);
             WebDriverUtils.highlightElement(getDriver(), element);
             element.sendKeys(text);
             return element;

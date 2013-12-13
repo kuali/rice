@@ -48,33 +48,31 @@
   var channelLocation = getLocation("${channelUrl}");
   var contextNames = new Array();
   <c:forEach var="contextName" items="${ConfigProperties.context.names}">
-          <c:if test="${not empty contextName.value}">
+      <c:if test="${not empty contextName.value}">
           contextNames.push("<c:out value="${contextName.value}" />");
-  </c:if>
+      </c:if>
   </c:forEach>
   var swf;
   var remote = channelLocation.protocol + '//' + channelLocation.host + "/";
-  if (jQuery.browser.msie){
-    for (var i = 0; i < contextNames.length; i++) {
-      if (channelLocation.pathname.lastIndexOf(contextNames[i], 0) === 0) {
-        remote += contextNames[i] + "/";
-        break;
-      }
+
+  // Preserve the server's context name in url path. IE pathname has a leading slash
+  for (var i = 0; i < contextNames.length; i++) {
+    if (channelLocation.pathname.lastIndexOf(contextNames[i], 0) === 0
+            || channelLocation.pathname.lastIndexOf("/" + contextNames[i], 0) === 0) {
+      remote += contextNames[i] + "/";
+      break;
     }
-    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
-    remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url=/"
-            + encodeURIComponent(channelLocation.pathname + channelLocation.search);
-  } else {
-    for (var i = 0; i < contextNames.length; i++) {
-      if (channelLocation.pathname.lastIndexOf(contextNames[i], 1) === 1) {
-        remote += contextNames[i] + "/";
-        break;
-      }
-    }
-    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
-    remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url="
-            + encodeURIComponent(channelLocation.pathname + channelLocation.search);
   }
+
+  // Add leading slash, only IE has a leading slash
+  var channelPathAndSearch = channelLocation.pathname + channelLocation.search;
+  if (channelPathAndSearch.substr(0,1) != "/") {
+    channelPathAndSearch = "/" + channelPathAndSearch;
+  }
+
+  swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
+  remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url="
+          + encodeURIComponent(channelPathAndSearch);
 
   new easyXDM.Socket(/** The configuration */{
     remote: remote,

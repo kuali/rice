@@ -43,7 +43,7 @@ public class LabsInquiryAuthorizerAndComponentSecurityAft extends LabsInquiryBas
     	waitAndClickByLinkText("Link to Inquiry with Authorizer configured");
         waitAndClickByLinkText("10000");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"ID:", "10000"},
+        String[][] lightBoxLabeledText = {{"Id:", "10000"},
                 {"Travel Authorization Document Id:", "10000"},
                 {"Primary Destination:", "10000"},
                 {"Date of Use:", getTodaysDate()},
@@ -60,7 +60,7 @@ public class LabsInquiryAuthorizerAndComponentSecurityAft extends LabsInquiryBas
         assertLabeledTextPresent(lightBoxLabeledText);
         waitAndClickButtonByText(CLOSE);
         selectTopFrame();
-        String[][] LabeledText = {{"ID:", "10000"},
+        String[][] LabeledText = {{"Id:", "10000"},
                 {"Primary Destination:", "10000"},
                 {"Date of Use:", getTodaysDate()}
                 };

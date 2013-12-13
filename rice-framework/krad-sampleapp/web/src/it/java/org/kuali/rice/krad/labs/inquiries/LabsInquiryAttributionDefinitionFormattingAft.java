@@ -45,7 +45,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
     	// Lightbox
         waitAndClickLinkContainingText("10000");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"ID:", "10000"},
+        String[][] lightBoxLabeledText = {{"Id:", "10000"},
                                           {"Travel Authorization Document Id:", "10000"},
                                           {"Travel Company Name:", "Discount Travel"},
                                           {"Expense Type:", "ME"},
@@ -70,7 +70,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Document Number:", "??"},
                 {"Principal Id:", "fred"},
                 {"Traveler Name:", ""},
-                {"Traveler User ID:", ""}, 
+                {"Traveler User ID:", ""},
                 {"First and Last Name (additionalDisplayAttributeName example):", "Test *-* Traveler"},
                 {"Middle Name:", "A"},
                 {"Last Name:", "Traveler"},

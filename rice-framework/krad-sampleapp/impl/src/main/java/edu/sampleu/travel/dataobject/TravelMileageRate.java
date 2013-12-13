@@ -49,7 +49,7 @@ public class TravelMileageRate extends DataObjectBase implements MutableInactiva
     @Id @Column(name = "MLG_RT_ID", length = 40)
     @GeneratedValue(generator = "TRVL_MLG_RT_ID_S")
     @PortableSequenceGenerator(name = "TRVL_MLG_RT_ID_S")
-    @Label("ID")
+    @Label("Id")
    private String mileageRateId;
 
     @Column(name = "MLG_RT_CD", length = 40)

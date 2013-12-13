@@ -44,10 +44,18 @@
             <list>
               <bean parent="Uif-InputField"
                     p:propertyName="travelDestinationId"
-                    p:defaultValue="@{ #sequence('TRVL_DEST_ID_S') }" />
-              <bean parent="Uif-InputField" p:propertyName="countryCd"/>
-              <bean parent="Uif-InputField" p:propertyName="stateCd"/>
-              <bean parent="Uif-InputField" p:propertyName="travelDestinationName" />
+                    p:defaultValue="@{ #sequence('TRVL_DEST_ID_S') }">
+                <property name="required" value="true"/>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="countryCd">
+                <property name="required" value="true"/>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="stateCd">
+                <property name="required" value="true"/>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="travelDestinationName">
+                <property name="required" value="true"/>
+              </bean>
               <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>

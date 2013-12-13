@@ -35,7 +35,6 @@ public class AccountTypeKeyValues extends KeyValuesBase {
 
         QueryResults<TravelAccountType> bos = KRADServiceLocator.getDataObjectService().findMatching( TravelAccountType.class, QueryByCriteria.Builder.create().build() );
 
-        keyValues.add(new ConcreteKeyValue("", ""));
         for ( TravelAccountType typ : bos.getResults() ) {
         	keyValues.add(new ConcreteKeyValue(typ.getAccountTypeCode(), typ.getName()));
         }

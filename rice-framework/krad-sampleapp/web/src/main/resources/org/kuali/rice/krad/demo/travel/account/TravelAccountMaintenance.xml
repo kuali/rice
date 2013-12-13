@@ -42,13 +42,13 @@
             <list>
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
-              <bean parent="Uif-InputField" p:propertyName="accountTypeCode">
+              <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true">
                 <property name="id" value="quickfinder1"/> <!-- changing this will break tests -->
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="fiscalOfficer.principalName" />
+              <bean parent="Uif-InputField" p:propertyName="foId" />
               <bean parent="Uif-InputField" p:propertyName="createDate"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
             </list>
@@ -60,7 +60,7 @@
           <property name="propertyName" value="subAccounts"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="subAccount"/>
+              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true"/>
               <bean parent="Uif-InputField" p:propertyName="subAccountName" />
             </list>
           </property>

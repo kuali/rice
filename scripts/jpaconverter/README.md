@@ -24,9 +24,8 @@ The script is written in Groovy and uses a Groovy configuration file for the mor
         <artifact pattern="${user.home}/.groovy/grapes/[organisation]/[module]/[type]s/[artifact]-[revision](-[classifier]).[ext]"/>
       </filesystem>
       <ibiblio name="localm2" root="file:${user.home}/.m2/repository/" checkmodified="true" changingPattern=".*" changingMatcher="regexp" m2compatible="true"/>
+      <ibiblio name="mavencentral" root="http://repo.maven.apache.org/maven2/" m2compatible="true"/>
       <ibiblio name="codehaus" root="http://repository.codehaus.org/" m2compatible="true"/>
-      <ibiblio name="ibiblio" m2compatible="true"/>
-      <ibiblio name="java.net2" root="http://download.java.net/maven/2/" m2compatible="true"/>
     </chain>
   </resolvers>
 </ivysettings>
@@ -72,3 +71,8 @@ All the elements below should be set in the Groovy configuration file.  See the 
 
 * Clear out your `$HOME/.groovy/grapes` directory to force a reload of the dependencies.
 * Add `-Divy.message.logger.level=4` to the groovy command line (before the groovy class) to help troubleshoot and dependency retrieval issues.
+* If you are having problems finding Kuali artifacts, or you are running against a snapshot build during testing, you may need to add the line below to your `grapesConfig.xml` file:
+
+```
+<ibiblio name="kuali" root="http://nexus.kuali.org/content/groups/public/" m2compatible="true"/>
+```

@@ -1,3 +1,4 @@
+#! /bin/bash -x
 #
 # Copyright 2005-2013 The Kuali Foundation
 #
@@ -14,7 +15,8 @@
 # limitations under the License.
 #
 
-#MAVEN_REPO=$HOME/.m2/repository
+MAVEN_REPO=$HOME/.m2/repository
+
 #groovy \
 #-cp .:../resources:../../../target/classes:\
 #$MAVEN_REPO/commons-io/commons-io/2.1/commons-io-2.1.jar:\
@@ -24,7 +26,13 @@
 #$MAVEN_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar \
 #Main.groovy -b $PWD/../.. -c $PWD/config.groovy --replace
 
-groovy JpaConverter.groovy -b $PWD/../.. -c $PWD/config-sample.groovy --replace
+GRAPES=$HOME/.groovy/grapes
+rm -rf "$GRAPES/org.kuali.rice/rice-development-tools"
+#ls -l "$GRAPES/org.kuali.rice/rice-development-tools/jars"
+pushd ../../development-tools
+mvn install
+popd
+groovy JpaConverter.groovy -b $PWD/../.. -c $PWD/config-sample.groovy "$@"
 
 
 #cat *.log

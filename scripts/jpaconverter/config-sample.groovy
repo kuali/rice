@@ -76,7 +76,7 @@ project {
     // Set this to true to make the application dump the resulting class files to the console instead of updating the existing files
     // This can be set to true if you want to make sure that you are not updating anything until this file is changed.
     // This option is set to true if you use the -d/--dryrun parameter of the script. 
-    dryRun = false    
+    dryrun = false    
     
     // If this property is set, it will skip all file updates and only report the messages which would appear 
     // during the processing of the files.  Useful for pre-testing the conversion to make any needed changes 

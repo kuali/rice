@@ -125,4 +125,37 @@ public class KradSampleAppController extends UifControllerBase {
 
         return getUIFModelAndView(form);
     }
+
+    /**
+     * Refreshes the group
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
+    public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Refresh and set server messages
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshWithServerMessages")
+    public ModelAndView refreshWithServerMessages(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().putError("inputField4", "serverTestError");
+        GlobalVariables.getMessageMap().putWarning("inputField4", "serverTestWarning");
+        GlobalVariables.getMessageMap().putInfo("inputField4", "serverTestInfo");
+
+        return getUIFModelAndView(form);
+    }
 }

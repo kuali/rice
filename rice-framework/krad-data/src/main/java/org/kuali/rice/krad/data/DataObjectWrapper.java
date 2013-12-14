@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.data;
 
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.dao.DataAccessException;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Wraps a data object and it's associated metadata. Provides additional utility methods to access portions of the data
@@ -163,6 +163,19 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
     Object getForeignKeyValue(String relationshipName);
 
     /**
+     * As {@link #getForeignKeyValue(String)} except only returns the value for the "attribute" foreign key value. If
+     * the wrapped data object has no attribute foreign key for the given relationship, this method will return null.
+     *
+     * @param relationshipName the name of the relationship on the wrapped data object for which to determine the
+     * foreign key value
+     * @return the single foreign key attribute value on the wrapped data object for the given relationship name, or
+     *         null if it has no fully-populated foreign key attribute value
+     * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
+     * data object
+     */
+    Object getForeignKeyAttributeValue(String relationshipName);
+
+    /**
      * Get property type for property name on object, this can be a nested property and method will
      * recursively use the metadata to find type.
      * @param objectType - Root object type
@@ -172,21 +185,20 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
     Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName);
 
     /**
-     * Refreshes the value for the relationship with the given name on the wrapped data object.
+     * Fetches and populates the value for the relationship with the given name on the wrapped data object.
      *
-     * <p>This is done by identifying the current foreign key value for the relationship using the algorithm described
-     * on {@link #getForeignKeyValue(String)} and then loading the related object using that foreign key, updating the
-     * value on the wrapped data object. If the foreign key value is null, this method will do nothing. If the
-     * loading of the related object using the foreign key does not find a valid related object, this method also does
-     * nothing.</p>
+     * <p>This is done by identifying the current foreign key attribute value for the relationship using the algorithm
+     * described on {@link #getForeignKeyAttributeValue(String)} and then loading the related object using that foreign
+     * key value, updating the relationship value on the wrapped data object afterward.</p>
      *
-     * <p>After the refresh is complete, if the wrapped data object has a foreign key attribute to the related object
-     * which is null, it will be populated with the primary key value from the refreshed object.</p>
+     * <p>If the foreign key value is null or the loading of the related object using the foreign key returns a null
+     * value, this method will set the relationship value to null.</p>
      *
      * @param relationshipName the name of the relationship on the wrapped data object to refresh
      * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
      * data object
      * @throws DataAccessException if there is a data access problem when attempting to refresh the relationship
      */
-    void refreshRelationship(String relationshipName);
+    void fetchRelationship(String relationshipName);
+
 }

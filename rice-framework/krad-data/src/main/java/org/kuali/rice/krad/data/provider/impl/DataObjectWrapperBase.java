@@ -316,17 +316,22 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 
     @Override
     public Object getForeignKeyValue(String relationshipName) {
-        if (StringUtils.isBlank(relationshipName)) {
-            throw new IllegalArgumentException("The relationshipName must not be null or blank");
+        Object foreignKeyAttributeValue = getForeignKeyAttributeValue(relationshipName);
+        if (foreignKeyAttributeValue != null) {
+            return foreignKeyAttributeValue;
         }
-
-        // validate the relationship exists
-        DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
-        if (relationship == null) {
-            throw new IllegalArgumentException("Failed to locate a valid relationship from " + getWrappedClass() + " with the given relationship name '" + relationshipName + "'");
+        // if there are no attribute relationships, or the attribute relationships are not fully populated, fall
+        // back to the actual relationship object
+        Object relationshipObject = getPropertyValue(relationshipName);
+        if (relationshipObject == null) {
+            return null;
         }
+        return dataObjectService.wrap(relationshipObject).getPrimaryKeyValue();
+    }
 
-        // first let's check if this relationship has an alternate set of foreign key attributes defined
+    @Override
+    public Object getForeignKeyAttributeValue(String relationshipName) {
+        DataObjectRelationship relationship = findAndValidateRelationship(relationshipName);
         List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
         if (!attributeRelationships.isEmpty()) {
             // ok, it has some of these relationships, are they all populated?
@@ -346,16 +351,9 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
                 return asSingleKey(attributeMap);
             }
         }
-
-        // if there are no attribute relationships, or the attribute relationships are not fully populated, fall back
-        // to the actual relationship object
-        Object relationshipObject = getPropertyValue(relationshipName);
-        if (relationshipObject == null) {
-            return null;
-        }
-        return dataObjectService.wrap(relationshipObject).getPrimaryKeyValue();
-
+        return null;
     }
+
 
     private Object asSingleKey(Map<String, Object> keyValues) {
         if (keyValues.size() == 1) {
@@ -409,33 +407,32 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     @Override
-    public void refreshRelationship(String relationshipName) {
-        if (StringUtils.isBlank(relationshipName)) {
-            throw new IllegalArgumentException("The relationshipName must not be null or blank");
-        }
-        Object foreignKey = getForeignKeyValue(relationshipName);
-        // if the foreignKey value is null, that means there is no foreign key available to do a refresh for this
-        // relationship, so we do nothing
-        if (foreignKey != null) {
-            DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
-            Object refreshedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
-            // only execute the refresh if our query found anything
-            if (refreshedValue != null) {
-                setPropertyValue(relationshipName, refreshedValue);
-                linkForeignKeyAttributes(relationshipName, refreshedValue);
+    public void fetchRelationship(String relationshipName) {
+        fetchRelationship(findAndValidateRelationship(relationshipName));
+    }
+
+    protected void fetchRelationship(DataObjectRelationship relationship) {
+        // if we have at least one attribute relationships here, then we are set to proceed
+        if (!relationship.getAttributeRelationships().isEmpty()) {
+            Object fetchedValue = null;
+            Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
+            if (foreignKey != null) {
+                fetchedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
             }
+            setPropertyValue(relationship.getName(), fetchedValue);
         }
     }
 
-    private void linkForeignKeyAttributes(String relationshipName, Object relationshipValue) {
-        DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
-        List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
-        if (!attributeRelationships.isEmpty()) {
-            DataObjectWrapper relationshipWrapper = dataObjectService.wrap(relationshipValue);
-            for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
-                setPropertyValue(attributeRelationship.getParentAttributeName(), relationshipWrapper.getPropertyValue(attributeRelationship.getChildAttributeName()));
-            }
+    private DataObjectRelationship findAndValidateRelationship(String relationshipName) {
+        if (StringUtils.isBlank(relationshipName)) {
+            throw new IllegalArgumentException("The relationshipName must not be null or blank");
         }
+        // validate the relationship exists
+        DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
+        if (relationship == null) {
+            throw new IllegalArgumentException("Failed to locate a valid relationship from " + getWrappedClass() + " with the given relationship name '" + relationshipName + "'");
+        }
+        return relationship;
     }
 
 }

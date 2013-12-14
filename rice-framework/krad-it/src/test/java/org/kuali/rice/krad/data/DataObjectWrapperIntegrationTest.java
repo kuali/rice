@@ -36,7 +36,7 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
 
         // right now we have no foreign keys so this should essentially do nothing
         DataObjectWrapper<?> wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("referencedObject");
+        wrapper.fetchRelationship("referencedObject");
         // should still be null
         assertNull(testDataObject.getReferencedObject());
         assertNull(testDataObject.getStringProperty());
@@ -51,40 +51,45 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
         // ReferencedDataObject for us
         testDataObject.setStringProperty("cba");
         assertNull(testDataObject.getReferencedObject());
-        wrapper.refreshRelationship("referencedObject");
+        wrapper.fetchRelationship("referencedObject");
         // now referenced object should not be null any longer
         assertNotNull(testDataObject.getReferencedObject());
         assertEquals("efg", testDataObject.getReferencedObject().getSomeOtherStringProperty());
 
-        // next, try the other direction with null attribute foreign keys and a non-null relationship object
-        testDataObject = new TestDataObject();
-        testDataObject.setPrimaryKeyProperty("abc2");
-        referencedDataObject = new ReferencedDataObject();
-        referencedDataObject.setStringProperty("cba2");
-        referencedDataObject.setSomeOtherStringProperty("efg2");
-        referencedDataObject = getDataObjectService().save(referencedDataObject);
-        testDataObject.setReferencedObject(referencedDataObject);
-        testDataObject = getDataObjectService().save(testDataObject);
-        // verify that our foreign key attribute is null
-        assertNull(testDataObject.getStringProperty());
-        assertNotNull(testDataObject.getReferencedObject());
 
-        // now that it's saved, let's update the referenced data object value and make sure the refresh works
+
+
+        // now, let's update the referenced data object value and make sure the refresh works
         // first, let's refetch the referenced object and update it
-        referencedDataObject = getDataObjectService().find(ReferencedDataObject.class, "cba2");
-        assertEquals("efg2", referencedDataObject.getSomeOtherStringProperty());
-        referencedDataObject.setSomeOtherStringProperty("efg3");
-        referencedDataObject = getDataObjectService().save(referencedDataObject);
+        referencedDataObject = getDataObjectService().find(ReferencedDataObject.class,"cba");
+        assertEquals("efg", referencedDataObject.getSomeOtherStringProperty());
+        referencedDataObject.setSomeOtherStringProperty("efg2");
+        getDataObjectService().save(referencedDataObject);
 
         // it's updated now, so let's verify the original testDataObject is out of date
-        assertEquals("efg2", testDataObject.getReferencedObject().getSomeOtherStringProperty());
+        assertEquals("efg", testDataObject.getReferencedObject().getSomeOtherStringProperty());
         wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("referencedObject");
+        wrapper.fetchRelationship("referencedObject");
         // now it should be updated!
+        assertEquals("efg2", testDataObject.getReferencedObject().getSomeOtherStringProperty());
+
+        // create a new referenced object to ensure we can fetch and update to a new foreign key as well
+        ReferencedDataObject referencedDataObject2 = new ReferencedDataObject();
+        referencedDataObject2.setStringProperty("cba2");
+        referencedDataObject2.setSomeOtherStringProperty("efg3");
+        getDataObjectService().save(referencedDataObject2);
+
+        // now, let's repoint the FK and try a fetch
+        testDataObject.setStringProperty("cba2");
+        wrapper.fetchRelationship("referencedObject");
+        assertEquals("cba2", testDataObject.getReferencedObject().getStringProperty());
         assertEquals("efg3", testDataObject.getReferencedObject().getSomeOtherStringProperty());
-        // the refresh should also synchronize the foreign key attribute value, so our string property should have a
-        // proper value now
-        assertEquals("cba2", testDataObject.getStringProperty());
+
+        // lastly, let's try setting our FK to null and ensure our fetched relationship is set to null
+        testDataObject.setStringProperty(null);
+        assertNotNull(testDataObject.getReferencedObject());
+        wrapper.fetchRelationship("referencedObject");
+        assertNull(testDataObject.getReferencedObject());
 
     }
 
@@ -102,7 +107,7 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
 
         // right now we have no foreign keys so this should essentially do nothing
         DataObjectWrapper<?> wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("anotherReferencedObject");
+        wrapper.fetchRelationship("anotherReferencedObject");
         // should still be null
         assertNull(testDataObject.getAnotherReferencedObject());
         assertNull(testDataObject.getStringProperty());
@@ -122,47 +127,58 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
         testDataObject.setStringProperty("cba");
         testDataObject.setDateProperty(date);
         assertNull(testDataObject.getAnotherReferencedObject());
-        wrapper.refreshRelationship("anotherReferencedObject");
+        wrapper.fetchRelationship("anotherReferencedObject");
         // now referenced object should not be null any longer
         assertNotNull(testDataObject.getAnotherReferencedObject());
         assertEquals("efg", testDataObject.getAnotherReferencedObject().getSomeOtherStringProperty());
 
-        // next, try the other direction with null attribute foreign keys and a non-null relationship object
-        testDataObject = new TestDataObject();
-        testDataObject.setPrimaryKeyProperty("abc2");
-        referencedDataObject = new AnotherReferencedDataObject();
-        referencedDataObject.setStringProperty("cba2");
-        Date date2 = newDateWithTimeAtStartOfDay();
-        referencedDataObject.setDateProperty(date2);
-        referencedDataObject.setSomeOtherStringProperty("efg2");
-        referencedDataObject = getDataObjectService().save(referencedDataObject);
-        testDataObject.setAnotherReferencedObject(referencedDataObject);
-        testDataObject = getDataObjectService().save(testDataObject);
-        // verify that our foreign key attributes are null
-        assertNull(testDataObject.getStringProperty());
-        assertNull(testDataObject.getDateProperty());
-        assertNotNull(testDataObject.getAnotherReferencedObject());
-
-        // now that it's saved, let's update the referenced data object value and make sure the refresh works
+        // now, let's update the referenced data object value and make sure the refresh works
         // first, let's refetch the referenced object and update it
         Map<String, Object> compoundKey = new LinkedHashMap<String, Object>();
-        compoundKey.put("stringProperty", "cba2");
-        compoundKey.put("dateProperty", date2);
+        compoundKey.put("stringProperty", "cba");
+        compoundKey.put("dateProperty", date);
         referencedDataObject = getDataObjectService().find(AnotherReferencedDataObject.class, new CompoundKey(compoundKey));
-        assertEquals("efg2", referencedDataObject.getSomeOtherStringProperty());
-        referencedDataObject.setSomeOtherStringProperty("efg3");
-        referencedDataObject = getDataObjectService().save(referencedDataObject);
+        assertEquals("efg", referencedDataObject.getSomeOtherStringProperty());
+        referencedDataObject.setSomeOtherStringProperty("efg2");
+        getDataObjectService().save(referencedDataObject);
 
         // it's updated now, so let's verify the original testDataObject is out of date
-        assertEquals("efg2", testDataObject.getAnotherReferencedObject().getSomeOtherStringProperty());
+        assertEquals("efg", testDataObject.getAnotherReferencedObject().getSomeOtherStringProperty());
         wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("anotherReferencedObject");
+        wrapper.fetchRelationship("anotherReferencedObject");
         // now it should be updated!
+        assertEquals("efg2", testDataObject.getAnotherReferencedObject().getSomeOtherStringProperty());
+
+        // create a new referenced object to ensure we can fetch and update to a new foreign key as well
+        AnotherReferencedDataObject referencedDataObject2 = new AnotherReferencedDataObject();
+        referencedDataObject2.setStringProperty("cba2");
+        Date date2 = newDateWithTimeAtStartOfDay();
+        referencedDataObject2.setDateProperty(date2);
+        referencedDataObject2.setSomeOtherStringProperty("efg3");
+        getDataObjectService().save(referencedDataObject2);
+
+        // now, let's repoint the FK and try a fetch
+        testDataObject.setStringProperty("cba2");
+        testDataObject.setDateProperty(date2);
+        wrapper.fetchRelationship("anotherReferencedObject");
+        assertEquals("cba2", testDataObject.getAnotherReferencedObject().getStringProperty());
+        assertEquals(date2, testDataObject.getAnotherReferencedObject().getDateProperty());
         assertEquals("efg3", testDataObject.getAnotherReferencedObject().getSomeOtherStringProperty());
-        // the refresh should also synchronize the foreign key attribute values, so our string and date property should
-        // have a proper value now
-        assertEquals("cba2", testDataObject.getStringProperty());
-        assertEquals(date2, testDataObject.getDateProperty());
+
+        // lastly, let's try setting our FK to null and ensure our fetched relationship is set to null
+        // first, a partial set
+        testDataObject.setStringProperty(null);
+        wrapper.fetchRelationship("anotherReferencedObject");
+        assertNull(testDataObject.getAnotherReferencedObject());
+        // set it back so we can repopulate and then try when setting both FK fields to null
+        testDataObject.setStringProperty("cba2");
+        wrapper.fetchRelationship("anotherReferencedObject");
+        assertNotNull(testDataObject.getAnotherReferencedObject());
+        // set both FK's to null
+        testDataObject.setStringProperty(null);
+        testDataObject.setDateProperty(null);
+        wrapper.fetchRelationship("anotherReferencedObject");
+        assertNull(testDataObject.getAnotherReferencedObject());
 
     }
 
@@ -182,7 +198,7 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
 
         // right now we have no foreign keys so this should essentially do nothing
         DataObjectWrapper<?> wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("yetAnotherReferencedObject");
+        wrapper.fetchRelationship("yetAnotherReferencedObject");
         // should still be null
         assertNull(testDataObject.getAnotherReferencedObject());
 
@@ -194,7 +210,7 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
 
         // now, if we refresh it should fetch the missing AnotherReferencedDataObject for us
         assertNull(testDataObject.getYetAnotherReferencedObject());
-        wrapper.refreshRelationship("yetAnotherReferencedObject");
+        wrapper.fetchRelationship("yetAnotherReferencedObject");
         // now referenced object should not be null any longer
         assertNotNull(testDataObject.getYetAnotherReferencedObject());
         assertEquals("efg", testDataObject.getYetAnotherReferencedObject().getSomeOtherStringProperty());
@@ -209,7 +225,7 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
         // it's updated now, so let's verify the original testDataObject is out of date
         assertEquals("efg", testDataObject.getYetAnotherReferencedObject().getSomeOtherStringProperty());
         wrapper = getDataObjectService().wrap(testDataObject);
-        wrapper.refreshRelationship("yetAnotherReferencedObject");
+        wrapper.fetchRelationship("yetAnotherReferencedObject");
         // now it should be updated!
         assertEquals("efg2", testDataObject.getYetAnotherReferencedObject().getSomeOtherStringProperty());
         // pk should still be the same
@@ -226,12 +242,12 @@ public class DataObjectWrapperIntegrationTest extends KRADTestCase {
         DataObjectWrapper<?> wrapper = getDataObjectService().wrap(testDataObject);
 
         try {
-            wrapper.refreshRelationship("badReferenceName");
+            wrapper.fetchRelationship("badReferenceName");
             fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
 
         try {
-            wrapper.refreshRelationship("");
+            wrapper.fetchRelationship("");
             fail("IllegalArgumentException should have been thrown");
         } catch (IllegalArgumentException e) {}
 

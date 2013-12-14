@@ -187,17 +187,36 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void retrieveNonKeyFields(Object persistableObject) {
-        // retrieveNonKeyFields does nothing for now...
+        List<DataObjectRelationship> relationships =
+                dataObjectService.getMetadataRepository().getMetadata(persistableObject.getClass()).getRelationships();
+        for (DataObjectRelationship relationship : relationships) {
+            retrieveReferenceObject(persistableObject, relationship.getName());
+        }
     }
 
     @Override
     public void retrieveReferenceObject(Object persistableObject, String referenceObjectName) {
-        // retrieveReferenceObject does nothing for now...
+        dataObjectService.wrap(persistableObject).fetchRelationship(referenceObjectName);
     }
 
     @Override
     public void refreshAllNonUpdatingReferences(Object persistableObject) {
-        // refreshAllNonUpdatingReferences does nothing for now...
+        List<DataObjectRelationship> nonUpdateableRelationships = findNonUpdateableRelationships(persistableObject);
+        for (DataObjectRelationship relationship : nonUpdateableRelationships) {
+            retrieveReferenceObject(persistableObject, relationship.getName());
+        }
+    }
+
+    protected List<DataObjectRelationship> findNonUpdateableRelationships(Object persistableObject) {
+        List<DataObjectRelationship> relationships =
+                dataObjectService.getMetadataRepository().getMetadata(persistableObject.getClass()).getRelationships();
+        List<DataObjectRelationship> nonUpdateableRelationships = new ArrayList<DataObjectRelationship>();
+        for (DataObjectRelationship relationship : relationships) {
+            if (!relationship.isSavedWithParent()) {
+                nonUpdateableRelationships.add(relationship);
+            }
+        }
+        return nonUpdateableRelationships;
     }
 
     @Override
@@ -514,7 +533,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
-        dataObjectService.wrap(businessObject).refreshRelationship(referenceObjectName);
+        dataObjectService.wrap(businessObject).fetchRelationship(referenceObjectName);
     }
 
     @Override

@@ -148,14 +148,16 @@ public abstract class AttributeValidatingTypeServiceBase {
             TypeAttributeDefinition typeAttributeDefinition = typeAttributeDefinitionMap.get(entry.getKey());
 
             final List<RemotableAttributeError> attributeErrors;
-            if ( typeAttributeDefinition.getComponentName() == null) {
-                attributeErrors = validateNonDataDictionaryAttribute(typeAttributeDefinition.getField(), entry.getKey(), entry.getValue());
-            } else {
-                attributeErrors = validateDataDictionaryAttribute(typeAttributeDefinition, entry.getKey(), entry.getValue());
-            }
+            if (ObjectUtils.isNotNull(typeAttributeDefinition)) {
+                if (typeAttributeDefinition.getComponentName() == null) {
+                    attributeErrors = validateNonDataDictionaryAttribute(typeAttributeDefinition.getField(), entry.getKey(), entry.getValue());
+                } else {
+                    attributeErrors = validateDataDictionaryAttribute(typeAttributeDefinition, entry.getKey(), entry.getValue());
+                }
 
-            if ( attributeErrors != null ) {
-                validationErrors.addAll(attributeErrors);
+                if ( attributeErrors != null ) {
+                    validationErrors.addAll(attributeErrors);
+                }
             }
         }
 
@@ -210,7 +212,7 @@ public abstract class AttributeValidatingTypeServiceBase {
 		for ( String attributeName : attributes.keySet() ) {
 			TypeAttributeDefinition attr = typeAttributeDefinitionMap.get(attributeName);
 
-			if (StringUtils.isNotBlank(attr.getComponentName())) {
+			if (ObjectUtils.isNotNull(attr) && StringUtils.isNotBlank(attr.getComponentName())) {
 				if (!componentClassInstances.containsKey(attr.getComponentName())) {
 					try {
 						Class<?> componentClass = Class.forName(attr.getComponentName());

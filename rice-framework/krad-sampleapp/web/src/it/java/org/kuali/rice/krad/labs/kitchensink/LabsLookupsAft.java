@@ -57,19 +57,17 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
     	clearTextByName("field72");
     	waitAndTypeByName("field72","a2");
     	clearTextByName("field70");
-    	Thread.sleep(4000);
-    	assertTextPresent("Travel Account 2");
+    	waitForTextPresent("Travel Account 2");
     	waitAndTypeByName("field76","");
     	clearTextByName("field70");
-    	Thread.sleep(4000);
-    	assertTextPresent("Travel Account 1");
+        waitForTextPresent("Travel Account 1");
     	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
-    	waitAndClickByXpath(SEARCH_BTN_XPATH);
+        waitAndClickButtonByText("Search");
     	waitAndClickLinkContainingText("return value","");
     	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
-    	gotoIframeByXpath(IFRAME_XPATH); 
-    	waitAndClickByXpath(SEARCH_BTN_XPATH);
+    	gotoIframeByXpath(IFRAME_XPATH);
+        waitAndClickButtonByText("Search");
     	waitAndClickLinkContainingText("return value","");
     }
 }

@@ -688,6 +688,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         if ("F".equals(actionListOptionValue)) {
             assertTextPresent(new String[]{docId, "FYI"});
+            selectOptionByName("defaultActionToTake", actionListOptionValue);
+            WebDriverUtils.jGrowl(getDriver(), "Click Apply Default Action", false, "Click Apply Default Action");
+            waitAndClickByXpath("//img[@src='images/tinybutton-applydflt.gif']");
+            WebDriverUtils.jGrowl(getDriver(), "Click Take Mass Action", false, "Click Take Mass Action");
+            waitAndClickById("takeMassActions");
+            waitForTextNotPresent(docId);
         } else if ("A".equals(actionListOptionValue)) {
             assertTextPresent(new String[]{docId, "APPROVE"});
         } else if ("C".equals(actionListOptionValue)) {
@@ -697,12 +703,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         } else {
             throw new IllegalArgumentException(actionListOptionValue + " is not a valid action list option VALUE");
         }
-        selectOptionByName("defaultActionToTake", actionListOptionValue);
-        WebDriverUtils.jGrowl(getDriver(), "Click Apply Default Action", false, "Click Apply Default Action");
-        waitAndClickByXpath("//img[@src='images/tinybutton-applydflt.gif']");
-        WebDriverUtils.jGrowl(getDriver(), "Click Take Mass Action", false, "Click Take Mass Action");
-        waitAndClickById("takeMassActions");
-        waitForTextNotPresent(docId);
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
@@ -748,8 +748,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
         selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
-        Thread.sleep(2000);
+        waitForElementPresentByXpath(DOC_ID_XPATH_3);
         assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
     }
@@ -1683,7 +1684,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
-    protected String getTodaysDate() {Date now = Calendar.getInstance().getTime();
+    protected String getTodaysDate() {
+        Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         return sdf.format(now);
     }

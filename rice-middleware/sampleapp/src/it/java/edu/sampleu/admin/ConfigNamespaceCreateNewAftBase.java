@@ -79,7 +79,7 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
 
         checkForDocError();
 
-        assertDocSearch(docId, DOC_STATUS_FINAL);
+        assertDocSearch(docId, DOC_STATUS_ENROUTE); // ENROUTE due to Approval
 
 //        waitAndClickByName("methodToCall.close");
 //        waitAndClickByName("methodToCall.processAnswer.button1");

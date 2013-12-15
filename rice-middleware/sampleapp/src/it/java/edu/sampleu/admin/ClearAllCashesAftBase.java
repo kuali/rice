@@ -59,14 +59,10 @@ public abstract class ClearAllCashesAftBase extends AdminTmplMthdAftNavBase {
     public void testClearAllCashes() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("//li[@id='u27_node_0_parent_root']/a/ins");
-        waitAndClickByXpath("//li[@id='u27_node_1_parent_root']/a/ins");
-        waitAndClickByXpath("//li[@id='u27_node_2_parent_root']/a/ins");
-        waitAndClickByXpath("//li[@id='u27_node_3_parent_root']/a/ins");
-        waitAndClickByXpath("//li[@id='u27_node_4_parent_root']/a/ins");        
-        waitAndClickByXpath("//button[@id='u50']");
-        Thread.sleep(10000);
-        assertTextPresent("All caches were flushed for the CacheManager: coreServiceDistributedCacheManager.");
-        assertTextPresent(" Cache Management ");
+        assertTextPresent(new String[] {"coreServiceDistributedCacheManager", "kewDistributedCacheManager",
+            "kimDistributedCacheManager", "krmsDistributedCacheManager", "locationDistributedCacheManager"});
+        waitAndClickButtonByText("Flush");
+//        assertTextPresent("All caches were flushed for the CacheManager: coreServiceDistributedCacheManager."); // displays to fast to assert
+        waitForTextPresent("Cache Management");
     }
 }

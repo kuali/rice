@@ -64,7 +64,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     protected void testLabsLookupDefaultCreateNewBlanketApprove()throws Exception {
         navigateToCreateNew();
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created ");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName", "A");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName", "A");
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
@@ -79,7 +79,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount()throws Exception {
         navigateToCreateNew();
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","A");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","A");
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input[2]","Sub Account");
         waitAndClickButtonByText("add");

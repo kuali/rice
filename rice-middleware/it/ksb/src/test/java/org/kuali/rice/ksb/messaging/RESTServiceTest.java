@@ -54,9 +54,7 @@ public class RESTServiceTest extends KSBTestCase {
 
     @Test
     public void testMessagingService() throws Exception {
-    	ResourceFacade kmsService =
-            (ResourceFacade) GlobalResourceLoader.getService(
-                new QName(NAMESPACE, KMS_SERVICE));
+    	ResourceFacade kmsService = GlobalResourceLoader.getService(new QName(NAMESPACE, KMS_SERVICE));
 
     	// Get service by resource name
     	InboxResource inboxResource = kmsService.getResource("inbox");

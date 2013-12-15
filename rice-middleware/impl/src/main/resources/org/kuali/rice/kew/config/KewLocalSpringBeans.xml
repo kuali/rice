@@ -241,4 +241,11 @@
     </property>
   </bean>
 
+  <!-- Still using OJB for some of the KNS-based UI's in KEW -->
+  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+  <bean id="kewOjbConfigurer"
+        class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer"
+        p:metadataLocation="classpath:org/kuali/rice/kew/impl/config/OJB-repository-kew.xml"
+        p:jcdAliases="kewDataSource"/>
+
 </beans>

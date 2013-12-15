@@ -88,13 +88,12 @@ public class BoxLayoutManager extends LayoutManagerBase {
             }
         }
 
-        // classes to identify this layout in jQuery and to clear the float correctly in all browsers
-        this.addStyleClass("clearfix");
-
         for (Component c : ((Container) container).getItems()) {
             if (c != null) {
                 if (orientation.equals(Orientation.HORIZONTAL)) {
                     c.addStyleClass("uif-boxLayoutHorizontalItem");
+
+                    container.addStyleClass("clearfix");
                     
                     for (String styleClass : this.getItemStyleClasses()) {
                         c.addStyleClass(styleClass);

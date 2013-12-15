@@ -129,7 +129,7 @@ public class MessageServiceInvoker implements Runnable {
             message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
             message.setQueueDate(new Timestamp(System.currentTimeMillis()));
             try {
-                KSBServiceLocator.getMessageQueueService().save(message);
+                message = KSBServiceLocator.getMessageQueueService().save(message);
             } catch (Throwable t3) {
                 LOG.fatal("Failed to flip status of message to EXCEPTION!!!", t3);
             }

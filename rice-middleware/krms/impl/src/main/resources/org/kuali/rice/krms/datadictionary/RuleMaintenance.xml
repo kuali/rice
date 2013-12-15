@@ -103,12 +103,9 @@
     <property name="items">
       <list>
 
-        <bean parent="Uif-VerticalFieldGroup" p:label="Copy from Existing Rule"
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Copy from Existing Rule"
               p:progressiveRenderViaAJAX="true"
               p:progressiveRender="@{#dp.addRuleInProgress == true}">
-          <property name="group.layoutManager">
-            <bean parent="Uif-HorizontalBoxLayout"/>
-          </property>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:id="copyRuleName" p:propertyName="copyRuleName"
@@ -301,14 +298,11 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeViewControls" parent="Uif-VerticalBoxSection"
-        p:cssClasses="krms-rulesButtonBar">
+  <bean id="RuleEditorView-RuleTreeViewControls" parent="Uif-HorizontalBoxSection"
+        p:cssClasses="krms-rulesButtonBar" p:style="padding: 5px;">
 
     <property name="renderHeader" value="true"/>
     <property name="headerText" value="Propositions"/>
-    <property name="layoutManager">
-      <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
-    </property>
 
     <property name="items">
       <list>
@@ -316,14 +310,11 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeEditControls" parent="Uif-VerticalBoxSection"
+  <bean id="RuleEditorView-RuleTreeEditControls" parent="Uif-HorizontalBoxSection" p:style="padding: 5px;"
         p:cssClasses="krms-rulesButtonBar">
 
     <property name="renderHeader" value="true"/>
     <property name="headerText" value="Propositions"/>
-    <property name="layoutManager">
-      <bean parent="Uif-HorizontalBoxLayout" p:style="padding: 5px;"/>
-    </property>
     <property name="onDocumentReadyScript" value="loadControlsInit();"/>
 
     <property name="items">

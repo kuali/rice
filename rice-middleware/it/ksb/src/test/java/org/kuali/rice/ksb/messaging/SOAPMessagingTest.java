@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
@@ -32,65 +25,75 @@ import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests that queues work over soap
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SOAPMessagingTest extends KSBTestCase {
 
     public boolean startClient1() {
-	return true;
+        return true;
     }
 
     @Test
     public void testSuccessfullyCallingSOAPTopic() throws Exception {
-	// ensure test harness has entries for TestClient1
-	KsbApiServiceLocator.getServiceBus().synchronize();
+        // ensure test harness has entries for TestClient1
+        KsbApiServiceLocator.getServiceBus().synchronize();
 
-	QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
+        QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 
-		SOAPService testJavaAsyncService = (SOAPService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
-	testJavaAsyncService.doTheThing("The param");
-	verifyServiceCalls(serviceName);
+        SOAPService testJavaAsyncService = KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
+        testJavaAsyncService.doTheThing("The param");
+        verifyServiceCalls(serviceName);
 
-		assertTrue("Test harness topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());
+        assertTrue("Test harness topic never called", (ServiceCallInformationHolder.flags.get(
+                "TestHarnessCalled")).booleanValue());
+        assertTrue("Cliet1 app topic never called", (ServiceCallInformationHolder.flags.get(
+                "Client1SOAPServiceCalled")).booleanValue());
     }
 
     @Test
     public void testSuccessfullyCallingSOAPTopicAsync() throws Exception {
-	KSBTestUtils.setMessagingToAsync();
+        KSBTestUtils.setMessagingToAsync();
 
-	QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
+        QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 
-	SimpleCallback callback = new SimpleCallback();
-	SOAPService testJavaAsyncService = (SOAPService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
-	synchronized (callback) {
-	    testJavaAsyncService.doTheThing("The param");
-	    callback.waitForAsyncCall(3000);
-	}
-	verifyServiceCalls(serviceName);
-		assertTrue("Test harness topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("TestHarnessCalled")).booleanValue());
-		assertTrue("Cliet1 app topic never called", ((Boolean) ServiceCallInformationHolder.stuff.get("Client1SOAPServiceCalled")).booleanValue());
+        SimpleCallback callback = new SimpleCallback();
+        SOAPService testJavaAsyncService = KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(
+                serviceName);
+        synchronized (callback) {
+            testJavaAsyncService.doTheThing("The param");
+            callback.waitForAsyncCall(3000);
+        }
+        verifyServiceCalls(serviceName);
+        assertTrue("Test harness topic never called", (ServiceCallInformationHolder.flags.get(
+                "TestHarnessCalled")).booleanValue());
+        assertTrue("Cliet1 app topic never called", (ServiceCallInformationHolder.flags.get(
+                "Client1SOAPServiceCalled")).booleanValue());
     }
 
     private void verifyServiceCalls(QName serviceName) throws Exception {
-	BAMService bamService = KSBServiceLocator.getBAMService();
-	List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
-	assertTrue("No service call recorded", bamCalls.size() > 0);
-	boolean foundClientCall = false;
-	boolean foundServiceCall = false;
-	for (BAMTargetEntry bamEntry : bamCalls) {
-	    if (bamEntry.getServerInvocation()) {
-		foundServiceCall = true;
-	    } else {
-		foundClientCall = true;
-	    }
-	}
-	assertTrue("No client call recorded", foundClientCall);
-	assertTrue("No service call recorded", foundServiceCall);
-	assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
+        BAMService bamService = KSBServiceLocator.getBAMService();
+        List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
+        assertTrue("No service call recorded", bamCalls.size() > 0);
+        boolean foundClientCall = false;
+        boolean foundServiceCall = false;
+        for (BAMTargetEntry bamEntry : bamCalls) {
+            if (bamEntry.getServerInvocation()) {
+                foundServiceCall = true;
+            } else {
+                foundClientCall = true;
+            }
+        }
+        assertTrue("No client call recorded", foundClientCall);
+        assertTrue("No service call recorded", foundServiceCall);
+        assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
     }
 }

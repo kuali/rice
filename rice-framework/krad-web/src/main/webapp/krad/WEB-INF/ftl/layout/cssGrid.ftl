@@ -34,22 +34,20 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
+    <#local rowIndex = 0/>
+    <#local cellIndex = 0/>
 
-    <div id="${manager.id}_cssGridLayout" ${style!} ${styleClass!}>
-        <#local rowIndex = 0/>
-        <#local cellIndex = 0/>
+    <#list manager.rows as rowItems>
+        <div class="${manager.rowCssClassAttributes[rowIndex]}">
+            <#list rowItems as item>
+                <div class="${manager.cellCssClassAttributes[cellIndex]}">
+                    <@krad.template component=item/>
+                </div>
+                <#local cellIndex = cellIndex + 1/>
+            </#list>
+        </div>
 
-        <#list manager.rows as rowItems>
-            <div class="${manager.rowCssClassAttributes[rowIndex]}">
-                <#list rowItems as item>
-                    <div class="${manager.cellCssClassAttributes[cellIndex]}">
-                        <@krad.template component=item/>
-                    </div>
-                    <#local cellIndex = cellIndex + 1/>
-                </#list>
-            </div>
+        <#local rowIndex = rowIndex + 1/>
+    </#list>
 
-            <#local rowIndex = rowIndex + 1/>
-        </#list>
-    </div>
 </#macro>

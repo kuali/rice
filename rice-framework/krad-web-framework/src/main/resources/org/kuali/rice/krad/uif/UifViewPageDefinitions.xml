@@ -49,6 +49,11 @@
         <value>uif-view</value>
       </list>
     </property>
+    <property name="libraryCssClasses">
+      <list>
+        <value>clearfix</value>
+      </list>
+    </property>
     <property name="contentContainerCssClasses">
       <list>
         <value>container-fluid</value>

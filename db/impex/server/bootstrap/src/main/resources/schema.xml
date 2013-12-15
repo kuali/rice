@@ -3888,4 +3888,5 @@
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
     <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
     <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
+    <sequence name="TRVL_TRAVELER_DTL_ID_S" nextval="10001"/>
 </database>

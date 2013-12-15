@@ -362,7 +362,7 @@
   </bean>
 
   <bean id="knsLegacyDataAdapter" class="org.kuali.rice.krad.service.impl.KNSLegacyDataAdapterImpl"
-        p:dataObjectService-ref="kd-dataObjectService"
+        p:dataObjectService-ref="dataObjectService"
         p:businessObjectService-ref="businessObjectService"
         p:persistenceService-ref="persistenceService"
         p:lookupDao-ref="lookupDao"

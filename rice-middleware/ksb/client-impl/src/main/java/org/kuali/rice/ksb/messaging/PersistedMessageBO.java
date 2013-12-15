@@ -18,6 +18,7 @@ package org.kuali.rice.ksb.messaging;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -41,49 +42,60 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="KRSB_MSG_QUE_T")
-//@Sequence(name="KRSB_MSG_QUE_S", property="routeQueueId")
 @NamedQueries({
-  @NamedQuery(name="PersistedMessage.FindAll", query="select pm from PersistedMessageBO pm"),
-  @NamedQuery(name="PersistedMessage.FindByServiceName", query="select pm from PersistedMessage pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),
-  @NamedQuery(name="PersistedMessage.GetNextDocuments", query="select pm from PersistedMessage pm where pm.applicationId = :applicationId and pm.queueStatus <> :queueStatus and pm.ipNumber = :ipNumber order by queuePriority asc, routeQueueId asc, queueDate asc")
+  @NamedQuery(name="PersistedMessageBO.FindAll", query="select pm from PersistedMessageBO pm"),
+  @NamedQuery(name="PersistedMessageBO.FindByServiceName", query="select pm from PersistedMessageBO pm where pm.serviceName = :serviceName and pm.methodName = :methodName"),
+  @NamedQuery(name="PersistedMessageBO.GetNextDocuments", query="select pm from PersistedMessageBO pm where pm.applicationId = :applicationId and pm.queueStatus <> :queueStatus and pm.ipNumber = :ipNumber order by pm.queuePriority asc, pm.routeQueueId asc, pm.queueDate asc")
 })
 public class PersistedMessageBO implements PersistedMessage {
 
 	private static final long serialVersionUID = -7047766894738304195L;
 
 	@Id
-	@GeneratedValue(generator="KRSB_MSG_QUE_S")
+	@GeneratedValue(generator = "KRSB_MSG_QUE_S")
+    @PortableSequenceGenerator(name = "KRSB_MSG_QUE_S")
 	@Column(name="MSG_QUE_ID")
 	private Long routeQueueId;
+
 	@Column(name="PRIO")
 	private Integer queuePriority;
+
 	@Column(name="STAT_CD")
 	private String queueStatus;
+
 	@Column(name="DT")
 	private Timestamp queueDate;
+
 	@Column(name="EXP_DT")
 	private Timestamp expirationDate;
+
 	@Column(name="RTRY_CNT")
 	private Integer retryCount;
+
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
+
     @Column(name="IP_NBR")
 	private String ipNumber;
+
     @Column(name="SVC_NM")
 	private String serviceName;
+
     @Column(name="APPL_ID")
 	private String applicationId;
+
     @Column(name="SVC_MTHD_NM")
 	private String methodName;
-    @Transient
-    private AsynchronousCall methodCall;
-    @Transient
-    private PersistedMessagePayload payload;
+
     @Column(name="APP_VAL_ONE")
-	private String value1;
+    private String value1;
+
     @Column(name="APP_VAL_TWO")
-	private String value2;
+    private String value2;
+
+    @Transient private AsynchronousCall methodCall;
+    @Transient private PersistedMessagePayload payload;
     
     public PersistedMessageBO() {
         // default constructor
@@ -109,12 +121,27 @@ public class PersistedMessageBO implements PersistedMessage {
         message.setMethodName(methodCall.getMethodName());
         return message;
     }
-    
-    //@PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getMessageEntityManagerFactory().createEntityManager());
+
+    public PersistedMessageBO copy() {
+        PersistedMessageBO message = new PersistedMessageBO();
+        message.routeQueueId = routeQueueId;
+        message.queuePriority = queuePriority;
+        message.queueStatus = queueStatus;
+        message.queueDate = queueDate;
+        message.expirationDate = expirationDate;
+        message.retryCount = retryCount;
+        message.lockVerNbr = lockVerNbr;
+        message.ipNumber = ipNumber;
+        message.serviceName = serviceName;
+        message.applicationId = applicationId;
+        message.methodName = methodName;
+        message.value1 = value1;
+        message.value2 = value2;
+        message.methodCall = methodCall;
+        message.payload = payload;
+        return message;
     }
-    
+
 	@Override
     public String getApplicationId() {
 		return this.applicationId;

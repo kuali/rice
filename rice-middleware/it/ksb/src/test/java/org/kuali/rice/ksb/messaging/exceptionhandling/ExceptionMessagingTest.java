@@ -27,7 +27,7 @@ import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.TestCallback;
-import org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue;
+import org.kuali.rice.ksb.messaging.remotedservices.TestHarnessExplodingQueue;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
@@ -63,7 +63,7 @@ public class ExceptionMessagingTest extends KSBTestCase {
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);
 		TestCallback.clearCallbacks();
-		TesetHarnessExplodingQueue.NUM_CALLS = 0;
+		TestHarnessExplodingQueue.NUM_CALLS = 0;
 	}
 
 	@Override

@@ -200,15 +200,21 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR3C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Sample Maintenance Delete Disabled"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR3C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of disabling delete record through the data dictionary."
+              p:instructionalText="To disable the ability to delete records of a specific business object, set the
+              allowsRecordDeletion property to false in the Maintenance Document Entry .xml for the object.  In this
+              example, TravelCompanyMaintenance.xml was modified.  The first link below attempts to delete a travelCompany record.
+              After blanket approving the document, you can use the second link to test that the document still exists.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Delete"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceDelete&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Edit"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
             </list>
           </property>
         </bean>
@@ -217,15 +223,19 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR4C1" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Document Controls"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR4C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Maintenance page with inherited control"
+              p:instructionalText="This demonstration uses the Travel Account object
+              (org.kuali.rice.krad.demo.travel.dataobject.TravelAccount).  The data dictionary file (TravelAccount.xml)
+              has a control defined in the attribute definition for the subsidized percent.  This control is passed
+              through to the maintenance document as seen in the link below. ">
           <property name="items">
             <list>
-
+                <bean parent="Uif-Link" p:linkText="Travel Account Maintenance (New Account)"
+                      p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
             </list>
           </property>
         </bean>
@@ -234,15 +244,18 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR4C2" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Document BO Attachment"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR4C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a business object attachment."
+              p:instructionalText="This demo shows how an attachment can be configured directly to the business object.
+              From the link, create a new object, with an attached file.  After clicking 'blanket approve', you can download the saved
+              file using the button.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Sample BO Attachment"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachment"/>
             </list>
           </property>
         </bean>

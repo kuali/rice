@@ -15,20 +15,13 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
-import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -53,11 +46,18 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
 public class UifDefaultingServiceImpl implements UifDefaultingService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifDefaultingServiceImpl.class);
 
     protected DataDictionaryService dataDictionaryService;
-    protected MetadataRepository metadataRepository;
+    protected DataObjectService dataObjectService;
 
     protected static final String ANY_CHARACTER_PATTERN_CONSTRAINT = "UTF8AnyCharacterPatternConstraint";
     protected static final String DATE_PATTERN_CONSTRAINT = "BasicDatePatternConstraint";
@@ -123,7 +123,8 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             // Need to find the relationship information
             // get the relationship ID by removing .principalName from the attribute name
             String relationshipName = StringUtils.removeEnd(attrDef.getName(), ".principalName");
-            DataObjectMetadata metadata = metadataRepository.getMetadata(dataObjectAttribute.getOwningType());
+            DataObjectMetadata metadata = dataObjectService.getMetadataRepository().getMetadata(
+                    dataObjectAttribute.getOwningType());
             if ( metadata != null ) {
                 DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
                 if ( relationship != null ) {
@@ -457,7 +458,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         this.dataDictionaryService = dataDictionaryService;
     }
 
-    public void setMetadataRepository(MetadataRepository metadataRepository) {
-        this.metadataRepository = metadataRepository;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

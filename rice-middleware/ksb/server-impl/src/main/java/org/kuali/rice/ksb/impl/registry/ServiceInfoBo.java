@@ -15,10 +15,17 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus;
 import org.kuali.rice.ksb.api.registry.ServiceInfo;
 import org.kuali.rice.ksb.api.registry.ServiceInfoContract;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.xml.namespace.QName;
 import java.io.Serializable;
 
@@ -29,62 +36,51 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@Entity
-//@Table(name="KRSB_SVC_DEF_T")
-//@NamedQueries([
-//	@NamedQuery(name="ServiceInfo.FetchAll", query="select s from ServiceInfo s"),
-//	@NamedQuery(name="ServiceInfo.FetchAllActive",query="select s from ServiceInfo s where s.alive = true"),
-//	@NamedQuery(name="ServiceInfo.FetchActiveByName",query="select s from ServiceInfo s where s.alive = true AND s.serviceName LIKE :serviceName"),
-//	@NamedQuery(name="ServiceInfo.FindLocallyPublishedServices",query="select s from ServiceInfo s where s.serverIp = :serverIp AND s.applicationId = :applicationId"),
-//	@NamedQuery(name="ServiceInfo.DeleteLocallyPublishedServices",query="delete from ServiceInfo s WHERE s.serverIp = :serverIp AND s.applicationId = :applicationId"),
-//	@NamedQuery(name="ServiceInfo.DeleteByEntry",query="delete from ServiceInfo s where s.messageEntryId = :messageEntryId")			
-//])
+
+@Entity
+@Table(name="KRSB_SVC_DEF_T")
 public class ServiceInfoBo implements ServiceInfoContract, Serializable {
  
 	private static final long serialVersionUID = -4244884858494208070L;
 
-	// TODO for some reason groovy won't compile this so commenting out for now...
-//	@Id
-//	@GeneratedValue(generator="KRSB_SVC_DEF_S")
-//	@GenericGenerator(name="KRSB_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters=[
-//			@Parameter(name="sequence_name",value="KRSB_SVC_DEF_S"),
-//			@Parameter(name="value_column",value="id")
-//	])
-	@javax.persistence.Column(name="SVC_DEF_ID")
+    @Id
+    @GeneratedValue(generator = "KRSB_SVC_DEF_S")
+    @PortableSequenceGenerator(name = "KRSB_SVC_DEF_S")
+	@Column(name = "SVC_DEF_ID")
 	private String serviceId;
 	
-	@javax.persistence.Column(name="SVC_NM")
+	@Column(name = "SVC_NM")
 	private String serviceName;
     
-	@javax.persistence.Column(name="SVC_URL", length=500)
+	@Column(name = "SVC_URL", length = 500)
 	private String endpointUrl;
 	
-	@javax.persistence.Column(name="INSTN_ID")
+	@Column(name = "INSTN_ID")
 	private String instanceId;
 
-	@javax.persistence.Column(name="APPL_ID")
+	@Column(name = "APPL_ID")
 	private String applicationId;
 
-	@javax.persistence.Column(name="SRVR_IP")
+	@Column(name = "SRVR_IP")
 	private String serverIpAddress;
 	
-	@javax.persistence.Column(name="TYP_CD")
+	@Column(name = "TYP_CD")
 	private String type;
 	
-	@javax.persistence.Column(name="SVC_VER")
+	@Column(name = "SVC_VER")
 	private String serviceVersion;
 	
-	@javax.persistence.Column(name="STAT_CD")
+	@Column(name = "STAT_CD")
 	private String statusCode;
 	
-	@javax.persistence.Column(name="SVC_DSCRPTR_ID")
+	@Column(name = "SVC_DSCRPTR_ID")
 	private String serviceDescriptorId;
 	
-	@javax.persistence.Column(name="CHKSM", length=30)
+	@Column(name = "CHKSM", length = 30)
 	private String checksum;
 	
-	@javax.persistence.Version
-	@javax.persistence.Column(name="VER_NBR")
+	@Version
+	@Column(name = "VER_NBR")
 	private Long versionNumber;
 
     public String getServiceId() {

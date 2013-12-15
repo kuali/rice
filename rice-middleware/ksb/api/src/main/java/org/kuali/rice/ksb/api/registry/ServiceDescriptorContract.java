@@ -57,5 +57,18 @@ public interface ServiceDescriptorContract extends Versioned {
 	 * should never return a null or blank value
 	 */
 	String getDescriptor();
-	
+
+    /**
+     * Deprecated: Will always return null as service descriptors have no version number column. This was included on
+     * the contract interface by mistake during the original implementation.
+     *
+     * @return always returns null
+     * @deprecated always returns null
+     */
+    @Deprecated
+    @Override
+    Long getVersionNumber();
+
+
+
 }

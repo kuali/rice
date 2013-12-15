@@ -71,12 +71,11 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 	
 	private static final String SERVICE_BUS_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml";
 	private static final String MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbMessageClientSpringBeans.xml";
-	private static final String OJB_MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbMessageClientSpringBeans.xml";
+	private static final String JPA_MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbJpaMessageClientSpringBeans.xml";
 	private static final String BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbBamSpringBeans.xml";
-	private static final String OJB_BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbBamSpringBeans.xml";
 	private static final String REGISTRY_SERVER_SPRING = "classpath:org/kuali/rice/ksb/config/KsbRegistryServerSpringBeans.xml";
-	private static final String OJB_REGISTRY_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbRegistrySpringBeans.xml";
-	private static final String WEB_SPRING = "classpath:org/kuali/rice/ksb/config/KsbWebSpringBeans.xml";
+    private static final String JPA_REGISTRY_SPRING = "classpath:org/kuali/rice/ksb/config/KsbJpaRegistrySpringBeans.xml";
+    private static final String WEB_SPRING = "classpath:org/kuali/rice/ksb/config/KsbWebSpringBeans.xml";
 
 	private List<ServiceDefinition> services = new ArrayList<ServiceDefinition>();
 	
@@ -124,18 +123,17 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
             //
 		    // if (isMessagePersistenceEnabled()) {
 			    springFileLocations.add(MESSAGE_CLIENT_SPRING);
-			    springFileLocations.add(OJB_MESSAGE_CLIENT_SPRING);
+			    springFileLocations.add(JPA_MESSAGE_CLIENT_SPRING);
 		    // }
 
             if (isBamEnabled()) {
         	    springFileLocations.add(BAM_SPRING);
-        	    springFileLocations.add(OJB_BAM_SPRING);
             }
         }
 
         if (getRunMode().equals( RunMode.LOCAL )) {
+            springFileLocations.add(JPA_REGISTRY_SPRING);
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
-        	springFileLocations.add(OJB_REGISTRY_SPRING);
         }
         
         return springFileLocations;

@@ -158,24 +158,6 @@
     <orderEntry type="library" name="Maven: org.mockito:mockito-core:1.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.0" level="project" />
     <orderEntry type="module" module-name="rice-development-tools" />
-    <orderEntry type="module" module-name="rice-impl" />
-    <orderEntry type="module" module-name="rice-ken-api" />
-    <orderEntry type="module" module-name="rice-kew-impl" />
-    <orderEntry type="module" module-name="rice-kim-impl" />
-    <orderEntry type="module" module-name="rice-core-service-web" />
-    <orderEntry type="module" module-name="rice-core-web" />
-    <orderEntry type="module" module-name="rice-ksb-client-impl" />
-    <orderEntry type="module" module-name="rice-ksb-server-impl" />
-    <orderEntry type="module" module-name="rice-location-framework" />
-    <orderEntry type="module" module-name="rice-location-impl" />
-    <orderEntry type="module" module-name="rice-location-web" />
-    <orderEntry type="module" module-name="rice-edl-framework" />
-    <orderEntry type="module" module-name="rice-krad-service-impl" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.sun.codemodel:codemodel:2.4.1" level="project" />
     <orderEntry type="library" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.javaparser:javaparser:1.0.9" level="project" />

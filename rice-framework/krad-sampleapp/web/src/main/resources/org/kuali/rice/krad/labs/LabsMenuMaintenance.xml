@@ -173,12 +173,13 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row3-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable Delete"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C3"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Show attempt to delete company when allowsRecordDeletion is
+            set to false within the data dictinary."/>
           </list>
           </property>
         </bean>
@@ -195,22 +196,24 @@
     <property name="items">
       <list>
         <bean id="LabsMenuMaintenance-Row4-Col1" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Define Control"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR4C1"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Use BO data dictionary to define a control in the
+            maintenance document"/>
           </list>
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row4-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - BO Attachment"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR4C2"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrate ability to save and retrieve a business object
+            attachment"/>
           </list>
           </property>
         </bean>

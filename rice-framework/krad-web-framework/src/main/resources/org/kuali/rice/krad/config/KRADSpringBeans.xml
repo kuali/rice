@@ -361,7 +361,7 @@
         class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter">
     <property name="dataObjectService">
-      <ref bean="kd-dataObjectService"/>
+      <ref bean="dataObjectService"/>
     </property>
   </bean>
 
@@ -568,7 +568,7 @@
 
   <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
-    <property name="metadataRepository" ref="kd-metadataRepository" />
+    <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
   <bean id="attributeQueryService" class="org.kuali.rice.krad.uif.service.impl.AttributeQueryServiceImpl">
@@ -614,8 +614,7 @@
         p:dateTimeService-ref="dateTimeService"
         p:dataDictionaryService-ref="dataDictionaryService"
         p:dbPlatform-ref="dbPlatform"
-        p:dataObjectService-ref="kd-dataObjectService"
-        p:metadataRepository-ref="kd-metadataRepository"/>
+        p:dataObjectService-ref="dataObjectService"/>
 
   <!-- Legacy Data Adapter Beans -->
 
@@ -628,8 +627,7 @@
         p:knsLegacyDataAdapter-ref="knsLegacyDataAdapter"/>
 
   <bean id="kradLegacyDataAdapter" class="org.kuali.rice.krad.service.impl.KRADLegacyDataAdapterImpl"
-        p:dataObjectService-ref="kd-dataObjectService"
-        p:metadataRepository-ref="kd-metadataRepository"
+        p:dataObjectService-ref="dataObjectService"
         p:lookupCriteriaGenerator-ref="lookupCriteriaGenerator"
         p:kualiModuleService-ref="kualiModuleService"
         p:dataDictionaryService-ref="dataDictionaryService"

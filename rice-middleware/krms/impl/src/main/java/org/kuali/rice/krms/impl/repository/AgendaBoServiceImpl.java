@@ -142,15 +142,15 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
     @Override
     public void deleteAgenda(String agendaId) {
         if (agendaId == null){ throw new RiceIllegalArgumentException("agendaId is null"); }
-        final AgendaDefinition existing = getAgendaByAgendaId(agendaId);
-        if (existing == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
+        final AgendaBo bo = businessObjectService.findBySinglePrimaryKey(AgendaBo.class, agendaId);
+        if (bo == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
 
-        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(existing.getId());
+        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(bo.getId());
         for( AgendaItemDefinition agendaItem : agendaItems) {
             businessObjectService.delete(AgendaItemBo.from(agendaItem));
         }
 
-        businessObjectService.delete(from(existing));
+        businessObjectService.delete(bo);
     }
 
     /**
@@ -241,7 +241,41 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
             toUpdate = builder.build();
         }
 
-        businessObjectService.save(AgendaItemBo.from(toUpdate));
+        AgendaItemBo aiBo = AgendaItemBo.from(toUpdate);
+        updateActionAttributes(aiBo);
+        businessObjectService.save(aiBo);
+    }
+
+    private void updateActionAttributes(AgendaItemBo aiBo) {
+        if(aiBo.getRule()!=null){
+            updateActionAttributes(aiBo.getRule().getActions());
+        }
+        if(aiBo.getWhenTrue()!=null){
+            updateActionAttributes(aiBo.getWhenTrue());
+        }
+        if(aiBo.getWhenFalse()!=null){
+            updateActionAttributes(aiBo.getWhenFalse());
+        }
+        if(aiBo.getAlways()!=null){
+            updateActionAttributes(aiBo.getAlways());
+        }
+    }
+
+    private void updateActionAttributes(List<ActionBo> actionBos) {
+        for (ActionBo action : actionBos) {
+            for (ActionAttributeBo aa : action.getAttributeBos()) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("actionId", action.getId());
+                Collection<ActionAttributeBo> aaBos = businessObjectService.findMatching(ActionAttributeBo.class, map);
+
+                for (ActionAttributeBo aaBo : aaBos) {
+                    if (aaBo.getAttributeDefinitionId().equals(aa.getAttributeDefinitionId())) {
+                        aa.setId(aaBo.getId());
+                        aa.setVersionNumber(aaBo.getVersionNumber());
+                    }
+                }
+            }
+        }
     }
 
     /**

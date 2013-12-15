@@ -17,10 +17,13 @@ package org.kuali.rice.ksb.server;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.ShadowingInstrumentableClassLoader;
 import org.kuali.rice.ksb.BaseTestServer;
 
+import java.io.IOException;
 import java.net.URL;
 
 public class TestClient1 extends BaseTestServer {
@@ -44,6 +47,8 @@ public class TestClient1 extends BaseTestServer {
 
 
 		WebAppContext context = new WebAppContext(location, CONTEXT);
+        context.setThrowUnavailableOnStartupException(true);
+        context.setClassLoader(new KsbTestClientClassLoader());
 		server.setHandler(context);
 		return server;
 	}

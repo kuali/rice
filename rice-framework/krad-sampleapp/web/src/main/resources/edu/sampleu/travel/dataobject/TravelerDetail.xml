@@ -74,8 +74,8 @@
     <property name="maxLength" value="255" />
     <property name="summary" value="Document Number" />
     <property name="description" value="Document Number" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="255" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="255"/>
     </property>
   </bean>
 
@@ -87,8 +87,8 @@
     <property name="maxLength" value="255" />
     <property name="summary" value="Principal Id" />
     <property name="description" value="Principal Id" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="20" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -102,8 +102,8 @@
     <property name="required" value="false" />
     <property name="summary" value="First and Last Name" />
     <property name="description" value="First and Last Name" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -116,8 +116,8 @@
     <property name="required" value="false" />
     <property name="summary" value="Middle Name" />
     <property name="description" value="Middle Name" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -130,8 +130,8 @@
     <property name="required" value="false" />
     <property name="summary" value="Last Name" />
     <property name="description" value="Last Name" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -144,8 +144,8 @@
     <property name="required" value="false" />
     <property name="summary" value="Street Address Line1" />
     <property name="description" value="Street Address Line1" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -157,8 +157,8 @@
     <property name="maxLength" value="50" />
     <property name="summary" value="Street Address Line2" />
     <property name="description" value="Street Address Line2" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -172,8 +172,8 @@
     <property name="summary" value="City Name" />
     <property name="description" value="City Name" />
     <property name="forceUppercase" value="true"/>
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -187,8 +187,8 @@
     <property name="summary" value="State Code" />
     <property name="description" value="State Code" />
     <property name="forceUppercase" value="true"/>
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -201,8 +201,8 @@
     <property name="required" value="false" />
     <property name="summary" value="Zip Code" />
     <property name="description" value="Zip Code" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -216,8 +216,8 @@
     <property name="summary" value="Country Code" />
     <property name="description" value="Country Code" />
     <property name="forceUppercase" value="true"/>
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -229,8 +229,8 @@
     <property name="maxLength" value="50" />
     <property name="summary" value="Email Address" />
     <property name="description" value="Email Address" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -242,8 +242,8 @@
     <property name="maxLength" value="20" />
     <property name="summary" value="Phone Number" />
     <property name="description" value="Phone Number" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="20" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
     <property name="attributeSecurity">
       <bean parent="AttributeSecurity">
@@ -281,8 +281,8 @@
     <property name="required" value="true" />
     <property name="summary" value="Traveler Type Code" />
     <property name="description" value="Traveler Type Code" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="50" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
     </property>
   </bean>
 
@@ -294,8 +294,8 @@
     <property name="maxLength" value="40" />
     <property name="summary" value="Customer" />
     <property name="description" value="Customer Number" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="0"/>
     </property>
   </bean>
 
@@ -307,8 +307,8 @@
     <property name="maxLength" value="40" />
     <property name="summary" value="License" />
     <property name="description" value="Drivers License" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="attributeSecurity">
       <bean parent="AttributeSecurity">
@@ -328,8 +328,8 @@
     <property name="maxLength" value="40" />
     <property name="summary" value="Citizenship" />
     <property name="description" value="Citizenship" />
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="40" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 

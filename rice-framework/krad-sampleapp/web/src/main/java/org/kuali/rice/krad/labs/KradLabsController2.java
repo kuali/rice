@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 
-@RequestMapping(value = {"/labs2", "/labs3"})
+@RequestMapping(value = "/labs2")
 public class KradLabsController2 extends UifControllerBase {
 
     @Override

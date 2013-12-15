@@ -97,7 +97,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
     protected void placeInException(Throwable throwable, PersistedMessageBO message) throws Exception {
         message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
         message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-        KSBServiceLocator.getMessageQueueService().save(message);
+        message = KSBServiceLocator.getMessageQueueService().save(message);
     }
 
     protected void scheduleExecution(Throwable throwable, PersistedMessageBO message) throws Exception {

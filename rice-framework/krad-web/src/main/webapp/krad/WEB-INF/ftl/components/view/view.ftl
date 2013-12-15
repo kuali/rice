@@ -46,19 +46,17 @@
         <@krad.template component=view.header/>
 
         <!-- VIEW CONTENT -->
-        <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper">
-            <div class="${view.contentContainerClassesAsString}">
-
-                <!-- VIEW NAVIGATION -->
+        <div id="Uif-ViewContentWrapper" class="uif-viewContentWrapper ${view.contentContainerClassesAsString}">
+            <!-- VIEW NAVIGATION -->
+            <#if view.navigation?? && view.navigation.items?? && view.navigation.items?has_content>
                 <div id="Uif-Navigation">
                      <@krad.template component=view.navigation currentPageId="${view.currentPageId}"/>
                 </div>
+            </#if>
 
-                <!-- PAGE CONTENT -->
-                <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
-                    <@krad.template component=view.currentPage/>
-                </div>
-
+            <!-- PAGE CONTENT -->
+            <div id="Uif-PageContentWrapper" class="uif-pageContentWrapper">
+                <@krad.template component=view.currentPage/>
             </div>
         </div>
 

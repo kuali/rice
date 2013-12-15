@@ -561,15 +561,6 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         List<NaturalLanguageTree> naturalLanguageTrees = naturalLanguageTree.getChildren();
         assertEquals("Should have found 2 child entries",2,naturalLanguageTrees.size());
 
-        // test with null NaturalLanguageUsageId
-        try {
-            ruleManagementService.translateNaturalLanguageTreeForProposition(
-                    null, propositionDefinition, "ms");
-            fail("Should have thrown RiceIllegalArgumentException: ms.xxxxx.null");
-        } catch (RiceIllegalArgumentException e) {
-            // throws RiceIllegalArgumentException: ms.xxxxx.null
-        }
-
         // test with null PropositionDefinition
         try {
             ruleManagementService.translateNaturalLanguageTreeForProposition(
@@ -587,15 +578,62 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         } catch (IllegalArgumentException e) {
             // throws IllegalArgumentException: languageCode is null or blank
         }
+    }
 
-        // test with a missing template
-        ruleManagementService.deleteNaturalLanguageTemplate("ms-Account");
-        try {
-            ruleManagementService.translateNaturalLanguageTreeForProposition(
-                    template.getNaturalLanguageUsageId(), propositionDefinition, "ms");
-            fail("Should have thrown RiceIllegalArgumentException: ms.xxxxx.krms.nl.proposition");
-        } catch (RiceIllegalArgumentException e) {
-            // throws RiceIllegalArgumentException: ms.xxxxx.krms.nl.proposition
-        }
+
+    /**
+     *  Test testNullTranslateNaturalLanguageTreeForProposition()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .translateNaturalLanguageTreeForProposition(String naturalLanguageUsageId,
+     *                                                  PropositionDefinition propositionDefinintion,
+     *                                                  String languageCode) method
+     *      where there is no NaturalLanguageTemplate
+     */
+    @Test
+    public void testNullTranslateNaturalLanguageTreeForProposition() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t9 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t9");
+
+        // build SIMPLE proposition
+        PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t9.object0, t9.namespaceName, "proposition" );
+
+        NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
+                null, propositionDefinition, "cy2");
+
+        String translation = naturalLanguageTree.getNaturalLanguage();
+        assertEquals("Non-empty translation returned",StringUtils.EMPTY,translation);
+
+        // SIMPLE proposition should not have children
+        assertNull("Should have returned null",naturalLanguageTree.getChildren());
+    }
+
+    /**
+     *  Test testEmptyTranslateNaturalLanguageTreeForProposition()
+     *
+     *  This test focuses specifically on the RuleManagementServiceImpl
+     *      .translateNaturalLanguageTreeForProposition(String naturalLanguageUsageId,
+     *                                                  PropositionDefinition propositionDefinintion,
+     *                                                  String languageCode) method
+     *      where there is no NaturalLanguageTemplate associated with the PropositionDefinition and languageCode
+     */
+    @Test
+    public void testEmptyTranslateNaturalLanguageTreeForProposition() {
+        // get a set of unique object names for use by this test (discriminator passed can be any unique value within this class)
+        RuleManagementBaseTestObjectNames t10 =  new RuleManagementBaseTestObjectNames( CLASS_DISCRIMINATOR, "t10");
+
+        // build SIMPLE proposition
+        PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t10.object0, t10.namespaceName, "proposition2" );
+        NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t10.namespaceName, "cy", "proposition2",
+                "Ddylai hyn fod yn segur, Gwrthrych");
+
+        NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
+                template.getNaturalLanguageUsageId(), propositionDefinition, "en");
+
+        String translation = naturalLanguageTree.getNaturalLanguage();
+        assertEquals("Non-empty translation returned",StringUtils.EMPTY,translation);
+
+        // SIMPLE proposition should not have children
+        assertNull("Should have returned null",naturalLanguageTree.getChildren());
     }
 }

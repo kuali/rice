@@ -30,17 +30,15 @@ import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanCo
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.metadata.MetadataRepository;
+import org.kuali.rice.krad.lookup.LookupInputField;
 import org.kuali.rice.krad.lookup.LookupUtils;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.lookup.LookupInputField;
-import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import java.math.BigDecimal;
@@ -64,7 +62,6 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     private DataDictionaryService dataDictionaryService;
     private DatabasePlatform dbPlatform;
     private DataObjectService dataObjectService;
-    private MetadataRepository metadataRepository;
 
     public DateTimeService getDateTimeService() {
         return dateTimeService;
@@ -96,14 +93,6 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
 
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
-    }
-
-    public MetadataRepository getMetadataRepository() {
-        return metadataRepository;
-    }
-
-    public void setMetadataRepository(MetadataRepository metadataRepository) {
-        this.metadataRepository = metadataRepository;
     }
 
     @Override
@@ -694,7 +683,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     }
 
     protected List<String> listPrimaryKeyFieldNames(Class<?> type) {
-        return metadataRepository.getMetadata(type).getPrimaryKeyAttributeNames();
+        return getDataObjectService().getMetadataRepository().getMetadata(type).getPrimaryKeyAttributeNames();
     }
 
     protected Class<?> getPropertyType(Object example, String propertyName) {
@@ -736,7 +725,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 // If the next level is a Collection, look into the collection,
                 // to find out what type its elements are.
                 if (Collection.class.isAssignableFrom(c)) {
-                    c = metadataRepository.getMetadata(o.getClass()).getCollection(parts[0]).getRelatedType();
+                    c = getDataObjectService().getMetadataRepository().getMetadata(o.getClass()).getCollection(parts[0]).getRelatedType();
                 }
 
                 // Look into the attribute class to see if it is writeable.

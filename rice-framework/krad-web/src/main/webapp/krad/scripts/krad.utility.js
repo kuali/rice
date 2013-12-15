@@ -1079,10 +1079,15 @@ function collectionLineChanged(inputField, highlightItemClass) {
  * @param componentId the id of the component that will be used for the lightbox content (usually a group id)
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
-function showLightboxComponent(componentId, overrideOptions) {
+function showLightboxComponent(componentId, overrideOptions, alwaysAjax) {
     if (overrideOptions === undefined) {
         overrideOptions = {};
     }
+
+    if (alwaysAjax === undefined) {
+        alwaysAjax = false;
+    }
+
 
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery('#renderedInLightBox').val() != true) {
@@ -1092,14 +1097,19 @@ function showLightboxComponent(componentId, overrideOptions) {
         }});
     }
 
-    if (jQuery('#' + componentId).hasClass('uif-placeholder')) {
-        retrieveComponent(componentId, undefined, function () {
-            _showLightboxComponentHelper(componentId, overrideOptions);
-        }, {}, true);
-
-    } else {
+    if (jQuery('#' + componentId).length > 0 && !alwaysAjax && !jQuery('#' + componentId).hasClass('uif-placeholder'))  {
         _showLightboxComponentHelper(componentId, overrideOptions);
-    }
+    } else {
+        if(jQuery('#' + componentId).length == 0) {
+           jQuery(".dialogs_div").append('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
+            retrieveComponent(componentId, undefined, function () {
+                _showLightboxComponentHelper(componentId, overrideOptions);}, {}, true);
+        } else {
+           jQuery('#' + componentId).replaceWith('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
+            retrieveComponent(componentId, undefined, function () {
+                _showLightboxComponentHelper(componentId, overrideOptions);}, {}, true);
+        }
+     }
 }
 
 /**

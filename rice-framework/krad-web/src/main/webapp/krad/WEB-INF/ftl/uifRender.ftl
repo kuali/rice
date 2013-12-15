@@ -55,6 +55,9 @@
             <div data-returntype="update-page">
                 <#include "updatePage.ftl" parse=true/>
             </div>
+            <div data-returntype="update-form">
+                ${KualiForm.formPostUrl}
+            </div>
 
         <#elseif KualiForm.ajaxReturnType == "display-lightbox">
             <div data-returntype="display-lightbox">

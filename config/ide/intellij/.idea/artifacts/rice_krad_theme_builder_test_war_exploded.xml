@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="rice-krad-theme-builder-test:war exploded">
+    <output-path>$PROJECT_DIR$/../../../rice-framework/krad-theme-builder/src/test/builder/target/rice-krad-theme-builder-test-2.4.0-M3-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="rice-krad-theme-builder-test/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="rice-krad-theme-builder-test" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

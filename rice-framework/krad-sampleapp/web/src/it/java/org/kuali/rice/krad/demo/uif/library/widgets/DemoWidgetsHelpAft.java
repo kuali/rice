@@ -41,7 +41,6 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsTooltipHelp() throws Exception {
-
         fireMouseOverEvent(By.id("Demo-Help-Field1_label"));
         WebElement helpExample1 = driver.findElement(By.xpath("//div[@data-for=\"Demo-Help-Field1_label\"]"))
                 .findElement(By.className("jquerybubblepopup-innerHtml"));
@@ -52,20 +51,34 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
             fail("Incorrect inner html text.");
         }
     }
+    
+    protected void testMissingTooltipHelp() throws Exception {
+       selectByName("exampleShown","Missing Tooltip Help");
+       fireEvent("dataField1", "focus");
+       waitForElementNotPresent(By.xpath("//div[@class='jquerybubblepopup-innerHtml']"));
+    }
+    
+    protected void testExternalHelp() throws Exception {
+    	selectByName("exampleShown","External Help");
+    	waitForElementPresentByXpath("//input[@type='image' and @title='Help for Field Label']");
+    	waitForElementPresentByXpath("//input[@type='image' and @title='Help']");
+    	waitForElementPresentByXpath("//input[@type='image' and @title='Help for Display only fields']");
+    }
+    
+    private void testAllHelp() throws Exception {
+    	testWidgetsTooltipHelp();
+        testMissingTooltipHelp();
+	    testExternalHelp();
+	    passed();
+    }
 
     @Test
     public void testWidgetsHelpBookmark() throws Exception {
-        testWidgetsTooltipHelp();
-
-        driver.close();
-        passed();
+    	testAllHelp();
     }
 
     @Test
     public void testWidgetsHelpNav() throws Exception {
-        testWidgetsTooltipHelp();
-
-        driver.close();
-        passed();
+    	testAllHelp();
     }
 }

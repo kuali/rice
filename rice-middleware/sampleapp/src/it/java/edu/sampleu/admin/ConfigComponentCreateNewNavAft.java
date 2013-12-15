@@ -27,4 +27,9 @@ public class ConfigComponentCreateNewNavAft extends ConfigComponentCreateNewAftB
     public void testConfigComponentCreateNewNav() throws Exception {
         testConfigComponentCreateNewNav(this);
     }
+
+    @Test
+    public void testConfigComponentCreateNewFullNav() throws Exception {
+        testConfigComponentCreateNewFull();
+    }
 }

@@ -1,0 +1,93 @@
+
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+  <bean id="rice.ksb.registryDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean">
+    <property name="preferredDataSourceParams">
+      <list>
+        <value>rice.ksb.registry.datasource</value>
+      </list>
+    </property>
+    <property name="preferredDataSourceJndiParams">
+      <list>
+        <value>rice.ksb.registry.datasource.jndi.location</value>
+      </list>
+    </property>
+    <property name="serverDataSource" value="false"/>
+  </bean>
+
+  <!-- Enables Load-Time Weaving -->
+  <context:load-time-weaver />
+
+  <util:list id="rice.ksb.registry.managedClassNames">
+    <value>org.kuali.rice.ksb.impl.registry.ServiceInfoBo</value>
+    <value>org.kuali.rice.ksb.impl.registry.ServiceDescriptorBo</value>
+  </util:list>
+
+  <bean
+          id="rice.ksb.registry.entityManagerFactory"
+          class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+          p:jtaDataSource-ref="rice.ksb.registryDataSource"
+          p:persistenceUnitName="rice.ksb.registry"
+          p:managedClassNames-ref="rice.ksb.registry.managedClassNames"/>
+
+  <bean
+          id="rice.ksb.registry.sharedEntityManager"
+          class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+          p:entityManagerFactory-ref="rice.ksb.registry.entityManagerFactory"/>
+
+  <bean
+          id="rice.ksb.registry.jpaPersistenceProvider"
+          class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+          p:dataObjectService-ref="rice.ksb.registry.dataObjectService"
+          p:sharedEntityManager-ref="rice.ksb.registry.sharedEntityManager"/>
+
+  <bean
+          id="rice.ksb.registry.metadataProviderJpa"
+          class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+          p:entityManager-ref="rice.ksb.registry.sharedEntityManager" />
+
+
+  <bean id="rice.ksb.registry.dataObjectService" class="org.kuali.rice.krad.data.config.KradDataFactoryBean"/>
+
+  <bean id="grlBeanImporter" abstract="true" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean" p:singleton="true" p:mustExist="true" />
+  <bean id="rice.ksb.registry.providerRegistry" p:serviceName="kd-providerRegistry" parent="grlBeanImporter" />
+
+  <bean id="rice.ksb.registry.providerRegister" class="org.kuali.rice.krad.data.config.ProviderRegistrationFactory">
+    <!-- Inject optional provider registry as it does not exist on the KradDataServiceLocator at this point-->
+    <property name="providerRegistry" ref="rice.ksb.registry.providerRegistry"/>
+    <property name="providers">
+    <util:list>
+      <ref bean="rice.ksb.registry.jpaPersistenceProvider"/>
+      <ref bean="rice.ksb.registry.metadataProviderJpa"/>
+    </util:list>
+    </property>
+  </bean>
+
+</beans>

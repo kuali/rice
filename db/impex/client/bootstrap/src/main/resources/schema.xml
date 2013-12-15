@@ -508,4 +508,5 @@
     <sequence name="TRVL_EXP_ITM_ID_S" nextval="10001"/>
     <sequence name="TRVL_MLG_RT_ID_S" nextval="10001"/>
     <sequence name="TRVL_PD_EXP_ID_S" nextval="10001"/>
+    <sequence name="TRVL_TRAVELER_DTL_ID_S" nextval="10001"/>
 </database>

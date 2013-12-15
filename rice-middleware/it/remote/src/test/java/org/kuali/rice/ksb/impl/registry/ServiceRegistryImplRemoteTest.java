@@ -22,15 +22,14 @@ import org.kuali.rice.test.remote.RemoteTestHarness;
 
 
 public class ServiceRegistryImplRemoteTest extends ServiceRegistryImplTest {
+
     RemoteTestHarness harness = new RemoteTestHarness();
 
     @Before
-    @Override
-    public void setupServiceUnderTest() {
-        super.setupServiceUnderTest();
+    public void setupRemoteTest() {
         ServiceRegistry remoteProxy =
-                harness.publishEndpointAndReturnProxy(ServiceRegistry.class, this.getServiceRegistry());
-        super.setServiceRegistry(remoteProxy);
+                harness.publishEndpointAndReturnProxy(ServiceRegistry.class, getServiceRegistry());
+        setServiceRegistry(remoteProxy);
     }
 
     @After

@@ -26,7 +26,7 @@ import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 public class Client1SOAPService implements SOAPService {
 
 	public String doTheThing(String param) {
-		ServiceCallInformationHolder.stuff.put("Client1SOAPServiceCalled", Boolean.TRUE);
+		ServiceCallInformationHolder.flags.put("Client1SOAPServiceCalled", Boolean.TRUE);
 
 		return "Client1SOAPService";
 	}

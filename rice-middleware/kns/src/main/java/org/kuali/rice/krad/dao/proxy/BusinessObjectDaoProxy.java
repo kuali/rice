@@ -60,24 +60,16 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 if (boDaoValues.get(dataSourceName) != null) {
                     return boDaoValues.get(dataSourceName);
                 } else {
-                	if (!LegacyUtils.useLegacy(clazz)) {
-                        throw new IllegalStateException("BusinessObjectDaoProxy called with non-legacy class: " + clazz);
-                	} else {
-                	    //using OJB
-                        BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb(
-                                KNSServiceLocator.getPersistenceStructureService());
-                        boDaoOjb.setJcdAlias(dataSourceName);
-                        // add to our cache of bo daos
-                        boDaoValues.put(dataSourceName, boDaoOjb);
-                        return boDaoOjb;
-                    }    
+                    //using OJB
+                    BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb(
+                            KNSServiceLocator.getPersistenceStructureService());
+                    boDaoOjb.setJcdAlias(dataSourceName);
+                    // add to our cache of bo daos
+                    boDaoValues.put(dataSourceName, boDaoOjb);
+                    return boDaoOjb;
                 }
 
             }
-        }
-        //return businessObjectDaoJpa;
-        if (!LegacyUtils.useLegacy(clazz)) {
-            throw new IllegalStateException("BusinessObjectDaoProxy called with non-legacy class: " + clazz);
         }
         return businessObjectDaoOjb;
     }

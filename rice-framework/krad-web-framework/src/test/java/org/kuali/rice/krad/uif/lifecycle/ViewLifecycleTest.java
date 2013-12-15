@@ -121,7 +121,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testKitchenSinkView() throws Throwable {
-        testFormView(new UifComponentsTestForm(), "UifCompView", null);
+        UifComponentsTestForm form = new UifComponentsTestForm();
+        testFormView(form, "UifCompView", null);
+        form = new UifComponentsTestForm();
+        form.setPageId("UifCompView-Page7");
+        testFormView(form, "UifCompView", null);
     }
     
     @Test

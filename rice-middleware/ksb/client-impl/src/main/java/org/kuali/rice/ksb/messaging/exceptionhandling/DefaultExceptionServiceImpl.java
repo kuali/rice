@@ -95,9 +95,10 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 
 	public void scheduleExecution(Throwable throwable, PersistedMessageBO message, String description) throws Exception {
 		KSBServiceLocator.getMessageQueueService().delete(message);
+        PersistedMessageBO messageCopy = message.copy();
 		Scheduler scheduler = KSBServiceLocator.getScheduler();
 		JobDataMap jobData = new JobDataMap();
-		jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
+		jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, messageCopy);
 		JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging",
 			MessageServiceExecutorJob.class);
 		jobDetail.setJobDataMap(jobData);
@@ -105,7 +106,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 		    jobDetail.setDescription(description);
 		}
 		jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-		Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", message
+		Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", messageCopy
 			.getQueueDate());
 		trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
 		scheduler.scheduleJob(jobDetail, trigger);    

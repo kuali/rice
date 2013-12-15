@@ -34,7 +34,7 @@ jQuery(function () {
  * Update the html code viewer with the html output for the example being viewed
  */
 function updateHtmlViewer(){
-    var content = jQuery("[data-parent='ComponentLibrary-TabGroup']:visible > .uif-verticalBoxLayout");
+    var content = jQuery("[data-parent='ComponentLibrary-TabGroup']:visible");
 
     // If the content has a single child, and that child is a link opening another view, then don't show the html
     // because this is showing an example outside of the scope of what should be shown here
@@ -46,6 +46,10 @@ function updateHtmlViewer(){
     }
 
     // Otherwise retrieve and show the html content
+    // Remove extraneous content from a copy of the content to only show relevant html
+    content = content.clone();
+    content.find("> [data-header_for='" + content.attr("id") + "']").remove();
+    content.find("> .uif-instructionalMessage[data-parent='" + content.attr("id") + "']").remove();
     var exampleHtml = content.html();
 
     if (exampleHtml){

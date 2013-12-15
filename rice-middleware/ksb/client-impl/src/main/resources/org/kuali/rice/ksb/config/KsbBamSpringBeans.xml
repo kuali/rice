@@ -76,7 +76,7 @@
 	</bean>
 
 	<bean id="rice.ksb.bamService" class="org.kuali.rice.ksb.messaging.bam.service.impl.BAMServiceImpl">
-		<property name="dao" ref="rice.ksb.bamDao" />
+		<property name="dataObjectService" ref="rice.ksb.message.dataObjectService" />
 	</bean>
 
     <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">

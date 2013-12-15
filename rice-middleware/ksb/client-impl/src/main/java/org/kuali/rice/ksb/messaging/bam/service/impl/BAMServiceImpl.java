@@ -15,40 +15,44 @@
  */
 package org.kuali.rice.ksb.messaging.bam.service.impl;
 
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.bam.BAMParam;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
-import org.kuali.rice.ksb.messaging.bam.dao.BAMDAO;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 
+import javax.xml.namespace.QName;
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
 
 public class BAMServiceImpl implements BAMService {
 
 	private static final Logger LOG = Logger.getLogger(BAMServiceImpl.class);
 
-	private BAMDAO dao;
+    private DataObjectService dataObjectService;
 
 	public BAMTargetEntry recordClientInvocation(ServiceConfiguration serviceConfiguration, Object target, Method method, Object[] params) {
 		if (isEnabled()) {
 			try {
 				LOG.debug("A call was received... for service: " + serviceConfiguration.getServiceName().toString() + " method: " + method.getName());
 				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.FALSE, serviceConfiguration, target, method, params);
-				this.dao.save(bamTargetEntry);
-				return bamTargetEntry;
+                return dataObjectService.save(bamTargetEntry, PersistenceOption.FLUSH);
 			} catch (Throwable t) {
 				LOG.error("BAM Failed to record client invocation", t);
-				return null;
 			}
 		}
 		return null;
@@ -59,8 +63,7 @@ public class BAMServiceImpl implements BAMService {
 			try {
 				LOG.debug("A call was received... for service: " + target.getClass().getName() + " method: " + method.getName());
 				BAMTargetEntry bamTargetEntry = getBAMTargetEntry(Boolean.TRUE, serviceDefinition, target, method, params);
-				this.dao.save(bamTargetEntry);
-				return bamTargetEntry;
+                return dataObjectService.save(bamTargetEntry, PersistenceOption.FLUSH);
 			} catch (Throwable t) {
 				LOG.error("BAM Failed to record server invocation", t);
 			}
@@ -72,8 +75,7 @@ public class BAMServiceImpl implements BAMService {
 		if (bamTargetEntry != null) {
 			try {
 				setThrowableOnBAMTargetEntry(throwable, bamTargetEntry);
-				this.dao.save(bamTargetEntry);
-				return bamTargetEntry;
+                return dataObjectService.save(bamTargetEntry, PersistenceOption.FLUSH);
 			} catch (Exception e) {
 				LOG.error("BAM Failed to record client invocation error", e);
 			}
@@ -85,8 +87,7 @@ public class BAMServiceImpl implements BAMService {
 		if (bamTargetEntry != null) {
 			try {
 				setThrowableOnBAMTargetEntry(throwable, bamTargetEntry);
-				this.dao.save(bamTargetEntry);
-				return bamTargetEntry;
+                return dataObjectService.save(bamTargetEntry, PersistenceOption.FLUSH);
 			} catch (Exception e) {
 				LOG.error("BAM Failed to record service invocation error", e);
 			}
@@ -150,31 +151,49 @@ public class BAMServiceImpl implements BAMService {
 		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(Config.BAM_ENABLED));
 	}
 
-	public BAMDAO getDao() {
-		return this.dao;
-	}
-
-	public void setDao(BAMDAO dao) {
-		this.dao = dao;
-	}
-
 	public List<BAMTargetEntry> getCallsForService(QName serviceName) {
-		return getDao().getCallsForService(serviceName);
+        return getCallsForService(serviceName, null);
 	}
+
+    public List<BAMTargetEntry> getCallsForService(QName serviceName, String methodName) {
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(equal("serviceName", serviceName.toString()));
+        if (StringUtils.isNotBlank(methodName)) {
+            predicates.add(equal("methodName", methodName));
+        }
+        builder.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+        return dataObjectService.findMatching(BAMTargetEntry.class, builder.build()).getResults();
+    }
 
 	public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef) {
-		return getDao().getCallsForRemotedClasses(objDef);
+		return getCallsForRemotedClasses(objDef, null);
 	}
+
+    public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef, String methodName) {
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        QName qname = new QName(objDef.getApplicationId(), objDef.getClassName());
+        predicates.add(like("serviceName", qname.toString() + "*"));
+        if (StringUtils.isNotBlank(methodName)) {
+            predicates.add(equal("methodName", methodName));
+        }
+        builder.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+        return dataObjectService.findMatching(BAMTargetEntry.class, builder.build()).getResults();
+    }
 
 	public void clearBAMTables() {
-		getDao().clearBAMTables();
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        dataObjectService.deleteMatching(BAMTargetEntry.class, builder.build());
+        dataObjectService.deleteMatching(BAMParam.class, builder.build());
 	}
 
-	public List<BAMTargetEntry> getCallsForService(QName serviceName, String methodName) {
-		return getDao().getCallsForService(serviceName, methodName);
-	}
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
 
-	public List<BAMTargetEntry> getCallsForRemotedClasses(ObjectDefinition objDef, String methodName) {
-		return getDao().getCallsForRemotedClasses(objDef, methodName);
-	}
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
 }

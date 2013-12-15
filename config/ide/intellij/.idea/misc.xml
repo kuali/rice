@@ -9,15 +9,19 @@
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/sampleapp/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/serviceregistry/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/serviceregistry/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/serviceregistry/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/serviceregistry/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/standalone/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/standalone/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/standalone/overlays" />
+    <file url="file://$PROJECT_DIR$/../../../rice-middleware/web/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/web/overlays" />
     <file url="file://$PROJECT_DIR$/../../../rice-middleware/web/overlays" />
     <file url="file://$PROJECT_DIR$/../../../sampleapp/overlays" />
@@ -54,6 +58,16 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/../../../pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
+        <option value="$PROJECT_DIR$/../../../rice-framework/krad-data/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -77,6 +91,7 @@
             <SvnBranchConfiguration>
               <option name="branchUrls">
                 <list>
+                  <option value="https://svn.kuali.org/repos/rice/sandbox" />
                   <option value="https://test.kuali.org/svn/rice/branches" />
                   <option value="https://test.kuali.org/svn/rice/continuous-integration" />
                   <option value="https://test.kuali.org/svn/rice/inactive" />
@@ -86,7 +101,7 @@
                   <option value="https://test.kuali.org/svn/rice/tools" />
                 </list>
               </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+              <option name="trunkUrl" value="https://svn.kuali.org/repos/rice/sandbox" />
             </SvnBranchConfiguration>
           </value>
         </entry>
@@ -231,6 +246,20 @@
                 </list>
               </option>
               <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-framework/krad-sampleapp">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.kuali.org/repos/rice/trunk/rice-framework/krad-sampleapp" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../rice-framework/krad-sampleapp/web">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svn.kuali.org/repos/rice/trunk/rice-framework/krad-sampleapp/web" />
             </SvnBranchConfiguration>
           </value>
         </entry>

@@ -448,7 +448,6 @@ public class CollectionGroupBuilder implements Serializable {
 
                 ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
-
                 subCollectionFields.add(subCollectionFieldGroup);
             }
             ComponentUtils.pushObjectToContext(subCollectionFields, UifConstants.ContextVariableNames.PARENT_LINE,

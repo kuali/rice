@@ -42,13 +42,14 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         }
     }
 
-    public void save(PersistedMessageBO routeQueue) {
+    public PersistedMessageBO save(PersistedMessageBO routeQueue) {
         if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE))) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Persisting Message " + routeQueue);
             }
-            this.getMessageQueueDao().save(routeQueue);
+            return getMessageQueueDao().save(routeQueue);
         }
+        return routeQueue;
     }
 
     public List<PersistedMessageBO> findAll() {

@@ -38,6 +38,6 @@ public class EchoService1Impl implements EchoService {
 	}
 
     public void captureHeaders() {
-        ServiceCallInformationHolder.stuff.put("capturedHeaders", PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS));
+        ServiceCallInformationHolder.multiValues = (Map<String, List<String>>)PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS);
     }
 }

@@ -27,6 +27,13 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
+  <bean id="Uif-Div" abstract="true" parent="Uif-Div-parentBean"/>
+  <bean id="Uif-Div-parentBean" parent="Uif-ContentElementBase"
+        class="org.kuali.rice.krad.uif.element.Div">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/div.ftl"/>
+    <property name="templateName" value="uif_div"/>
+  </bean>
+
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
   <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ValidationMessages"

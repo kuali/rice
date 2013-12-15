@@ -45,8 +45,8 @@ public class TravelerDetail extends DataObjectBase implements MutableInactivatab
 	private static final long serialVersionUID = -7169083136626617130L;
 
     @Id
-    @GeneratedValue(generator = "TEM_TRAVELER_DTL_ID_SEQ")
-    @SequenceGenerator(name = "TEM_TRAVELER_DTL_ID_SEQ", sequenceName = "TEM_TRAVELER_DTL_ID_SEQ", allocationSize = 5)
+    @GeneratedValue(generator = "TRVL_TRAVELER_DTL_ID_S")
+    @SequenceGenerator(name = "TRVL_TRAVELER_DTL_ID_S", sequenceName = "TRVL_TRAVELER_DTL_ID_S", allocationSize = 5)
     @Column(name = "id", length = 40, nullable = false)
 	protected String id;
     @Column(name = "doc_nbr", length=14)

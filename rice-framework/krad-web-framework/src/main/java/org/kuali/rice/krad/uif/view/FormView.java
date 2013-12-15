@@ -112,7 +112,7 @@ public class FormView extends View {
 
         PageGroup page = getCurrentPage();
 
-        if (StringUtils.isNotBlank(page.getFormPostUrl())) {
+        if ((page != null) && StringUtils.isNotBlank(page.getFormPostUrl())) {
             form.setFormPostUrl(page.getFormPostUrl());
         }
         else if (StringUtils.isNotBlank(formPostUrl)) {

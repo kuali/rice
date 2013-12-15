@@ -16,6 +16,7 @@
 package org.kuali.rice.ksb.messaging.remotedservices;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,13 +25,17 @@ import java.util.Map;
  * get called remotely and aren't recorded in the bam.
  * 
  * Holds a single hashmap that can hold whatever is needed for confirmation of call for 
- * testing.
+ * testing. This class is special in that it is excluded from the shadowing so that the KSB test clients and the
+ * main test harness classloader can pass values back and forth. Therefore, this class only references classes that are
+ * part of the JVM and won't get shadowed by the {@link org.kuali.rice.ksb.server.KsbTestClientClassLoader}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class ServiceCallInformationHolder {
 
-	public static Map<String, Object> stuff = new HashMap<String, Object>();
+	public static Map<String, String> values = new HashMap<String, String>();
+    public static Map<String, List<String>> multiValues = null;
+    public static Map<String, Boolean> flags = new HashMap<String, Boolean>();
 
 }

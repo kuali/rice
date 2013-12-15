@@ -584,6 +584,7 @@ public class FreeMarkerInlineRenderUtils {
             renderTemplate(env, pager, null, false, false, pagerTmplParms);
         }
 
+/*
         out.write("<div id=\"");
         out.write(manager.getId());
         out.write("\"");
@@ -603,6 +604,7 @@ public class FreeMarkerInlineRenderUtils {
         }
 
         out.write(">");
+*/
 
         Group wrapperGroup = manager.getWrapperGroup();
         if (wrapperGroup != null) {
@@ -613,7 +615,7 @@ public class FreeMarkerInlineRenderUtils {
             }
         }
 
-        out.write("</div>");
+        /*out.write("</div>");*/
 
         if (pager != null && container.isUseServerPaging()) {
             pagerTmplParms = new HashMap<String, TemplateModel>();

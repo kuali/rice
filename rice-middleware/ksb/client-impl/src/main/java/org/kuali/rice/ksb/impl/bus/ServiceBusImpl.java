@@ -175,7 +175,7 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 			Endpoint localEndpoint = getLocalEndpoint(serviceName);
 			if (localEndpoint != null) {
 				for (Iterator<Endpoint> iterator = endpoints.iterator(); iterator.hasNext();) {
-					Endpoint endpoint = (Endpoint) iterator.next();
+					Endpoint endpoint = iterator.next();
 					if (localEndpoint.getServiceConfiguration().equals(endpoint.getServiceConfiguration())) {
 						iterator.remove();
 						break;

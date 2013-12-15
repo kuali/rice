@@ -17,6 +17,13 @@
 -->
 <#macro uif_header element>
 
+    <#-- Return if all content is missing -->
+    <#if (!element.headerText?? || !element.headerText?has_content || element.headerText == '&nbsp;')
+        && !element.richHeaderMessage?? && !element.upperGroup??
+        && !element.lowerGroup?? && !element.rightGroup??>
+        <#return>
+    </#if>
+
     <#if element.headerStyleClassesAsString?has_content>
         <#local styleClass="class=\"${element.headerStyleClassesAsString}\""/>
     </#if>
@@ -40,11 +47,14 @@
         ${headerCloseTag}
     <#else>
 
+    <#-- Only render wrapper when upper and lower group content exist -->
+    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
       <div class="clearfix uif-header-contentWrapper">
-
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
+    </#if>
 
+        <#-- Main header content -->
         <@krad.div component=element>
 
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
@@ -73,10 +83,11 @@
 
         </@krad.div>
 
-        <#-- lower group -->
-        <@krad.template component=element.lowerGroup/>
-
-      </div>
+      <#if element.upperGroup?has_content || element.lowerGroup?has_content>
+           <#-- lower group -->
+           <@krad.template component=element.lowerGroup/>
+        </div>
+      </#if>
 
     </#if>
 

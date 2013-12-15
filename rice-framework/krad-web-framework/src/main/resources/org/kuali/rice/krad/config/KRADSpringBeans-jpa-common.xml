@@ -73,8 +73,8 @@
 		id="jpaPersistenceProvider"
 		class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
 		p:dataObjectService-ref="dataObjectService"
-		p:sharedEntityManager-ref="sharedEntityManager" />
-	
+		p:sharedEntityManager-ref="sharedEntityManager"/>
+
 	<bean
 		id="metadataProviderJpa"
 		class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"

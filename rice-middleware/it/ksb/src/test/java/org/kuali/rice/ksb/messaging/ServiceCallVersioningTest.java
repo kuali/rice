@@ -39,14 +39,14 @@ public class ServiceCallVersioningTest extends KSBTestCase {
 
     @Test
     public void testSimpleSOAPService() throws Exception {
-        EchoService echoService = (EchoService) GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
+        EchoService echoService = GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
         echoService.captureHeaders();
         assertHeadersCaptured();
     }
 
     @Test
     public void testJaxWsSOAPService() {
-        JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1",
+        JaxWsEchoService jaxwsEchoService = GlobalResourceLoader.getService(new QName("TestCl1",
                 "jaxwsEchoService"));
         jaxwsEchoService.captureHeaders();
         assertHeadersCaptured();
@@ -54,7 +54,7 @@ public class ServiceCallVersioningTest extends KSBTestCase {
 
     @Test
     public void testJaxRsService() {
-        BaseballCardCollectionService service = (BaseballCardCollectionService) GlobalResourceLoader.getService(new QName("test", "baseballCardCollectionService"));
+        BaseballCardCollectionService service = GlobalResourceLoader.getService(new QName("test", "baseballCardCollectionService"));
         // invoke a method that stores the headers
         List<BaseballCard> allCards = service.getAll();
         Assert.assertNotNull(allCards);
@@ -62,8 +62,8 @@ public class ServiceCallVersioningTest extends KSBTestCase {
     }
 
     public void assertHeadersCaptured() {
-        Map<String, List<String>> headers = (Map<String, List<String>>) ServiceCallInformationHolder.stuff.get(
-                "capturedHeaders");
+        Map<String, List<String>> headers = ServiceCallInformationHolder.multiValues;
+        Assert.assertNotNull(headers);
         System.out.println("HEADERS");
         System.out.println(headers);
         Assert.assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_ENVIRONMENT_HEADER).contains("dev"));

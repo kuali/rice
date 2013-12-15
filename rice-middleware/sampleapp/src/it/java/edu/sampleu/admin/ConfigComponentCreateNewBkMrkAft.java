@@ -32,4 +32,9 @@ public class ConfigComponentCreateNewBkMrkAft extends ConfigComponentCreateNewAf
     public void testConfigComponentCreateNewBookmark() throws Exception {
         testConfigComponentCreateNewBookmark(this);
     }
+
+    @Test
+    public void testConfigComponentCreateNewFullBookmark() throws Exception {
+        testConfigComponentCreateNewFull();
+    }
 }

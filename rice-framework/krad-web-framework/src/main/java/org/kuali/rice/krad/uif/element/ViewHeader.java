@@ -74,6 +74,28 @@ public class ViewHeader extends Header {
                 supportTitleMessage.setMessageText(pageHeader.getHeaderText().trim());
             }
         }
+
+/*        if ((StringUtils.isBlank(this.getHeaderText()) || this.getHeaderText().equals("&nbsp;"))
+                && this.getRichHeaderMessage() == null
+                && this.getUpperGroup() == null
+                && this.getLowerGroup() == null
+                && this.getRightGroup() == null
+                && (this.getSupportTitleMessage() == null || StringUtils.isBlank(
+                this.getSupportTitleMessage().getMessageText()))
+                && (this.getAreaTitleMessage() == null || StringUtils.isBlank(
+                this.getAreaTitleMessage().getMessageText()))
+                && (this.getMetadataMessage() == null || StringUtils.isBlank(
+                this.getMetadataMessage().getMessageText()))
+                && this.getTemplateName().equals("uif_viewHeader")) {
+            this.setRender(false);
+        }
+
+        if (this.getUpperGroup() == null && this.getLowerGroup() == null && this.getRightGroup() == null
+                && !this.isSticky()
+                && (this.getMetadataMessage() == null || StringUtils.isBlank(this.getMetadataMessage().getMessageText()))
+                && this.getTemplateName().equals("uif_viewHeader")) {
+            this.setRenderWrapper(false);
+        }*/
     }
 
     /**

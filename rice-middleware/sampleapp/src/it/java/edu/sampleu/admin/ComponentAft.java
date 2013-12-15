@@ -28,6 +28,8 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 public class ComponentAft extends WebDriverLegacyITBase {
 
     String docId;
+    String componentCode;
+    String componentName;
 
     /**
      *  for Component Parameter
@@ -58,6 +60,15 @@ public class ComponentAft extends WebDriverLegacyITBase {
         checkForIncidentReport("Component");
     }
 
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
+        waitAndTypeByName("document.newMaintainableObject.code", componentCode);
+        waitAndTypeByName("document.newMaintainableObject.name", componentName);
+        checkByName("document.newMaintainableObject.active");
+    }
+
     protected void testComponentCreateNewCancel() throws Exception {
         waitAndCreateNew();
         testCancelConfirmation();
@@ -66,10 +77,9 @@ public class ComponentAft extends WebDriverLegacyITBase {
 
     protected void testComponentParameter() throws Exception {
         //Create New
-        waitAndCreateNew();
-        String componentName = "TestName" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        String componentCode = "TestCode" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        docId = testCreateNewComponent(componentName, componentCode, FOR_TEST_MESSAGE);
+        componentName = "TestName" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        componentCode = "TestCode" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        docId = createNewTemplateMethod();
 
         //Lookup
         navigate();

@@ -91,6 +91,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                     missingMessage += data[i][j] + " not present in data table row containing " + data[i][0] + ". ";
                 }
             }
+            WebDriverUtils.jGrowl(getDriver(), "Assert DataTable Row", false, "Assert datatable row '" + dataTableRow
+                    + "' contains '" + data[i] + "' " + dataPresent);
         }
         if (!dataPresent) {
             jiraAwareFail(missingMessage);
@@ -306,6 +308,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param text
      */
     protected void assertTextPresent(String text, String message) {
+        WebDriverUtils.jGrowl(getDriver(), "Assert Text Present", false, "Assert text '" + text + "' is present.");
         String pageSource = getDriver().getPageSource();
         if (!pageSource.contains(text)) {
             jiraAwareFail(text + " not present " + message);
@@ -426,6 +429,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected boolean isLabeledTextPresent(String label, String text) {
         WebElement element = findElement(By.xpath("//tr/th/*/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
         String labeledText = element.getText().trim();
+        WebDriverUtils.jGrowl(getDriver(), "Is Labeled Text Present", false, "Is text '" + text + "' present for label '" + label + "'? " + labeledText.contains(text));
         return labeledText.contains(text);
     }
 
@@ -537,6 +541,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message, failable);
             WebElement element = findElement(by);
+//            String name = element.getAttribute("name");
+//            if (name == null || "".equals(name)) {
+//                name = element.getAttribute("id");
+//            }
+//            WebDriverUtils.jGrowl(getDriver(), "Click " + name, false, "Click " + name);
             element.click();
         } catch (Exception e) {
             failable.jiraAwareFail(by.toString(), message, e);
@@ -645,6 +654,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         WebElement select1 = findElement(by);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
+        String name = select1.getAttribute("name");
+
         if (options == null || options.size() == 0) {
             jiraAwareFail("No options for select "
                     + select1.toString()
@@ -656,6 +667,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
         for (WebElement option : options) {
             if (option.getAttribute("value").equals(optionValue)) {
+                WebDriverUtils.jGrowl(getDriver(), "Select " + option.getText(), false, "Select " + option.getText() + " from " + name);
                 option.click();
                 break;
             }
@@ -677,6 +689,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message);
             WebElement element = findElement(by);
+            String name = element.getAttribute("name");
+            WebDriverUtils.jGrowl(getDriver(), "Type", false, "Type into " + name + " the text: " + text);
             WebDriverUtils.highlightElement(getDriver(), element);
             element.sendKeys(text);
             return element;

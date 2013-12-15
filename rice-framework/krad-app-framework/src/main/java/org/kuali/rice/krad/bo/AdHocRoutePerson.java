@@ -40,11 +40,14 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     public AdHocRoutePerson() {
         setType(PERSON_TYPE);
 
-        try {
-            person = (Person) KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            if(KimApiServiceLocator.getPersonService() == null){
+//                return;
+//            }
+//                person = (Person) KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override

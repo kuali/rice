@@ -56,26 +56,19 @@ public class LookupDaoProxy implements LookupDao {
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
-                } else {         
-                    if (!LegacyUtils.useLegacy(clazz)) {
-                        throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
-					} else {
-						LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
-                        classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
-                        classSpecificLookupDaoOjb.setPersistenceStructureService(
-                                KNSServiceLocator.getPersistenceStructureService());
-                        classSpecificLookupDaoOjb.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
-                        classSpecificLookupDaoOjb.setDataDictionaryService(
-                                KRADServiceLocatorWeb.getDataDictionaryService());
-                        lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
-                        return classSpecificLookupDaoOjb;
-                    }
+                } else {
+                    LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
+                    classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
+                    classSpecificLookupDaoOjb.setPersistenceStructureService(
+                            KNSServiceLocator.getPersistenceStructureService());
+                    classSpecificLookupDaoOjb.setDateTimeService(CoreApiServiceLocator.getDateTimeService());
+                    classSpecificLookupDaoOjb.setDataDictionaryService(
+                            KRADServiceLocatorWeb.getDataDictionaryService());
+                    lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
+                    return classSpecificLookupDaoOjb;
                 }
 
             }
-        }
-        if (!LegacyUtils.useLegacy(clazz)) {
-            throw new IllegalStateException(this.getClass() + " called with non-legacy class: " + clazz);
         }
         return lookupDaoOjb;
     }

@@ -35,10 +35,8 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <div id="${manager.id}_boxLayout" ${style!} ${styleClass!}>
-        <#list items as item>
-           <@krad.template component=item/>
-       </#list>
-    </div>
+    <#list items as item>
+       <@krad.template component=item/>
+   </#list>
 
 </#macro>

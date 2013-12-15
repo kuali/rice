@@ -645,6 +645,12 @@ public class WebDriverUtils {
     }
 
 
+    public static void highlightElements(WebDriver webDriver, List<WebElement> webElements) {
+        for (WebElement webElement: webElements) {
+            highlightElement(webDriver, webElement);
+        }
+    }
+
     /**
      * <p>
      * Highlight given WebElement.
@@ -691,12 +697,13 @@ public class WebDriverUtils {
     }
 
     public static Boolean isTextPresent(WebDriver driver, String pageText, String text) {
+        boolean textPresent = Boolean.FALSE;
         if (pageText.contains(text)) {
             WebDriverUtils.highlightElement(driver, By.xpath("//*[contains(text(), '" + text + "')]"));
-            return Boolean.TRUE;
+            textPresent = Boolean.TRUE;
         }
-
-        return Boolean.FALSE;
+        WebDriverUtils.jGrowl(driver, "Is Text Present?", false, "Is text '" + text + " present?" + " " + textPresent);
+        return textPresent;
     }
 
     /**
@@ -727,6 +734,7 @@ public class WebDriverUtils {
      * @param message message to display in the jGrowl
      */
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
+        System.out.println("AFT Step: " + message);
         if (jGrowlEnabled) {
             try {
                 String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
@@ -837,7 +845,7 @@ public class WebDriverUtils {
             } catch (Exception e) {}
         }
 
-        WebElement element = driver.findElement(by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+        WebElement element = findElement(driver, by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
         driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }

@@ -43,27 +43,27 @@ public class DemoControlCheckboxGroupAft extends WebDriverLegacyITBase {
 
     protected void testLibraryControlCheckboxGroupOptionsFinder() throws Exception {
         waitAndClickByLinkText("optionsFinder");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField1' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField1' and @value='5']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField1' and @value='1']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField1' and @value='5']");
     }
     
     protected void testLibraryControlCheckboxGroupKeyValuePairs() throws Exception {
         waitAndClickByLinkText("Key Value Pairs");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField2' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField2' and @value='3']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField2' and @value='1']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField2' and @value='3']");
     }
     
     protected void testLibraryControlCheckboxGroupHorizontal() throws Exception {
         waitAndClickByLinkText("Horizontal");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField3' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField3' and @value='2']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField3' and @value='1']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField3' and @value='2']");
     }
     
     protected void testLibraryControlCheckboxGroupDelimiter() throws Exception {
         waitAndClickByLinkText("Delimiter");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField4' and @value='1']");
-        assertTextPresent("|");
-        waitForElementPresentByXpath("//div[@id='Demo-CheckboxGroupControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='checkbox' and @name='checkboxesField4' and @value='2']");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField4' and @value='1']");
+        assertTextPresent("\n|");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField4' and @value='2']");
     }
     
     @Test

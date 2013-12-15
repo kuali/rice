@@ -846,6 +846,7 @@ public class WebDriverUtils {
         }
 
         WebElement element = findElement(driver, by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+        highlightElement(driver, element);
         driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }

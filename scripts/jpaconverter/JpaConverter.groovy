@@ -17,10 +17,10 @@
 import japa.parser.JavaParser
 import japa.parser.ast.CompilationUnit
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+// import org.apache.log4j.BasicConfigurator;
+// import org.apache.log4j.Level;
+// import org.apache.log4j.Logger;
+// import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.ojb.OjbUtil
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.visitor.EntityVisitor
 
@@ -28,6 +28,8 @@ import groovy.util.ConfigSlurper
 
 @Grapes([
 	@Grab(group="org.kuali.rice",module="rice-development-tools",version="2.4.0-M3-SNAPSHOT")
+	//,@Grab(group="log4j",module="log4j",version="1.2.16")
+	//,@GrabExclude('log4j:log4j')
     ,@GrabExclude('commons-transaction:commons-transaction')
     ,@GrabExclude('commons-beanutils:commons-beanutils')
     ,@GrabExclude('org.codehaus.groovy:groovy-all')
@@ -36,7 +38,8 @@ import groovy.util.ConfigSlurper
 class JpaConverter {
 
     static void processJavaFile( entityVisitor, File ojbMappedFile, String subclassName, boolean dryRun, boolean errorsonly ) {
-        println "Processing File: $ojbMappedFile"
+        print "Processing File: $ojbMappedFile.............."
+        if ( dryRun || errorsonly ) println ""
         if ( ojbMappedFile == null ) return;
         
         def unit = JavaParser.parse(ojbMappedFile)
@@ -44,11 +47,15 @@ class JpaConverter {
     
         if ( dryRun ) {
             if ( !errorsonly ) {
+            	println "\n"
                 println unit.toString()
-            }
+            } else {
+            	println "\n"
+        	}
         } else {
             ojbMappedFile.delete()
             ojbMappedFile << unit.toString()
+        	println "Complete"
         }
     }
     
@@ -145,7 +152,6 @@ class JpaConverter {
         }
         
         //println c
-        //BasicConfigurator.configure()
         
         /*
          * NOTE: When running from within Eclipse/IDE, you need to add groovy to the --classpath of the script being run so that
@@ -226,17 +232,17 @@ class JpaConverter {
         
         def entityVisitor = new EntityVisitor(drs, c.ojb.converterMappings, c.project.replaceExistingAnnotations, c.project.upperCaseDbArtifactNames)
         
-        //if ( c.project.errorsonly ) {
-        //    Logger.getLogger( "org.kuali.rice.devtools" ).setLevel(Level.WARN)
-        //}
+        if ( c.project.errorsonly ) {
+            entityVisitor.setErrorsOnly()
+        }
         
         for (String className : mappedJavaFiles.keySet()) {
             File ojbMappedFile = mappedJavaFiles[className]
-            processJavaFile(entityVisitor, ojbMappedFile, className, c.project.dryRun, c.project.errorsonly)
+            processJavaFile(entityVisitor, ojbMappedFile, className, c.project.dryrun, c.project.errorsonly)
             
             Collection<String> superClasses = OjbUtil.getSuperClasses(className, "org.kuali.rice");
             for (String superClass : superClasses) {
-                processJavaFile(entityVisitor, convertClassToFile(superClass), className, c.project.dryRun, c.project.errorsonly)
+                processJavaFile(entityVisitor, convertClassToFile(superClass), className, c.project.dryrun, c.project.errorsonly)
             }
         
         }

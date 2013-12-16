@@ -122,6 +122,11 @@
             <artifactId>ojdbc14</artifactId>
             <version>10.2.0.3.0</version>
           </dependency>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.25</version>
+          </dependency>
          </dependencies>
         <executions>
           <execution>

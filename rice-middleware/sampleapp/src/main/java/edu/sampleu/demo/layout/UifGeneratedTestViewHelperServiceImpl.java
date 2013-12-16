@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -33,7 +34,7 @@ public class UifGeneratedTestViewHelperServiceImpl extends ViewHelperServiceImpl
     private static final long serialVersionUID = 1594814355163875742L;
 
     @Override
-    public void performCustomInitialization(Component component) {
+    public void performCustomInitialization(LifecycleElement component) {
         super.performCustomInitialization(component);
         List<Component> fields = new ArrayList<Component>();
         if(component instanceof PageGroup && component.getId().equals("UifGeneratedFields-Page1")){

@@ -35,7 +35,7 @@
             <list>
               <bean parent="Uif-DataField" p:propertyName="accountTypeCode"/>
               <bean parent="Uif-DataField" p:propertyName="name"/>
-              <bean parent="Uif-DataField" p:propertyName="codeAndDescription"/>
+              <bean parent="Uif-DataField" p:label="Account Type" p:propertyName="codeAndDescription"/>
             </list>
           </property>
         </bean>

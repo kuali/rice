@@ -3729,7 +3729,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
                     <para>
                         Run the <emphasis role="keyword">JpaConverter.groovy</emphasis> tool as
                         shown below.  See the README.md in the same directory as the scripts for 
-                        troubleshooting information.
+                        troubleshooting information and further recommendations.
                     </para>
                     <para>
                         <emphasis role="bold">Tool Usage</emphasis>

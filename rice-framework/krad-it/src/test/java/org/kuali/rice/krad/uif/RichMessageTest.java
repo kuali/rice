@@ -27,9 +27,11 @@ import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.KeyMessage;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -481,7 +483,7 @@ public class RichMessageTest extends KRADTestCase {
 
         radioGroupControl.setOptions(options);
         performSimulatedLifecycle(radioGroupControl);
-        for (Component component : radioGroupControl.getComponentsForLifecycle().values()) {
+        for (LifecycleElement component : ViewLifecycleUtils.getElementsForLifecycle(radioGroupControl).values()) {
             performSimulatedLifecycle(component);
         }
 
@@ -571,15 +573,15 @@ public class RichMessageTest extends KRADTestCase {
     /**
      * Peform a simulated lifecycle on the component passed in
      *
-     * @param component
+     * @param element
      */
-    private void performSimulatedLifecycle(final Component component) {
-        ViewLifecycle.encapsulateLifecycle(view, component, null, null, new Runnable(){
+    private void performSimulatedLifecycle(final LifecycleElement element) {
+        ViewLifecycle.encapsulateLifecycle(view, element, null, null, new Runnable(){
             @Override
             public void run() {
-                component.performInitialization(model);
-                component.performApplyModel(model, view);
-                component.performFinalize(model, view);
+                element.performInitialization(model);
+                element.performApplyModel(model, view);
+                element.performFinalize(model, view);
             }});
     }
 

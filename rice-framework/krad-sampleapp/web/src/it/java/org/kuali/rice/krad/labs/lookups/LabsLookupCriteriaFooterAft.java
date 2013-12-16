@@ -50,6 +50,6 @@ public class LabsLookupCriteriaFooterAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupCriteriaFooter()throws Exception {
-       waitForElementPresentByXpath("//div[@class='uif-horizontalBoxLayout clearfix']/button[contains(text(), 'create new')]");
+        waitAndClickButtonByText("create new");
     }
 }

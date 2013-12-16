@@ -180,8 +180,8 @@
   <bean id="TravelerDetail-stateCode" parent="TravelerDetail-stateCode-parentBean" />
   <bean id="TravelerDetail-stateCode-parentBean" parent="AttributeDefinition">
     <property name="name" value="stateCode" />
-    <property name="label" value="State Code" />
-    <property name="shortLabel" value="State Code" />
+    <property name="label" value="State" />
+    <property name="shortLabel" value="State" />
     <property name="maxLength" value="50" />
     <property name="required" value="false" />
     <property name="summary" value="State Code" />
@@ -195,8 +195,8 @@
   <bean id="TravelerDetail-zipCode" parent="TravelerDetail-zipCode-parentBean" />
   <bean id="TravelerDetail-zipCode-parentBean" parent="AttributeDefinition">
     <property name="name" value="zipCode" />
-    <property name="label" value="Zip Code" />
-    <property name="shortLabel" value="Zip Code" />
+    <property name="label" value="Zip" />
+    <property name="shortLabel" value="Zip" />
     <property name="maxLength" value="50" />
     <property name="required" value="false" />
     <property name="summary" value="Zip Code" />
@@ -209,8 +209,8 @@
   <bean id="TravelerDetail-countryCode" parent="TravelerDetail-countryCode-parentBean" />
   <bean id="TravelerDetail-countryCode-parentBean" parent="AttributeDefinition">
     <property name="name" value="countryCode" />
-    <property name="label" value="Country Code" />
-    <property name="shortLabel" value="Country Code" />
+    <property name="label" value="Country" />
+    <property name="shortLabel" value="Country" />
     <property name="maxLength" value="50" />
     <property name="required" value="false" />
     <property name="summary" value="Country Code" />

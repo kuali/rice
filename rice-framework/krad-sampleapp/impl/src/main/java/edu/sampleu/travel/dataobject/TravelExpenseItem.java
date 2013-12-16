@@ -51,7 +51,7 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     @Id @Column(name = "EXP_ITM_ID", length = 10)
     @GeneratedValue(generator = "TRVL_EXP_ITM_ID_S")
     @PortableSequenceGenerator(name = "TRVL_EXP_ITM_ID_S")
-    @Label("ID")
+    @Label("Id")
     @Description("Unique identifier for item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelExpenseItemId;

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.dataobject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +51,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
+import org.kuali.rice.krad.demo.travel.dataobject.TravelSubAccount;
 import org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues;
 
 @Entity
@@ -66,7 +68,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 	private String number;
 
 	@Column(name="ACCT_NAME",length=40)
-	@Label("Account Name")
+	@Label("Travel Account Name")
 	@ForceUppercase
 	private String name;
 
@@ -175,6 +177,9 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 	}
 
 	public List<TravelSubAccount> getSubAccounts() {
+        if(subAccounts == null) {
+            subAccounts = new ArrayList<TravelSubAccount>();
+        }
 		return subAccounts;
 	}
 

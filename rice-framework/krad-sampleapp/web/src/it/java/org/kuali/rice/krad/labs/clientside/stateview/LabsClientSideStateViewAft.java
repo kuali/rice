@@ -17,6 +17,7 @@ package org.kuali.rice.krad.labs.clientside.stateview;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,16 +40,6 @@ public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
      */
     private static final String ACTIVE_COMPONENT2_NAME = "inactivatableCollection2[0].active";
     
-    /**
-     * //div[4]/div[2]/button
-     */
-    private static final String AJAX_BUTTON_XPATH = "//div[4]/div[2]/button";
-    
-    /**
-     * //div[4]/div[2]/button[2]
-     */
-    private static final String SUBMIT_BUTTON_XPATH = "//div[4]/div[2]/button[2]";
-
     /**
      * This overridden method ...
      * 
@@ -73,13 +64,14 @@ public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
     public void testClientSideStateView() throws Exception {
         waitAndClickByName(ACTIVE_COMPONENT_NAME);
         waitAndClickByName(ACTIVE_COMPONENT2_NAME);
-        waitAndClickByXpath(AJAX_BUTTON_XPATH);
-        Thread.sleep(5000);
+        waitAndClickButtonByText("Refresh - Ajax");
+        Thread.sleep(2000);
+        waitForElementNotPresent(By.name(ACTIVE_COMPONENT_NAME));
         assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
         assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
-        waitAndClickByXpath(SUBMIT_BUTTON_XPATH);
-        Thread.sleep(5000);
-        assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
+        waitAndClickButtonByText("Refresh - Non-Ajax");
+        Thread.sleep(2000);
+        waitForElementNotPresent(By.name(ACTIVE_COMPONENT_NAME));
         assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
     }
 }

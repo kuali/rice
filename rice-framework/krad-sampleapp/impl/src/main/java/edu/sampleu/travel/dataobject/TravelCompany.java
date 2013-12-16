@@ -47,13 +47,13 @@ public class TravelCompany extends DataObjectBase implements MutableInactivatabl
     @Id @Column(name = "CO_ID", length = 40)
     @GeneratedValue(generator = "TRVL_CO_ID_S")
     @PortableSequenceGenerator(name = "TRVL_CO_ID_S")
-    @Label("id")
+    @Label("Id")
     @Description("Unique identifier for company")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelCompanyId;
 
     @Column(name = "CO_NM", length = 40)
-    @Label("Company name")
+    @Label("Company Name")
     @Description("Company Name")
     private String travelCompanyName;
 

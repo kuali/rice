@@ -44,7 +44,9 @@
               <bean parent="Uif-DataField"
                     p:propertyName="travelCompanyId"
                     p:defaultValue="@{ #sequence('TRVL_CO_ID_S') }" />
-              <bean parent="Uif-InputField" p:propertyName="travelCompanyName"/>
+              <bean parent="Uif-InputField" p:propertyName="travelCompanyName">
+                <property name="required" value="true"/>
+              </bean>
             </list>
           </property>
         </bean>

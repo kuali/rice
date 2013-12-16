@@ -63,7 +63,7 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @Column(name = "PD_EXP_ID", length = 10)
     @GeneratedValue(generator = "TRVL_PD_EXP_ID_S")
     @PortableSequenceGenerator(name = "TRVL_PD_EXP_ID_S")
-    @Label("ID")
+    @Label("Id")
     @Description("Unique identifier for per diem expense item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelPerDiemExpenseId;

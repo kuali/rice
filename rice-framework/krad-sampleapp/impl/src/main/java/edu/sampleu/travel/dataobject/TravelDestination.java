@@ -56,13 +56,13 @@ public class TravelDestination extends DataObjectBase implements MutableInactiva
     @Id @Column(name = "TRVL_DEST_ID", length = 40)
     @GeneratedValue(generator = "TRVL_DEST_ID_S")
     @PortableSequenceGenerator(name = "TRVL_DEST_ID_S")
-    @Label("id")
+    @Label("Id")
     @Description("Unique identifier for destination item")
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelDestinationId;
 
     @Column(name = "DEST_NM", length = 40)
-    @Label("Destination name")
+    @Label("Destination")
     @Description("Name of location")
     private String travelDestinationName;
 
@@ -70,6 +70,7 @@ public class TravelDestination extends DataObjectBase implements MutableInactiva
     @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
                       @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     @KeyValuesFinderClass(PostalCountryCodeKeyValuesFinder.class)
+    @Label("Country")
     private String countryCd;
 
     @Transient
@@ -81,6 +82,7 @@ public class TravelDestination extends DataObjectBase implements MutableInactiva
     @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
                       @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     @KeyValuesFinderClass(PostalStateCodeKeyValuesFinder.class)
+    @Label("State")
     private String stateCd;
 
     @Transient

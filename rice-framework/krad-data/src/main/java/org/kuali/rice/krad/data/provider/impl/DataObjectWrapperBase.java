@@ -16,9 +16,11 @@
 package org.kuali.rice.krad.data.provider.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.springframework.beans.BeanWrapper;
@@ -38,6 +40,7 @@ import java.beans.PropertyEditor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -231,6 +234,19 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         return primaryKeyValues;
     }
 
+    @Override
+    public Object getPrimaryKeyValue() {
+        if (!areAllPrimaryKeyAttributesPopulated()) {
+            return null;
+        }
+        Map<String, Object> primaryKeyValues = getPrimaryKeyValues();
+        if (getPrimaryKeyValues().size() == 1) {
+            return primaryKeyValues.values().iterator().next();
+        } else {
+            return new CompoundKey(primaryKeyValues);
+        }
+    }
+
 	@Override
 	public boolean areAllPrimaryKeyAttributesPopulated() {
 		List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
@@ -299,6 +315,54 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     @Override
+    public Object getForeignKeyValue(String relationshipName) {
+        Object foreignKeyAttributeValue = getForeignKeyAttributeValue(relationshipName);
+        if (foreignKeyAttributeValue != null) {
+            return foreignKeyAttributeValue;
+        }
+        // if there are no attribute relationships, or the attribute relationships are not fully populated, fall
+        // back to the actual relationship object
+        Object relationshipObject = getPropertyValue(relationshipName);
+        if (relationshipObject == null) {
+            return null;
+        }
+        return dataObjectService.wrap(relationshipObject).getPrimaryKeyValue();
+    }
+
+    @Override
+    public Object getForeignKeyAttributeValue(String relationshipName) {
+        DataObjectRelationship relationship = findAndValidateRelationship(relationshipName);
+        List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
+        if (!attributeRelationships.isEmpty()) {
+            // ok, it has some of these relationships, are they all populated?
+            boolean allPopulated = true;
+            Map<String, Object> attributeMap = new LinkedHashMap<String, Object>();
+            for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
+                String attributeName = attributeRelationship.getParentAttributeName();
+                Object attributeValue = getPropertyValue(attributeName);
+                if (attributeValue == null) {
+                    allPopulated = false;
+                    break;
+                }
+                attributeMap.put(attributeName, attributeValue);
+            }
+            if (allPopulated) {
+                // if they are all populated, then we have our foreign key!
+                return asSingleKey(attributeMap);
+            }
+        }
+        return null;
+    }
+
+
+    private Object asSingleKey(Map<String, Object> keyValues) {
+        if (keyValues.size() == 1) {
+            return keyValues.values().iterator().next();
+        }
+        return new CompoundKey(keyValues);
+    }
+
+    @Override
     public Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName) {
         DataObjectMetadata objectMetadata = dataObjectService.getMetadataRepository().getMetadata(objectType);
         return getPropertyTypeChild(objectMetadata,propertyName);
@@ -341,4 +405,34 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         }
         return null;
     }
+
+    @Override
+    public void fetchRelationship(String relationshipName) {
+        fetchRelationship(findAndValidateRelationship(relationshipName));
+    }
+
+    protected void fetchRelationship(DataObjectRelationship relationship) {
+        // if we have at least one attribute relationships here, then we are set to proceed
+        if (!relationship.getAttributeRelationships().isEmpty()) {
+            Object fetchedValue = null;
+            Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
+            if (foreignKey != null) {
+                fetchedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
+            }
+            setPropertyValue(relationship.getName(), fetchedValue);
+        }
+    }
+
+    private DataObjectRelationship findAndValidateRelationship(String relationshipName) {
+        if (StringUtils.isBlank(relationshipName)) {
+            throw new IllegalArgumentException("The relationshipName must not be null or blank");
+        }
+        // validate the relationship exists
+        DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
+        if (relationship == null) {
+            throw new IllegalArgumentException("Failed to locate a valid relationship from " + getWrappedClass() + " with the given relationship name '" + relationshipName + "'");
+        }
+        return relationship;
+    }
+
 }

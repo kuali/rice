@@ -55,7 +55,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         assertLabeledTextPresent(lightBoxLabeledText);
         waitAndClickButtonByText(CLOSE);
         selectTopFrame();
-        String[][] LabeledText = {{"ID:", "10000"},
+        String[][] LabeledText = {{"Id:", "10000"},
                 {"Travel Authorization Document Id:", "10000"},
                 {"Primary Destination:", "10000"},
                 {"Date of Use:", getTodaysDate()},

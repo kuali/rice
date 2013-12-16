@@ -40,8 +40,8 @@ public class LabsInquiryCollectionOfInactivaTablesAft extends LabsInquiryBase {
 
     protected void testInquiryCollectionOfInactivaTables() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a collection of inactivatable elements");
-        String[][] lightBoxLabeledText = {{"id:", "10001"},
-                {"Company name:", "AAA Travel"},
+        String[][] lightBoxLabeledText = {{"Id:", "10001"},
+                {"Company Name:", "AAA Travel"},
                 {"Active:", "false"}};
         assertLabeledTextNotPresent(lightBoxLabeledText);
         waitAndClickButtonByText("show inactive");

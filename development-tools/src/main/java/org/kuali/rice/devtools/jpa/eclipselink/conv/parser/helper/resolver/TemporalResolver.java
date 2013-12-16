@@ -88,35 +88,35 @@ public class TemporalResolver extends AbstractMappedFieldResolver {
 
     private boolean isJavaUtilDate(Class<?> fc) {
         if (fc != null) {
-            return !fc.isAssignableFrom(java.sql.Date.class) && fc.isAssignableFrom(java.util.Date.class);
+            return !java.sql.Date.class.isAssignableFrom(fc) && java.util.Date.class.isAssignableFrom(fc);
         }
         return false;
     }
 
     private boolean isJavaUtilCalendar(Class<?> fc) {
         if (fc != null) {
-            return fc.isAssignableFrom(Calendar.class);
+            return Calendar.class.isAssignableFrom(fc);
         }
         return false;
     }
 
     private boolean isJavaSqlDate(Class<?> fc) {
         if (fc != null) {
-            return fc.isAssignableFrom(java.sql.Date.class);
+            return java.sql.Date.class.isAssignableFrom(fc);
         }
         return false;
     }
 
     private boolean isJavaSqlTimestamp(Class<?> fc) {
         if (fc != null) {
-            return fc.isAssignableFrom(Timestamp.class);
+            return Timestamp.class.isAssignableFrom(fc);
         }
         return false;
     }
 
     private boolean isJavaSqlTime(Class<?> fc) {
         if (fc != null) {
-            return fc.isAssignableFrom(Time.class);
+            return Time.class.isAssignableFrom(fc);
         }
         return false;
     }

@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,8 +37,10 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -223,17 +227,29 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      * @param component
      */
     private void addNestedGroupKeys(Collection<String> keyList, Component component) {
-        for (Component c : component.getComponentsForLifecycle().values()) {
-            ValidationMessages ef = null;
-            if (c instanceof ContainerBase) {
-                ef = ((ContainerBase) c).getValidationMessages();
-            } else if (c instanceof FieldGroup) {
-                ef = ((FieldGroup) c).getGroup().getValidationMessages();
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        try {
+            elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(component).values());
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement element = elementQueue.poll();
+
+                ValidationMessages ef = null;
+                if (element instanceof ContainerBase) {
+                    ef = ((ContainerBase) element).getValidationMessages();
+                } else if (element instanceof FieldGroup) {
+                    ef = ((FieldGroup) element).getGroup().getValidationMessages();
+                }
+                
+                if (ef != null) {
+                    keyList.addAll(ef.getKeys((Component) element));
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(element).values());
             }
-            if (ef != null) {
-                keyList.addAll(ef.getKeys(c));
-                addNestedGroupKeys(keyList, c);
-            }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 

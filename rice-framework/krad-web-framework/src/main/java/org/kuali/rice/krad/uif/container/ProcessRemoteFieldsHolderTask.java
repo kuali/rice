@@ -49,7 +49,7 @@ public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Container container = (Container) getPhase().getComponent();
+        Container container = (Container) getPhase().getElement();
         
         List<Component> processedItems = new ArrayList<Component>();
 
@@ -71,7 +71,7 @@ public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
         
         // invoke hook point for adding components through code
         ViewLifecycle.getHelper().addCustomContainerComponents(getPhase().getModel(),
-                (Container) getPhase().getComponent());
+                (Container) getPhase().getElement());
     }
 
 }

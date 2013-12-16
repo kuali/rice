@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.ToggleMenu;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * A navigation group which renders a menu with items, that is shown at the side of the page with collapse functionality
@@ -48,7 +49,7 @@ public class SidebarNavigationGroup extends GroupBase {
      * <p>{@inheritDoc}</p>
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         for (Component item: this.getItems()){

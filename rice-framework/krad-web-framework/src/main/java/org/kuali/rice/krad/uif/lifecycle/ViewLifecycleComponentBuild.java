@@ -169,10 +169,10 @@ public class ViewLifecycleComponentBuild implements Runnable {
         // set the sub collection id prefix from the original component (this is needed when the group being
         // refreshed is part of another collection)
         if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
+            List<CollectionGroup> origCollectionGroups = ViewLifecycleUtils.getElementsOfTypeShallow(
                     origComponent,
                     CollectionGroup.class);
-            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
+            List<CollectionGroup> collectionGroups = ViewLifecycleUtils.getElementsOfTypeShallow(newComponent,
                     CollectionGroup.class);
 
             for (int i = 0; i < collectionGroups.size(); i++) {
@@ -190,9 +190,9 @@ public class ViewLifecycleComponentBuild implements Runnable {
             }
 
             // Handle LightTables, as well
-            List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+            List<LightTable> origLightTables = ViewLifecycleUtils.getElementsOfTypeShallow(origComponent,
                     LightTable.class);
-            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent,
+            List<LightTable> lightTables = ViewLifecycleUtils.getElementsOfTypeShallow(newComponent,
                     LightTable.class);
 
             for (int i = 0; i < lightTables.size(); i++) {

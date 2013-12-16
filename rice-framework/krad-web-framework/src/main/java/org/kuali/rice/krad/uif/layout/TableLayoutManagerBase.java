@@ -51,6 +51,7 @@ import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Pager;
@@ -159,7 +160,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      */
     @Override
     public void performInitialization(Object model) {
-        CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getComponent();
+        CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
         
         if (collectionGroup.isReadOnly()) {
             addLineGroup.setReadOnly(true);
@@ -183,13 +184,11 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#performApplyModel(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component component) {
-        super.performApplyModel(model, component);
+    public void performApplyModel(Object model, LifecycleElement parent) {
+        super.performApplyModel(model, parent);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
@@ -197,17 +196,15 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#performFinalize(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component component) {
-        super.performFinalize(model, component);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
 
         UifFormBase formBase = (UifFormBase) model;
 
-        CollectionGroup collectionGroup = (CollectionGroup) component;
+        CollectionGroup collectionGroup = (CollectionGroup) parent;
 
         int totalColumns = getNumberOfDataColumns();
         if (renderSequenceField) {
@@ -226,7 +223,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
-            String highlightScript = "jQuery(\"#" + component.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
+            String highlightScript = "jQuery(\"#" + parent.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
             String onReadyScript = collectionGroup.getOnDocumentReadyScript();
             if (StringUtils.isNotBlank(onReadyScript)) {
                 highlightScript = onReadyScript + highlightScript;
@@ -1056,39 +1053,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(pagerWidget);
-        components.add(richTable);
-        components.add(addLineGroup);
-        components.addAll(headerLabels);
-        components.addAll(allRowFields);
-
-        if (columnCalculations != null) {
-            for (ColumnCalculationInfo cInfo : columnCalculations) {
-                components.add(cInfo.getTotalField());
-                components.add(cInfo.getPageTotalField());
-                components.add(cInfo.getGroupTotalFieldPrototype());
-            }
-        }
-
-        if (isShowToggleAllDetails()) {
-            components.add(toggleAllDetailsAction);
-        }
-
-        return components;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getColumnCalculationComponents()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getColumnCalculationComponents() {
@@ -1106,27 +1071,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
     
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.add(getHeaderLabelPrototype());
-        components.add(getSequenceFieldPrototype());
-        components.add(getActionFieldPrototype());
-        components.add(getSubCollectionFieldGroupPrototype());
-        components.add(getSelectFieldPrototype());
-
-        return components;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isUseShortLabels()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "useShortLabels")
@@ -1135,9 +1080,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setUseShortLabels(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setUseShortLabels(boolean useShortLabels) {
@@ -1145,9 +1088,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isRepeatHeader()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "repeatHeader")
@@ -1156,9 +1097,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRepeatHeader(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRepeatHeader(boolean repeatHeader) {
@@ -1166,9 +1105,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getHeaderLabelPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -1178,9 +1115,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setHeaderLabelPrototype(org.kuali.rice.krad.uif.element.Label)
+     * {@inheritDoc}
      */
     @Override
     public void setHeaderLabelPrototype(Label headerLabelPrototype) {
@@ -1188,9 +1123,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getHeaderLabels()
+     * {@inheritDoc}
      */
     @Override
     public List<Label> getHeaderLabels() {
@@ -1198,9 +1131,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isRenderSequenceField()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "renderSequenceField")
@@ -1209,9 +1140,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRenderSequenceField(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRenderSequenceField(boolean renderSequenceField) {
@@ -1219,9 +1148,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSequencePropertyName()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "sequencePropertyName")
@@ -1234,9 +1161,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSequencePropertyName(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setSequencePropertyName(String sequencePropertyName) {
@@ -1246,9 +1171,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isGenerateAutoSequence()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "generateAutoSequence")
@@ -1257,9 +1180,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setGenerateAutoSequence(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setGenerateAutoSequence(boolean generateAutoSequence) {
@@ -1267,9 +1188,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSequenceFieldPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -1279,9 +1198,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSequenceFieldPrototype(org.kuali.rice.krad.uif.field.Field)
+     * {@inheritDoc}
      */
     @Override
     public void setSequenceFieldPrototype(Field sequenceFieldPrototype) {
@@ -1289,9 +1206,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getActionFieldPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -1301,9 +1216,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setActionFieldPrototype(org.kuali.rice.krad.uif.field.FieldGroup)
+     * {@inheritDoc}
      */
     @Override
     public void setActionFieldPrototype(FieldGroup actionFieldPrototype) {
@@ -1311,9 +1224,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSubCollectionFieldGroupPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -1323,9 +1234,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSubCollectionFieldGroupPrototype(org.kuali.rice.krad.uif.field.FieldGroup)
+     * {@inheritDoc}
      */
     @Override
     public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
@@ -1333,9 +1242,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSelectFieldPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -1345,9 +1252,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSelectFieldPrototype(org.kuali.rice.krad.uif.field.Field)
+     * {@inheritDoc}
      */
     @Override
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
@@ -1355,9 +1260,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isSeparateAddLine()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "separateAddLine")
@@ -1366,9 +1269,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSeparateAddLine(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setSeparateAddLine(boolean separateAddLine) {
@@ -1376,9 +1277,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getAddLineGroup()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1387,9 +1286,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setAddLineGroup(org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
     @Override
     public void setAddLineGroup(Group addLineGroup) {
@@ -1397,9 +1294,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getAllRowFields()
+     * {@inheritDoc}
      */
     @Override
     public List<Field> getAllRowFields() {
@@ -1407,9 +1302,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getFirstRowFields()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
@@ -1418,9 +1311,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getPagerWidget()
+     * {@inheritDoc}
      */
     @Override
     public Pager getPagerWidget() {
@@ -1428,9 +1319,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setPagerWidget(org.kuali.rice.krad.uif.widget.Pager)
+     * {@inheritDoc}
      */
     @Override
     public void setPagerWidget(Pager pagerWidget) {
@@ -1438,9 +1327,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getRichTable()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1449,9 +1336,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRichTable(org.kuali.rice.krad.uif.widget.RichTable)
+     * {@inheritDoc}
      */
     @Override
     public void setRichTable(RichTable richTable) {
@@ -1459,9 +1344,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getNumberOfDataColumns()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "numberOfDataColumns")
@@ -1470,9 +1353,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setNumberOfDataColumns(int)
+     * {@inheritDoc}
      */
     @Override
     public void setNumberOfDataColumns(int numberOfDataColumns) {
@@ -1480,9 +1361,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getHiddenColumns()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
@@ -1495,9 +1374,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setHiddenColumns(java.util.Set)
+     * {@inheritDoc}
      */
     @Override
     public void setHiddenColumns(Set<String> hiddenColumns) {
@@ -1507,9 +1384,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSortableColumns()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
@@ -1522,9 +1397,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setSortableColumns(java.util.Set)
+     * {@inheritDoc}
      */
     @Override
     public void setSortableColumns(Set<String> sortableColumns) {
@@ -1534,9 +1407,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getActionColumnIndex()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "actionColumnIndex")
@@ -1545,9 +1416,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getActionColumnPlacement()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "actionColumnPlacement")
@@ -1556,9 +1425,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setActionColumnPlacement(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setActionColumnPlacement(String actionColumnPlacement) {
@@ -1574,9 +1441,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getRowDetailsGroup()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
@@ -1586,9 +1451,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRowDetailsGroup(org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
     @Override
     public void setRowDetailsGroup(Group rowDetailsGroup) {
@@ -1654,9 +1517,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getColumnsToCalculate()
+     * {@inheritDoc}
      */
     @Override
     public List<String> getColumnsToCalculate() {
@@ -1664,9 +1525,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isShowTotal()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "showTotal")
@@ -1675,9 +1534,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setShowTotal(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setShowTotal(boolean showTotal) {
@@ -1685,9 +1542,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isShowPageTotal()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "showPageTotal")
@@ -1696,9 +1551,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setShowPageTotal(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setShowPageTotal(boolean showPageTotal) {
@@ -1706,9 +1559,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isShowGroupTotal()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "showGroupTotal")
@@ -1717,9 +1568,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setShowGroupTotal(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setShowGroupTotal(boolean showGroupTotal) {
@@ -1727,9 +1576,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getTotalLabel()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "totalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1738,9 +1585,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setTotalLabel(org.kuali.rice.krad.uif.element.Label)
+     * {@inheritDoc}
      */
     @Override
     public void setTotalLabel(Label totalLabel) {
@@ -1748,9 +1593,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getPageTotalLabel()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "pageTotalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1759,9 +1602,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setPageTotalLabel(org.kuali.rice.krad.uif.element.Label)
+     * {@inheritDoc}
      */
     @Override
     public void setPageTotalLabel(Label pageTotalLabel) {
@@ -1769,9 +1610,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getGroupTotalLabelPrototype()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "groupTotalLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1780,9 +1619,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setGroupTotalLabelPrototype(org.kuali.rice.krad.uif.element.Label)
+     * {@inheritDoc}
      */
     @Override
     public void setGroupTotalLabelPrototype(Label groupTotalLabelPrototype) {
@@ -1790,9 +1627,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getColumnCalculations()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "columnCalculations", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -1801,9 +1636,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setColumnCalculations(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setColumnCalculations(List<ColumnCalculationInfo> columnCalculations) {
@@ -1811,9 +1644,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isRenderOnlyLeftTotalLabels()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "renderOnlyLeftTotalLabels")
@@ -1822,9 +1653,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRenderOnlyLeftTotalLabels(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRenderOnlyLeftTotalLabels(boolean renderOnlyLeftTotalLabels) {
@@ -1832,9 +1661,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getFooterCalculationComponents()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
@@ -1843,9 +1670,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getGroupingPropertyNames()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "groupingPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -1854,9 +1679,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setGroupingPropertyNames(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setGroupingPropertyNames(List<String> groupingPropertyNames) {
@@ -1864,9 +1687,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getGroupingTitle()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "groupingTitle")
@@ -1875,9 +1696,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setGroupingTitle(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setGroupingTitle(String groupingTitle) {
@@ -1891,9 +1710,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getGroupingPrefix()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "groupingPrefix")
@@ -1902,9 +1719,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setGroupingPrefix(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setGroupingPrefix(String groupingPrefix) {
@@ -1912,9 +1727,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isRowDetailsOpen()
+     * {@inheritDoc}
      */
     @Override
     public boolean isRowDetailsOpen() {
@@ -1922,9 +1735,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setRowDetailsOpen(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRowDetailsOpen(boolean rowDetailsOpen) {
@@ -1932,9 +1743,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isShowToggleAllDetails()
+     * {@inheritDoc}
      */
     @Override
     public boolean isShowToggleAllDetails() {
@@ -1942,9 +1751,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setShowToggleAllDetails(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setShowToggleAllDetails(boolean showToggleAllDetails) {
@@ -1952,9 +1759,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getToggleAllDetailsAction()
+     * {@inheritDoc}
      */
     @Override
     public Action getToggleAllDetailsAction() {
@@ -1962,9 +1767,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setToggleAllDetailsAction(org.kuali.rice.krad.uif.element.Action)
+     * {@inheritDoc}
      */
     @Override
     public void setToggleAllDetailsAction(Action toggleAllDetailsAction) {
@@ -1972,9 +1775,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#isAjaxDetailsRetrieval()
+     * {@inheritDoc}
      */
     @Override
     public boolean isAjaxDetailsRetrieval() {
@@ -1982,9 +1783,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setAjaxDetailsRetrieval(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setAjaxDetailsRetrieval(boolean ajaxDetailsRetrieval) {
@@ -1992,9 +1791,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getExpandDetailsActionPrototype()
+     * {@inheritDoc}
      */
     @Override
     public Action getExpandDetailsActionPrototype() {
@@ -2002,9 +1799,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getGroupingColumnIndex()
+     * {@inheritDoc}
      */
     @Override
     public int getGroupingColumnIndex() {
@@ -2012,9 +1807,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setExpandDetailsActionPrototype(org.kuali.rice.krad.uif.element.Action)
+     * {@inheritDoc}
      */
     @Override
     public void setExpandDetailsActionPrototype(Action expandDetailsActionPrototype) {

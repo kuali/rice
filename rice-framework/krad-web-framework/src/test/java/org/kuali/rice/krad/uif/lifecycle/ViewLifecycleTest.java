@@ -181,13 +181,13 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Test
     public void testPerformanceMediumAll() throws Throwable {
         KradLabsForm form = new KradLabsForm();
-        View view = testFormView(form, "Lab-PerformanceMedium", "u9f5hlk");
+        View view = testFormView(form, "Lab-PerformanceMedium", "u14a9ysq");
 
         form.setPostedView(view);
         form.setView(null);
 
         String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();
-        assertEquals("u9f5hlk", tableId);
+        assertEquals("u14a9ysq", tableId);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

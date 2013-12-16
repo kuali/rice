@@ -15,20 +15,14 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Queue;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AddComponentStateToViewIndexTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.HelperCustomInitializeTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Lifecycle phase processing task for initializing a component.
@@ -93,19 +87,8 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
         tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
-
-        if (!(getComponent() instanceof View)) {
-            tasks.offer(LifecycleTaskFactory.getTask(AddComponentStateToViewIndexTask.class, this));
-        }
-
-        tasks.offer(LifecycleTaskFactory.getTask(PopulateComponentFromExpressionGraphTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(ComponentDefaultInitializeTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, this));
-
-        getComponent().initializePendingTasks(this, tasks);
-
+        getElement().initializePendingTasks(this, tasks);
         tasks.offer(LifecycleTaskFactory.getTask(HelperCustomInitializeTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
     }
 
     /**
@@ -114,21 +97,21 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        Component component = getComponent();
+        LifecycleElement element = getElement();
         Object model = getModel();
 
         // initialize nested components
         int index = 0;
 
-        for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
-                getViewPhase()).entrySet()) {
+        for (Entry<String, LifecycleElement> nestedElementEntry :
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
             String path = getPath();
-            String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
-            Component nestedComponent = nestedComponentEntry.getValue();
+            String nestedPath = (path == null ? "" : path + ".") + nestedElementEntry.getKey();
+            LifecycleElement nestedElement = nestedElementEntry.getValue();
 
-            if (nestedComponent != null && !nestedComponent.isInitialized()) {
+            if (nestedElement != null && !nestedElement.isInitialized()) {
                 successors.offer(LifecyclePhaseFactory.initialize(
-                        nestedComponent, model, index++, nestedPath, null, null));
+                        nestedElement, model, index++, nestedPath, null, null));
             }
         }
     }

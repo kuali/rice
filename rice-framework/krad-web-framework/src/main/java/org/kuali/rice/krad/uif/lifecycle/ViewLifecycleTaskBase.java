@@ -96,8 +96,8 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
 
                 if (ProcessLogger.isTraceActive()) {
                     ProcessLogger.countEnd("lc-task-" + phase.getViewPhase(), getClass().getName() + " "
-                            + phase.getClass().getName() + " " + phase.getComponent().getClass().getName() + " "
-                            + phase.getComponent().getId());
+                            + phase.getClass().getName() + " " + phase.getElement().getClass().getName() + " "
+                            + phase.getElement().getId());
                 }
             }
 
@@ -123,8 +123,8 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + " " + getPhase().getComponent().getClass().getSimpleName()
-                + " " + getPhase().getComponent().getId();
+                + " " + getPhase().getElement().getClass().getSimpleName()
+                + " " + getPhase().getElement().getId();
     }
 
 }

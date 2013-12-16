@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.layout.GridLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -256,7 +257,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     protected boolean performValueComparison(Group group, Component compareItem, Object model,
             String compareValueObjectBindingPath) {
         // get any attribute fields for the item so we can compare the values
-        List<DataField> itemFields = ComponentUtils.getComponentsOfTypeDeep(compareItem, DataField.class);
+        List<DataField> itemFields = ViewLifecycleUtils.getElementsOfTypeDeep(compareItem, DataField.class);
         boolean valueChanged = false;
         for (DataField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();

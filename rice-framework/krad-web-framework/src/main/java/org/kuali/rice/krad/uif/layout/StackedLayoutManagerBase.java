@@ -36,7 +36,9 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -92,9 +94,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#performInitialization(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -104,12 +104,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#performApplyModel(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component component) {
+    public void performApplyModel(Object model, LifecycleElement component) {
         super.performApplyModel(model, component);
 
         if (wrapperGroup != null) {
@@ -118,19 +116,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#performFinalize(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component container) {
-        super.performFinalize(model, container);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
 
         // Calculate the number of pages for the pager widget if we are using server paging
-        if (container instanceof CollectionGroup
-                && ((CollectionGroup) container).isUseServerPaging()
+        if (parent instanceof CollectionGroup
+                && ((CollectionGroup) parent).isUseServerPaging()
                 && this.getPagerWidget() != null) {
-            CollectionGroup collectionGroup = (CollectionGroup) container;
+            CollectionGroup collectionGroup = (CollectionGroup) parent;
 
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
@@ -138,9 +134,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#buildLine(java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.util.List, java.util.List, java.lang.String, java.util.List, java.lang.String, java.lang.Object, int)
+     * {@inheritDoc}
      */
     @Override
     public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
@@ -178,7 +172,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
 
         // any actions that are attached to the group prototype (like the header) need to get action parameters
         // and context set for the collection line
-        List<Action> lineGroupActions = ComponentUtils.getComponentsOfTypeDeep(lineGroup, Action.class);
+        List<Action> lineGroupActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineGroup, Action.class);
         if (lineGroupActions != null) {
             collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup, lineIndex);
             ComponentUtils.updateContextsForLine(lineGroupActions, currentLine, lineIndex, idSuffix);
@@ -287,48 +281,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getComponentsForLifecycle()
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (wrapperGroup != null) {
-            components.add(wrapperGroup);
-        } else {
-            components.addAll(stackedGroups);
-        }
-
-        if (pagerWidget != null) {
-            components.add(pagerWidget);
-        }
-
-        return components;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getComponentPrototypes()
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.add(addLineGroup);
-        components.add(lineGroupPrototype);
-        components.add(subCollectionFieldGroupPrototype);
-        components.add(selectFieldPrototype);
-
-        return components;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getSummaryTitle()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "summaryTitle")
@@ -337,9 +290,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setSummaryTitle(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setSummaryTitle(String summaryTitle) {
@@ -347,9 +298,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getSummaryFields()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "summaryFields", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -358,9 +307,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setSummaryFields(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setSummaryFields(List<String> summaryFields) {
@@ -368,9 +315,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getAddLineGroup()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -380,9 +325,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setAddLineGroup(org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
     @Override
     public void setAddLineGroup(Group addLineGroup) {
@@ -390,9 +333,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getLineGroupPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -402,9 +343,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setLineGroupPrototype(org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
     @Override
     public void setLineGroupPrototype(Group lineGroupPrototype) {
@@ -412,9 +351,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getSubCollectionFieldGroupPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -424,9 +361,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setSubCollectionFieldGroupPrototype(org.kuali.rice.krad.uif.field.FieldGroup)
+     * {@inheritDoc}
      */
     @Override
     public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
@@ -434,9 +369,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getSelectFieldPrototype()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -446,9 +379,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setSelectFieldPrototype(org.kuali.rice.krad.uif.field.Field)
+     * {@inheritDoc}
      */
     @Override
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
@@ -456,9 +387,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getWrapperGroup()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "wrapperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -467,9 +396,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setWrapperGroup(org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
     @Override
     public void setWrapperGroup(Group wrapperGroup) {
@@ -477,9 +404,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getPagerWidget()
+     * {@inheritDoc}
      */
     @Override
     public Pager getPagerWidget() {
@@ -487,9 +412,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setPagerWidget(org.kuali.rice.krad.uif.widget.Pager)
+     * {@inheritDoc}
      */
     @Override
     public void setPagerWidget(Pager pagerWidget) {
@@ -497,9 +420,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getStackedGroups()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
@@ -509,9 +430,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getStackedGroupsNoWrapper()
+     * {@inheritDoc}
      */
     @Override
     public List<Group> getStackedGroupsNoWrapper() {
@@ -519,9 +438,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setStackedGroups(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setStackedGroups(List<Group> stackedGroups) {
@@ -529,9 +446,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#isActionsInLineGroup()
+     * {@inheritDoc}
      */
     @Override
     public boolean isActionsInLineGroup() {
@@ -539,9 +454,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#setActionsInLineGroup(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setActionsInLineGroup(boolean actionsInLineGroup) {
@@ -549,7 +462,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {

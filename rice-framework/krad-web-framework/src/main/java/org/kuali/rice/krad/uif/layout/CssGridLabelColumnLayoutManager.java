@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -22,10 +25,8 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A Css Grid Layout which only takes fields as its content and separates out the field's labels into
@@ -49,7 +50,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(Object model, Component component) {
+    public void performFinalize(Object model, LifecycleElement component) {
         super.performFinalize(model, component);
 
         Container container = (Container) component;

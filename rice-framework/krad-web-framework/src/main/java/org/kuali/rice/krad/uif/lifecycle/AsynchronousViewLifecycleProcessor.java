@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
@@ -62,8 +62,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     private static final ThreadLocal<AsynchronousLifecyclePhase> ACTIVE_PHASE =
             new ThreadLocal<AsynchronousLifecyclePhase>();
     
-    private static final Map<Component, AsynchronousLifecyclePhase> BUSY_COMPONENTS =
-            new IdentityHashMap<Component, AsynchronousLifecyclePhase>();
+    private static final Map<LifecycleElement, AsynchronousLifecyclePhase> BUSY_ELEMENTS =
+            new IdentityHashMap<LifecycleElement, AsynchronousLifecyclePhase>();
 
     private static Integer minThreads;
     private static Integer maxThreads;
@@ -285,9 +285,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase aphase = getAsynchronousPhase(phase);
-        if (phase.getStartViewStatus().equals(phase.getComponent().getViewStatus())) {
-            synchronized (BUSY_COMPONENTS) {
-                BUSY_COMPONENTS.put(phase.getComponent(), aphase);
+        if (phase.getStartViewStatus().equals(phase.getElement().getViewStatus())) {
+            synchronized (BUSY_ELEMENTS) {
+                BUSY_ELEMENTS.put(phase.getElement(), aphase);
             }
         }
 
@@ -305,9 +305,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     @Override
     public void offerPendingPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase aphase = getAsynchronousPhase(phase);
-        if (phase.getStartViewStatus().equals(phase.getComponent().getViewStatus())) {
-            synchronized (BUSY_COMPONENTS) {
-                BUSY_COMPONENTS.put(phase.getComponent(), aphase);
+        if (phase.getStartViewStatus().equals(phase.getElement().getViewStatus())) {
+            synchronized (BUSY_ELEMENTS) {
+                BUSY_ELEMENTS.put(phase.getElement(), aphase);
             }
         }
 
@@ -461,8 +461,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                     continue;
                 }
 
-                Component comp = phase.getComponent();
-                AsynchronousLifecyclePhase busyPhase = BUSY_COMPONENTS.get(comp);
+                LifecycleElement element = phase.getElement();
+                AsynchronousLifecyclePhase busyPhase = BUSY_ELEMENTS.get(element);
                 if (busyPhase != null && busyPhase != aphase) {
                     // Another phase is already active on this component, requeue
                     synchronized (PENDING_PHASE_QUEUE) {
@@ -505,8 +505,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                         aphase.processor.expressionEvaluatorPool.offer(expressionEvaluator);
                     }
 
-                    synchronized (BUSY_COMPONENTS) {
-                        BUSY_COMPONENTS.remove(comp);
+                    synchronized (BUSY_ELEMENTS) {
+                        BUSY_ELEMENTS.remove(element);
                     }
                     GlobalVariables.popGlobalVariables();
                     ViewLifecycle.setProcessor(null);

@@ -346,9 +346,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#setItems(java.util.List)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override

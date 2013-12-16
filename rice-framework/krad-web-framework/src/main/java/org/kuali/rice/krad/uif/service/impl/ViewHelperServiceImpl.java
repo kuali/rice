@@ -52,15 +52,15 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -235,34 +235,34 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Hook for service overrides to perform custom apply model logic on the component
      * 
-     * @param component component instance to apply model to
+     * @param element element to apply model to
      * @param model Top level object containing the data (could be the model or a top level business
      *        object, dto)
      */
     @Override
-    public void performCustomApplyModel(Component component, Object model) {
+    public void performCustomApplyModel(LifecycleElement element, Object model) {
         
     }
 
     /**
-     * Hook for service overrides to perform custom component finalization
+     * Hook for service overrides to perform custom finalization
      * 
-     * @param component component instance to update
+     * @param element element instance to update
      * @param model Top level object containing the data
      * @param parent Parent component for the component being finalized
      */
     @Override
-    public void performCustomFinalize(Component component, Object model, Component parent) {
+    public void performCustomFinalize(LifecycleElement element, Object model, LifecycleElement parent) {
         
     }
 
     /**
-     * Hook for service overrides to perform custom initialization on the component
+     * Hook for service overrides to perform custom initialization on the element
      * 
-     * @param component component instance to initialize
+     * @param element element to initialize
      */
     @Override
-    public void performCustomInitialization(Component component) {
+    public void performCustomInitialization(LifecycleElement element) {
         
     }
 
@@ -292,10 +292,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * 
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    private static class ComponentState {
+    private static class ElementState {
         private int hash = -1;
         private String path;
-        private Component component;
+        private LifecycleElement element;
     }
     
     /**
@@ -306,14 +306,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param copy The copy of the component, for storage as initial component.
      * @return component state helper
      */
-    private static ComponentState getComponentState(int hash, String path, Component component) {
-        ComponentState rv = RecycleUtils.getRecycledInstance(ComponentState.class);
+    private static ElementState getComponentState(int hash, String path, LifecycleElement component) {
+        ElementState rv = RecycleUtils.getRecycledInstance(ElementState.class);
         if (rv == null) {
-            rv = new ComponentState();
+            rv = new ElementState();
         }
         rv.hash = hash;
         rv.path = path;
-        rv.component = component;
+        rv.element = component;
         return rv;
     }
 
@@ -322,10 +322,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * 
      * @param state The component state helper to recycle.
      */
-    private static void recycle(ComponentState state) {
+    private static void recycle(ElementState state) {
         state.hash = -1;
         state.path = null;
-        state.component = null;
+        state.element = null;
         RecycleUtils.recycle(state);
     }
 
@@ -335,7 +335,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void preprocessView(View view) {
         @SuppressWarnings("unchecked")
-        Queue<ComponentState> tailQueue = RecycleUtils.getInstance(LinkedList.class);
+        Queue<ElementState> tailQueue = RecycleUtils.getInstance(LinkedList.class);
         
         // Calculate a hash code based on the path to the top of the phase tree
         // without building a string.
@@ -348,19 +348,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             while (!tailQueue.isEmpty()) {
 
                 // Poll the queue for the next phase to calculate
-                ComponentState componentState = tailQueue.poll();
+                ElementState elementState = tailQueue.poll();
 
                 // Include the class name and ID of the component
                 // at the current phase to the hash
-                Component component = componentState.component;
-                int hash = componentState.hash * prime;
-                hash += componentState.path.hashCode();
+                LifecycleElement element = elementState.element;
+                int hash = elementState.hash * prime;
+                hash += elementState.path.hashCode();
 
-                if (component != null) {
+                if (element != null) {
                     hash *= prime;
-                    hash += component.getClass().getName().hashCode();
+                    hash += element.getClass().getName().hashCode();
 
-                    String id = component.getId();
+                    String id = element.getId();
                     if (id != null) {
                         hash *= prime;
                         hash += id.hashCode();
@@ -380,48 +380,38 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                         } while (!viewIndex.observeAssignedId(id));
 
                         // Set the ID on the component, if not already set.
-                        component.setId(UifConstants.COMPONENT_ID_PREFIX + id);
+                        element.setId(UifConstants.COMPONENT_ID_PREFIX + id);
                     }
                     
-                    if (component instanceof Container) {
-                        Container container = (Container) component;
+                    if (element instanceof Container) {
+                        Container container = (Container) element;
                         container.sortItems();
-                        LayoutManager manager = container.getLayoutManager();
-                        if (manager != null) {
-                            id = manager.getId();
-                            if (id == null) {
-                                do {
-                                    // Iteratively take the product of the hash and another large prime
-                                    hash *= 4507; // until a unique ID has been generated.
-                                    // The use of large primes will minimize collisions, reducing the
-                                    // likelihood of race conditions leading to components coming out
-                                    // with different IDs on different server instances and/or test runs.
-
-                                    // Eliminate negatives without losing precision, and express in base-36
-                                    id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
-
-                                    // Use the view index to detect collisions, keep looping until an
-                                    // id unique to the current view has been generated.
-                                } while (!viewIndex.observeAssignedId(id));
-
-                                // Set the ID on the component, if not already set.
-                                manager.setId(UifConstants.COMPONENT_ID_PREFIX + id);
-                            }
-                        }
                     }
                 }
                 
-                for (Entry<String, Component> nestedEntry : component.getComponentsForLifecycle().entrySet()) {
-                    tailQueue.offer(getComponentState(hash, componentState.path 
-                            + (StringUtils.isEmpty(componentState.path) ? "" : ".")
+                for (Entry<String, LifecycleElement> nestedEntry :
+                    ViewLifecycleUtils.getElementsForLifecycle(element).entrySet()) {
+                    tailQueue.offer(getComponentState(hash, elementState.path 
+                            + (StringUtils.isEmpty(elementState.path) ? "" : ".")
                             + nestedEntry.getKey(), nestedEntry.getValue()));
                 }
 
-                component.setBaseId(component.getId());
-                component.preventModification();
-                viewIndex.addInitialComponentStateIfNeeded(component);
+                if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
+                    String msg = getClass() + " preprocess " + elementState.path + " " +
+                            (element == null ? "(recycled)" : element.getClass() + " " + element.getId());
+                    LOG.debug(msg);
+                }
 
-                recycle(componentState);
+                if (element instanceof Component) {
+                    Component component = (Component) element;
+                    component.setBaseId(component.getId());
+                    component.preventModification();
+                    viewIndex.addInitialComponentStateIfNeeded(component);
+                } else {
+                    element.preventModification();
+                }
+
+                recycle(elementState);
             }
         } finally {
             // Ensure that the recursion queue is clear to prevent
@@ -869,7 +859,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void applyDefaultValuesForCollectionLine(CollectionGroup collectionGroup, Object line) {
         // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineItems(),
+        List<DataField> dataFields = ViewLifecycleUtils.getElementsOfTypeDeep(collectionGroup.getAddLineItems(),
                 DataField.class);
         for (DataField dataField : dataFields) {
             String bindingPath = "";
@@ -896,19 +886,26 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         View view = ViewLifecycle.getView();
         Object model = ViewLifecycle.getModel();
-        
-        // if component is a data field apply default value
-        if (component instanceof DataField) {
-            DataField dataField = ((DataField) component);
 
-            // need to make sure binding is initialized since this could be on a page we have not initialized yet
-            dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        try {
+            LifecycleElement currentElement = elementQueue.poll();
+            
+            // if component is a data field apply default value
+            if (currentElement instanceof DataField) {
+                DataField dataField = ((DataField) currentElement);
 
-            populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
-        }
+                // need to make sure binding is initialized since this could be on a page we have not initialized yet
+                dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
 
-        for (Component nested : component.getComponentsForLifecycle().values()) {
-            applyDefaultValues(nested);
+                populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
+            }
+
+            elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 

@@ -27,12 +27,12 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
@@ -58,7 +58,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (!(parent instanceof InputField)) {

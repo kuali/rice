@@ -18,12 +18,11 @@ package org.kuali.rice.krad.uif.lifecycle.model;
 import java.util.Map;
 
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
 * * Push attributes to the component context.
@@ -54,26 +53,20 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
-        Component parent = getPhase().getParent();
+        LifecycleElement element = getPhase().getElement();
+        LifecycleElement parent = getPhase().getParent();
         Map<String, Object> commonContext = getPhase().getCommonContext();
         
         if (parent != null) {
-            component.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
+            element.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);
         }
 
         // set context on component for evaluating expressions
-        component.pushAllToContext(commonContext);
+        element.pushAllToContext(commonContext);
 
         // set context evaluate expressions on the layout manager
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if (layoutManager != null) {
-                layoutManager.pushAllToContext(commonContext);
-                layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
-                layoutManager.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, layoutManager);
-            }
+        if (element instanceof LayoutManager) {
+            element.pushObjectToContext(UifConstants.ContextVariableNames.MANAGER, element);
         }
     }
 

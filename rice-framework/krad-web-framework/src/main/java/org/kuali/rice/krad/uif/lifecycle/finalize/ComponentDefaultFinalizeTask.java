@@ -50,7 +50,7 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         FinalizeComponentPhase phase = getPhase();
-        phase.getComponent().performFinalize(phase.getModel(), phase.getParent());
+        phase.getElement().performFinalize(phase.getModel(), phase.getParent());
     }
 
 }

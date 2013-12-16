@@ -43,8 +43,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -263,12 +265,12 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
         collectionPath += getBindingInfo().getBindingName();
 
-        List<DataField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(), DataField.class);
+        List<DataField> collectionFields = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), DataField.class);
         for (DataField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 
-        List<DataField> addLineCollectionFields = ComponentUtils.getComponentsOfTypeDeep(addLineItems, DataField.class);
+        List<DataField> addLineCollectionFields = ViewLifecycleUtils.getElementsOfTypeDeep(addLineItems, DataField.class);
         for (DataField collectionField : addLineCollectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
@@ -289,7 +291,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * @see org.kuali.rice.krad.uif.container.CollectionGroup#performApplyModel(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         // If we are using server paging, determine if a displayStart value has been set for this collection
@@ -361,15 +363,11 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * instance, and sets name as parameter for an action fields in the group
      */
     public void pushCollectionGroupToReference() {
-        Collection<Component> components;
-        synchronized (this) {
-            resetComponentsForLifecycle();
-            components = getComponentsForLifecycle().values();
-        }
+        Collection<LifecycleElement> components = ViewLifecycleUtils.getElementsForLifecycle(this).values();
         ComponentUtils.pushObjectToContext(components,
                 UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(components, Action.class);
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(components, Action.class);
         for (Action action : actions) {
             action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
         }
@@ -644,9 +642,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
@@ -656,9 +652,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddLineActions(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setAddLineActions(List<? extends Component> addLineActions) {
@@ -666,9 +660,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "includeLineSelectionField")
@@ -677,9 +669,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setIncludeLineSelectionField(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setIncludeLineSelectionField(boolean includeLineSelectionField) {
@@ -687,9 +677,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "lineSelectPropertyName")
@@ -698,9 +686,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setLineSelectPropertyName(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setLineSelectPropertyName(String lineSelectPropertyName) {
@@ -708,9 +694,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getCollectionLookup()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "collectionLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -719,9 +703,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setCollectionLookup(org.kuali.rice.krad.uif.widget.QuickFinder)
+     * {@inheritDoc}
      */
     @Override
     public void setCollectionLookup(QuickFinder collectionLookup) {
@@ -729,9 +711,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isShowInactiveLines()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "showInactiveLines")
@@ -740,9 +720,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setShowInactiveLines(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setShowInactiveLines(boolean showInactiveLines) {
@@ -750,9 +728,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getActiveCollectionFilter()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "activeCollectionFilter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -761,9 +737,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setActiveCollectionFilter(org.kuali.rice.krad.uif.container.CollectionFilter)
+     * {@inheritDoc}
      */
     @Override
     public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
@@ -771,9 +745,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getFilters()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "filters", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -782,9 +754,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setFilters(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setFilters(List<CollectionFilter> filters) {
@@ -792,9 +762,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getUnauthorizedLineBindingInfos()
+     * {@inheritDoc}
      */
     @Override
     public List<BindingInfo> getUnauthorizedLineBindingInfos() {
@@ -802,9 +770,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setUnauthorizedLineBindingInfos(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setUnauthorizedLineBindingInfos(List<BindingInfo> unauthorizedLineBindingInfos) {
@@ -835,9 +801,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getSubCollectionSuffix()
+     * {@inheritDoc}
      */
     @Override
     public String getSubCollectionSuffix() {
@@ -845,9 +809,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setSubCollectionSuffix(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setSubCollectionSuffix(String subCollectionSuffix) {
@@ -855,9 +817,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getCollectionGroupSecurity()
+     * {@inheritDoc}
      */
     @Override
     public CollectionGroupSecurity getCollectionGroupSecurity() {
@@ -865,9 +825,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
+     * {@inheritDoc}
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
@@ -880,7 +838,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
+     * {@inheritDoc}
      */
     @Override
     protected void initializeComponentSecurity() {
@@ -890,9 +848,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isEditLineAuthz()
+     * {@inheritDoc}
      */
     @Override
     public boolean isEditLineAuthz() {
@@ -902,9 +858,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setEditLineAuthz(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setEditLineAuthz(boolean editLineAuthz) {
@@ -914,9 +868,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isViewLineAuthz()
+     * {@inheritDoc}
      */
     @Override
     public boolean isViewLineAuthz() {
@@ -926,9 +878,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setViewLineAuthz(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setViewLineAuthz(boolean viewLineAuthz) {
@@ -938,9 +888,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getCollectionGroupBuilder()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "collectionGroupBuilder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -952,9 +900,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setCollectionGroupBuilder(org.kuali.rice.krad.uif.container.CollectionGroupBuilder)
+     * {@inheritDoc}
      */
     @Override
     public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {
@@ -962,9 +908,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setRenderInactiveToggleButton(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRenderInactiveToggleButton(boolean renderInactiveToggleButton) {
@@ -972,9 +916,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isRenderInactiveToggleButton()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "renderInactiveToggleButton")
@@ -983,9 +925,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getDisplayCollectionSize()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "displayCollectionSize")
@@ -994,9 +934,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setDisplayCollectionSize(int)
+     * {@inheritDoc}
      */
     @Override
     public void setDisplayCollectionSize(int displayCollectionSize) {
@@ -1004,9 +942,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isHighlightNewItems()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "highlightNewItems")
@@ -1015,9 +951,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setHighlightNewItems(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setHighlightNewItems(boolean highlightNewItems) {
@@ -1025,9 +959,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getNewItemsCssClass()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "newItemsCssClass")
@@ -1036,9 +968,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setNewItemsCssClass(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setNewItemsCssClass(String newItemsCssClass) {
@@ -1046,9 +976,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getAddItemCssClass()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addItemCssClass")
@@ -1057,9 +985,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddItemCssClass(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setAddItemCssClass(String addItemCssClass) {
@@ -1067,9 +993,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isHighlightAddItem()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "highlightAddItem")
@@ -1078,9 +1002,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setHighlightAddItem(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setHighlightAddItem(boolean highlightAddItem) {
@@ -1088,9 +1010,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isRenderAddBlankLineButton()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "renderAddBlankLineButton")
@@ -1099,9 +1019,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setRenderAddBlankLineButton(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
@@ -1109,9 +1027,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getAddBlankLineAction()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addBlankLineAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1120,9 +1036,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddBlankLineAction(org.kuali.rice.krad.uif.element.Action)
+     * {@inheritDoc}
      */
     @Override
     public void setAddBlankLineAction(Action addBlankLineAction) {
@@ -1130,9 +1044,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getAddLinePlacement()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addLinePlacement")
@@ -1141,9 +1053,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddLinePlacement(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setAddLinePlacement(String addLinePlacement) {
@@ -1151,9 +1061,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isRenderSaveLineActions()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "renderSaveLineActions")
@@ -1162,9 +1070,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setRenderSaveLineActions(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRenderSaveLineActions(boolean renderSaveLineActions) {
@@ -1172,9 +1078,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isAddViaLightBox()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addViaLightBox")
@@ -1183,9 +1087,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddViaLightBox(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setAddViaLightBox(boolean addViaLightBox) {
@@ -1193,9 +1095,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getAddViaLightBoxAction()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "addViaLightBoxAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1204,9 +1104,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setAddViaLightBoxAction(org.kuali.rice.krad.uif.element.Action)
+     * {@inheritDoc}
      */
     @Override
     public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
@@ -1214,9 +1112,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isUseServerPaging()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "useServerPaging")
@@ -1225,9 +1121,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setUseServerPaging(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setUseServerPaging(boolean useServerPaging) {
@@ -1235,9 +1129,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getPageSize()
+     * {@inheritDoc}
      */
     @Override
     public int getPageSize() {
@@ -1245,9 +1137,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setPageSize(int)
+     * {@inheritDoc}
      */
     @Override
     public void setPageSize(int pageSize) {
@@ -1255,9 +1145,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getDisplayStart()
+     * {@inheritDoc}
      */
     @Override
     public int getDisplayStart() {
@@ -1265,9 +1153,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setDisplayStart(int)
+     * {@inheritDoc}
      */
     @Override
     public void setDisplayStart(int displayStart) {
@@ -1275,9 +1161,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getDisplayLength()
+     * {@inheritDoc}
      */
     @Override
     public int getDisplayLength() {
@@ -1285,9 +1169,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setDisplayLength(int)
+     * {@inheritDoc}
      */
     @Override
     public void setDisplayLength(int displayLength) {
@@ -1295,9 +1177,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#getFilteredCollectionSize()
+     * {@inheritDoc}
      */
     @Override
     public int getFilteredCollectionSize() {
@@ -1305,9 +1185,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.CollectionGroup#setFilteredCollectionSize(int)
+     * {@inheritDoc}
      */
     @Override
     public void setFilteredCollectionSize(int filteredCollectionSize) {
@@ -1332,7 +1210,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

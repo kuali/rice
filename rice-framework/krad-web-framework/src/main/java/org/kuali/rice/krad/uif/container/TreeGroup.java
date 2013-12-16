@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 /**
@@ -87,7 +88,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         buildTreeGroups(model);

@@ -50,7 +50,7 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke service override hook
-        ViewLifecycle.getHelper().performCustomFinalize(getPhase().getComponent(), getPhase().getModel(),
+        ViewLifecycle.getHelper().performCustomFinalize(getPhase().getElement(), getPhase().getModel(),
                 getPhase().getParent());
     }
 

@@ -25,9 +25,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element
@@ -54,7 +54,7 @@ public class ActionField extends FieldBase {
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present

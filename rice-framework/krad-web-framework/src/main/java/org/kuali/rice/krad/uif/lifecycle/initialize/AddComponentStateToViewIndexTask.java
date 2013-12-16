@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -40,7 +41,8 @@ public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        ViewLifecycle.getView().getViewIndex().addInitialComponentStateIfNeeded(getPhase().getComponent());
+        ViewLifecycle.getView().getViewIndex()
+            .addInitialComponentStateIfNeeded((Component) getPhase().getElement());
     }
 
 }

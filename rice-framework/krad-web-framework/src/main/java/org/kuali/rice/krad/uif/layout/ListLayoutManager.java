@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * List layout manager is a layout manager for group types to output their items as either ordered or
@@ -45,7 +46,7 @@ public class ListLayoutManager extends LayoutManagerBase {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component component) {
+    public void performApplyModel(Object model, LifecycleElement component) {
         super.performApplyModel(model, component);
 
         Group parentGroup = (Group) component;

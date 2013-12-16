@@ -17,9 +17,10 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
@@ -44,14 +45,15 @@ public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // implement readonly request overrides
-        Component component = getPhase().getComponent();
+        LifecycleElement element = getPhase().getElement();
         ViewModel viewModel = (ViewModel) getPhase().getModel();
-        if ((component instanceof DataBinding)
+        if ((element instanceof DataBinding)
                 && ViewLifecycle.getView().isSupportsRequestOverrideOfReadOnlyFields()
                 && !viewModel.getReadOnlyFieldsList().isEmpty()) {
-            String propertyName = ((DataBinding) component).getPropertyName();
+            DataBinding dataBinding = (DataBinding) element;
+            String propertyName = dataBinding.getPropertyName();
             if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
-                component.setReadOnly(true);
+                ((Component) dataBinding).setReadOnly(true);
             }
         }
     }

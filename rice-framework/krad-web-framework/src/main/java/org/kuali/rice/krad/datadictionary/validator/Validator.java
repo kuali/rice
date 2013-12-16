@@ -27,10 +27,12 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -229,7 +231,8 @@ public class Validator {
         try {
             runValidationsOnLifecycle(component, tracer.getCopy());
         } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentsForLifecycle().size() + "",
+            String value[] = {component.getId(),
+                    ViewLifecycleUtils.getElementsForLifecycle(component).size() + "",
                     "Exception " + e.getMessage()};
             tracerTemp.createError("Error Validating Bean Lifecycle", value);
         }
@@ -238,28 +241,34 @@ public class Validator {
     /**
      * Runs the validations on a components lifecycle items
      *
-     * @param component - The component whose lifecycle items are being checked
+     * @param element - The component whose lifecycle items are being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnLifecycle(Component component, ValidationTrace tracer) {
-        Map<String, Component> nestedComponents =
-                ComponentUtils.getComponentsForLifecycle(component, UifConstants.ViewPhases.INITIALIZE);
+    private void runValidationsOnLifecycle(LifecycleElement element, ValidationTrace tracer) {
+        Map<String, LifecycleElement> nestedComponents =
+                ViewLifecycleUtils.getElementsForLifecycle(element, UifConstants.ViewPhases.INITIALIZE);
         if (nestedComponents == null) {
             return;
         }
-        if (!doValidationOnUIFBean(component)) {
-            return;
+
+        Component component = null;
+        if (element instanceof Component) {
+            component = (Component) element;
+            if (!doValidationOnUIFBean(component)) {
+                return;
+            }
+            tracer.addBean(component);
         }
-        tracer.addBean(component);
-        for (Component temp : nestedComponents.values()) {
-            if (temp == null) {
+        
+        for (LifecycleElement temp : nestedComponents.values()) {
+            if (!(temp instanceof Component)) {
                 continue;
             }
             if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(temp, false);
+                ExpressionUtils.populatePropertyExpressionsFromGraph((UifDictionaryBean) temp, false);
             }
-            if (temp.isRender()) {
-                temp.completeValidation(tracer.getCopy());
+            if (((Component) temp).isRender()) {
+                ((DataDictionaryEntry) temp).completeValidation(tracer.getCopy());
                 runValidationsOnLifecycle(temp, tracer.getCopy());
             }
         }

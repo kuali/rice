@@ -24,7 +24,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
@@ -37,6 +36,7 @@ import org.kuali.rice.krad.uif.field.InputFieldBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
@@ -67,7 +67,7 @@ public class LookupInputField extends InputFieldBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         // if enabled add option to select all values

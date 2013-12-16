@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
@@ -44,20 +45,20 @@ public final class LifecyclePhaseFactory {
     }
     
     /**
-     * Creates a new lifecycle phase processing task for performing initialization on a component.
+     * Creates a new lifecycle phase processing task for performing initialization on a element.
      * 
-     * @param component The component.
+     * @param element The element.
      * @param model The model
-     * @param parent The parent component.
+     * @param parent The parent element.
      * @param index The index of the phase within the nested component list.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @return lifecycle processing task for processing the initialize phase on the component
      */
-    public static InitializeComponentPhase initialize(Component component, Object model,
+    public static InitializeComponentPhase initialize(LifecycleElement element, Object model,
             int index, String path, Component parent, ApplyModelComponentPhase nextPhase) {
         InitializeComponentPhase initializePhase = RecycleUtils.getInstance(InitializeComponentPhase.class);
-        initializePhase.prepare(component, model, index, path, parent, nextPhase);
+        initializePhase.prepare(element, model, index, path, parent, nextPhase);
         return initializePhase;
     }
 
@@ -85,9 +86,9 @@ public final class LifecyclePhaseFactory {
     }
     
     /**
-     * Creates a new lifecycle phase processing task for applying the model to a component.
+     * Creates a new lifecycle phase processing task for applying the model to a element.
      * 
-     * @param component The component.
+     * @param element The element.
      * @param model The model
      * @param parent The parent component.
      * @param index The index of the phase within the nested component list.
@@ -96,11 +97,11 @@ public final class LifecyclePhaseFactory {
      * @param visitedIds The set of visited IDs to track while applying model.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
-    public static ApplyModelComponentPhase applyModel(Component component, Object model,
+    public static ApplyModelComponentPhase applyModel(LifecycleElement element, Object model,
             int index, String path, Component parent, FinalizeComponentPhase nextPhase,
             Set<String> visitedIds) {
         ApplyModelComponentPhase applyModelPhase = RecycleUtils.getInstance(ApplyModelComponentPhase.class);
-        applyModelPhase.prepare(component, model, index, path, parent, nextPhase, visitedIds);
+        applyModelPhase.prepare(element, model, index, path, parent, nextPhase, visitedIds);
         return applyModelPhase;
     }
 
@@ -130,16 +131,16 @@ public final class LifecyclePhaseFactory {
     /**
      * Creates a new lifecycle phase processing task for finalizing a nested component.
      * 
-     * @param component The component.
+     * @param element The component.
      * @param model The model
      * @param parent The parent component.
      * @param index The index of the phase within the nested component list.
      * @return lifecycle processing task for processing the finalize phase on the component
      */
-    public static FinalizeComponentPhase finalize(Component component, Object model,
+    public static FinalizeComponentPhase finalize(LifecycleElement element, Object model,
             int index, String path, Component parent) {
         FinalizeComponentPhase finalizePhase = RecycleUtils.getInstance(FinalizeComponentPhase.class);
-        finalizePhase.prepare(component, model, index, path, parent);
+        finalizePhase.prepare(element, model, index, path, parent);
         return finalizePhase;
     }
 
@@ -169,8 +170,9 @@ public final class LifecyclePhaseFactory {
      */
     public static RenderComponentPhase render(
             FinalizeComponentPhase finalizePhase, RenderComponentPhase parent, int pendingChildren) {
+        LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
-        renderPhase.prepare(finalizePhase.getComponent(), finalizePhase.getModel(),
+        renderPhase.prepare(element, finalizePhase.getModel(),
                 finalizePhase.getIndex(), finalizePhase.getPath(), parent, pendingChildren);
         return renderPhase;
     }

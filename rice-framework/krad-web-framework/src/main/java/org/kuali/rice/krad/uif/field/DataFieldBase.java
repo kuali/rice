@@ -46,6 +46,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -138,12 +139,10 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.DataField#performApplyModel(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly()) {
@@ -157,12 +156,10 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.DataField#performFinalize(java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         // adjust the path for hidden fields

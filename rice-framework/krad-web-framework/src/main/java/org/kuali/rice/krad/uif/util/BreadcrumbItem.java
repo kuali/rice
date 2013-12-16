@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -46,11 +44,10 @@ public class BreadcrumbItem extends ContentElementBase {
      * <li>Evaluate expressions on url object</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         View view = ViewLifecycle.getView();

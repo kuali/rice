@@ -53,7 +53,7 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
         
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers == null) {

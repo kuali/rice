@@ -26,6 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
@@ -66,7 +68,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     private List<PropertyReplacer> propertyReplacers;
     
-    private boolean cached;
+    private String viewStatus = UifConstants.ViewStatus.CREATED;
 
     public LayoutManagerBase() {
         super();
@@ -80,9 +82,26 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
-        if (cached) {
+        if (UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
             ViewLifecycle.reportIllegalState("Cached layout manager " + getClass() + " " + getId()
                     + " is immutable, use copy() to get a mutable instance");
+            return;
+        }
+
+        if (ViewLifecycle.isActive()) {
+            return;
+        }
+
+        if (UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+            if (!legalDuringInitialization) {
+                ViewLifecycle.reportIllegalState(
+                        "View has not been fully initialized, attempting to change layout manager "
+                                + getClass() + " " + getId());
+                return;
+            }
+        } else {
+            ViewLifecycle.reportIllegalState("Layout manager " + getClass() + " " + getId()
+                    + " has been initialized, but the lifecycle is not active.");
             return;
         }
     }
@@ -91,14 +110,48 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#isMutable(boolean)
      */
     public boolean isMutable(boolean legalDuringInitialization) {
-        return !cached;
+        return (UifConstants.ViewStatus.CREATED.equals(viewStatus) && legalDuringInitialization)
+                || ViewLifecycle.isActive();
     }
 
     /**
-     * @param mutable the mutable to set
+     * Indicates what lifecycle phase the layout manager instance is in
+     * 
+     * <p>
+     * The view lifecycle begins with the CREATED status. In this status a new instance of the view
+     * has been retrieved from the dictionary, but no further processing has been done. After the
+     * initialize phase has been run the status changes to INITIALIZED. After the model has been
+     * applied and the view is ready for render the status changes to FINAL
+     * </p>
+     * 
+     * @return view status
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
      */
-    public void setCached(boolean cached) {
-        this.cached = cached;
+    public String getViewStatus() {
+        return this.viewStatus;
+    }
+
+    /**
+     * Setter for the view status
+     * 
+     * @param viewStatus
+     */
+    @Override
+    public void setViewStatus(ViewLifecyclePhase phase) {
+        if (!viewStatus.equals(phase.getStartViewStatus())) {
+            ViewLifecycle.reportIllegalState("Component " + getClass().getName() + " is not in expected status "
+                    + phase.getStartViewStatus() + " marking the completion of a lifecycle phase, found " + viewStatus
+                    + "\nPhase: " + phase);
+        }
+
+        this.viewStatus = phase.getEndViewStatus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notifyCompleted(ViewLifecyclePhase phase) {
     }
 
     /**
@@ -110,7 +163,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         
         // set id of layout manager from container
         if (StringUtils.isBlank(id)) {
-            Container container = (Container) ViewLifecycle.getPhase().getComponent();
+            Container container = (Container) ViewLifecycle.getPhase().getElement();
             id = container.getId() + "_layout";
         }
     }
@@ -119,7 +172,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#performApplyModel(Object, Component)
      */
     @Override
-    public void performApplyModel(Object model, Component component) {
+    public void performApplyModel(Object model, LifecycleElement component) {
         checkMutable(false);
     }
 
@@ -127,7 +180,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see LifecycleElement#performFinalize(Object, Component)
      */
     @Override
-    public void performFinalize(Object model, Component component) {
+    public void performFinalize(Object model, LifecycleElement component) {
         checkMutable(false);
 
         // put together all css class names for this component, in order
@@ -171,7 +224,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentsForLifecycle()
      */
     @Override
-    public List<Component> getComponentsForLifecycle() {
+    public final List<Component> getComponentsForLifecycle() {
         return new ArrayList<Component>();
     }
 
@@ -179,7 +232,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
      */
     @Override
-    public List<Component> getComponentPrototypes() {
+    public final List<Component> getComponentPrototypes() {
         List<Component> components = new ArrayList<Component>();
 
         return components;
@@ -470,20 +523,61 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     @Override
     public LayoutManagerBase clone() throws CloneNotSupportedException {
         LayoutManagerBase copy = (LayoutManagerBase) super.clone();
-        copy.cached = false;
+
+        // Copy initialized status, but reset to created for others.
+        // This allows prototypes to bypass repeating the initialized phase.
+        if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
+            copy.viewStatus = UifConstants.ViewStatus.INITIALIZED;
+        } else {
+            copy.viewStatus = UifConstants.ViewStatus.CREATED;
+        }
+
         return copy;
     }
     
     /**
-     * Mark this instance as cached to prevent modification.
+     * Set view status to {@link UifConstants.ViewStatus#CACHED} to prevent modification.
      * 
      * @see Copyable#preventModification()
      */
     @Override
     public void preventModification() {
-        this.cached = true;
+        if (!UifConstants.ViewStatus.CREATED.equals(viewStatus)
+                && !UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
+            ViewLifecycle.reportIllegalState("View status is " + viewStatus + " prior to caching "
+                    + getClass().getName() + " " + getId() + ", expected C or X");
+        }
+
+        viewStatus = UifConstants.ViewStatus.CACHED;
     }
 
+    /**
+     * Indicates whether the component has been initialized.
+     * 
+     * @return True if the component has been initialized, false if not.
+     */
+    public boolean isInitialized() {
+        return StringUtils.equals(viewStatus, ViewStatus.INITIALIZED) || isModelApplied();
+    }
+
+    /**
+     * Indicates whether the component has been updated from the model.
+     * 
+     * @return True if the component has been updated, false if not.
+     */
+    public boolean isModelApplied() {
+        return StringUtils.equals(viewStatus, ViewStatus.MODEL_APPLIED) || isFinal();
+    }
+
+    /**
+     * Indicates whether the component has been updated from the model and final updates made.
+     * 
+     * @return True if the component has been updated, false if not.
+     */
+    public boolean isFinal() {
+        return StringUtils.equals(viewStatus, ViewStatus.FINAL);
+    }
+    
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
@@ -493,7 +587,13 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
         LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
 
-        layoutManagerBaseCopy.cached = false;
+        // Copy initialized status, but reset to created for others.
+        // This allows prototypes to bypass repeating the initialized phase.
+        if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
+            layoutManagerBaseCopy.viewStatus = UifConstants.ViewStatus.INITIALIZED;
+        } else {
+            layoutManagerBaseCopy.viewStatus = UifConstants.ViewStatus.CREATED;
+        }
 
         layoutManagerBaseCopy.setId(this.id);
         layoutManagerBaseCopy.setTemplate(this.template);

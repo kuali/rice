@@ -25,6 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Renders a toggle menu (aka sub menu, dropdown menu) of items.
@@ -71,7 +73,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (StringUtils.isNotBlank(toggleText) && StringUtils.isBlank(toggleMessage.getMessageText())) {
@@ -196,6 +198,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return List of menu items for the toggle menu
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "menuItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getMenuItems() {
         return menuItems;

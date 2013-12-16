@@ -46,7 +46,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
         
         // move expressions on property replacers and component modifiers
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();

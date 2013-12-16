@@ -53,7 +53,7 @@ public class SyncClientSideStateTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
         ViewModel model = (ViewModel) getPhase().getModel();
 
         // find the map of state that was sent for component (if any)

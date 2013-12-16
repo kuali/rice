@@ -20,6 +20,7 @@ import java.util.Queue;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecyclePhaseBase.class);
 
-    private Component component;
+    private LifecycleElement element;
     private Object model;
     private Component parent;
     private int index = -1;
@@ -56,7 +57,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         trace("recycle");
         model = null;
         index = -1;
-        component = null;
+        element = null;
         predecessor = null;
         nextPhase = null;
         processed = false;
@@ -67,29 +68,29 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     /**
      * Prepares this phase for reuse.
      * 
-     * @param component The component to be processed by this phase.
+     * @param element The element to be processed by this phase.
      * @param model The model associated with the lifecycle at this phase.
      * @param index The position within the predecessor phase's successor list of this phase.
-     * @param parent The parent component. For top-down phases, this component will be associated
-     *        with the predecssor phase. For bottom-up phases (rendering), this component will be
+     * @param parent The parent element. For top-down phases, this component will be associated
+     *        with the predecessor phase. For bottom-up phases (rendering), this element will be
      *        associated with a successor phases.
      * @param nextPhase The lifecycle phase to queue directly upon completion of this phase, if
-     *        applicible.
+     *        applicable.
      *        
      * @see LifecyclePhaseFactory
      */
-    protected void prepare(Component component, Object model, int index,
+    protected void prepare(LifecycleElement element, Object model, int index,
             String path, Component parent, ViewLifecyclePhase nextPhase) {
-        if (component.getViewStatus().equals(getEndViewStatus())) {
+        if (element.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
                     "Component is already in the expected end status " + getEndViewStatus()
-                            + " before this phase " + component.getClass() + " " + component.getId());
+                            + " before this phase " + element.getClass() + " " + element.getId());
         }
 
         this.model = model;
         this.index = index;
         this.path = path;
-        this.component = component;
+        this.element = element;
         this.parent = parent;
         this.nextPhase = nextPhase;
 
@@ -126,8 +127,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * {@inheritDoc}
      */
     @Override
-    public final Component getComponent() {
-        return component;
+    public final LifecycleElement getElement() {
+        return element;
     }
 
     /**
@@ -239,17 +240,17 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             try {
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
                     ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":", ":"
-                            + getComponent().getClass().getSimpleName(), 1000);
+                            + getElement().getClass().getSimpleName(), 1000);
                     ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
                 }
 
                 processor.setActivePhase(this);
 
-                if (!component.getViewStatus().equals(getStartViewStatus())) {
+                if (!element.getViewStatus().equals(getStartViewStatus())) {
                     ViewLifecycle.reportIllegalState(
                             "Component is not in the expected status " + getStartViewStatus()
-                                    + " at the start of this phase, found " + component.getClass()
-                                    + " " + component.getId() + " " + component.getViewStatus() +
+                                    + " at the start of this phase, found " + element.getClass()
+                                    + " " + element.getId() + " " + element.getViewStatus() +
                                     "\nThis phase: " + this);
                 }
 
@@ -263,15 +264,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     currentTask = null;
                 }
 
-                component.setViewStatus(this);
+                element.setViewStatus(this);
                 processed = true;
 
             } finally {
                 processor.setActivePhase(null);
 
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
-                    ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(), getComponent()
-                            .getClass() + " " + getComponent().getId());
+                    ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(), getElement()
+                            .getClass() + " " + getElement().getId());
                 }
             }
 
@@ -322,10 +323,10 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         LifecycleEvent event = getEventToNotify();
         if (event != null) {
             ViewLifecycle.getActiveLifecycle().invokeEventListeners(
-                    event, ViewLifecycle.getView(), ViewLifecycle.getModel(), component);
+                    event, ViewLifecycle.getView(), ViewLifecycle.getModel(), element);
         }
 
-        component.notifyCompleted(this);
+        element.notifyCompleted(this);
 
         if (nextPhase != null) {
             ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
@@ -358,7 +359,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         while (!toPrint.isEmpty()) {
             ViewLifecyclePhase tp = toPrint.poll();
 
-            if (tp.getModel() == null || tp.getComponent() == null) {
+            if (tp.getModel() == null || tp.getElement() == null) {
                 sb.append("\n      ");
                 sb.append(tp.getClass().getSimpleName());
                 sb.append(" (recycled)");
@@ -383,9 +384,9 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             sb.append(" ");
             sb.append(tp.getPath());
             sb.append(" ");
-            sb.append(tp.getComponent().getClass().getSimpleName());
+            sb.append(tp.getElement().getClass().getSimpleName());
             sb.append(" ");
-            sb.append(tp.getComponent().getId());
+            sb.append(tp.getElement().getId());
             sb.append(" ");
             sb.append(pendingSuccessors);
 
@@ -411,7 +412,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private void trace(String step) {
         if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
             String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " + path + " " +
-                    (component == null ? "(recycled)" : component.getClass() + " " + component.getId());
+                    (element == null ? "(recycled)" : element.getClass() + " " + element.getId());
             LOG.debug(msg);
         }
     }

@@ -25,10 +25,10 @@ import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Widget that renders help on a component
@@ -92,7 +92,7 @@ public class Help extends WidgetBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         buildExternalHelp(parent);
@@ -124,7 +124,7 @@ public class Help extends WidgetBase {
      * @param view used to get the default namespace
      * @param parent used to get the help title text used in the html title attribute of the help icon
      */
-    protected void buildExternalHelp(Component parent) {
+    protected void buildExternalHelp(LifecycleElement parent) {
         if (StringUtils.isBlank(externalHelpUrl) && (helpDefinition != null)) {
             if (StringUtils.isBlank(helpDefinition.getParameterNamespace())) {
                 helpDefinition.setParameterNamespace(ViewLifecycle.getView().getNamespaceCode());
@@ -170,7 +170,7 @@ public class Help extends WidgetBase {
      *
      * @param parent used for checking misconfigurations
      */
-    protected void buildTooltipHelp(Component parent) {
+    protected void buildTooltipHelp(LifecycleElement parent) {
         if (StringUtils.isNotBlank(tooltipHelpContent) && this.isRender()) {
             // make sure that we are the component's native help and not a misconfigured standalone help bean.
             if (this.getToolTip() != null && (parent instanceof Helpable) 

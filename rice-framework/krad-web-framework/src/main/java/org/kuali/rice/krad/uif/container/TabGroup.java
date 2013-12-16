@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tabs;
 
 /**
@@ -45,7 +46,7 @@ public class TabGroup extends GroupBase {
     }
 
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
         this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Uif-TabGroup");
     }

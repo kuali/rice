@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
@@ -119,7 +120,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@SuppressWarnings("deprecation")
     @Override
-	public void performApplyModel(Object model, Component parent) {
+	public void performApplyModel(Object model, LifecycleElement parent) {
 		super.performApplyModel(model, parent);
 
 		// setup summary message field if necessary
@@ -146,7 +147,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@SuppressWarnings("deprecation")
     @Override
-	public void performFinalize(Object model, Component parent) {
+	public void performFinalize(Object model, LifecycleElement parent) {
 		super.performFinalize(model, parent);
 
         if(header != null){

@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Lifecycle phase processing task for rendering a component.
@@ -46,7 +47,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Create a new lifecycle phase processing task for finalizing a component.
      * 
-     * @param component the component instance that should be updated
+     * @param element the component instance that should be updated
      * @param model top level object containing the data
      * @param index The position of the assocaited finalize phase within it's predecessor's
      *        successor queue.
@@ -54,9 +55,12 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * @param pendingChildren The number of child rendering phases to expect to be queued for
      *        processing before this phase.
      */
-    protected void prepare(Component component, Object model, int index,
+    protected void prepare(LifecycleElement element, Object model, int index,
             String path, RenderComponentPhase parent, int pendingChildren) {
-        super.prepare(component, model, index, path, parent == null ? null : parent.getComponent(), null);
+        Component parentComponent = parent == null ? null
+                : parent.getElement() instanceof Component ? (Component) parent.getElement()
+                        : parent.getParent();
+        super.prepare(element, model, index, path, parentComponent, null);
         this.renderParent = parent;
         this.pendingChildren = pendingChildren;
     }
@@ -103,8 +107,12 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
-        Component component = getComponent();
-        if (component == null || !component.isRender() || component.getTemplate() == null) {
+        if (!(getElement() instanceof Component)) {
+            return;
+        }
+        
+        Component component = (Component) getElement();
+        if (!component.isRender() || component.getTemplate() == null) {
             return;
         }
 

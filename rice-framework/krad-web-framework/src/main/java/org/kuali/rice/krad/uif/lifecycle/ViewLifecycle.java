@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -355,13 +356,13 @@ public class ViewLifecycle implements Serializable {
      * @param event event that has occurred
      * @param view view instance the lifecycle is being executed for
      * @param model object containing the model data
-     * @param eventComponent component instance the event occurred on/for
+     * @param eventElement component instance the event occurred on/for
      * @see LifecycleEvent
      */
-    public void invokeEventListeners(LifecycleEvent event, View view, Object model, Component eventComponent) {
+    public void invokeEventListeners(LifecycleEvent event, View view, Object model, LifecycleElement eventElement) {
         for (EventRegistration registration : eventRegistrations) {
-            if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventComponent)) {
-                registration.getEventListener().processEvent(event, view, model, eventComponent);
+            if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventElement)) {
+                registration.getEventListener().processEvent(event, view, model, eventElement);
             }
         }
     }

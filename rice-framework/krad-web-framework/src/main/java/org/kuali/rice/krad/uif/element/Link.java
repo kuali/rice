@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.LightBox;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Content element that renders a link
@@ -67,7 +66,7 @@ public class Link extends ContentElementBase {
      *      org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (openInLightbox && (lightBox == null)) {
@@ -79,7 +78,7 @@ public class Link extends ContentElementBase {
      * Special handling for lightbox links to add and onclick data attribute to be handled by a global handler
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (lightBox != null && lightBox.isRender()){

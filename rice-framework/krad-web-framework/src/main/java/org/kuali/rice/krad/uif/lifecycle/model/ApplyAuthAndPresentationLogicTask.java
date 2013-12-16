@@ -68,7 +68,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         ViewModel model = (ViewModel) getPhase().getModel();
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
         View view = ViewLifecycle.getView();
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();

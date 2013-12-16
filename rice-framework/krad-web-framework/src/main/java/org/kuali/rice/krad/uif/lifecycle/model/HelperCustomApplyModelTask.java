@@ -41,7 +41,7 @@ public class HelperCustomApplyModelTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke service override hook
-        ViewLifecycle.getHelper().performCustomApplyModel(getPhase().getComponent(), getPhase().getModel());
+        ViewLifecycle.getHelper().performCustomApplyModel(getPhase().getElement(), getPhase().getModel());
     }
 
 }

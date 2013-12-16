@@ -56,6 +56,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -116,8 +117,8 @@ public class RichTable extends WidgetBase {
      * </ul>
      */
     @Override
-    public void performFinalize(Object model, Component component) {
-        super.performFinalize(model, component);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
 
         UifFormBase formBase = (UifFormBase) model;
 
@@ -158,8 +159,8 @@ public class RichTable extends WidgetBase {
             templateOptions.put(UifConstants.TableToolsKeys.AASORTING, "[]");
         }
 
-        if ((component instanceof CollectionGroup)) {
-            CollectionGroup collectionGroup = (CollectionGroup) component;
+        if ((parent instanceof CollectionGroup)) {
+            CollectionGroup collectionGroup = (CollectionGroup) parent;
             LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
             //if useServerPaging is true, add the css cell styling to the template options so it can still be used
@@ -184,7 +185,7 @@ public class RichTable extends WidgetBase {
         String kradUrl = getConfigurationService().getPropertyValueAsString(UifConstants.ConfigProperties.KRAD_URL);
         if (StringUtils.isNotBlank(ajaxSource)) {
             templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE, ajaxSource);
-        } else if (component instanceof CollectionGroup && ((CollectionGroup) component).isUseServerPaging()) {
+        } else if (parent instanceof CollectionGroup && ((CollectionGroup) parent).isUseServerPaging()) {
             // enable required dataTables options for server side paging
             templateOptions.put(UifConstants.TableToolsKeys.BPROCESSING, "true");
             templateOptions.put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
@@ -199,7 +200,7 @@ public class RichTable extends WidgetBase {
                     + "&"
                     + UifParameters.TABLE_ID
                     + "="
-                    + component.getId()
+                    + parent.getId()
                     + "&"
                     + UifParameters.FORM_KEY
                     + "="
@@ -229,7 +230,7 @@ public class RichTable extends WidgetBase {
 
             // store col defs so columns can be built on paging request
             ViewLifecycle.getActiveLifecycle().getView().getViewIndex()
-                .addPostContextEntry(component.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
+                .addPostContextEntry(parent.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
                     templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
@@ -239,7 +240,7 @@ public class RichTable extends WidgetBase {
                 + "?"
                 + UifParameters.TABLE_ID
                 + "="
-                + component.getId()
+                + parent.getId()
                 + "&"
                 + UifParameters.FORM_KEY
                 + "="

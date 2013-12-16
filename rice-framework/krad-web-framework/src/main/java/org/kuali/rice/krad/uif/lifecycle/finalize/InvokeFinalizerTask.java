@@ -51,7 +51,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
         String finalizeMethodToCall = component.getFinalizeMethodToCall();
         MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
 

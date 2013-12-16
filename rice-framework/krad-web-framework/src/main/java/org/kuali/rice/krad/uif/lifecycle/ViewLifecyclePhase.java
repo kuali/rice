@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Represents a phase in the view lifecycle. 
@@ -26,11 +27,11 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 public interface ViewLifecyclePhase extends Runnable {
     
     /**
-     * Gets the component this lifecycle phase is responsible for processing.
+     * Gets the element this lifecycle phase is responsible for processing.
      * 
-     * @return component this lifecycle phase is responsible for processing
+     * @return element this lifecycle phase is responsible for processing
      */
-    Component getComponent();
+    LifecycleElement getElement();
     
     /**
      * Gets the model to use in processing this phase.

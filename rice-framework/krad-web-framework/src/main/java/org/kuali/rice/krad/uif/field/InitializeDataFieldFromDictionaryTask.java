@@ -57,7 +57,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      */
     @Override
     protected void performLifecycleTask() {
-        DataField field = (DataField) getPhase().getComponent();
+        DataField field = (DataField) getPhase().getElement();
 
         AttributeDefinition attributeDefinition = null;
 
@@ -257,7 +257,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      */
     protected AttributeDefinition findNestedDictionaryAttribute(String propertyPath) {
         // attempt to find definition for parent and property
-        DataField field = (DataField) getPhase().getComponent();
+        DataField field = (DataField) getPhase().getElement();
         String fieldBindingPrefix = null;
         String dictionaryAttributePath = propertyPath;
 

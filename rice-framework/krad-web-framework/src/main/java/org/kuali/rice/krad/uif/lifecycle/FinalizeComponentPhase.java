@@ -21,11 +21,8 @@ import java.util.Queue;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -58,13 +55,13 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Creates a new lifecycle phase processing task for finalizing a component.
      * 
-     * @param component The component instance the model should be applied to
+     * @param element The component instance the model should be applied to
      * @param model Top level object containing the data
      * @param index The position of this phase within its predecessor phase's successor queue.
      * @param parent The parent component.
      */
-    protected void prepare(Component component, Object model, int index, String path, Component parent) {
-        super.prepare(component, model, index, path, parent, null);
+    protected void prepare(LifecycleElement element, Object model, int index, String path, Component parent) {
+        super.prepare(element, model, index, path, parent, null);
     }
 
     /**
@@ -109,13 +106,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
-        tasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, this));
+        getElement().initializePendingTasks(this, tasks);
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
-
-        getComponent().initializePendingTasks(this, tasks);
     }
 
     /**
@@ -124,21 +116,22 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        Component component = getComponent();
+        LifecycleElement element = getElement();
         Object model = getModel();
 
         // initialize nested components
         int index = 0;
 
-        for (Entry<String, Component> nestedComponentEntry : ComponentUtils.getComponentsForLifecycle(component,
-                getViewPhase()).entrySet()) {
+        for (Entry<String, LifecycleElement> nestedComponentEntry :
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
             String path = getPath();
             String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
-            Component nestedComponent = nestedComponentEntry.getValue();
+            LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
-            if (nestedComponent != null) {
+            if (nestedElement != null) {
                 FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedComponent, model, index, nestedPath, component);
+                        nestedElement, model, index, nestedPath, 
+                        element instanceof Component ? (Component) element : getParent());
                 successors.add(nestedFinalizePhase);
                 index++;
             }

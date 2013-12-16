@@ -349,20 +349,30 @@ public final class CopyUtils {
                 return (T) ((Object[]) obj).clone();
             }
 
+            // synchronized on collections/maps below here is to avoid
+            // concurrent modification
             if (obj instanceof ArrayList) {
-                return (T) ((ArrayList<?>) obj).clone();
+                synchronized (obj) {
+                    return (T) ((ArrayList<?>) obj).clone();
+                }
             }
 
             if (obj instanceof LinkedList) {
-                return (T) ((LinkedList<?>) obj).clone();
+                synchronized (obj) {
+                    return (T) ((LinkedList<?>) obj).clone();
+                }
             }
 
             if (obj instanceof HashSet) {
-                return (T) ((HashSet<?>) obj).clone();
+                synchronized (obj) {
+                    return (T) ((HashSet<?>) obj).clone();
+                }
             }
 
             if (obj instanceof HashMap) {
-                return (T) ((HashMap<?, ?>) obj).clone();
+                synchronized (obj) {
+                    return (T) ((HashMap<?, ?>) obj).clone();
+                }
             }
 
             // Use reflection to invoke a public clone() method on the object, if available.

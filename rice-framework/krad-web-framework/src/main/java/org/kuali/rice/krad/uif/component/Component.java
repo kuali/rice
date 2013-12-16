@@ -21,8 +21,6 @@ import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -93,54 +91,11 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     String getComponentTypeName();
     
     /**
-     * Indicates whether the component has been initialized.
-     *
-     * @return True if the component has been initialized, false if not.
-     */
-    boolean isInitialized();
-
-    /**
-     * Indicates whether the component has been updated from the model.
-     *
-     * @return True if the component has been updated, false if not.
-     */
-    boolean isModelApplied();
-
-    /**
-     * Indicates whether the component has been updated from the model and final
-     * updates made.
-     *
-     * @return True if the component has been updated, false if not.
-     */
-    boolean isFinal();
-
-    /**
      * Indicates whether the component has been fully rendered.
      *
      * @return True if the component has fully rendered, false if not.
      */
     boolean isRendered();
-
-    /**
-     * Get the view lifecycle processing status for this component.
-     * 
-     * @return The view lifecycle processing status for this component.
-     * @see UifConstants.ViewStatus
-     */
-    String getViewStatus();
-
-    /**
-     * Set the view lifecycle processing status for this component.
-     * 
-     * @param phase The phase that has just finished processing the component.
-     */
-    void setViewStatus(ViewLifecyclePhase phase);
-    
-    /**
-     * Receive notification that a lifecycle phase, and all successor phases, have been completed on
-     * this component.
-     */
-    void notifyCompleted(ViewLifecyclePhase phase);
 
     /**
      * Set the view lifecycle processing status for this component, explicitly.
@@ -229,13 +184,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param title
      */
     void setTitle(String title);
-
-    /**
-     * Gets the child components for the next lifecycle phase.
-     * 
-     * @return child components
-     */
-    Map<String, Component> getComponentsForLifecycle();
 
     /**
      * List of components that are contained within the List of {@code PropertyReplacer} in component
@@ -695,35 +643,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param context
      */
     void setContext(Map<String, Object> context);
-
-    /**
-     * Places the given object into the context Map for the component with the
-     * given name
-     *
-     * <p>
-     * Note this also will push context to property replacers configured on the component.
-     * To place multiple objects in the context, you should use #pushAllToContext since that
-     * will call this method for each and update property replacers. Using {@link #getContext().putAll()}
-     * will bypass property replacers.
-     * </p>
-     *
-     * @param objectName - name the object should be exposed under in the context map
-     * @param object - object instance to place into context
-     */
-    void pushObjectToContext(String objectName, Object object);
-
-    /**
-     * Places each entry of the given Map into the context for the component
-     *
-     * <p>
-     * Note this will call #pushObjectToContext for each entry which will update any configured property
-     * replacers as well. This should be used in place of getContext().putAll()
-     * </p>
-     *
-     * @param objects - Map<String, Object> objects to add to context, where the entry key will be the context key
-     * and the entry value will be the context value
-     */
-    void pushAllToContext(Map<String, Object> objects);
 
     /**
      * gets a list of {@code PropertyReplacer} instances

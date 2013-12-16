@@ -15,18 +15,14 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -43,7 +39,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.springframework.core.OrderComparator;
 
@@ -187,130 +183,6 @@ public class ComponentUtils {
     }
 
     /**
-     * Return the components of the specified type from the given component list
-     *
-     * <p>
-     * Components that match, implement or are extended from the specified {@code componentType} are returned in
-     * the result.  If a component is a parent to other components then these child components are searched for
-     * matching component types as well.
-     * </p>
-     *
-     * @param items list of components from which to search
-     * @param componentType the class or interface of the component type to return
-     * @param <T> the type of the components that are returned
-     * @return List of matching components
-     */
-    public static <T extends Component> List<T> getComponentsOfTypeDeep(Collection<? extends Component> items,
-            Class<T> componentType) {
-        if (items == null) {
-            return Collections.emptyList();
-        }
-        
-        List<T> components = Collections.emptyList();
-        
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.addAll(items);
-
-        while (!componentQueue.isEmpty()) {
-            Component currentComponent = componentQueue.poll();
-            if (currentComponent == null) {
-                continue;
-            }
-
-            if (componentType.isInstance(currentComponent)) {
-                if (components.isEmpty()) {
-                    components = new ArrayList<T>();
-                }
-
-                components.add(componentType.cast(currentComponent));
-            }
-            
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
-        }
-
-        return components;
-    }
-
-    /**
-     * Return the components of the specified type from the given component list
-     *
-     * <p>
-     * Components that match, implement or are extended from the specified {@code componentType} are returned in
-     * the result.  If a component is a parent to other components then these child components are searched for
-     * matching component types as well.
-     * </p>
-     *
-     * @param component The components to search
-     * @param componentType the class or interface of the component type to return
-     * @param <T> the type of the components that are returned
-     * @return List of matching components
-     */
-    public static <T extends Component> List<T> getComponentsOfTypeDeep(Component component, Class<T> componentType) {
-        return getComponentsOfTypeDeep(Collections.singletonList(component), componentType);
-    }
-
-    /**
-     * Returns components of the given type that are direct children of the given component (only checks
-     * one level) including itself
-     *
-     * @param component instance to get children for
-     * @param componentType type for component to return
-     * @param <T> type of component that will be returned
-     * @return list of child components with the given type
-     */
-    public static <T extends Component> List<T> getComponentsOfTypeShallow(Component component,
-            Class<T> componentType) {
-        if (component == null) {
-            return Collections.emptyList();
-        }
-        
-        List<T> typeComponents = getNestedComponentsOfTypeShallow(component, componentType);
-        
-        if (componentType.isInstance(component)) {
-            if (typeComponents.isEmpty()) {
-                typeComponents = Collections.singletonList(componentType.cast(component));
-            } else {
-                typeComponents.add(0, componentType.cast(component));
-            }
-        }
-
-        return typeComponents;
-    }
-
-    /**
-     * Get nested components of the type specified one layer deep; this defers from getComponentsOfTypeShallow
-     * because it does NOT include itself as a match if it also matches the type being requested
-     *
-     * @param component instance to get children for
-     * @param componentType type for component to return
-     * @param <T> type of component that will be returned
-     * @return list of child components with the given type
-     */
-    public static <T extends Component> List<T> getNestedComponentsOfTypeShallow(Component component,
-            Class<T> componentType) {
-        if (component == null) {
-            return Collections.emptyList();
-        }
-
-        List<T> typeComponents = Collections.emptyList();
-
-        for (Component nested : component.getComponentsForLifecycle().values()) {
-            
-            if (!componentType.isInstance(nested)) {
-                continue;
-            }
-
-            if (typeComponents.isEmpty()) {
-                typeComponents = new ArrayList<T>();
-            }
-
-            typeComponents.add(componentType.cast(nested));
-        }
-
-        return typeComponents;
-    }
-
-    /**
      * Gets all components of the give type that are within the items list of the container, or within a nested
      * container or field group.
      *
@@ -357,25 +229,31 @@ public class ComponentUtils {
         }
         
         List<Component> components = Collections.emptyList();
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.offer(component);
-        
-        while (!componentQueue.isEmpty()) {
-            Component currentComponent = componentQueue.poll();
-            
-            if (currentComponent == null) {
-                continue;
-            }
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        elementQueue.offer(component);
 
-            if (currentComponent != component) {
-                if (components.isEmpty()) {
-                    components = new ArrayList<Component>();
+        try {
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+
+                if (currentElement == null) {
+                    continue;
                 }
 
-                components.add(currentComponent);
-            }
+                if (currentElement instanceof Component && currentElement != component) {
+                    if (components.isEmpty()) {
+                        components = new ArrayList<Component>();
+                    }
 
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
+                    components.add((Component) currentElement);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
+            }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
 
         return components;
@@ -398,61 +276,42 @@ public class ComponentUtils {
         return null;
     }
 
-    /**
-     * Finds the child component of the given parent component that has the required id
-     *
-     * @param parent parent component for component to find
-     * @param nestedId id of the component to find
-     * @return Component instance for child (if found) or null
-     */
-    public static Component findNestedComponentById(Component parent, String nestedId) {
-        if (parent == null) {
-            return null;
-        }
-        
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.offer(parent);
-        
-        while (!componentQueue.isEmpty()) {
-            Component child = componentQueue.poll();
-            
-            if (child == null) {
-                continue;
-            }
-
-            if (child != parent && StringUtils.equals(nestedId, child.getId())) {
-                return child;
-            }
-
-            componentQueue.addAll(child.getComponentsForLifecycle().values());
-        }
-        
-        return null;
-    }
-
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
         for (Field field : fields) {
             if (field instanceof DataBinding) {
                 prefixBindingPath((DataBinding) field, addBindingPrefix);
             } else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null)) {
-                List<Field> groupFields = getComponentsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
+                List<Field> groupFields = ViewLifecycleUtils
+                        .getElementsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
                 prefixBindingPath(groupFields, addBindingPrefix);
             }
         }
     }
 
     public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
-        if (component instanceof DataBinding) {
-            if (LOG.isDebugEnabled()) {
-                LOG.info("setting nested binding prefix '" + addBindingPrefix + "' on " + component);
-            }
-            prefixBindingPath((DataBinding) component, addBindingPrefix);
-        }
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        elementQueue.offer(component);
+        
+        try {
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+                if (currentElement == null) {
+                    continue;
+                }
 
-        for (Component nested : component.getComponentsForLifecycle().values()) {
-            if (nested != null) {
-                prefixBindingPathNested(nested, addBindingPrefix);
+                if (component instanceof DataBinding) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.info("setting nested binding prefix '" + addBindingPrefix + "' on " + component);
+                    }
+                    prefixBindingPath((DataBinding) component, addBindingPrefix);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
             }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 
@@ -477,19 +336,27 @@ public class ComponentUtils {
     }
 
     public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
-        for (Component nested : component.getComponentsForLifecycle().values()) {
-            if (nested != null) {
-                updateIdsWithSuffixNested(nested, idSuffix);
-            }
-        }
-
-        List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
-        if (propertyReplacerComponents != null) {
-            for (Component nested : propertyReplacerComponents) {
-                if (nested != null) {
-                    updateIdsWithSuffixNested(nested, idSuffix);
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        try {
+            elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(component).values());
+            
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+                if (currentElement == null) {
+                    continue;
                 }
+
+                if (currentElement instanceof Component) {
+                    updateIdWithSuffix((Component) currentElement, idSuffix);
+                    elementQueue.addAll(((Component) currentElement).getPropertyReplacerComponents());
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
             }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 
@@ -546,33 +413,38 @@ public class ComponentUtils {
         }
         
         int hash = 1;
-        Queue<Component> toClear = new LinkedList<Component>();
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> toClear = RecycleUtils.getInstance(LinkedList.class);
         toClear.addAll(components);
-        while (!toClear.isEmpty()) {
-            Component component = toClear.poll();
+        try {
+            while (!toClear.isEmpty()) {
+                LifecycleElement element = toClear.poll();
 
-            hash = generateId(component, hash);
+                hash = generateId(element, hash);
 
-            if (component instanceof Container) {
-                hash = generateId(((Container) component).getLayoutManager(), hash);
-            }
+                for (LifecycleElement nested : ViewLifecycleUtils.getElementsForLifecycle(element).values()) {
+                    if (nested != null) {
+                        toClear.add(nested);
+                    }
+                }
 
-            for (Component nested : component.getComponentsForLifecycle().values()) {
-                if (nested != null) {
-                    toClear.add(nested);
+                if (element instanceof Component) {
+                    List<Component> propertyReplacerComponents =
+                            ((Component) element).getPropertyReplacerComponents();
+                    if (propertyReplacerComponents == null) {
+                        continue;
+                    }
+
+                    for (Component nested : propertyReplacerComponents) {
+                        if (nested != null) {
+                            toClear.add(nested);
+                        }
+                    }
                 }
             }
-
-            List<Component> propertyReplacerComponents = component.getPropertyReplacerComponents();
-            if (propertyReplacerComponents == null) {
-                continue;
-            }
-            
-            for (Component nested : propertyReplacerComponents) {
-                if (nested != null) {
-                    toClear.add(nested);
-                }
-            }
+        } finally {
+            toClear.clear();
+            RecycleUtils.recycle(toClear);
         }
     }
 
@@ -611,29 +483,36 @@ public class ComponentUtils {
         }
 
         Set<Class<?>> skipTypes = null;
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.addAll(components);
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        elementQueue.addAll(components);
 
-        while (!componentQueue.isEmpty()) {
-            Component currentComponent = componentQueue.poll();
-            if (currentComponent == null) {
-                continue;
+        try {
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+                if (currentElement == null) {
+                    continue;
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
+
+                Class<?> componentClass = currentElement.getClass();
+                if (skipTypes != null && skipTypes.contains(componentClass)) {
+                    continue;
+                }
+
+                if (!ObjectPropertyUtils.isWritableProperty(currentElement, propertyPath)) {
+                    if (skipTypes == null)
+                        skipTypes = new HashSet<Class<?>>();
+                    skipTypes.add(componentClass);
+                    continue;
+                }
+
+                ObjectPropertyUtils.setPropertyValue(currentElement, propertyPath, propertyValue, true);
             }
-
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
-
-            Class<?> componentClass = currentComponent.getClass();
-            if (skipTypes != null && skipTypes.contains(componentClass)) {
-                continue;
-            }
-
-            if (!ObjectPropertyUtils.isWritableProperty(currentComponent, propertyPath)) {
-                if (skipTypes == null) skipTypes = new HashSet<Class<?>>();
-                skipTypes.add(componentClass);
-                continue;
-            }
-
-            ObjectPropertyUtils.setPropertyValue(currentComponent, propertyPath, propertyValue, true);
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 
@@ -648,19 +527,6 @@ public class ComponentUtils {
      */
     public static void setComponentPropertyDeep(Component component, String propertyPath, Object propertyValue) {
         setComponentsPropertyDeep(Collections.singletonList(component), propertyPath, propertyValue);
-    }
-
-    public static List<String> getComponentPropertyNames(Class<? extends Component> componentClass) {
-        List<String> componentProperties = new ArrayList<String>();
-
-        for (Entry<String, PropertyDescriptor> propertyDescriptorEntry : ObjectPropertyUtils.getPropertyDescriptors(
-                componentClass).entrySet()) {
-            if (propertyDescriptorEntry.getValue().getReadMethod() != null) {
-                componentProperties.add(propertyDescriptorEntry.getKey());
-            }
-        }
-
-        return componentProperties;
     }
 
     /**
@@ -685,38 +551,38 @@ public class ComponentUtils {
     }
 
     /**
-     * places a key, value pair in each context map of a list of components
+     * places a key, value pair in each context map of a list of lifecycle elements
      *
-     * @param components the list components
+     * @param elements the list of elements
      * @param contextName a value to be used as a key to retrieve the object
      * @param contextValue the value to be placed in the context
      */
-    public static void pushObjectToContext(Collection<? extends Component> components, String contextName,
+    public static void pushObjectToContext(Collection<? extends LifecycleElement> elements, String contextName,
             Object contextValue) {
-        if (components == null || components.isEmpty()) {
+        if (elements == null || elements.isEmpty()) {
             return;
         }
         
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.addAll(components);
+        Queue<LifecycleElement> elementQueue = new LinkedList<LifecycleElement>();
         
-        while (!componentQueue.isEmpty()) {
-            Component currentComponent = componentQueue.poll();
-            
-            if (currentComponent == null) {
-                continue;
-            }
-            
-            currentComponent.pushObjectToContext(contextName, contextValue);
+        try {
+            elementQueue.addAll(elements);
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
 
-            if (currentComponent instanceof Container) {
-                LayoutManager layoutManager = ((Container) currentComponent).getLayoutManager();
-                if (layoutManager != null) {
-                    layoutManager.pushObjectToContext(contextName, contextValue);
+                if (currentElement == null) {
+                    continue;
                 }
+
+                if (currentElement instanceof Component) {
+                    ((Component) currentElement).pushObjectToContext(contextName, contextValue);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
             }
-            
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 
@@ -749,26 +615,26 @@ public class ComponentUtils {
             return;
         }
         
-        Queue<Component> componentQueue = new LinkedList<Component>();
-        componentQueue.addAll(components);
-        
-        while (!componentQueue.isEmpty()) {
-            Component currentComponent = componentQueue.poll();
-            
-            if (currentComponent == null) {
-                continue;
-            }
-            
-            currentComponent.pushAllToContext(sourceContext);
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        try {
+            elementQueue.addAll(components);
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
 
-            if (currentComponent instanceof Container) {
-                LayoutManager layoutManager = ((Container) currentComponent).getLayoutManager();
-                if (layoutManager != null) {
-                    layoutManager.pushAllToContext(sourceContext);
+                if (currentElement == null) {
+                    continue;
                 }
+
+                if (currentElement instanceof Component) {
+                    ((Component) currentElement).pushAllToContext(sourceContext);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
             }
-            
-            componentQueue.addAll(currentComponent.getComponentsForLifecycle().values());
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
         }
     }
 
@@ -907,7 +773,7 @@ public class ComponentUtils {
     public static List<InputField> getAllInputFieldsWithinContainer(Container container) {
         List<InputField> inputFields = new ArrayList<InputField>();
 
-        for (Component c : container.getComponentsForLifecycle().values()) {
+        for (LifecycleElement c : ViewLifecycleUtils.getElementsForLifecycle(container).values()) {
             if (c instanceof InputField) {
                 inputFields.add((InputField) c);
             } else if (c instanceof Container) {
@@ -970,12 +836,12 @@ public class ComponentUtils {
         }
 
         if (container != null) {
-            List<Container> subContainers = ComponentUtils.getNestedComponentsOfTypeShallow(container, Container.class);
+            List<Container> subContainers = ViewLifecycleUtils.getNestedElementsOfTypeShallow(container, Container.class);
             for (Container subContainer : subContainers) {
                 adjustNestedLevelsForTableCollections(subContainer, currentLevel);
             }
 
-            List<FieldGroup> subFieldGroups = ComponentUtils.getNestedComponentsOfTypeShallow(container,
+            List<FieldGroup> subFieldGroups = ViewLifecycleUtils.getNestedElementsOfTypeShallow(container,
                     FieldGroup.class);
             for (FieldGroup fieldGroup : subFieldGroups) {
                 if (fieldGroup != null) {
@@ -983,101 +849,6 @@ public class ComponentUtils {
                 }
             }
         }
-    }
-
-    private static final String COMPONENTS_FOR_LIFECYCLE = "componentsForLifecycle";
-    private static final String COMPONENT_PROTOTYPES = "componentPrototypes";
-    
-    /**
-     * Gets subcomponents for lifecycle processing.
-     * 
-     * @param component The component to scan.
-     * @param viewPhase The view phase to return subcomponents for.
-     * @return lifecycle components
-     */
-    public static Map<String, Component> getComponentsForLifecycle(LifecycleElement component, String viewPhase) {
-        Set<String> restrictedPropertyNames =
-                ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(component, ViewLifecycleRestriction.class);
-        
-        // Prune restrictions to only include those that apply to the indicated phase.
-        Class<?> componentClass = component.getClass();
-        if (!restrictedPropertyNames.isEmpty() && viewPhase != null) {
-            Set<String> origRestrictedPropertyNames = restrictedPropertyNames;
-            for (String restrictedPropertyName : origRestrictedPropertyNames) {
-                ViewLifecycleRestriction restriction = ObjectPropertyUtils
-                        .getReadMethod(componentClass, restrictedPropertyName)
-                        .getAnnotation(ViewLifecycleRestriction.class);
-                for (String phase : restriction.value()) {
-                    if (phase.equals(viewPhase)) {
-                        if (restrictedPropertyNames == origRestrictedPropertyNames) {
-                            restrictedPropertyNames = new HashSet<String>(origRestrictedPropertyNames);
-                        }
-                        
-                        restrictedPropertyNames.remove(restrictedPropertyName);
-                        break;
-                    }
-                }
-            }
-        }
-        
-        Map<String, Component> components = new LinkedHashMap<String, Component>();
-
-        for (String propertyName : ObjectPropertyUtils
-                .getReadablePropertyNamesByType(component, LifecycleElement.class)) {
-            if (COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
-                    || COMPONENT_PROTOTYPES.equals(propertyName)
-                    || restrictedPropertyNames.contains(propertyName)) {
-                continue;
-            }
-            
-            LifecycleElement element = ObjectPropertyUtils.getPropertyValue(component, propertyName);
-            if (element instanceof Component) {
-                components.put(propertyName, (Component) element.unwrap());
-            } else if (element != null) {
-                for (Entry<String, Component> managerEntry : getComponentsForLifecycle(
-                                (LifecycleElement) element.unwrap(), viewPhase).entrySet()) {
-                    components.put(propertyName + "." + managerEntry.getKey(), managerEntry.getValue());
-                }
-            }
-        }
-        
-        for (String propertyName : ObjectPropertyUtils
-                .getReadablePropertyNamesByCollectionType(component, Component.class)) {
-            if (COMPONENTS_FOR_LIFECYCLE.equals(propertyName)
-                    || COMPONENT_PROTOTYPES.equals(propertyName)
-                    || restrictedPropertyNames.contains(propertyName)) {
-                continue;
-            }
-
-            Object componentCollection = ObjectPropertyUtils.getPropertyValue(component, propertyName);
-            if (component.getClass().isArray()) {
-                for (int i = 0; i < Array.getLength(componentCollection); i++) {
-                    Component collComponent = (Component) Array.get(componentCollection, i);
-                    if (collComponent != null) {
-                        collComponent = (Component) collComponent.unwrap();
-                    }
-                    components.put(propertyName + "[" + i + "]", collComponent);
-                }
-            } else if (componentCollection instanceof List) {
-                for (int i = 0; i < ((List<?>) componentCollection).size(); i++) {
-                    Component collComponent = (Component) ((List<?>) componentCollection).get(i);
-                    if (collComponent != null) {
-                        collComponent = (Component) collComponent.unwrap();
-                    }
-                    components.put(propertyName + "[" + i + "]", collComponent);
-                }
-            } else if (componentCollection instanceof Map) {
-                for (Entry<?, ?> entry : ((Map<?, ?>) componentCollection).entrySet()) {
-                    Component collComponent = (Component) entry.getValue();
-                    if (collComponent != null) {
-                        collComponent = (Component) collComponent.unwrap();
-                    }
-                    components.put(propertyName + "[" + entry.getKey() + "]", collComponent);
-                }
-            }
-        }
-
-        return components;
     }
     
 }

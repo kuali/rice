@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
@@ -70,7 +71,7 @@ public class FieldGroup extends FieldBase {
     }
 
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());

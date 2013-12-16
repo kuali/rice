@@ -35,12 +35,26 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
+import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.AddComponentStateToViewIndexTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
+import org.kuali.rice.krad.uif.lifecycle.model.ApplyAuthAndPresentationLogicTask;
+import org.kuali.rice.krad.uif.lifecycle.model.ComponentDefaultApplyModelTask;
+import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
+import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
+import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
@@ -272,7 +286,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         this.viewStatus = status;
-        resetComponentsForLifecycle();
     }
 
     /**
@@ -289,7 +302,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         this.viewStatus = phase.getEndViewStatus();
-        resetComponentsForLifecycle();
     }
 
     /**
@@ -368,7 +380,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         View view = ViewLifecycle.getView();
 
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -398,7 +410,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         // progressiveRender expression setup
         if (StringUtils.isNotEmpty(progressiveRender)) {
             View view = ViewLifecycle.getView();
@@ -452,7 +464,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
         if (skipInTabOrder) {
-            for (Component component : getComponentsForLifecycle().values()) {
+            for (LifecycleElement component : ViewLifecycleUtils.getElementsForLifecycle(this).values()) {
                 if (component != null && component instanceof ComponentBase) {
                     ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
                     if (component instanceof ControlBase) {
@@ -532,50 +544,36 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        // TODO: migrate tasks
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, Component> getComponentsForLifecycle() {
-        if (componentsForLifecycle == null) {
-            String phase;
-            
-            if (viewStatus == null
-                    || UifConstants.ViewStatus.CACHED.equals(viewStatus)
-                    || UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
-                phase = UifConstants.ViewPhases.INITIALIZE;
-            
-            } else if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
-                phase = UifConstants.ViewPhases.APPLY_MODEL;
-                
-            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(viewStatus)) {
-                phase = UifConstants.ViewPhases.FINALIZE;
-                
-            } else if (UifConstants.ViewStatus.FINAL.equals(viewStatus)
-                   || UifConstants.ViewStatus.RENDERED.equals(viewStatus)) {
-                phase = UifConstants.ViewPhases.RENDER;
-            } else {
-                ViewLifecycle.reportIllegalState("Invalid view status " + viewStatus);
-                phase = UifConstants.ViewPhases.INITIALIZE;
+        String viewPhase = phase.getViewPhase();
+        if (viewPhase.equals(UifConstants.ViewPhases.INITIALIZE)) {
+            if (!(this instanceof View)) {
+                pendingTasks.offer(LifecycleTaskFactory
+                        .getTask(AddComponentStateToViewIndexTask.class, phase));
             }
-            
-            synchronized (this) {
-                if (componentsForLifecycle == null) {
-                    componentsForLifecycle = ComponentUtils.getComponentsForLifecycle(this, phase);
-                }
-            }
+
+            pendingTasks.offer(LifecycleTaskFactory
+                    .getTask(PopulateComponentFromExpressionGraphTask.class, phase));
+            pendingTasks.offer(LifecycleTaskFactory
+                    .getTask(ComponentDefaultInitializeTask.class, phase));
+            pendingTasks.offer(LifecycleTaskFactory
+                    .getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, phase));
+        
+        } else if (viewPhase.equals(UifConstants.ViewPhases.APPLY_MODEL)) {
+            pendingTasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, phase));
+
+        } else if (viewPhase.equals(UifConstants.ViewPhases.FINALIZE)) {
+            pendingTasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, phase));
+            pendingTasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, phase));
         }
         
-        return componentsForLifecycle;
+        pendingTasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, phase));
     }
     
-    protected void resetComponentsForLifecycle() {
-        componentsForLifecycle = null;
-    }
-
     /**
      * Returns list of components that are being held in property replacers configured for this
      * component
@@ -2240,7 +2238,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             copy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
-        copy.resetComponentsForLifecycle();
 
         return copy;
     }
@@ -2259,7 +2256,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         viewStatus = UifConstants.ViewStatus.CACHED;
-        resetComponentsForLifecycle();
     }
 
     /**
@@ -2281,7 +2277,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         } else {
             componentCopy.viewStatus = UifConstants.ViewStatus.CREATED;
         }
-        componentCopy.resetComponentsForLifecycle();
 
         List<String> copyAdditionalComponentsToRefresh = this.getAdditionalComponentsToRefresh();
         if (copyAdditionalComponentsToRefresh != null) {

@@ -20,12 +20,9 @@ import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 
@@ -100,12 +97,12 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
 
                 // Include the class name and ID of the component
                 // at the current phase to the hash
-                Component component = phase.getComponent();
+                LifecycleElement currentElement = phase.getElement();
                 hash *= prime;
-                if (component != null) {
-                    hash += component.getClass().getName().hashCode();
+                if (currentElement != null) {
+                    hash += currentElement.getClass().getName().hashCode();
 
-                    String id = component.getId();
+                    String id = currentElement.getId();
                     hash *= prime;
                     if (id != null) {
                         hash += id.hashCode();
@@ -151,18 +148,10 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        LifecycleElement element = getPhase().getElement();
 
-        if (StringUtils.isBlank(component.getId())) {
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(component));
-        }
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(layoutManager));
-            }
+        if (StringUtils.isBlank(element.getId())) {
+            element.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(element));
         }
     }
 

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -25,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Content element that renders a HTML <code>&lt;IMG&gt;</code> tag
@@ -94,7 +93,7 @@ public class Image extends ContentElementBase {
      * org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (StringUtils.isNotBlank(captionHeaderText)) {

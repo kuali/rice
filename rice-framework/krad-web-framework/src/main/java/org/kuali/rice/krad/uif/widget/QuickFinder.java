@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -112,10 +113,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        if (parent.isReadOnly()) {
+        if (parent instanceof Component && ((Component) parent).isReadOnly()) {
             setRender(false);
         }
 
@@ -340,7 +341,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * @param model object containing the view data
      * @param parent component instance the quickfinder is associated with
      */
-    protected void setupQuickfinderAction(View view, Object model, Component parent) {
+    protected void setupQuickfinderAction(View view, Object model, LifecycleElement parent) {
         quickfinderAction.setId(getId() + UifConstants.IdSuffixes.ACTION);
 
         if ((lightBox != null) && lightBox.isRender()) {
@@ -400,7 +401,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      */
     @Override
     public void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
-            Component eventComponent) {
+            LifecycleElement eventComponent) {
         Action finalQuickfinderAction = (Action) eventComponent;
 
         // add post metadata for focus point when the associated lookup returns

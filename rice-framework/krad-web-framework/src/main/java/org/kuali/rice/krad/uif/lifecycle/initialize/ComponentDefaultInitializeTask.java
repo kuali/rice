@@ -41,7 +41,7 @@ public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke component to initialize itself after properties have been set
-        getPhase().getComponent().performInitialization(getPhase().getModel());
+        getPhase().getElement().performInitialization(getPhase().getModel());
     }
 
 }

@@ -57,7 +57,7 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        View view = (View) getPhase().getComponent();
+        View view = (View) getPhase().getElement();
         assert view == ViewLifecycle.getView();
         Object model = ViewLifecycle.getModel();
 

@@ -45,7 +45,9 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -176,7 +178,7 @@ public class LightTable extends GroupBase implements DataBinding {
             ((Group) item).getLayoutManager().setId(ID_TOKEN + ((Group) item).getLayoutManager().getId() + ID_TOKEN);
         }
 
-        expressionMap = addChildExpressions(item.getComponentsForLifecycle().values(), expressionMap);
+        expressionMap = addChildExpressions(ViewLifecycleUtils.getElementsForLifecycle(item).values(), expressionMap);
 
         for (String name : toRemove) {
             item.getExpressionGraph().remove(name);
@@ -243,9 +245,9 @@ public class LightTable extends GroupBase implements DataBinding {
      * @param expressionMap the map to add expressions to
      * @return the map with child component expressions added
      */
-    protected Map<String, String> addChildExpressions(Collection<? extends Component> components,
+    protected Map<String, String> addChildExpressions(Collection<? extends LifecycleElement> components,
             Map<String, String> expressionMap) {
-        for (Component comp : components) {
+        for (LifecycleElement comp : components) {
             if (comp != null && (comp instanceof Action
                     || comp instanceof Image
                     || comp instanceof Message
@@ -257,7 +259,7 @@ public class LightTable extends GroupBase implements DataBinding {
                     || comp instanceof CheckboxControl
                     || comp instanceof TextControl
                     || comp instanceof SelectControl)) {
-                expressionMap = buildExpressionMap(comp, expressionMap);
+                expressionMap = buildExpressionMap((Component) comp, expressionMap);
             }
         }
 
@@ -268,7 +270,7 @@ public class LightTable extends GroupBase implements DataBinding {
      * performFinalize override corrects the binding path for the DataFields and turns off rendering on some components
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         headerLabels = new ArrayList<Label>();

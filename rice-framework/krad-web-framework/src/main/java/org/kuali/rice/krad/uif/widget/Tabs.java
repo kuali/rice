@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.TabGroup;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Widget used for configuring tab options, use componentOptions for most options.
@@ -53,14 +54,14 @@ public class Tabs extends WidgetBase {
      * </ul>
      */
     @Override
-    public void performFinalize(Object model, Component component) {
-        super.performFinalize(model, component);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
 
-        if (!(component instanceof TabGroup)) {
-            throw new RuntimeException("Parent for tabs widget should be tab group, not " + component.getClass());
+        if (!(parent instanceof TabGroup)) {
+            throw new RuntimeException("Parent for tabs widget should be tab group, not " + parent.getClass());
         }
 
-        TabGroup tabGroup = (TabGroup) component;
+        TabGroup tabGroup = (TabGroup) parent;
 
         if (StringUtils.isNotBlank(defaultActiveTabId)) {
             // need to find the index of the item to set the plugin active option

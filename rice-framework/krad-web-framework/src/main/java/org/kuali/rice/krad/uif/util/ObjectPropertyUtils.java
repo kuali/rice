@@ -93,6 +93,16 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Gets the names of all readable properties for the bean class.
+     * 
+     * @param beanClass The bean class.
+     * @return set of property names
+     */
+    public static Set<String> getReadablePropertyNames(Class<?> beanClass) {
+        return getMetadata(beanClass).readMethods.keySet();
+    }
+
+    /**
      * Get the read method for a specific property on a bean class.
      * 
      * @param beanClass The bean class.
@@ -709,7 +719,7 @@ public final class ObjectPropertyUtils {
             }
             
             propertyNames = Collections.unmodifiableSet(propertyNames);
-            readablePropertyNamesByPropertyType.put(collectionType, propertyNames);
+            readablePropertyNamesByCollectionType.put(collectionType, propertyNames);
             
             return propertyNames;
         }

@@ -42,8 +42,10 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -149,7 +151,7 @@ public class LookupView extends FormView {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         LookupForm lookupForm = (LookupForm) model;
 
         if (!renderCriteriaActions) {
@@ -209,12 +211,12 @@ public class LookupView extends FormView {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         LookupForm lookupForm = (LookupForm) model;
 
-        List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(criteriaGroup, InputField.class);
+        List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(criteriaGroup, InputField.class);
         for (InputField field : fields) {
             field.setForceSessionPersistence(true);
         }

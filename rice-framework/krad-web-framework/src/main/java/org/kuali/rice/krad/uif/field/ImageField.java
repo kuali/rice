@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that wraps an image content element.
@@ -52,7 +53,7 @@ public class ImageField extends FieldBase {
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present

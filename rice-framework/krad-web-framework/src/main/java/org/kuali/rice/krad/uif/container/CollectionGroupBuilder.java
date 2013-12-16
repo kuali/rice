@@ -45,6 +45,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -327,14 +328,14 @@ public class CollectionGroupBuilder implements Serializable {
         // If the fields contain any collections themselves (details case) adjust their binding path
         // TODO: does the copyFieldList method above not take care of this?
         for (Field field : lineFields) {
-            List<CollectionGroup> components = ComponentUtils.getComponentsOfTypeDeep(field, CollectionGroup.class);
+            List<CollectionGroup> components = ViewLifecycleUtils.getElementsOfTypeDeep(field, CollectionGroup.class);
             for (CollectionGroup fieldCollectionGroup : components) {
                 ComponentUtils.prefixBindingPath(fieldCollectionGroup, bindingPath);
                 fieldCollectionGroup.setSubCollectionSuffix(lineSuffix);
             }
 
             // OR LightTables in details...
-            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeDeep(field, LightTable.class);
+            List<LightTable> lightTables = ViewLifecycleUtils.getElementsOfTypeDeep(field, LightTable.class);
             for (LightTable lightTable : lightTables) {
                 ComponentUtils.prefixBindingPath(lightTable, bindingPath);
             }
@@ -346,7 +347,7 @@ public class CollectionGroupBuilder implements Serializable {
         // update contexts before add line fields are added to the index below
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
 
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionList, Action.class);
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
             if (action != null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
                     action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString()) &&
@@ -458,7 +459,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // update action parameters for any actions that were added in the line items (as opposed to the line actions)
-        List<Action> lineFieldActions = ComponentUtils.getComponentsOfTypeDeep(lineFields, Action.class);
+        List<Action> lineFieldActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineFields, Action.class);
         if (lineFieldActions != null) {
             collectionGroup.getCollectionGroupBuilder().initializeActions(lineFieldActions, collectionGroup, lineIndex);
         }
@@ -481,7 +482,7 @@ public class CollectionGroupBuilder implements Serializable {
                         selector = selector + ",#" + f.getId() + UifConstants.IdSuffixes.CONTROL;
                     }
                 } else if (f instanceof FieldGroup) {
-                    List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(((FieldGroup) f).getGroup(),
+                    List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(((FieldGroup) f).getGroup(),
                             InputField.class);
                     for (InputField nestedField : fields) {
                         Control control = nestedField.getControl();
@@ -718,7 +719,7 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         // check auth on line actions
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionList, Action.class);
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
             if (action.isRender()) {
                 boolean canPerformAction = authorizer.canPerformLineAction(view, model, collectionGroup,
@@ -800,7 +801,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
 
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(actionComponents, Action.class);
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         initializeActions(actions, collectionGroup, lineIndex);
 
         ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
@@ -881,18 +882,13 @@ public class CollectionGroupBuilder implements Serializable {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
         List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(), lineSuffix);
-        List<Action> actions = ComponentUtils.getComponentsOfTypeDeep(lineActionComponents, Action.class);
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineActionComponents, Action.class);
         for (Action action : actions) {
             action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
             action.setRefreshId(collectionGroup.getId());
-
-            String baseId = collectionGroup.getBaseId();
-            if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-                baseId += collectionGroup.getSubCollectionSuffix();
-            }
 
             if (action.isPerformClientSideValidation()) {
                 String preSubmitScript = "var valid=";

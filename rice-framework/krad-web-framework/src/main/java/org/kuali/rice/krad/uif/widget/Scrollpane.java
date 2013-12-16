@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Decorates a group with scroll functionality
@@ -35,13 +36,13 @@ public class Scrollpane  extends WidgetBase {
     private String height;
 
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         buildCSSforScrollPane(parent);
     }
 
-    private void buildCSSforScrollPane(Component parent) {
+    private void buildCSSforScrollPane(LifecycleElement parent) {
         LayoutManager layoutManager = ((Group) parent).getLayoutManager();
         if (StringUtils.isNotBlank(getHeight())) {
             if (!StringUtils.contains(layoutManager.getStyle(), CssConstants.HEIGHT)) {

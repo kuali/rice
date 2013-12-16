@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -34,6 +34,6 @@ public interface LifecycleEventListener {
      * @param eventComponent component instance the event occurred on/for
      */
     void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
-            Component eventComponent);
+            LifecycleElement eventElement);
     
 }

@@ -50,7 +50,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         ApplyModelComponentPhase phase = getPhase();
-        phase.getComponent().performApplyModel(phase.getModel(), phase.getParent());
+        phase.getElement().performApplyModel(phase.getModel(), phase.getParent());
     }
 
 }

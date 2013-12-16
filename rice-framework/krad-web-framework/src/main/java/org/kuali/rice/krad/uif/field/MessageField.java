@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field wrapper for a Message
@@ -56,7 +57,7 @@ public class MessageField extends FieldBase {
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present

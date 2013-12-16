@@ -41,7 +41,7 @@ public class HelperCustomInitializeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke initialize service hook
-        ViewLifecycle.getHelper().performCustomInitialization(getPhase().getComponent());
+        ViewLifecycle.getHelper().performCustomInitialization(getPhase().getElement());
     }
 
 }

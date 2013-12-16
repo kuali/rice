@@ -77,7 +77,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
     protected void performLifecycleTask() {
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         View view = ViewLifecycle.getView();
-        Component component = getPhase().getComponent();
+        Component component = (Component) getPhase().getElement();
 
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
         if (componentPropertyReplacers != null) {

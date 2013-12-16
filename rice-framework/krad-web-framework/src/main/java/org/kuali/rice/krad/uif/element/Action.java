@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -190,7 +191,7 @@ public class Action extends ContentElementBase {
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         View view = ViewLifecycle.getView();
@@ -326,7 +327,7 @@ public class Action extends ContentElementBase {
      * @param model model object containing the view data
      * @param parent component the holds the action
      */
-    protected void buildActionData(View view, Object model, Component parent) {
+    protected void buildActionData(View view, Object model, LifecycleElement parent) {
         HashMap<String, String> actionDataAttributes = new HashMap<String, String>();
 
         Map<String, String> dataDefaults =

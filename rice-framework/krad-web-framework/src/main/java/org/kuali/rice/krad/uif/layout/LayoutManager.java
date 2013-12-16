@@ -222,24 +222,6 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	public void setContext(Map<String, Object> context);
 
 	/**
-	 * Places the given object into the context Map for the layout manager
-	 * with the given name
-	 *
-	 * @see org.kuali.rice.krad.uif.component.Component#pushObjectToContext(String,
-	 *      Object)
-	 */
-	public void pushObjectToContext(String objectName, Object object);
-
-    /**
-     * Places all entries from a map into the context Map for the layout manager.
-     *
-     * @param sourceContext The map to push entries from.
-     * @see org.kuali.rice.krad.uif.component.Component#pushToContext(Map,
-     *      Object)
-     */
-    public void pushAllToContext(Map<String, Object> sourceContext);
-
-	/**
 	 * List of <code>PropertyReplacer</code> instances that will be
 	 * evaluated during the view lifecycle to conditional set properties on the
 	 * <code>LayoutManager</code> based on expression evaluations

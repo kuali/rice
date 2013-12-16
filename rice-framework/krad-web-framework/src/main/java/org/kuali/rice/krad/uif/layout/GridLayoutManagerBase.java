@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Layout manager that organizes its components in a table based grid
@@ -79,10 +80,10 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performFinalize(Object model, Component component) {
-        super.performFinalize(model, component);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
         
-        Container container = (Container) component;
+        Container container = (Container) parent;
 
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();

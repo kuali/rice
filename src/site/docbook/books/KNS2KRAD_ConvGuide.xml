@@ -48,9 +48,19 @@
       manually.</para>
     <section>
       <title>Process Overview</title>
-      <para>There are four main steps involved in converting from KNS to KRAD: <orderedlist>
+      <para>There are five main steps involved in converting from KNS to KRAD: <orderedlist>
           <listitem>
-            <para>Convert data dictionary into krad compliant format.<itemizedlist>
+            <para><link linkend="ojb_to_jpa">Convert OJB BusinessObject Mappings to JPA Annotations.</link><itemizedlist>
+                <listitem>
+                  <para>Configure and run provided automated conversion script.</para>
+                </listitem>
+                <listitem>
+                  <para>Review conversions and resolve reported issues.</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para>Convert data dictionary into KRAD compliant format.<itemizedlist>
                 <listitem>
                   <para>Convert validation patterns to constraint.</para>
                 </listitem>
@@ -127,7 +137,7 @@
         </orderedlist></para>
     </section>
   </section>
-  <section>
+  <section xml:id="dd_conv">
     <title>Data Dictionary Conversion</title>
     <para>The Data Dictionary is a repository of metadata primarily describing data objects and
       their properties with attribute Definitions that provide the metadata about the attributes
@@ -3618,13 +3628,131 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       <para/>
     </section>
   </section>
-  <section>
+  <section xml:id="ojb_to_jpa">
     <title>OJB to JPA Conversion</title>
     <para>Conversion from OJB to JPA should be done a module at a time if possible.</para>
     <para>In some cases there are clusters of tables that are related and will need to be converted
       together, but often there are sets of tables (even within a given module) which are
       independent from each other and can be converted independently to allow for some amount of
       testing.</para>
+    <section>
+        <title>JPA Conversion Tool</title>
+        <para>As part of the upgrade to use KRAD, you will need to update all your OJB-mapped 
+        <emphasis role="keyword">BusinessObject</emphasis> classes into JPA-mapped data objects.</para>
+        <para>For this, the Rice project has provided a tool which should extract most of your 
+        OJB metadata and use it to annotate your Java classes.</para>
+        <para>The script is written in Groovy and uses a Groovy configuration file for the more
+        verbose elements.</para>
+        <section>
+            <title>Running the Conversion Tool</title>
+            <orderedlist>
+                <listitem><para>In the project distribution, copy the contents of the 
+            <emphasis role="keyword">scripts/jpaconverter</emphasis> directory to a working 
+            directory.</para></listitem>
+                <listitem>
+                    <para>
+                        If you do not have your own Groovy Grapes setup, place the XML content below into <emphasis role="keyword">$HOME/.groovy/grapeConfig.xml</emphasis>.                        
+                    </para>
+                    <programlisting><![CDATA[
+<ivysettings>
+  <property name="ivy.cache.ttl.default" value="24h"/>
+  <settings defaultResolver="downloadGrapes"/>
+  <resolvers>
+    <chain name="downloadGrapes" returnFirst="true">
+      <filesystem name="cachedGrapes">
+        <ivy pattern="\${user.home}/.groovy/grapes/[organisation]/[module]/ivy-[revision].xml"/>
+        <artifact pattern="\${user.home}/.groovy/grapes/[organisation]/[module]/[type]s/[artifact]-[revision](-[classifier]).[ext]"/>
+      </filesystem>
+      <ibiblio name="localm2" root="file:\${user.home}/.m2/repository/" checkmodified="true" changingPattern=".*" changingMatcher="regexp" m2compatible="true"/>
+      <ibiblio name="mavencentral" root="http://repo.maven.apache.org/maven2/" m2compatible="true"/>
+      <ibiblio name="codehaus" root="http://repository.codehaus.org/" m2compatible="true"/>
+    </chain>
+  </resolvers>
+</ivysettings>
+                    ]]></programlisting>
+                </listitem>
+                <listitem>
+                    <para>
+                        Update (and rename) the <emphasis role="keyword">config-sample.groovy</emphasis> 
+                        script with the appropriate values for your project.
+                    </para>
+                    <para>
+						All the elements below should be set in the Groovy configuration file.  See 
+						the provided <emphasis role="keyword">config-sample.groovy</emphasis> for 
+						examples and use it as a starting point.
+						<itemizedlist>
+                          <listitem><para>
+                            <emphasis role="keyword">classpathDirectories</emphasis> : This is a 
+                            list of directories, relative to the base path passed in on the command 
+                            line, which will be used to resolve your compiled classes.  The
+                            converter inspects the code to obtain needed information, and so needs a
+                            compiled version of all business object classes.  Each directory is 
+                            expected to be the base of a class file output directory.  
+                            (E.g., <emphasis role="keyword">target/classes</emphasis>)
+                          </para></listitem>
+                          <listitem><para>
+                            <emphasis role="keyword">classpathJarDirectories</emphasis> : A list of 
+                            directories, relative to the base path, which will be scanned for jar 
+                            files.  Each jar file found will be added to the classpath.  This should
+                            contain paths to all the libraries used by your project in order to
+                            resolve dependencies of your business objects.  
+                            (E.g., a <emphasis role="keyword">WEB-INF/lib</emphasis> directory)
+                          </para></listitem>
+                          <listitem><para>
+                            <emphasis role="keyword">sourceDirectories</emphasis> :  A list of 
+                            directories, relative to the base path, which will be scanned for the 
+                            matching source files for your business objects.  The first 
+                            <emphasis role="keyword">.java</emphasis> file
+                            which matches a given class will be used and modified by this tool.
+                          </para></listitem>
+                          <listitem><para>
+                            <emphasis role="keyword">repositoryFiles</emphasis> : A list of the 
+                            files, relative to the base path, of the OJB files you want to scan and 
+                            process.  Only classes referenced in 
+                            <emphasis role="keyword">&lt;class-descriptor&gt;</emphasis> elements 
+                            in these files will be touched by the conversion process.
+                          </para></listitem>
+                          <listitem><para>
+                            <emphasis role="keyword">converterMappings</emphasis> : A mapping of 
+                            class name to new JPA converter names.  If you edit this map, leave all
+                            the existing entries in place and add your application-specific 
+                            converters to the end of the list.  If you have converters in your 
+                            application which are not covered by the implementations already in the 
+                            conversion list, you will need to create a new JPA converter class 
+                            (<emphasis role="keyword">javax.persistence.AttributeConverter</emphasis>) 
+                            and then add the fully qualified class name in this map.
+                          </para></listitem>
+						</itemizedlist>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Run the <emphasis role="keyword">JpaConverter.groovy</emphasis> tool as
+                        shown below.  See the README.md in the same directory as the scripts for 
+                        troubleshooting information.
+                    </para>
+                    <para>
+                        <emphasis role="bold">Tool Usage</emphasis>
+                        <programlisting><![CDATA[usage: groovy JpaConverter.groovy -b <project base directory> -c <location of config file> [options]
+ -b,--base <base directory>   Absolute path to the base directory for the
+                              conversion.
+ -c,--config <config file>    Location of groovy configuration file
+ -e,--errorsonly              If set, the script will only report any
+                              errors or warnings it will encounter and
+                              *not* update any files.
+ -h,--help                    show usage information
+ -n,--dryrun                  If set, the script will dump the resulting
+                              java files to the console instead of
+                              updating the existing files.
+    --replace                 Replace all existing JPA annotations on
+                              classes referenced by OJB files.
+                        ]]></programlisting>
+                    </para>
+                </listitem>
+            </orderedlist>
+            
+        </section>
+    </section>
     <section>
       <title>JPA Configuration</title>
       <para>Create a new spring file for your JPA configuration.

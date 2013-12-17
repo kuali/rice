@@ -85,11 +85,9 @@
     <property name="headerText" value="Document Overview"/>
     <property name="items">
       <list>
-        <bean parent="Uif-DocumentDescription" p:required="true" p:label="Description"
-              p:width="25%" p:fieldLabel.width="25%"/>
-        <bean parent="Uif-DocumentExplaination" p:rowSpan="2" p:fieldLabel.rowSpan="2"
-              p:width="40%" p:fieldLabel.width="10%"/>
-        <bean parent="Uif-OrganizationDocumentNumber" p:width="25%" p:fieldLabel.width="25%"/>
+        <bean parent="Uif-DocumentDescription" p:required="true" p:label="Description"/>
+        <bean parent="Uif-DocumentExplaination" p:rowSpan="2" p:fieldLabel.rowSpan="2"/>
+        <bean parent="Uif-OrganizationDocumentNumber"/>
       </list>
     </property>
     <property name="fieldBindingObjectPath" value="document.documentHeader"/>

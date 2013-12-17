@@ -33,6 +33,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
     <#local splitter = ";"/>
     <#local columnArray=[]/>
     <#local columnLoopArray=""/>
+    <#local hasRowSpan=false/>
+    <#local hasColSpan=false/>
 
     <#local firstRow=true/>
 
@@ -79,12 +81,8 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         </#if>
 
         <#-- determine cell width by using default or configured width and round off to two decimal places-->
-        <#if item.cellWidth?has_content>
-            <#local cellWidth=item.cellWidth />
-        </#if>
-
         <#if cellWidth?has_content>
-            <#local cellWidth="width=\"${cellWidth}\""/>
+            <#local cellWidth="width=\"${item.cellWidth}\""/>
         </#if>
 
         <#local singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
@@ -106,12 +104,14 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
 
         <#if (index == 1)>
 
-            <#if item.colSpan != 1>
+            <#if item.colSpan != 1 || hasColSpan>
                 <#local colSpan="colspan=\"${item.colSpan}\""/>
+                <#local hasColSpan=true/>
             </#if>
 
-            <#if item.rowSpan != 1>
+            <#if item.rowSpan != 1 || hasRowSpan>
                 <#local rowSpan="rowspan=\"${item.rowSpan}\""/>
+                <#local hasRowSpan=true/>
             </#if>
 
             <#if renderHeaderColumn>

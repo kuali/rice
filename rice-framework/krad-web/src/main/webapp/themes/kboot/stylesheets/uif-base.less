@@ -27,7 +27,10 @@ body { background: white}
 
 .uif-label .uif-requiredMessage {
   float: left;
-  padding-right: 3px;
+}
+
+.uif-labelBlock {
+  margin-bottom: 0;
 }
 
 .uif-labelBlock .uif-requiredMessage {
@@ -36,6 +39,7 @@ body { background: white}
 
 .uif-cssGridLabelCol label {
   float: right;
+  white-space: pre-wrap;
 }
 /** end label css **/
 
@@ -448,6 +452,7 @@ table.uif-tableCollectionLayout thead th.sorting, table.uif-tableCollectionLayou
 .uif-gridLayout th[scope="row"] label {
   padding-top: 4px;
   float: right;
+  white-space: pre-wrap;
 }
 .uif-gridLayout td .uif-inputField input:first-child {
   margin-bottom: 0px;
@@ -557,7 +562,11 @@ div.uif-calculationField, div.uif-calculationField input {
   background-color: #FFFFFF;
 }
 .uif-maintenanceView .uif-viewHeader-contentWrapper {
-  min-height: 70px;
+  min-height: 75px;
+}
+
+.uif-maintenanceView .uif-viewHeader {
+  min-height: 75px;
 }
 /* Date-picker customizations *************************************************************************/
 

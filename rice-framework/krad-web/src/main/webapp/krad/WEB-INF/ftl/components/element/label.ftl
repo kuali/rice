@@ -29,21 +29,22 @@
             <#local for='for="${element.labelForComponentId!}"'>
         </#if>
 
-        <label id="${element.id}" ${for!} ${krad.attrBuild(element)}
-            ${element.simpleDataAttributes!}>
+        <@compress single_line=true>
+            <label id="${element.id}" ${for!} ${krad.attrBuild(element)}
+                ${element.simpleDataAttributes!}>
 
-            <#if element.richLabelMessage?has_content>
-                <@krad.template component=element.richLabelMessage/>${colon}
-            <#else>
-                ${label}${colon}
-            </#if>
+                <#if element.richLabelMessage?has_content>
+                    <@krad.template component=element.richLabelMessage/>${colon}
+                <#else>
+                    ${label}${colon}
+                </#if>
 
-            <#-- required indicator -->
-            <#if element.requiredIndicator?? && element.renderRequiredIndicator>
-                <span class="uif-requiredMessage">${element.requiredIndicator!}</span>
-            </#if>
+                <#-- required indicator -->
+                <#if element.requiredIndicator?? && element.renderRequiredIndicator>
+                    <span class="uif-requiredMessage">${element.requiredIndicator!}</span>
+                </#if>
 
-        </label>
-
+            </label>
+        </@compress>
     </#if>
 </#macro>

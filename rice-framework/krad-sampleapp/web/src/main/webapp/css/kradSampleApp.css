@@ -782,6 +782,7 @@ a.demo-documentationLink {
     background-image: url(../images/logo.png);
     position: absolute;
     top: 0px;
+    z-index: 1;
 }
 
 .demo-headerFooterContainer {

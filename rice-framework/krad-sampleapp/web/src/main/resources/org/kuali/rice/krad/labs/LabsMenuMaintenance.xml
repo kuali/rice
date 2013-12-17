@@ -218,12 +218,12 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row4-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Clear secure fields on BO Copy"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR4C3"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrate automatically clearing out secure fields (phone number) upon a BO copy operation"/>
           </list>
           </property>
         </bean>

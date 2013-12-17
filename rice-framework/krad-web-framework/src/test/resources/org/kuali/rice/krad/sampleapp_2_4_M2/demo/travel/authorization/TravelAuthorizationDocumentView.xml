@@ -105,8 +105,8 @@
         p:layoutManager.numberOfColumns="4">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin" p:fieldLabel.requiredMessagePlacement="LEFT"/>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd" p:fieldLabel.requiredMessagePlacement="LEFT"/>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripBegin"/>
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="tripEnd"/>
 <!--  p:constraintText="mm/dd/yyyy"
         <bean parent="Uif-InputField" p:label="Primary Destination Lookup" p:required="true" p:propertyName="primaryDestinationId" p:colSpan="3">
           <property name="id" value="quickfinder"/>

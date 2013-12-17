@@ -77,11 +77,14 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
         checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
-        checkBeanStructure(resultMDENode, [], ["businessObjectEntry"]);
+        def mdeCheckedProperties = [];
+        checkBeanStructure(resultMDENode, mdeCheckedProperties, ["businessObjectEntry"]);
 
+        def umvCheckedProperties = ["dataObjectClassName"];
         checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
         def resultMVNode = ddRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
-        checkBeanStructure(resultMVNode, [], ["maintainableSections"]);
+        checkBeanStructure(resultMVNode, umvCheckedProperties, ["maintainableSections"]);
+
     }
 
     @Test

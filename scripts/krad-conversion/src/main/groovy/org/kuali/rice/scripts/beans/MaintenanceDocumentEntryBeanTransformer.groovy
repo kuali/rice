@@ -52,6 +52,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformMaintenanceDocumentEntryBean(Node beanNode) {
+        fixNamespaceProperties(beanNode);
         def maintDocParentBeanNode = beanNode;
 
         def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, mdeIgnoreOnCarryoverAttributes);

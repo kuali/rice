@@ -26,7 +26,20 @@ import groovy.util.logging.Log
 class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     String maintenanceDefinitionBeanType = "MaintenanceDocumentEntry";
+    String maintenanceDocEntryBeanType = "uifMaintenanceDocumentEntry"
     String maintenanceViewBeanType = "Uif-MaintenanceView";
+
+    // MDE Conversion Components
+    def mdeCopyProperties = []
+    def mdeRenameProperties = [:]
+    def mdeIgnoreOnCarryoverProperties = []
+
+
+
+    // UMV Conversion Components - include
+    def umvCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"]
+    def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"]
+    def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections"]
 
     /**
      * Transforms maintenance document entry which results in an updated document entry
@@ -50,13 +63,11 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
             def beanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
 
-            List copiedProperties;
-            if (carryoverProperties) {
-                copiedProperties = beanNode.property.collect { it.@name };
-                copiedProperties.removeAll(ignoreOnCopyProperties);
-            } else {
-                copiedProperties = docEntryCopyProperties;
-            }
+            def mdeCarryoverProperties = []
+            def umvCarryoverProperties = []
+
+
+            List copiedProperties = findCarryoverProperties();
 
             log.finer "transform bean node for maintenance document entry"
             if (isPlaceholder(beanNode)) {
@@ -70,7 +81,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                     addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                     bean(beanAttributes) {
                         copyProperties(delegate, beanNode, copiedProperties)
-                        renameProperties(delegate, maintDocParentBeanNode, ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"])
+                        renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
                         addViewNameProperty(delegate, beanTitle);
                         transformMaintainableSectionsProperty(delegate, beanNode)
                     }
@@ -83,6 +94,18 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
 
         return beanNode;
+    }
+
+    def findCarryoverProperties(Node beanNode, boolean includeCarryoverProperties, def copyPropertiesList, def renamePropertiesList, def ignorePropertiesList) {
+        def carryoverProperties = []
+        if (includeCarryoverProperties) {
+            carryoverProperties = beanNode.property.collect { it.@name };
+            carryoverProperties.removeAll(copyPropertiesList);
+            carryoverProperties.removeAll(renamePropertiesList);
+            carryoverProperties.removeAll(ignorePropertiesList);
+        }
+
+        return carryoverProperties;
     }
 
     /**

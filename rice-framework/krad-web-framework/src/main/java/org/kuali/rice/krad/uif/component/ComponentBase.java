@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
@@ -580,6 +581,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * 
      * @return List<Component>
      */
+    @ViewLifecycleRestriction
     public List<Component> getPropertyReplacerComponents() {
         if (propertyReplacers == null) {
             return Collections.emptyList();

@@ -752,6 +752,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the SyntaxHighlighter
      */
+    @ViewLifecycleRestriction
     public SyntaxHighlighter getHtmlCodeViewer() {
         return htmlCodeViewer;
     }

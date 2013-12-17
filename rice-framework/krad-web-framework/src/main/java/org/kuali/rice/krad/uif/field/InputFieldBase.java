@@ -156,9 +156,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#performInitialization(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {

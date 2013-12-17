@@ -209,7 +209,7 @@ public class FreeMarkerInlineRenderUtils {
 
         }
 
-        if (componentUpdate) {
+        if (componentUpdate || UifConstants.ViewStatus.RENDERED.equals(component.getViewStatus())) {
             return;
         }
 

@@ -31,8 +31,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     String maintenanceViewBeanType = "Uif-MaintenanceView";
 
     // MDE Conversion Components
-    def mdeCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass",
-            "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
+    def mdeCopyProperties = ["businessObjectClass", "businessRulesClass", "maintainableClass", "documentTypeName",
+            "documentAuthorizerClass", "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
     def mdeRenameProperties = [:]
     def mdeIgnoreOnCarryoverProperties = []
     def mdeIgnoreOnCarryoverAttributes = []

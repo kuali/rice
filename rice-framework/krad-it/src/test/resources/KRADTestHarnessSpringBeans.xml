@@ -213,12 +213,18 @@
     <value>edu.sampleu.travel.dataobject</value>
   </util:list>
 
+  <util:list id="jpaManagedClassNames">
+    <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableVersion</value>
+    <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableNoVersion</value>
+  </util:list>
+
   <!-- Override the EntityManagerFactory -->
   <bean id="kradTestEntityManagerFactory"
         class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
         p:jtaDataSource-ref="riceDataSource"
         p:persistenceUnitName="krad-test"
-        p:packagesToScan-ref="jpaPackagesToScan"/>
+        p:packagesToScan-ref="jpaPackagesToScan"
+        p:managedClassNames-ref="jpaManagedClassNames"/>
 
   <bean id="kradTestSharedEntityManager"
         class="org.springframework.orm.jpa.support.SharedEntityManagerBean"

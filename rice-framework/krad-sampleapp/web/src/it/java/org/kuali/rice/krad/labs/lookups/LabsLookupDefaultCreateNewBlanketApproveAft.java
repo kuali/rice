@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,47 +40,59 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveBookmark() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApprove();
+        String account = "A" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        testLabsLookupDefaultCreateNewBlanketApprove(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountBookmark() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
+        String account = "A" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveNav() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApprove();
+        String account = "A" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        testLabsLookupDefaultCreateNewBlanketApprove(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountNav() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
+        String account = "A" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
         passed();
     }
 
-    protected void testLabsLookupDefaultCreateNewBlanketApprove()throws Exception {
+    protected void testLabsLookupDefaultCreateNewBlanketApprove(String account)throws Exception {
         navigateToCreateNew();
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created ");
-//        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName", "A");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+        waitAndClickByXpath("//input[@value='CAT']");
+
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin, admin");
         waitAndClickButtonByText("blanket approve");
-        waitForElementPresentByXpath("//img[@src='/krad/images/validation/info.png']");
+        waitForElementPresent("img[src*=\"info.png\"]");
+
         assertTextPresent("Document was successfully approved.");
         assertTextPresent("ENROUTE");
     }
 
-    protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount()throws Exception {
+    protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(String account)throws Exception {
         navigateToCreateNew();
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
-//        waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","A");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+        waitAndClickByXpath("//input[@value='CAT']");
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input[2]","Sub Account");
         waitAndClickButtonByText("add");
@@ -91,7 +104,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         //Document not being able to create if we add Adhoc (Showing missing Person Network ID which is not present on page)
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
-        waitForElementPresentByXpath("//img[@src='/krad/images/validation/info.png']");
+        waitForElementPresent("img[src*=\"info.png\"]");
         assertTextPresent("Document was successfully approved.");
         assertTextPresent("ENROUTE");
     }

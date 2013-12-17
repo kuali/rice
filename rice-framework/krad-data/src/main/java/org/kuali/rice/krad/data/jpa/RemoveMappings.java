@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2013 The Kuali Foundation
+/*
+ * Copyright 2006-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.krad.data.jpa;
 
-import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Class level annotation that may be used to disable versioning on optimistic locking policies.
+ * Class level annotation that allows for multiple {@link RemoveMapping} annotations to be defined.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({TYPE})
 @Retention(RUNTIME)
-@Inherited
-public @interface DisableVersioning {
+public @interface RemoveMappings {
+
+    /**
+     * The mappings to remove.
+     */
+    RemoveMapping[] value();
 
 }

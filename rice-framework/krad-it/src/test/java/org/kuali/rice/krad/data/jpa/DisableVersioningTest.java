@@ -16,26 +16,88 @@
 
 package org.kuali.rice.krad.data.jpa;
 
+import org.eclipse.persistence.exceptions.DatabaseException;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
+import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Tests the DisableVersion annotation.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB) // no rollback so we can avoid transactional cache mucking up our results
 public class DisableVersioningTest extends KRADTestCase {
+
+    private DisableVersion createDisableVersion(String rndId, String propertyVal) {
+        return new DisableVersion(rndId, propertyVal, new Long(0));
+    }
+
+    private DisableNoVersion createDisableNoVersion(String rndId, String propertyVal) {
+        return new DisableNoVersion(rndId, propertyVal);
+    }
+
+    private DisableNoVersionRemoveMapping createDisableNoVersionRemoveMapping(String rndId, String propertyVal) {
+        return new DisableNoVersionRemoveMapping(rndId, propertyVal);
+    }
+
+    private String getRandomId() {
+        String time = String.valueOf(System.currentTimeMillis());
+        return (time.substring(time.length() - 9));
+    }
+
+    @Test
+    public void testDisableVersioning() {
+        // get a random value for our id
+        String rndId = getRandomId();
+        String property = "testPropertyValue";
+
+        // persist to the datasource
+        KRADServiceLocator.getDataObjectService().save(createDisableVersion(rndId, property));
+        // retrieve the object back from the datasource
+        DisableVersion resultDV = KRADServiceLocator.getDataObjectService().find(DisableVersion.class, rndId);
+        // validate
+        assertNotNull("DisableVersion is null", resultDV);
+        assertEquals("DisableVersion id does not match given value", rndId, resultDV.getId());
+        assertEquals("DisableVersion property does not match given value", property, resultDV.getProperty());
+        assertEquals(new Long(0), resultDV.getVersionNumber());
+        // now set the version number to a value and make sure it persists properly
+        resultDV.setVersionNumber(new Long(50));
+        resultDV = KRADServiceLocator.getDataObjectService().save(resultDV);
+        assertEquals(new Long(50), resultDV.getVersionNumber());
+
+        // now, since DisableNoVersion has no version number column, it should throw an exception when we attempt to
+        // persist it since there is no ver_nbr column in the database
+        try {
+            KRADServiceLocator.getDataObjectService().save(createDisableNoVersion(rndId, property));
+            fail("Database exception should have been thrown when saving with no version number column");
+        } catch (DatabaseException e) {
+            // TODO - in the future once we resolve KULRICE-9798 this should be throwing DataAccessException instead
+        }
+
+        // DisableVersionRemoveMapping *should* work though because we are removing the VER_NBR column mapping which
+        // should help because we have no such column in the database
+        KRADServiceLocator.getDataObjectService().save(createDisableNoVersionRemoveMapping(rndId, property));
+        // retrieve the object back from the datasource
+        DisableNoVersionRemoveMapping resultDNV = KRADServiceLocator.getDataObjectService().find(DisableNoVersionRemoveMapping.class, rndId);
+        // validate
+        assertNotNull("DisableNoVersionRemoveMapping is null", resultDNV);
+        assertEquals("DisableNoVersionRemoveMapping id does not match given value", rndId, resultDNV.getId());
+        assertEquals("DisableNoVersionRemoveMapping property does not match given value", property, resultDNV.getProperty());
+
+    }
 
     @Entity
     @Table(name="KRTST_TEST_DISABLE_VER_TABLE_T")
@@ -51,9 +113,10 @@ public class DisableVersioningTest extends KRADTestCase {
 
         public DisableVersion() { }
 
-        public DisableVersion(String id, String property) {
+        public DisableVersion(String id, String property, Long versionNumber) {
             this.id = id;
             this.property = property;
+            setVersionNumber(versionNumber);
         }
 
         public String getId() {
@@ -109,41 +172,40 @@ public class DisableVersioningTest extends KRADTestCase {
         }
     }
 
-    private DisableVersion createDisableVersion(String rndId, String propertyVal) {
-        return new DisableVersion(rndId, propertyVal);
-    }
+    @Entity
+    @Table(name="KRTST_TEST_DISABLE_NO_VER_TABLE_T")
+    @DisableVersioning
+    @RemoveMapping(name = "versionNumber")
+    public static class DisableNoVersionRemoveMapping extends PersistableBusinessObjectBase {
 
-    private DisableNoVersion createDisableNoVersion(String rndId, String propertyVal) {
-        return new DisableNoVersion(rndId, propertyVal);
-    }
+        @Id
+        @Column(name="ID")
+        private String id;
 
-    private String getRandomId() {
-        String time = String.valueOf(System.currentTimeMillis());
-        return (time.substring(time.length() - 9));
-    }
+        @Column(name="STR_PROP")
+        private String property;
 
-    @Test
-    public void testDisableVersioning() {
-        // get a random value for our id
-        String rndId = getRandomId();
-        String property = "testPropertyValue";
+        public DisableNoVersionRemoveMapping() { }
 
-        // persist to the datasource
-        KRADServiceLocator.getDataObjectService().save(createDisableNoVersion(rndId, property));
-        // retrieve the object back from the datasource
-        DisableNoVersion resultDNV = KRADServiceLocator.getDataObjectService().find(DisableNoVersion.class, rndId);
-        // validate
-        assertNotNull("DisableNoVersion is null", resultDNV);
-        assertEquals("DisableNoVersion id does not match given value", rndId, resultDNV.getId());
-        assertEquals("DisableNoVersion property does not match given value", property, resultDNV.getProperty());
+        public DisableNoVersionRemoveMapping(String id, String property) {
+            this.id = id;
+            this.property = property;
+        }
 
-        // persist to the datasource
-        KRADServiceLocator.getDataObjectService().save(createDisableVersion(rndId, property));
-        // retrieve the object back from the datasource
-        DisableVersion resultDV = KRADServiceLocator.getDataObjectService().find(DisableVersion.class, rndId);
-        // validate
-        assertNotNull("DisableVersion is null", resultDV);
-        assertEquals("DisableVersion id does not match given value", rndId, resultDV.getId());
-        assertEquals("DisableVersion property does not match given value", property, resultDV.getProperty());
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getProperty() {
+            return property;
+        }
+
+        public void setProperty(String property) {
+            this.property = property;
+        }
     }
 }

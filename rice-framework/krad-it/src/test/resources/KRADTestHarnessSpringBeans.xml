@@ -216,6 +216,7 @@
   <util:list id="jpaManagedClassNames">
     <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableVersion</value>
     <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableNoVersion</value>
+    <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableNoVersionRemoveMapping</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->

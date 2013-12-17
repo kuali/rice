@@ -18,6 +18,7 @@ package org.kuali.rice.krad.data.jpa.eclipselink;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.persistence.config.SessionCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
+import org.eclipse.persistence.exceptions.DescriptorException;
 import org.eclipse.persistence.internal.databaseaccess.Accessor;
 import org.eclipse.persistence.internal.descriptors.OptimisticLockingPolicy;
 import org.eclipse.persistence.internal.helper.DatabaseField;
@@ -28,6 +29,8 @@ import org.eclipse.persistence.sessions.DatabaseLogin;
 import org.eclipse.persistence.sessions.JNDIConnector;
 import org.eclipse.persistence.sessions.Session;
 import org.kuali.rice.krad.data.jpa.DisableVersioning;
+import org.kuali.rice.krad.data.jpa.RemoveMapping;
+import org.kuali.rice.krad.data.jpa.RemoveMappings;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
@@ -103,6 +106,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         if (Boolean.FALSE.equals(descModified)) {
             modDescMap.put(sessionName,Boolean.TRUE);
             handleDisableVersioning(session);
+            handleRemoveMapping(session);
         }
     }
 
@@ -119,27 +123,68 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         }
 
         for (ClassDescriptor classDescriptor : descriptors.values()) {
-            if (classDescriptor != null && classDescriptor.getJavaClass().isAnnotationPresent(DisableVersioning.class)) {
+            if (classDescriptor != null && AnnotationUtils.findAnnotation(classDescriptor.getJavaClass(),
+                    DisableVersioning.class) != null) {
                 OptimisticLockingPolicy olPolicy = classDescriptor.getOptimisticLockingPolicy();
                 if (olPolicy != null) {
-                    DatabaseField field = classDescriptor.getOptimisticLockingPolicy().getWriteLockField();
-                    if (field != null) {
-                        DatabaseMapping dbMappingToRemove = null;
-                        for (DatabaseMapping dbMapping : classDescriptor.getMappings()) {
-                            if (dbMapping.getField() != null && dbMapping.getField().equals(field)) {
-                                dbMappingToRemove = dbMapping;
-                                break;
-                            }
-                        }
-                        if (dbMappingToRemove != null) {
-                            classDescriptor.removeMappingForAttributeName(dbMappingToRemove.getAttributeName());
-                            classDescriptor.setOptimisticLockingPolicy(null);
-                        }
-                    }
+                    classDescriptor.setOptimisticLockingPolicy(null);
                 }
             }
         }
     }
+
+    /**
+     * Checks class descriptors for {@link @RemoveMapping} and {@link RemoveMappings} annotations at the class level and
+     * removes any specified mappings from the ClassDescriptor.
+     *
+     * @param session the current session
+     */
+    protected void handleRemoveMapping(Session session) {
+        Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
+
+        if (descriptors == null || descriptors.isEmpty()) {
+            return;
+        }
+
+        for (ClassDescriptor classDescriptor : descriptors.values()) {
+            List<RemoveMapping> removeMappings = scanForRemoveMappings(classDescriptor);
+            if (!removeMappings.isEmpty()) {
+                List<DatabaseMapping> mappingsToRemove = new ArrayList<DatabaseMapping>();
+                for (RemoveMapping removeMapping : removeMappings) {
+                    if (StringUtils.isBlank(removeMapping.name())) {
+                        throw DescriptorException.attributeNameNotSpecified();
+                    }
+                    DatabaseMapping databaseMapping = classDescriptor.getMappingForAttributeName(removeMapping.name());
+                    if (databaseMapping == null) {
+                        throw DescriptorException.mappingForAttributeIsMissing(removeMapping.name(), classDescriptor);
+                    }
+                    mappingsToRemove.add(databaseMapping);
+                }
+                for (DatabaseMapping mappingToRemove : mappingsToRemove) {
+                    classDescriptor.removeMappingForAttributeName(mappingToRemove.getAttributeName());
+                }
+            }
+        }
+    }
+
+    protected List<RemoveMapping> scanForRemoveMappings(ClassDescriptor classDescriptor) {
+        List<RemoveMapping> removeMappings = new ArrayList<RemoveMapping>();
+        RemoveMappings removeMappingsAnnotation = AnnotationUtils.findAnnotation(classDescriptor.getJavaClass(),
+                RemoveMappings.class);
+        if (removeMappingsAnnotation == null) {
+            RemoveMapping removeMappingAnnotation = AnnotationUtils.findAnnotation(classDescriptor.getJavaClass(),
+                    RemoveMapping.class);
+            if (removeMappingAnnotation != null) {
+                removeMappings.add(removeMappingAnnotation);
+            }
+        } else {
+            for (RemoveMapping removeMapping : removeMappingsAnnotation.value()) {
+                removeMappings.add(removeMapping);
+            }
+        }
+        return removeMappings;
+    }
+
 
     protected List<Sequence> loadSequences(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();

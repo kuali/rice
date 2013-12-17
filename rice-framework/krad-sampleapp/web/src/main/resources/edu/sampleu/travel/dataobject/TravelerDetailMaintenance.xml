@@ -57,7 +57,9 @@
               <bean parent="Uif-InputField" p:propertyName="travelerTypeCode" />
               <bean parent="Uif-InputField" p:propertyName="customerNumber" />
               <bean parent="Uif-InputField" p:propertyName="driversLicenseNumber" />
+              <bean parent="Uif-InputField" p:propertyName="driversLicenseExpDate" />
               <bean parent="Uif-InputField" p:propertyName="liabilityInsurance" />
+              <bean parent="Uif-InputField" p:propertyName="dateOfBirth" />
               <bean parent="Uif-InputField" p:propertyName="citizenship" />
             </list>
           </property>

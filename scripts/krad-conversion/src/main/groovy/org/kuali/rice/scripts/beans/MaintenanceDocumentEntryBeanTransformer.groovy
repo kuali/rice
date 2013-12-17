@@ -134,7 +134,6 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
             builder.bean(beanAttributes) {
                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
                 transformMaintainableItemsProperty(delegate, beanNode);
             }
         } else {
@@ -168,7 +167,6 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             if (itemsList.size() > 0) {
                                 builder.bean(parent: 'Uif-MaintenanceGridSection') {
                                     copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                                    renameProperties(delegate, beanNode, ["numberOfColumns": "layoutManager.numberOfColumns"]);
                                     property(name: "items") {
                                         list {
                                             itemsList.each { attributes ->

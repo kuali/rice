@@ -63,11 +63,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
             def beanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, ignoreAttributes);
 
-            def mdeCarryoverProperties = []
-            def umvCarryoverProperties = []
-
-
-            List copiedProperties = findCarryoverProperties();
+            def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(), mdeIgnoreOnCarryoverProperties);
+            def umvCarryoverProperties = findCarryoverProperties(beanNode, umvCopyProperties, umvRenameProperties.keySet(), umvIgnoreOnCarryoverProperties);
 
             log.finer "transform bean node for maintenance document entry"
             if (isPlaceholder(beanNode)) {
@@ -80,7 +77,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 beanNode.replaceNode {
                     addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                     bean(beanAttributes) {
-                        copyProperties(delegate, beanNode, copiedProperties)
+                        copyProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
                         renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
                         addViewNameProperty(delegate, beanTitle);
                         transformMaintainableSectionsProperty(delegate, beanNode)
@@ -96,16 +93,16 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         return beanNode;
     }
 
-    def findCarryoverProperties(Node beanNode, boolean includeCarryoverProperties, def copyPropertiesList, def renamePropertiesList, def ignorePropertiesList) {
-        def carryoverProperties = []
-        if (includeCarryoverProperties) {
-            carryoverProperties = beanNode.property.collect { it.@name };
-            carryoverProperties.removeAll(copyPropertiesList);
-            carryoverProperties.removeAll(renamePropertiesList);
-            carryoverProperties.removeAll(ignorePropertiesList);
+    def findCarryoverProperties(Node beanNode, def copyPropertiesList, def renamePropertiesList, def ignorePropertiesList) {
+        def carryoverPropertiesList = []
+        if (carryoverProperties) {
+            carryoverPropertiesList = beanNode.property.collect { it.@name };
+            carryoverPropertiesList.removeAll(copyPropertiesList);
+            carryoverPropertiesList.removeAll(renamePropertiesList);
+            carryoverPropertiesList.removeAll(ignorePropertiesList);
         }
 
-        return carryoverProperties;
+        return carryoverPropertiesList;
     }
 
     /**

@@ -44,7 +44,6 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
@@ -74,37 +73,16 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public class RuleDelegationLookupableHelperServiceImpl extends AbstractRuleLookupableHelperServiceImpl {
     private List<Row> rows = new ArrayList<Row>();
-    //private List<Column> columns = establishColumns();
-    //private Long previousRuleTemplateId;
     private static final String PARENT_RESPONSIBILITY_ID_PROPERTY_NAME = "responsibilityId";
     private static final String PARENT_RULE_ID_PROPERTY_NAME = "ruleResponsibility.ruleBaseValuesId";
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "delegationRule.ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "delegationRule.id";
     private static final String ACTIVE_IND_PROPERTY_NAME = "delegationRule.active";
     private static final String DELEGATION_PROPERTY_NAME = "delegationType";
-    private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
-    private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "groupReviewerName";
-    private static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "groupReviewerNamespace";
-    private static final String PERSON_REVIEWER_PROPERTY_NAME = "personReviewer";
-    private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "personReviewerType";
     private static final String DOC_TYP_NAME_PROPERTY_NAME = "delegationRule.documentType.name";
     private static final String RULE_DESC_PROPERTY_NAME = "delegationRule.description";
-
-    private static final String BACK_LOCATION = "backLocation";
-    private static final String DOC_FORM_KEY = "docFormKey";
-    private static final String INVALID_WORKGROUP_ERROR = "The Group Reviewer Namespace and Name combination is not valid";
-    private static final String INVALID_PERSON_ERROR = "The Person Reviewer is not valid";
-
-    @Override
-	public List<Row> getRows() {
-        List<Row> superRows = super.getRows();
-        List<Row> returnRows = new ArrayList<Row>();
-        returnRows.addAll(superRows);
-        returnRows.addAll(rows);
-        return returnRows;
-    }
 
     @Override
     public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
@@ -336,55 +314,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
     }
 
-
-
-    private GroupService getGroupService() {
-       return KimApiServiceLocator.getGroupService();
-    }
-
-    private RuleTemplateService getRuleTemplateService() {
-        return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
-    }
     private RuleDelegationService getRuleDelegationService() {
         return (RuleDelegationService) KEWServiceLocator.getService(KEWServiceLocator.RULE_DELEGATION_SERVICE);
-    }
-
-    @Override
-    public void validateSearchParameters(Map<String, String> fieldValues) {
-        super.validateSearchParameters(fieldValues);
-
-        // make sure that if we have either groupName or Namespace, that both are filled in
-        String groupName = (String)fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
-        String groupNamespace = (String)fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-        String principalName = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
-
-        if (StringUtils.isEmpty(groupName) && !StringUtils.isEmpty(groupNamespace)) {
-            String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
-        }
-
-        if  (!StringUtils.isEmpty(groupName) && StringUtils.isEmpty(groupNamespace)) {
-            String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
-        }
-
-        if  (!StringUtils.isEmpty(groupName) && !StringUtils.isEmpty(groupNamespace)) {
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespace,
-                    groupName);
-            if (group == null) {
-                GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
-            }
-        }
-
-        if  (!StringUtils.isEmpty(principalName)) {
-            Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-            if (person == null) {
-                GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
-            }
-        }
-        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
-            throw new ValidationException("errors in search criteria");
-        }
     }
 
     @Override
@@ -523,21 +454,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         lookupForm.setHasReturnableRow(hasReturnableRow);
 
         return displayList;
-    }
-
-    @Override
-    public List<Column> getColumns() {
-        List<Column> columns = super.getColumns();
-        for (Row row : rows) {
-            for (Field field : row.getFields()) {
-                Column newColumn = new Column();
-                newColumn.setColumnTitle(field.getFieldLabel());
-                newColumn.setMaxLength(field.getMaxLength());
-                newColumn.setPropertyName(field.getPropertyName());
-                columns.add(newColumn);
-            }
-        }
-        return columns;
     }
 
     @Override

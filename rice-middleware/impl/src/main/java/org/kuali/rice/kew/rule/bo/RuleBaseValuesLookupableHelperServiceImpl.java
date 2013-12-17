@@ -41,7 +41,6 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
@@ -73,10 +72,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public class RuleBaseValuesLookupableHelperServiceImpl extends AbstractRuleLookupableHelperServiceImpl {
     private List<Row> rows = new ArrayList<Row>();
-    //private List<Column> columns = establishColumns();
-    //private Long previousRuleTemplateId;
     private LookupableHelperService ruleDelegationLookupableHelperService;
     private List<?> delegationPkNames;
 
@@ -85,27 +82,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "ruleTemplateId";
     private static final String ACTIVE_IND_PROPERTY_NAME = "active";
     private static final String DELEGATE_RULE_PROPERTY_NAME = "delegateRule";
-    private static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
-    private static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "groupReviewerName";
-    private static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "groupReviewerNamespace";
-    private static final String PERSON_REVIEWER_PROPERTY_NAME = "personReviewer";
-    private static final String PERSON_REVIEWER_TYPE_PROPERTY_NAME = "personReviewerType";
     private static final String DOC_TYP_NAME_PROPERTY_NAME = "documentType.name";
     private static final String RULE_DESC_PROPERTY_NAME = "description";
-
-    private static final String BACK_LOCATION = "backLocation";
-    private static final String DOC_FORM_KEY = "docFormKey";
-    private static final String INVALID_WORKGROUP_ERROR = "The Group Reviewer Namespace and Name combination is not valid";
-    private static final String INVALID_PERSON_ERROR = "The Person Reviewer is not valid";
-
-    @Override
-	public List<Row> getRows() {
-        List<Row> superRows = super.getRows();
-        List<Row> returnRows = new ArrayList<Row>();
-        returnRows.addAll(superRows);
-        returnRows.addAll(rows);
-        return returnRows;
-    }
 
     @Override
     public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
@@ -181,8 +159,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         Boolean isDelegateRule = null;
         Boolean isActive = null;
         String ruleId = null;
-      
-        
+
+
         //for KULRICE-3678
         if(StringUtils.isNotBlank(deleteSelection))
         {
@@ -192,7 +170,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 				isDelegateRule = Boolean.FALSE;
 			}
         }
-        
+
         if (StringUtils.isNotBlank(ruleIdParam)) {
             ruleId = ruleIdParam.trim();
         }
@@ -216,7 +194,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         		workflowId = principal.getPrincipalId();
         	}
         }
-        
+
         if (!StringUtils.isEmpty(groupIdParam) || !StringUtils.isEmpty(groupNameParam)) {
             Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
@@ -277,11 +255,10 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             ruleDescription = ruleDescription.replace('*', '%');
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
-       
+
         if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
-       
 
         // TODO: replace this with new API find method ??
         List<RuleBaseValues> rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, isDelegateRule, isActive, attributes, userDirectiveParam);
@@ -324,55 +301,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
     }
 
-
-
-    private GroupService getGroupService() {
-       return KimApiServiceLocator.getGroupService();
-    }
-
-    private RuleTemplateService getRuleTemplateService() {
-        return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
-    }
     private RuleServiceInternal getRuleService() {
         return (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
-    }
-
-    @Override
-    public void validateSearchParameters(Map<String, String> fieldValues) {
-        super.validateSearchParameters(fieldValues);
-
-        // make sure that if we have either groupName or Namespace, that both are filled in
-        String groupName = (String)fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
-        String groupNamespace = (String)fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-        String principalName = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
-
-        if (StringUtils.isEmpty(groupName) && !StringUtils.isEmpty(groupNamespace)) {
-            String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
-            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
-        }
-
-        if  (!StringUtils.isEmpty(groupName) && StringUtils.isEmpty(groupNamespace)) {
-            String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-            GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
-        }
-
-        if  (!StringUtils.isEmpty(groupName) && !StringUtils.isEmpty(groupNamespace)) {
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespace,
-                    groupName);
-            if (group == null) {
-                GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
-            }
-        }
-
-        if  (!StringUtils.isEmpty(principalName)) {
-            Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-            if (person == null) {
-                GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
-            }
-        }
-        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
-            throw new ValidationException("errors in search criteria");
-        }
     }
 
     @Override
@@ -399,7 +329,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
         List pkNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(getBusinessObjectClass());
         Person user = GlobalVariables.getUserSession().getPerson();
-        
+
         // iterate through result list and wrap rows with return url and action urls
         for (Iterator iter = displayList.iterator(); iter.hasNext();) {
             BusinessObject element = (BusinessObject) iter.next();
@@ -419,7 +349,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
             // Determine whether or not this rule is a delegate rule.
             boolean isRuleDelegation = (element instanceof RuleBaseValues && ((RuleBaseValues) element).getDelegateRule().booleanValue());
-            
+
             List<Column> columns = getColumns();
             for (Object element2 : columns) {
 
@@ -528,21 +458,6 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     }
 
     @Override
-    public List<Column> getColumns() {
-        List<Column> columns = super.getColumns();
-        for (Row row : rows) {
-            for (Field field : row.getFields()) {
-                Column newColumn = new Column();
-                newColumn.setColumnTitle(field.getFieldLabel());
-                newColumn.setMaxLength(field.getMaxLength());
-                newColumn.setPropertyName(field.getPropertyName());
-                columns.add(newColumn);
-            }
-        }
-        return columns;
-    }
-
-    @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject,
             List pkNames) {
         RuleBaseValues ruleBaseValues = (RuleBaseValues)businessObject;
@@ -576,7 +491,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             	}
         	}
         }
-        
+
         return htmlDataList;
     }
 

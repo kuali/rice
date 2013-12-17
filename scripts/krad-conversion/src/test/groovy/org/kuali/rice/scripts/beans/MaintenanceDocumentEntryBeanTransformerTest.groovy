@@ -43,6 +43,26 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
      * Verifies maintenance document entry has been converted into a valid maintenance doc entry and view
      */
     @Test
+    void testTransformMaintenanceDocumentEntryBeanPlaceholder() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+
+        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@parent) }
+        try {
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+
+        checkBeanParentExists(ddRootNode, "AttachmentSampleMaintenanceDocument-uifMaintenanceDocumentEntry-parentBean");
+        checkBeanParentExists(ddRootNode, "AttachmentSampleMaintenanceDocument-MaintenanceView-parentBean");
+    }
+
+    /**
+     * Verifies maintenance document entry has been converted into a valid maintenance doc entry and view
+     */
+    @Test
     void testTransformMaintenanceDocumentEntryBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
@@ -55,8 +75,8 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(ddRootNode, "MaintenanceDocumentEntry");
-        def resultMDENode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
         checkBeanStructure(resultMDENode, [], ["businessObjectEntry"]);
 
         checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");

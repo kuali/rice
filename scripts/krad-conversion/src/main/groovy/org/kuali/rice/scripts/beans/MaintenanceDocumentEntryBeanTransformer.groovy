@@ -16,6 +16,7 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
+import org.apache.commons.lang.StringUtils
 
 /**
  * This class transforms maintenance document entry beans and its properties/children beans into their uif equivalent
@@ -30,7 +31,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     String maintenanceViewBeanType = "Uif-MaintenanceView";
 
     // MDE Conversion Components
-    def mdeCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"];
+    def mdeCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass",
+            "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
     def mdeRenameProperties = [:]
     def mdeIgnoreOnCarryoverProperties = []
     def mdeIgnoreOnCarryoverAttributes = []
@@ -50,39 +52,33 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformMaintenanceDocumentEntryBean(Node beanNode) {
-        if (beanNode.@parent == "MaintenanceDocumentEntry") {
-            def maintDocParentBeanNode = beanNode;
-            def beanTitle = maintDocParentBeanNode.property.find { it.@name == "title" }?.@value;
+        def maintDocParentBeanNode = beanNode;
 
-            // these properties are being converted and should not be copied when carryoverProperties is enabled
-            List ignoreOnCopyProperties = ["title", "maintainableSections"];
+        def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, mdeIgnoreOnCarryoverAttributes);
+        def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(), mdeIgnoreOnCarryoverProperties);
 
-            def mdeBeanAttributes =  beanNode.attributes().clone(); // convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, mdeIgnoreOnCarryoverAttributes);
-            def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, umvIgnoreOnCarryoverAttributes);
+        def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, umvIgnoreOnCarryoverAttributes);
+        def umvCarryoverProperties = findCarryoverProperties(beanNode, umvCopyProperties, umvRenameProperties.keySet(), umvIgnoreOnCarryoverProperties);
 
-            def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(), mdeIgnoreOnCarryoverProperties);
-            def umvCarryoverProperties = findCarryoverProperties(beanNode, umvCopyProperties, umvRenameProperties.keySet(), umvIgnoreOnCarryoverProperties);
 
-            log.finer "transform bean node for maintenance document entry"
-            if (isPlaceholder(beanNode)) {
+        log.finer "transform bean node for maintenance document entry"
+        if (isPlaceholder(beanNode)) {
+            addCommentIfNotExists(beanNode.parent(), "Maintenance View");
+            beanNode.attributes().putAll(mdeBeanAttributes);
+            addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry");
+            beanNode.plus{ bean(umvBeanAttributes) }
+        } else {
+            beanNode.replaceNode {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance View")
-                beanNode.@id = getTranslatedBeanId(beanNode.@id, maintenanceDefinitionBeanType, maintenanceViewBeanType);
-                beanNode.@parent = getTranslatedBeanId(beanNode.@parent, maintenanceDefinitionBeanType, maintenanceViewBeanType);
-                beanNode.parent().append(beanNode);
-                beanNode.parent().remove(beanNode);
-            } else {
-                beanNode.replaceNode {
-                    addCommentIfNotExists(beanNode.parent(), "Maintenance View")
-                    bean(umvBeanAttributes) {
-                        copyProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
-                        renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
-                        addViewNameProperty(delegate, beanTitle);
-                        transformMaintainableSectionsProperty(delegate, beanNode)
-                    }
-                    addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
-                    bean(mdeBeanAttributes) {
-                        copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties)
-                    }
+                bean(umvBeanAttributes) {
+                    copyProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
+                    renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
+                    transformTitleProperty(delegate, beanNode);
+                    transformMaintainableSectionsProperty(delegate, beanNode)
+                }
+                addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
+                bean(mdeBeanAttributes) {
+                    copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties)
                 }
             }
         }
@@ -186,6 +182,26 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
         }
     }
+
+    /**
+     * Converts title property to view name property
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformTitleProperty(NodeBuilder builder, Node beanNode) {
+        if(beanNode?.property?.findAll { "title".equals(it.@name) }?.size > 0) {
+            def modifiedViewName = beanNode?.property?.find { it.@name == "title" }?.@value;
+            if (StringUtils.isNotBlank(modifiedViewName)) {
+                modifiedViewName = OUTPUT_CONV_FILE_PREFIX + modifiedViewName;
+            }
+
+            createProperty(builder, "viewName", modifiedViewName)
+        }
+
+    }
+
 
     /**
      *

@@ -163,9 +163,6 @@
         <value>uif-label</value>
       </list>
     </property>
-    <property name="requiredMessage">
-      <bean parent="Uif-RequiredMessage" p:render="false"/>
-    </property>
   </bean>
 
   <bean id="Uif-Link" parent="Uif-Link-parentBean"/>
@@ -455,16 +452,6 @@
     <property name="cssClasses">
       <list>
         <value>uif-constraintMessage</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
-  <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype"
-        p:messageText="*">
-    <property name="cssClasses">
-      <list>
-        <value>uif-requiredMessage</value>
       </list>
     </property>
   </bean>

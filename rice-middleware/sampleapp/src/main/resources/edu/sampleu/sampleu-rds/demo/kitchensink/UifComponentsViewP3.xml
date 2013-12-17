@@ -34,7 +34,7 @@
       <inputField-bean control.disabled="true" parent="GenericTextField" propertyName="field2" required="true"/>
       <inputField-bean parent="GenericTextArea" propertyName="field3" required="true"/>
       <inputField-bean parent="GenericRadio" propertyName="field4" required="true"/>
-      <inputField-bean fieldLabel.requiredMessagePlacement="RIGHT" parent="GenericSelection" propertyName="field5"
+      <inputField-bean parent="GenericSelection" propertyName="field5"
                        required="true"/>
     </items>
   </horizontalBoxSection-bean>

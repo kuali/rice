@@ -84,6 +84,11 @@ public class GridLayoutManager extends LayoutManagerBase {
         
         Container container = (Container) component;
 
+        // Default equal cell widths class
+        if (this.isApplyDefaultCellWidths()){
+            this.addStyleClass("uif-table-fixed");
+        }
+
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();
         }

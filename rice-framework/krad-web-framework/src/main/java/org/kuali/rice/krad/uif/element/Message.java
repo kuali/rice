@@ -101,8 +101,10 @@ public class Message extends ContentElementBase {
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
 
-        // message needs to be aware of its own parent because it now contains content that can have validation
-        this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
+        if (messageComponentStructure != null && !messageComponentStructure.isEmpty()) {
+            // Message needs to be aware of its own parent because it now contains content that can have validation
+            this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
+        }
     }
 
     /**

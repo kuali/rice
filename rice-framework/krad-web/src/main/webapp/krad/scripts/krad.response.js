@@ -124,12 +124,12 @@ KradResponse.prototype = {
         var component = jQuery("#" + id + "_update", content);
 
         // special label handling, if any
-        var theLabel = jQuery("#" + id + "_label_span", component);
+        var theLabel = jQuery("[data-label_for='" + id + "']", component);
         if (jQuery(".displayWith-" + id).length && theLabel.length) {
             theLabel.addClass("displayWith-" + id);
             jQuery("span.displayWith-" + id).replaceWith(theLabel);
 
-            component.remove("#" + id + "_label_span");
+            component.remove("[data-label_for='" + id + "']");
         }
 
         // remove old stuff
@@ -198,13 +198,17 @@ KradResponse.prototype = {
 
     // replaces the view with the given content and run the hidden scripts
     updateViewHandler: function (content, dataAttr) {
-        var $view = jQuery('#' + kradVariables.APP_ID);
+        var view = jQuery("#" + kradVariables.APP_ID);
 
-        $view.replaceWith(content);
+        var newView = jQuery("#" + kradVariables.APP_ID, content);
 
-        $view.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
+        view.replaceWith(newView);
 
-        runHiddenScriptsAgain();
+        jQuery("#" + kradVariables.APP_ID).show();
+        setupStickyHeaderAndFooter();
+        runHiddenScripts(kradVariables.APP_ID);
+
+        view.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
     },
 
     // displays the response contents in a lightbox

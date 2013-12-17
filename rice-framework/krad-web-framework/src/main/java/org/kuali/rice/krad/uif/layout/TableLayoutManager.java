@@ -229,6 +229,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
         setNumberOfColumns(totalColumns);
 
+        // Default equal cell widths class
+        if (this.isApplyDefaultCellWidths()){
+            this.addStyleClass("uif-table-fixed");
+        }
+
         // if add line event, add highlighting for added row
         if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
             String highlightScript = "jQuery(\"#" + component.getId() + " tr:first\").effect(\"highlight\",{}, 6000);";
@@ -240,7 +245,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         }
 
         //setup the column calculations functionality and components
-        if (columnCalculations != null && richTable != null &&
+        if (columnCalculations != null && !columnCalculations.isEmpty() && richTable != null &&
                 this.getAllRowFields() != null && !this.getAllRowFields().isEmpty()) {
             setupColumnCalculations(model, collectionGroup, totalColumns);
         }
@@ -843,7 +848,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
-        if (lineActionsField.getWrapperCssClasses() != null) {
+        if (lineActionsField.getWrapperCssClasses() != null && !lineActionsField.getWrapperCssClasses().contains(
+                CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS)) {
             lineActionsField.getWrapperCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
         } else {
             lineActionsField.setWrapperCssClasses(Arrays.asList(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
@@ -962,7 +968,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     protected void addActionHeader(int rowCount, String idSuffix, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
         getActionFieldPrototype().setRowSpan(rowCount);
-        if (getActionFieldPrototype().getWrapperCssClasses() != null) {
+        if (getActionFieldPrototype().getWrapperCssClasses() != null && !getActionFieldPrototype()
+                .getWrapperCssClasses().contains(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS)) {
             getActionFieldPrototype().getWrapperCssClasses().add(CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS);
         } else {
             getActionFieldPrototype().setWrapperCssClasses(Arrays.asList(
@@ -1001,9 +1008,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         headerLabel.setColSpan(field.getColSpan());
 
         if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
-            headerLabel.getRequiredMessage().setRender(!field.isReadOnly());
+            headerLabel.setRenderRequiredIndicator(!field.isReadOnly());
         } else {
-            headerLabel.getRequiredMessage().setRender(false);
+            headerLabel.setRenderRequiredIndicator(false);
         }
 
         setCellAttributes(field);

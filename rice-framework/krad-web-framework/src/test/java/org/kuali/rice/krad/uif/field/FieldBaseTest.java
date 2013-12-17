@@ -61,14 +61,12 @@ public class FieldBaseTest {
         fieldBase.setRequired(true);
         fieldBase.setReadOnly(false);
 
-        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
         fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
-        assertTrue(fieldBase.getFieldLabel().getRequiredMessage().isRender());
+        assertTrue(fieldBase.getFieldLabel().isRenderRequiredIndicator());
 
         // required and readonly -  do not render
         fieldBase.setReadOnly(true);
-        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
         fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
-        assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
+        assertFalse(fieldBase.getFieldLabel().isRenderRequiredIndicator());
     }
 }

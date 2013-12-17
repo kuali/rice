@@ -79,14 +79,14 @@
         </#if>
     </#list>
 
-    <!-- preload script (server variables) -->
+    <#-- preload script (server variables) -->
     <#if view.preLoadScript?has_content>
         <script type="text/javascript">
             ${view.preLoadScript}
         </script>
     </#if>
 
-    <!-- custom script for the view -->
+    <#-- custom script for the view -->
     <#if view.onLoadScript?has_content>
         <script type="text/javascript">
             jQuery(document).ready(function () {

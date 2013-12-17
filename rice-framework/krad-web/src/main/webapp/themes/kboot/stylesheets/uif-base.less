@@ -16,9 +16,29 @@
 
 body { background: white}
 
+/** The following are required for labels and required messages to behave correctly **/
 .uif-requiredMessage {
   display: inline;
 }
+
+.uif-label{
+  overflow: hidden;
+}
+
+.uif-label .uif-requiredMessage {
+  float: left;
+  padding-right: 3px;
+}
+
+.uif-labelBlock .uif-requiredMessage {
+  float: none;
+}
+
+.uif-cssGridLabelCol label {
+  float: right;
+}
+/** end label css **/
+
 img {
   vertical-align: top;
 }
@@ -348,6 +368,10 @@ div.clearfix:after {
 * html .clearfix {
   height: 1%;
 }
+.uif-table-fixed {
+  width: 100%;
+  table-layout: fixed;
+}
 .uif-gridLayout th {
   /*  text-align: right;*/
 }
@@ -420,12 +444,10 @@ table.uif-tableCollectionLayout thead th.sorting, table.uif-tableCollectionLayou
 .uif-gridLayout th, .uif-tableCollectionLayout th {
 //background-color: @grayLighter;
 }
-.uif-gridLayout th[scope="row"] {
-//background-color: @grayLighter;
-  text-align: right;
-}
-.uif-gridLayout th[scope="row"] .uif-label {
+
+.uif-gridLayout th[scope="row"] label {
   padding-top: 4px;
+  float: right;
 }
 .uif-gridLayout td .uif-inputField input:first-child {
   margin-bottom: 0px;
@@ -566,9 +588,6 @@ table.uif-gridLayout {
 
 table.uif-lightTable{width:100%;}
 
-table.uif-gridLayout th .uif-label {
-  /*  text-align: right;*/
-}
 table.dataTable tr.even {
   background-color: white;
 }

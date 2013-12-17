@@ -138,6 +138,19 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
         this.rowLayoutCssClass = rowLayoutCssClass;
     }
 
+    @Override
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
+
+        for(List<Component> row:rows) {
+            for(Component component: row){
+                components.add(component);
+            }
+        }
+
+        return components;
+    }
+
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */

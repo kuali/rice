@@ -81,9 +81,6 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         <#-- determine cell width by using default or configured width and round off to two decimal places-->
         <#if item.cellWidth?has_content>
             <#local cellWidth=item.cellWidth />
-        <#elseif applyDefaultCellWidths>
-            <#local width= (defaultCellWidth * item.colSpan)?number?string("0.##") />
-            <#local cellWidth="${width}%"/>
         </#if>
 
         <#if cellWidth?has_content>
@@ -108,6 +105,15 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         </#if>
 
         <#if (index == 1)>
+
+            <#if item.colSpan != 1>
+                <#local colSpan="colspan=\"${item.colSpan}\""/>
+            </#if>
+
+            <#if item.rowSpan != 1>
+                <#local rowSpan="rowspan=\"${item.rowSpan}\""/>
+            </#if>
+
             <#if renderHeaderColumn>
                 <#if renderHeaderRow || (renderFirstRowHeader && firstRow)>
                   <#local headerScope="col"/>
@@ -115,11 +121,11 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
                   <#local headerScope="row"/>
                 </#if>
 
-                <th scope="${headerScope}" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></th>
+                <th scope="${headerScope}" ${cellWidth!} ${colSpan!}
+                    ${rowSpan!} ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></th>
             <#else>
-                <td role="presentation" ${cellWidth!} colspan="${item.colSpan}"
-                    rowspan="${item.rowSpan}" ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></td>
+                <td ${cellWidth!} ${colSpan!}
+                    ${rowSpan!} ${cellClassAttr!} ${cellStyleAttr!}><@template component=item/></td>
             </#if>
 
             <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />

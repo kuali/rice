@@ -384,7 +384,7 @@ public class ClientValidationUtils {
             s = s.substring(1);
             String fieldName = StringUtils.substringBefore(s, "'");
             //Only add field name once for this condition check
-            if (fieldNames.contains(fieldName)) {
+            if (!fieldNames.contains(fieldName)) {
                 fieldNames.add(fieldName);
             }
 
@@ -416,14 +416,18 @@ public class ClientValidationUtils {
                 if (((SimpleConstraint) constraint).getRequired() != null && ((SimpleConstraint) constraint)
                         .getRequired()) {
                     rule = rule + "required: function(element){\nreturn (" + booleanStatement + ");}";
+
                     //special requiredness indicator handling
                     String showIndicatorScript = "";
+                    boolean hasConditionalReqCheck = false;
                     for (String checkedField : parseOutFields(booleanStatement)) {
                         showIndicatorScript = showIndicatorScript +
                                 "setupShowReqIndicatorCheck('" + checkedField + "', '" + field.getBindingInfo()
                                         .getBindingPath() + "', " + "function(){\nreturn (" + booleanStatement
                                 + ");});\n";
+                        hasConditionalReqCheck = true;
                     }
+
                     addScriptToPage(view, field, showIndicatorScript);
 
                     constraintCount++;
@@ -764,10 +768,10 @@ public class ClientValidationUtils {
                     array = array + "'" + ScriptUtils.escapeName(constraint.getPrerequisiteConstraints().get(i)
                             .getPropertyName()) + "'";
                     attributePaths.add(constraint.getPrerequisiteConstraints().get(i).getPropertyName());
+
                     if (i + 1 != constraint.getPrerequisiteConstraints().size()) {
                         array = array + ",";
                     }
-
                 }
             }
             array = array + "]";

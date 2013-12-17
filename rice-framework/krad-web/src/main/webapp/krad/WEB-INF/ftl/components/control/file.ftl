@@ -17,8 +17,11 @@
 -->
 <#macro uif_file control field>
 
-    <#local attributes='class="${control.styleClassesAsString!}"
-         tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
+    <#local attributes='class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+
+    <#if control.tabIndex != 0>
+        <#local attributes='${attributes} tabindex="${control.tabIndex!}"' />
+    </#if>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="disabled"'/>

@@ -264,7 +264,9 @@ public class RichTable extends WidgetBase {
             for (int index = 0; index < manager.getNumberOfColumns(); index++) {
                 String cellStyleClasses = ((ComponentBase) manager.getAllRowFields().get(index))
                         .getWrapperCssClassesAsString();
-                cellCssClasses.add(cellStyleClasses);
+                if (StringUtils.isNotBlank (cellStyleClasses)) {
+                    cellCssClasses.add(cellStyleClasses);
+                }
             }
         }
     }

@@ -355,7 +355,7 @@ function validateLineFields(controlsToValidate) {
 
         haltValidationMessaging = true;
 
-        if (!control.prop("disabled") && !control.hasClass("uif-readOnlyContent")) {
+        if (control.length && !control.prop("disabled")) {
             control.valid();
             if (control.hasClass("error")) {
                 validValue = false;

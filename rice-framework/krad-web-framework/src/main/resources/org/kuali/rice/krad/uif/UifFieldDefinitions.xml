@@ -59,7 +59,7 @@
 
   <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>
   <bean id="Uif-DataField-LabelTop-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="TOP"
-        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
+        p:fieldLabel.renderColon="false">
     <property name="fieldLabel.cssClasses">
       <list>
         <value>uif-labelTop</value>
@@ -69,7 +69,7 @@
 
   <bean id="Uif-DataField-LabelRight" parent="Uif-DataField-LabelRight-parentBean"/>
   <bean id="Uif-DataField-LabelRight-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="RIGHT"
-        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
+        p:fieldLabel.renderColon="false">
     <property name="fieldLabel.cssClasses">
       <list>
         <value>uif-labelRight</value>
@@ -111,7 +111,7 @@
 
   <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
   <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
-        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="RIGHT">
+        p:fieldLabel.renderColon="false" >
     <property name="cssClasses">
       <list>
         <value>uif-inputField</value>
@@ -127,7 +127,7 @@
 
   <bean id="Uif-InputField-LabelRight" parent="Uif-InputField-LabelRight-parentBean"/>
   <bean id="Uif-InputField-LabelRight-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="RIGHT"
-        p:fieldLabel.renderColon="false" p:fieldLabel.requiredMessagePlacement="LEFT">
+        p:fieldLabel.renderColon="false">
     <property name="cssClasses">
       <list>
         <value>uif-inputField</value>

@@ -40,7 +40,7 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <table id="${manager.id}" ${style!} ${styleClass!}>
+    <table id="${manager.id}" ${style!} ${styleClass!} role="presentation">
 
         <@krad.grid items=items numberOfColumns=manager.numberOfColumns
                    applyAlternatingRowStyles=manager.applyAlternatingRowStyles

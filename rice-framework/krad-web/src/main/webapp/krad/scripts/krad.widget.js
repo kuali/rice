@@ -31,13 +31,16 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     breadcrumbsWrapper.empty();
     breadcrumbsWrapper.show();
 
+    var breadcrumbUpdate = jQuery("div#Uif-BreadcrumbUpdate");
+
     //find the new ones
-    var breadcrumbList = jQuery("div#Uif-BreadcrumbUpdate > ol").detach();
+    var breadcrumbList = breadcrumbUpdate.find("> ol").detach();
     var items = breadcrumbList.find("> li");
 
     //dont display if display when one is false and there is only one item
     if ((!displayBreadcrumbsWhenOne && items.length == 1) || items.length == 0) {
         breadcrumbsWrapper.hide();
+        breadcrumbUpdate.remove();
         return;
     }
 
@@ -90,6 +93,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
 
     //append to the wrapper
     jQuery("div#Uif-BreadcrumbWrapper").append(breadcrumbList);
+    breadcrumbUpdate.remove();
 }
 
 function setupLocationSelect(controlId) {
@@ -299,7 +303,7 @@ function createLightBoxLink(linkId, options, addAppParms) {
         // first time content is brought up in lightbox we don't want to continue history
         var flow = 'start';
         if (renderedInLightBox) {
-            flow = jQuery("#flowKey").val();
+            flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
         }
 
         var link = jQuery("#" + linkId);
@@ -335,7 +339,7 @@ function handleLightboxOpen(link, options, addAppParms, event) {
     // first time content is brought up in lightbox we don't want to continue history
     var flow = 'start';
     if (renderedInLightBox) {
-        flow = jQuery("#flowKey").val();
+        flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
     }
 
     if (addAppParms) {
@@ -432,7 +436,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInLightBox]'] = 'true';
             data['actionParameters[returnTarget]'] = '_self';
-            data['actionParameters[flowKey]'] = jQuery("#flowKey").val();
+            data['actionParameters[flowKey]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
 
             nonAjaxSubmitForm(data['methodToCall'], data);
         }
@@ -445,12 +449,12 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
  * @return true if called within a lightbox, false otherwise
  */
 function isCalledWithinLightbox() {
-    if (jQuery('#renderedInLightBox').val() == undefined) {
+    var isRenderedInLightbox = jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val();
+    if (isRenderedInLightbox == undefined) {
         return false;
     }
 
-    return jQuery('#renderedInLightBox').val().toUpperCase() == 'TRUE' ||
-            jQuery('#renderedInLightBox').val().toUpperCase() == 'YES';
+    return isRenderedInLightbox.toUpperCase() == 'TRUE' || isRenderedInLightbox.toUpperCase() == 'YES';
     // reverting for KULRICE-8346
 //    try {
 //        // For security reasons the browsers will not allow cross server scripts and
@@ -508,7 +512,8 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             getContext().fancybox(lightBoxOptions);
         } else {
             // If this is already in a lightbox just open in current lightbox
-            queryString = queryString + "&flow=" + jQuery("#flowKey").val() + "&renderedInLightBox=true";
+            queryString = queryString + "&flow="
+                    + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInLightBox=true";
             window.open(url + queryString, "_self");
         }
     } else {
@@ -534,10 +539,10 @@ function checkDirectInquiryValueValid(value) {
  * Cleanup form data from server when lightbox window is closed
  */
 function cleanupClosedLightboxForms() {
-    if (jQuery('#formKey').length) {
+    if (jQuery("input[name='" + kradVariables.FORM_KEY + "']").length) {
         // get the formKey of the lightbox (fancybox)
         var context = getContext();
-        var formKey = context('iframe.fancybox-iframe').contents().find('input#formKey').val();
+        var formKey = context('iframe.fancybox-iframe').contents().find("input[name='" + kradVariables.FORM_KEY + "']").val();
 
         clearServerSideForm(formKey);
     }

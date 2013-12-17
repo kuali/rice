@@ -89,16 +89,10 @@ public class FieldBase extends ComponentBase implements Field {
             fieldLabel.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                fieldLabel.getRequiredMessage().setRender(!isReadOnly());
+                fieldLabel.setRenderRequiredIndicator(!isReadOnly());
             } else {
-                setRequired(new Boolean(false));
-                fieldLabel.getRequiredMessage().setRender(true);
-
-                String prefixStyle = "";
-                if (StringUtils.isNotBlank(fieldLabel.getRequiredMessage().getStyle())) {
-                    prefixStyle = fieldLabel.getRequiredMessage().getStyle();
-                }
-                fieldLabel.getRequiredMessage().setStyle(prefixStyle + ";" + "display: none;");
+                setRequired(false);
+                fieldLabel.setRenderRequiredIndicator(false);
             }
 
             if (labelPlacement.equals(Position.RIGHT)) {
@@ -163,7 +157,7 @@ public class FieldBase extends ComponentBase implements Field {
             return fieldLabel.getLabelText();
         }
 
-        return null;
+        return "";
     }
 
     /**

@@ -420,7 +420,8 @@ public class View extends ContainerBase {
                 UifConstants.FIELD_VALIDATION_DEFAULTS_MAP_ID);
         Object actionDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                 UifConstants.ACTION_DEFAULTS_MAP_ID);
-
+        Object requiredIndicator = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                UifConstants.REQUIRED_INDICATOR_ID);
 
         // Add data defaults for common components to the view for use in js (to reduce size of individual components)
         this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
@@ -428,7 +429,8 @@ public class View extends ContainerBase {
         this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
                 (Map<String, String>) fieldValidationDataDefaults));
         this.addDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS, ScriptUtils.convertToJsValue(
-                        (Map<String, String>) actionDataDefaults));
+                (Map<String, String>) actionDataDefaults));
+        this.addDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, (String) requiredIndicator);
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");

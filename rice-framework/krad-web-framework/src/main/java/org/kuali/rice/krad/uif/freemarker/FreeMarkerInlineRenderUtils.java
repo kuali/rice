@@ -155,6 +155,7 @@ public class FreeMarkerInlineRenderUtils {
     public static void renderTemplate(Environment env, Component component, String body,
             boolean componentUpdate, boolean includeSrc, Map<String, TemplateModel> tmplParms)
             throws TemplateException, IOException {
+        String templateJsScripts = "";
 
         if (component == null) {
             return;
@@ -200,7 +201,7 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             if (StringUtils.hasText(s = component.getEventHandlerScript())) {
-                renderScript(s, component, null, out);
+                templateJsScripts += s;
             }
 
             if (StringUtils.hasText(s = component.getPostRenderContent())) {
@@ -210,6 +211,7 @@ public class FreeMarkerInlineRenderUtils {
         }
 
         if (componentUpdate) {
+            renderScript(templateJsScripts, component, null, out);
             return;
         }
 
@@ -227,17 +229,16 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             for (String cName : component.getProgressiveDisclosureControlNames()) {
-                renderScript(
+                templateJsScripts +=
                         "var condition = function(){return ("
                                 + component.getProgressiveDisclosureConditionJs()
                                 + ");};setupProgressiveCheck('" + StringEscapeUtils.escapeJavaScript(cName)
                                 + "', '" + component.getId() + "', '" + component.getBaseId() + "', condition,"
                                 + component.isProgressiveRenderAndRefresh() + ", '"
-                                + methodToCallOnRefresh + "');"
-                        , component, null, out);
+                                + methodToCallOnRefresh + "');";
             }
 
-            renderScript("hiddenInputValidationToggle('" + component.getId() + "');", null, null, out);
+            templateJsScripts += "hiddenInputValidationToggle('" + component.getId() + "');";
         }
 
         if ((component.isProgressiveRenderViaAJAX() && !StringUtils.hasLength(component.getProgressiveRender())) ||
@@ -250,23 +251,27 @@ public class FreeMarkerInlineRenderUtils {
 
         if (StringUtils.hasText(component.getConditionalRefresh())) {
             for (String cName : component.getConditionalRefreshControlNames()) {
-                renderScript(
+                templateJsScripts +=
                         "var condition = function(){return ("
                                 + component.getConditionalRefreshConditionJs()
                                 + ");};setupRefreshCheck('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId() + "', condition,'"
-                                + methodToCallOnRefresh + "');", null, null, out);
+                                + methodToCallOnRefresh + "');";
             }
         }
 
         List<String> refreshWhenChanged = component.getRefreshWhenChangedPropertyNames();
         if (refreshWhenChanged != null) {
             for (String cName : refreshWhenChanged) {
-                renderScript(
+                templateJsScripts +=
                         "setupOnChangeRefresh('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
                                 + component.getId()
-                                + "','" + methodToCallOnRefresh + "');", null, null, out);
+                                + "','" + methodToCallOnRefresh + "');";
             }
+        }
+
+        if (StringUtils.hasText(templateJsScripts)) {
+            renderScript(templateJsScripts, component, null, out);
         }
 
         renderTooltip(component, out);
@@ -285,13 +290,15 @@ public class FreeMarkerInlineRenderUtils {
      */
     public static void renderTooltip(Component component, Writer out) throws IOException {
         Tooltip tt = component.getToolTip();
+        String script = "";
         if (tt != null && StringUtils.hasText(tt.getTooltipContent())) {
             String templateOptionsJSString = tt.getTemplateOptionsJSString();
-            renderScript("createTooltip('" + component.getId() + "', '" + tt.getTooltipContent() + "', "
+            script += "createTooltip('" + component.getId() + "', '" + tt.getTooltipContent() + "', "
                     + (templateOptionsJSString == null ? "''" : templateOptionsJSString) + ", " + tt.isOnMouseHover()
-                    + ", " + tt.isOnFocus() + ");", component, null, out);
-            renderScript("addAttribute('" + component.getId() + "', 'class', 'uif-tooltip', true);", component, null,
-                    out);
+                    + ", " + tt.isOnFocus() + ");";
+            script += "addAttribute('" + component.getId() + "', 'class', 'uif-tooltip', true);";
+
+            renderScript(script, component, null, out);
         }
     }
 

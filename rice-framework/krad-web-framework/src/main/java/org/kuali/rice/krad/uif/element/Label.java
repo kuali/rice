@@ -22,6 +22,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -47,16 +49,14 @@ public class Label extends ContentElementBase {
 
     private boolean renderColon;
 
-    private Position requiredMessagePlacement;
-    private Message requiredMessage;
+    private String requiredIndicator;
+    private boolean renderRequiredIndicator;
 
     private Message richLabelMessage;
     private List<Component> inlineComponents;
 
     public Label() {
         renderColon = true;
-
-        requiredMessagePlacement = Position.LEFT;
     }
 
     /**
@@ -80,6 +80,7 @@ public class Label extends ContentElementBase {
 
             this.setRichLabelMessage(message);
         }
+
     }
 
     /**
@@ -98,6 +99,16 @@ public class Label extends ContentElementBase {
         if (StringUtils.isBlank(getLabelText())) {
             setRender(false);
         }
+
+        String defaultRequiredIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                UifConstants.REQUIRED_INDICATOR_ID);
+
+        if (requiredIndicator != null && !requiredIndicator.equals(defaultRequiredIndicator)) {
+            this.addDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, requiredIndicator);
+        }
+        else if (requiredIndicator == null) {
+            requiredIndicator = defaultRequiredIndicator;
+        }
     }
 
     /**
@@ -107,7 +118,6 @@ public class Label extends ContentElementBase {
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(requiredMessage);
         components.add(richLabelMessage);
 
         return components;
@@ -178,49 +188,49 @@ public class Label extends ContentElementBase {
     }
 
     /**
-     * <code>Message</code> instance that will display a required indicator
+     * True if the indicator will be displayed when this label is first render, false otherwise.
+     *
+     * <p>This is set by the framework based on required constraint state, and generally should NOT
+     * be set in most cases.</p>
+     *
+     * @return true if rendering, false otherwise
+     */
+    public boolean isRenderRequiredIndicator() {
+        return renderRequiredIndicator;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Label#isRenderRequiredIndicator()
+     *
+     * @param renderRequiredIndicator
+     */
+    public void setRenderRequiredIndicator(boolean renderRequiredIndicator) {
+        this.renderRequiredIndicator = renderRequiredIndicator;
+    }
+
+    /**
+     * String indicator that will be displayed as a required indicator
      *
      * <p>
      * To indicate a field must have a value (required input) the required
-     * message field can be set to display an indicator or message along with
-     * the label. The message field also dictates the styling of the required
-     * message
+     * indicator can be set to display an indicator or text along with
+     * the label.
      * </p>
      *
-     * @return Message instance
+     * @return the required indicator String to display
      */
-    @BeanTagAttribute(name="requiredMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Message getRequiredMessage() {
-        return this.requiredMessage;
+    @BeanTagAttribute(name="requiredIndicator")
+    public String getRequiredIndicator() {
+        return requiredIndicator;
     }
 
     /**
-     * Setter for the required message field
+     * @see org.kuali.rice.krad.uif.element.Label#getRequiredIndicator()
      *
-     * @param requiredMessage
+     * @param requiredIndicator
      */
-    public void setRequiredMessage(Message requiredMessage) {
-        this.requiredMessage = requiredMessage;
-    }
-
-    /**
-     * Indicates where the required message field should be placed in relation
-     * to the label field, valid options are 'LEFT' and 'RIGHT'
-     *
-     * @return the requiredMessage placement
-     */
-    @BeanTagAttribute(name="requiredMessagePlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Position getRequiredMessagePlacement() {
-        return this.requiredMessagePlacement;
-    }
-
-    /**
-     * Setter for the required message field placement
-     *
-     * @param requiredMessagePlacement
-     */
-    public void setRequiredMessagePlacement(Position requiredMessagePlacement) {
-        this.requiredMessagePlacement = requiredMessagePlacement;
+    public void setRequiredIndicator(String requiredIndicator) {
+        this.requiredIndicator = requiredIndicator;
     }
 
     /**
@@ -283,15 +293,15 @@ public class Label extends ContentElementBase {
         labelCopy.setLabelText(this.labelText);
         labelCopy.setRenderColon(this.renderColon);
 
-        if (this.requiredMessage != null) {
-            labelCopy.setRequiredMessage((Message)this.requiredMessage.copy());
+        if (this.requiredIndicator != null) {
+            labelCopy.setRequiredIndicator(this.requiredIndicator);
         }
+
+        labelCopy.setRenderRequiredIndicator(this.renderRequiredIndicator);
 
         if (this.richLabelMessage != null) {
             labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
         }
-
-        labelCopy.setRequiredMessagePlacement(this.requiredMessagePlacement);
     }
 
     /**

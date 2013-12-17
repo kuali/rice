@@ -48,34 +48,34 @@
         <#if view.renderForm>
             <span id="formInfo">
                 <#-- write out view, page id as hidden so the view can be reconstructed if necessary -->
-                <@spring.formHiddenInput id="viewId" path="KualiForm.viewId"/>
+                <@spring.formHiddenInput path="KualiForm.viewId"/>
 
                 <#-- all forms will be stored in session, this is the conversation key -->
-                <@spring.formHiddenInput id="formKey" path="KualiForm.formKey"/>
+                <@spring.formHiddenInput path="KualiForm.formKey"/>
 
                 <#-- original form key requested, may differ from actual form key-->
-                <@spring.formHiddenInput id="requestedFormKey" path="KualiForm.requestedFormKey"/>
+                <@spring.formHiddenInput path="KualiForm.requestedFormKey"/>
 
                 <#-- tracks the session, used to determine timeouts -->
-                <@spring.formHiddenInput id="sessionId" path="KualiForm.sessionId"/>
+                <@spring.formHiddenInput path="KualiForm.sessionId"/>
 
                 <#-- flow key to maintain a history flow -->
-                <@spring.formHiddenInput id="flowKey" path="KualiForm.flowKey"/>
+                <@spring.formHiddenInput path="KualiForm.flowKey"/>
 
                 <#-- based on the view setting, form elements will be checked for dirtyness -->
-                <@spring.formHiddenInput id="validateDirty" path="KualiForm.view.applyDirtyCheck"/>
+                <@spring.formHiddenInput path="KualiForm.view.applyDirtyCheck"/>
 
                 <#-- based on the view setting, form elements will be checked for dirtyness -->
-                <@spring.formHiddenInput id="dirtyForm" path="KualiForm.dirtyForm"/>
+                <@spring.formHiddenInput path="KualiForm.dirtyForm"/>
 
                 <#-- indicator which is set to true when content is being rendered inside a lightbox -->
-                <@spring.formHiddenInput id="renderedInLightBox" path="KualiForm.renderedInLightBox"/>
+                <@spring.formHiddenInput path="KualiForm.renderedInLightBox"/>
 
                 <#-- indicator for single page view, used to drive script page handling logic -->
-                <@spring.formHiddenInput id="singlePageView" path="KualiForm.view.singlePageView"/>
+                <@spring.formHiddenInput path="KualiForm.view.singlePageView"/>
 
                 <#-- indicator for disabling browser caching of the view -->
-                <@spring.formHiddenInput id="disableBrowserCache" path="KualiForm.view.disableBrowserCache"/>
+                <@spring.formHiddenInput path="KualiForm.view.disableBrowserCache"/>
 
                 <#if KualiForm.view.additionalHiddenValues??>
                     <#list KualiForm.view.additionalHiddenValues?keys as additionalHiddenName>

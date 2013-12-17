@@ -20,6 +20,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <!-- Required indicators -->
+
+  <bean id="Uif-RequiredIndicator" class="java.lang.String">
+    <constructor-arg value="*"/>
+  </bean>
+
+  <bean id="Uif-RequiredIndicator-ForNextState" class="java.lang.String">
+    <constructor-arg value="**"/>
+  </bean>
+
   <!-- ComponentBase -->
 
   <bean id="Uif-ComponentBase" parent="Uif-ComponentBase-parentBean" abstract="true"/>

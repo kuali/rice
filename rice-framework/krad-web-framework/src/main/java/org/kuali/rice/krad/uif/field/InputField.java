@@ -342,6 +342,8 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             stateObject = model;
         }
         StateMapping stateMapping = view.getStateMapping();
+        String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                        UifConstants.REQUIRED_NEXT_STATE_INDICATOR_ID);
 
         if (stateMapping != null) {
             String validationState = ConstraintStateUtils.getClientViewValidationState(model, view);
@@ -354,7 +356,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
                 SimpleConstraint prevConstraint = ConstraintStateUtils.getApplicableConstraint(
                         this.getSimpleConstraint(), stateMapping.getCurrentState(stateObject), stateMapping);
                 if (prevConstraint == null || prevConstraint.getRequired() == null || !prevConstraint.getRequired()) {
-                    this.getFieldLabel().getRequiredMessage().setMessageText("**");
+                    this.getFieldLabel().setRequiredIndicator(nextStateReqIndicator);
                 }
             }
         }

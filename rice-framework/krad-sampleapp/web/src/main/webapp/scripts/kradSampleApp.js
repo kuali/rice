@@ -21,7 +21,8 @@
 jQuery(function () {
     jQuery(".demo-appHeader, .demo-appFooter, .demo-thirdTier").show();
     linkSelection();
-    if (jQuery("#renderedInLightBox").length && jQuery("#renderedInLightBox").val() == "true") {
+    if (jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").length
+            && jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val() == "true") {
         jQuery(".uif-view").css("padding-top", "0");
     }
     jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
@@ -40,7 +41,7 @@ function updateHtmlViewer(){
     // because this is showing an example outside of the scope of what should be shown here
     var anchor = content.find("a");
     if (content.children().length === 1 && anchor.length === 1
-            && anchor.attr("href") != null && anchor.attr("href").indexOf("viewId") !== -1 ) {
+            && anchor.attr("href") != null && anchor.attr("href").indexOf(kradVariables.VIEW_ID) !== -1 ) {
         jQuery("div#ComponentLibrary-HtmlCodeViewer").hide();
         return;
     }
@@ -116,7 +117,7 @@ function linkSelection() {
     var viewDiv = jQuery("div.uif-formView");
     if (jQuery(viewDiv).is(".demo-componentLibView") || jQuery(viewDiv).is(".demo-componentLibHome")) {
         var viewId = viewDiv.attr("id");
-        var link = jQuery("#Uif-Navigation").find("a[href*='" + viewId + "']");
+        var link = jQuery("#" + kradVariables.NAVIGATION_ID).find("a[href*='" + viewId + "']");
         if (link.length) {
             jQuery(link).css("color", "#222222");
             var accordionLi = jQuery(link).closest("li.uif-accordionTab");

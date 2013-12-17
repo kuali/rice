@@ -331,7 +331,7 @@ function getSerializedViewState() {
 
 // gets the the label for field with the corresponding id
 function getLabel(id) {
-    var label = jQuery("#" + id + "_label");
+    var label = jQuery("[data-label_for='" + id + "']");
     if (label) {
         return label.text();
     }
@@ -448,8 +448,9 @@ function evalHiddenScript(jqueryObj) {
     if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length) {
         return;
     }
-    jqueryObj.attr("script", "first_run");
-    jqueryObj.removeAttr("name");
+/*    jqueryObj.attr("script", "first_run");
+    jqueryObj.removeAttr("name");*/
+    jqueryObj.remove();
     var js = jqueryObj.val();
     try {
         eval(js);
@@ -1090,10 +1091,10 @@ function showLightboxComponent(componentId, overrideOptions, alwaysAjax) {
 
 
     // set renderedInLightBox indicator and remove it when lightbox is closed
-    if (jQuery('#renderedInLightBox').val() != true) {
-        jQuery('#renderedInLightBox').val(true);
+    if (jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val() != true) {
+        jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(true);
         _appendCallbackFunctions(overrideOptions, {afterClose: function () {
-            jQuery('#renderedInLightBox').val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
         }});
     }
 
@@ -1142,7 +1143,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery("#" + componentId).css("display", cssDisplay);
             jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
 
-            jQuery("#renderedInLightBox").val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
 
             activeDialogId = null;
         }});
@@ -1156,7 +1157,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery("#" + componentId).css("display", cssDisplay);
             jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
 
-            jQuery("#renderedInLightBox").val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
 
             activeDialogId = null;
         }});

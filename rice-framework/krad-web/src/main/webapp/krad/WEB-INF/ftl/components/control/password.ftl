@@ -22,8 +22,12 @@
 
 <#macro uif_password control field>
 
-    <#local attributes='size="${control.size!}" class="${control.styleClassesAsString!}"
-         tabindex="${control.tabIndex!}"  ${control.simpleDataAttributes!}'/>
+    <#local attributes='size="${control.size!}"
+        class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+
+    <#if control.tabIndex != 0>
+        <#local attributes='${attributes} tabindex="${control.tabIndex!}"' />
+    </#if>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="disabled"'/>

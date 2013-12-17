@@ -53,7 +53,7 @@ DirtyFormState.prototype = {
     /**
      * jQuery selection of dirtyForm field
      */
-    dirtyFormInput: jQuery("input[name='dirtyForm']"),
+    dirtyFormInput: jQuery("input[name='" + kradVariables.DIRTY_FORM + "']"),
     /**
      * Set this to true to prevent dirty blocking until a View reload or until it is set back to false
      */
@@ -119,7 +119,7 @@ DirtyFormState.prototype = {
      * @returns true if the form has dirty fields, false if not
      */
     checkDirty: function (event, showAlert) {
-        var validateDirty = jQuery("#validateDirty").val();
+        var validateDirty = jQuery("input[name='" + kradVariables.VALIDATE_DIRTY + "']").val();
 
         if (!this.skipDirtyChecks && validateDirty == "true" && this.isDirty()) {
 

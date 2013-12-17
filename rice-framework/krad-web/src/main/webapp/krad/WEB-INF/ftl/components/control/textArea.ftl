@@ -23,7 +23,11 @@ Standard HTML TextArea Input
 <#macro uif_textarea control field>
 
     <#local attributes='rows="${control.rows!}" cols="${control.cols!}"
-            class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}" ${control.simpleDataAttributes!}'/>
+        class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+
+    <#if control.tabIndex != 0>
+        <#local attributes='${attributes} tabindex="${control.tabIndex!}"' />
+    </#if>
 
     <#if control.disabled>
         <#local attributes='${attributes} disabled="disabled"'/>

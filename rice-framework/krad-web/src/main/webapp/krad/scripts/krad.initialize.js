@@ -176,12 +176,14 @@ function setupStickyHeaderAndFooter() {
     initStickyFooterContent();
 
     //bind scroll and resize events to dynamically update sticky content positions
-    jQuery(window).bind("scroll", function () {
+    jQuery(window).unbind("scroll.sticky");
+    jQuery(window).bind("scroll.sticky", function () {
         handleStickyContent();
         handleStickyFooterContent();
     });
 
-    jQuery(window).bind("resize", function () {
+    jQuery(window).unbind("resize.sticky");
+    jQuery(window).bind("resize.sticky", function () {
         handleStickyContent();
         handleStickyFooterContent();
     });
@@ -693,16 +695,20 @@ function setupPage(validate) {
     }
 
     // update the top group per page
-    var topGroupUpdate = jQuery("#" + kradVariables.TOP_GROUP_UPDATE).find("> div").detach();
+    var topGroupUpdateDiv = jQuery("#" + kradVariables.TOP_GROUP_UPDATE);
+    var topGroupUpdate = topGroupUpdateDiv.find("> div").detach();
     if (topGroupUpdate.length && !initialViewLoad) {
         jQuery("#Uif-TopGroupWrapper > div").replaceWith(topGroupUpdate);
     }
+    topGroupUpdateDiv.remove();
 
     // update the view header per page
-    var viewHeaderUpdate = jQuery("#" + kradVariables.VIEW_HEADER_UPDATE).find(".uif-viewHeader").detach();
+    var headerUpdateDiv = jQuery("#" + kradVariables.VIEW_HEADER_UPDATE);
+    var viewHeaderUpdate = headerUpdateDiv.find(".uif-viewHeader").detach();
     if (viewHeaderUpdate.length && !initialViewLoad) {
         jQuery(".uif-viewHeader").replaceWith(viewHeaderUpdate);
     }
+    headerUpdateDiv.remove();
 
     originalPageTitle = document.title;
 

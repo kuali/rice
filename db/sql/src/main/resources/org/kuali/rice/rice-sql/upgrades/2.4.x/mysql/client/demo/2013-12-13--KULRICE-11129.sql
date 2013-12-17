@@ -16,5 +16,5 @@
 
 -- Traveler Account Type change to use KualiCodeBase
 -- KULRICE-11129 Samples for I22
-ALTER TABLE TRV_ACCT_TYPE ADD ACTV_IND VARCHAR(1);
+ALTER TABLE TRV_ACCT_TYPE ADD ACTV_IND VARCHAR(1)
 /

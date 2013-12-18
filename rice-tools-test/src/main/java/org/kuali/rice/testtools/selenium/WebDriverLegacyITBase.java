@@ -786,6 +786,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
+    protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
+        // get growl text
+        String growlText = waitForElementPresent(By.className("jGrowl-message")).getText();
+
+        WebDriverUtils.stepMessage("Is jGrowl text '" + jGrowlText + "'? " + jGrowlText.equals(growlText));
+
+        //check growl text is present
+        assertEquals(jGrowlText, growlText);
+    }
+
     protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {
         jGrowl("Assert Label containing the text " + labelText + " is present");
         waitForElementPresentByXpath("//label[contains(text(), '" + labelText + "')]");

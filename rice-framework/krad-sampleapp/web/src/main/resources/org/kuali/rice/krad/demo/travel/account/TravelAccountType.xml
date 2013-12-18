@@ -19,6 +19,7 @@
 
   <bean id="TravelAccountType" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+    <property name="exporterClass" value="org.kuali.rice.krad.demo.travel.exporter.TravelAccountTypeExporter"/>
   </bean>
 
 </beans>

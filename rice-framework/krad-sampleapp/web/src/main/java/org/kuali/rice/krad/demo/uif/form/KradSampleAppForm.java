@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.uif.form;
 
 import java.io.Serializable;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,9 @@ import java.util.List;
 import edu.sampleu.travel.dataobject.TravelAuthorizationDocument;
 import edu.sampleu.travel.dataobject.TravelDestination;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
@@ -1140,5 +1143,15 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setTravelAccounts(List<TravelAccount> travelAccounts) {
         this.travelAccounts = travelAccounts;
+    }
+
+    public String getEncryptedValue(String value) {
+        try {
+            return CoreApiServiceLocator.getEncryptionService().encrypt(value);
+        } catch (GeneralSecurityException gse) {
+            // Fail silently
+        }
+
+        return StringUtils.EMPTY;
     }
 }

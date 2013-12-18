@@ -3069,7 +3069,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				roleMemberBo = getRoleMember(roleMember.getId());
 				roleMemberObject = getMember(roleMemberBo.getType(), roleMemberBo.getMemberId());
 				matchingRoleMember = new KimDocumentRoleMember();
-				KimCommonUtilsInternal.copyProperties(matchingRoleMember, roleMemberBo);
+                KimDocumentRoleMember.copyProperties(matchingRoleMember, roleMemberBo);
                 matchingRoleMember.setMemberId(roleMemberBo.getMemberId());
                 matchingRoleMember.setRoleMemberId(roleMemberBo.getId());
 				matchingRoleMember.setMemberName(getMemberName(roleMemberBo.getType(), roleMemberObject));

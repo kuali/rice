@@ -990,7 +990,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     /**
      * Translates and retrieves a NaturalLanguage for a given KRMS object (e.g,
      * proposition or agenda), NaturalLanguage usage type (context) and language
-     * into natural language TODO: Add appropriate caching annotation
+     * into natural language
      *
      * @param naturalLanguageUsageId Natural language usage information
      * @param typeId    KRMS object type id (for example, could refer to agenda

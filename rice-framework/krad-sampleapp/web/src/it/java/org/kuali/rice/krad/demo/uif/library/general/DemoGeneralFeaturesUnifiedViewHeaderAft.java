@@ -42,12 +42,13 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
     }
 
     protected void testGeneralFeaturesUnifiedHeader() throws Exception {
-       waitAndClickByLinkText("Unified Header");
-       waitAndClickByLinkText("Unified example");
-       switchToWindow("Kuali :: View Header");
-       assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
-       assertElementPresentByXpath("//h1/span/span[@class='uif-viewHeader-supportTitle']");
-       switchToWindow("Kuali");
+        waitAndClickByLinkText("Unified Header");
+        waitAndClickByLinkText("Unified example");
+        switchToWindow("Kuali :: View Header");
+        assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
+        assertElementPresentByXpath("//h1/span/span[@class='uif-viewHeader-supportTitle']");
+        driver.close();
+        switchToWindow("Kuali");
     }
     
     protected void testGeneralFeaturesNonUnifiedHeader() throws Exception {
@@ -56,6 +57,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
         assertElementPresentByXpath("//h2/span[@class='uif-headerText-span']");
+        driver.close();
         switchToWindow("Kuali");
     }
     
@@ -63,9 +65,11 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
         waitAndClickByLinkText("Options");
         waitAndClickByLinkText("Additional unified header options");
         switchToWindow("Kuali :: View Header");
+        assertTextPresent(new String[]{"metadata information", "Custom Support/Page title"});
         assertElementPresentByXpath("//h1/span[@class='uif-viewHeader-areaTitle']");
         assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
         assertElementPresentByXpath("//h1/span[@class='uif-supportTitle-wrapper']/span");
+        driver.close();
         switchToWindow("Kuali");
     }
     

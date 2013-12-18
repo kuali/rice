@@ -242,7 +242,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Link to demonstrate the use of the disclosure widget to open/close sections by default." p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-Disclosure-View"/>
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DisclosureView#Demo-Disclosure-Example2_tab"/>
             </list>
           </property>
         </bean>

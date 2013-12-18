@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -161,6 +163,26 @@ public class Header extends ContentElementBase {
         components.add(lowerGroup);
 
         return components;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        List<String> additionalTemplates = super.getAdditionalTemplates();
+
+        Object parent = getContext().get(UifConstants.ContextVariableNames.PARENT);
+        if (parent instanceof Group && ((Group) parent).getHelp() != null) {
+            String helpTemplate = ((Group) parent).getHelp().getTemplate();
+            if (additionalTemplates.isEmpty()) {
+                return Collections.singletonList(helpTemplate);
+            } else {
+                additionalTemplates.add(helpTemplate);
+            }
+        }
+        
+        return additionalTemplates;
     }
 
     /**

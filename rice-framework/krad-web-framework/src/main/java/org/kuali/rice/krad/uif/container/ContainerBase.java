@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -218,6 +219,24 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         }
 
         return components;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        List<String> additionalTemplates = super.getAdditionalTemplates();
+
+        if (layoutManager != null) {
+            if (additionalTemplates.isEmpty()) {
+                return Collections.singletonList(layoutManager.getTemplate());
+            } else {
+                additionalTemplates.add(layoutManager.getTemplate());
+            }
+        }
+        
+        return additionalTemplates;
     }
 
     /**

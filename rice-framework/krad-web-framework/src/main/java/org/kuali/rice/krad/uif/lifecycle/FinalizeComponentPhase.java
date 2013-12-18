@@ -146,7 +146,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
             if (predecessor instanceof FinalizeComponentPhase) {
                 parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
             }
-            
+
             renderPhase = LifecyclePhaseFactory.render(this, parentRenderPhase, index);
         }
 

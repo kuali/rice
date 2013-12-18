@@ -621,6 +621,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        return Collections.emptyList();
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#getTemplateName()
      */
     @BeanTagAttribute(name = "templateName")

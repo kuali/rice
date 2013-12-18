@@ -2562,7 +2562,6 @@
       &lt;bean parent="MaintainableCollectionDefinition">
         &lt;property name="summaryTitle" value="Entity Type Detail"/>
         &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
-        &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
         &lt;property name="name" value="entityTypeDetails"/>
         &lt;property name="maintainableFields">
           &lt;list>
@@ -2841,17 +2840,6 @@
             </para>
           </listitem>
           <listitem xml:id="MDD9">
-            <para>To control whether or not to have a multiple value lookup, the KNS provided the
-              property <emphasis role="keyword">p:includeMultipleLookupLine="false"</emphasis>. This
-              has been replaced with the KRAD equivalent <emphasis role="keyword"
-                >p:includeLineSelectionField="false"</emphasis>. <inlinemediaobject>
-                <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
-                </imageobject>
-              </inlinemediaobject>
-            </para>
-          </listitem>
-          <listitem xml:id="MDD10">
             <para>To specify whether items can be deleted from a collection, the KNS provided the
               property <emphasis role="keyword">p:alwaysAllowCollectionDeletion="true"</emphasis>.
               This has been removed in KRAD but has an equivalent replacement: <programlisting linenumbering="numbered">&lt;property name="lineActions">
@@ -2876,45 +2864,56 @@
         with multiple results at once, rather than forcing the user to iteratively add results one
         after another. For a maintenance document to use a multiple value lookup, the maintenance
         document must contain a collection, and a collection lookup must be configured for that
-        collection. </para>
+        collection.</para>
       <para><emphasis role="bold">KNS code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
-  &lt;property name="name" value="categories"/>
-  &lt;property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="includeMultipleLookupLine" value="true"/>
   ...
+  &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+  &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.CustomEntityTypeDetailsBo"/>
+  &lt;property name="maintainableFields">
+    &lt;list>
+      &lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="true" p:template="detailName"/>
+      &lt;bean parent="MaintainableFieldDefinition" p:name="value" p:required="true" p:template="detailValue"/>
+    &lt;/list>
+  &lt;/property>
 &lt;/bean></programlisting>
         <emphasis role="bold">KRAD code example:</emphasis>
       </para>
       <para>
-        <programlisting linenumbering="numbered">&lt;bean parent="Uif-TableCollectionSection">
-  &lt;property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="propertyName" value="categories"/>
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-Disclosure-StackedCollectionSection">
+  ...
+  &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
   &lt;property name="collectionLookup">
     &lt;bean parent="Uif-CollectionQuickFinder"
-             p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo"
-             p:fieldConversions="id:id,name:name,namespace:namespace"/>
+             p:dataObjectClassName="org.kuali.rice.kim.impl.identity.CustomEntityTypeDetailsBo"
+             p:fieldConversions="detailName:name,detailValue:value"/>
   &lt;/property>
-  ...
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:attributeName="name"/>
+      &lt;bean parent="Uif-DataField" p:attributeName="value"/>
+    &lt;/list>
+  &lt;/property>
 &lt;/bean></programlisting>
       </para>
       <para>
         <itemizedlist>
           <listitem>
-            <para>The in KNS the <emphasis role="keyword"
-                >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
-              maintenance document. With KRAD one of the Uif collection groups is used. [KNS line:
-              1, KRAD line: 1]</para>
+            <para>The in KNS the <emphasis role="keyword">MaintainableCollectionDefinition</emphasis>
+              is used to specify collections on a maintenance document. With KRAD one of the Uif
+              collection groups is used.
+            </para>
           </listitem>
           <listitem>
             <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
-              was set to true to enable multiple value lookups on the collection. In KRAD this
-              property does no longer exist, instead the <emphasis role="keyword"
-                >collectionLookup</emphasis> property is initialized with the <emphasis
-                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
-                >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
-              to be specified if the collectionObjectClass of the collection group is the same as
-              the dataObjectClassName of the multi value lookup:</para>
+              was set to true and the <emphasis role="keyword">sourceClassName</emphasis> was
+              specified to enable multiple value lookups on the collection, using the <emphasis
+              role="keyword">template</emphasis> fields for the field conversions. In KRAD these properties
+              do no longer exist.  Instead the <emphasis role="keyword">collectionLookup</emphasis>
+              property is initialized with the <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis>
+              bean. <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis> has the following
+              properties but do not need to be specified if the collectionObjectClass of the collection
+              group is the same as the dataObjectClassName of the multi value lookup:</para>
             <itemizedlist>
               <listitem>
                 <para>dataObjectClassName - the data object that should be looked up</para>
@@ -2923,12 +2922,7 @@
                 <para>fieldConversions - from-to mapping of the returned data
                   (&lt;lookup-field>:&lt;maintenance-collection-field>)</para>
               </listitem>
-              <listitem>
-                <para>viewName - name of the lookup view (only needed if multible views for the
-                  dataObjectClassName exists)</para>
-              </listitem>
             </itemizedlist>
-            <para>[KNS line: , KRAD line: 4-8]</para>
           </listitem>
         </itemizedlist>
       </para>

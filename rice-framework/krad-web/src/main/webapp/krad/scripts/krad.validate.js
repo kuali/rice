@@ -1867,27 +1867,28 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
 
         var id = jQuery("[name='" + escapeName(requiredName) + "']").attr("id");
         id = getAttributeId(id);
+        var label = jQuery("[data-label_for='" + id + "']");
         var indicator;
         if (id) {
-            var label = jQuery("#" + id + "_label_span");
-            if (label.length) {
-                indicator = label.find(".uif-requiredMessage");
+            indicator = label.data("req_indicator");
+            if (indicator === undefined) {
+                indicator = jQuery("div[data-role='view']").data("req_indicator");
             }
         }
 
         //check right now if it satisfies the condition, only if an indicator is not shown
         //(indicators that are shown stay shown for this check, as the server or another check must have shown them)
-        if (indicator != null && indicator.length && indicator.is(':hidden')) {
-            checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
+        if (label.find("uif-requiredMessage").length == 0) {
+            checkForRequiredness(requiredName, booleanFunction, indicator);
         }
 
         //also check condition when corresponding control is changed
         jQuery("[name='" + escapeName(controlName) + "']").change(function () {
-            checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
+            checkForRequiredness(requiredName, booleanFunction, indicator);
         });
 
         jQuery("[name='" + escapeName(controlName) + "']").bind("checkReq", function () {
-            checkForRequiredness(controlName, requiredName, booleanFunction, indicator);
+            checkForRequiredness(requiredName, booleanFunction, indicator);
         });
     }
 }
@@ -1895,22 +1896,26 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
 /**
  * Checks a particular field to see if it is now required, the field is considered required if the booleanFunction
  * evaluates to true.
- * @param controlName
+ *
  * @param requiredName
  * @param booleanFunction
  * @param indicator
  */
-function checkForRequiredness(controlName, requiredName, booleanFunction, indicator) {
+function checkForRequiredness(requiredName, booleanFunction, indicator) {
+    var requiredControl = jQuery("[name='" + escapeName(requiredName) + "']");
+    var label = jQuery("label[for='" + requiredControl.attr("id") + "']");
     if (indicator != null && indicator.length) {
         if (booleanFunction()) {
-            indicator.show();
-            jQuery("[name='" + escapeName(requiredName) + "']").attr("aria-required", "true");
-            jQuery("[name='" + escapeName(requiredName) + "']").addClass("required");
+            if (label.find(".uif-requiredMessage").length == 0) {
+                label.append("<span class='uif-requiredMessage'>" + indicator + "</span>");
+            }
+            requiredControl.attr("aria-required", "true");
+            requiredControl.addClass("required");
         }
         else {
-            indicator.hide();
-            jQuery("[name='" + escapeName(requiredName) + "']").attr("aria-required", "false");
-            jQuery("[name='" + escapeName(requiredName) + "']").removeClass("required");
+            label.find(".uif-requiredMessage").remove();
+            requiredControl.attr("aria-required", "false");
+            requiredControl.removeClass("required");
         }
     }
 }

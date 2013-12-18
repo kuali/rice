@@ -1588,7 +1588,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KRADServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

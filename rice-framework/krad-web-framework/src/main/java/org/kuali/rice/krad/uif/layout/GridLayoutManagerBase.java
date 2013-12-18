@@ -85,6 +85,11 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
         
         Container container = (Container) parent;
 
+        // Default equal cell widths class
+        if (this.isApplyDefaultCellWidths()){
+            this.addStyleClass("uif-table-fixed");
+        }
+
         if (suppressLineWrapping) {
             numberOfColumns = container.getItems().size();
         }

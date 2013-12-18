@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.util.KRADUtils;
 
 /**
@@ -106,6 +107,10 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
 
                 label = field.getFieldLabel();
 
+/*                if (field instanceof InputField && field.getRequired() != null && field.getRequired()) {
+                    label.setRenderRequiredIndicator(true);
+                }*/
+
                 // set boolean to indicate label field should not be
                 // rendered with the attribute
                 field.setLabelRendered(true);
@@ -168,6 +173,8 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
             rows.add(currentRow);
         }
     }
+
+
 
     /**
      * The css class to use on the label column's div "cells"

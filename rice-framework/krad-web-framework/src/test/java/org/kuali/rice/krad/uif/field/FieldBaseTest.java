@@ -49,26 +49,24 @@ public class FieldBaseTest {
         Component mockComponent = mock(Component.class);
 
         // build asterisk required message and mock label to test rendering
-        Label mockLabel = mock(Label.class);
+        Label mockLabel = new Label();
         Message message = new Message();
         message.setMessageText("*");
         message.setRender(true);
-        when(mockLabel.copy()).thenReturn(mockLabel);
-        when(mockLabel.clone()).thenReturn(mockLabel);
 
         FieldBase fieldBase = new FieldBase();
         fieldBase.setFieldLabel(mockLabel);
         fieldBase.setRequired(true);
         fieldBase.setReadOnly(false);
 
-        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
-        fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
-        assertTrue(fieldBase.getFieldLabel().getRequiredMessage().isRender());
+        FieldBase fieldBaseCopy = fieldBase.<FieldBase> copy();
+        fieldBaseCopy.performFinalize(nullModel, mockComponent);
+        assertTrue(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
 
         // required and readonly -  do not render
-        fieldBase.setReadOnly(true);
-        when(mockLabel.getRequiredMessage()).thenReturn(message.<Message> copy());
-        fieldBase.<FieldBase> copy().performFinalize(nullModel, mockComponent);
-        assertFalse(fieldBase.getFieldLabel().getRequiredMessage().isRender());
+        fieldBaseCopy = fieldBase.<FieldBase> copy();
+        fieldBaseCopy.setReadOnly(true);
+        fieldBaseCopy.performFinalize(nullModel, mockComponent);
+        assertFalse(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
     }
 }

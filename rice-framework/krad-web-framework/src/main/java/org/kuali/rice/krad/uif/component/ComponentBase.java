@@ -831,7 +831,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public String getWrapperCssClassesAsString() {
         if (wrapperCssClasses != null) {
-            return StringUtils.join(wrapperCssClasses, " ");
+            return StringUtils.join(wrapperCssClasses, " ").trim();
         }
 
         return "";
@@ -1020,7 +1020,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public String getStyleClassesAsString() {
         if (cssClasses != null) {
-            return StringUtils.join(cssClasses, " ");
+            return StringUtils.join(cssClasses, " ").trim();
         }
 
         return "";

@@ -355,7 +355,7 @@ h<#--
     </#if>
 	<input type="hidden" name="_${name}" value="on"/>
 	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
-    <#if label?has_content>
+    <#if label?has_content && label.messageText?has_content>
         <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${id}">
             <@krad.template component=label/>
         </label>

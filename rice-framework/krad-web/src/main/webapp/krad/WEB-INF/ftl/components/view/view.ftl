@@ -20,7 +20,7 @@
     <!-- VIEW -->
     <@krad.div component=view>
 
-        <!-- optional top group content above breadcrumbs -->
+        <#-- optional top group content above breadcrumbs -->
         <#local topGroupWrapData=""/>
         <#if view.stickyTopGroup>
             <#local topGroupWrapData="data-sticky='true'"/>

@@ -25,30 +25,26 @@
             <#local colon=":"/>
         </#if>
 
-        <#if element.title?has_content>
-            <#local title="title=\"${element.title}\""/>
+        <#if element.labelForComponentId?has_content>
+            <#local for='for="${element.labelForComponentId!}"'>
         </#if>
 
-        <@krad.span component=element>
+        <@compress single_line=true>
+            <label id="${element.id}" ${for!} ${krad.attrBuild(element)}
+                ${element.simpleDataAttributes!}>
 
-        <#-- required message left -->
-            <#if element.requiredMessagePlacement == 'LEFT'>
-                <@krad.template component=element.requiredMessage/>
-            </#if>
+                <#if element.richLabelMessage?has_content>
+                    <@krad.template component=element.richLabelMessage/>${colon}
+                <#else>
+                    ${label}${colon}
+                </#if>
 
-        <label id="${element.id}" for="${element.labelForComponentId!}" ${title!} ${element.simpleDataAttributes!}>
-            <#if element.richLabelMessage?has_content>
-                <@krad.template component=element.richLabelMessage/>${colon}
-            <#else>
-                ${label}${colon}
-            </#if>
-        </label>
+                <#-- required indicator -->
+                <#if element.requiredIndicator?? && element.renderRequiredIndicator>
+                    <span class="uif-requiredMessage">${element.requiredIndicator!}</span>
+                </#if>
 
-        <#-- required message right -->
-            <#if element.requiredMessagePlacement == 'RIGHT'>
-                <@krad.template component=element.requiredMessage/>
-            </#if>
-
-        </@krad.span>
+            </label>
+        </@compress>
     </#if>
 </#macro>

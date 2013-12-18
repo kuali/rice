@@ -66,6 +66,8 @@ public class UifConstants {
     public static final String GROUP_VALIDATION_DEFAULTS_MAP_ID = "Uif-GroupValidationMessages-DataDefaults";
     public static final String FIELD_VALIDATION_DEFAULTS_MAP_ID = "Uif-FieldValidationMessages-DataDefaults";
     public static final String ACTION_DEFAULTS_MAP_ID = "Uif-Action-DataDefaults";
+    public static final String REQUIRED_INDICATOR_ID = "Uif-RequiredIndicator";
+    public static final String REQUIRED_NEXT_STATE_INDICATOR_ID = "Uif-RequiredIndicator-ForNextState";
     public static final String REFERER = "Referer";
     public static final String NO_RETURN = "NO_RETURN";
 
@@ -368,6 +370,7 @@ public class UifConstants {
     public static final class DataAttributes {
         public static final String TYPE = "type";
         public static final String ROLE = "role";
+        public static final String REQ_INDICATOR = "req_indicator";
         public static final String ONCLICK = "onClick";
         public static final String SUBMIT_DATA = "submit_data";
         public static final String HAS_MESSAGES = "has_messages";

@@ -22,8 +22,11 @@
 
 <#macro uif_checkbox control field>
 
-    <#local attributes='class="${control.styleClassesAsString!}" tabindex="${control.tabIndex!}"'/>
-    <#local attributes='${attributes} ${control.simpleDataAttributes!}' />
+    <#local attributes='class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+
+    <#if control.tabIndex != 0>
+        <#local attributes='${attributes} tabindex="${control.tabIndex!}"' />
+    </#if>
 
     <#if control.value??>
         <#local attributes='${attributes} value="${control.value}"'/>

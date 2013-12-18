@@ -107,7 +107,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         if (field != null) {
             return field.getLabel();
         } else {
-            return null;
+            return "";
         }
     }
 

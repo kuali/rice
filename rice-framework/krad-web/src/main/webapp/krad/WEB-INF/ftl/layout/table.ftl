@@ -104,7 +104,7 @@
                 <tfoot>
                 <tr>
                     <#list manager.footerCalculationComponents as component>
-                        <th rowspan="1" colspan="1">
+                        <th>
                             <#if component??>
                                 <@krad.template component=component/>
                             </#if>

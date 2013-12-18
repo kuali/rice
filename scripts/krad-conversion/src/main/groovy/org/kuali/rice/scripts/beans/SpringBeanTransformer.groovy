@@ -85,7 +85,7 @@ class SpringBeanTransformer {
         if (beanId =~ origBeanTypePattern) {
             translatedBeanId = translatedBeanId.replaceAll(origBeanTypePattern, transformBeanType);
         } else {
-            if (beanId.contains(PARENT_BEAN_SUFFIX)) {
+            if (beanId?.contains(PARENT_BEAN_SUFFIX)) {
                 translatedBeanId = translatedBeanId.replaceFirst(PARENT_BEAN_SUFFIX, "") + '-' + transformBeanType + PARENT_BEAN_SUFFIX;
             } else {
                 translatedBeanId = translatedBeanId + '-' + transformBeanType;
@@ -519,7 +519,7 @@ class SpringBeanTransformer {
 
         def beanAttributesCarriedOver = [:]
         if (carryoverAttributes) {
-            beanAttributesCarriedOver = beanNode.attributes();
+            beanAttributesCarriedOver = beanNode?.attributes()?.clone();
             beanAttributesCarriedOver.keySet().removeAll(["id", "parent"])
             if (ignoreAttributes.size() > 0) {
                 beanAttributesCarriedOver.keySet().removeAll(ignoreAttributes)

@@ -367,6 +367,11 @@
                         <entry>false</entry>
                     </row>
                     <row>
+                        <entry>rice.cache.disableDistributedCacheFlush</entry>
+                        <entry>Flag to disable flushing distributed caches via the KSB messaging service</entry>
+                        <entry>false</entry>
+                    </row>
+                    <row>
                         <entry>rice.cache.disabledCaches</entry>
                         <entry>Flag to disable specific Spring caches in Rice by name.  The cache names should be comma
                             separated.</entry>

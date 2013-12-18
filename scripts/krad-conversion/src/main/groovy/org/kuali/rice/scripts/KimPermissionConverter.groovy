@@ -56,19 +56,23 @@ class KimPermissionConverter {
     String viewFieldPermTemplateName = "View Field";
 
     // canned select statements
-    String selectPermissionTemplateByName = "select * from KRIM_PERM_TMPL_T where NMSPC_CD = ? and NM = ? and ACTV_IND = 'Y'";
-    String selectPermissionsByTemplate = "select * from KRIM_PERM_T where PERM_TMPL_ID = ?";
+    String selectPermissionTemplateByName = "SELECT * FROM KRIM_PERM_TMPL_T WHERE NM = ? AND NMSPC_CD = ? AND ACTV_IND = 'Y'";
+    String selectPermissionsByTemplate = "SELECT * FROM KRIM_PERM_T WHERE PERM_TMPL_ID = ?";
+    String selectPermissionAttributes = "SELECT * FROM KRIM_PERM_ATTR_DATA_T WHERE PERM_ID = ?";
 
-    String selectInquiryViewFieldPerm = "select * from KRIM_PERM_TMPL_T where NMSPC_CD='KR-NS' and NM = 'View Inquiry or Maintenance Document Field' and ACTV_IND = 'Y'";
+    String selectInquiryViewFieldPerm = "SELECT * FROM KRIM_PERM_TMPL_T WHERE NMSPC_CD='KR-NS' AND NM = 'VIEW INQUIRY OR MAINTENANCE DOCUMENT FIELD' AND ACTV_IND = 'Y'";
 
-    String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, VER_NBR, ACTV_IND,) values ('";
+    String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR) VALUES ('";
     String insertIntoPermissionAttributesTable = "INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR) VALUES ('";
-    String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLD_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, VER_NBR, ACTV_IND) VALUES ('";
+    String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLD_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, VER_NBR) VALUES ('";
 
-    String selectPermTemplateAttributeDefinitionIds = "SELECT A.KIM_TYP_ID, C.KIM_ATTR_DEFN_ID FROM KRIM_PERM_TMPL_T AS A, KRIM_TYP_ATTR_T AS B, KRIM_ATTR_DEFN_T AS C" +
-      " WHERE A.NMSPC_CD = ? AND A.NM= ? and A.ACTV_IND = 'Y' AND A.KIM_TYP_ID = B.KIM_TYP_ID AND B.KIM_ATTR_DEFN_ID = C.KIM_ATTR_DEFN_ID"
+    String selectPermTemplateAttributeDefinitionIds = "SELECT A.KIM_TYP_ID, C.KIM_ATTR_DEFN_ID, C.NM FROM KRIM_PERM_TMPL_T AS A, KRIM_TYP_ATTR_T AS B, KRIM_ATTR_DEFN_T AS C" +
+      " WHERE A.NMSPC_CD = ? AND A.NM= ? AND A.ACTV_IND = 'Y' AND A.KIM_TYP_ID = B.KIM_TYP_ID AND B.KIM_ATTR_DEFN_ID = C.KIM_ATTR_DEFN_ID ORDER BY C.NM"
+
+    String selectAttributeDefinitionIdByNameAndNamespace = "SELECT KIM_ATTR_DEFN_ID FROM KRIM_ATTR_DEFN_T WHERE NM = ? AND NMSPC_CD = ? AND ACTV_IND = 'Y'";
 
     String sqlStatementDelimiter = "/";
+
 
     public KimPermissionConverter(config) {
         init(config);
@@ -97,10 +101,12 @@ class KimPermissionConverter {
         log.finer("converting KIM permissions");
         connectToDb();
 
-        outputFile << "-- KRAD KIM Permissions";
+        outputFile << "-- KRAD KIM Permissions\n";
         transformViewMaintenanceInquiryFieldPermissions();
 //        generateSqlScriptFile()
+        outputFile << "-- Done\n" ;
     }
+
 
     /**
      * creates a SQL connextion to the rice database
@@ -126,15 +132,21 @@ class KimPermissionConverter {
      */
     protected void transformViewMaintenanceInquiryFieldPermissions() {
 
-        // get KRAD View Field permission template. we need the Id and KimType
-        def permAttributeDefs = sql.rows(selectPermTemplateAttributeDefinitionIds,[kradNamespaceCode, viewFieldPermTemplateName]);
-        println "PERM ATTRIBUTE DEFS: " + permAttributeDefs;
+        // get KRAD View Field permission template. we need the KimTypeId and AttrDefininitionIds
+        // for creating the new permissions attributes to insert into KRIM_PERM_ATTR_DATA_T table
+        def componentAttributeDefId = sql.firstRow(selectAttributeDefinitionIdByNameAndNamespace, ["componentName", knsNamespaceCode]).KIM_ATTR_DEFN_ID;
+        def propertyNameAttributeDefId = sql.firstRow(selectAttributeDefinitionIdByNameAndNamespace, ["propertyName", knsNamespaceCode]).KIM_ATTR_DEFN_ID;
+        def viewIdAttributeDefId = sql.firstRow(selectAttributeDefinitionIdByNameAndNamespace, ["viewId", kradNamespaceCode]).KIM_ATTR_DEFN_ID;
+        def viewFieldTemplate = sql.firstRow(selectPermissionTemplateByName, [viewFieldPermTemplateName, kradNamespaceCode] );
+
+        println "Component Name Attribute Definition Id: " + componentAttributeDefId;
+
+        outputFile << "-- Insert new View Field permission\n";
 
         // get existing kim permission template(s)."
         // should be only 1 but theoretically could be more.
-        sql.eachRow(selectPermissionTemplateByName,[knsNamespaceCode, viewInquiryFieldPermTemplateName]){ tmpl ->
+        sql.eachRow(selectPermissionTemplateByName,[viewInquiryFieldPermTemplateName, knsNamespaceCode]){ tmpl ->
             def tmplId = tmpl.PERM_TMPL_ID;
-            def permTmplKimType = tmpl.KIM_TYP_ID;
             println 'Template ID: ' + tmplId;
 
             // find the existing permissions based off this template
@@ -143,23 +155,41 @@ class KimPermissionConverter {
                 println perm;
                 def oldPermId = perm.PERM_ID;
                 def newPermId = getNextSequence();
-                println "New Sequence = " + newPermId
-
-                // select related permission attributes
-                def oldPermAttributes = sql.rows(selectPermissionAttributes, [oldPermId]);
+                println "New Sequence = " + newPermId;
 
                 // create an open view permission
-                def createPermString = insertIntoPermissionTable + newPermId + "', '" + newPermId + "', '" + tmplId
-                 + "', 'KR-KRAD', 'View Field', 'Allow user to view hidden field', 'Y', 1);"
-                outputFile << createPermString;
+                def createPermString = insertIntoPermissionTable + newPermId + "', '" + newPermId + "', '" + viewFieldTemplate.PERM_TMPL_ID + "', 'KR-KRAD', 'View Field', 'Allow user to view hidden field', 'Y', 1)";
+                outputFile << createPermString + "\n";
+                outputFile << sqlStatementDelimiter + "\n";
 
-                // create the perm attribute data value for viewId
-                newPermAttrId = getNextSequence();
-/*
-                def createAttr1String = insertIntoPermissionAttributesTable + newPermAttrId + "', '" + newPermAttrId
-                + "', '"+ newPermId+ "', '"+ newPermId+ "', '"+ newPermId+ "', '"+ newPermId);
-                + "'"
-*/
+                // select existing related permission attributes from KNS permission
+                def oldPermAttributes = sql.rows(selectPermissionAttributes, [oldPermId]);
+                println "OldAttributes" + oldPermAttributes;
+
+                // create the perm attributes for the new krad  permission
+                // viewId, fieldId, and propertyName
+                outputFile << "-- Insert new View Field permission attributes\n";
+                oldPermAttributes.eachWithIndex{ oldAttr, index ->
+                    def newPermAttrId = getNextSequence();
+                    def attrDefnId="";
+                    def attrValue="";
+                    println "New Sequence = " + newPermAttrId;
+                    if (oldAttr.KIM_ATTR_DEFN_ID == componentAttributeDefId){
+                        attrDefnId = viewIdAttributeDefId;
+                        attrValue = oldAttr.ATTR_VAL + '*';
+                    } else if (oldAttr.KIM_ATTR_DEFN_ID == propertyNameAttributeDefId){
+                        attrDefnId = propertyNameAttributeDefId;
+                        attrValue = oldAttr.ATTR_VAL;
+                    }
+
+                    def createAttrString = insertIntoPermissionAttributesTable + newPermAttrId + "', '" + newPermAttrId + "', '" + newPermId + "', '" + viewFieldTemplate.KIM_TYP_ID + "', '" +  attrDefnId + "', '" + attrValue + "', 1)";
+                    outputFile << createAttrString + "\n";
+                    outputFile << sqlStatementDelimiter + "\n";
+                }
+
+                println "Done With Attributes";
+                outputFile << sqlStatementDelimiter + "\n";
+
                 // get all of the roles assigned to the KNS permission
 
                 // add role assignments for the new KRAD permission

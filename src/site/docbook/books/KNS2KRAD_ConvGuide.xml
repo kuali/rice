@@ -3201,33 +3201,36 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
         </itemizedlist>
       </para>
     </section>
-    <section xml:id="MPBO">
-      <title>Preparing the BO as part of document setup </title>
-      <para> In KNS the business object was set up as part document setup using the
-        Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
-        MaintenanceDocumentService.setupMaintenanceObject.</para>
-      <para><emphasis role="bold">KNS BO
-          Preparation:</emphasis><programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);         </programlisting><emphasis
-          role="bold">KRAD BO Preparation:
-        </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document,
-        String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
-    </section>
     <section xml:id="MPEBO">
       <title>Preparing the BO from an external source</title>
-      <para> In KNS an external business object was set up using <emphasis role="bold"
-          >org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>. In KRAD
-        this functionality has been moved to <emphasis role="bold"
-          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced. Different methods
+      <para>In the KNS an external business object was set up using <emphasis role="bold"
+          >org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>. To activate
+        this, implementers also had to override <emphasis role="bold"
+          >org.kuali.rice.kns.maintenance.Maintainable.isExternalBusinessObject</emphasis>
+        to return true.  In KRAD this functionality has been moved to <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced.  Different methods
         should be overridden depending on whether the external BO being loaded is from the database
         or not.</para>
       <para><emphasis role="bold">KNS BO Preparation:</emphasis>
-        <programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);</programlisting>
+        <programlisting linenumbering="numbered">public boolean isExternalBusinessObject();
+public void prepareBusinessObject(BusinessObject businessObject);</programlisting>
         <emphasis role="bold">KRAD Database BO Preparation:</emphasis>
         <programlisting linenumbering="numbered">public boolean isExternalBusinessObject();
 public void prepareExternalBusinessObject(BusinessObject businessObject);</programlisting>
         <emphasis role="bold">KRAD Non-Database BO Preparation:</emphasis>
         <programlisting linenumbering="numbered">public void retrieveObjectForEditOrCopy(MaintenanceDocument document, Map&lt;String, String> dataObjectKeys);</programlisting>
       </para>
+    </section>
+    <section xml:id="MPBO">
+      <title>Custom BO setup</title>
+      <para>While external Business Objects have methods to handle their setup, there is no way to
+        change the old Business Object after it is loaded but before it is copied into the new Business
+        Object.  In edge cases where this needs to happen, the above methods can be used, but it is
+        better to use <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable.processAfterCopy</emphasis> or
+        <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable.processAfterEdit</emphasis> if processing can
+        wait until the new Business Object has been created.</para>
     </section>
     <section xml:id="MRR">
       <title>Refreshing references </title>

@@ -102,6 +102,11 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase {
         clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
                 UifConstants.ClientSideVariables.APPLICATION_URL, applicationURL);
 
+        String scriptCleanup = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.ConfigParameters.KRAD_SCRIPT_CLEANUP);
+        clientStateScript += ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SET_CONFIG_PARM,
+                UifConstants.ClientSideVariables.KRAD_SCRIPT_CLEANUP, scriptCleanup);
+
         return clientStateScript;
     }
 

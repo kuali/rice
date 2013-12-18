@@ -21,6 +21,9 @@ var jq = jQuery.noConflict();
 jQuery.blockUI.defaults.css = {};
 jQuery.blockUI.defaults.overlayCSS = {};
 
+// script cleanup flag
+var scriptCleanup;
+
 //stickyContent globals
 var stickyContent;
 var stickyContentOffset;
@@ -91,6 +94,9 @@ jQuery(document).ready(function () {
     // determine whether we need to refresh or update the page
     skipPageSetup = handlePageAndCacheRefreshing();
     dirtyFormState = new DirtyFormState();
+
+    // script cleanup setting
+    scriptCleanup = getConfigParam("scriptCleanup").toLowerCase() === "true";
 
     // buttons
     jQuery("input:submit, input:button, a.button, .uif-dialogButtons").button();

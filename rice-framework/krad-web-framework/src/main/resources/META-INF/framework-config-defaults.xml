@@ -31,6 +31,9 @@
   <!-- Indicates whether Less files should be included instead of CSS files. Only applies if rice.krad.dev.mode is true -->
   <param name="rice.krad.include.less" override="false">false</param>
 
+  <!-- Indicates whether the hidden script inputs should be removed from the html after executing -->
+  <param name="rice.krad.script.cleanup" override="false">true</param>
+
   <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
   <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 

@@ -448,9 +448,7 @@ function evalHiddenScript(jqueryObj) {
     if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length) {
         return;
     }
-/*    jqueryObj.attr("script", "first_run");
-    jqueryObj.removeAttr("name");*/
-    jqueryObj.remove();
+
     var js = jqueryObj.val();
     try {
         eval(js);
@@ -461,23 +459,15 @@ function evalHiddenScript(jqueryObj) {
             throw err;
         }
     }
-}
 
-/**
- * run hidden scripts again
- *
- * <p>This is needed in situations where due to some bugs in page refreshes or progressive rendering,
- * the hidden scripts may have run but not accomplished the desired results</p>
- */
-function runHiddenScriptsAgain() {
-    jQuery("input[data-role='dataScript']").each(function () {
-        eval(jQuery(this).val());
-        jQuery(this).removeAttr("script");
-    });
-    jQuery("input[script='first_run']").each(function () {
-        eval(jQuery(this).val());
-        jQuery(this).removeAttr("script");
-    });
+    // cleanup script for non-dev modes
+    if (scriptCleanup) {
+        jqueryObj.remove();
+    }
+    else {
+        jqueryObj.attr("script", "first_run");
+        jqueryObj.removeAttr("name");
+    }
 }
 
 /**

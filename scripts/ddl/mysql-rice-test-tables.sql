@@ -116,6 +116,19 @@ CREATE TABLE KRTST_TEST_TABLE_T  (
     RO_PROP         VARCHAR(40),
     PRIMARY KEY(PK_PROP)
 );
+CREATE TABLE KRTST_TEST_DISABLE_NO_VER_TABLE_T  (
+    ID              varchar(10),
+    OBJ_ID     	    varchar(36) NOT NULL,
+    STR_PROP	      varchar(40),
+    PRIMARY KEY(id)
+);
+CREATE TABLE KRTST_TEST_DISABLE_VER_TABLE_T  (
+    ID            varchar(10),
+    OBJ_ID     	  varchar(36) NOT NULL,
+    STR_PROP	    varchar(40),
+    VER_NBR    	  decimal(8,0) DEFAULT 1 NOT NULL,
+    PRIMARY KEY(id)
+);
 CREATE TABLE KRTST_TEST_YARDO_T  ( 
     ID            	varchar(10),
     OTHER_STR_PROP	varchar(40),

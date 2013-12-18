@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.NodeData;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -58,8 +59,10 @@ public class JoinColumnsResolver extends AbstractJoinColumnResolver {
             annotation.setComment(fixme);
             return new NodeData(annotation,
                     new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE), SIMPLE_NAME), false, false),
-                    Collections.singletonList(new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PACKAGE),
-                            "PrimaryKeyJoinColumn"), false, false)));
+                    Arrays.asList(
+                              new ImportDeclaration(new QualifiedNameExpr(new NameExpr(PrimaryKeyJoinColumnResolver.PACKAGE),PrimaryKeyJoinColumnResolver.SIMPLE_NAME), false, false)
+                            , new ImportDeclaration(new QualifiedNameExpr(new NameExpr(JoinColumnResolver.PACKAGE),JoinColumnResolver.SIMPLE_NAME), false, false)
+                            ));
         }
 
         return null;

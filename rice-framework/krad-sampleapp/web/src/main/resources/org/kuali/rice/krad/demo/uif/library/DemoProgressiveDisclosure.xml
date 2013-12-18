@@ -35,6 +35,8 @@
         <ref bean="Demo-ProgressiveDisclosure-Example5"/>
         <ref bean="Demo-ProgressiveDisclosure-Example6"/>
         <ref bean="Demo-ProgressiveDisclosure-Example7"/>
+        <ref bean="Demo-ProgressiveDisclosure-Example8"/>
+        <ref bean="Demo-ProgressiveDisclosure-Example9"/>
       </list>
     </property>
   </bean>
@@ -108,10 +110,6 @@
         <bean parent="Uif-InputField-LabelTop" p:progressiveRenderAndRefresh="true" p:maxLength="1"
               p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
               p:propertyName="inputField6" />
-        <!--<bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:label="Field A"
-              p:progressiveRender="@{#dp.inputField6 ne null and #dp.inputField6 matches 'a'}" p:propertyName="inputField7" />
-        <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:label="Field B"
-              p:progressiveRender="@{#dp.inputField6 eq 'b'}" p:propertyName="inputField8" />-->
         <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:label="Field A"
               p:progressiveRender="@{#dp.inputField6 ne null and #dp.inputField6 matches '^[aA]$'}" p:propertyName="inputField7" />
         <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:label="Field B"
@@ -232,12 +230,53 @@
     </property>
   </bean>
 
-  <!--<bean id="timer1" parent="Uif-VerticalBoxSection" p:refreshTimer="10"
-              p:methodToCallOnRefresh="refreshProgGroup">
+  <bean id="Demo-ProgressiveDisclosure-Example8" parent="Uif-VerticalBoxSection" p:headerText="Refresh Based on Timer">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressiveDisclosure-Example8 start-->
+        <bean id="timer1" parent="Uif-VerticalBoxSection" p:refreshTimer="10" p:methodToCallOnRefresh="refreshProgGroup">
           <property name="items">
             <list>
               <bean parent="Uif-Message"/>
             </list>
           </property>
-        </bean>-->
+        </bean>
+        <!-- ex:Demo-ProgressiveDisclosure-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressiveDisclosure-Example9" parent="Uif-VerticalBoxSection" p:headerText="Collection Group With Refresh"
+          p:instructionalText="This demonstrates refreshes fields and groups within a collection.">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressiveDisclosure-Example9 start-->
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.summaryFields" value="field1"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:constraintText="Type ref" p:required="true"/>
+              <bean parent="Uif-VerticalFieldGroup" p:conditionalRefresh="@{#lp.field2 eq 'ref'}" p:label="Field Group">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:label="Field 3"/>
+                    <bean parent="Uif-InputField" p:propertyName="field4" p:required="true" p:label="Field 4"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="subCollections">
+            <list>
+              <bean parent="Uif-SubCollectionRefresh" p:refreshWhenChangedPropertyNames="#lp.field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressiveDisclosure-Example9 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

@@ -29,6 +29,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Message-Example1"/>
+        <ref bean="Demo-Message-Example2"/>
       </list>
     </property>
   </bean>
@@ -39,13 +40,18 @@
       <list>
         <!-- ex:Demo-Message-Example1 start-->
         <bean parent="Uif-Message" p:messageText="Default Message"/>
-        <bean parent="Uif-InstructionalMessage" p:messageText="InstructionalMessage"/>
-        <bean parent="Uif-ConstraintMessage" p:messageText="ConstraintMessage"/>
         <!-- ex:Demo-Message-Example1 end-->
-
       </list>
     </property>
   </bean>
 
-
+  <bean id="Demo-Message-Example2"  parent="Uif-VerticalBoxSection" p:headerText="Message with Expression">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Message-Example2 start-->
+        <bean parent="Uif-Message" p:messageText="This message has [b]bold[/b] text."/>
+        <!-- ex:Demo-Message-Example2 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

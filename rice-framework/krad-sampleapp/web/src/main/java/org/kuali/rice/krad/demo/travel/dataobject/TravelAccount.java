@@ -26,8 +26,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -84,7 +86,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     protected String accountTypeCode;
 
     @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
-    @JoinColumn(name="ACCT_TYPE", insertable=false, updatable=false)
+    @PrimaryKeyJoinColumn(name="ACCT_TYPE", referencedColumnName = "ACCT_TYPE")
     @InheritProperty(name="codeAndDescription",displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))
     private TravelAccountType accountType;
 

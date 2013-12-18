@@ -51,7 +51,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         	<bean parent="Uif-InputField" p:propertyName="numDocTypes" p:fieldLabel.align="right" p:label="Number of Document Types" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
 	       <bean parent="Uif-InputField" p:propertyName="numUsers" p:label="Number of Users" p:fieldLabel.align="right" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2"/>
 	       <bean parent="Uif-InputField" p:propertyName="numActionItems" p:fieldLabel.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2"/>
-	       <bean parent="Uif-Label" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:requiredMessage.render="false"/>
+	       <bean parent="Uif-Label" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:renderRequiredIndicator="false"/>
 	       
 	       <bean id="testSection4" parent="Uif-Disclosure-GridSection" p:disclosure.render="false" p:colSpan="2">
       		 <property name="layoutManager">
@@ -97,8 +97,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               		<bean parent="Uif-DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
                </property>
 	        </bean>
-	        <bean parent="Uif-Label" p:labelText="Routing Status" p:colSpan="2" p:requiredMessage.render="false" p:align="center" p:renderColon="false"/>
-            <bean parent="Uif-Label" p:labelText="Number of Documents for Date Range" p:colSpan="2" p:requiredMessage.render="false" p:align="center" p:renderColon="false"/>
+	        <bean parent="Uif-Label" p:labelText="Routing Status" p:colSpan="2" p:renderRequiredIndicator="false" p:align="center" p:renderColon="false"/>
+            <bean parent="Uif-Label" p:labelText="Number of Documents for Date Range" p:colSpan="2" p:renderRequiredIndicator="false" p:align="center" p:renderColon="false"/>
         	<!-- <bean parent="Uif-InputField" p:propertyName="stats.approvedNumber" p:fieldLabel.align="right" p:label="APPROVED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" /> -->
 	        <bean parent="Uif-InputField" p:propertyName="stats.canceledNumber" p:fieldLabel.align="right" p:label="CANCELED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />
 	        <bean parent="Uif-InputField" p:propertyName="stats.disapprovedNumber" p:fieldLabel.align="right" p:label="DISAPPROVED" p:readOnly="true" p:colSpan="2" p:fieldLabel.colSpan="2" />

@@ -42,7 +42,7 @@
         <bean parent="GenericTextField" p:required="true" p:control.disabled="true" p:propertyName="field2"/>
         <bean parent="GenericTextArea" p:required="true" p:propertyName="field3"/>
         <bean parent="GenericRadio" p:required="true" p:propertyName="field4" />
-        <bean parent="GenericSelection" p:required="true" p:fieldLabel.requiredMessagePlacement="RIGHT" p:propertyName="field5"/>
+        <bean parent="GenericSelection" p:required="true" p:propertyName="field5"/>
       </list>
     </property>
   </bean>

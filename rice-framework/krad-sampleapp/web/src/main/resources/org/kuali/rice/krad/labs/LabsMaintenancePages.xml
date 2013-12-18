@@ -264,15 +264,18 @@
   </bean>
 
   <bean id="KradMaintenanceSample-PageR4C3" parent="KradSampleAppView">
-    <property name="page.headerText" value="Sample"/>
+    <property name="page.headerText" value="Maintenance Sample - Clear secure fields on BO Copy"/>
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR4C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Maintenance automatically clearing out secure fields (phone number) upon a BO copy operation."
+              p:instructionalText="See phone number">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance clearing out secure fields upon a BO copy operation as user dev1"
+                    p:href="maintenance?viewTypeName=MAINTENANCE&amp;id=1&amp;methodToCall=maintenanceCopy&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail&amp;backdoorId=dev1"/>
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance clearing out secure fields upon a BO copy operation as user admin"
+                    p:href="maintenance?viewTypeName=MAINTENANCE&amp;id=1&amp;methodToCall=maintenanceCopy&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail&amp;backdoorId=admin"/>
             </list>
           </property>
         </bean>

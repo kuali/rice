@@ -17,6 +17,8 @@ package org.kuali.rice.krad.demo.travel.dataobject;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,6 +26,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.bo.KualiCodeBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
 import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
@@ -33,8 +36,14 @@ import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraint
 
 @Entity
 @Table(name="TRV_ACCT_TYPE")
-@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
-public class TravelAccountType extends DataObjectBase implements Serializable {
+@AttributeOverrides({
+        @AttributeOverride(name="code",
+                           column=@Column(name="ACCT_TYPE",insertable=false,updatable=false, length=3)),
+        @AttributeOverride(name="name",
+                           column=@Column(name="ACCT_TYPE_NAME", insertable=false,updatable=false, length=40))
+})
+@UifAutoCreateViews({UifAutoCreateViewType.LOOKUP})
+public class TravelAccountType extends KualiCodeBase implements Serializable {
     private static final long serialVersionUID = 413236253897119667L;
 
 	@Id
@@ -71,13 +80,4 @@ public class TravelAccountType extends DataObjectBase implements Serializable {
 		this.name = name;
 	}
 
-	@NonPersistentProperty
-	@Label("Account Type")
-	public String getCodeAndDescription() {
-        if (accountTypeCode != null) {
-            return accountTypeCode + " - " + name;
-        }
-
-        return "";
-	}
 }

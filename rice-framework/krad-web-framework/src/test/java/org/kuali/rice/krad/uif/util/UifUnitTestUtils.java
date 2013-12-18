@@ -68,7 +68,7 @@ public final class UifUnitTestUtils {
 
         MutablePropertyValues mpv = new MutablePropertyValues();
         mpv.add("preferFileSystemAccess", false);
-        mpv.add("templateLoaderPath", "/krad-web_2_4_M3");
+        mpv.add("templateLoaderPath", "/krad-web");
         Properties props = new Properties();
         props.put("number_format", "computer");
         props.put("template_update_delay", "2147483647");

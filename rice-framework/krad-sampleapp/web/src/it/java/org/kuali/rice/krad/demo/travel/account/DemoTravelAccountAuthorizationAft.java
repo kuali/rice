@@ -96,6 +96,8 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     	waitAndTypeByName(CONTACT_NUMBER_NAME,"918000884215");
     	waitAndClickByXpath("//a[@id='travelerQuickfinder_quickfinder_act']");
     	waitAndGetReturnValue();
+
+        // KNS/KRAD Equiv M38
     	waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/span/a");
     	waitAndGetReturnValue();
     	

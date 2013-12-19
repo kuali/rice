@@ -91,7 +91,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     /**
      * Fiscal officer ID
      */
-    public static final String FISCAL_OFFICER_ID_FIELD = "document.newMaintainableObject.dataObject.fiscalOfficer.principalName";
+    public static final String FISCAL_OFFICER_ID_FIELD = "document.newMaintainableObject.dataObject.foId";
 
     @Override
     public String getBookmarkUrl() {

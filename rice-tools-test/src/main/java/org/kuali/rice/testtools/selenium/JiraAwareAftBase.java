@@ -427,7 +427,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected boolean isLabeledTextPresent(String label, String text) {
-        WebElement element = findElement(By.xpath("//tr/th/*/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
+        WebElement element = findElement(By.xpath("//tr/th/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
         String labeledText = element.getText().trim();
         WebDriverUtils.jGrowl(getDriver(), "Is Labeled Text Present", false, "Is text '" + text + "' present for label '" + label + "'? " + labeledText.contains(text));
         return labeledText.contains(text);

@@ -42,6 +42,7 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
     }
 
     protected void testLayoutManagersCssGridLayoutDefault() throws Exception {
+        selectByName("exampleShown", "Default");
         waitForElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div/div/input");
         assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div[2]/div/input");
         assertElementPresentByXpath("//div[@id='Demo-CssGridLayoutManager-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-cssGridLayout']/div/div[3]/div/input");

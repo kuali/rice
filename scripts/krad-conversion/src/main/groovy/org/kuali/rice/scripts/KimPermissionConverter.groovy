@@ -45,8 +45,6 @@ class KimPermissionConverter {
     // sql processing vars
     def sql;
     def sequencePrefix = "KRADCONV";
-    def sequenceRandom;
-    def sequenceValue = 0;
 
     // db values
     String kradNamespaceCode = "KR-KRAD";
@@ -59,25 +57,19 @@ class KimPermissionConverter {
     String selectPermissionTemplateByName = "SELECT * FROM KRIM_PERM_TMPL_T WHERE NM = ? AND NMSPC_CD = ? AND ACTV_IND = 'Y'";
     String selectPermissionsByTemplate = "SELECT * FROM KRIM_PERM_T WHERE PERM_TMPL_ID = ?";
     String selectPermissionAttributes = "SELECT * FROM KRIM_PERM_ATTR_DATA_T WHERE PERM_ID = ?";
-
-    String selectInquiryViewFieldPerm = "SELECT * FROM KRIM_PERM_TMPL_T WHERE NMSPC_CD='KR-NS' AND NM = 'VIEW INQUIRY OR MAINTENANCE DOCUMENT FIELD' AND ACTV_IND = 'Y'";
-
-    String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR) VALUES ('";
-    String insertIntoPermissionAttributesTable = "INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR) VALUES ('";
-    String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLD_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, VER_NBR) VALUES ('";
-
-    String selectPermTemplateAttributeDefinitionIds = "SELECT A.KIM_TYP_ID, C.KIM_ATTR_DEFN_ID, C.NM FROM KRIM_PERM_TMPL_T AS A, KRIM_TYP_ATTR_T AS B, KRIM_ATTR_DEFN_T AS C" +
-      " WHERE A.NMSPC_CD = ? AND A.NM= ? AND A.ACTV_IND = 'Y' AND A.KIM_TYP_ID = B.KIM_TYP_ID AND B.KIM_ATTR_DEFN_ID = C.KIM_ATTR_DEFN_ID ORDER BY C.NM"
-
+    String selectRoleMembersByPermId = "SELECT * FROM KRIM_ROLE_PERM_T WHERE PERM_ID = ?";
     String selectAttributeDefinitionIdByNameAndNamespace = "SELECT KIM_ATTR_DEFN_ID FROM KRIM_ATTR_DEFN_T WHERE NM = ? AND NMSPC_CD = ? AND ACTV_IND = 'Y'";
 
-    String sqlStatementDelimiter = "/";
+    // insert statement help strings
+    String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR) VALUES ('";
+    String insertIntoPermissionAttributesTable = "INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR) VALUES ('";
+    String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, VER_NBR) VALUES ('";
 
+    String sqlStatementDelimiter = ";\n";
 
     public KimPermissionConverter(config) {
         init(config);
     }
-
 
     def init(config) {
         username = config.datasource.username;
@@ -88,7 +80,6 @@ class KimPermissionConverter {
 
         def dir = config.output.dir + config.output.path.db.sql;
         outputFile = new File(dir, 'KradKimPermissions.sql');
-        sequenceRandom = System.currentTimeMillis().toString();
     }
 
 
@@ -103,8 +94,9 @@ class KimPermissionConverter {
 
         outputFile << "-- KRAD KIM Permissions\n";
         transformViewMaintenanceInquiryFieldPermissions();
-//        generateSqlScriptFile()
-        outputFile << "-- Done\n" ;
+
+        // just for debug to know it completed w/o runtime error, remove when completed
+        outputFile << "-- Finished\n" ;
     }
 
 
@@ -123,7 +115,7 @@ class KimPermissionConverter {
      *
      * Ouput:
      * - insert new permission into KRIM_PERM_T
-     * - insert 3 new permissions attributes (viewId, fieldId, propertyName) into KRIM_PERM_ATTR_DATA_T
+     * - insert new permissions attributes (viewId, fieldId, propertyName) into KRIM_PERM_ATTR_DATA_T
      * - insert role assigments into  KRIM_ROLE_MBR_T
      *
      * DB Info needed
@@ -154,11 +146,12 @@ class KimPermissionConverter {
             perms.each{ perm ->
                 println perm;
                 def oldPermId = perm.PERM_ID;
-                def newPermId = getNextSequence();
+                def newPermId = sequencePrefix + oldPermId;
                 println "New Sequence = " + newPermId;
 
                 // create an open view permission
-                def createPermString = insertIntoPermissionTable + newPermId + "', '" + newPermId + "', '" + viewFieldTemplate.PERM_TMPL_ID + "', 'KR-KRAD', 'View Field', 'Allow user to view hidden field', 'Y', 1)";
+                def createPermString = insertIntoPermissionTable + newPermId + "', '" + newPermId + "', '" + viewFieldTemplate.PERM_TMPL_ID +
+                        "', '" + kradNamespaceCode + "', '" + perm.NM + "', '" +  perm.DESC_TXT + "', 'Y', 1)";
                 outputFile << createPermString + "\n";
                 outputFile << sqlStatementDelimiter + "\n";
 
@@ -170,7 +163,7 @@ class KimPermissionConverter {
                 // viewId, fieldId, and propertyName
                 outputFile << "-- Insert new View Field permission attributes\n";
                 oldPermAttributes.eachWithIndex{ oldAttr, index ->
-                    def newPermAttrId = getNextSequence();
+                    def newPermAttrId = sequencePrefix + oldAttr.ATTR_DATA_ID;
                     def attrDefnId="";
                     def attrValue="";
                     println "New Sequence = " + newPermAttrId;
@@ -182,54 +175,26 @@ class KimPermissionConverter {
                         attrValue = oldAttr.ATTR_VAL;
                     }
 
-                    def createAttrString = insertIntoPermissionAttributesTable + newPermAttrId + "', '" + newPermAttrId + "', '" + newPermId + "', '" + viewFieldTemplate.KIM_TYP_ID + "', '" +  attrDefnId + "', '" + attrValue + "', 1)";
+                    def createAttrString = insertIntoPermissionAttributesTable + newPermAttrId + "', '" + newPermAttrId +
+                            "', '" + newPermId + "', '" + viewFieldTemplate.KIM_TYP_ID + "', '" +  attrDefnId + "', '" + attrValue + "', 1)";
                     outputFile << createAttrString + "\n";
-                    outputFile << sqlStatementDelimiter + "\n";
+                    outputFile << sqlStatementDelimiter;
                 }
 
-                println "Done With Attributes";
-                outputFile << sqlStatementDelimiter + "\n";
-
                 // get all of the roles assigned to the KNS permission
+                sql.eachRow(selectRoleMembersByPermId, [oldPermId]){ roleMember ->
+                    // add role assignments for the new KRAD permission
+                    def newRolePermId =  sequencePrefix + roleMember.ROLE_PERM_ID;
+                    def createRolePermString = insertIntoRoleMembershipTable + newRolePermId +
+                            "', '" + newRolePermId + "', '" + roleMember.ROLE_ID + "', '" + newPermId + "', 'Y', 1)";
 
-                // add role assignments for the new KRAD permission
+                    outputFile << "-- Insert New Role Membership" + "\n"
+                    outputFile << createRolePermString + "\n";
+                    outputFile << sqlStatementDelimiter;
+                }
 
+                println "Done with creating new permissions.";
             }
         }
     }
-
-
-    /**
-     * Creates a SQL script file contains statements to create KRAD KIM permissions
-     *
-     * @param path
-     * @param filename
-     */
-    private void generateSqlScriptFile(path, filename) {
-        try {
-            def writer = new StringWriter();
-            XmlUtil.serialize(rootBean, writer);
-            def result = writer.toString();
-            result = addBlankLinesBetweenMajorBeans(result);
-            result = fixComments(result);
-            result = modifyBeanSchema(result);
-            ConversionUtils.buildFile(path, filename, result);
-        } catch (FileNotFoundException ex) {
-            log.info "unable to generate output for " + outputFile.name;
-            errorText();
-        }
-    }
-
-    private String getNextSequence(){
-        sequencePrefix + sequenceRandom + sequenceValue++
-    }
-
-   /**
-     * @deprecated
-     */
-    def errorText() {
-        log.info("=====================\nFatal Error in Script\n=====================\n")
-        System.exit(2)
-    }
-
 }

@@ -1251,7 +1251,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             queryData.methodToCall = 'performFieldSuggest';
             queryData.ajaxRequest = true;
             queryData.ajaxReturnType = 'update-none';
-            queryData.formKey = jQuery("input#formKey").val();
+            queryData.formKey = jQuery("input[name='" + kradVariables.FORM_KEY + "']").val();
             queryData.queryTerm = request.term;
             queryData.queryFieldId = queryFieldId;
 
@@ -1572,7 +1572,7 @@ function getTooltipElement(fieldId) {
  * @param queryMethodArgs -
  *         list of parameters that should be sent along with the query, the list gives the
  * name of the field in the view to pull values from, and will be sent with the same name
- * as a query parameter on the request
+ * as a query parameter on the request (this will only be used by the js if a queryParameters mapping does not exist)
  * @param returnFieldMapping -
  *        map of fields that should be returned (updated) from the query. map key gives
  * the name of the parameter to update, map value is the name of field to pull value from
@@ -1583,18 +1583,22 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     queryData.methodToCall = 'performFieldQuery';
     queryData.ajaxRequest = true;
     queryData.ajaxReturnType = 'update-none';
-    queryData.formKey = jQuery("input#formKey").val();
+    queryData.formKey = jQuery("input[name='" + kradVariables.FORM_KEY + "']").val();
     queryData.queryFieldId = queryFieldId;
 
+    var queryParamLength = 0;
     for (var parameter in queryParameters) {
         queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
+        queryParamLength++;
     }
 
-    for (var parameter in queryMethodArgs) {
-        queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
+    if (queryParamLength === 0) {
+        for (var parameter in queryMethodArgs) {
+            queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
+        }
     }
 
-    jQuery.ajax({
+    var submitOptions = {
         url: jQuery("form#kualiForm").attr("action"),
         dataType: "json",
         data: queryData,
@@ -1637,5 +1641,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                 }
             }
         }
-    });
+    };
+
+    jQuery.ajax(submitOptions);
 }

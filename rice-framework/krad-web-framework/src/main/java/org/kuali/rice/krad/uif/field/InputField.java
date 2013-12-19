@@ -496,7 +496,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
             this.setRenderInfoMessageSpan(true);
 
             if (StringUtils.isNotBlank(getControl().getOnBlurScript())) {
-                script = getControl().getOnBlurScript() + script;
+                script = getControl().getOnBlurScript() + ";" + script;
             }
             getControl().setOnBlurScript(script);
         }

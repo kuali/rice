@@ -45,7 +45,7 @@
           <property name="propertyNamesForAdditionalDisplay" value="inputField4,inputField5" />
           <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:queryFieldMapping="inputField3:number" p:returnFieldMapping="name:inputField4,subAccountName:inputField5" />
+                  p:queryFieldMapping="inputField3:number" p:returnFieldMapping="name:inputField4,foId:inputField5"/>
           </property>
         </bean>
         <!-- ex:Demo-AjaxFieldQuery-Example1 end-->
@@ -63,7 +63,7 @@
           <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
                   p:queryMethodArgumentFieldList="number"
-                  p:returnFieldMapping="name:inputField7,subAccountName:inputField8"
+                  p:returnFieldMapping="name:inputField7,foId:inputField8"
                   p:queryFieldMapping="inputField6:number"/>
           </property>
         </bean>
@@ -82,7 +82,7 @@
           <property name="attributeQuery">
             <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByNumber"
                   p:queryMethodArgumentFieldList="number"
-                  p:returnFieldMapping="name:inputField10,subAccountName:inputField11"
+                  p:returnFieldMapping="name:inputField10,foId:inputField11"
                   p:queryFieldMapping="inputField9:number">
               <property name="queryMethodInvokerConfig.targetObject">
                 <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">

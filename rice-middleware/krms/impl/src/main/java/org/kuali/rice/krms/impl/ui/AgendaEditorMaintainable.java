@@ -368,23 +368,25 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
 
     private void addItemsToListForDeletion(List<AgendaItemBo> deletionOrder, AgendaItemBo agendaItemBo){
-        if (!deletionOrder.contains(agendaItemBo)) {
+        if (!deletionOrder.contains(agendaItemBo) && ObjectUtils.isNotNull(agendaItemBo)) {
             deletionOrder.add(agendaItemBo);
         }
-        if (StringUtils.isNotBlank(agendaItemBo.getWhenTrueId()) &&
-            !deletionOrder.contains(agendaItemBo.getWhenTrue())) {
-                deletionOrder.add(agendaItemBo.getWhenTrue());
-                addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenTrue());
-        }
-        if (StringUtils.isNotBlank(agendaItemBo.getWhenFalseId()) &&
-            !deletionOrder.contains(agendaItemBo.getWhenFalse())) {
-                deletionOrder.add(agendaItemBo.getWhenFalse());
-                addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenFalse());
-        }
-        if (StringUtils.isNotBlank(agendaItemBo.getAlwaysId()) &&
-            !deletionOrder.contains(agendaItemBo.getAlways())) {
-                deletionOrder.add(agendaItemBo.getAlways());
-                addItemsToListForDeletion (deletionOrder,agendaItemBo.getAlways());
+        if (ObjectUtils.isNotNull(agendaItemBo)) {
+            if (StringUtils.isNotBlank(agendaItemBo.getWhenTrueId()) &&
+                !deletionOrder.contains(agendaItemBo.getWhenTrue())) {
+                    deletionOrder.add(agendaItemBo.getWhenTrue());
+                    addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenTrue());
+            }
+            if (StringUtils.isNotBlank(agendaItemBo.getWhenFalseId()) &&
+                !deletionOrder.contains(agendaItemBo.getWhenFalse())) {
+                    deletionOrder.add(agendaItemBo.getWhenFalse());
+                    addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenFalse());
+            }
+            if (StringUtils.isNotBlank(agendaItemBo.getAlwaysId()) &&
+                !deletionOrder.contains(agendaItemBo.getAlways())) {
+                    deletionOrder.add(agendaItemBo.getAlways());
+                    addItemsToListForDeletion (deletionOrder,agendaItemBo.getAlways());
+            }
         }
     }
 

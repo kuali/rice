@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -339,12 +340,51 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             Map<String, String> primaryKeys = new HashMap<String, String>();
             primaryKeys.put("id", agendaBo.getId());
             AgendaBo dbAgendaBo = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
-            getBusinessObjectService().delete(dbAgendaBo);
+
+            if (ObjectUtils.isNotNull(dbAgendaBo)) {
+                Map<String, String> primaryKeyForFirstItem = new HashMap<String, String>();
+                primaryKeyForFirstItem.put("id", dbAgendaBo.getFirstItemId());
+                AgendaItemBo dbFirstAgendaItemBo = getBusinessObjectService().findByPrimaryKey(AgendaItemBo.class,
+                    primaryKeyForFirstItem);
+
+                List<AgendaItemBo> deletionOrder = new ArrayList<AgendaItemBo>();
+                addItemsToListForDeletion(deletionOrder, dbFirstAgendaItemBo);
+
+                for (AgendaItemBo agendaItemToDelete : deletionOrder) {
+                    getBusinessObjectService().delete(agendaItemToDelete);
+                }
+
+                dbAgendaBo.setItems(null);
+                getBusinessObjectService().delete(dbAgendaBo);
+            }
+
             flushCacheBeforeSave();
 
             getBusinessObjectService().linkAndSave(agendaBo);
         } else {
             throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
+        }
+    }
+
+
+    private void addItemsToListForDeletion(List<AgendaItemBo> deletionOrder, AgendaItemBo agendaItemBo){
+        if (!deletionOrder.contains(agendaItemBo)) {
+            deletionOrder.add(agendaItemBo);
+        }
+        if (StringUtils.isNotBlank(agendaItemBo.getWhenTrueId()) &&
+            !deletionOrder.contains(agendaItemBo.getWhenTrue())) {
+                deletionOrder.add(agendaItemBo.getWhenTrue());
+                addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenTrue());
+        }
+        if (StringUtils.isNotBlank(agendaItemBo.getWhenFalseId()) &&
+            !deletionOrder.contains(agendaItemBo.getWhenFalse())) {
+                deletionOrder.add(agendaItemBo.getWhenFalse());
+                addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenFalse());
+        }
+        if (StringUtils.isNotBlank(agendaItemBo.getAlwaysId()) &&
+            !deletionOrder.contains(agendaItemBo.getAlways())) {
+                deletionOrder.add(agendaItemBo.getAlways());
+                addItemsToListForDeletion (deletionOrder,agendaItemBo.getAlways());
         }
     }
 

@@ -42,9 +42,10 @@ public class DemoLayoutManagersStackedLayoutAft extends WebDriverLegacyITBase {
     }
 
     protected void testLayoutManagersStackedLayout() throws Exception {
-       waitForElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem uif-collectionAddItem']/div[@class='uif-footer']/div/button[contains(text(),'add')]");
-       assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
-       assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem'][35]/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
+        selectByName("exampleShown","Stacked Layout Manager");
+        waitForElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem uif-collectionAddItem']/div[@class='uif-footer']/div/button[contains(text(),'add')]");
+        assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
+        assertElementPresentByXpath("//div[@class='uif-collectionItem uif-gridCollectionItem'][35]/div[@class='uif-footer']/div/button[contains(text(),'delete')]");
     }
     
     protected void testLayoutManagersStackedWithTableSubCollectionLayout() throws Exception {
@@ -67,8 +68,7 @@ public class DemoLayoutManagersStackedLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersStackedCollectionAjaxDisclosures() throws Exception {
         selectByName("exampleShown","Stacked Collection Ajax Disclosures");
-        if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[3]/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table/tbody/tr/td/div/input[@name='groupedCollection3[0].field1']"))
-        {
+        if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[3]/div[@class='uif-collectionItem uif-gridCollectionItem']/div[@class='uif-disclosureContent']/table/tbody/tr/td/div/input[@name='groupedCollection3[0].field1']")) {
             fail("Ajax Disclosure Not working!");
         }
         waitAndClickByLinkText("Item 100");

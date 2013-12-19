@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
 import org.junit.Test;
 
 /**

@@ -39,15 +39,8 @@ public class LabsMaintenanceDefineControlAft extends LabsMaintenanceBase {
 
     protected void testMaintenanceDefineControl() throws InterruptedException {
     	waitAndClickByLinkText("Travel Account Maintenance (New Account)");
-    	waitForElementPresentByXpath("//span[contains(text(),'Document Overview')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Account Information')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Sub Accounts')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Notes and Attachments (0)')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Ad Hoc Recipients')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Route Log')]");
-    	assertElementPresentByXpath("//button[contains(text(),'submit')]");
-    	assertElementPresentByXpath("//button[contains(text(),'Save')]");
-    	assertElementPresentByXpath("//button[contains(text(),'blanket approve')]");
+        assertTextPresent(new String[] {"Document Overview", "Account Information", "Sub Accounts", "Notes and Attachments (0)",
+            "Ad Hoc Recipients", "Route Log", "submit", "Save", "blanket approve"});
     }
 
     @Test

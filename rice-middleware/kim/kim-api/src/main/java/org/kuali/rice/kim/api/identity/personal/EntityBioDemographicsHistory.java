@@ -25,6 +25,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.core.api.util.jaxb.PrimitiveBooleanDefaultToFalseAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
@@ -137,7 +138,7 @@ public final class EntityBioDemographicsHistory extends AbstractDataTransferObje
 
     @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
     private final String noteMessage;
-    @XmlElement(name = Elements.SUPPRESS_PERSONAL, required = false)
+    @XmlElement(name = Elements.SUPPRESS_PERSONAL, required = true)
     private final boolean suppressPersonal;
 
     @XmlElementWrapper(name = Elements.DISABILITIES, required = false)
@@ -267,13 +268,15 @@ public final class EntityBioDemographicsHistory extends AbstractDataTransferObje
     }
 
     @Override
-    @XmlElement(name = Elements.VETERAN, required = false)
+    @XmlElement(name = Elements.VETERAN, required = false, type = Boolean.class)
+    @XmlJavaTypeAdapter(PrimitiveBooleanDefaultToFalseAdapter.class)
     public boolean isVeteran() {
         return CollectionUtils.isNotEmpty(this.militaryRecords);
     }
 
     @Override
-    @XmlElement(name = Elements.DISABLED, required = false)
+    @XmlElement(name = Elements.DISABLED, required = false, type = Boolean.class)
+    @XmlJavaTypeAdapter(PrimitiveBooleanDefaultToFalseAdapter.class)
     public boolean isDisabled() {
         return CollectionUtils.isNotEmpty(this.disabilities);
     }

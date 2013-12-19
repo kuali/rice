@@ -23,6 +23,7 @@ import org.joda.time.Years;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.PrimitiveBooleanDefaultToFalseAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,12 +72,12 @@ import java.util.List;
     EntityBioDemographics.Elements.GEOGRAPHIC_ORIGIN_UNMASKED,
     EntityBioDemographics.Elements.NOTE_MESSAGE,
     EntityBioDemographics.Elements.SUPPRESS_PERSONAL,
+    CoreConstants.CommonElements.VERSION_NUMBER,
+    CoreConstants.CommonElements.OBJECT_ID,
     EntityBioDemographics.Elements.DISABLED,
     EntityBioDemographics.Elements.DISABILITIES,
     EntityBioDemographics.Elements.VETERAN,
     EntityBioDemographics.Elements.MILITARY_RECORDS,
-    CoreConstants.CommonElements.VERSION_NUMBER,
-    CoreConstants.CommonElements.OBJECT_ID,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityBioDemographics extends AbstractDataTransferObject
@@ -131,8 +133,13 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
     private final String noteMessage;
-    @XmlElement(name = Elements.SUPPRESS_PERSONAL, required = false)
+    @XmlElement(name = Elements.SUPPRESS_PERSONAL, required = true)
     private final boolean suppressPersonal;
+
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+    private final String objectId;
 
     @XmlElementWrapper(name = Elements.DISABILITIES, required = false)
     @XmlElement(name = Elements.DISABILITY, required = false)
@@ -141,10 +148,6 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     @XmlElement(name = Elements.MILITARY_RECORD, required = false)
     private final List<EntityMilitary> militaryRecords;
 
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
-    private final Long versionNumber;
-    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
-    private final String objectId;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -247,13 +250,15 @@ public final class EntityBioDemographics extends AbstractDataTransferObject
     }
 
     @Override
-    @XmlElement(name = Elements.VETERAN, required = false)
+    @XmlElement(name = Elements.VETERAN, required = false, type = Boolean.class)
+    @XmlJavaTypeAdapter(PrimitiveBooleanDefaultToFalseAdapter.class)
     public boolean isVeteran() {
         return CollectionUtils.isNotEmpty(this.militaryRecords);
     }
 
     @Override
-    @XmlElement(name = Elements.DISABLED, required = false)
+    @XmlElement(name = Elements.DISABLED, required = false, type = Boolean.class)
+    @XmlJavaTypeAdapter(PrimitiveBooleanDefaultToFalseAdapter.class)
     public boolean isDisabled() {
         return CollectionUtils.isNotEmpty(this.disabilities);
     }

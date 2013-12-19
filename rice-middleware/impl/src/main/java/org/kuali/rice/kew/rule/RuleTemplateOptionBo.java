@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateOptionContract;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import javax.persistence.Column;
@@ -73,10 +70,6 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
         this.value = value;
     }
 
-    //@PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
     @Override
     public String getCode() {
         return code;

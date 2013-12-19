@@ -17,10 +17,8 @@ package org.kuali.rice.kew.notes;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.note.NoteContract;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
@@ -231,12 +229,7 @@ public class Note implements Serializable, NoteContract {
 	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
 	}
-	
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
-	
+
 	// new methods from NoteContract in 2.0
 
 	@Override

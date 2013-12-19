@@ -84,7 +84,6 @@ public class RuleServiceTest extends KEWTestCase {
         // TODO: this isn't really the same test as isJpaEnabled
         // i.e. JPA will be present even when the legacy data framework is enabled
         // what do we do in this case?
-        //final boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
         final boolean isKewJpaEnabled = !LegacyUtils.isLegacyDataFrameworkEnabled();
         try {
             KEWServiceLocator.getRuleService().save2(rbv);

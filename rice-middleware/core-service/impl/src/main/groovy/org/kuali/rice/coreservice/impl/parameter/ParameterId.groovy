@@ -34,7 +34,6 @@ public class ParameterId implements Serializable {
     @Column(name="APPL_ID")
     def final String applicationId
 
-    /** this ctor should never be called.  It is only present for hibernate */
     public ParameterId() {
         namespaceCode = null
         componentCode = null

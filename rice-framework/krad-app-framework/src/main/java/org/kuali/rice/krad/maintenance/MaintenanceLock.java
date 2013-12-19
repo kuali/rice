@@ -23,7 +23,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -75,19 +74,6 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
     }
-
-	/**
-	 * Uses OrmUtils to set the sequence
-     *
-     * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#prePersist()
-     */
-    @PrePersist
-	protected void customPrePersist() {
-//		final EntityManagerFactory factory = KRADServiceLocator.getApplicationEntityManagerFactory();
-//		OrmUtils.populateAutoIncValue(this, factory.createEntityManager());
-
-		super.prePersist();
-	}
 
 }
 

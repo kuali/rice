@@ -16,11 +16,8 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -73,12 +70,7 @@ public class RuleExtensionValue implements Serializable {
         this.key = key;
         this.value = value;
     }
-    
-    //@PrePersist
-    public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-    }
-    
+
     public RuleExtensionBo getExtension() {
         return extension;
     }

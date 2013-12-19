@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -71,11 +68,6 @@ public class BranchPrototype implements Serializable {
 
 	public void setLockVerNbr(Integer lockVerNbr) {
 		this.lockVerNbr = lockVerNbr;
-	}
-	
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
 	}
 	
 }

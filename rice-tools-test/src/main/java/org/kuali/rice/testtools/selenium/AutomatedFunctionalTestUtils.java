@@ -168,48 +168,57 @@ public class AutomatedFunctionalTestUtils {
             return;
         }
 
+        String errorMessage = incidentReportMessage(contents, linkLocator, message);
+
+        if (errorMessage != null) {
+            failable.fail(errorMessage);
+        }
+    }
+
+    protected static String incidentReportMessage(String contents, String linkLocator, String message) {
         if (incidentReported(contents)) {
             try {
-                processIncidentReport(contents, linkLocator, failable, message);
+                processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                failable.fail(
-                        "\nIncident report detected "
+                return "\nIncident report detected "
                                 + message
                                 + " but there was an exception during processing: "
                                 + e.getMessage()
                                 + "\nStack Trace from processing exception"
                                 + stackTrace(e)
                                 + "\nContents that triggered exception: "
-                                + deLinespace(contents));
+                                + deLinespace(contents);
             }
         }
 
         if (contents.contains("HTTP Status 404")) {
-            failWithInfo("HTTP Status 404 contents: " + contents, linkLocator, failable, message);
+            return "HTTP Status 404 contents: " + contents;
         }
 
         if (contents.contains("HTTP Status 500")) {
-            failWithInfo("\nHTTP Status 500 stacktrace: " + extract500Exception(contents), linkLocator, failable, message);
+            return "\nHTTP Status 500 stacktrace: " + extract500Exception(contents);
         }
 
         if (contents.contains("Java backtrace for programmers:") || contents.contains("Java stack trace (for programmers):")) { // freemarker exception
             try {
-                processFreemarkerException(contents, linkLocator, failable, message);
+                return freemarkerExceptionMessage(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
-                failable.fail("\nFreemarker exception detected "
+                return "\nFreemarker exception detected "
                         + message
                         + " but there was an exception during processing: "
                         + e.getMessage()
                         + "\nStack Trace from processing exception"
                         + stackTrace(e)
                         + "\nContents that triggered exception: "
-                        + deLinespace(contents));
+                        + deLinespace(contents);
             }
         }
 
         if (contents.contains("Document Expired")) { // maybe Firefox specific
-            failable.fail("Document Expired message.");
+            return "Document Expired message.";
         }
+
+        return null;
     }
 
     public static String deLinespace(String contents) {
@@ -367,6 +376,13 @@ public class AutomatedFunctionalTestUtils {
 
     private static void processFreemarkerException(String contents, String linkLocator, JiraAwareFailable failable, String message) {
         JiraAwareFailureUtils.failOnMatchedJira(contents, failable);
+        String errorMessage = freemarkerExceptionMessage(contents, linkLocator, message);
+
+        JiraAwareFailureUtils.failOnMatchedJira(errorMessage, linkLocator, failable);
+        failable.fail(errorMessage);
+    }
+
+    protected static String freemarkerExceptionMessage(String contents, String linkLocator, String message) {
         String ftlStackTrace = null;
         if (contents.contains("more<")) {
             ftlStackTrace = contents.substring(contents.indexOf("----------"), contents.indexOf("more<") - 1);
@@ -377,8 +393,7 @@ public class AutomatedFunctionalTestUtils {
                 ftlStackTrace = contents.substring(contents.indexOf("FreeMarker template error:"), contents.indexOf("at java.lang.Thread.run(Thread.java:") + 39 );
             }
         }
-        JiraAwareFailureUtils.failOnMatchedJira(ftlStackTrace, linkLocator, failable);
-        failable.fail( "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim());
+        return "\nFreemarker Exception " + message + " navigating to " + linkLocator + "\nStackTrace: " + ftlStackTrace.trim();
     }
 
 /*
@@ -418,6 +433,22 @@ public class AutomatedFunctionalTestUtils {
                 + message
                 + "\n Unable to parse out details for the contents that triggered exception: "
                 + deLinespace(contents));
+    }
+
+    protected static String processIncidentReport(String contents, String linkLocator, String message) {
+
+        if (contents.indexOf("Incident Feedback") > -1) {
+            return extractIncidentReportInfo(contents, linkLocator, message);
+        }
+
+        if (contents.indexOf("Incident Report") > -1) { // KIM incident report
+            return extractIncidentReportKim(contents, linkLocator, message);
+        }
+
+        return "\nIncident report detected "
+                + message
+                + "\n Unable to parse out details for the contents that triggered exception: "
+                + deLinespace(contents);
     }
 
     /**

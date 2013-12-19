@@ -1022,6 +1022,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         checkForIncidentReport("", this.getClass().toString());
     }
 
+    protected String incidentReportMessage() {
+        return AutomatedFunctionalTestUtils.incidentReportMessage(driver.getPageSource(), "", this.getClass().toString());
+    }
+
     protected void checkForIncidentReport(String locator) {
         checkForIncidentReport(locator, this.getClass().toString());
     }

@@ -31,6 +31,14 @@
         <bean parent="TravelAuthorization-MainPage"/>
       </list>
     </property>
+    <property name="dialogs">
+      <list>
+        <bean id="TravelAuthorization-RouteConfirmationDialog" parent="Uif-Yes-No-DialogGroup">
+          <property name="headerText" value="Submit Travel Authorization?"/>
+          <property name="promptText" value="Are you really sure you want to submit the travel authorization?"/>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="TravelAuthorization-MainPage" parent="Uif-DocumentPage">

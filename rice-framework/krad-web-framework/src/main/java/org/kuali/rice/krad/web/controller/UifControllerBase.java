@@ -685,6 +685,17 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Sets the status of the dialog tracking record to indicate that this dialog
+     * has not yet been asked or answered
+     *
+     * @param dialogId  - the id of the dialog
+     * @param form - form instance containing the request data
+     */
+    protected void resetDialogStatus(String dialogId, UifFormBase form) {
+        form.getDialogManager().resetDialogStatus(dialogId);
+    }
+
+    /**
      * Handles a modal dialog interaction with the client user when a @{boolean} response is desired
      *
      * <p>

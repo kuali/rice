@@ -75,7 +75,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         selectTopFrame();
     }
     @Test
-    public void testBasicDocSearch() throws Exception {
+    public void testBasicDocSearchBookmark() throws Exception {
         createAndSaveDoc();
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
@@ -99,10 +99,23 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
     }
-    
+
+    @Test
+    public void testBasicFullDocSearchBookmark() throws Exception {
+        waitAndClickByXpath("//a/img[@alt='doc search']");
+        waitForPageToLoad();
+        selectFrame("iframeportlet");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='detailed search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
+        waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "1/1/1900"); // remove default today's date
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitForTextPresent("Export options:");
+    }
+
     @Ignore // TODO fix
     @Test
-    public void testDetailedDocSearch() throws Exception{
+    public void testDetailedDocSearchBookmark() throws Exception{
         //createAndSaveDoc();
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
@@ -139,7 +152,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     }
     
     @Test
-    public void testSuperUserSearch() throws Exception{
+    public void testSuperUserSearchBookmark() throws Exception{
         //createAndSaveDoc();
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
@@ -170,7 +183,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     }
     
     @Test
-    public void testClearSavedSearches() throws Exception{
+    public void testClearSavedSearchesBookmark() throws Exception{
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
@@ -187,7 +200,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     }
     
     @Test
-    public void testAjaxPageReload() throws Exception{
+    public void testAjaxPageReloadBookmark() throws Exception{
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");

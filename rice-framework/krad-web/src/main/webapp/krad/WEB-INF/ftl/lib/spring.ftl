@@ -269,6 +269,7 @@ h<#--
         <option value="${option.key?html}"<#if isSelected> selected="selected"</#if>>${option.value?html}</option>
         </#list>
     </select>
+    <input type="hidden" name="_${status.expression}" value="on"/>
 </#macro>
 
 <#--

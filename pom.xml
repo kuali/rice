@@ -1154,7 +1154,7 @@
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
               -XX:+UseConcMarkSweepGC
-              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent}
+              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent} -Dspring.instrument.javaagent="${spring.instrument.javaagent}"
             </argLine>
           </configuration>
           <dependencies>

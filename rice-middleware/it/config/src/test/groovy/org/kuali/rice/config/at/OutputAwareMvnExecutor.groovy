@@ -78,6 +78,38 @@ class OutputAwareMvnExecutor extends MvnExecutor {
         }
     }
 
+    @Override
+    protected void addMavenOpts(MvnContext context, Commandline cl) {
+        if (isAddMavenOpts(context)) {
+            if (context.getOverrideMavenOpts() != null ) {
+                cl.addEnvironment(MvnContext.MAVEN_OPTS, context.getOverrideMavenOpts());
+            } else {
+                String mavenOpts = System.getenv(MvnContext.MAVEN_OPTS);
+                cl.addEnvironment(MvnContext.MAVEN_OPTS, mavenOpts);
+            }
+        }
+    }
+
+    @Override
+    protected void showConfig(MvnContext context, Commandline cl) {
+        if (!context.isSilent()) {
+            log.info("Maven POM - " + toEmpty(context.getPom()));
+        }
+        String args = getMavenArgs(cl);
+        if (!context.isSilent()) {
+            log.info("Maven Args - " + args);
+        }
+        if (isAddMavenOpts(context)) {
+            if (!context.isSilent() && !context.isQuiet()) {
+                if (context.getOverrideMavenOpts() != null ) {
+                    log.info(MvnContext.MAVEN_OPTS + '=' + context.getOverrideMavenOpts());
+                } else {
+                    log.info(MvnContext.MAVEN_OPTS + '=' + System.getenv(MvnContext.MAVEN_OPTS));
+                }
+            }
+        }
+    }
+
     StreamConsumer newOutStreamConsumer(MvnContext context) {
         if (context instanceof OutputAwareMvnContext) {
             return context.stdOutWriter != null ? new WriterStreamConsumer(context.stdOutWriter) : newSimpleConsumer()

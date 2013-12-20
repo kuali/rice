@@ -27,20 +27,20 @@ import groovy.xml.QName
  */
 class BeanTransformerTestBase {
 
-    public static String testResourceDir = "./src/test/resources/";
-    public static String dictionaryTestDir = testResourceDir + "DictionaryConverterTest/";
-
+    public static String TEST_RESOURCE_DIR = "./src/test/resources/";
+    public static String DICT_TEST_DIR = "DictionaryConverterTest/";
+    public static String TEST_CONFIG_FILE_PATH = "test.config.properties"
     ConfigObject config;
 
     void setUp() {
-        String configFilePath = testResourceDir + "test.config.properties";
-        config = new ConfigSlurper().parse(new File(configFilePath).toURL());
+        File configFile = getTestResourceFile(TEST_CONFIG_FILE_PATH);
+        config = new ConfigSlurper().parse(configFile.text);
     }
 
 
     // helper functions
     public String getDictionaryTestDir() {
-        return dictionaryTestDir;
+        return DICT_TEST_DIR;
     }
 
     def getConfig() {
@@ -49,6 +49,10 @@ class BeanTransformerTestBase {
 
     public void checkBeanParentExists(def rootNode, String parentName) {
         Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    }
+
+    public File getTestResourceFile(String relativeFilePath) {
+        return new File(this.getClass().getClassLoader().getResource(relativeFilePath).file);
     }
 
     /**
@@ -69,7 +73,7 @@ class BeanTransformerTestBase {
     }
 
     public Node getFileRootNode(String filepath) {
-        def file = new File(filepath);
+        def file = getTestResourceFile(filepath);
         return new XmlParser().parse(file);
     }
 

@@ -48,15 +48,15 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
         def translatedBeanId = getTranslatedBeanId(beanNode.@id, inquiryDefinitionBeanType, inquiryViewBeanType);
         def translatedParentId = getTranslatedBeanId(beanNode.@parent, inquiryDefinitionBeanType, inquiryViewBeanType);
 
-        // these attributes are being converted and should not be copied when carryoverAttributes is enabled
+        // these attributes are being converted and should not be copied when useCarryoverAttributes is enabled
         List ignoreAttributes = [];
 
-        // these properties are being converted and should not be copied when carryoverProperties is enabled
+        // these properties are being converted and should not be copied when useCarryoverProperties is enabled
         List ignoreOnCopyProperties = ["title", "inquirableClass", "authorizerClass", "presentationControllerClass", "inquirySections"];
 
-        def beanAttributes = convertBeanAttributes(beanNode, inquiryDefinitionBeanType, inquiryViewBeanType, ignoreAttributes);
+        def beanAttributes = convertBeanAttributes(beanNode, inquiryDefinitionBeanType, inquiryViewBeanType, [],[:], ignoreAttributes);
 
-        if (carryoverProperties) {
+        if (useCarryoverProperties) {
             copiedProperties = beanNode.property.collect { it.@name };
             copiedProperties.removeAll(ignoreOnCopyProperties);
         } else {

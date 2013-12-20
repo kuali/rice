@@ -17,6 +17,7 @@ package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
 import groovy.xml.QName
+import groovy.xml.XmlUtil
 import org.apache.commons.lang.StringUtils
 
 /**
@@ -52,8 +53,8 @@ class SpringBeanTransformer {
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
 
-    def carryoverAttributes
-    def carryoverProperties
+    def useCarryoverAttributes
+    def useCarryoverProperties
     def replacePropertyDuringConversion
     def controlPropertiesMap
     def validationPatternMap
@@ -65,8 +66,8 @@ class SpringBeanTransformer {
         ddPropertiesRemoveList = config.list.remove.dd_beans
         pNamespaceSchema = config.msg_bean_schema
         xsiNamespaceSchema = config.msg_xml_schema_legacy
-        carryoverAttributes = config.bool.dictionaryconversion.carryoverAttributes;
-        carryoverProperties = config.bool.dictionaryconversion.carryoverProperties;
+        useCarryoverAttributes = config.bool.dictionaryconversion.carryoverAttributes;
+        useCarryoverProperties = config.bool.dictionaryconversion.carryoverProperties;
         controlPropertiesMap = config.map.convert_control_properties
         validationPatternMap = config.map.convert.dd_validation_patterns
         validationPatternPropertiesMap = config.map.convert_validation_pattern_properties
@@ -504,8 +505,35 @@ class SpringBeanTransformer {
         return false;
     }
 
+    def collectBeanCopyAttributes(Node beanNode, List<String> copyAttributes) {
+      return beanNode?.attributes()?.clone()?.findAll { copyAttributes.contains(it.key)};
+    }
+
+    def collectBeanRenameAttributes(Node beanNode, Map<String, String> renameAttributes) {
+        return beanNode?.attributes()?.clone()?.findAll { key, value ->
+            renameAttributes.keySet().contains(key)
+        }.collectEntries { key, value ->
+            [renameAttributes.get(key),value]
+        };
+    }
+
+    def collectCopyNamespaceProperties(Node beanNode, List<String> copyProperties) {
+        return beanNode?.attributes()?.clone()?.findAll { key, value ->
+            key instanceof QName && copyProperties?.contains(((QName)key).getLocalPart())
+         };
+    }
+
+    def collectRenameNamespaceProperties(Node beanNode, Map<String, String> renameProperties) {
+        return beanNode?.attributes()?.clone()?.findAll { key, value ->
+            // find all namespace propertier that are in the renameProperties keyset
+            key instanceof QName && renameProperties?.keySet()?.contains(((QName)key).getLocalPart())
+        }.collectEntries { QName key, value ->
+            [new QName(key.getNamespaceURI(), renameProperties.get(key.getLocalPart()), key.getPrefix()), value]
+        }
+    }
+
     /**
-     * Convert the bean attributes of view beans
+     * Convert the bean attributes of while ignoring namespace properties
      *
      * @param beanNode of the view
      * @param originalBeanType of the view
@@ -513,28 +541,115 @@ class SpringBeanTransformer {
      * @param ignoreAttributes list of know attributes that should not be carried over
      * @return
      */
-    def Map convertBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List ignoreAttributes) {
-        def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
-        def translatedParentBeanId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+    def Map convertBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List copyAttributes, Map renameAttributes, List ignoreAttributes) {
+        return convertBeanAttributes(beanNode, originalBeanType, transformBeanType, copyAttributes, renameAttributes, ignoreAttributes, [],[:],[]);
+    }
 
-        def beanAttributesCarriedOver = [:]
-        if (carryoverAttributes) {
-            beanAttributesCarriedOver = beanNode?.attributes()?.clone();
-            beanAttributesCarriedOver.keySet().removeAll(["id", "parent"])
+    /**
+     *
+     * @param beanNode
+     * @param copyAttributes
+     * @param renameAttributes
+     * @param ignoreAttributes
+     * @return
+     */
+    def Map collectBeanAttributes(Node beanNode, List copyAttributes, Map renameAttributes, List ignoreAttributes) {
+        def beanAttributes = [:];
+        def carryoverBeanAttributes = [:];
+
+        def copiedAttributes = collectBeanCopyAttributes(beanNode, copyAttributes);
+        def renamedAttributes = collectBeanRenameAttributes(beanNode, renameAttributes);
+        beanAttributes.putAll(copiedAttributes + renamedAttributes);
+
+        if (useCarryoverAttributes) {
+            carryoverBeanAttributes = beanNode?.attributes()?.clone();
+            carryoverBeanAttributes.keySet().removeAll{it instanceof QName};
+            carryoverBeanAttributes.keySet().removeAll(copyAttributes);
+            carryoverBeanAttributes.keySet().removeAll(renameAttributes.keySet());
+
             if (ignoreAttributes.size() > 0) {
-                beanAttributesCarriedOver.keySet().removeAll(ignoreAttributes)
-            };
-        } else {
-            // always carry over the abstract attribute
-            if (beanNode.attribute("abstract") != null) {
-                beanAttributesCarriedOver = [abstract: beanNode.attribute("abstract")];
+                carryoverBeanAttributes.keySet().removeAll(ignoreAttributes);
             }
         }
 
-        return [id: translatedBeanId] + beanAttributesCarriedOver + [parent: translatedParentBeanId];
+        return beanAttributes + carryoverBeanAttributes;
     }
 
-    def Map somethingBeanProperties
+    def Map collectNamespaceProperties(Node beanNode, List copyProperties, Map<String, String> renameProperties, List<String> ignoreProperties) {
+        def namespaceProperties = [:];
+        def carryoverBeanAttributes = [:];
+
+        // transform namespace properties (p:*) (copy, rename, transform)
+        def copiedNamespaceProperties = collectCopyNamespaceProperties(beanNode, copyProperties);
+        def renamedNamespaceProperties = collectRenameNamespaceProperties(beanNode, renameProperties)
+        namespaceProperties.putAll(copiedNamespaceProperties + renamedNamespaceProperties);
+
+        if(useCarryoverProperties) {
+            carryoverBeanAttributes = beanNode?.attributes()?.clone();
+            carryoverBeanAttributes.keySet().removeAll{!(it instanceof QName)};
+            carryoverBeanAttributes.keySet().removeAll{
+                copyProperties.contains(((QName)it).getLocalPart())
+            };
+            carryoverBeanAttributes.keySet().removeAll{
+                renameProperties.keySet().contains(((QName)it).getLocalPart())
+            };
+
+            if (ignoreProperties.size() > 0) {
+                carryoverBeanAttributes.keySet().removeAll{
+                    ignoreProperties.contains(((QName)it).getLocalPart())
+                };
+            }
+        }
+
+        return namespaceProperties + carryoverBeanAttributes;
+    }
+
+    /**
+     * copy, renames, and carryover (if configured) attributes and namespace properties of a bean
+     *
+     * @param beanNode
+     * @param originalBeanType
+     * @param transformBeanType
+     * @param copyAttributes
+     * @param renameAttributes
+     * @param ignoreAttributes
+     * @param copyProperties
+     * @param renameProperties
+     * @param ignoreProperties
+     *
+     * @return Map containing attibutes and namespace properties
+     */
+    def Map convertBeanAttributes(Node beanNode, String originalBeanType, String transformBeanType, List copyAttributes, Map renameAttributes,
+            List ignoreAttributes, List copyProperties, Map<String, String> renameProperties, List<String> ignoreProperties) {
+        Map idAttribute = [:];
+        Map parentAttribute = [:];
+        Map beanAttributes = [:];
+        Map namespaceProperties = [:];
+
+        // transform id and parent
+        if(beanNode?.@id) {
+            def translatedBeanId = getTranslatedBeanId(beanNode.@id, originalBeanType, transformBeanType);
+            idAttribute.put("id",translatedBeanId);
+        }
+
+        if(beanNode?.@parent) {
+            def translatedParentBeanId = getTranslatedBeanId(beanNode.@parent, originalBeanType, transformBeanType);
+            parentAttribute.put("parent",translatedParentBeanId);
+        }
+
+        // transform standard attributes (copy, rename, transform) and namespace properties
+        beanAttributes = collectBeanAttributes(beanNode, copyAttributes, renameAttributes, ignoreAttributes.plus(["id", "parent"]));
+        namespaceProperties = collectNamespaceProperties(beanNode, copyProperties, renameProperties, ignoreProperties);
+
+        // return the set with ordering id, attributes, properties, and parent
+        return idAttribute + beanAttributes + namespaceProperties + parentAttribute;
+    }
+
+    public static String getNodeString(Node rootNode) {
+        def writer = new StringWriter()
+        XmlUtil.serialize(rootNode, writer)
+        return writer.toString()
+    }
 
     /**
      * replaces namespace properties (p:name) with a property tag

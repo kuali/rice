@@ -55,10 +55,10 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         fixNamespaceProperties(beanNode);
         def maintDocParentBeanNode = beanNode;
 
-        def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, mdeIgnoreOnCarryoverAttributes);
-        def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(), mdeIgnoreOnCarryoverProperties);
+        def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, [],[:], mdeIgnoreOnCarryoverAttributes);
+        def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(),mdeIgnoreOnCarryoverProperties);
 
-        def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, umvIgnoreOnCarryoverAttributes);
+        def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, [],[:], umvIgnoreOnCarryoverAttributes);
         def umvCarryoverProperties = findCarryoverProperties(beanNode, umvCopyProperties, umvRenameProperties.keySet(), umvIgnoreOnCarryoverProperties);
 
 
@@ -89,7 +89,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     def findCarryoverProperties(Node beanNode, def copyPropertiesList, def renamePropertiesList, def ignorePropertiesList) {
         def carryoverPropertiesList = []
-        if (carryoverProperties) {
+        if (useCarryoverProperties) {
             carryoverPropertiesList = beanNode.property.collect { it.@name };
             carryoverPropertiesList.removeAll(copyPropertiesList);
             carryoverPropertiesList.removeAll(renamePropertiesList);
@@ -125,6 +125,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
             builder.bean(beanAttributes) {
                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                transformHelpUrlProperty(delegate, beanNode)
                 transformMaintainableItemsProperty(delegate, beanNode);
             }
         } else {
@@ -149,6 +150,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
         builder.bean(beanAttrs) {
             copyProperties(delegate, beanNode, ["title"]);
+            transformHelpUrlProperty(delegate, beanNode)
             property(name: "items") {
                 list {
                     beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
@@ -156,7 +158,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             itemsList.add(gatherNameAttribute(beanItem));
                         } else {
                             if (itemsList.size() > 0) {
-                                builder.bean(parent: 'Uif-MaintenanceGridSection') {
+                                builder.bean(parent: 'MaintenanceGridSection') {
                                     copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
                                     property(name: "items") {
                                         list {
@@ -200,7 +202,25 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
             createProperty(builder, "viewName", modifiedViewName)
         }
+    }
 
+    /**
+     * replaces helpUrl property with a help property and Uif-Help bean
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformHelpUrlProperty(NodeBuilder builder, Node beanNode) {
+        if(beanNode?.property?.findAll { "helpUrl".equals(it.@name) }?.size > 0) {
+            String helpUrl = beanNode?.property?.find  { "helpUrl".equals(it.@name) }.@value;
+
+            builder.property(name:"help") {
+                bean(parent:"Uif-Help") {
+                    property(name:"externalHelpUrl", value: helpUrl)
+                }
+            }
+        }
     }
 
 
@@ -245,10 +265,35 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         if (maintainableFieldsProperty) {
             builder.property(name: "items") {
                 list {
-                    maintainableFieldsProperty?.list?.bean.each { maintainableItem -> inputFieldBeanTransform(builder, gatherNameAttribute(maintainableItem)); }
+                    maintainableFieldsProperty.list.bean.each { fieldBean ->
+                        transformMaintainableFieldDefinitionBean(builder, fieldBean);
+                    }
                 }
             }
         }
     }
+
+    /**
+     * Replaces a maintainable field definition bean with a Uif-InputField bean
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformMaintainableFieldDefinitionBean(NodeBuilder builder, Node beanNode) {
+        // copy and rename properties
+        def mfdCopyProperties = ["required"];
+        def mfdRenameProperties = ["name":"attributeName"];
+
+        // collect attributes and replace parent node with input field
+        def beanAttributes = convertBeanAttributes(beanNode, "MaintainableFieldDefinition", "Uif-InputField", [],[:], [],
+        mfdCopyProperties, mfdRenameProperties, []);
+        beanAttributes.putAt("parent", "Uif-InputField");
+        builder.bean(beanAttributes) {
+            copyProperties(delegate, beanNode, mfdCopyProperties)
+            renameProperties(delegate, beanNode, mfdRenameProperties)
+        }
+    }
+
 
 }

@@ -88,6 +88,7 @@
         parent="MaintainableSectionDefinition">
     <property name="id" value="Edit attachment"/>
     <property name="title" value="Edit attachment"/>
+    <property name="helpUrl" value="linkUrl"/>
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition"

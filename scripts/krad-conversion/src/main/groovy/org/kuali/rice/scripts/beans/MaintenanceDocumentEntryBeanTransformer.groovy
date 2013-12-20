@@ -55,10 +55,12 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         fixNamespaceProperties(beanNode);
         def maintDocParentBeanNode = beanNode;
 
-        def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, [],[:], mdeIgnoreOnCarryoverAttributes);
+        def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, [],[:], mdeIgnoreOnCarryoverAttributes,
+                mdeCopyProperties, mdeRenameProperties, mdeIgnoreOnCarryoverProperties);
         def mdeCarryoverProperties = findCarryoverProperties(beanNode, mdeCopyProperties, mdeRenameProperties.keySet(),mdeIgnoreOnCarryoverProperties);
 
-        def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, [],[:], umvIgnoreOnCarryoverAttributes);
+        def umvBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceViewBeanType, [],[:], umvIgnoreOnCarryoverAttributes,
+                umvCopyProperties, umvRenameProperties, umvIgnoreOnCarryoverProperties);
         def umvCarryoverProperties = findCarryoverProperties(beanNode, umvCopyProperties, umvRenameProperties.keySet(), umvIgnoreOnCarryoverProperties);
 
 

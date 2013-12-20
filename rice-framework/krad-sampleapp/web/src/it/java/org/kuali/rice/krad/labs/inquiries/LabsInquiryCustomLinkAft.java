@@ -39,17 +39,17 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
 
     protected void testInquiryCustomLink() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a Custom Link");
-
-        assertLabeledIatText();
+        assertElementPresentByXpath("//button[contains(text(), 'export')]");
 
         // Lightbox
         waitAndClickLinkContainingText("IAT (Click for Example)");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Travel Account Number:", "a3"},
-                                          {"Account Name:", "Travel Account 3"},
-                                          {"Account Type:", "IAT - Income"},
+                                          {"Travel Account Name:", "Travel Account 3"},
+                                          {"Code And Description:", "IAT - Income"},
                                           {"Subsidized Percent:", "20 percent"},
 //                                          {"Date Created:", ""}, // skip Date Created till a good way to handle empty strings is figured out
+                                          {"Fiscal Officer:", "frank"},
                                           {"Fiscal Officer User ID:", "frank"},
                                           {"Fiscal Officer Name:", "frank, frank"}};
         assertLabeledTextPresent(lightBoxLabeledText);
@@ -67,7 +67,6 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
 
         // Back opens previous page inside lightbox, is that correct behavior?
         waitAndClickButtonByText("< Back");
-        assertLabeledIatText();
     }
 
     @Test

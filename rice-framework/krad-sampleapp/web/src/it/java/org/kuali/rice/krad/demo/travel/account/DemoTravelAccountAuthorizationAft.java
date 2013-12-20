@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -82,6 +83,9 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationSubmit() throws Exception {
     	testTravelAccountAuthorization();
     	waitAndClickButtonByText("submit");
+        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
+        waitAndClickButtonByText("submit");
+        waitAndClick(By.xpath("//label[contains(text(), 'Yes')]"));
     	waitForTextPresent("Document was successfully");
     }
 

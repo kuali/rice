@@ -44,7 +44,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         waitAndClickByXpath("//a[@title='Travel Destination ']");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                                          {"Destination name:", "Colorado"},
+                                          {"Destination:", "Colorado"},
                                           {"Country:", "United States"},
                                           {"State:", "Colorado"},
                                           {"Active:", "true"}};

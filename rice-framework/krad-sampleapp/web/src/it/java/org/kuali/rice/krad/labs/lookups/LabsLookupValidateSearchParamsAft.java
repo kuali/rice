@@ -28,10 +28,10 @@ public class LabsLookupValidateSearchParamsAft extends LabsLookupBase {
     public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=search&dataObjectClassName=edu.sampleu.travel.dataobject.TravelPerDiemExpense&viewId=LabsLookup-PerDiemExpenseDisabledWildcardsView";
 
     /**
-     *  Wildcards (e.g. *) and operators (e.g. >=, <=, >, <, !, &&) are treated literally on the Id field.
+     *  are treated literally
      */
-    private static final String WILDCARD_WARNING_MSG="Wildcards (e.g. *) and operators (e.g. >=, <=, >, <, !, &&) are treated literally"; 
-    
+    private static final String WILDCARD_WARNING_MSG="are treated literally";
+
     /**
      * Negative values are not allowed on this Breakfast Value field.
      */
@@ -71,25 +71,25 @@ public class LabsLookupValidateSearchParamsAft extends LabsLookupBase {
     }
 
     protected void testLabsValidateSearchParams()throws Exception {
-       waitAndTypeByName("lookupCriteria[travelPerDiemExpenseId]",WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.FALSE);
-       waitAndTypeByName("lookupCriteria[travelAuthorizationDocumentId]",WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.FALSE);
-       waitAndTypeByName("lookupCriteria[breakfastValue]",NEGATIVE_WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
-       waitAndTypeByName("lookupCriteria[lunchValue]",NEGATIVE_WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
-       waitAndTypeByName("lookupCriteria[dinnerValue]",NEGATIVE_WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
-       waitAndTypeByName("lookupCriteria[incidentalsValue]",NEGATIVE_WILDCARD_INPUT);
-       assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
-       waitAndTypeByName("lookupCriteria[estimatedMileage]",NEGATIVE_WILDCARD_INPUT);
+        waitAndTypeByName("lookupCriteria[travelPerDiemExpenseId]",WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.FALSE);
+        waitAndTypeByName("lookupCriteria[travelAuthorizationDocumentId]",WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.FALSE);
+        waitAndTypeByName("lookupCriteria[breakfastValue]",NEGATIVE_WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
+        waitAndTypeByName("lookupCriteria[lunchValue]",NEGATIVE_WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
+        waitAndTypeByName("lookupCriteria[dinnerValue]",NEGATIVE_WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
+        waitAndTypeByName("lookupCriteria[incidentalsValue]",NEGATIVE_WILDCARD_INPUT);
+        assertWarningPresent(Boolean.TRUE,Boolean.TRUE);
+        waitAndTypeByName("lookupCriteria[estimatedMileage]",NEGATIVE_WILDCARD_INPUT);
     }
     
     private void assertWarningPresent(Boolean isWildCardWarningPresent , Boolean isNegativeWarningPresent) throws Exception {
     	waitAndClickButtonByText("Search");
     	if(isWildCardWarningPresent){
-    		waitForElementPresentByXpath("//li[contains(text(),'"+WILDCARD_WARNING_MSG+"')]");
+    		waitForTextPresent(WILDCARD_WARNING_MSG);
     	}
     	if(isNegativeWarningPresent){
     		waitForTextPresent(NEGATIVE_WARNING_MSG);

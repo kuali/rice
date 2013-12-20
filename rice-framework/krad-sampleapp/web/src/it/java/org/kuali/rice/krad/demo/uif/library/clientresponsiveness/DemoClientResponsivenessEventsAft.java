@@ -18,8 +18,6 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

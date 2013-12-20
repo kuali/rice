@@ -18,8 +18,6 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -44,18 +42,27 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
-    	waitAndClickByXpath("//li[@data-tabFor='Demo-AjaxFieldQuery-Example1']/a[contains(text(),'Ajax Field Query')]");
+    	waitAndClickByLinkText("Ajax Field Query");
     	waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
+        fireEvent("inputField3", "focus");
+        fireEvent("inputField3", "blur");
+        assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
-    	waitAndClickByXpath("//li[@data-tabFor='Demo-AjaxFieldQuery-Example2']/a[contains(text(),'Ajax Field Query Custom Method')]");
+        waitAndClickByLinkText("Ajax Field Query Custom Method");
     	waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
+        fireEvent("inputField6", "focus");
+        fireEvent("inputField6", "blur");
+        assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
-    	waitAndClickByXpath("//li[@data-tabFor='Demo-AjaxFieldQuery-Example3']/a[contains(text(),'Ajax Field Query Custom Method and Service')]");
+        waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
+        fireEvent("inputField9", "focus");
+        fireEvent("inputField9", "blur");
+        assertTextPresent(new String[] {"Travel Account 3", "frank"});
     }
     
     @Test

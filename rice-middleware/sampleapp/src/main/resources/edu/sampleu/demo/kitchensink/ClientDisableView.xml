@@ -36,6 +36,7 @@
               <ref bean="Demo-DisableSection3"/>
               <ref bean="Demo-DisableSection4"/>
               <ref bean="Demo-DisableSection5"/>
+              <ref bean="Demo-DisableSection6"/>
             </list>
           </property>
         </bean>
@@ -347,6 +348,24 @@
           </property>
         </bean>
 
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DisableSection6" p:headerText="Disabled for refreshed fields"
+        parent="Uif-HorizontalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:Label="Field A" p:constraintText="Type ref" p:propertyName="field80"/>
+        <bean parent="Uif-InputField" p:Label="Field B" p:conditionalRefresh="@{#form.field80 eq 'ref'}"
+              p:propertyName="field81" p:constraintText="Type disable to disable C"/>
+        <bean parent="Uif-InputField" p:Label="Field C"
+              p:propertyName="field82">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:disabled="@{#form.field81 eq 'disable'}"
+                  p:evaluateDisabledOnKeyUp="true"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

@@ -124,6 +124,50 @@
 			</dependency>
 		</dependencies>
       </plugin>
+
+		<plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <version>2.4</version>
+			<executions>
+				<execution>
+					<id>create-krad-sampleapp-class-jar</id>
+					<phase>prepare-package</phase>
+					<goals>
+						<goal>jar</goal>
+					</goals>
+					<configuration>
+						<excludes>
+							<exclude>log4j.properties</exclude>
+							<exclude>META-INF/**</exclude>
+						</excludes>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+
+		<plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-install-plugin</artifactId>
+	        <version>2.5.1</version>
+			<executions>
+				<execution>
+					<id>export-krad-sampleapp-class-jar</id>
+					<phase>install</phase>
+					<goals>
+						<goal>install-file</goal>
+					</goals>
+					<configuration>
+						<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
+						<groupId>${project.groupId}</groupId>
+						<artifactId>${project.artifactId}</artifactId>
+						<version>${project.version}</version>
+						<packaging>jar</packaging>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+      
     </plugins>
   </build>
 

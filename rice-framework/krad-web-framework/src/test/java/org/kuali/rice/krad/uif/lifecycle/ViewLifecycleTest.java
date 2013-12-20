@@ -30,10 +30,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kuali.rice.krad.sampleapp_2_4_M2.demo.uif.form.KradSampleAppForm;
-import org.kuali.rice.krad.sampleapp_2_4_M2.labs.KradLabsForm;
-import org.kuali.rice.krad.sampleapp_2_4_M2.labs.kitchensink.UifComponentsTestForm;
-import org.kuali.rice.krad.sampleapp_2_4_M2.labs.transaction.TransactionForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -64,7 +60,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecycleTest extends ProcessLoggingUnitTest {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTest.class);
 
     @BeforeClass
@@ -99,51 +95,61 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         assertEquals(UifConstants.ViewStatus.RENDERED, dummyLogin.getViewStatus());
         assertEquals("LoginPage", dummyLogin.getCurrentPage().getId());
         assertEquals("Rice-UserName",
-                ObjectPropertyUtils.getPropertyValue(dummyLogin, "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
-        
+                ObjectPropertyUtils.getPropertyValue(dummyLogin,
+                        "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
+
         ViewCleaner.cleanView(dummyLogin);
     }
 
-    private View testFormView(UifFormBase form, String viewName, String initialStateId) throws Throwable {
+    private UifFormBase testFormView(String viewName, String initialStateId) throws Throwable {
+        return testFormView(null, viewName, initialStateId);
+    }
+
+    private UifFormBase testFormView(UifFormBase form, String viewName, String initialStateId) throws Throwable {
+        View view = KRADServiceLocatorWeb.getDataDictionaryService().getViewById(viewName);
+        if (form == null) {
+            form = (UifFormBase) view.getFormClass().newInstance();
+        }
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setParameter(UifParameters.VIEW_ID, viewName);
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
-        View view = form.getView();
+        view = form.getView();
         if (initialStateId != null) {
             assertNotNull(initialStateId, view.getViewIndex().getInitialComponentStates().get(initialStateId));
         }
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
         ViewCleaner.cleanView(view);
-        return view;
+        return form;
     }
-    
+
     @Test
     public void testKitchenSinkView() throws Throwable {
-        UifComponentsTestForm form = new UifComponentsTestForm();
-        testFormView(form, "UifCompView", null);
-        form = new UifComponentsTestForm();
+        UifFormBase form = testFormView("UifCompView", null);
+        form.setFormKey(null);
         form.setPageId("UifCompView-Page7");
         testFormView(form, "UifCompView", null);
     }
-    
+
     @Test
     public void testTransactionView() throws Throwable {
-        testFormView(new TransactionForm(), "TransactionView", null);
+        testFormView((UifFormBase) Class
+                .forName("org.kuali.rice.krad.labs.transaction.TransactionForm").newInstance(),
+                "TransactionView", null);
     }
-    
+
     @Test
     public void testLabsMenuView() throws Throwable {
-        testFormView(new TransactionForm(), "LabsMenuView", null);
+        testFormView("LabsMenuView", null);
     }
-    
+
     @Test
     public void testTransactionViewOnly() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         viewService.getViewById("TransactionView");
     }
-    
+
     @Test
     public void testTransactionInitPhase() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
@@ -154,35 +160,35 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
             public void run() {
                 View view = ViewLifecycle.getView();
                 assertSame(transactionView, view);
-                
+
                 assertEquals("TransactionView", view.getId());
-                
+
                 ProcessLogger.trace("begin-init");
                 ViewLifecycle.getHelper().populateViewFromRequestParameters(Collections.<String, String> emptyMap());
-                
+
                 ProcessLogger.trace("populate-request");
                 tform.setViewRequestParameters(view.getViewRequestParameters());
-                
+
                 ViewLifecycle.getHelper().performCustomViewInitialization(tform);
 
                 ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
                 processor.performPhase(LifecyclePhaseFactory.initialize(view, tform));
-                
+
                 ProcessLogger.trace("end-init");
-            }});
+            }
+        });
     }
 
     @Test
     public void testComponentLibraryHome() throws Throwable {
-        KradSampleAppForm form = new KradSampleAppForm();
-        testFormView(form, "ComponentLibraryHome", null);
+        testFormView("ComponentLibraryHome", null);
     }
-    
+
     @Test
     public void testPerformanceMediumAll() throws Throwable {
-        KradLabsForm form = new KradLabsForm();
-        View view = testFormView(form, "Lab-PerformanceMedium", "u14a9ysq");
+        UifFormBase form = testFormView("Lab-PerformanceMedium", "u14a9ysq");
 
+        View view = form.getView();
         form.setPostedView(view);
         form.setView(null);
 
@@ -267,7 +273,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         pagingHelper.processPagingRequest(tableId, form, request, response, dataTablesInputs);
     }
 
-
     @SuppressWarnings("unchecked")
     @Test
     public void testMutability() throws Throwable {
@@ -278,7 +283,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         group.setHeaderText("bar");
         group.setItems(new ArrayList<Component>());
         ((List<Group>) loginView.getItems()).add(group);
-        assertSame(group, loginView.getItems().get(loginView.getItems().size()-1));
+        assertSame(group, loginView.getItems().get(loginView.getItems().size() - 1));
     }
 
 }

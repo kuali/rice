@@ -50,37 +50,37 @@
 	 			</entry>
 	 			<entry key="demo">
  					<list>
-	 					<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/components/KradSampleAppDemo.xml</value>
-	 					<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/demo/uif/library/DemoNavigationGroup.xml</value>
+	 					<value>classpath:/org/kuali/rice/krad/demo/uif/components/KradSampleAppDemo.xml</value>
+	 					<value>classpath:/org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml</value>
 	 				</list>
 	 			</entry>
 	 			<entry key="labs">
  					<list>
-	 					<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsClientSideState.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsEncryption.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsFileUploads.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsGroupControl.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsKsaTransactionTest.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsLookupViews.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsMenu.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsMenuLookup.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsNativeAutocomplete.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsPerformance.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsSessionPolicy.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsStickyHeaderFooter.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/LabsUserControl.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/XmlIngester.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsView.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP2.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP3.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP4.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP5.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP6.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP7.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP8.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewP9.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewPx10.xml</value>
-						<value>classpath:/org/kuali/rice/krad/sampleapp_2_4_M2/labs/kitchensink/UifComponentsViewPx11.xml</value>
+	 					<value>classpath:/org/kuali/rice/krad/labs/LabsClientSideState.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsEncryption.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsFileUploads.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsGroupControl.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsKsaTransactionTest.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsLookupViews.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsMenu.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsMenuLookup.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsNativeAutocomplete.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsPerformance.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsSessionPolicy.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsStickyHeaderFooter.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/LabsUserControl.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/XmlIngester.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsView.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP2.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP3.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP4.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP5.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP6.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP7.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP8.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewP9.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewPx10.xml</value>
+						<value>classpath:/org/kuali/rice/krad/labs/kitchensink/UifComponentsViewPx11.xml</value>
  					</list>
 	 			</entry>
 	 		</map>

@@ -331,6 +331,9 @@
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="40"/>
     </property>
+    <property name="attributeSecurity">
+      <bean parent="AttributeSecurity" p:hide="true"/>
+    </property>
   </bean>
 
 </beans>

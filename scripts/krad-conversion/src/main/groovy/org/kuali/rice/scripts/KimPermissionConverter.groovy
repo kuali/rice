@@ -43,7 +43,7 @@ class KimPermissionConverter {
     // directory and path structure
     def dir;
     def outputFile;
-    def sequencePrefix;
+    def sequencePrefix = "KRAD-";
 
     // sql processing vars
     def sql;
@@ -84,7 +84,6 @@ class KimPermissionConverter {
         platform = config.datasource.platform;
 
         dir = config.output.dir + config.output.path.db.sql;
-        sequencePrefix = config.output.filePrefix;
         sqlStatementDelimiter = (platform.toUpperCase().contains('ORACLE')) ? "/\n" : ";\n";
     }
 

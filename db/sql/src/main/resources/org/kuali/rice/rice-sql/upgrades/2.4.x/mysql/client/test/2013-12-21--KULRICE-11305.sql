@@ -14,7 +14,18 @@
 -- limitations under the License.
 --
 
-create table EN_UNITTEST_T (
-    COL VARCHAR2(1) NULL
+CREATE TABLE KRTST_TEST_DISABLE_NO_VER_T  (
+    ID              varchar(10),
+    OBJ_ID     	    varchar(36) NOT NULL,
+    STR_PROP	      varchar(40),
+    PRIMARY KEY(id)
+)
+/
+CREATE TABLE KRTST_TEST_DISABLE_VER_T  (
+    ID            varchar(10),
+    OBJ_ID     	  varchar(36) NOT NULL,
+    STR_PROP	    varchar(40),
+    VER_NBR    	  decimal(8,0) DEFAULT 1 NOT NULL,
+    PRIMARY KEY(id)
 )
 /

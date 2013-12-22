@@ -113,6 +113,13 @@
     </dependency>
 
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krad-sampleapp-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
       <artifactId>rice-krad-web-framework</artifactId>

@@ -114,7 +114,7 @@ public class ScriptUtils {
                 Map<String, PropertyDescriptor> propertyDescriptors = ObjectPropertyUtils
                         .getPropertyDescriptors(valueClass);
                 for (String propertyName : propertyDescriptors.keySet()) {
-                    if (ObjectPropertyUtils.isReadableProperty(valueClass, propertyName)
+                    if (ObjectPropertyUtils.isReadableProperty(value, propertyName)
                             && !"class".equals(propertyName)) {
                         Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, propertyName);
                         jsValue += propertyName + ":";

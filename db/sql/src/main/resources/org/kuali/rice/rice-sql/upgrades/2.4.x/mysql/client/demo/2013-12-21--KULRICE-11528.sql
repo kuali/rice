@@ -14,7 +14,13 @@
 -- limitations under the License.
 --
 
-create table EN_UNITTEST_T (
-    COL VARCHAR2(1) NULL
+-- Adding back the missing travel account extension table
+CREATE TABLE TRV_ACCT_EXT
+(
+      ACCT_NUM VARCHAR(10)
+        , ACCT_TYPE VARCHAR(100)
+        , OBJ_ID VARCHAR(36)
+        , VER_NBR DECIMAL(8) default 1
+    , CONSTRAINT TRV_ACCT_EXTP1 PRIMARY KEY(ACCT_NUM)
 )
 /

@@ -3879,6 +3879,17 @@
         <column name="PK_COLL_KEY_PROP" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="STR_PROP" size="40" type="VARCHAR"/>
     </table>
+    <table name="KRTST_TEST_DISABLE_NO_VER_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_TEST_DISABLE_VER_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column name="STR_PROP" size="40" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
     <table name="KRTST_TEST_INDIRECT_COLL_T">
         <column name="PK_COLL_PROP" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="STR_PROP" size="40" type="VARCHAR"/>

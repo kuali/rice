@@ -37,4 +37,5 @@ import groovy.transform.Canonical
     boolean deleteTempPom
     Writer stdOutWriter
     Writer stdErrWriter
+    String overrideMavenOpts
 }

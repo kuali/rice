@@ -51,8 +51,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testLookups() throws InterruptedException 
-    {
+    protected void testLookups() throws InterruptedException {
     	assertElementPresentByXpath("//input[@title='Direct Inquiry']");
     	clearTextByName("field72");
     	waitAndTypeByName("field72","a2");

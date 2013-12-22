@@ -734,7 +734,7 @@ public class WebDriverUtils {
      * @param message message to display in the jGrowl
      */
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
-        System.out.println("AFT Step: " + message);
+        stepMessage(message);
         if (jGrowlEnabled) {
             try {
                 String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
@@ -774,6 +774,10 @@ public class WebDriverUtils {
         } catch (NoSuchFrameException nsfe) {
             // don't fail
         }
+    }
+
+    public static void stepMessage(String message) {
+        System.out.println("AFT Step: " + message);
     }
 
     /**

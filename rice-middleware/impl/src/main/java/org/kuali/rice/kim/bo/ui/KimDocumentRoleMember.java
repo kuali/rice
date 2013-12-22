@@ -16,12 +16,14 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
@@ -36,6 +38,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -292,4 +295,18 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
         return false;
     }
 
+    public static void copyProperties(KimDocumentRoleMember copyToKimDocRoleMember, RoleMemberBo copyFromRoleMbrBo){
+        if(copyToKimDocRoleMember!=null && copyFromRoleMbrBo!=null) {
+            copyToKimDocRoleMember.setRoleId(copyFromRoleMbrBo.getRoleId());
+            copyToKimDocRoleMember.setMemberId(copyFromRoleMbrBo.getMemberId());
+            copyToKimDocRoleMember.setMemberName(copyFromRoleMbrBo.getMemberName());
+            copyToKimDocRoleMember.setMemberNamespaceCode(copyFromRoleMbrBo.getMemberNamespaceCode());
+            copyToKimDocRoleMember.setActive(copyFromRoleMbrBo.isActive());
+            copyToKimDocRoleMember.setActiveFromDate(copyFromRoleMbrBo.getActiveFromDateValue());
+            copyToKimDocRoleMember.setActiveToDate(copyFromRoleMbrBo.getActiveToDateValue());
+            copyToKimDocRoleMember.setExtension(copyFromRoleMbrBo.getExtension());
+            copyToKimDocRoleMember.setVersionNumber(copyFromRoleMbrBo.getVersionNumber());
+            copyToKimDocRoleMember.setObjectId(copyFromRoleMbrBo.getObjectId());
+        }
+    }
 }

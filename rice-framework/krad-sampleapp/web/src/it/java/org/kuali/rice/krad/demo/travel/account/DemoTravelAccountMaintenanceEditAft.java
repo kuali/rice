@@ -85,11 +85,13 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUB_ACCOUNT_FIELD, "a1");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         gotoIframeByXpath("//iframe[@id='routeLogIFrame']");
-        checkForIncidentReport();
-        selectFrameIframePortlet();
+        String error404 = incidentReportMessage();
+        selectTopFrame();
         waitAndClickButtonByText("submit");
-        Thread.sleep(10000);
-        assertTextPresent("Document was successfully submitted.");
+        waitForTextPresent("Document was successfully submitted.");
+        if (error404 != null) {
+            jiraAwareFail("Test passed, but 404 was present on maintenance screen " + error404);
+        }
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

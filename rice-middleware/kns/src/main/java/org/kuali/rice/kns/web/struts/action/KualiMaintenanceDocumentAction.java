@@ -184,15 +184,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 			// get new document from service
 			document = (MaintenanceDocument) getDocumentService().getNewDocument(maintenanceForm.getDocTypeName());
-			// Check for an auto-incrementing PK and set it if needed
-			//            if (document.getNewMaintainableObject().getBoClass().isAnnotationPresent(Sequence.class)) {
-			//    			Sequence sequence = (Sequence) document.getNewMaintainableObject().getBoClass().getAnnotation(Sequence.class);
-			//    			Long pk = OrmUtils.getNextAutoIncValue(sequence);
-			//    			OrmUtils.populateAutoIncValue(document.getOldMaintainableObject().getBusinessObject(), pk);
-			//    			OrmUtils.populateAutoIncValue(document.getNewMaintainableObject().getBusinessObject(), pk);
-			//    			document.getOldMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
-			//    			document.getNewMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
-			//            }
 			maintenanceForm.setDocument(document);
 		}
 		else {
@@ -281,13 +272,6 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				}	
 				//document.getNewMaintainableObject().processAfterEdit( document, request.getParameterMap() );
 			}
-			// Check for an auto-incrementing PK and set it if needed
-			//            if (document.getNewMaintainableObject().getBoClass().isAnnotationPresent(Sequence.class)) {
-			//    			Sequence sequence = (Sequence) document.getNewMaintainableObject().getBoClass().getAnnotation(Sequence.class);
-			//    			Long pk = OrmUtils.getNextAutoIncValue(sequence);
-			//    			OrmUtils.populateAutoIncValue(document.getNewMaintainableObject().getBusinessObject(), pk);
-			//    			document.getNewMaintainableObject().getBusinessObject().setAutoIncrementSet(true);
-			//            }
 		}
 		// if new with existing we need to populate we need to populate with passed in parameters
 		if (KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {

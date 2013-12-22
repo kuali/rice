@@ -53,6 +53,9 @@
   	view lifecycle in asynchronous mode -->
   <param name="rice.krad.lifecycle.render" override="false">false</param>
 
+  <!-- Indicates whether the hidden script inputs should be removed from the html after executing -->
+  <param name="rice.krad.script.cleanup" override="false">true</param>
+
   <param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
   <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 

@@ -24,4 +24,7 @@ public interface OutputAwareMvnContext extends MvnContext {
 
     Writer getStdErrWriter();
     void setStdErrWriter(Writer writer);
+
+    String getOverrideMavenOpts();
+    void setOverrideMavenOpts(String overrideOpts);
 }

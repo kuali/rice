@@ -105,6 +105,7 @@ class QuickStartTest {
     def getDatasourceDriver() { config.getProperty("datasource.driver.name") }
     def getJettyPort() { config.getProperty("unittest.jetty.server1.port") }
     def getArchetypeVersion() { config.getProperty("rice.version") }
+    def getJavaAgent() { config.getProperty("spring.instrument.javaagent") }
 
     //this is a hack to fix the quartz tables...  once an embedded db is supported we should use that.
     def fixQuartzTriggerTable() {
@@ -137,7 +138,8 @@ class QuickStartTest {
             failOnError: true,
             deleteTempPom: true,
             stdOutWriter: new StringWriter(),
-            stdErrWriter: new StringWriter())
+            stdErrWriter: new StringWriter(),
+            overrideMavenOpts: null)
     }
 
     private Properties createStandardProperties() {
@@ -217,6 +219,9 @@ class QuickStartTest {
         def context = createStandardContext()
         def properties = createStandardProperties()
 
+        def javaAgent = getJavaAgent();
+        def overrideMvnOpts =  System.env["MAVEN_OPTS"] + " " + javaAgent;
+
         //db args for archetype generation
         properties["jetty.port"] = getJettyPort()
         properties["datasource_ojb_platform"] = getDatasourceOjbPlatform()
@@ -228,6 +233,8 @@ class QuickStartTest {
         properties["goals"] = "clean install -X -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties
         context.properties = properties.keySet() as List
+
+        context.setOverrideMavenOpts(overrideMvnOpts);
 
         //fixme: remove when we support embedded db
         fixQuartzTriggerTable();

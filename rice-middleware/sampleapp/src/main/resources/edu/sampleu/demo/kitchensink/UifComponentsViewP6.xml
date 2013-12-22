@@ -50,7 +50,7 @@
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccounts"
                     p:queryMethodArgumentFieldList="number"
-                    p:returnFieldMapping="name:field77,subAccountName:field78"
+                    p:returnFieldMapping="name:field77,foId:field78"
                     p:queryFieldMapping="field76:number"/>
             </property>
           </bean>
@@ -59,7 +59,7 @@
             <property name="attributeQuery">
               <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByNumber"
                     p:queryMethodArgumentFieldList="number"
-                    p:returnFieldMapping="name:field80,subAccountName:field81"
+                    p:returnFieldMapping="name:field80,foId:field81"
                     p:queryFieldMapping="field79:number">
                 <property name="queryMethodInvokerConfig.targetObject">
                   <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">

@@ -72,6 +72,11 @@
                     ${readOnlyDisplay}
                 </#if>
 
+                <#--render field quickfinder -->
+                <#if field.inputAllowed>
+                    <@krad.template component=field.quickfinder componentId="${field.id}"/>
+                </#if>
+
             <#else>
 
                 <#if field.postInputAddons?? || field.renderInputAddonGroup>
@@ -108,11 +113,6 @@
                     </div>
                 </#if>
             </#if>
-
-            <#-- render field quickfinder -->
-            <#--<#if field.inputAllowed>-->
-                <#--<@krad.template component=field.quickfinder componentId="${field.id}"/>-->
-            <#--</#if>-->
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->
             <#if !readOnly && (field.inquiry.render)!false>

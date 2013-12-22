@@ -85,7 +85,7 @@ public class UifComponentsTestController extends UifControllerBase {
     public ModelAndView save(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
-        uiTestForm = null;
+
         return getUIFModelAndView(uiTestForm);
     }
 

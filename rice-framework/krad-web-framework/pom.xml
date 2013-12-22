@@ -68,8 +68,8 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-web</artifactId>
       <version>${project.version}</version>
-			<type>war</type>
-			<scope>test</scope>
+	  <type>war</type>
+	  <scope>test</scope>
     </dependency>
 
     <dependency>

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.general;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,8 +43,9 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
 
     protected void testGeneralFeaturesRichMessagesHtml() throws Exception {
-       assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example1']/b");
-       assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example1']/br");
+        waitAndClickByLinkText("Html");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example1']/b");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example1']/br");
     }
     
     protected void testGeneralFeaturesRichMessagesCompByIndex() throws Exception {
@@ -76,11 +78,29 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
         waitAndClickByLinkText("Action");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example14']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example14'][2]");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example14'][3]");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example14'][4]");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example14'][5]");
+        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][1]/a"));
+        assertJgrowlText("Sample Message Text. Data passed: none");
+        waitAndClick(By.className("jGrowl-close"));
+
+        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][2]/a"));
+        assertJgrowlText("Sample Message Text. Data passed: none");
+        waitAndClick(By.className("jGrowl-close"));
+
+        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][3]/a"));
+        assertJgrowlText("Sample Message Text. Data passed: You passed data");
+        waitAndClick(By.className("jGrowl-close"));
+
+        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][4]/a"));
+        assertJgrowlText("Sample Message Text. Data passed: none");
+        waitAndClick(By.className("jGrowl-close"));
+
+        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][5]/a"));
+        assertJgrowlText("Sample Message Text. Data passed: none");
+        waitAndClick(By.className("jGrowl-close"));
     }
     
     protected void testGeneralFeaturesRichMessagesCombine() throws Exception {
@@ -123,39 +143,30 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     @Test
     public void testGeneralFeaturesRichMessagesBookmark() throws Exception {
-        testGeneralFeaturesRichMessagesHtml();
-        testGeneralFeaturesRichMessagesCompByIndex();
-        testGeneralFeaturesRichMessagesCompById();
-        testGeneralFeaturesRichMessagesColor();
-        testGeneralFeaturesRichMessagesCss();
-        testGeneralFeaturesRichMessagesLink();
-        testGeneralFeaturesRichMessagesAction();
-        testGeneralFeaturesRichMessagesCombine();
-        testGeneralFeaturesRichMessagesInLabels();
-        testGeneralFeaturesRichMessagesWInputField();
-        testGeneralFeaturesRichMessagesWSpringEL();
-        testGeneralFeaturesRichMessagesImages();
-        testGeneralFeaturesRichMessagesEscapeChar();
-        testGeneralFeaturesRichMessagesEscapeCheckboxRadio();
+        testRichMessages();
         passed();
     }
 
     @Test
     public void testGeneralFeaturesRichMessagesNav() throws Exception {
+        testRichMessages();
+        passed();
+    }
+
+    private void testRichMessages() throws Exception {
         testGeneralFeaturesRichMessagesHtml();
         testGeneralFeaturesRichMessagesCompByIndex();
-        testGeneralFeaturesRichMessagesCompById();
         testGeneralFeaturesRichMessagesColor();
         testGeneralFeaturesRichMessagesCss();
         testGeneralFeaturesRichMessagesLink();
         testGeneralFeaturesRichMessagesAction();
         testGeneralFeaturesRichMessagesCombine();
-        testGeneralFeaturesRichMessagesInLabels();
         testGeneralFeaturesRichMessagesWInputField();
         testGeneralFeaturesRichMessagesWSpringEL();
         testGeneralFeaturesRichMessagesImages();
         testGeneralFeaturesRichMessagesEscapeChar();
         testGeneralFeaturesRichMessagesEscapeCheckboxRadio();
-        passed();
-    }  
+        testGeneralFeaturesRichMessagesInLabels();
+        testGeneralFeaturesRichMessagesCompById();
+    }
 }

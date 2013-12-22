@@ -144,8 +144,9 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
     @Test
     public void testTransformMaintainableSectionDefinitionBean() {
+        String MAINT_SECT_DEF_BEAN_ID = "AttachmentSampleMaintenanceDocument-EditAttachment-parentBean";
         def ddRootNode = getFileRootNode(defaultTestFilePath);
-        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-EditAttachment-parentBean".equals(it.@id) };
+        def beanNode = ddRootNode.bean.find { MAINT_SECT_DEF_BEAN_ID.equals(it.@id) };
         Node resultNode = beanNode.replaceNode {
             bean(parent: "Uif-MaintenanceView") {
                 property(name: "items") {
@@ -155,8 +156,12 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
                 }
             }
         }
+        //
+        def sectionResultNode = resultNode.property.find{ "items".equals(it.@name)}.list.bean[0];
 
-        checkBeanPropertyExists(resultNode, "items");
+        // check that new grid or vertical box section includes help
+        checkBeanPropertyExists(sectionResultNode, "items");
+        checkBeanPropertyExists(sectionResultNode, "help");
         def refSize = resultNode.property.find { "items".equals(it.@name) }.list.bean.size();
         Assert.assertEquals("number of beans created", 1, refSize)
         //def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();

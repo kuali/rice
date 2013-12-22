@@ -15,10 +15,21 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
+import org.kuali.rice.kew.api.doctype.RouteNodeContract;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.service.RuleTemplateService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,30 +42,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
-import org.kuali.rice.kew.api.doctype.RouteNodeContract;
-import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.rule.service.RuleTemplateService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -390,11 +386,6 @@ public class RouteNode implements Serializable, RouteNodeContract {
         this.branch = branch;
     }
 
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
-	}
-	
 	/**
 	 * This overridden method ...
 	 * 

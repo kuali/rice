@@ -47,8 +47,7 @@ public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testOtherExamples() throws InterruptedException 
-    {
+    protected void testOtherExamples() throws InterruptedException {
     	//Fields created by Fetching Remotable Fields
     	waitForElementPresentByXpath("//input[@name='remoteFieldValuesMap[remoteField1]' and @value='Apple']");
     	assertElementPresentByXpath("//select[@name='remoteFieldValuesMap[remoteField4]']");

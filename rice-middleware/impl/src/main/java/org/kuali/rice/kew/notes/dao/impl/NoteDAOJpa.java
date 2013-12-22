@@ -15,16 +15,12 @@
  */
 package org.kuali.rice.kew.notes.dao.impl;
 
-import java.util.List;
+import org.kuali.rice.kew.notes.dao.NoteDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.notes.Attachment;
-import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.notes.dao.NoteDAO;
+import java.util.List;
 
 
 public class NoteDAOJpa implements NoteDAO {

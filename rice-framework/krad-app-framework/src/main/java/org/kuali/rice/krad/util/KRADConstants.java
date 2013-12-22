@@ -699,6 +699,7 @@ public final class KRADConstants {
         public static final String APPLICATION_VERSION = "application.version";
         public static final String APPLICATION_URL = "application.url";
         public static final String KRAD_DEV_MODE = "rice.krad.dev.mode";
+        public static final String KRAD_SCRIPT_CLEANUP = "rice.krad.script.cleanup";
         public static final String KRAD_STRICT_LIFECYCLE = "rice.krad.lifecycle.strict";
         public static final String KRAD_VIEW_LIFECYCLE_TRACE = "rice.krad.lifecycle.trace";
         public static final String KRAD_RENDER_IN_LIFECYCLE = "rice.krad.lifecycle.render";

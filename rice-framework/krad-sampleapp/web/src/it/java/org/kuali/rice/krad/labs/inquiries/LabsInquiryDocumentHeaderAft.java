@@ -40,8 +40,8 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
     protected void testInquiryDocumentHeader() throws InterruptedException {
     	waitAndClickByXpath("//input[@type='image' and @title='Direct Inquiry']");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Document Number:", "3010"},
-                                          {"Document Description:", "Test"}};
+        String[][] lightBoxLabeledText = {{"Document Number:", "3013"},
+                                          {"Document Description:", "Travel Authorization Description"}};
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

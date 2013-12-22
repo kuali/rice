@@ -637,6 +637,18 @@ public abstract class UifControllerBase {
     AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        String formKey = request.getParameter(UifParameters.FORM_KEY);
+
+        UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
+
+        View view;
+        if (currentForm.getPostedView() != null) {
+            view = currentForm.getPostedView();
+        } else {
+            view = currentForm.getView();
+        }
+
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
@@ -657,7 +669,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
-                form.getPostedView(), queryFieldId, queryParameters);
+                view, queryFieldId, queryParameters);
 
         return queryResult;
     }
@@ -682,6 +694,17 @@ public abstract class UifControllerBase {
      */
     protected boolean hasDialogBeenAnswered(String dialogId, UifFormBase form) {
         return (form.getDialogManager().hasDialogBeenAnswered(dialogId));
+    }
+
+    /**
+     * Sets the status of the dialog tracking record to indicate that this dialog
+     * has not yet been asked or answered
+     *
+     * @param dialogId  - the id of the dialog
+     * @param form - form instance containing the request data
+     */
+    protected void resetDialogStatus(String dialogId, UifFormBase form) {
+        form.getDialogManager().resetDialogStatus(dialogId);
     }
 
     /**

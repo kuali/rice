@@ -31,7 +31,6 @@ import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 import org.kuali.rice.core.framework.lifecycle.ServiceDelegatingLifecycle;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.ksb.api.KsbApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.ServiceDefinition;

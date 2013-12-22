@@ -62,13 +62,13 @@ public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
     protected void testTravelAccountTypeLookUp() throws Exception {
         waitAndTypeByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"CAT");
         waitAndClickButtonByText(SEARCH);
-        assertElementPresentByXpath("//span[contains(text(),'CAT')]");
+        waitAndClickByLinkText("CAT");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
-        waitForElementsPresentByXpath("//span[contains(text(),'IAT')]");
-        assertElementPresentByXpath("//span[contains(text(),'CAT')]");
-        assertElementPresentByXpath("//span[contains(text(),'EAT')]");
-        assertElementPresentByXpath("//span[contains(text(),'IAT')]");
+        waitForElementsPresentByXpath("//a[contains(text(),'IAT')]");
+        assertElementPresentByXpath("//a[contains(text(),'CAT')]");
+        assertElementPresentByXpath("//a[contains(text(),'EAT')]");
+        assertElementPresentByXpath("//a[contains(text(),'IAT')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndTypeByName("lookupCriteria[name]","Clearing Account Type");
         waitAndClickButtonByText(SEARCH);
@@ -79,22 +79,18 @@ public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
         waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(1000);
-        if(isAlertPresent())    {
+        if(isAlertPresent()) {
             fail(fieldName + " caused XSS.");
         }
         waitAndClickButtonByText(CLEAR_VALUES);
         Thread.sleep(1000);
     }
 
-    public boolean isAlertPresent()
-    {
-        try
-        {
+    public boolean isAlertPresent() {
+        try {
             driver.switchTo().alert();
             return true;
-        }   // try
-        catch (Exception Ex)
-        {
+        }  catch (Exception Ex) {
             return false;
         }   // catch
     }   // isAlertPresent()

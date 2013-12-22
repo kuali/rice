@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.kew.documentlink;
 
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.document.DocumentLinkContract;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
@@ -103,12 +101,7 @@ public class DocumentLink implements Serializable, DocumentLinkContract {
 	public void setDestDocId(String destDocId) {
 		this.destDocId = destDocId;
 	}
-	
-	//@PrePersist
-	public void beforeInsert(){
-		OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());		
-	}
-	
+
 	// new contract methods for Rice 2.0
 	
 	@Override

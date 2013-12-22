@@ -39,9 +39,9 @@ public class LabsMaintenanceCopyWithRestrictedFieldAft extends LabsMaintenanceBa
 
     protected void testMaintenanceCopyWithRestrictedField() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Copy with restricted field");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/th/span/label[contains(text(),'Principal Name:')]");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/td/div/span[contains(text(),'fran')]");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr[5]/td[2]/div/span[contains(text(),'')]");
+    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/th/label[contains(text(),'Principal Name:')]");
+    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/td/div[contains(text(),'fran')]");
+    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr[5]/td[2]/div[contains(text(),'')]");
     }
 
     @Test

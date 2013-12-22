@@ -491,14 +491,17 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall) {
  */
 function setupDisabledCheck(controlName, disableCompId, disableCompType, condition, onKeyUp) {
     var theControl = jQuery("[name='" + escapeName(controlName) + "']");
-    var eventType = 'change';
+
+    // Namespace the event type to avoid duplicates if the disabled enhanced component gets refreshed
+    var eventType = "change.disable-" + disableCompId;
 
     if (onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text'], input[type='password']"))) {
-        eventType = 'keyup';
+        eventType = "keyup.disable-" + disableCompId;
     }
 
     if (disableCompType == "radioGroup" || disableCompType == "checkboxGroup") {
-        theControl.on(eventType, function () {
+        jQuery(document).off(eventType);
+        jQuery(document).on(eventType, "[name='" + escapeName(controlName) + "']", function () {
             if (condition()) {
                 jQuery("input[id^='" + disableCompId + "']").prop("disabled", true);
             }
@@ -508,7 +511,8 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
         });
     }
     else {
-        theControl.on(eventType, function () {
+        jQuery(document).off(eventType);
+        jQuery(document).on(eventType, "[name='" + escapeName(controlName) + "']", function () {
             var disableControl = jQuery("#" + disableCompId);
             if (condition()) {
                 disableControl.prop("disabled", true);

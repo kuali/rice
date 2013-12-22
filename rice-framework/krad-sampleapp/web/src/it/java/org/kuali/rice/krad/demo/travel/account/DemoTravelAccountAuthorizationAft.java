@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -83,6 +83,9 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationSubmit() throws Exception {
     	testTravelAccountAuthorization();
     	waitAndClickButtonByText("submit");
+        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
+        waitAndClickButtonByText("submit");
+        waitAndClick(By.xpath("//label[contains(text(), 'Yes')]"));
     	waitForTextPresent("Document was successfully");
     }
 
@@ -97,6 +100,8 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     	waitAndTypeByName(CONTACT_NUMBER_NAME,"918000884215");
     	waitAndClickByXpath("//a[@id='travelerQuickfinder_quickfinder_act']");
     	waitAndGetReturnValue();
+
+        // KNS/KRAD Equiv M38
     	waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/span/a");
     	waitAndGetReturnValue();
     	

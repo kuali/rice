@@ -15,17 +15,13 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+import java.io.Serializable;
 
 /**
  * A convenience class for encapsulating the serialized version of a ServiceDefinition object, allowing it to be lazy-loaded.
@@ -45,12 +41,7 @@ public class FlattenedServiceDefinition implements Serializable {
 	@Lob
 	@Column(name="FLT_SVC_DEF", length=4000)
 	private String flattenedServiceDefinitionData;
-	
-	//@PrePersist
-    public void beforeInsert() {
-        OrmUtils.populateAutoIncValue(this, KSBServiceLocator.getRegistryEntityManagerFactory().createEntityManager());
-    }
-	
+
 	public FlattenedServiceDefinition() {
 	}
 	

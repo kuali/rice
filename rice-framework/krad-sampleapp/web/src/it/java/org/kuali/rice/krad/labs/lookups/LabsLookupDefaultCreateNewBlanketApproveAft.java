@@ -71,14 +71,16 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created ");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
         waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
         waitAndClickByXpath("//input[@value='CAT']");
-
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
-        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin, admin");
+        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
+        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
         waitForElementPresent("img[src*=\"info.png\"]");
 
@@ -91,17 +93,18 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
         waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
         waitAndClickByXpath("//input[@value='CAT']");
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
-        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input[2]","Sub Account");
+        waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account");
         waitAndClickButtonByText("add");
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
-        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin, admin");
-        //Document not being able to create if we add Adhoc (Showing missing Person Network ID which is not present on page)
+        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
         waitForElementPresent("img[src*=\"info.png\"]");

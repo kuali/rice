@@ -39,8 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -65,6 +63,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
 
     private static final String DISABLE_ALL_CACHES_PARAM = "rice.cache.disableAllCaches";
+    private static final String DISABLE_DISTRIBUTED_CACHE_FLUSH_PARAM = "rice.cache.disableDistributedCacheFlush";
     private static final String DISABLED_CACHES_PARAM = "rice.cache.disabledCaches";
 
     private CacheManager cacheManager;
@@ -205,10 +204,16 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
         /**
          * Sends a cache target message to distributed endpoints.  It will either send it in a delayed fashion when
-         * bound to a transaction or immediately if no transaction is present.
+         * bound to a transaction or immediately if no transaction is present.  It will not send any messages if
+         * rice.cache.disableDistributedCacheFlush is true.
+         *
          * @param target the cache target.  cannot be null.
          */
         private void doDistributed(CacheTarget target) {
+            if (ConfigurationPropertiesHolder.disableDistributedCacheFlush) {
+                return;
+            }
+
             if (doTransactionalFlush()) {
                 final CacheMessageSendingTransactionSynchronization ts = getCacheMessageSendingTransactionSynchronization();
                 //adding to internal queue.  the Synchronization is already registered at this point
@@ -335,6 +340,8 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     private static final class ConfigurationPropertiesHolder {
         static final boolean disableAllCaches =
                 ConfigContext.getCurrentContextConfig().getBooleanProperty(DISABLE_ALL_CACHES_PARAM, false);
+        static final boolean disableDistributedCacheFlush =
+                ConfigContext.getCurrentContextConfig().getBooleanProperty(DISABLE_DISTRIBUTED_CACHE_FLUSH_PARAM, false);
         static final Set<String> disabledCaches = getDisabledCachesConfig();
 
         private static Set<String> getDisabledCachesConfig() {

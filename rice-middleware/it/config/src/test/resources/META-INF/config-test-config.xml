@@ -46,4 +46,10 @@
 	
 	<!-- this is used for the testharness test -->
 	<param name="rice.test.case.test">test</param>
+
+  <!-- This is for the QuickStartTest mvn environments which need to start Jetty.
+       It is set in the Rice pom as a argLine param for the maven-failsafe-plugin
+       -Dspring.instrument.javaagent="${spring.instrument.javaagent}
+  -->
+  <param name="spring.instrument.javaagent">${spring.instrument.javaagent}</param>
 </config>

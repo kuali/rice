@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -47,7 +48,8 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
 
 
     /**
-     * sort {@link org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo}s by stop number (priority)
+     * sort {@link org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo}s by stop number (priority), and clean
+     * out the actionRequestPolicyCode for non-ROLE members.
      *
      * @param collection - the Collection to add the given addLine to
      * @param addLine - the line to add to the given collection
@@ -58,6 +60,13 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         if (collection instanceof List) {
             ((List) collection).add(0, addLine);
             if (addLine instanceof PeopleFlowMemberBo) {
+
+                // action request policy is only valid for MemberType.ROLE
+                PeopleFlowMemberBo member = (PeopleFlowMemberBo) addLine;
+                if (member.getMemberType() != MemberType.ROLE) {
+                    member.setActionRequestPolicyCode(null);
+                }
+
                 Collections.sort((List) collection, new Comparator<Object>() {
                     public int compare(Object o1, Object o2) {
                         if ((o1 instanceof PeopleFlowMemberBo) && (o1 instanceof PeopleFlowMemberBo)) {

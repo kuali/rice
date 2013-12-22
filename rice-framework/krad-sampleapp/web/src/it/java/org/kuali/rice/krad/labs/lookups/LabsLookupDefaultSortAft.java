@@ -51,8 +51,8 @@ public class LabsLookupDefaultSortAft extends LabsLookupBase {
     
     protected void testLabsLookupDefaultSort()throws Exception {
         waitAndClickButtonByText("Search");
-        waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td/div/span/a[contains(text(), 'a9')]");
-        assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]/td/div/span/a[contains(text(), 'a8')]");
-        assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[4]/td/div/span/a[contains(text(), 'a6')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a9')]");
+        assertElementPresentByXpath("//a[contains(text(), 'a8')]");
+        assertElementPresentByXpath("//a[contains(text(), 'a6')]");
     }
 }

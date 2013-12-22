@@ -87,7 +87,7 @@ public class DemoCollectionSequenceAft extends DemoLibraryBase {
     
     private void testFieldSequence() throws InterruptedException{
     	//Cant test all in loop as the value differs a lot.
-    	waitForElementPresentByXpath("//div[@data-parent='Demo-CollectionSequence-Example2']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div/span[contains(text(),'3')]");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-CollectionSequence-Example2']/div[@class='uif-disclosureContent']/div/table/tbody/tr/td/div[contains(text(),'3')]");
     }
     
     private void testNoSequence() throws InterruptedException{

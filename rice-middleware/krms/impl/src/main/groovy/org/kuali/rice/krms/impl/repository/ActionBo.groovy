@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+import org.kuali.rice.krad.util.ObjectUtils
 
 /**
  * The Action Business Object is the Action mutable class.
@@ -75,12 +76,14 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 
             for (Map.Entry<String, String> attr : attributes) {
                 KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
-                ActionAttributeBo attributeBo = new ActionAttributeBo();
-                attributeBo.setActionId(this.getId());
-                attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.getId());
-                attributeBo.setValue(attr.getValue());
-                attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
-                attributeBos.add(attributeBo);
+                if (ObjectUtils.isNotNull(attributeDefinition)) {
+                    ActionAttributeBo attributeBo = new ActionAttributeBo();
+                    attributeBo.setActionId(this.getId());
+                    attributeBo.setAttributeDefinitionId(attributeDefinition.getId());
+                    attributeBo.setValue(attr.getValue());
+                    attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
+                    attributeBos.add(attributeBo);
+                }
             }
         }
     }

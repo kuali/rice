@@ -25,7 +25,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-kim-impl:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-kim-impl:test-jar:tests:2.4.0-M4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" scope="TEST" name="Maven: commons-lang:commons-lang:2.6" level="project" />
@@ -180,7 +180,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-impl" scope="TEST" production-on-test="" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:test-jar:tests:2.4.0-M3-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kuali.rice:rice-impl:test-jar:tests:2.4.0-M4-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />

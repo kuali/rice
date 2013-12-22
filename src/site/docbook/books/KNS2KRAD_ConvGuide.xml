@@ -2562,7 +2562,6 @@
       &lt;bean parent="MaintainableCollectionDefinition">
         &lt;property name="summaryTitle" value="Entity Type Detail"/>
         &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
-        &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
         &lt;property name="name" value="entityTypeDetails"/>
         &lt;property name="maintainableFields">
           &lt;list>
@@ -2841,17 +2840,6 @@
             </para>
           </listitem>
           <listitem xml:id="MDD9">
-            <para>To control whether or not to have a multiple value lookup, the KNS provided the
-              property <emphasis role="keyword">p:includeMultipleLookupLine="false"</emphasis>. This
-              has been replaced with the KRAD equivalent <emphasis role="keyword"
-                >p:includeLineSelectionField="false"</emphasis>. <inlinemediaobject>
-                <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
-                </imageobject>
-              </inlinemediaobject>
-            </para>
-          </listitem>
-          <listitem xml:id="MDD10">
             <para>To specify whether items can be deleted from a collection, the KNS provided the
               property <emphasis role="keyword">p:alwaysAllowCollectionDeletion="true"</emphasis>.
               This has been removed in KRAD but has an equivalent replacement: <programlisting linenumbering="numbered">&lt;property name="lineActions">
@@ -2876,45 +2864,56 @@
         with multiple results at once, rather than forcing the user to iteratively add results one
         after another. For a maintenance document to use a multiple value lookup, the maintenance
         document must contain a collection, and a collection lookup must be configured for that
-        collection. </para>
+        collection.</para>
       <para><emphasis role="bold">KNS code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;bean parent="MaintainableCollectionDefinition">
-  &lt;property name="name" value="categories"/>
-  &lt;property name="businessObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="includeMultipleLookupLine" value="true"/>
   ...
+  &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+  &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.CustomEntityTypeDetailsBo"/>
+  &lt;property name="maintainableFields">
+    &lt;list>
+      &lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="true" p:template="detailName"/>
+      &lt;bean parent="MaintainableFieldDefinition" p:name="value" p:required="true" p:template="detailValue"/>
+    &lt;/list>
+  &lt;/property>
 &lt;/bean></programlisting>
         <emphasis role="bold">KRAD code example:</emphasis>
       </para>
       <para>
-        <programlisting linenumbering="numbered">&lt;bean parent="Uif-TableCollectionSection">
-  &lt;property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-  &lt;property name="propertyName" value="categories"/>
+        <programlisting linenumbering="numbered">&lt;bean parent="Uif-Disclosure-StackedCollectionSection">
+  ...
+  &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
   &lt;property name="collectionLookup">
     &lt;bean parent="Uif-CollectionQuickFinder"
-             p:dataObjectClassName="org.kuali.rice.krms.impl.repository.CategoryBo"
-             p:fieldConversions="id:id,name:name,namespace:namespace"/>
+             p:dataObjectClassName="org.kuali.rice.kim.impl.identity.CustomEntityTypeDetailsBo"
+             p:fieldConversions="detailName:name,detailValue:value"/>
   &lt;/property>
-  ...
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:attributeName="name"/>
+      &lt;bean parent="Uif-DataField" p:attributeName="value"/>
+    &lt;/list>
+  &lt;/property>
 &lt;/bean></programlisting>
       </para>
       <para>
         <itemizedlist>
           <listitem>
-            <para>The in KNS the <emphasis role="keyword"
-                >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
-              maintenance document. With KRAD one of the Uif collection groups is used. [KNS line:
-              1, KRAD line: 1]</para>
+            <para>The in KNS the <emphasis role="keyword">MaintainableCollectionDefinition</emphasis>
+              is used to specify collections on a maintenance document. With KRAD one of the Uif
+              collection groups is used.
+            </para>
           </listitem>
           <listitem>
             <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
-              was set to true to enable multiple value lookups on the collection. In KRAD this
-              property does no longer exist, instead the <emphasis role="keyword"
-                >collectionLookup</emphasis> property is initialized with the <emphasis
-                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
-                >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
-              to be specified if the collectionObjectClass of the collection group is the same as
-              the dataObjectClassName of the multi value lookup:</para>
+              was set to true and the <emphasis role="keyword">sourceClassName</emphasis> was
+              specified to enable multiple value lookups on the collection, using the <emphasis
+              role="keyword">template</emphasis> fields for the field conversions. In KRAD these properties
+              do no longer exist.  Instead the <emphasis role="keyword">collectionLookup</emphasis>
+              property is initialized with the <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis>
+              bean. <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis> has the following
+              properties but do not need to be specified if the collectionObjectClass of the collection
+              group is the same as the dataObjectClassName of the multi value lookup:</para>
             <itemizedlist>
               <listitem>
                 <para>dataObjectClassName - the data object that should be looked up</para>
@@ -2923,12 +2922,7 @@
                 <para>fieldConversions - from-to mapping of the returned data
                   (&lt;lookup-field>:&lt;maintenance-collection-field>)</para>
               </listitem>
-              <listitem>
-                <para>viewName - name of the lookup view (only needed if multible views for the
-                  dataObjectClassName exists)</para>
-              </listitem>
             </itemizedlist>
-            <para>[KNS line: , KRAD line: 4-8]</para>
           </listitem>
         </itemizedlist>
       </para>
@@ -3201,33 +3195,36 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
         </itemizedlist>
       </para>
     </section>
-    <section xml:id="MPBO">
-      <title>Preparing the BO as part of document setup </title>
-      <para> In KNS the business object was set up as part document setup using the
-        Maintainable.prepareBusinessObject. In KRAD this has been replaced by using
-        MaintenanceDocumentService.setupMaintenanceObject.</para>
-      <para><emphasis role="bold">KNS BO
-          Preparation:</emphasis><programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);         </programlisting><emphasis
-          role="bold">KRAD BO Preparation:
-        </emphasis><programlisting linenumbering="numbered">public void setupMaintenanceObject(MaintenanceDocument document,
-        String maintenanceAction, Map&lt;String, String[]&gt; requestParameters);</programlisting></para>
-    </section>
     <section xml:id="MPEBO">
       <title>Preparing the BO from an external source</title>
-      <para> In KNS an external business object was set up using <emphasis role="bold"
-          >org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>. In KRAD
-        this functionality has been moved to <emphasis role="bold"
-          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced. Different methods
+      <para>In the KNS an external business object was set up using <emphasis role="bold"
+          >org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>. To activate
+        this, implementers also had to override <emphasis role="bold"
+          >org.kuali.rice.kns.maintenance.Maintainable.isExternalBusinessObject</emphasis>
+        to return true.  In KRAD this functionality has been moved to <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced.  Different methods
         should be overridden depending on whether the external BO being loaded is from the database
         or not.</para>
       <para><emphasis role="bold">KNS BO Preparation:</emphasis>
-        <programlisting linenumbering="numbered">public void prepareBusinessObject(BusinessObject businessObject);</programlisting>
+        <programlisting linenumbering="numbered">public boolean isExternalBusinessObject();
+public void prepareBusinessObject(BusinessObject businessObject);</programlisting>
         <emphasis role="bold">KRAD Database BO Preparation:</emphasis>
         <programlisting linenumbering="numbered">public boolean isExternalBusinessObject();
 public void prepareExternalBusinessObject(BusinessObject businessObject);</programlisting>
         <emphasis role="bold">KRAD Non-Database BO Preparation:</emphasis>
         <programlisting linenumbering="numbered">public void retrieveObjectForEditOrCopy(MaintenanceDocument document, Map&lt;String, String> dataObjectKeys);</programlisting>
       </para>
+    </section>
+    <section xml:id="MPBO">
+      <title>Custom BO setup</title>
+      <para>While external Business Objects have methods to handle their setup, there is no way to
+        change the old Business Object after it is loaded but before it is copied into the new Business
+        Object.  In edge cases where this needs to happen, the above methods can be used, but it is
+        better to use <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable.processAfterCopy</emphasis> or
+        <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable.processAfterEdit</emphasis> if processing can
+        wait until the new Business Object has been created.</para>
     </section>
     <section xml:id="MRR">
       <title>Refreshing references </title>

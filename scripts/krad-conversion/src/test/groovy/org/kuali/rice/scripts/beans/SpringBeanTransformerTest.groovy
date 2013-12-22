@@ -129,8 +129,8 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
      */
     @Test
     public void testRemoveChildrenBeans() {
-        String lookupDefFilePath = getDictionaryTestDir() + "LookupDefinitionSample.xml"
-        def lookupDefFile = new File(lookupDefFilePath)
+        String lookupDefFilePath = getDictionaryTestDir() + "LookupDefinitionSample.xml";
+        def lookupDefFile = getTestResourceFile(lookupDefFilePath);
         def ddRootNode = new XmlParser().parse(lookupDefFile);
         def beanNode = ddRootNode.bean.find { "BusinessObjectEntry".equals(it.@parent) };
         String parentName = beanNode.@parent;

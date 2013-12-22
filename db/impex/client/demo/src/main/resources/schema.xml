@@ -742,6 +742,12 @@
             <reference foreign="ACCT_TYPE" local="ACCT_TYPE"/>
         </foreign-key>
     </table>
+    <table name="TRV_ACCT_EXT">
+        <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="ACCT_TYPE" size="100" type="VARCHAR"/>
+        <column name="OBJ_ID" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
     <table name="TRV_ACCT_TYPE">
         <column name="ACCT_TYPE" primaryKey="true" size="3" type="VARCHAR"/>
         <column name="ACCT_TYPE_NAME" size="40" type="VARCHAR"/>

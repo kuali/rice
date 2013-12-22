@@ -146,25 +146,25 @@
         SRVC_NM="backdoorRestrictionPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP10"
         NM="Namespace or Component" NMSPC_CD="KR-SAP"
-        OBJ_ID="EDD5E3F4247F5347E0406E0AC31D7225"
+        OBJ_ID="EE18CE0D8B373D82E0406E0AC31D38E0"
         SRVC_NM="namespaceOrComponentPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP12"
         NM="Namespace or Action" NMSPC_CD="KR-SAP"
-        OBJ_ID="EDD5E3F424805347E0406E0AC31D7225"
+        OBJ_ID="EE18CE0D8B383D82E0406E0AC31D38E0"
         SRVC_NM="namespaceOrActionPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP3"
         NM="Document Type (Permission)" NMSPC_CD="KR-SAP"
-        OBJ_ID="EDD5E3F4247C5347E0406E0AC31D7225"
+        OBJ_ID="EE18CE0D8B343D82E0406E0AC31D38E0"
         SRVC_NM="documentTypePermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP5" NM="Ad Hoc Review"
-        NMSPC_CD="KR-SAP" OBJ_ID="EDD5E3F4247D5347E0406E0AC31D7225"
+        NMSPC_CD="KR-SAP" OBJ_ID="EE18CE0D8B353D82E0406E0AC31D38E0"
         SRVC_NM="adhocReviewPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP59"
         NM="Document Type &amp; Relationship to Note Author"
-        NMSPC_CD="KR-SAP" OBJ_ID="EDD5E3F424815347E0406E0AC31D7225"
+        NMSPC_CD="KR-SAP" OBJ_ID="EE18CE0D8B393D82E0406E0AC31D38E0"
         SRVC_NM="documentTypeAndRelationshipToNoteAuthorPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KRSAP8"
         NM="Document Type &amp; Routing Node or State" NMSPC_CD="KR-SAP"
-        OBJ_ID="EDD5E3F4247E5347E0406E0AC31D7225"
+        OBJ_ID="EE18CE0D8B363D82E0406E0AC31D38E0"
         SRVC_NM="documentTypeAndNodeOrStatePermissionTypeService" VER_NBR="1"/>
 </dataset>

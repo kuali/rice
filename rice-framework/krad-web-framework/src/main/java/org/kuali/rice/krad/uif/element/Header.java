@@ -31,6 +31,8 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -173,8 +175,16 @@ public class Header extends ContentElementBase {
         List<String> additionalTemplates = super.getAdditionalTemplates();
 
         Object parent = getContext().get(UifConstants.ContextVariableNames.PARENT);
-        if (parent instanceof Group && ((Group) parent).getHelp() != null) {
-            String helpTemplate = ((Group) parent).getHelp().getTemplate();
+        
+        Help help = null;
+        if (parent instanceof Group) {
+            help = ((Group) parent).getHelp();
+        } else if (parent instanceof View) {
+            help = ((View) parent).getHelp();
+        }
+        
+        if (help != null) {
+            String helpTemplate = help.getTemplate();
             if (additionalTemplates.isEmpty()) {
                 return Collections.singletonList(helpTemplate);
             } else {

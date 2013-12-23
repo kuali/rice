@@ -32,7 +32,7 @@
             <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
             <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
-            <#if readOnly || quickfinderInputOnly>
+            <#if readOnly>
 
                 <#local readOnlyDisplay>
                     <#if field.forcedValue?has_content>
@@ -76,42 +76,104 @@
                 <#if field.inputAllowed>
                     <@krad.template component=field.quickfinder componentId="${field.id}"/>
                 </#if>
-
             <#else>
+                <#if quickfinderInputOnly>
+                   <#local readOnlyDisplay>
+                       <#if field.forcedValue?has_content>
+                           ${field.forcedValue}
+                       <#else>
+                           <#-- display replacement display value if set -->
+                           <#if field.readOnlyDisplayReplacement?has_content>
+                                ${field.readOnlyDisplayReplacement}
+                           <#else>
+                               <#-- display actual field value -->
+                               <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
 
-                <#if field.postInputAddons?? || field.renderInputAddonGroup>
-                    <div class="input-group">
-                </#if>
+                               <#-- check escape flag -->
+                               <#if field.escapeHtmlInPropertyValue>
+                                   ${(spring.status.value?default(""))?html}
+                               <#else>
+                                   ${(spring.status.value?default(""))}
+                               </#if>
 
-                <#-- render field instructional text -->
-                <@krad.template component=field.instructionalMessage/>
+                               <#-- add display suffix value if set -->
+                               <#if field.readOnlyDisplaySuffix?has_content>
+                                    *-* ${field.readOnlyDisplaySuffix}
+                               </#if>
+                           </#if>
+                       </#if>
+                   </#local>
 
-                <#-- render control for input -->
-                <@krad.template component=field.control field=field/>
+                   <#if field.multiLineReadOnlyDisplay>
+                       <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                   </#if>
 
-                <#if field.helperText?has_content>
-                    <div class="uif-helperText">
-                        ${field.helperText}
-                    </div>
-                </#if>
+                   <span id="${field.id}_control" class="uif-readOnlyContent">
+                       <#-- render inquiry if enabled -->
+                       <#if field.inquiry?has_content && field.inquiry.render>
+                           <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
+                             readOnly=field.readOnly/>
+                       <#else>
+                           ${readOnlyDisplay}
+                       </#if>
+                   </span>
+                   <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                       <div class="input-group inlineBlock">
+                   </#if>
 
-                <#if field.postInputAddons??>
-                     <#list field.postInputAddons as postAddon>
-                         <#if postAddon.wrapperCssClassesAsString?has_content>
-                             <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
-                         <#else>
-                             <#local postAddonStyleClass=""/>
-                         </#if>
+                   <#if field.postInputAddons??>
+                        <#list field.postInputAddons as postAddon>
+                            <#if postAddon.wrapperCssClassesAsString?has_content>
+                                <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                            <#else>
+                                <#local postAddonStyleClass=""/>
+                            </#if>
 
-                         <span ${postAddonStyleClass!}>
-                             <@krad.template component=postAddon/>
-                         </span>
-                     </#list>
-                </#if>
+                            <span ${postAddonStyleClass!}>
+                                <@krad.template component=postAddon/>
+                            </span>
+                        </#list>
+                   </#if>
 
-                <#if field.postInputAddons?? || field.renderInputAddonGroup>
-                    </div>
-                </#if>
+                   <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                       </div>
+                   </#if>
+                <#else>
+
+                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                        <div class="input-group">
+                    </#if>
+
+                    <#-- render field instructional text -->
+                    <@krad.template component=field.instructionalMessage/>
+
+                    <#-- render control for input -->
+                    <@krad.template component=field.control field=field/>
+
+                    <#if field.helperText?has_content>
+                        <div class="uif-helperText">
+                            ${field.helperText}
+                        </div>
+                    </#if>
+
+                    <#if field.postInputAddons??>
+                         <#list field.postInputAddons as postAddon>
+                             <#if postAddon.wrapperCssClassesAsString?has_content>
+                                 <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                             <#else>
+                                 <#local postAddonStyleClass=""/>
+                             </#if>
+
+                             <span ${postAddonStyleClass!}>
+                                 <@krad.template component=postAddon/>
+                             </span>
+                         </#list>
+                    </#if>
+
+                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                        </div>
+                    </#if>
+                 </#if>
             </#if>
 
             <#-- render field direct inquiry if field is editable and inquiry is enabled-->

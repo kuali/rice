@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 
 import org.junit.Test;
-
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -33,6 +33,11 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
+    
+    /**
+     * //div[@data-parent='Demo-ProgressiveDisclosure-Example9']/div[@data-role='disclosureContent']
+     */
+    private static final String CWGR_GENERIC_XPATH= "//div[@data-parent='Demo-ProgressiveDisclosure-Example9']/div[@data-role='disclosureContent']";
 
     @Override
     protected void navigate() throws Exception {
@@ -47,20 +52,15 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
         waitAndClickByName("booleanField1");
         assertIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
-        assertIsNotVisibleByXpath("//input[@name='inputField3']", "Is Visible");
-        waitAndTypeByName("inputField2", "show");
-        waitAndClickByLinkText("<< Close Library Navigation");
-        Thread.sleep(2000);
-        assertIsVisibleByXpath("//input[@name='inputField3']", "testClientResponsivenessProgressiveDisclosure text input based disclosure not visible");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureAjaxRetrieval() throws Exception {
         waitAndClickByLinkText("Ajax Retrieval");
         checkForIncidentReport("DemoClientResponsivenessProgressiveDisclosureAft Ajax Retrieval");
-        assertIsNotVisibleByXpath("//input[@name='inputField4']", "element");
+        assertIsNotVisibleByXpath("//input[@name='inputField18']", "element");
         waitAndClickByName("booleanField2");
         Thread.sleep(2000);
-        assertIsVisibleByXpath("//input[@name='inputField4']", "element");
+        assertIsVisibleByXpath("//input[@name='inputField18']", "element");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureRefreshWhenShown() throws Exception {
@@ -71,19 +71,94 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         assertIsVisibleByXpath("//input[@name='inputField5']", "element");
     }
     
+    protected void testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching() throws Exception {
+    	waitAndClickByLinkText("Show Field Through Matching");
+    	assertElementPresentByXpath("//input[@name='inputField7' and @disabled]");
+    	assertElementPresentByXpath("//input[@name='inputField8' and @disabled]");
+    	waitAndTypeByName("inputField6","A");
+    	waitAndClickByLinkText("Documentation");
+    	waitForElementPresentByXpath("//input[@name='inputField7']");
+    	waitAndTypeByName("inputField6","B");
+    	waitAndClickByLinkText("Documentation");
+    	waitForElementPresentByXpath("//input[@name='inputField8']");
+    }
+    
+    protected void testClientResonsivenessProgressiveDisclosureofGroup() throws Exception {
+    	waitAndClickByLinkText("Progressive Disclosure of Groups");
+    	waitForElementPresentByXpath("//input[@name='inputField10' and @disabled]");
+    	waitForElementPresentByXpath("//input[@name='inputField11' and @disabled]");
+    	waitForElementPresentByXpath("//input[@name='inputField12' and @disabled]");
+    	waitAndClickByXpath("//input[@name='inputField9' and @value='show1']");
+    	waitForElementPresentByXpath("//input[@name='inputField10']");
+    	waitForElementPresentByXpath("//input[@name='inputField11']");
+    	waitForElementPresentByXpath("//input[@name='inputField12']");
+    	waitAndClickByXpath("//input[@name='inputField9' and @value='show2']");
+    	waitForTextPresent("Loading...");
+    	waitForElementPresentByXpath("//input[@name='inputField13']");
+    	waitForElementPresentByXpath("//input[@name='inputField14']");
+    }
+    
+    protected void testClientResonsivenessProgressiveDisclosureConditionalRefresh() throws Exception {
+    	waitAndClickByXpath("//li[@data-tabfor='Demo-ProgressiveDisclosure-Example6']/a[contains(text(),'Conditional Refresh')]");
+    	waitAndClickByXpath("//input[@name='inputField15' and @value='show1']");
+    	waitForTextPresent("Loading...");
+    	waitAndTypeByName("inputField16","Hello World!");
+    	waitAndTypeByName("inputField17","Hello Deep!");
+    	waitAndClickByXpath("//input[@name='inputField15' and @value='show2']");
+    	waitForTextPresent("Loading...");
+    	waitForTextPresent("Hello Deep!");
+    }
+    
+    protected void testClientResonsivenessProgressiveDisclosureConditionalOptions() throws Exception {
+    	waitAndClickByLinkText("Conditional Options");
+    	selectByName("inputField19","Apples");
+    	waitAndClickButtonByText("Refresh Group");
+    	waitForTextPresent("Loading...");
+    	Thread.sleep(10000);		
+    	selectByName("inputField4","Vegetables");
+    	// Test page gives exception after this step.
+		//    	waitAndClickButtonByText("Refresh Field");
+		//    	waitForTextPresent("Loading...");
+		//    	Thread.sleep(10000);
+		//    	waitAndClickButtonByText("Refresh Field but with Server Errors");
+		//    	waitForTextPresent("Field 1: Intended message with key: serverTestError not found. [+1 warning] [+1 message]");
+		//    	waitAndClickButtonByText("Refresh Page");
+		//    	waitForTextNotPresent("Field 1: Intended message with key: serverTestError not found. [+1 warning] [+1 message]");
+    }
+    
+    protected void testClientResonsivenessProgressiveDisclosureRefreshBasedOnTimer() throws Exception {
+    	waitAndClickByLinkText("Refresh Based on Timer");
+    	//There are no component to perform test on the page.
+    }
+    
+    protected void testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh() throws Exception {
+    	waitAndClickByLinkText("Collection Group With Refresh");
+    	waitAndTypeByXpath(CWGR_GENERIC_XPATH+"/div/table/tbody/tr[2]/td/div/input","ref");
+    	waitForTextPresent("Loading...");
+    	//Test cannot be written ahead as there is a freemarker error in page
+    }
+    
     @Test
     public void testClientResponsivenessProgressiveDisclosureBookmark() throws Exception {
-        testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
-        testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
-        testClientResponsivenessProgressiveDisclosure();
+    	testClientResponsivenessProgressiveDisclosureAll();
         passed();
     }
 
     @Test
     public void testClientResponsivenessProgressiveDisclosureNav() throws Exception {
-        testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
-        testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
-        testClientResponsivenessProgressiveDisclosure();
+    	testClientResponsivenessProgressiveDisclosureAll();
         passed();
     }  
+    
+    private void testClientResponsivenessProgressiveDisclosureAll() throws Exception {
+    	testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
+        testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
+        testClientResponsivenessProgressiveDisclosure();
+        testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching();
+        testClientResonsivenessProgressiveDisclosureofGroup();
+        testClientResonsivenessProgressiveDisclosureConditionalRefresh();
+        testClientResonsivenessProgressiveDisclosureConditionalOptions();
+        testClientResonsivenessProgressiveDisclosureRefreshBasedOnTimer();
+        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
+    }
 }

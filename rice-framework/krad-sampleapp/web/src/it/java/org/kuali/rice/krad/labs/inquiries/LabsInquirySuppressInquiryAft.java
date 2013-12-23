@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsInquirySupressInquiryAft extends LabsInquiryBase {
+public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=KradInquirySample-PageR6C1
@@ -37,7 +37,7 @@ public class LabsInquirySupressInquiryAft extends LabsInquiryBase {
     	navigateToInquiry("Inquiry - Suppress Inquiry.");
     }
 
-    protected void testInquirySupressInquiry() throws InterruptedException {
+    protected void testInquirySuppressInquiry() throws InterruptedException {
     	waitAndClickByLinkText("Link to demonstrate ability to suppress the automatically generated inquiry link on fields.");
     	waitAndClickByLinkText("10000");
         gotoLightBox();
@@ -71,14 +71,14 @@ public class LabsInquirySupressInquiryAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testInquirySupressInquiryBookmark() throws Exception {
-    	testInquirySupressInquiry();
+    public void testInquirySuppressInquiryBookmark() throws Exception {
+    	testInquirySuppressInquiry();
         passed();
     }
 
     @Test
-    public void testInquirySupressInquiryNav() throws Exception {
-    	testInquirySupressInquiry();
+    public void testInquirySuppressInquiryNav() throws Exception {
+    	testInquirySuppressInquiry();
         passed();
     }
 }

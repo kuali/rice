@@ -231,11 +231,11 @@ public class AutomatedFunctionalTestUtils {
     private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-        docId = docId.substring(0, docId.indexOf("</span>"));
+        docId = docId.substring(0, docId.indexOf("</div>"));
         docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
 
         String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-        viewId = viewId.substring(0, viewId.indexOf("</span>"));
+        viewId = viewId.substring(0, viewId.indexOf("</div>"));
         viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
 
         String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());

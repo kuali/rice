@@ -185,6 +185,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
 
     @Test
+    public void testColumnCalculations() throws Throwable {
+        testFormView("Demo-TableLayoutTotalingView", null);
+    }
+    
+    @Test
     public void testPerformanceMediumAll() throws Throwable {
         UifFormBase form = testFormView("Lab-PerformanceMedium", "u14a9ysq");
 

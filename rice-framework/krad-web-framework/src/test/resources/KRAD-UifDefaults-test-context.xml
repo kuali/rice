@@ -37,8 +37,6 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService" />
-
 	<bean id="legacyDataAdapter" class="org.kuali.rice.krad.uif.util.MockLegacyDataAdapter" />
 	
 	<bean id="messageService" class="org.kuali.rice.krad.uif.util.MockMessageService" />

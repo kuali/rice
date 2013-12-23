@@ -19,7 +19,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.kuali.rice.krad.messages.Message;
+import org.kuali.rice.krad.messages.MessageProvider;
 import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.messages.MessageServiceImpl;
+import org.kuali.rice.krad.messages.providers.ResourceMessageProvider;
 
 /**
  * Provides mock messages for UIF unit tests.
@@ -28,13 +31,33 @@ import org.kuali.rice.krad.messages.MessageService;
  */
 public class MockMessageService implements MessageService {
 
+    private MessageService delegate;
+
+    private MessageService getDelegate() {
+        if (delegate != null) {
+            return delegate;
+        }
+
+        ResourceMessageProvider provider = new ResourceMessageProvider();
+        
+        MessageServiceImpl messageServiceDelegate = new MessageServiceImpl();
+        messageServiceDelegate.setMessageProviders(Collections.<MessageProvider> singletonList(provider));
+        delegate = messageServiceDelegate;
+        return delegate;
+    }
+    
     /**
      * @see org.kuali.rice.krad.messages.MessageService#getMessage(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
     @Override
     public Message getMessage(String namespace, String component, String key) {
-        Message rv = new Message();
+        Message rv = getDelegate().getMessage(namespace, component, key);
+        if (rv != null) {
+            return rv;
+        }
+        
+        rv = new Message();
         rv.setNamespaceCode(namespace);
         rv.setComponentCode(component);
         rv.setKey(key);
@@ -48,7 +71,12 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public Message getMessage(String namespace, String component, String key, String locale) {
-        Message rv = new Message();
+        Message rv = getDelegate().getMessage(namespace, component, key, locale);
+        if (rv != null) {
+            return rv;
+        }
+
+        rv = new Message();
         rv.setNamespaceCode(namespace);
         rv.setComponentCode(component);
         rv.setKey(key);
@@ -63,6 +91,11 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public String getMessageText(String namespace, String component, String key) {
+        String rv = getDelegate().getMessageText(namespace, component, key);
+        if (rv != null) {
+            return rv;
+        }
+
         return namespace + ":" + component + ":" + key;
     }
 
@@ -72,6 +105,11 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public String getMessageText(String namespace, String component, String key, String locale) {
+        String rv = getDelegate().getMessageText(namespace, component, key, locale);
+        if (rv != null) {
+            return rv;
+        }
+
         return namespace + ":" + component + ":" + key + ":" + locale;
     }
 
@@ -80,6 +118,11 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public String getMessageText(String key) {
+        String rv = getDelegate().getMessageText(key);
+        if (rv != null) {
+            return rv;
+        }
+
         return key;
     }
 
@@ -89,6 +132,11 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public String getMessageText(String key, String locale) {
+        String rv = getDelegate().getMessageText(key, locale);
+        if (rv != null) {
+            return rv;
+        }
+
         return key + ":" + locale;
     }
 
@@ -98,11 +146,16 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public Collection<Message> getAllMessagesForComponent(String namespace, String component) {
-        Message rv = new Message();
-        rv.setNamespaceCode(namespace);
-        rv.setComponentCode(component);
-        rv.setText(namespace + ":" + component);
-        return Collections.singletonList(rv);
+        Collection<Message> rv = getDelegate().getAllMessagesForComponent(namespace, component);
+        if (rv != null) {
+            return rv;
+        }
+
+        Message rm = new Message();
+        rm.setNamespaceCode(namespace);
+        rm.setComponentCode(component);
+        rm.setText(namespace + ":" + component);
+        return Collections.singletonList(rm);
     }
 
     /**
@@ -111,12 +164,17 @@ public class MockMessageService implements MessageService {
      */
     @Override
     public Collection<Message> getAllMessagesForComponent(String namespace, String component, String locale) {
-        Message rv = new Message();
-        rv.setNamespaceCode(namespace);
-        rv.setComponentCode(component);
-        rv.setLocale(locale);
-        rv.setText(namespace + ":" + component + ":" + locale);
-        return Collections.singletonList(rv);
+        Collection<Message> rv = getDelegate().getAllMessagesForComponent(namespace, component, locale);
+        if (rv != null) {
+            return rv;
+        }
+
+        Message rm = new Message();
+        rm.setNamespaceCode(namespace);
+        rm.setComponentCode(component);
+        rm.setLocale(locale);
+        rm.setText(namespace + ":" + component + ":" + locale);
+        return Collections.singletonList(rm);
     }
 
 }

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
@@ -42,6 +43,8 @@ public class MockKualiModuleService implements KualiModuleService, ApplicationCo
     private static MockKualiModuleService bootstrap;
     private static ApplicationContext applicationContext;
     private static Map<String, ModuleService> installedModuleServices = new LinkedHashMap<String, ModuleService>();
+    
+    private Map<String, List<String>> resourceBundleNames;
 
     private static ModuleConfiguration createMockModuleConfiguration(String namespaceCode,
             Class<? extends ExternalizableBusinessObject> boClass) {
@@ -54,6 +57,7 @@ public class MockKualiModuleService implements KualiModuleService, ApplicationCo
         Map<Class, Class> externalizableBusinessObjectImplementations = new HashMap<Class, Class>();
         externalizableBusinessObjectImplementations.put(boClass, boClass);
         rv.setExternalizableBusinessObjectImplementations(externalizableBusinessObjectImplementations);
+        rv.setResourceBundleNames(bootstrap.resourceBundleNames.get(namespaceCode));
         return rv;
     }
 
@@ -67,12 +71,27 @@ public class MockKualiModuleService implements KualiModuleService, ApplicationCo
         installedModuleServices.put(moduleId, mockService);
     }
 
+    public static class MockBusinessObject implements ExternalizableBusinessObject {
+
+        @Override
+        public void refresh() {
+        }
+    }
+    
     /**
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
     @Override
     public void afterPropertiesSet() throws Exception {
         bootstrap = this;
+        if (resourceBundleNames == null) {
+            resourceBundleNames = Collections.emptyMap();
+        } else {
+            for (Map.Entry<String, List<String>> resourceBundleEntry : resourceBundleNames.entrySet()) {
+                registerModuleService(UUID.randomUUID().toString(), resourceBundleEntry.getKey(),
+                        MockBusinessObject.class, false, false, Collections.<MockBusinessObject> emptyList());
+            }
+        }
     }
 
     /**
@@ -81,6 +100,20 @@ public class MockKualiModuleService implements KualiModuleService, ApplicationCo
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         MockKualiModuleService.applicationContext = applicationContext;
+    }
+
+    /**
+     * @return the resourceBundleNames
+     */
+    public Map<String, List<String>> getResourceBundleNames() {
+        return this.resourceBundleNames;
+    }
+
+    /**
+     * @param resourceBundleNames the resourceBundleNames to set
+     */
+    public void setResourceBundleNames(Map<String, List<String>> resourceBundleNames) {
+        this.resourceBundleNames = resourceBundleNames;
     }
 
     /**

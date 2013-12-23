@@ -22,7 +22,8 @@
 
   <!-- TableLayoutTotaling demo -->
   <bean id="Demo-TableLayoutTotalingView" parent="ComponentLibraryView">
-    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml"/>
+    <property name="xmlFilePath" value="org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml"/>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm" />
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.layout.TableLayoutManagerBase"/>
     <property name="docBookAnchor" value="d7339e4811"/>

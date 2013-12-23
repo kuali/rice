@@ -32,8 +32,21 @@
 	<bean id="dataDictionaryService" class="org.kuali.rice.krad.uif.util.TestDataDictionaryService">
 		<property name="dataDictionary" ref="dataDictionary" />
 	</bean>
+
+	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService">
+		<property name="resourceBundleNames">
+			<map>
+				<entry>
+					<key><value>demo</value></key>
+					<list>
+				        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean>
 	 
-	 <bean name="dataDictionary" class="org.kuali.rice.krad.datadictionary.DataDictionary">
+	<bean name="dataDictionary" class="org.kuali.rice.krad.datadictionary.DataDictionary">
 	 	<property name="moduleLoadOrder">
 	 		<list>
 	 			<value>kr</value>
@@ -52,6 +65,7 @@
  					<list>
 	 					<value>classpath:/org/kuali/rice/krad/demo/uif/components/KradSampleAppDemo.xml</value>
 	 					<value>classpath:/org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml</value>
+	 					<value>classpath:/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutTotaling.xml</value>
 	 				</list>
 	 			</entry>
 	 			<entry key="labs">

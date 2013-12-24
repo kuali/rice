@@ -40,6 +40,7 @@ public class DemoWidgetsDatePickerAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsDatePickerDefault() throws Exception {
+        selectByName("exampleShown","Default");
 
         //click on datepicker
         waitAndClick(By.cssSelector("img.ui-datepicker-trigger"));
@@ -51,7 +52,7 @@ public class DemoWidgetsDatePickerAft extends DemoLibraryBase {
     protected void testWidgetsDatePickerWidget() throws Exception {
         selectByName("exampleShown","Widget Input Only");
         assertElementPresentByXpath("//input[@name='inputField1' and @readonly]");
-        waitAndClickByXpath("//div[@id='Demo-DatePicker-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/img");
+        waitAndClickByXpath("//div[@id='Demo-DatePicker-Example2']/div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/img");
         waitAndClickByXpath("//button[@class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all']");
     }
 

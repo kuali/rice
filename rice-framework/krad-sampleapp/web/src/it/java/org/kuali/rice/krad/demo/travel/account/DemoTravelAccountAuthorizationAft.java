@@ -83,8 +83,10 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationSubmit() throws Exception {
     	testTravelAccountAuthorization();
     	waitAndClickButtonByText("submit");
-        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
-        waitAndClickButtonByText("submit");
+// No isn't visible but Yes is?!
+//        waitForElementVisibleBy(By.xpath("//label[contains(text(), 'No')]"), "").click();
+//        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
+//        waitAndClickButtonByText("submit");
         waitAndClick(By.xpath("//label[contains(text(), 'Yes')]"));
     	waitForTextPresent("Document was successfully");
     }

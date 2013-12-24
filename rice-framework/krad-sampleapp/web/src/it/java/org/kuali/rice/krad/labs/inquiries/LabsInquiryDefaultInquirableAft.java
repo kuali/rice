@@ -44,8 +44,8 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
         waitAndClickLinkContainingText("a14");
         gotoLightBox();
         String[][] lightBoxTravelAccountLabeledText = {{"Travel Account Number:", "a14"},
-                                          {"Account Name:", "Travel Account 14"},
-                                          {"Account Type:", "CAT - Clearing"},
+                                          {"Travel Account Name:", "Travel Account 14"},
+                                          {"Code And Description:", "CAT - Clearing"},
                                         //{"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
                                       	  {"Date Created:", getTodaysDate()}, 
                                           };

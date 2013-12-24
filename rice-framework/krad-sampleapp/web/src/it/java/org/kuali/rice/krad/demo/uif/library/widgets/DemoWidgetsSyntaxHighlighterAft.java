@@ -18,7 +18,6 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,7 +40,7 @@ public class DemoWidgetsSyntaxHighlighterAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsSyntaxHighlighter() throws Exception {
-        fireMouseOverEventByXpath("//div[@id='Demo-SyntaxHighlighter-Example1_tab']/div/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-syntaxHighlighter']");
+        fireMouseOverEventByXpath("//div[@id='Demo-SyntaxHighlighter-Example1']/div/div[@class='uif-syntaxHighlighter']");
         waitForElementPresentByXpath("//div[@id='Demo-SyntaxHighlighter-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-syntaxHighlighter']/a[@class='uif-copyPaste']");
         
     }

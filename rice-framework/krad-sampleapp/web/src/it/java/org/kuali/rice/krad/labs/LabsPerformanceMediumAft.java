@@ -62,6 +62,7 @@ public class LabsPerformanceMediumAft extends WebDriverLegacyITBase {
 
     private void navigateToSecondPage() throws InterruptedException {
         waitAndClickByLinkText("Page 2");
+        alertAccept();
         waitForBottomButton();
     }
 

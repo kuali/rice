@@ -79,6 +79,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
         waitAndClickByLinkText("Action");
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][1]/a"));
+        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 

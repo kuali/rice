@@ -17,8 +17,6 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,14 +39,14 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsTooltipHover() throws Exception {
+        selectByName("exampleShown","Tooltip On Hover");
         fireMouseOverEventByName("dataField1");
         assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This is a helpful tooltip about this field')]");
-       
     }
 
     protected void testWidgetsTooltipFocus() throws Exception {
         selectByName("exampleShown","Tooltip On Focus");
-        waitAndTypeByXpath("//div[@id='Demo-Tooltip-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@name='dataField1']","");
+        waitAndTypeByXpath("//div[@id='Demo-Tooltip-Example2']/div/input[@name='dataField1']","");
         assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This tooltip appears when the field receives focus')]");
     }
 
@@ -56,7 +54,6 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
     public void testWidgetsTooltipBookmark() throws Exception {
         testWidgetsTooltipHover();
         testWidgetsTooltipFocus();
-        driver.close();
         passed();
     }
 
@@ -64,7 +61,6 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
     public void testWidgetsTooltipNav() throws Exception {
         testWidgetsTooltipHover();
         testWidgetsTooltipFocus();
-        driver.close();
         passed();
     }
 }

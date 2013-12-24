@@ -4593,7 +4593,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementVisibleBy(By.cssSelector(elementLocator), message);
     }
 
-    protected void waitForElementVisibleBy(By by, String message) throws InterruptedException {
+    protected WebElement waitForElementVisibleBy(By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         boolean failed = false;
@@ -4615,7 +4615,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (failed) {
             jiraAwareFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver
                     .getCurrentUrl());
+            return null;
         }
+        return driver.findElements(by).get(0);
     }
 
     protected void waitForElementVisibleById(String id, String message) throws InterruptedException {

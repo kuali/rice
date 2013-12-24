@@ -50,7 +50,7 @@ public class LabsLookupMultipleCriteriaColumnAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupMultipleCriteriaColumn()throws Exception {
-       waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr/th");
-       waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr/th[2]");
+       waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']/tbody/tr/th");
+       waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']/tbody/tr/th[2]");
     }
 }

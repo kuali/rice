@@ -166,6 +166,7 @@
   <bean id="LabsInquiry-AuthorizerSecurity" parent="LabsInquiry-DefaultView">
     <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
     <property name="viewName" value="LabsInquiry-AuthorizerSecurityView"/>
+    <property name="headerText" value="Inquiry with component and attribute security controlling visibility"/>
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">
@@ -187,7 +188,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-Disclosure-GridSection">
+        <bean id="CostEstimatesSection" parent="Uif-Disclosure-GridSection">
           <property name="headerText" value="Cost Estimates"/>
           <property name="componentSecurity">
             <bean parent="Uif-CollectionGroupSecurity" p:viewAuthz="true"/>

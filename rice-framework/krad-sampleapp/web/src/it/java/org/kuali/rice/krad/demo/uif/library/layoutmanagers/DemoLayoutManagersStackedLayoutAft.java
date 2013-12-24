@@ -68,7 +68,7 @@ public class DemoLayoutManagersStackedLayoutAft extends WebDriverLegacyITBase {
     protected void testLayoutManagersStackedCollectionAjaxDisclosures() throws Exception {
         selectByName("exampleShown","Stacked Collection Ajax Disclosures");
         if(isElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Example5']/div[@class='uif-stackedCollectionSection uif-boxLayoutVerticalItem clearfix']/div[3]/div[2]/table/tbody/tr/td/div/input")) {
-            fail("Ajax Disclosure Not working!");
+            jiraAwareFail("Ajax Disclosure Not working!");
         }
         waitAndClickByLinkText("Item 100");
         waitForTextPresent("Loading...");

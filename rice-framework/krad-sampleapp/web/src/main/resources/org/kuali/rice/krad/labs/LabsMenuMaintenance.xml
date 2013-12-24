@@ -240,12 +240,12 @@
     <property name="items">
       <list>
         <bean id="LabsMenuMaintenance-Row5-Col1" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Prompt Before Validation"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR5C1"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrate Prompt Before Validation"/>
           </list>
           </property>
         </bean>

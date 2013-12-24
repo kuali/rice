@@ -288,11 +288,12 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR5C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Prompt Before Validation"
+              p:instructionalText="Demo of Maintenance Prompt Before Validation">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Authorization Maintenance prompting before validation on submit"
+                    p:href="approval?methodToCall=docHandler&amp;command=initiate&amp;docTypeName=TravelAuthorization"/>
             </list>
           </property>
         </bean>

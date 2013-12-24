@@ -161,7 +161,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         Assert.assertEquals("number of copied references", 1, refSize)
         def sectionSize = resultNode.property.list.bean.findAll { ["Uif-VerticalBoxSection", "Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();
         Assert.assertEquals("number of converted section definitions", 1, sectionSize);
-
     }
 
     /**
@@ -215,12 +214,13 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
                 }
             }
         }
-        //
         def sectionResultNode = resultNode.property.find{ "items".equals(it.@name)}.list.bean[0];
 
         // check that new grid or vertical box section includes help
         checkBeanPropertyExists(sectionResultNode, "items");
         checkBeanPropertyExists(sectionResultNode, "help");
+        checkBeanPropertyExists(sectionResultNode, "disclosure.defaultOpen");
+
         def refSize = resultNode.property.find { "items".equals(it.@name) }.list.bean.size();
         Assert.assertEquals("number of beans created", 1, refSize)
         //def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();

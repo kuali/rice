@@ -129,6 +129,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
             builder.bean(beanAttributes) {
                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
                 transformHelpUrlProperty(delegate, beanNode)
                 transformMaintainableItemsProperty(delegate, beanNode);
             }
@@ -154,6 +155,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
         builder.bean(beanAttrs) {
             copyProperties(delegate, beanNode, ["title"]);
+            renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
             transformHelpUrlProperty(delegate, beanNode)
             property(name: "items") {
                 list {
@@ -164,6 +166,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             if (itemsList.size() > 0) {
                                 builder.bean(parent: 'MaintenanceGridSection') {
                                     copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                                    renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
                                     property(name: "items") {
                                         list {
                                             itemsList.each { attributes ->

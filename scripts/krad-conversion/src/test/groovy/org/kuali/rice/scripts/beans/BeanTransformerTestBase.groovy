@@ -72,6 +72,13 @@ class BeanTransformerTestBase {
         Assert.assertTrue("bean should not contain property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() == 0);
     }
 
+    public void checkBeanPropertyValueExists(def beanNode, String propertyName, String propertyValue) {
+        checkBeanPropertyExists(beanNode,propertyName)
+        def value = beanNode.property.find { propertyName.equals(it.@name) }?.@value;
+        //System.out.println("Value::"+value);
+        Assert.assertTrue("property should contains value " + propertyName, value?.equals(propertyValue));
+    }
+
     public Node getFileRootNode(String filepath) {
         def file = getTestResourceFile(filepath);
         return new XmlParser().parse(file);

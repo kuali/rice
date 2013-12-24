@@ -32,9 +32,9 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     // MDE Conversion Components
     def mdeCopyProperties = ["businessObjectClass", "businessRulesClass", "maintainableClass", "documentTypeName",
-            "documentAuthorizerClass", "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
+             "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
     def mdeRenameProperties = [:]
-    def mdeIgnoreOnCarryoverProperties = []
+    def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass"]
     def mdeIgnoreOnCarryoverAttributes = []
 
     // UMV Conversion Components - include
@@ -82,6 +82,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
                 bean(mdeBeanAttributes) {
                     copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties)
+                    transformDocumentAuthorizerClassProperty(delegate, beanNode)
+                    transformDocumentPresentationControllerClassProperty(delegate, beanNode)
                 }
             }
         }
@@ -274,7 +276,53 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
         }
     }
+    /**
+     * Creates the documentPresentationControllerClass property. Replaces the default value with the KRAD equivalent.
+     * Adds comment to add new presentation controller java class if not using default.
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformDocumentPresentationControllerClassProperty(NodeBuilder builder, Node beanNode) {
+        def origClassName = "org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase";
+        def modifiedClassName = "";
+        if(beanNode?.property?.find{ "documentPresentationControllerClass".equals(it.@name) }) {
+            def className = beanNode?.property?.find { it.@name == "documentPresentationControllerClass" }?.@value;
+            if (StringUtils.isNotBlank(className) && className.equals(origClassName)) {
+                modifiedClassName = "org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase";
+            }  else {
+                addCommentIfNotExists(beanNode.parent(),"TODO - Add documentPresentationControllerClass for bean Id: " + beanNode.@id)
+            }
 
+            createProperty(builder, "documentPresentationControllerClass", modifiedClassName)
+        }
+
+    }
+
+    /**
+     * Creates the documentAuthorizerClass property. Replaces the default value with the KRAD equivalent.
+     * Adds comment to add new authorizer java class if not using default.
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformDocumentAuthorizerClassProperty(NodeBuilder builder, Node beanNode) {
+        def origClassName = "org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase";
+        def modifiedClassName = "";
+        if(beanNode?.property?.find{ "documentAuthorizerClass".equals(it.@name) }) {
+            def className = beanNode?.property?.find { it.@name == "documentAuthorizerClass" }?.@value;
+            if (StringUtils.isNotBlank(className) && className.equals(origClassName)) {
+                modifiedClassName = "org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase";
+            }  else {
+                addCommentIfNotExists(beanNode.parent(),"TODO - Add documentAuthorizerClass for bean Id: " + beanNode.@id)
+            }
+
+            createProperty(builder, "documentAuthorizerClass", modifiedClassName)
+        }
+
+    }
     /**
      * Replaces a maintainable field definition bean with a Uif-InputField bean
      *
@@ -289,13 +337,12 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
         // collect attributes and replace parent node with input field
         def beanAttributes = convertBeanAttributes(beanNode, "MaintainableFieldDefinition", "Uif-InputField", [],[:], [],
-        mfdCopyProperties, mfdRenameProperties, []);
+                mfdCopyProperties, mfdRenameProperties, []);
         beanAttributes.putAt("parent", "Uif-InputField");
         builder.bean(beanAttributes) {
             copyProperties(delegate, beanNode, mfdCopyProperties)
             renameProperties(delegate, beanNode, mfdRenameProperties)
         }
     }
-
 
 }

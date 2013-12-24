@@ -30,11 +30,12 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
     MaintenanceDocumentEntryBeanTransformer maintenanceDocumentEntryBeanTransformer;
     String defaultTestFilePath;
-
+    String customTestFilePath;
     @Before
     void setUp() {
         super.setUp();
         defaultTestFilePath = getDictionaryTestDir() + "MaintenanceDefinitionSample.xml";
+        customTestFilePath = getDictionaryTestDir() + "MaintenanceDefinitionCustomDPCSample.xml";
         maintenanceDocumentEntryBeanTransformer = new MaintenanceDocumentEntryBeanTransformer();
         maintenanceDocumentEntryBeanTransformer.init(config);
     }
@@ -79,6 +80,10 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
         def mdeCheckedProperties = [];
         checkBeanStructure(resultMDENode, mdeCheckedProperties, ["businessObjectEntry"]);
+        //checks if the default documentPresentationControllerClass has been added
+        checkBeanPropertyValueExists(resultMDENode,"documentPresentationControllerClass","org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase");
+        //checks if the default documentAuthorizerClass has been added
+        checkBeanPropertyValueExists(resultMDENode,"documentAuthorizerClass","org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase");
 
         def umvCheckedProperties = ["dataObjectClassName"];
         checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
@@ -86,6 +91,60 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         checkBeanStructure(resultMVNode, umvCheckedProperties, ["maintainableSections"]);
 
     }
+
+    /**
+     * Verifies that a documentPresentationControllerClass property is added with empty value and a comment is added to
+     * specify the value if a custom class is specified.
+     */
+    @Test
+    void testTransformMaintenanceDocumentEntryNonDefaultDPCBean() {
+        def ddRootNode = getFileRootNode(customTestFilePath);
+        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+
+        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        try {
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+
+        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
+        checkBeanPropertyValueExists(resultMDENode,"documentPresentationControllerClass","");
+
+        def foundComment = false;
+        beanNode.parent().meta.findAll { it.@key == "comment" }.each{ if (it?.@value?.equals("TODO - Add documentPresentationControllerClass for bean Id: " + beanNode.@id)) {foundComment = true;}  };
+        Assert.assertTrue("No comment found for custom documentPresentationControllerClass", foundComment);
+
+        }
+
+    /**
+     * Verifies that a documentAuthorizerClass property is added with empty value and a comment is added to
+     * specify the value if a custom class is specified.
+     */
+    @Test
+    void testTransformMaintenanceDocumentEntryNonDefaultDACBean() {
+        def ddRootNode = getFileRootNode(customTestFilePath);
+        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+
+        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        try {
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+
+        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
+        checkBeanPropertyValueExists(resultMDENode,"documentAuthorizerClass","");
+
+        def foundComment = false;
+        beanNode.parent().meta.findAll { it.@key == "comment" }.each{ if (it?.@value?.equals("TODO - Add documentAuthorizerClass for bean Id: " + beanNode.@id)) {foundComment = true;}  };
+        Assert.assertTrue("No comment found for custom documentAuthorizerClass", foundComment);
+    }
+
 
     @Test
     public void testTransformMaintainableSectionsProperty() {

@@ -166,7 +166,6 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             if (itemsList.size() > 0) {
                                 builder.bean(parent: 'MaintenanceGridSection') {
                                     copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                                    renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
                                     property(name: "items") {
                                         list {
                                             itemsList.each { attributes ->
@@ -182,6 +181,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
                                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
                                 renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
+                                renameProperties(delegate, beanItem, ["defaultOpen": "disclosure.defaultOpen"]);
                                 transformMaintainableFieldsProperty(delegate, beanItem);
                                 transformSummaryFieldsProperty(delegate, beanNode);
 

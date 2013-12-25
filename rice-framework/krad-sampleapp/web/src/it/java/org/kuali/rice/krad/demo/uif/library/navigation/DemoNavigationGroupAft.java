@@ -59,18 +59,50 @@ public class DemoNavigationGroupAft extends DemoLibraryNavigationBase {
         waitForElementPresentByXpath("//div[@class='uif-menuNavigationGroup sidebar-collapsed']");
         switchToWindow("Kuali");
     }
+    
+    protected void testNavigationWithToggleMenu() throws Exception {
+        selectByName("exampleShown","With Toggle Menu");
+        waitAndClickByLinkText("Navigation Toggle Menu");
+        switchToWindow("Kuali :: Navigation Menu View");
+        waitAndClickByLinkText("Page 1");
+        waitAndClickByLinkText("Page 2");
+        waitAndClickByLinkText("More Content");
+        switchToWindow("Kuali");
+    }
 
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderBookmark() throws Exception {
+    public void testNavigationViewBookmark() throws Exception {
         testNavigationView();
+        passed();
+    }
+
+    @Test
+    public void testNavigationViewNav() throws Exception {
+        testNavigationView();
+        passed();
+    }  
+    
+    @Test
+    public void testNavigationMenuViewBookmark() throws Exception {
         testNavigationMenuView();
         passed();
     }
 
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderNav() throws Exception {
-        testNavigationView();
+    public void testNavigationMenuViewNav() throws Exception {
         testNavigationMenuView();
+        passed();
+    }  
+    
+    @Test
+    public void testNavigationToggleMenuBookmark() throws Exception {
+        testNavigationWithToggleMenu();
+        passed();
+    }
+
+    @Test
+    public void testNavigationToggleMenuNav() throws Exception {
+        testNavigationWithToggleMenu();
         passed();
     }  
 }

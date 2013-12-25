@@ -16,7 +16,6 @@
 
 package edu.sampleu.main;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class CreateNewAgendaNavAft extends CreateNewAgendaAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testCreateNewAgendaNav() throws Exception {
         testCreateNewAgendaNav(this);

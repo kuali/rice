@@ -16,7 +16,6 @@
 
 package edu.sampleu.krad.configview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class Help2BkMrkAft extends Help2AftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testHelp2Bookmark() throws Exception {
         testHelp2Bookmark(this);

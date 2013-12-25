@@ -16,7 +16,6 @@
 
 package edu.sampleu.kim.api.identity;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class IdentityRoleBlanketAppNavAft extends IdentityRoleBlanketAppAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testIdentityRoleBlanketAppNav() throws Exception {
         testIdentityRoleBlanketAppNav(this);

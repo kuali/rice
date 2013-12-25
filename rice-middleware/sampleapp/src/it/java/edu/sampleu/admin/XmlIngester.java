@@ -21,7 +21,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,11 +63,11 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
 
-    @Ignore
+    @Ignore // empty test, XML Ingester does not have Create New Cancel functionality
     @Override
     public void testCreateNewCancel() throws Exception {}
 
-    @Ignore
+    @Ignore // empty test, XML Ingester does not have Edit Cancel functionality
     @Override
     public void testEditCancel() throws Exception {}
 

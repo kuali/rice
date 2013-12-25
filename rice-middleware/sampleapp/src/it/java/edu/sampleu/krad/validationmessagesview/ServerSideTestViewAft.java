@@ -15,7 +15,6 @@
  */
 package edu.sampleu.krad.validationmessagesview;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 

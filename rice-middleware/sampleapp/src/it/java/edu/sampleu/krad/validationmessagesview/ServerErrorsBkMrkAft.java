@@ -16,7 +16,6 @@
 
 package edu.sampleu.krad.validationmessagesview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class ServerErrorsBkMrkAft extends ServerErrorsAftBase {
 
-    @Ignore // lots of selector updates needed.
     @Test
     public void testServerErrorsBookmark() throws Exception {
         testServerErrorsBookmark(this);

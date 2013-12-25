@@ -16,7 +16,6 @@
 
 package edu.sampleu.krad.compview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class ValidCharsConstraintNavAft extends ValidCharsConstraintAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testValidCharsConstraintNav() throws Exception {
         testValidCharsConstraintNav(this);

@@ -15,7 +15,6 @@
  */
 package edu.sampleu.travel;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,7 +22,6 @@ import org.junit.Test;
  */
 public class UifComponentValidationRegexPatternBkMrkAft extends UifComponentValidationRegexPatternAftBase {
 
-    @Ignore // lots of selector updates needed.
     @Test
     public void testValidCharacterConstraintBookmark() throws Exception {
         testValidCharacterConstraintBookmark(this);

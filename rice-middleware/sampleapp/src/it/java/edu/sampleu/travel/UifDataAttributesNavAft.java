@@ -17,7 +17,6 @@ package edu.sampleu.travel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -126,7 +125,6 @@ public class UifDataAttributesNavAft extends WebDriverLegacyITBase {
     /**
      * Tests that the data attributes are rendered as expected for all controls
      */
-    @Ignore // This test fails, but what is it testing doing?
     @Test
     public void testDataAttributesPresentInControlsNav() throws Exception{
         assertEquals("Kuali Portal Index", getTitle());

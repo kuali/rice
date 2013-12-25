@@ -16,7 +16,6 @@
 
 package edu.sampleu.main;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,7 +28,6 @@ public class CreateNewAgendaBkMrkAft extends CreateNewAgendaAftBase {
         return BOOKMARK_URL;
     }
 
-    @Ignore // TODO fix
     @Test
     public void testCreateNewAgendaBookmark() throws Exception {
         testCreateNewAgendaBookmark(this);

@@ -16,7 +16,6 @@
 
 package edu.sampleu.travel;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class ConfigurationTestViewBkMrkAft extends ConfigurationTestViewAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testConfigurationTestViewBookmark() throws Exception {
         testConfigurationTestViewBookmark(this);

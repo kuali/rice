@@ -16,10 +16,12 @@
 package org.kuali.rice.krad.demo.lookup.multivalue;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
+ * No Nav test, there is no link to this page.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DemoLookUpMultiValueAft extends WebDriverLegacyITBase {
@@ -66,27 +68,17 @@ public class DemoLookUpMultiValueAft extends WebDriverLegacyITBase {
     }
 
     protected void testLookUpMultiValue() throws InterruptedException {
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
-        if(isElementPresentByXpath(TABLE_ROW_SIX_XPATH)){
-            fail(FAILURE_MESSAGE);
-        }
+        waitForElementNotPresent(By.xpath(TABLE_ROW_SIX_XPATH));
     }
 
+    // No Nav test, there is no link to this page
     @Test
     public void testLookUpMultiValueBookmark() throws Exception {
-        testLookUpMultiValue();
-        passed();
-    }
-
-    @Ignore // Link removed
-    @Test
-    public void testLookUpMultiValueNav() throws Exception {
         testLookUpMultiValue();
         passed();
     }

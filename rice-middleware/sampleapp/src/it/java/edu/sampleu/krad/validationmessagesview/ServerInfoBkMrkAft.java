@@ -16,7 +16,6 @@
 
 package edu.sampleu.krad.validationmessagesview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +23,6 @@ import org.junit.Test;
  */
 public class ServerInfoBkMrkAft extends ServerInfoAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testServerInfoBookmark() throws Exception {
         testServerInfoBookmark(this);

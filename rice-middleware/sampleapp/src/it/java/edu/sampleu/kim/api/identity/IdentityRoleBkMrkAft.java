@@ -16,7 +16,6 @@
 
 package edu.sampleu.kim.api.identity;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,7 +28,6 @@ public class IdentityRoleBkMrkAft extends IdentityRoleAftBase {
         return BOOKMARK_URL;
     }
 
-    @Ignore // TODO fix
     @Test
     public void testIdentityRoleBookmark() throws Exception {
         testIdentityRoleBookmark(this);

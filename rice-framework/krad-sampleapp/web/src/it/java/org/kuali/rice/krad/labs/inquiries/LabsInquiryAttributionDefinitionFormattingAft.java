@@ -80,7 +80,6 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"State", "CA"},
                 {"Zip:", "95616"},
                 {"Country:", "US"},
-                {"Citizenship:", "US"},
                 {"Email Address:", ""},
                 {"Gender:", "M"},
                 {"Phone Number:", "******1212"},

@@ -48,7 +48,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         String preValueString = waitAndGetText(By.xpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0];
         if (StringUtils.isBlank(preValueString)) {
-            JiraAwareFailureUtils.fail("calculation column contains no text", this);
+            jiraAwareFail("calculation column contains no text");
         }
         Integer preValue = Integer.parseInt(preValueString);
         clearTextByName("collection1[0].field1");
@@ -58,7 +58,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
                 "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
 
         if (postValue >= preValue) {
-            fail("Calculation Error !");
+            jiraAwareFail("Calculation Error !");
         }
     }
 
@@ -72,7 +72,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         Integer postValue = Integer.parseInt(getTextByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
         if (postValue >= preValue) {
-            fail("Calculation Error !");
+            jiraAwareFail("Calculation Error !");
 
         }
     }
@@ -87,7 +87,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         Integer postValue = Integer.parseInt(getTextByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
         if (postValue >= preValue) {
-            fail("Calculation Error !");
+            jiraAwareFail("Calculation Error !");
 
         }
     }
@@ -106,7 +106,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
                 "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label");
         if (isElementPresentByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label")) {
-            fail("Multiple Options Failure !");
+            jiraAwareFail("Multiple Options Failure !");
         }
     }
 
@@ -122,7 +122,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
                 "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
         if (isElementPresentByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[2]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]")) {
-            fail("Multiple Calculations Failure !");
+            jiraAwareFail("Multiple Calculations Failure !");
         }
     }
 

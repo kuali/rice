@@ -43,55 +43,55 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
 
     protected void testLibraryControlRadioOptionsFinder() throws Exception {
         waitAndClickByLinkText("OptionsFinder");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='5']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example1']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example1']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='5']");
     }
     
     protected void testLibraryControlRadioKeyValuePairs() throws Exception {
         waitAndClickByLinkText("Key-value pr.");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example2']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example2']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
     }
     
     protected void testLibraryControlRadioDisabled() throws Exception {
         waitAndClickByLinkText("Disabled");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example3']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example3']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
     }
     
     protected void testLibraryControlRadioDelimiter() throws Exception {
         waitAndClickByLinkText("Delimiter");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example4']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
         assertTextPresent(";");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example4']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
     }
     
     protected void testLibraryControlRadioDisableOnKeyEvent() throws Exception {
         waitAndClickByLinkText("Disable on Key event");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='2']");
         waitAndTypeByName("inputField1","a");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
     }
     
     protected void testLibraryControlRadioEnableWhenChanged() throws Exception {
         waitAndClickByLinkText("Enable when changed");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='2']");
         waitAndTypeByName("inputField3","a");
         waitAndClickLinkContainingText("Library Navigation");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField4' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @value='2']");
     }
     
     protected void testLibraryControlRadioDisableWhenChanged() throws Exception {
         waitAndClickByLinkText("Disable when changed");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField6' and @value='1']");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@type='radio' and @name='inputField6' and @value='2']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@type='radio' and @name='inputField6' and @value='1']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@type='radio' and @name='inputField6' and @value='2']");
         waitAndTypeByName("inputField5","a");
         waitAndClickLinkContainingText("Library Navigation");
-        waitForElementPresentByXpath("//div[@id='Demo-RadioControl-Example7']/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/span/input[@disabled]");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@disabled]");
     }
     
     @Test

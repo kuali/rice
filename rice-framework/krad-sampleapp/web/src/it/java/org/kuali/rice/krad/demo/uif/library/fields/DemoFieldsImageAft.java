@@ -59,7 +59,7 @@ public class DemoFieldsImageAft extends DemoLibraryBase {
         assertIsVisible("#" + imgId + "[alt='']");
 
         // validate that the image comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + img[src='/krad/images/pdf.png']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + img[src='/krad/images/pdf.png']"),
                 exampleDiv);
     }
 

@@ -41,14 +41,14 @@ public class DemoWidgetsSyntaxHighlighterAft extends DemoLibraryBase {
 
     protected void testWidgetsSyntaxHighlighter() throws Exception {
         fireMouseOverEventByXpath("//div[@id='Demo-SyntaxHighlighter-Example1']/div/div[@class='uif-syntaxHighlighter']");
-        waitForElementPresentByXpath("//div[@id='Demo-SyntaxHighlighter-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-syntaxHighlighter']/a[@class='uif-copyPaste']");
+        waitForElementPresentByXpath("//div[@id='Demo-SyntaxHighlighter-Example1']/div/div[@class='uif-syntaxHighlighter']/a[@class='uif-copyPaste']");
         
     }
     
     protected void testWidgetSyntaxHighlighterWithNoCopyButton() throws Exception {
        selectByName("exampleShown","Syntax Highlighter that does not display copying button");
-       fireMouseOverEventByXpath("//div[@id='Demo-SyntaxHighlighter-Example2_tab']/div/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-syntaxHighlighter']");
-       waitForElementNotPresent(By.xpath("//div[@id='Demo-SyntaxHighlighter-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-syntaxHighlighter']/a[@class='uif-copyPaste']"));
+       fireMouseOverEventByXpath("//div[@id='Demo-SyntaxHighlighter-Example2']/div/div[@class='uif-syntaxHighlighter']");
+       waitForElementNotPresent(By.xpath("//div[@id='Demo-SyntaxHighlighter-Example2']/div/div[@class='uif-syntaxHighlighter']/a[@class='uif-copyPaste']"));
     }
     
     private void testAllSyntaxHighlighter() throws Exception {

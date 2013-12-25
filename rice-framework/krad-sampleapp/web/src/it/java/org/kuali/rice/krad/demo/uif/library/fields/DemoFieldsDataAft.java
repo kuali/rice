@@ -60,15 +60,13 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
         assertIsVisible("label[for='" + controlId + "']");
         WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
         if (!label.getText().contains("DataField 1:")) {
-            fail("Label text does not match");
+            jiraAwareFail("Label text does not match");
         }
 
-        assertIsVisible("#" + controlId);
-        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+        assertTextPresent("1001", "#" + fieldId, "DataField value not correct");
 
         // validate that the value comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span[id='" + controlId + "']"),
-                exampleDiv);
+        findElement(By.xpath("//div/label[@data-label_for='" + fieldId + "']"));
     }
 
     protected void testDataFieldLabelTop() throws Exception {
@@ -82,13 +80,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
         assertIsVisible("label[for='" + controlId + "']");
         WebElement label = findElement(By.cssSelector("label[for='" + controlId + "']"), field);
         if (!label.getText().contains("DataField 1:")) {
-            fail("Label text does not match");
-        }
-
-        WebElement labelSpan = findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"), field);
-        // top and bottom add the uif-labelBlock class
-        if (!labelSpan.getAttribute("class").contains("uif-labelBlock")) {
-            fail("Label span does not contain the appropriate class expected");
+            jiraAwareFail("Label text does not match");
         }
     }
 
@@ -99,25 +91,22 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
-        assertIsVisible("#" + controlId);
-        assertTextPresent("1001", "#" + controlId, "DataField value not correct");
+        assertTextPresent("1001", "#" + fieldId, "DataField value not correct");
 
-        assertIsVisible("#" + fieldId);
         assertIsVisible("label[for='" + controlId + "']");
         WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
         if (!label.getText().contains("DataField 1")) {
-            fail("Label text does not match");
+            jiraAwareFail("Label text does not match");
         }
 
         // validate that the label comes after the value
-        findElement(By.cssSelector("span[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"),
-                exampleDiv);
+        findElement(By.xpath("//div/label[@data-label_for='" + fieldId + "']"));
     }
 
     protected void testDataFieldDefaultValue() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
         if(!"2012".equals(valueText)) {
-            JiraAwareFailureUtils.fail("Fields Data Field Default Value 2012 not displayed", this);
+            jiraAwareFail("Fields Data Field Default Value 2012 not displayed");
         }
     }
 
@@ -128,27 +117,27 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 
     protected void testDataFieldReplaceProperty() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example6", "DataField 1");
-        Assert.assertEquals("ID Val", valueText);
+        assertTrue(valueText.contains("ID Val"));
     }
 
     protected void testDataFieldReplacePropertyWithField() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example7", "DataField 1");
-        Assert.assertEquals("My Book Title", valueText);
+        assertTrue(valueText.contains("My Book Title"));
     }
 
     protected void testDataFieldAppendPropertyWithField() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example8", "DataField 1");
-        Assert.assertEquals("1001 *-* My Book Title", valueText);
+        assertTrue(valueText.contains("1001 *-* My Book Title"));
     }
 
     protected void testDataFieldApplyFullMask() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example9", "DataField 1");
-        Assert.assertEquals("https://jira.kuali.org/browse/KULRICE-11307", "*********", valueText);
+        assertTrue("1001 not masked to *********", valueText.contains("*********"));
     }
 
     protected void testDataFieldApplyPartialMask() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example10", "DataField 1");
-        Assert.assertEquals("https://jira.kuali.org/browse/KULRICE-11307", "**01", valueText);
+        assertTrue("1001 not masked to **01", valueText.contains("**01"));
     }
 
     protected void testDataFieldHideProperty() throws Exception {
@@ -170,12 +159,10 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
         assertIsVisible("label[for='" + controlId + "']");
         WebElement label = findElement(By.cssSelector("[for='" + controlId + "']"), field);
         if (!label.getText().contains(testLabel)) {
-            fail("Label text does not match");
+            jiraAwareFail("Label text does not match");
         }
 
-        assertIsVisible("#" + controlId);
-
-        return findElement(By.id(controlId), field).getText();
+        return findElement(By.id(fieldId)).getText();
     }
 
     protected void testDataFieldExamples() throws Exception {

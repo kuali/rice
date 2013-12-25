@@ -47,7 +47,6 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
                                           {"Travel Account Name:", "Travel Account 14"},
                                           {"Code And Description:", "CAT - Clearing"},
                                         //{"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
-                                      	  {"Date Created:", getTodaysDate()}, 
                                           };
         String[][] lightBoxFiscalOfficerLabeledText = {{"Travel Account Number:", "a14"},
                 {"Fiscal Officer User ID:", "fran"},

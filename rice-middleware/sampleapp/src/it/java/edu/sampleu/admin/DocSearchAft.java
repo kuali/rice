@@ -16,7 +16,6 @@
 
 package edu.sampleu.admin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -113,7 +112,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForTextPresent("Export options:");
     }
 
-    @Ignore // TODO fix
     @Test
     public void testDetailedDocSearchBookmark() throws Exception{
         //createAndSaveDoc();

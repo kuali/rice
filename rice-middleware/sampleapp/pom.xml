@@ -58,6 +58,11 @@
           <exclude>**/META-INF/*.xml</exclude>
         </excludes>
       </resource>
+      <!-- needed for XmlIngestionAfts -->
+      <resource>
+        <directory>src/it/resources</directory>
+        <filtering>false</filtering>
+      </resource>
     </resources>
 
     <plugins>

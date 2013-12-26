@@ -113,7 +113,7 @@ public class JiraIssueCreation {
                     this.getClass().toString()).click();
 
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("components-textarea"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.component", "Regression,Development").replaceAll(",", " "));
+                    this.getClass().toString()).sendKeys(System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " "));
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
                     this.getClass().toString()).sendKeys(System.getProperty("jira.priority", "Critical"));
 
@@ -124,15 +124,6 @@ public class JiraIssueCreation {
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
                     this.getClass().toString()).sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
 
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
-
-
-            if (jiraDatas.size() > 1) {
-                description = new StringBuilder("AFT Failures");
-            } else {
-                description = new StringBuilder("AFT Failure");
-            }
 
             summary = description + jiraDatas.get(0).errorMessage;
             if (summary.length() > 80) {
@@ -143,6 +134,7 @@ public class JiraIssueCreation {
                     this.getClass().toString()).sendKeys(summary);
 
             for (JiraData jiraData : jiraDatas) {
+                description.append("\n").append(jiraData.aftSteps);
                 description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
                 description.append(jiraData.testUrl).append("\n");
             }
@@ -159,7 +151,8 @@ public class JiraIssueCreation {
     protected JiraData parseJiraData(File inputFile) throws IOException {
         String rawData = FileUtils.readFileToString(inputFile, null);
         JiraData jiraData = new JiraData();
-        jiraData.shortTestName = rawData.substring(15, rawData.indexOf("Full test name: ")).trim(); // Abbreviated test name:
+        jiraData.aftSteps = rawData.substring(rawData.indexOf("AFT Step:"), rawData.indexOf("Abbreviated test name: "));
+        jiraData.shortTestName = rawData.substring(rawData.indexOf("Abbreviated test name: ") + 23, rawData.indexOf("Full test name: ")).trim(); // Abbreviated test name:
         jiraData.fullTestName = rawData.substring(rawData.indexOf("Full test name: ") + 16, rawData.indexOf("Test results url: ")).trim();
         jiraData.testUrl = rawData.substring(rawData.indexOf("Test results url: ") + 18, rawData.indexOf("Error Message: ")).trim();
         jiraData.errorMessage = rawData.substring(rawData.indexOf("Error Message: ") + 15, rawData.indexOf("Test Details: ")).trim();
@@ -186,6 +179,7 @@ public class JiraIssueCreation {
     }
 
     class JiraData {
+        String aftSteps;
         String shortTestName;
         String fullTestName;
         String testUrl;

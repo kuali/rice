@@ -541,11 +541,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message, failable);
             WebElement element = findElement(by);
-//            String name = element.getAttribute("name");
-//            if (name == null || "".equals(name)) {
-//                name = element.getAttribute("id");
+            // possible future code of outputting clicked components in a more generic way, but need to look into duplicates, don't delete
+//            String jgrowl = element.getAttribute("name");
+//            if (jgrowl == null || "".equals(jgrowl)) {
+//                jgrowl = element.getAttribute("id");
 //            }
-//            WebDriverUtils.jGrowl(getDriver(), "Click " + name, false, "Click " + name);
+//            if (jgrowl == null || "".equals(jgrowl)) {
+//                jgrowl = by.toString();
+//            }
+//            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
             element.click();
         } catch (Exception e) {
             failable.jiraAwareFail(by.toString(), message, e);

@@ -1771,18 +1771,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
         String agendaName = "Agenda Date :" + Calendar.getInstance().getTime().toString();
         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
         fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
+        Thread.sleep(1000);
+        // extra focus and blur to work around KULRICE-11534 Create New Agenda requires two blur events to fully render Type when Context is typed in (first renders label, second renders select)
         fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
         selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickByXpath("//div[2]/button");
-        waitAndClickByXpath("//div[2]/button[3]");
-        waitForPageToLoad();
-        selectTopFrame();
-        waitAndClickByXpath("(//input[@name='imageField'])[2]");
+        waitAndClickButtonByText("submit");
+        assertTextPresent(new String[] {"Document was successfully submitted.", "ENROUTE"});
         passed();
     }
 
@@ -2153,7 +2154,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");
+        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "Identity Role Kim Type lookup no return value link");
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
@@ -2707,10 +2708,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
 
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = waitAndGetAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']",
+        String styleValue = waitAndGetAttributeByXpath("//label[@id='" + idPrefix + "TextInputField_label']",
                 "style");
 
         // log.info("styleValue is " + styleValue);
@@ -2749,7 +2750,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineWithSpecificTime(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
         String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
         String inputTime = "7:06";
@@ -2767,7 +2768,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
         String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
         String inputTime = "5:20";
@@ -2781,20 +2782,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
 
         //store number of rows before adding the lines
-        String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
-        int rowCount = (getCssCount(cssCountRows));
         String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClickByXpath(allDayId);
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
 
+        WebElement table = findElement(By.id("ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent"));
+        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'delete')]"), table);
         //confirm that line has been added (by checking for the new delete button)
-        assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
+        assertEquals("line was not added", 3, columns.size());
     }
 
     //    protected void testTravelAccountTypeLookup() throws Exception {
@@ -3662,7 +3663,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testViewHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        assertEquals("Sample text for view help", getText("td.jquerybubblepopup-innerHtml"));
+        Thread.sleep(500);
+        assertEquals("Sample text for view help", getTextByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");

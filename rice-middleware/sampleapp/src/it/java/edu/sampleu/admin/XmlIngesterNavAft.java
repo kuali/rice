@@ -33,7 +33,7 @@ public class XmlIngesterNavAft extends XmlIngesterAftBase {
      * @throws Exception
      */
     @Test
-    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+    public void testXMLIngesterSuccessfulFileUploadNav() throws Exception {
         testIngestionNav(this);
     }
 }

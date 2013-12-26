@@ -16,7 +16,6 @@
 package edu.sampleu.admin;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 
 /**
  * JUnit implementation of XMLIngesterAftBase that navigates through the UI to the page under test.  In the future
@@ -27,12 +26,7 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlIngesterKradBkMrkAft extends XmlIngesterAftBase {
-
-    public XmlIngesterKradBkMrkAft(){
-        super();
-        this.setUiFramework(AutomatedFunctionalTestUtils.REMOTE_UIF_KRAD);
-    }
+public class XmlIngesterBkMrkAft extends XmlIngesterAftBase {
 
     @Override
     public String getBookmarkUrl() {

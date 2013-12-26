@@ -88,13 +88,14 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
     /**
      * go to the getMenuLinkLocator() Menu and click the getLinkLocator()
      */
-    protected void navigate(JiraAwareFailable failable) throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         selectTopFrame();
         waitAndClickAdministration();
         waitForTitleToEqualKualiPortalIndex();
-        waitAndClickXMLIngester(failable);
+        waitAndClickXMLIngester(this);
         selectFrameIframePortlet();
-        checkForIncidentReport("XML Ingester", failable, "");
+        checkForIncidentReport("XML Ingester", this, "");
     }
 
     /**
@@ -104,7 +105,6 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      * @throws Exception
      */
     protected void testIngestionNav(JiraAwareFailable failable) throws Exception {
-        navigate(failable);
         testIngestion(failable);
         passed();
     }
@@ -146,7 +146,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
         // confirm all files were uploaded successfully
         Thread.sleep(1000);
         for(File file: fileUploadList) {
-            assertTextPresent("Ingested xml doc: " + file.getName());
+            waitForTextPresent("Ingested xml doc: " + file.getName());
         }
     }
 

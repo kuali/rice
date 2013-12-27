@@ -61,7 +61,7 @@ public abstract class ConfigComponentLookUpAndInquireAftBase extends AdminTmplMt
     public void testConfigComponentLookUpAndInquire() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("Action List");
         switchToWindow("Kuali :: Inquiry");
         selectFrameIframePortlet();

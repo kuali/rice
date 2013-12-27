@@ -61,7 +61,7 @@ public abstract class ConfigNamespaceLookUpAndCopyAftBase extends AdminTmplMthdA
     public void testConfigNamespaceLookUpAndCopy() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("copy");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace copy" + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());

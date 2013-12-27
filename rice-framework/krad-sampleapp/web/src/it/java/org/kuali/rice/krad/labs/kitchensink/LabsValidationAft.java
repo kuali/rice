@@ -88,6 +88,6 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	waitAndClickByXpath("//input[@name='field24' and @value='case1']");
     	waitAndTypeByName("field25","");
     	waitAndTypeByName("field26","");
-    	assertElementPresentByXpath("//input[@name='field25' and @class='form-control input-sm uif-textControl dependsOn-field24 error']");
+    	assertElementPresentByXpath("//input[@name='field25' and @class='form-control input-sm uif-textControl dependsOn-field24 required error']");
     }
 }

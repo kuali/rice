@@ -37,13 +37,14 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();
-        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+        waitAndClickByLinkText("Validation");
+        waitAndClickByLinkText("Validation - Regex");
     }
 
     protected void testValidCharsConstraintNav(JiraAwareFailable failable) throws Exception {
         navigation();
-        waitAndClickByLinkText("Validation - Regex");
         testValidCharsConstraintIT();
         passed();
     }

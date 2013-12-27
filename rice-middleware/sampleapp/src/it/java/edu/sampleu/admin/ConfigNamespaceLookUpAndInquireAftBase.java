@@ -61,7 +61,7 @@ public abstract class ConfigNamespaceLookUpAndInquireAftBase extends AdminTmplMt
     public void testConfigNamespaceLookUpAndInquire() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("Enterprise Infrastructure");
         switchToWindow("Kuali :: Inquiry");
         selectFrameIframePortlet();

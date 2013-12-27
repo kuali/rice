@@ -37,8 +37,8 @@ public abstract class RichMessagesAftBase extends WebDriverLegacyITBase {
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();
-        waitAndClickByXpath("(//a[contains(text(),'Rich Messages')])[2]");
-        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);        
+        waitAndClickByLinkText("Rich Messages");
+        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
         checkForIncidentReport(RICH_MESSAGES_WINDOW_TITLE);
         Thread.sleep(9000);
     }

@@ -59,10 +59,9 @@ public abstract class ConfigComponentLookUpAndCopyAftBase extends AdminTmplMthdA
         passed();
     }    
     
-    public void testConfigComponentLookUpAndCopy() throws Exception
-    {
+    public void testConfigComponentLookUpAndCopy() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("copy");
         String fourLetters = RandomStringUtils.randomAlphabetic(4);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component copy " + AutomatedFunctionalTestUtils

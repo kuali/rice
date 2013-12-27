@@ -61,7 +61,7 @@ public abstract class ConfigParameterTypeLookUpAndCopyAftBase extends AdminTmplM
     public void testConfigParameterTypeLookUpAndCopy() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("copy");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type copy");
         waitAndTypeByName("document.newMaintainableObject.code","AUTH2");

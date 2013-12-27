@@ -61,7 +61,7 @@ public abstract class ConfigParameterTypeLookUpAndInquireAftBase extends AdminTm
     public void testConfigParameterTypeLookUpAndInquire() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("Authorization");
         switchToWindow("Kuali :: Inquiry");
         selectFrameIframePortlet();

@@ -52,21 +52,37 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
     }
     
     protected void testLookups() throws InterruptedException {
-    	assertElementPresentByXpath("//input[@title='Direct Inquiry']");
+        waitAndClickByLinkText("a2");
+        gotoLightBox();
+        assertTextPresent(new String[] {"Travel Account Number:", "a2", "Travel Account Name:", "Travel Account 2", "Code And Description:", "EAT - Expense"});
+        waitAndClickButtonByText("Close");
+
     	clearTextByName("field72");
     	waitAndTypeByName("field72","a2");
-    	clearTextByName("field70");
+        fireEvent("field72", "blur");
     	waitForTextPresent("Travel Account 2");
-    	waitAndTypeByName("field76","");
-    	clearTextByName("field70");
+
+        clearTextByName("field76");
+    	waitAndTypeByName("field76","a1");
+        fireEvent("field76", "blur");
         waitForTextPresent("Travel Account 1");
+
+        waitAndTypeByName("field79", "");
+        fireEvent("field79", "blur");
+        waitForTextPresent("Travel Account 3");
+
     	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickButtonByText("Search");
-    	waitAndClickLinkContainingText("return value","");
+    	waitAndClickReturnValue();
     	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickButtonByText("Search");
-    	waitAndClickLinkContainingText("return value","");
+        waitAndClickReturnValue();
+
+        waitAndClickByXpath("//input[@title='Direct Inquiry']");
+        gotoLightBox();
+        assertTextPresent(new String[] {"Travel Account Number:", "a1", "Travel Account Name:", "Travel Account 1", "Code And Description:", "IAT - Income"});
+        waitAndClickButtonByText("Close");
     }
 }

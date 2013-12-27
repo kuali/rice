@@ -340,6 +340,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String SEARCH_XPATH_3 = "//button[contains(text(),'earch')]";
 
     /**
+     * (//input[@name='methodToCall.search'])[2]
+     */
+    public static final String SEARCH_SECOND = "(//input[@name='methodToCall.search'])[2]";
+
+    /**
      * //input[@name='methodToCall.route' and @alt='submit']
      */
     public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
@@ -787,13 +792,23 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
-        // get growl text
-        String growlText = waitForElementPresent(By.className("jGrowl-message")).getText();
+        waitForElementPresent(By.className("jGrowl-message"));
 
-        WebDriverUtils.stepMessage("Is jGrowl text '" + jGrowlText + "'? " + jGrowlText.equals(growlText));
+        // get growl texts
+        StringBuilder sb = new StringBuilder("");
+        List<WebElement> jGrowls = findElements(By.className("jGrowl-message"));
+        for (WebElement jGrowl : jGrowls) {
+            if (jGrowl.getText() != null && jGrowl.getText().contains("")) {
+            } else {
+                sb.append(jGrowl.getText()).append("\n");
+            }
+        }
+        String growlText = sb.toString();
+
+        WebDriverUtils.stepMessage("Do jGrowls contain text '" + jGrowlText + "'? " + growlText.contains(jGrowlText));
 
         //check growl text is present
-        assertEquals(jGrowlText, growlText);
+        assertTrue(growlText + " does not contain " + jGrowlText, growlText.contains(jGrowlText));
     }
 
     protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {
@@ -2154,7 +2169,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "Identity Role Kim Type lookup no return value link");
+        waitAndClickReturnValue();
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
@@ -2165,7 +2180,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName(
                 "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");
+        waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
         blanketApproveTest();
@@ -2662,18 +2677,18 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertFocusTypeBlurValidation("field75", new String[]{"02/35/12"},new String[]{"02/28/12"});
         assertFocusTypeBlurValidation("field82", new String[]{"13:22"},new String[]{"02:33"});
         assertFocusTypeBlurValidation("field83", new String[]{"25:22"},new String[]{"14:33"});
+        assertFocusTypeBlurValidation("field56", new String[]{"2020-06-02"},new String[]{"2020-06-02 03:30:30.22"});
         assertFocusTypeBlurValidation("field57", new String[]{"0"},new String[]{"2020"});
         assertFocusTypeBlurValidation("field58", new String[]{"13"},new String[]{"12"});
         assertFocusTypeBlurValidation("field61", new String[]{"5555-444"},new String[]{"55555-4444"});
         assertFocusTypeBlurValidation("field62", new String[]{"aa5bb6_a"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"});
-        assertFocusTypeBlurValidation("field63", new String[]{"fff555"},new String[]{"aa22 _/"});
+        assertFocusTypeBlurValidation("field63", new String[]{"#fff555"},new String[]{"aa22 _/"});
         assertFocusTypeBlurValidation("field64", new String[]{"AABB55"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z"});
         assertFocusTypeBlurValidation("field76", new String[]{"AA~BB%"},new String[]{"abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?"});
         assertFocusTypeBlurValidation("field65", new String[]{"sdfs$#$# dsffs"},new String[]{"sdfs$#$#sffs"});
         assertFocusTypeBlurValidation("field66", new String[]{"abcABCD"},new String[]{"ABCabc"});
         assertFocusTypeBlurValidation("field67", new String[]{"(111)B-(222)A"},new String[]{"(12345)-(67890)"});
         assertFocusTypeBlurValidation("field68", new String[]{"A.66"},new String[]{"a.4"});
-        assertFocusTypeBlurValidation("field56", new String[]{"2020-06-02"},new String[]{"2020-06-02 03:30:30.22"});
     }
 
     protected void assertFocusTypeBlurValidation(String field, String[] errorInputs, String[] validInputs) throws InterruptedException {
@@ -4366,7 +4381,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickReturnValue() throws InterruptedException {
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT);
+        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "Unable to click return value " + this.getClass().toString());
     }
 
     protected void waitAndClickReturnValue(String message) throws InterruptedException {
@@ -4387,6 +4402,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitAndClickSearch3() throws InterruptedException {
         waitAndClickByXpath(SEARCH_XPATH_3);
+    }
+
+    protected void waitAndClickSearchSecond() throws InterruptedException {
+        waitAndClickByXpath(SEARCH_SECOND);
     }
 
     protected String waitForDocId() throws InterruptedException {

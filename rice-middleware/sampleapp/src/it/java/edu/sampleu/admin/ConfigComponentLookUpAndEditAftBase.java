@@ -60,7 +60,7 @@ public abstract class ConfigComponentLookUpAndEditAftBase extends AdminTmplMthdA
     
     public void testConfigComponentLookUpAndEdit() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component");
         waitAndClickByName("methodToCall.route");

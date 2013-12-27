@@ -61,7 +61,7 @@ public abstract class ConfigNamespaceLookUpAndEditAftBase extends AdminTmplMthdA
     public void testConfigNamespaceLookUpAndEdit() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Namespace " + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());

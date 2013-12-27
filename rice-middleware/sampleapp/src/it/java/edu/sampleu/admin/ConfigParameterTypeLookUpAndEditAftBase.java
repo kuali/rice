@@ -62,7 +62,7 @@ public abstract class ConfigParameterTypeLookUpAndEditAftBase extends AdminTmplM
     public void testConfigParameterTypeLookUpAndEdit() throws Exception
     {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter type " + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());

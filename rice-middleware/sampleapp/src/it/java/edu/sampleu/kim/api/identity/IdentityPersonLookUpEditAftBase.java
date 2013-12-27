@@ -64,7 +64,7 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         // This tests only runs correctly the first time.
         selectFrameIframePortlet();
         waitAndTypeByName("principalName","fran");
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         selectFrameIframePortlet();
         waitAndClickByXpath("//a[@title='edit Person withPrincipal ID=fran ']");
         waitAndTypeByName("document.documentHeader.documentDescription", "Test description of person");

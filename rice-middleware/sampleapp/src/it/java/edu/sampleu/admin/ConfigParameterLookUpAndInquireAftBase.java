@@ -63,7 +63,7 @@ public abstract class ConfigParameterLookUpAndInquireAftBase extends AdminTmplMt
     {
         selectFrameIframePortlet();
         waitAndTypeByName("name","email*");
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("EMAIL_NOTIFICATION_TEST_ADDRESS");
         switchToWindow("Kuali :: Inquiry");
         selectFrameIframePortlet();

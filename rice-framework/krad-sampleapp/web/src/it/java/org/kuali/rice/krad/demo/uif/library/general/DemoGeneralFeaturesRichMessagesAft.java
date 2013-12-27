@@ -79,35 +79,26 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
         waitAndClickByLinkText("Action");
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][1]/a"));
-        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][2]/a"));
-        Thread.sleep(1000);
-        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][3]/a"));
-        Thread.sleep(1000);
-        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: You passed data");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][4]/a"));
-        Thread.sleep(1000);
-        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][5]/a"));
-        Thread.sleep(1000);
-        acceptAlertIfPresent(); // Flash not installed
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
     }

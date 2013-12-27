@@ -62,7 +62,7 @@ public abstract class ConfigParameterLookUpAndEditAftBase extends AdminTmplMthdA
     {
         selectFrameIframePortlet();
         waitAndTypeByName("name","email*");
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("edit");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter " + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());

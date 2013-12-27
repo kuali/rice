@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.List;
+
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 
@@ -127,5 +130,19 @@ public interface Group extends Container {
      * @param renderFooter value
      */
     void setRenderFooter(boolean renderFooter);
+    
+    /**
+     * Gets a list of items dynamically added to the group by a component modifier.
+     * 
+     * @return list of dynamic items
+     */
+    List<? extends LifecycleElement> getDynamicItems();
+    
+    /**
+     * Setter for {@link #getDynamicItems()}.
+     * 
+     * @param dynamicItems list of dynamic items.
+     */
+    void setDynamicItems(List<? extends LifecycleElement> dynamicItems);
     
 }

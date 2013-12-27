@@ -55,12 +55,12 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * @param pendingChildren The number of child rendering phases to expect to be queued for
      *        processing before this phase.
      */
-    protected void prepare(LifecycleElement element, Object model, int index,
+    protected void prepare(LifecycleElement element, Object model,
             String path, RenderComponentPhase parent, int pendingChildren) {
         Component parentComponent = parent == null ? null
                 : parent.getElement() instanceof Component ? (Component) parent.getElement()
                         : parent.getParent();
-        super.prepare(element, model, index, path, parentComponent, null);
+        super.prepare(element, model, path, parentComponent, null);
         this.renderParent = parent;
         this.pendingChildren = pendingChildren;
     }

@@ -318,9 +318,8 @@ public class CollectionGroupBuilder implements Serializable {
 
         // check for remote fields holder
         List<Field> lineFields = processAnyRemoteFieldsHolder(collectionGroup, lineItems);
-        for (Field lineField : lineFields) {
-            ViewLifecycle.spawnSubLifecyle(model, lineField, collectionGroup, null, null, false);
-        }
+        collectionGroup.addLineFields(lineSuffix, lineFields);
+        ViewLifecycle.spawnSubLifecyle(model, collectionGroup, "lineFields["+lineSuffix+"]", null, null, false);
 
         // adjust binding path and id to match collection line path
         ComponentUtils.bindAndIdFieldList(lineFields, bindingPath, lineSuffix);

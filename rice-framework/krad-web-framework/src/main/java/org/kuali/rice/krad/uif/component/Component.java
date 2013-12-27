@@ -70,7 +70,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return String bean id for component
      */
     String getBaseId();
-
+    
     /**
      * Setter for the base id that backs the component instance
      *

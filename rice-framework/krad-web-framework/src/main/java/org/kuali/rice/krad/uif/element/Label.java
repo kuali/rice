@@ -78,7 +78,7 @@ public class Label extends ContentElementBase {
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
 
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
+            ViewLifecycle.spawnSubLifecyle(model,this, "richLabelMessage");
 
             this.setRichLabelMessage(message);
         }

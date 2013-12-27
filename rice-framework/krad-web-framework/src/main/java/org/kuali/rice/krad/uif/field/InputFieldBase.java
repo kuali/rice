@@ -370,11 +370,10 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     protected void buildAutomaticQuickfinder(Object model) {
         QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
 
-        ViewLifecycle.spawnSubLifecyle(model, autoQuickfinder, this);
-
         // if render flag is true, that means the quickfinder was able to find a relationship
         if (autoQuickfinder.isRender()) {
             this.quickfinder = autoQuickfinder;
+            ViewLifecycle.spawnSubLifecyle(model, this, "quickfinder");
         }
     }
 

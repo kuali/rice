@@ -127,9 +127,8 @@ public class Header extends ContentElementBase {
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
             
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
-
             this.setRichHeaderMessage(message);
+            ViewLifecycle.spawnSubLifecyle(model, this, "richHeaderMessage");
         }
     }
 

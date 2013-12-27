@@ -54,6 +54,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     private static final long serialVersionUID = -2657663560459456814L;
 
     private String id;
+    private String path;
     private String template;
     private String templateName;
 
@@ -254,6 +255,22 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public void setId(String id) {
         checkMutable(true);
         this.id = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getPath() {
+        return this.path;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**

@@ -38,7 +38,6 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -232,11 +231,10 @@ public class DataFieldBase extends FieldBase implements DataField {
     protected void buildAutomaticInquiry(Object model, boolean enableDirectInquiry) {
         Inquiry autoInquiry = ComponentFactory.getInquiry();
 
-        ViewLifecycle.spawnSubLifecyle(model, autoInquiry, this);
-
         // if render flag is true, that means the inquiry was able to find a relationship
         if (autoInquiry.isRender()) {
             this.inquiry = autoInquiry;
+            ViewLifecycle.spawnSubLifecyle(model, this, "inquiry", null, null, false);
         }
     }
 

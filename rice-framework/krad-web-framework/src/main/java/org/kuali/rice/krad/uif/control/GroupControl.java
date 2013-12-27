@@ -75,7 +75,7 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
             field.setQuickfinder(quickFinder);
-            ViewLifecycle.spawnSubLifecyle(model, quickFinder, field);
+            ViewLifecycle.spawnSubLifecyle(model, field, "quickFinder");
         }
 
         if (field.getQuickfinder() != null) {

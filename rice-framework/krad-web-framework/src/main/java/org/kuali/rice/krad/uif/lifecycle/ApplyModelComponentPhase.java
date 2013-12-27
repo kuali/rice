@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.HelperCustomApplyModelTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewTheme;
+import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -81,9 +82,9 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      */
-    protected void prepare(LifecycleElement element, Object model, int index, String path,
+    protected void prepare(LifecycleElement element, Object model, String path,
             Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
-        super.prepare(element, model, index, path, parent, nextPhase);
+        super.prepare(element, model, path, parent, nextPhase);
         this.visitedIds = visitedIds;
 
         Map<String, Object> commonContext = new HashMap<String, Object>();
@@ -191,18 +192,16 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         LifecycleElement element = getElement();
         Object model = getModel();
 
-        // initialize nested components
-        int index = 0;
-
         for (Entry<String, LifecycleElement> nestedElementEntry :
                 ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
             String path = getPath();
-            String nestedPath = (path == null ? "" : path + ".") + nestedElementEntry.getKey();
+            String nestedPath = (StringUtils.isEmpty(path) ? "" : path + ".")
+                    + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
             if (nestedElement != null) {
                 successors.offer(LifecyclePhaseFactory
-                        .applyModel(nestedElement, model, index++, nestedPath,
+                        .applyModel(nestedElement, model, nestedPath,
                                 element instanceof Component ? (Component) element : getParent(),
                                 null, visitedIds));
             }

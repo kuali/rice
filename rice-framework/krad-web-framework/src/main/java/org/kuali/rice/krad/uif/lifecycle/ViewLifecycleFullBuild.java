@@ -73,7 +73,7 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         helper.performCustomViewInitialization(model);
 
-        processor.performPhase(LifecyclePhaseFactory.initialize(view, model, 0, null, null, null));
+        processor.performPhase(LifecyclePhaseFactory.initialize(view, model, "", null, null));
 
         ProcessLogger.trace("initialize:" + view.getId());
         
@@ -94,7 +94,7 @@ public class ViewLifecycleFullBuild implements Runnable {
         // set view context for conditional expressions
         helper.setViewContext();
 
-        processor.performPhase(LifecyclePhaseFactory.applyModel(view, model));
+        processor.performPhase(LifecyclePhaseFactory.applyModel(view, model, ""));
 
         ProcessLogger.trace("apply-model:" + view.getId());
         
@@ -107,7 +107,7 @@ public class ViewLifecycleFullBuild implements Runnable {
         String growlScript = helper.buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        processor.performPhase(LifecyclePhaseFactory.finalize(view, model, 0, null, null));
+        processor.performPhase(LifecyclePhaseFactory.finalize(view, model, "", null));
         
         ProcessLogger.trace("finalize:" + view.getId());
     }

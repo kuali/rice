@@ -78,6 +78,11 @@ public class ViewLifecycleComponentBuild implements Runnable {
         Component newComponent = component;
         Component origComponent = view.getViewIndex().getComponentById(origId);
 
+        String path = origComponent.getPath();
+        component.setPath(origComponent.getPath());
+        assert origComponent == ObjectPropertyUtils.getPropertyValue(view, path);
+        ObjectPropertyUtils.setPropertyValue(view, path, component);
+
         // check if the component is nested in a box layout in order to
         // reapply the layout item style
         List<String> origCss = origComponent.getCssClasses();
@@ -152,7 +157,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ProcessLogger.trace("ready:" + newComponent.getId());
         }
         
-        processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model));
+        processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model, path));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("initialize:" + newComponent.getId());
@@ -213,7 +218,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
+        processor.performPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent, newComponent.getPath()));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("apply-model:" + newComponent.getId());
@@ -226,7 +231,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
+        processor.performPhase(LifecyclePhaseFactory.finalize(newComponent, model, newComponent.getPath(), parent));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("finalize:" + newComponent.getId());

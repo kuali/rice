@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -397,9 +398,186 @@ public class ViewLifecycle implements Serializable {
      * @param model object providing the view data
      * @param component component to run the lifecycle phases for
      * @param parent parent component for the component being processed
+     * @param path property path of the component, relative the parent component
      */
-    public static void spawnSubLifecyle(Object model, Component component, Component parent) {
-        spawnSubLifecyle(model, component, parent, null, null, true);
+    public static void spawnSubLifecyle(Object model, Component parent, String path) {
+        spawnSubLifecyle(model, parent, path, null, null, true);
+    }
+
+    private static String getStartPhaseForSubLifecycle(LifecycleElement element, String startPhase) {
+        if (StringUtils.isBlank(startPhase)) {
+            String compStatus = element.getViewStatus();
+
+            if (UifConstants.ViewStatus.CREATED.equals(compStatus)) {
+                return UifConstants.ViewPhases.INITIALIZE;
+            } else if (UifConstants.ViewStatus.INITIALIZED.equals(compStatus)) {
+                return UifConstants.ViewPhases.APPLY_MODEL;
+            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(compStatus)) {
+                return UifConstants.ViewPhases.FINALIZE;
+            } else {
+                reportIllegalState("View lifecycle has already been applied to "
+                        + element.getClass().getName() + " " + element.getId());
+                return ViewLifecycleUtils.getNextLifecyclePhase(element);
+            }
+
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
+                .equals(startPhase) && !UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
+            throw new RuntimeException("Invalid start phase given: " + startPhase);
+        
+        } else {
+            return startPhase;
+        }
+    }
+
+    private static String getEndPhaseForSubLifecycle(LifecycleElement element, String elementStartPhase, String endPhase) {
+        if (StringUtils.isBlank(endPhase)) {
+            ViewLifecyclePhase activePhase = ViewLifecycle.getPhase();
+
+            if (activePhase != null && UifConstants.ViewPhases.APPLY_MODEL.equals(activePhase.getViewPhase())) {
+                if (!UifConstants.ViewPhases.INITIALIZE.equals(elementStartPhase)) {
+                    return null;
+                }
+                return UifConstants.ViewPhases.INITIALIZE;
+
+            } else if (activePhase != null && UifConstants.ViewPhases.FINALIZE.equals(activePhase.getViewPhase())) {
+                if (!UifConstants.ViewPhases.INITIALIZE.equals(elementStartPhase)
+                        && !UifConstants.ViewPhases.APPLY_MODEL.equals(elementStartPhase)) {
+                    return null;
+                }
+                return UifConstants.ViewPhases.APPLY_MODEL;
+
+            } else {
+                return UifConstants.ViewPhases.FINALIZE;
+            }
+
+        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase)
+                && !UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)
+                && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+            throw new RuntimeException("Invalid end phase given: " + endPhase);
+        
+        } else {
+            return endPhase;
+        }
+    }
+    
+    private static void doSpawnSubLifecycleAsynchronous(Object model, Component parent,
+            LifecycleElement element, String elementPath, String startPhase, String endPhase) {
+        assert startPhase != null;
+        assert endPhase != null;
+        
+        // Push sub-lifecycle phases in reverse order.  These will be processed immediately after
+        // the active phase ends, starting with the last phase pushed.
+        ViewLifecycleProcessor processor = getProcessor();
+        
+        // Perform sub-lifecycle immediately in the same thread
+        FinalizeComponentPhase finalPhase = null;
+        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
+            finalPhase = LifecyclePhaseFactory.finalize(element, model, elementPath, parent);
+        }
+
+        if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
+            processor.pushPendingPhase(finalPhase);
+            return;
+        }
+
+        ApplyModelComponentPhase applyModelPhase = null;
+        if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
+                UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+            applyModelPhase = LifecyclePhaseFactory.applyModel(
+                    element, model, elementPath, parent, finalPhase, new HashSet<String>());
+        }
+
+        if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+            processor.pushPendingPhase(applyModelPhase);
+            return;
+        }
+
+        InitializeComponentPhase initializePhase = 
+                LifecyclePhaseFactory.initialize(element, model, elementPath, parent, applyModelPhase);
+        processor.pushPendingPhase(initializePhase);
+
+    }
+    
+    private static void doSpawnSubLifecycleSynchronous(Object model, Component parent,
+            LifecycleElement element, String elementPath, String startPhase, String endPhase) {
+        assert startPhase != null;
+        assert endPhase != null;
+        
+        ViewLifecycleProcessor processor = getProcessor();
+        ViewLifecycleProcessor synchProcessor = new SynchronousViewLifecycleProcessor(processor.getLifecycle());
+        try {
+            PROCESSOR.set(synchProcessor);
+
+            synchProcessor.getExpressionEvaluator().initializeEvaluationContext(model);
+            
+            // Perform sub-lifecycle immediately in the same thread
+            if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
+                synchProcessor.performPhase(LifecyclePhaseFactory.initialize(
+                        element, model, elementPath, parent, null));
+            }
+
+            if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
+                return;
+            }
+
+            if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
+                    UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
+                synchProcessor.performPhase(LifecyclePhaseFactory.applyModel(
+                        element, model, elementPath, parent, null, new HashSet<String>()));
+            }
+
+            if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
+                return;
+            }
+
+            synchProcessor.performPhase(LifecyclePhaseFactory.finalize(
+                    element, model, elementPath, parent));
+
+        } finally {
+            PROCESSOR.set(processor);
+        }
+    }
+
+    private static void doSpawnSubLifecycle(Object model, LifecycleElement element, Component parent,
+            String elementPath, String startPhase, String endPhase, boolean asynchronous) {
+        if (element == null) {
+            return;
+        }
+        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Spawning sub-lifecycle for component: "
+                    + element.getClass() + " " + element.getId() + " " + element.getPath()
+                    + (parent == null ? "" : " " + parent.getClass() + " " + parent.getId()));
+        }
+
+        String elementStartPhase = getStartPhaseForSubLifecycle(element, startPhase);
+        String elementEndPhase = getEndPhaseForSubLifecycle(element, elementStartPhase, endPhase);
+        if (elementEndPhase == null) {
+            return;
+        }
+
+        if (asynchronous) {
+            doSpawnSubLifecycleAsynchronous(model, parent, element, elementPath, elementStartPhase, elementEndPhase);
+        } else {
+            doSpawnSubLifecycleSynchronous(model, parent, element, elementPath, elementStartPhase, elementEndPhase);
+        }
+    }
+
+    private static void doSpawnSubLifecycleList(Object model, List<? extends LifecycleElement> elementList,
+            Component parent, String elementPath, String startPhase, String endPhase, boolean asynchronous) {
+        for (int i=0; i < elementList.size(); i++) {
+            doSpawnSubLifecycle(model, elementList.get(i), parent, elementPath + "["+i+"]",
+                    startPhase, endPhase, asynchronous);
+        }
+    }
+
+    private static void doSpawnSubLifecycleMap(Object model, Map<String, ? extends LifecycleElement> elementMap,
+            Component parent, String elementPath, String startPhase, String endPhase, boolean asynchronous) {
+        for (Map.Entry<String, ? extends LifecycleElement> elementEntry : elementMap.entrySet()) {
+            doSpawnSubLifecycle(model, elementEntry.getValue(), parent,
+                    elementPath + "["+elementEntry.getKey()+"]",
+                    startPhase, endPhase, asynchronous);
+        }
     }
 
     /**
@@ -413,133 +591,49 @@ public class ViewLifecycle implements Serializable {
      * @param model object providing the view data
      * @param component component to run the lifecycle phases for
      * @param parent parent component for the component being processed
+     * @param path property path of the component, relative the parent component
      * @param startPhase lifecycle phase to start with, or null to indicate the first phase
      * @param endPhase lifecycle phase to end with, or null to indicate the last phase
      * @param asynchronous True to spawn the component lifecycle in the next available worker, false
      *        to spawn immediately in the same thread.
      */
-    public static void spawnSubLifecyle(Object model, Component component, Component parent,
+    public static void spawnSubLifecyle(Object model, Component parent, String path,
             String startPhase, String endPhase, boolean asynchronous) {
-        if (component == null) {
+        
+        if (!ObjectPropertyUtils.isReadableProperty(parent, path)) {
+            reportIllegalState("Property " + path + " is not readable on " + parent.getClass());
             return;
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Spawning sub-lifecycle for component: "
-                    + component.getClass() + " " + component.getId()
-                    + (parent == null ? "" : " " + parent.getClass() + " " + parent.getId()));
-        }
+        String elementPath = (StringUtils.isEmpty(parent.getPath()) ? path
+                : parent.getPath() + "." + path);
+        
+        Object elementPropertyValue = ObjectPropertyUtils.getPropertyValue(parent, path);
+        if (elementPropertyValue instanceof LifecycleElement) {
+            doSpawnSubLifecycle(model, (LifecycleElement) elementPropertyValue,
+                    parent, elementPath, startPhase, endPhase, asynchronous);
+            
+        } else if (elementPropertyValue instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends LifecycleElement> elementList = (List<? extends LifecycleElement>) elementPropertyValue;
+            doSpawnSubLifecycleList(model, elementList,
+                    parent, elementPath, startPhase, endPhase, asynchronous);
 
-        if (StringUtils.isBlank(startPhase)) {
-            String compStatus = component.getViewStatus();
+        } else if (elementPropertyValue instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, ? extends LifecycleElement> elementMap = (Map<String, ? extends LifecycleElement>) elementPropertyValue;
+            doSpawnSubLifecycleMap(model, elementMap,
+                    parent, elementPath, startPhase, endPhase, asynchronous);
 
-            if (UifConstants.ViewStatus.CREATED.equals(compStatus)) {
-                startPhase = UifConstants.ViewPhases.INITIALIZE;
-            } else if (UifConstants.ViewStatus.INITIALIZED.equals(compStatus)) {
-                startPhase = UifConstants.ViewPhases.APPLY_MODEL;
-            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(compStatus)) {
-                startPhase = UifConstants.ViewPhases.FINALIZE;
-            } else {
-                reportIllegalState("View lifecycle has already been applied to "
-                        + component.getClass().getName() + " " + component.getId());
-            }
-
-        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase) && !UifConstants.ViewPhases.APPLY_MODEL
-                .equals(startPhase) && !UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
-            throw new RuntimeException("Invalid start phase given: " + startPhase);
-        }
-
-        if (StringUtils.isBlank(endPhase)) {
-            ViewLifecyclePhase activePhase = ViewLifecycle.getPhase();
-
-            if (activePhase != null && UifConstants.ViewPhases.APPLY_MODEL.equals(activePhase.getViewPhase())) {
-                if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-                    return;
-                }
-                endPhase = UifConstants.ViewPhases.INITIALIZE;
-
-            } else if (activePhase != null && UifConstants.ViewPhases.FINALIZE.equals(activePhase.getViewPhase())) {
-                if (!UifConstants.ViewPhases.INITIALIZE.equals(startPhase)
-                        && !UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                    return;
-                }
-                endPhase = UifConstants.ViewPhases.APPLY_MODEL;
-
-            } else {
-                endPhase = UifConstants.ViewPhases.FINALIZE;
-            }
-
-        } else if (!UifConstants.ViewPhases.INITIALIZE.equals(endPhase) && !UifConstants.ViewPhases.APPLY_MODEL.equals(
-                endPhase) && !UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
-            throw new RuntimeException("Invalid end phase given: " + endPhase);
-        }
-
-        // Push sub-lifecycle phases in reverse order.  These will be processed immediately after
-        // the active phase ends, starting with the last phase pushed.
-        ViewLifecycleProcessor processor = getProcessor();
-
-        if (asynchronous) {
-
-            // Perform sub-lifecycle immediately in the same thread
-            FinalizeComponentPhase finalPhase = null;
-            if (UifConstants.ViewPhases.FINALIZE.equals(endPhase)) {
-                finalPhase = LifecyclePhaseFactory.finalize(component, model, 0, null, parent);
-            }
-
-            if (UifConstants.ViewPhases.FINALIZE.equals(startPhase)) {
-                processor.pushPendingPhase(finalPhase);
-                return;
-            }
-
-            ApplyModelComponentPhase applyModelPhase = null;
-            if (UifConstants.ViewPhases.FINALIZE.equals(endPhase) ||
-                    UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
-                applyModelPhase = LifecyclePhaseFactory.applyModel(
-                        component, model, 0, null, parent, finalPhase, new HashSet<String>());
-            }
-
-            if (UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                processor.pushPendingPhase(applyModelPhase);
-                return;
-            }
-
-            InitializeComponentPhase initializePhase = 
-                    LifecyclePhaseFactory.initialize(component, model, 0, null, parent, applyModelPhase);
-            processor.pushPendingPhase(initializePhase);
-
+        } else if (elementPropertyValue == null) {
+            return;
+        
         } else {
-
-            ViewLifecycleProcessor synchProcessor =
-                    new SynchronousViewLifecycleProcessor(processor.getLifecycle());
-            try {
-                PROCESSOR.set(synchProcessor);
-
-                synchProcessor.getExpressionEvaluator().initializeEvaluationContext(model);
-                
-                // Perform sub-lifecycle immediately in the same thread
-                if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase)) {
-                    synchProcessor.performPhase(LifecyclePhaseFactory.initialize(component, model, 0, null, parent, null));
-                }
-
-                if (UifConstants.ViewPhases.INITIALIZE.equals(endPhase)) {
-                    return;
-                }
-
-                if (UifConstants.ViewPhases.INITIALIZE.equals(startPhase) ||
-                        UifConstants.ViewPhases.APPLY_MODEL.equals(startPhase)) {
-                    synchProcessor.performPhase(LifecyclePhaseFactory.applyModel(component, model, 0, null, parent, null, new HashSet<String>()));
-                }
-
-                if (UifConstants.ViewPhases.APPLY_MODEL.equals(endPhase)) {
-                    return;
-                }
-
-                synchProcessor.performPhase(LifecyclePhaseFactory.finalize(component, model, 0, null, parent));
-
-            } finally {
-                PROCESSOR.set(processor);
-            }
+            reportIllegalState("Property " + path + " does not resolve to a lifecycle element on "
+                    + parent.getClass());
+            return;
         }
+
     }
 
     /**

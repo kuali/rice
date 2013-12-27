@@ -454,11 +454,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         //perform the lifecycle for all the newly generated components as a result of processing the
         //column calculations
-        for (Component component : footerCalculationComponents) {
-            if (component != null) {
-                ViewLifecycle.spawnSubLifecyle(model, component, container);
-            }
-        }
+        ViewLifecycle.spawnSubLifecyle(model, container, "layoutManager.footerCalculationComponents");
     }
 
     /**
@@ -503,11 +499,10 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                 labelPhase = UifConstants.ViewPhases.APPLY_MODEL;
             }
 
-            if (labelPhase != null) {
-                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), label, totalDataField, null, labelPhase, true);
-            }
-
             totalDataField.setFieldLabel(label);
+            if (labelPhase != null) {
+                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), totalDataField, "fieldLabel", null, labelPhase, true);
+            }
         }
 
         if (this.isRenderOnlyLeftTotalLabels()) {
@@ -687,7 +682,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                 }
             } else {
                 sequenceField = ComponentFactory.getMessageField();
-                ViewLifecycle.spawnSubLifecyle(model, sequenceField, collectionGroup);
 
                 Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
                 ((MessageField) sequenceField).setMessage(sequenceMessage);
@@ -707,6 +701,12 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
             allRowFields.add(sequenceField);
+            
+            if (isAddLine) {
+                ViewLifecycle.spawnSubLifecyle(model, collectionGroup,
+                        "layoutManager.allRowFields[" + (allRowFields.size() - 1) + "]");
+            }
+            
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {

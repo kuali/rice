@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -115,8 +116,14 @@ public class ObjectPropertyReference {
 
             // Get the property type and value from the current node reference.
             // These will become the bean and bean class after transition.
-            Object bean = current.get();
             Class<?> beanClass = current.getPropertyType();
+            Object bean = current.get();
+            if (bean instanceof Copyable) {
+                bean = ((Copyable) bean).unwrap();
+                if (!beanClass.isInstance(bean)) {
+                    beanClass = bean.getClass();
+                }
+            }
 
             // Determine the parameterized property type, if applicable.
             // This facilitates type conversion when setting/getting typed collections.
@@ -332,8 +339,15 @@ public class ObjectPropertyReference {
             // Parse the path expression.  This requires a new reference object since object read
             // methods could potentially call this method recursively.
             ObjectPropertyReference reference = new ObjectPropertyReference();
-            reference.bean = bean;
             reference.beanClass = beanClass;
+            if (bean instanceof Copyable) {
+                reference.bean = ((Copyable) bean).unwrap();
+                if (!(beanClass.isInstance(reference.bean))) {
+                    reference.beanClass = reference.bean.getClass();
+                }
+            } else {
+                reference.bean = bean;
+            }
 
             ObjectPropertyReference resolved = (ObjectPropertyReference) ObjectPathExpressionParser
                     .parsePathExpression(reference, propertyPath,
@@ -373,9 +387,16 @@ public class ObjectPropertyReference {
             reference = new ObjectPropertyReference();
             TL_BUILDER_REF.set(reference);
         }
-        reference.bean = bean;
         reference.beanClass = beanClass;
-        reference.beanType = beanClass;
+        if (bean instanceof Copyable) {
+            reference.bean = ((Copyable) bean).unwrap();
+            if (!(beanClass.isInstance(reference.bean)) && reference.bean != null) {
+                reference.beanClass = reference.bean.getClass();
+            }
+        } else {
+            reference.bean = bean;
+        }
+        reference.beanType = reference.beanClass;
         reference.name = propertyPath;
         return reference;
     }

@@ -168,7 +168,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
             field.setQuickfinder(quickFinder);
-            ViewLifecycle.spawnSubLifecyle(model, quickFinder, field);
+            ViewLifecycle.spawnSubLifecyle(model, field, "quickFinder");
         }
 
         if (StringUtils.isBlank(quickFinder.getDataObjectClassName())) {

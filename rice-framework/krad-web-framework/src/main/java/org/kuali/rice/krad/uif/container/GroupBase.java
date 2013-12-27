@@ -32,8 +32,10 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 
@@ -134,6 +136,8 @@ public class GroupBase extends ContainerBase implements Group {
 
     private List<? extends Component> items;
 
+    private List<? extends LifecycleElement> dynamicItems;
+
     /**
      * Default Constructor
      */
@@ -142,9 +146,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#performInitialization(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -224,9 +226,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -238,9 +238,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getComponentTypeName()
+     * {@inheritDoc}
      */
     @Override
     public String getComponentTypeName() {
@@ -248,9 +246,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getFieldBindByNamePrefix()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "fieldBindByNamePrefix")
@@ -259,9 +255,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#setFieldBindByNamePrefix(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setFieldBindByNamePrefix(String fieldBindByNamePrefix) {
@@ -269,9 +263,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getFieldBindingObjectPath()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "fieldBindingObjectPath")
@@ -280,9 +272,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#setFieldBindingObjectPath(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setFieldBindingObjectPath(String fieldBindingObjectPath) {
@@ -290,9 +280,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getDisclosure()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "Disclosure", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -301,9 +289,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#setDisclosure(org.kuali.rice.krad.uif.widget.Disclosure)
+     * {@inheritDoc}
      */
     @Override
     public void setDisclosure(Disclosure disclosure) {
@@ -311,9 +297,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getScrollpane()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "scrollpane", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -322,9 +306,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#setScrollpane(org.kuali.rice.krad.uif.widget.Scrollpane)
+     * {@inheritDoc}
      */
     @Override
     public void setScrollpane(Scrollpane scrollpane) {
@@ -332,9 +314,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#getItems()
+     * {@inheritDoc}
      */
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
@@ -358,6 +338,23 @@ public class GroupBase extends ContainerBase implements Group {
         } else {
             this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
         }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @ViewLifecycleRestriction
+    @Override
+    public List<? extends LifecycleElement> getDynamicItems() {
+        return dynamicItems;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDynamicItems(List<? extends LifecycleElement> dynamicItems) {
+        this.dynamicItems = dynamicItems;
     }
 
     /**
@@ -387,9 +384,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {
@@ -416,9 +411,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.container.Group2#isRenderLoading()
+     * {@inheritDoc}
      */
     @Override
     public boolean isRenderLoading() {

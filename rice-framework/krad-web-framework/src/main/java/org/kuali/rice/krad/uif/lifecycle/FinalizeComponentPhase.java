@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -60,8 +61,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * @param index The position of this phase within its predecessor phase's successor queue.
      * @param parent The parent component.
      */
-    protected void prepare(LifecycleElement element, Object model, int index, String path, Component parent) {
-        super.prepare(element, model, index, path, parent, null);
+    protected void prepare(LifecycleElement element, Object model, String path, Component parent) {
+        super.prepare(element, model, path, parent, null);
     }
 
     /**
@@ -120,20 +121,21 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         Object model = getModel();
 
         // initialize nested components
-        int index = 0;
+        int pendingChildren = 0;
 
         for (Entry<String, LifecycleElement> nestedComponentEntry :
                 ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
             String path = getPath();
-            String nestedPath = (path == null ? "" : path + ".") + nestedComponentEntry.getKey();
+            String nestedPath = (StringUtils.isEmpty(path) ? "" : path + ".")
+                    + nestedComponentEntry.getKey();
             LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
             if (nestedElement != null) {
                 FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedElement, model, index, nestedPath, 
+                        nestedElement, model, nestedPath, 
                         element instanceof Component ? (Component) element : getParent());
                 successors.add(nestedFinalizePhase);
-                index++;
+                pendingChildren++;
             }
         }
 
@@ -145,7 +147,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                 parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
             }
 
-            renderPhase = LifecyclePhaseFactory.render(this, parentRenderPhase, index);
+            renderPhase = LifecyclePhaseFactory.render(this, parentRenderPhase, pendingChildren);
         }
 
         if (successors.isEmpty() && renderPhase != null) {

@@ -62,8 +62,8 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
             this.setRichLabelMessage(message);
+            ViewLifecycle.spawnSubLifecyle(model, this, "richLabelMessage");
         }
     }
 

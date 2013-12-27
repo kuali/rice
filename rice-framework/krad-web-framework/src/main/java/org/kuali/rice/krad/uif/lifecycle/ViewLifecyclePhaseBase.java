@@ -18,12 +18,16 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 /**
  * Base abstract implementation for a lifecycle phase.
@@ -37,7 +41,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private LifecycleElement element;
     private Object model;
     private Component parent;
-    private int index = -1;
     private String path;
     private ViewLifecyclePhaseBase predecessor;
 
@@ -55,9 +58,9 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     protected void recycle() {
         trace("recycle");
-        model = null;
-        index = -1;
         element = null;
+        model = null;
+        path = null;
         predecessor = null;
         nextPhase = null;
         processed = false;
@@ -79,7 +82,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      *        
      * @see LifecyclePhaseFactory
      */
-    protected void prepare(LifecycleElement element, Object model, int index,
+    protected void prepare(LifecycleElement element, Object model,
             String path, Component parent, ViewLifecyclePhase nextPhase) {
         if (element.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
@@ -88,7 +91,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         }
 
         this.model = model;
-        this.index = index;
         this.path = path;
         this.element = element;
         this.parent = parent;
@@ -145,14 +147,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     @Override
     public final Component getParent() {
         return this.parent;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int getIndex() {
-        return index;
     }
 
     /**
@@ -254,6 +248,31 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                                     "\nThis phase: " + this);
                 }
 
+                trace("path-update " + element.getPath());
+                View view = ViewLifecycle.getView();
+                
+                if (ViewLifecycle.isStrict()) {
+                    if (element == view) {
+                        if (!StringUtils.isEmpty(path)) {
+                            ViewLifecycle.reportIllegalState("View path is not empty " + path);
+                        }
+                    } else {
+                        LifecycleElement referredElement = (LifecycleElement)
+                                ObjectPropertyUtils.getPropertyValue(view, path);
+                        if (referredElement != null) {
+                            referredElement = (LifecycleElement) referredElement.unwrap();
+                            if (element != referredElement) {
+                                ViewLifecycle.reportIllegalState("Path " + path
+                                        + " refers to an element other than " + element.getClass()
+                                        + " " + element.getId() + " " + element.getPath()
+                                        + (referredElement == null ? "" : " " + referredElement.getClass()
+                                                + " " + referredElement.getId() + " " + referredElement.getPath()));
+                            }
+                        }
+                    }
+                }
+                element.setPath(getPath());
+                
                 Queue<ViewLifecycleTask> pendingTasks = new LinkedList<ViewLifecycleTask>();
                 initializePendingTasks(pendingTasks);
 

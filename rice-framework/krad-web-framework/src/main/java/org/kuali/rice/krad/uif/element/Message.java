@@ -88,9 +88,7 @@ public class Message extends ContentElementBase {
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
 
             if (messageComponentStructure != null) {
-                for (Component component : messageComponentStructure) {
-                    ViewLifecycle.spawnSubLifecyle(model, component, this);
-                }
+                ViewLifecycle.spawnSubLifecyle(model, this, "messageComponentStructure");
             }
         }
     }

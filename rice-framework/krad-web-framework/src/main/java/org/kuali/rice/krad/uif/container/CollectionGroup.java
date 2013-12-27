@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.List;
+import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -24,6 +25,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
@@ -692,5 +694,20 @@ public interface CollectionGroup extends Group, DataBinding {
      * 
      */
     void pushCollectionGroupToReference();
+    
+    /**
+     * Gets a mapping from line suffix to line fields.
+     * 
+     * @return mapping from line suffix to line fields.
+     */
+    Map<String, List<Field>> getLineFields();
+    
+    /**
+     * Adds line fields to the collection after building.
+     * 
+     * @param lineSuffix The line suffix.
+     * @param lineFields The line fields.
+     */
+    void addLineFields(String lineSuffix, List<Field> lineFields);
 
 }

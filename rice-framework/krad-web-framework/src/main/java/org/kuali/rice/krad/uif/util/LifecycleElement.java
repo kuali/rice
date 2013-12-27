@@ -55,6 +55,21 @@ public interface LifecycleElement extends Serializable, Copyable {
     void setId(String id);
     
     /**
+     * Gets a property for referring to this component from the view, relative to the view, as
+     * assigned by the current or most recent lifecycle.
+     * 
+     * @return property path
+     */
+    String getPath();
+
+    /**
+     * Setter for {@link #getPath()}.
+     * 
+     * @param path The property path.
+     */
+    void setPath(String path);
+    
+    /**
      * Determine if this lifecycle element is mutable.
      *
      * <p>

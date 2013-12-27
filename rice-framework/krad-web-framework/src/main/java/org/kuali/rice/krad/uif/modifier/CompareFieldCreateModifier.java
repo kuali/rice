@@ -148,13 +148,10 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             // add space field for label column
             SpaceField spaceField = ComponentFactory.getSpaceField();
             comparisonItems.add(spaceField);
-            ViewLifecycle.spawnSubLifecyle(model, spaceField, group);
 
             for (ComparableInfo comparable : groupComparables) {
                 Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
-                ViewLifecycle.spawnSubLifecyle(model, compareHeaderField, group);
-
                 comparisonItems.add(compareHeaderField);
             }
             
@@ -162,6 +159,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             if (group.getLayoutManager() instanceof GridLayoutManager) {
                 ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
             }
+
+            group.setDynamicItems(new ArrayList<Component>(comparisonItems));
+            ViewLifecycle.spawnSubLifecyle(model, group, "dynamicItems");
         }
 
         // find the comparable to use for comparing value changes (if

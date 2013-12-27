@@ -48,13 +48,6 @@ public interface ViewLifecyclePhase extends Runnable {
     Component getParent();
 
     /**
-     * Gets the index within a parent phase's original list of successors of this phase.
-     * 
-     * @return index of this phase within a successor list
-     */
-    int getIndex();
-    
-    /**
      * Gets the path relative the predecessor phase's component.
      * 
      * @return path relative the predecessor phase's component

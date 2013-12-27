@@ -172,7 +172,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getHelper().performCustomViewInitialization(tform);
 
                 ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
-                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform));
+                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, ""));
 
                 ProcessLogger.trace("end-init");
             }
@@ -191,14 +191,14 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     
     @Test
     public void testPerformanceMediumAll() throws Throwable {
-        UifFormBase form = testFormView("Lab-PerformanceMedium", "u14a9ysq");
+        UifFormBase form = testFormView("Lab-PerformanceMedium", "u1c5ay4e");
 
         View view = form.getView();
         form.setPostedView(view);
         form.setView(null);
 
         String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();
-        assertEquals("u14a9ysq", tableId);
+        assertEquals("u1c5ay4e", tableId);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

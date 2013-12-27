@@ -184,6 +184,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                                 renameProperties(delegate, beanItem, ["defaultOpen": "disclosure.defaultOpen"]);
                                 transformMaintainableFieldsProperty(delegate, beanItem);
                                 transformSummaryFieldsProperty(delegate, beanNode);
+                                transformIncludeAddLineProperty(delegate,beanItem);
+                                transformIncludeMultipleLookupLineProperty(delegate,beanItem);
 
                             }
                         }
@@ -230,6 +232,77 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
     }
 
+    /**
+     * replaces includeAddLine property with a addLineActions property
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformIncludeAddLineProperty(NodeBuilder builder, Node beanNode) {
+        if(beanNode?.property?.findAll { "includeAddLine".equals(it.@name) }?.size > 0) {
+            String includeAddLine = beanNode?.property?.find  { "includeAddLine".equals(it.@name) }.@value;
+
+            builder.property(name:"addLineActions") {
+                list('xmlns:p':'http://www.springframework.org/schema/p') {
+                    bean (parent:"Uif-SecondaryActionButton-Small",'p:methodToCall':"addLine" ,'p:actionLabel':"add",'p:hidden': !(includeAddLine)  )
+                }
+            }
+        }
+    }
+
+    /**
+     * Transforms includeMultipleLookupLine property with a collectionLookup property initialized with the
+     * Uif-CollectionQuickfinder bean. sourceClassName is translated to dataObjectClassName if specified and
+     * includeMultipleLookupLine is not set to false.  templates are translated to field conversions.
+
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     *
+     */
+
+    def transformIncludeMultipleLookupLineProperty(NodeBuilder builder, Node beanNode) {
+        if(beanNode?.property?.findAll { "includeMultipleLookupLine".equals(it.@name) }?.size > 0) {
+            String includeMultipleLookupLine = beanNode?.property?.find  { "includeMultipleLookupLine".equals(it.@name) }.@value;
+
+            if(includeMultipleLookupLine != null && includeMultipleLookupLine.equalsIgnoreCase("true")) {
+                String dataObjectClassName = beanNode?.property?.find  { "sourceClassName".equals(it.@name) }?.@value;
+
+                if(dataObjectClassName == null || dataObjectClassName.empty)   {
+                    dataObjectClassName = beanNode?.property?.find  { "businessObjectClass".equals(it.@name) }.@value
+                }
+                def maintainableFieldsProperty = beanNode.property.find { "maintainableFields".equals(it.@name) };
+                String fieldConversion = "";
+                if (maintainableFieldsProperty) {
+
+                    maintainableFieldsProperty.list.bean.each { fieldBean ->
+                        def attrPropMap = gatherPropertyTagsAndPropertyAttributes(fieldBean, ["*name":"name","*template":"template"]);
+                        String name = attrPropMap?.get("name");
+                        String template = attrPropMap?.get("template");
+                        if(template == null || name.equals(template))   {
+                            fieldConversion += name + ":" + name + ",";
+                        } else {
+                            fieldConversion += name + ":" + template + "," ;
+                        }
+                    }
+
+                    if(fieldConversion.length() > 1) {
+                        fieldConversion = fieldConversion.substring(0,fieldConversion.lastIndexOf(','))
+                    }
+                }
+
+                builder.property(name:"collectionLookup") {
+                    bean(parent:"Uif-CollectionQuickFinder") {
+                        property(name:"dataObjectClassName", value:dataObjectClassName )
+                        property(name:"fieldConversions", value:fieldConversion )
+
+                    }
+                }
+            }
+        }
+    }
 
     /**
      *

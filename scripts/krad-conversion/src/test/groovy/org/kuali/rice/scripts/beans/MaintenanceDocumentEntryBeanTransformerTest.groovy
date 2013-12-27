@@ -185,6 +185,141 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
     }
 
     /**
+     * Tests transformation of the includeAddLine property to addLineActions
+     *
+     */
+    @Test
+    public void transformMaintainableCollectionSectionDefinitionBeanWithIncludeAddLine() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+        def attachmentListBean = parentBean.property.list.bean.find { "MultiAttachmentSampleMaintenanceDocument-AttachmentList".equals(it.@id) };
+
+        attachmentListBean = attachmentListBean.replaceNode {
+            bean(id: "MultiAttachmentSampleMaintenanceDocument-AttachmentList") {
+                maintenanceDocumentEntryBeanTransformer.transformMaintainableSectionDefinitionBean(delegate, attachmentListBean);
+            }
+        }
+         def collectionDefBean = attachmentListBean.bean.find { "Uif-VerticalBoxSection".equals(it.@parent) }.property.find{"items".equals(it.@name) }.
+                    list.bean.find { "Uif-MaintenanceStackedCollectionSection".equals(it.@parent) };
+         def addLineActionsSize = collectionDefBean?.property.findAll { "addLineActions".equals(it.@name) }.size();
+         Assert.assertEquals("number of addLineActions", 1, addLineActionsSize);
+
+        def methodToCall = collectionDefBean.property.find { "addLineActions".equals(it.@name) }.attributes().find{"p:methodToCall"};
+        def actionLabel = collectionDefBean.property.find { "addLineActions".equals(it.@name) }.attributes().find{"p:actionLabel"};
+        def hiddenAttr = collectionDefBean.property.find { "addLineActions".equals(it.@name) }.attributes().find{"p:hidden"};
+
+        Assert.assertNotNull(methodToCall);
+        Assert.assertNotNull(actionLabel);
+        Assert.assertNotNull(hiddenAttr);
+
+    }
+
+    /**
+     * Tests transformation of the includeMultiValueLookupLine property to collectionLookup with a Uif-QuickFinder
+     *
+     */
+    @Test
+    public void transformMaintainableCollectionSectionDefinitionBeanWithIncludeMultiValueLookupLine() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+        def attachmentListBean = parentBean.property.list.bean.find { "MultiAttachmentSampleMaintenanceDocument-AttachmentList".equals(it.@id) };
+        def sourceClassName = attachmentListBean.property.find{"maintainableItems".equals(it.@name)}.list.bean.find
+        {"MaintainableCollectionDefinition".equals(it.@parent)}.property.find{"sourceClassName".equals(it.@name)}.@value
+
+        attachmentListBean = attachmentListBean.replaceNode {
+            bean(id: "MultiAttachmentSampleMaintenanceDocument-AttachmentList") {
+                maintenanceDocumentEntryBeanTransformer.transformMaintainableSectionDefinitionBean(delegate, attachmentListBean);
+            }
+        }
+        def collectionDefBean = attachmentListBean.bean.find { "Uif-VerticalBoxSection".equals(it.@parent) }.property.find{"items".equals(it.@name) }.
+                list.bean.find { "Uif-MaintenanceStackedCollectionSection".equals(it.@parent) };
+        def collectionLookupSize = collectionDefBean?.property.findAll { "collectionLookup".equals(it.@name) }.size();
+        Assert.assertEquals("number of collectionLookups", 1, collectionLookupSize);
+
+        def quickFinderBean = collectionDefBean.property.find { "collectionLookup".equals(it.@name) }.bean.find{"Uif-CollectionQuickFinder".equals(it.@parent)};
+        Assert.assertNotNull(quickFinderBean);
+
+        def dataObjectClassName = quickFinderBean.property.find { "dataObjectClassName".equals(it.@name) }.@value;
+        Assert.assertNotNull(dataObjectClassName);
+        Assert.assertEquals(sourceClassName,dataObjectClassName);
+
+        def fieldConversion = quickFinderBean.property.find { "fieldConversions".equals(it.@name) }.@value;
+        Assert.assertNotNull(fieldConversion);
+        Assert.assertEquals("description:description,attachmentFile:newAttachmentFile",fieldConversion);
+
+
+    }
+
+    /**
+     * Tests transformation of the includeMultiValueLookupLine property to collectionLookup with a Uif-QuickFinder does
+     * not happen when  includeMultiValueLookupLine is false
+     *
+     */
+    @Test
+    public void transformIncludeMultiValueLookupLineFalse() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+        def attachmentListBean = parentBean.property.list.bean.find { "MultiAttachmentSampleMaintenanceDocument-AttachmentList".equals(it.@id) };
+        attachmentListBean.property.find{"maintainableItems".equals(it.@name)}.list.bean.find
+        {"MaintainableCollectionDefinition".equals(it.@parent)}.property.find{"includeMultipleLookupLine".equals(it.@name)}.@value = false;
+
+        attachmentListBean = attachmentListBean.replaceNode {
+            bean(id: "MultiAttachmentSampleMaintenanceDocument-AttachmentList") {
+                maintenanceDocumentEntryBeanTransformer.transformMaintainableSectionDefinitionBean(delegate, attachmentListBean);
+            }
+        }
+        def collectionDefBean = attachmentListBean.bean.find { "Uif-VerticalBoxSection".equals(it.@parent) }.property.find{"items".equals(it.@name) }.
+                list.bean.find { "Uif-MaintenanceStackedCollectionSection".equals(it.@parent) };
+        def collectionLookupSize = collectionDefBean?.property.findAll { "collectionLookup".equals(it.@name) }.size();
+        Assert.assertEquals("number of collectionLookups", 0, collectionLookupSize);
+
+        def quickFinderBean = collectionDefBean.property.find { "collectionLookup".equals(it.@name) }?.bean.find{"Uif-CollectionQuickFinder".equals(it.@parent)};
+        Assert.assertNull("QuickFinderBean should be null",quickFinderBean);
+
+    }
+
+    /**
+     * Tests transformation of the includeMultiValueLookupLine property to collectionLookup with a Uif-QuickFinder when
+     * no sourceClassName is specified. Defaults to the businessObjectClass
+     *
+     */
+
+    @Test
+    public void transformIncludeMultiValueLookupLineNoSourceClass() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+        def attachmentListBean = parentBean.property.list.bean.find { "MultiAttachmentSampleMaintenanceDocument-AttachmentList".equals(it.@id) };
+        def businessObjectClass = attachmentListBean.property.find{"maintainableItems".equals(it.@name)}.list.bean.find
+        {"MaintainableCollectionDefinition".equals(it.@parent)}.property.find{"businessObjectClass".equals(it.@name)}.@value;
+
+        attachmentListBean.property.find{"maintainableItems".equals(it.@name)}.list.bean.find
+        {"MaintainableCollectionDefinition".equals(it.@parent)}.property.find{"sourceClassName".equals(it.@name)}.@value = "";
+
+        attachmentListBean = attachmentListBean.replaceNode {
+            bean(id: "MultiAttachmentSampleMaintenanceDocument-AttachmentList") {
+                maintenanceDocumentEntryBeanTransformer.transformMaintainableSectionDefinitionBean(delegate, attachmentListBean);
+            }
+        }
+        def collectionDefBean = attachmentListBean.bean.find { "Uif-VerticalBoxSection".equals(it.@parent) }.property.find{"items".equals(it.@name) }.
+                list.bean.find { "Uif-MaintenanceStackedCollectionSection".equals(it.@parent) };
+        def collectionLookupSize = collectionDefBean?.property.findAll { "collectionLookup".equals(it.@name) }.size();
+        Assert.assertEquals("number of collectionLookups", 1, collectionLookupSize);
+
+        def quickFinderBean = collectionDefBean.property.find { "collectionLookup".equals(it.@name) }.bean.find{"Uif-CollectionQuickFinder".equals(it.@parent)};
+        Assert.assertNotNull(quickFinderBean);
+
+        def dataObjectClassName = quickFinderBean.property.find { "dataObjectClassName".equals(it.@name) }.@value;
+        Assert.assertNotNull(dataObjectClassName);
+        Assert.assertEquals(businessObjectClass,dataObjectClassName);
+
+        def fieldConversion = quickFinderBean.property.find { "fieldConversions".equals(it.@name) }.@value;
+        Assert.assertNotNull(fieldConversion);
+        Assert.assertEquals("description:description,attachmentFile:newAttachmentFile",fieldConversion);
+
+    }
+
+
+    /**
      * retrieves collection definition from a maintenance document entry
      *
      * @param rootNode
@@ -227,7 +362,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         //Assert.assertEquals("number of converted section definitions", 2, sectionSize);
 
     }
-
 
     /**
      * Tests conversion of lookup definition's result fields into appropriate property

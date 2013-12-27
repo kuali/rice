@@ -26,11 +26,7 @@
   <bean id="TravelMileageRateMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelMileageRate"/>
     <property name="documentTypeName" value="TravelMileageRateMaintenanceDocument"/>
-    <property name="lockingKeys">
-      <list>
-        <value>mileageRateId</value>
-      </list>
-    </property>
+    <property name="preserveLockingKeysOnCopy" value="true"/>
   </bean>
 
   <bean id="TravelMileageRate-MaintenanceView" parent="Uif-MaintenanceView">

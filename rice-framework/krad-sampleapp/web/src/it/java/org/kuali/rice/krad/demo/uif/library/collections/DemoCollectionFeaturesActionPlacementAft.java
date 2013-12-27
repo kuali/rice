@@ -42,8 +42,8 @@ public class DemoCollectionFeaturesActionPlacementAft extends WebDriverLegacyITB
     }
 
     protected void testCollectionFeaturesActionPlacement() throws Exception {
-    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[1]/div/fieldset/div/div[@class='uif-horizontalBoxLayout clearfix']/button");
-    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[2]/div/fieldset/div/div[@class='uif-horizontalBoxLayout clearfix']/button");
+    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[1]/div/fieldset/div/button");
+    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[2]/div/fieldset/div/button");
     }
     
     @Test

@@ -42,13 +42,13 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollectionFeaturesRowDetails() throws Exception {
-      if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+      if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']")) {
         fail("Row Details Present");
       }
       waitAndClickButtonByText("Open/Close Row Details");
-      assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']");
+      assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']");
       waitAndClickButtonByText("Open/Close Row Details");
-      if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+      if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']")) {
         fail("Row Details Present");
       }
       waitAndClickButtonByText("Open/Close Row Details");
@@ -69,13 +69,13 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesRowDetailsTableSubCollection() throws Exception {
         selectByName("exampleShown","W/ Table SubCollection");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-disclosure uif-boxLayoutVerticalItem clearfix']/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/div/table");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-disclosure uif-boxLayoutVerticalItem clearfix']/div[@class='uif-disclosureContent']/div[@class='dataTables_wrapper']/table")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/div/table")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
@@ -83,13 +83,13 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesRowDetailsStackedSubCollection() throws Exception {
         selectByName("exampleShown","W/ Stacked SubCollection");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section4']/div/table/tbody/tr[@class='detailsRow']")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section4_detLink_line0']");
-        waitForElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-stackedSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='uif-stackedCollectionLayout']/div/table");
+        waitForElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section4']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/table");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section4_detLink_line0']");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-stackedSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='uif-stackedCollectionLayout']/div/table")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section4']/div/table/tbody/tr[@class='detailsRow']")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section4_detLink_line0']");
@@ -97,13 +97,13 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesRowDetailsNestedDetails() throws Exception {
         selectByName("exampleShown","Nested Details");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-tableSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='dataTables_wrapper']/table");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/table");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']/td/div/div[@class='uif-verticalBoxLayout clearfix']/div[@class='uif-tableSubCollection uif-boxLayoutVerticalItem clearfix']/div[@class='dataTables_wrapper']/table")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/table")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");
@@ -111,13 +111,13 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesRowDetailsOpenedDetails() throws Exception {
         selectByName("exampleShown","Opened Details");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']")) {
           fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section6_detLink_add']");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']/td");
         waitAndClickByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/button");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_wrapper']/table/tbody/tr[@class='detailsRow']")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']/td")) {
           fail("Row Details Present");
         }
       }
@@ -125,7 +125,7 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     @Test
     public void testCollectionFeaturesRowDetailsBookmark() throws Exception {
         testCollectionFeaturesRowDetails();
-        testCollectionFeaturesRowDetailsAjaxRetrival();
+        //testCollectionFeaturesRowDetailsAjaxRetrival();   //Commented as this feature is not present on the environment
         testCollectionFeaturesRowDetailsTableSubCollection();
         testCollectionFeaturesRowDetailsStackedSubCollection();
         testCollectionFeaturesRowDetailsNestedDetails();
@@ -136,7 +136,7 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     @Test
     public void testCollectionFeaturesRowDetailsNav() throws Exception {
         testCollectionFeaturesRowDetails();
-        testCollectionFeaturesRowDetailsAjaxRetrival();
+        //testCollectionFeaturesRowDetailsAjaxRetrival();	//Commented as this feature is not present on the environment
         testCollectionFeaturesRowDetailsTableSubCollection();
         testCollectionFeaturesRowDetailsStackedSubCollection();
         testCollectionFeaturesRowDetailsNestedDetails();

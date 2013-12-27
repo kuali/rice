@@ -42,8 +42,8 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollectionFeaturesDefaultAddLine() throws Exception {
-        waitAndTypeByXpath("//div[@id='Demo-CollectionAddLine-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[2]/div[2]/table/tbody/tr[1]/td[2]/div/input","12");
-        waitAndTypeByXpath("//div[@id='Demo-CollectionAddLine-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[2]/div[2]/table/tbody/tr[1]/td[3]/div/input","5");
+        waitAndTypeByXpath("//div[@id='Demo-CollectionAddLine-Example1']/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/div/input","12");
+        waitAndTypeByXpath("//div[@id='Demo-CollectionAddLine-Example1']/div[2]/div[2]/div/table/tbody/tr[1]/td[3]/div/input","5");
         waitAndClickButtonByText("add");
         assertElementPresentByXpath("//input[@name='collection1[0].field1' and @value='12']");
         assertElementPresentByXpath("//input[@name='collection1[0].field2' and @value='5']");
@@ -52,16 +52,17 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     protected void testCollectionFeaturesDefaultAddViaLightbox() throws Exception {
         selectByName("exampleShown","Collection Add Via Lightbox");
         waitAndClickButtonByText("Add Line");
-        waitAndTypeByName("newCollectionLines['collection1_2'].field1","12");
-        waitAndTypeByName("newCollectionLines['collection1_2'].field2","5");
-        waitAndClickByXpath("//form[@id='kualiLightboxForm']/div/div[@class='uif-footer']/div[@class='uif-horizontalBoxLayout ']/button");
-        assertElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='12']");
-        assertElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='5']");
+        gotoLightBox();
+        waitAndTypeByXpath("//form[@class='uif-lightbox']/div/table/tbody/tr/td/div/input","12");
+        waitAndTypeByXpath("//form[@class='uif-lightbox']/div/table/tbody/tr[2]/td/div/input","5");
+        waitAndClickByXpath("//form[@class='uif-lightbox']/div/div[2]/button");
+        waitForElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='12']");
+        waitForElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='5']");
     }
     
     protected void testCollectionFeaturesDefaultAddBlankLine() throws Exception {
         selectByName("exampleShown","Collection Add Blank Line");
-        waitAndClickByXpath("//div[@id='Demo-CollectionAddLine-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-disclosureContent']/button");
+        waitAndClickByXpath("//div[@id='Demo-CollectionAddLine-Example3']/div[2]/div[2]/button");
         assertElementPresentByXpath("//input[@name='collection1_4[0].field1' and @value]");
         assertElementPresentByXpath("//input[@name='collection1_4[0].field2' and @value]");
     }

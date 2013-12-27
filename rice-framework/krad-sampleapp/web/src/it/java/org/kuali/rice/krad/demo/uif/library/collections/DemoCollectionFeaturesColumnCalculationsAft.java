@@ -46,7 +46,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
 
     protected void testCollectionFeaturesColumnCalculations() throws Exception {
         String preValueString = waitAndGetText(By.xpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0];
+                "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"))[0];
         if (StringUtils.isBlank(preValueString)) {
             jiraAwareFail("calculation column contains no text");
         }
@@ -55,7 +55,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         waitAndTypeByName("collection1[0].field1", "0");
         waitAndTypeByName("newCollectionLines['collection1'].field1", "");
         Integer postValue = Integer.parseInt(getTextByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
+                "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"));
 
         if (postValue >= preValue) {
             jiraAwareFail("Calculation Error !");
@@ -65,12 +65,12 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsOnKeyUp() throws Exception {
         selectByName("exampleShown", "On Key Up");
         Integer preValue = Integer.parseInt(waitAndGetText(By.xpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0]);
+                "//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"))[0]);
         clearTextByName("collection1_2[0].field1");
         waitAndTypeByName("collection1_2[0].field1", "0");
         Thread.sleep(2000);
         Integer postValue = Integer.parseInt(getTextByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
+                "//div[@id='Demo-TableLayoutTotaling-Section2']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"));
         if (postValue >= preValue) {
             jiraAwareFail("Calculation Error !");
 
@@ -80,12 +80,12 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsSomeColumns() throws Exception {
         selectByName("exampleShown", "Some Columns");
         Integer preValue = Integer.parseInt(waitAndGetText(By.xpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"))[0]);
+                "//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"))[0]);
         clearTextByName("collection1_3[0].field2");
         waitAndTypeByName("collection1_3[0].field2", "0");
         waitAndTypeByName("newCollectionLines['collection1_3'].field2", "");
         Integer postValue = Integer.parseInt(getTextByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]"));
+                "//div[@id='Demo-TableLayoutTotaling-Section3']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"));
         if (postValue >= preValue) {
             jiraAwareFail("Calculation Error !");
 
@@ -95,15 +95,15 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsLeftLabel() throws Exception {
         selectByName("exampleShown", "Left Label");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section4']/div/table/tfoot/tr/th/div/div[@class='uif-verticalBoxLayout clearfix']/span/label");
+                "//div[@id='Demo-TableLayoutTotaling-Section4']/div/table/tfoot/tr/th/div/label");
     }
 
     protected void testCollectionFeaturesColumnCalculationsMultipleOptions() throws Exception {
         selectByName("exampleShown", "Multiple Options");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div/span[@data-role='totalValue']");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label");
+                "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th/div/fieldset/div/div/label");
         if (isElementPresentByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section5']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span/label")) {
             jiraAwareFail("Multiple Options Failure !");
@@ -113,13 +113,13 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsMultipleCalculations() throws Exception {
         selectByName("exampleShown", "Multiple Calculations");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div/fieldset/div/div/span[@data-role]");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[2]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[2]/fieldset/div/div/span[@data-role]");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[3]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[3]/fieldset/div/div/span[@data-role]");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[@class='uif-verticalBoxLayout clearfix']/div[4]/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[5]/div/div[4]/fieldset/div/div/span[@data-role]");
         if (isElementPresentByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section6']/div/table/tfoot/tr/th[2]/div/div[@class='uif-verticalBoxLayout clearfix']/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]")) {
             jiraAwareFail("Multiple Calculations Failure !");
@@ -139,7 +139,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsNonClientSide() throws Exception {
         selectByName("exampleShown", "Non Client-side");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div[@class='uif-verticalBoxLayout']/div/span[@data-role]");
+                "//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div/span[@data-role='totalValue']");
     }
 
     protected void testCollectionFeaturesColumnCalculationsCustomCalculation() throws Exception {

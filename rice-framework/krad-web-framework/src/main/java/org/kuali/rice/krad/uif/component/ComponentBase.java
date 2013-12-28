@@ -149,6 +149,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String onDblClickScript;
     private String onFocusScript;
     private String onSubmitScript;
+    private String onInputScript;
     private String onKeyPressScript;
     private String onKeyUpScript;
     private String onKeyDownScript;
@@ -1379,6 +1380,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "click", getOnClickScript()));
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "dblclick", getOnDblClickScript()));
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "focus", getOnFocusScript()));
+        sb.append(ScriptUtils.buildEventHandlerScript(getId(), "input", getOnInputScript()));
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keypress", getOnKeyPressScript()));
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keyup", getOnKeyUpScript()));
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "keydown", getOnKeyDownScript()));
@@ -1549,6 +1551,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setOnSubmitScript(String onSubmitScript) {
         checkMutable(true);
         this.onSubmitScript = onSubmitScript;
+    }
+    
+    /**
+     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnInputScript()
+     */
+    @BeanTagAttribute(name = "onInputScript")
+    public String getOnInputScript() {
+        return onInputScript;
+    }
+
+    /**
+     * @see ScriptEventSupport#setOnInputScript(java.lang.String)
+     */
+    public void setOnInputScript(String onInputScript) {
+        checkMutable(true);
+        this.onInputScript = onInputScript;
     }
 
     /**
@@ -2303,6 +2321,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setOnDblClickScript(this.onDblClickScript);
         componentCopy.setOnDocumentReadyScript(this.onDocumentReadyScript);
         componentCopy.setOnFocusScript(this.onFocusScript);
+        componentCopy.setOnInputScript(this.onInputScript);
         componentCopy.setOnKeyDownScript(this.onKeyDownScript);
         componentCopy.setOnKeyPressScript(this.onKeyPressScript);
         componentCopy.setOnKeyUpScript(this.onKeyUpScript);

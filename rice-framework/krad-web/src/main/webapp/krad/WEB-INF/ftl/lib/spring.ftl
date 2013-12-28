@@ -176,7 +176,10 @@ h<#--
     <#if fieldType != "file" && fieldType != "password">
         <#local value='value="${stringStatusValue}"'/>
     </#if>
-    <input id="${id!}" type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
+    <#if id?has_content>
+        <#local idAttr="id='${id!}'"/>
+    </#if>
+    <input ${idAttr!} type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
 </#macro>
 
 <#--

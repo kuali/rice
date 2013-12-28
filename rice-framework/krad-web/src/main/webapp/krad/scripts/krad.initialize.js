@@ -560,7 +560,7 @@ function initFieldHandlers() {
         refreshDatatableCellRedraw(this);
     });
 
-    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
+    jQuery(document).on("input", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
         var input = this;
         delay(function () {
             refreshDatatableCellRedraw(input)

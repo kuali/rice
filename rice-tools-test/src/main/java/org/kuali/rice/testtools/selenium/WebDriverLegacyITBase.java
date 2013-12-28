@@ -798,8 +798,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         StringBuilder sb = new StringBuilder("");
         List<WebElement> jGrowls = findElements(By.className("jGrowl-message"));
         for (WebElement jGrowl : jGrowls) {
-            if (jGrowl.getText() != null && jGrowl.getText().contains("")) {
-            } else {
+            if (jGrowl.getText() != null) {
                 sb.append(jGrowl.getText()).append("\n");
             }
         }
@@ -3677,6 +3676,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testViewHelp() throws Exception {
         // test tooltip help
+        fireEvent("field102", "blur");
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
         Thread.sleep(500);
         assertEquals("Sample text for view help", getTextByXpath("//td[@class='jquerybubblepopup-innerHtml']"));

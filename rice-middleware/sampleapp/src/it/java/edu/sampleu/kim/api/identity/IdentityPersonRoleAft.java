@@ -26,10 +26,10 @@ import org.openqa.selenium.By;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
+public class IdentityPersonRoleAft extends WebDriverLegacyITBase {
 
     public static final String EDIT_URL = WebDriverUtils.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
-    public static final String BOOKARM_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtils
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtils
             .getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + "&hideReturnLink=true";
@@ -41,11 +41,16 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
 
     @Override
     protected String getBookmarkUrl() {
-        return BOOKARM_URL;
+        return BOOKMARK_URL;
     }
 
     @Test
     public void testPersonRoleBookmark() throws InterruptedException {
+        testPersonRole();
+        passed();
+    }
+
+    private void testPersonRole() throws InterruptedException {
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
@@ -67,6 +72,5 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase{
             waitAndClickByName("methodToCall.blanketApprove");
             waitForPageToLoad();
         }
-        passed();
     }
 }

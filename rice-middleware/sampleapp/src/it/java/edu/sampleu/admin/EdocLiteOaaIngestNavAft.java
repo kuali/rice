@@ -23,7 +23,7 @@ import org.junit.Test;
 public class EdocLiteOaaIngestNavAft extends EdocLiteXmlIngesterBase {
 
     @Test
-    public void test() throws Exception {
+    public void testEdocLiteOaaIngestNav() throws Exception {
         setUpResourceDir("OAA");
         testEdocLiteIngestion();
         assertTextPresent("InterviewRequest");

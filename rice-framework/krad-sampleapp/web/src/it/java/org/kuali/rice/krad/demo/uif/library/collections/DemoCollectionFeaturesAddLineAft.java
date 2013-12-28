@@ -52,7 +52,6 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     protected void testCollectionFeaturesDefaultAddViaLightbox() throws Exception {
         selectByName("exampleShown","Collection Add Via Lightbox");
         waitAndClickButtonByText("Add Line");
-        gotoLightBox();
         waitAndTypeByXpath("//form[@class='uif-lightbox']/div/table/tbody/tr/td/div/input","12");
         waitAndTypeByXpath("//form[@class='uif-lightbox']/div/table/tbody/tr[2]/td/div/input","5");
         waitAndClickByXpath("//form[@class='uif-lightbox']/div/div[2]/button");

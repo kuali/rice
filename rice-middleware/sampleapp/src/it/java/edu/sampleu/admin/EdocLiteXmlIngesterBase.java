@@ -14,7 +14,6 @@
  * limitations under the License.
  */package edu.sampleu.admin;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 
 import java.io.File;

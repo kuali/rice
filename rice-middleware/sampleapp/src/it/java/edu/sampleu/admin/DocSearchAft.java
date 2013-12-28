@@ -122,7 +122,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='detailed search']");
-        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']", "DocSearchAft.testDetailedDocSearch");
         //waitAndTypeByName("documentTypeName", parentName);
         waitAndTypeByName("initiatorPrincipalName", "admin");
         //waitAndTypeByName("documentId", docId);
@@ -159,7 +159,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
-        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']", "DocSearchAft.testSuperUserSearch");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitAndClickByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a");
         selectTopFrame();
@@ -190,7 +190,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitForPageToLoad();
-        WebElement select1 = driver.findElement(By.xpath("//select[@id='savedSearchToLoadAndExecute']"));
+        WebElement select1 = findElement(By.xpath("//select[@id='savedSearchToLoadAndExecute']"));
         List<WebElement> options = select1.findElements(By.tagName("option"));
         int count= options.size();
         assertEquals(5,count);

@@ -61,7 +61,7 @@ public class DemoClientResponsivenessConditionalRefreshAft extends WebDriverLega
         waitAndClickByLinkText("Advanced Example");
         selectByName("inputField5","Apple");
         selectByName("inputField4","Vegetables");
-        selectByName("inputField5","Beans");
+        waitAndSelectByName("inputField5","Beans");
     }
     
     @Test

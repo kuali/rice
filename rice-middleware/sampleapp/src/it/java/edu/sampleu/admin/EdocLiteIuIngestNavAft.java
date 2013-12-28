@@ -23,7 +23,7 @@ import org.junit.Test;
 public class EdocLiteIuIngestNavAft extends EdocLiteXmlIngesterBase {
 
     @Test
-    public void test() throws Exception {
+    public void testEdocLiteIuIngestNav() throws Exception {
         setUpResourceDir("IU");
         testEdocLiteIngestion();
         assertTextPresent("PhDCommencement");

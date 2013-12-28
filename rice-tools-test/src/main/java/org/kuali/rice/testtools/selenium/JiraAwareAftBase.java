@@ -463,8 +463,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String message) {
-        checkForIncidentReport("", message);
-        JiraAwareFailureUtils.fail(message, this);
+        jiraAwareFail("", message, null, this);
     }
 
     /**
@@ -476,8 +475,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String contents, String message) {
-        checkForIncidentReport(contents, message);
-        JiraAwareFailureUtils.fail(contents, message, this);
+        jiraAwareFail(contents, message, null, this);
     }
 
     /**
@@ -488,7 +486,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param throwable to check for a Jira match
      */
     protected void jiraAwareFail(By by, String message, Throwable throwable) {
-        jiraAwareFail(by.toString(), message, throwable);
+        jiraAwareFail(by.toString(), message, throwable, this);
     }
 
     /**
@@ -501,8 +499,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String contents, String message, Throwable throwable) {
-        checkForIncidentReport(contents, message);
-        JiraAwareFailureUtils.fail(contents, message, throwable, this);
+        jiraAwareFail(contents, message, throwable, this);
     }
 
     /**
@@ -514,7 +511,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to call fail on
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
-        checkForIncidentReport(contents, message);
+        String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
+        if (errorMessage != null) {
+            JiraAwareFailureUtils.failOnMatchedJira(errorMessage, message, failable);
+            JiraAwareFailureUtils.fail(errorMessage, message, throwable, failable);
+        }
         JiraAwareFailureUtils.fail(contents, message, throwable, failable);
     }
 

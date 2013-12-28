@@ -100,7 +100,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
 
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Account Maintenance (New)");
+        waitAndClickByLinkText("Travel Account Maintenance (New)");
     }
 
     protected void testTravelAccountMaintenanceNew() throws Exception {
@@ -148,7 +148,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();

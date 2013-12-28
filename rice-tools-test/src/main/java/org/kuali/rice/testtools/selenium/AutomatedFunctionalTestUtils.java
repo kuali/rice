@@ -171,14 +171,18 @@ public class AutomatedFunctionalTestUtils {
         String errorMessage = incidentReportMessage(contents, linkLocator, message);
 
         if (errorMessage != null) {
-            failable.fail(errorMessage);
+            if (message != null && message.isEmpty()) {
+                failable.jiraAwareFail(errorMessage, message);
+            } else {
+                failable.jiraAwareFail(errorMessage, contents);
+            }
         }
     }
 
     protected static String incidentReportMessage(String contents, String linkLocator, String message) {
         if (incidentReported(contents)) {
             try {
-                processIncidentReport(contents, linkLocator, message);
+                return processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
                 return "\nIncident report detected "
                                 + message

@@ -33,29 +33,23 @@
         <ref bean="Demo-Group-Example2"/>
         <ref bean="Demo-Group-Example3"/>
         <ref bean="Demo-Group-Example4"/>
+        <ref bean="Demo-Group-Example5"/>
+        <ref bean="Demo-Group-Example6"/>
       </list>
     </property>
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-Group-Example1" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example1" parent="Uif-VerticalBoxSection" p:headerText="Basic Grid"
+        p:instructionalText="Groups can be used to layout fields, elements, and other groups on the screen.  This is a GridGroup (backed by GridLayoutManager).">
     <property name="items">
       <list>
         <!-- ex:Demo-Group-Example1 start-->
-        <bean parent="Uif-VerticalBoxGroup">
+        <bean parent="Uif-GridGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"/>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField2"/>
-            </list>
-          </property>
-        </bean>
-
-        <bean parent="Uif-GridGroup">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField3"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField4"/>
             </list>
           </property>
         </bean>
@@ -64,33 +58,16 @@
     </property>
   </bean>
 
-  <!-- Sections -->
-  <bean id="Demo-Group-Example2" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example2" parent="Uif-VerticalBoxSection" p:headerText="Basic Vertical Box"
+        p:instructionalText="Groups can be used to layout fields, elements, and other groups on the screen.  This is a BoxGroup (backed by BoxLayoutManager).">
     <property name="items">
       <list>
         <!-- ex:Demo-Group-Example2 start-->
-        <!-- Section usage -->
-        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
-              <!-- SubSection usage -->
-              <bean parent="Uif-VerticalBoxSubSection" p:headerText="SubSection 1">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:propertyName="inputField5"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 6" p:propertyName="inputField6"/>
-                  </list>
-                </property>
-              </bean>
-
-              <bean parent="Uif-HorizontalBoxSubSection" p:headerText="SubSection 2">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 7" p:propertyName="inputField7"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 8" p:propertyName="inputField8"/>
-                  </list>
-                </property>
-              </bean>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField3"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField4"/>
             </list>
           </property>
         </bean>
@@ -99,28 +76,15 @@
     </property>
   </bean>
 
-  <!-- disclosure -->
-  <bean id="Demo-Group-Example3" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example3" parent="Uif-VerticalBoxSection" p:headerText="Basic CSS Grid">
     <property name="items">
       <list>
         <!-- ex:Demo-Group-Example3 start-->
-        <bean parent="Uif-HorizontalBoxSection" p:headerText="Disclosure Section">
-          <!-- property to activate disclosure -->
-          <property name="disclosure.render" value="true"/>
+        <bean parent="Uif-CssGridGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField9"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField10"/>
-            </list>
-          </property>
-        </bean>
-
-        <!-- There are beans that already have disclosure defined to true for you -->
-        <bean parent="Uif-Disclosure-HorizontalBoxSection" p:headerText="Predefined Disclosure Section">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField11"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField12"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field A" p:propertyName="inputField5" p:instructionalText="Grid Instructions"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field B" p:propertyName="inputField6"/>
             </list>
           </property>
         </bean>
@@ -129,11 +93,76 @@
     </property>
   </bean>
 
-  <!-- scroll -->
+  <!-- Sections -->
   <bean id="Demo-Group-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Group-Example4 start-->
+        <!-- Section usage -->
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
+          <property name="items">
+            <list>
+              <!-- SubSection usage -->
+              <bean parent="Uif-VerticalBoxSubSection" p:headerText="SubSection 1">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField7"/>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField8"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-HorizontalBoxSubSection" p:headerText="SubSection 2">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField9"/>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField10"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-Group-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- disclosure -->
+  <bean id="Demo-Group-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Group-Example5 start-->
+        <bean parent="Uif-HorizontalBoxSection" p:headerText="Disclosure Section">
+          <!-- property to activate disclosure -->
+          <property name="disclosure.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField11"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField12"/>
+            </list>
+          </property>
+        </bean>
+
+        <!-- There are beans that already have disclosure defined to true for you -->
+        <bean parent="Uif-Disclosure-HorizontalBoxSection" p:headerText="Predefined Disclosure Section">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField13"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField14"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-Group-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- scroll -->
+  <bean id="Demo-Group-Example6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Group-Example6 start-->
         <bean parent="Uif-VerticalBoxGroup">
           <!-- property to activate scrollpane -->
           <property name="scrollpane">
@@ -143,13 +172,13 @@
           </property>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField13"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField14"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField15"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField15"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField16"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField17"/>
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-Group-Example4 end-->
+        <!-- ex:Demo-Group-Example6 end-->
       </list>
     </property>
   </bean>

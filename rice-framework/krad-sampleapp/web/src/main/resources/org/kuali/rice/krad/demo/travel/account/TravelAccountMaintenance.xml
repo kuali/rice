@@ -60,8 +60,8 @@
           <property name="propertyName" value="subAccounts"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true"/>
-              <bean parent="Uif-InputField" p:propertyName="subAccountName" />
+              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:readOnly="@{!#isAddLine}"/>
+              <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Sub Account"/>

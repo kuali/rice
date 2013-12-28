@@ -158,4 +158,12 @@ public class KradSampleAppController extends UifControllerBase {
 
         return getUIFModelAndView(form);
     }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customRefresh")
+    public ModelAndView customRefresh(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().addGrowlMessage("Test", "serverTestInfo");
+
+        return getUIFModelAndView(form);
+    }
 }

@@ -53,8 +53,14 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      * The hash code that the generated ID is based on is equivalent (though not identical) to
      * taking the hash code of the string concenation of all class names, non-null IDs, and
      * successor index positions in the lifecycle phase tree for all predecessors of the current
-     * phase.  This technique leads to a reliably unique ID that is also repeatable across server
+     * phase. This technique leads to a reliably unique ID that is also repeatable across server
      * instances and test runs.
+     * </p>
+     * 
+     * <p>
+     * The use of large primes by this method minimizes collisions, and therefore reduces the
+     * likelihood of a race condition causing components to come out with different IDs on different
+     * server instances and/or test runs.
      * </p>
      * 
      * @param element The lifecycle element for which to generate an ID.
@@ -66,8 +72,7 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
     public static String generateId(LifecycleElement element, View view) {
         // Calculate a hash code based on the path to the top of the phase tree
         // without building a string.
-
-        final int prime = 6971; // Seed prime for hashing
+        int prime = 6971;
 
         // Initialize hash to the class of the lifecycle element
         int hash = element.getClass().getName().hashCode();
@@ -82,10 +87,8 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
         String id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
         while (!view.getViewIndex().observeAssignedId(id)) {
             // Iteratively take the product of the hash and another large prime
-            hash *= 4507; // until a unique ID has been generated.
-            // The use of large primes will minimize collisions, reducing the
-            // likelihood of race conditions leading to components coming out
-            // with different IDs on different server instances and/or test runs.
+            // until a unique ID has been generated.
+            hash *= 4507;
             id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
         }
         

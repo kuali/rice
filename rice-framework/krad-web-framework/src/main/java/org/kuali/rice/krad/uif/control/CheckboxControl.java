@@ -22,7 +22,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -63,7 +62,6 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
             this.setRichLabelMessage(message);
-            ViewLifecycle.spawnSubLifecyle(model, this, "richLabelMessage");
         }
     }
 

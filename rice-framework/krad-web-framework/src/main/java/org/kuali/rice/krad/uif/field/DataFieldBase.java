@@ -234,7 +234,6 @@ public class DataFieldBase extends FieldBase implements DataField {
         // if render flag is true, that means the inquiry was able to find a relationship
         if (autoInquiry.isRender()) {
             this.inquiry = autoInquiry;
-            ViewLifecycle.spawnSubLifecyle(model, this, "inquiry", null, null, false);
         }
     }
 

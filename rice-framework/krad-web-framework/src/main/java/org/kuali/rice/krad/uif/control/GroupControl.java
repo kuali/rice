@@ -23,9 +23,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -75,7 +73,6 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
         if (quickFinder == null) {
             quickFinder = ComponentFactory.getQuickFinder();
             field.setQuickfinder(quickFinder);
-            ViewLifecycle.spawnSubLifecyle(model, field, "quickFinder");
         }
 
         if (field.getQuickfinder() != null) {

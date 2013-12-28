@@ -86,10 +86,6 @@ public class Message extends ContentElementBase {
 
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
-
-            if (messageComponentStructure != null) {
-                ViewLifecycle.spawnSubLifecyle(model, this, "messageComponentStructure");
-            }
         }
     }
 

@@ -159,9 +159,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             if (group.getLayoutManager() instanceof GridLayoutManager) {
                 ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
             }
-
-            group.setDynamicItems(new ArrayList<Component>(comparisonItems));
-            ViewLifecycle.spawnSubLifecyle(model, group, "dynamicItems");
         }
 
         // find the comparable to use for comparing value changes (if

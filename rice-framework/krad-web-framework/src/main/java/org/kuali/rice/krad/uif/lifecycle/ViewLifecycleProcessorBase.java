@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
-
 /**
  * Abstract base lifecycle processor implementation.
  * 

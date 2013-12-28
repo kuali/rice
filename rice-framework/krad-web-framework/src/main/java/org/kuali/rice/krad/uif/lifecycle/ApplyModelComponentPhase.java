@@ -83,7 +83,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      */
     protected void prepare(LifecycleElement element, Object model, String path,
-            Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
+            Component parent, ViewLifecyclePhaseBase nextPhase, Set<String> visitedIds) {
         super.prepare(element, model, path, parent, nextPhase);
         this.visitedIds = visitedIds;
 
@@ -200,10 +200,25 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
             if (nestedElement != null) {
-                successors.offer(LifecyclePhaseFactory
-                        .applyModel(nestedElement, model, nestedPath,
-                                element instanceof Component ? (Component) element : getParent(),
-                                null, visitedIds));
+                Component nestedParent;
+                if (element instanceof Component) {
+                    nestedParent = (Component) element;
+                } else {
+                    nestedParent = getParent();
+                }
+                
+                ApplyModelComponentPhase nestedApplyModelPhase = LifecyclePhaseFactory
+                        .applyModel(nestedElement, model, nestedPath, nestedParent,
+                                null, visitedIds);
+                if (nestedElement.isInitialized()) {
+                    successors.add(nestedApplyModelPhase);
+                    continue;
+                }
+                
+                InitializeComponentPhase nestedInitializePhase = LifecyclePhaseFactory
+                        .initialize(nestedElement, model, nestedPath, nestedParent,
+                                nestedApplyModelPhase);
+                successors.add(nestedInitializePhase);
             }
         }
     }

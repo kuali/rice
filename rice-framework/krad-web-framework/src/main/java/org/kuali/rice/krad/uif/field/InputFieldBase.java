@@ -373,7 +373,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         // if render flag is true, that means the quickfinder was able to find a relationship
         if (autoQuickfinder.isRender()) {
             this.quickfinder = autoQuickfinder;
-            ViewLifecycle.spawnSubLifecyle(model, this, "quickfinder");
         }
     }
 

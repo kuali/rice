@@ -24,9 +24,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -77,8 +75,6 @@ public class Label extends ContentElementBase {
             message.setMessageText(labelText);
             message.setInlineComponents(inlineComponents);
             message.setGenerateSpan(false);
-
-            ViewLifecycle.spawnSubLifecyle(model,this, "richLabelMessage");
 
             this.setRichLabelMessage(message);
         }

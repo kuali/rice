@@ -32,10 +32,8 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 
@@ -135,8 +133,6 @@ public class GroupBase extends ContainerBase implements Group {
     private Scrollpane scrollpane;
 
     private List<? extends Component> items;
-
-    private List<? extends LifecycleElement> dynamicItems;
 
     /**
      * Default Constructor
@@ -340,23 +336,6 @@ public class GroupBase extends ContainerBase implements Group {
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    @ViewLifecycleRestriction
-    @Override
-    public List<? extends LifecycleElement> getDynamicItems() {
-        return dynamicItems;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDynamicItems(List<? extends LifecycleElement> dynamicItems) {
-        this.dynamicItems = dynamicItems;
-    }
-
     /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */

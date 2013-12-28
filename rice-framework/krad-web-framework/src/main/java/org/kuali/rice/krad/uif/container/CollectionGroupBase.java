@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,11 +36,9 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -131,9 +128,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private boolean renderLineActions;
     private List<? extends Component> lineActions;
     
-    @ReferenceCopy(referenceTransient = true)
-    private Map<String, List<Field>> lineFields;
-
     private boolean includeLineSelectionField;
     private String lineSelectPropertyName;
 
@@ -314,7 +308,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             if (this.addBlankLineAction == null) {
                 this.addBlankLineAction = (Action) ComponentFactory.getNewComponentInstance(
                         ComponentFactory.ADD_BLANK_LINE_ACTION);
-                ViewLifecycle.spawnSubLifecyle(model, this, "addBlankLineAction");
             }
 
             if (addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
@@ -326,7 +319,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             if (this.addViaLightBoxAction == null) {
                 this.addViaLightBoxAction = (Action) ComponentFactory.getNewComponentInstance(
                         ComponentFactory.ADD_VIA_LIGHTBOX_ACTION);
-                ViewLifecycle.spawnSubLifecyle(model, this, "addViaLightBoxAction");
             }
 
             if (this.addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
@@ -1161,31 +1153,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     protected void setTotalColumns(List<String> totalColumns) {
         this.totalColumns = totalColumns;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @ViewLifecycleRestriction
-    @Override
-    public Map<String, List<Field>> getLineFields() {
-        return lineFields;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addLineFields(String lineSuffix, List<Field> lineFields) {
-        synchronized (this) {
-            if (this.lineFields == null) {
-                this.lineFields = new java.util.HashMap<String, List<Field>>();
-            }
-        }
-        
-        synchronized (this.lineFields) {
-            this.lineFields.put(lineSuffix, lineFields);
-        }
     }
 
     /**

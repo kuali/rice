@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.Map.Entry;
+import java.util.HashSet;
 import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
@@ -131,11 +132,34 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
             LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
             if (nestedElement != null) {
-                FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory.finalize(
-                        nestedElement, model, nestedPath, 
-                        element instanceof Component ? (Component) element : getParent());
-                successors.add(nestedFinalizePhase);
                 pendingChildren++;
+                
+                Component nestedParent;
+                if (element instanceof Component) {
+                    nestedParent = (Component) element;
+                } else {
+                    nestedParent = getParent();
+                }
+                
+                FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory
+                        .finalize(nestedElement, model, nestedPath, nestedParent);
+                if (nestedElement.isModelApplied()) {
+                    successors.add(nestedFinalizePhase);
+                    continue;
+                }
+                
+                ApplyModelComponentPhase nestedApplyModelPhase = LifecyclePhaseFactory
+                        .applyModel(nestedElement, model, nestedPath, nestedParent,
+                                nestedFinalizePhase, new HashSet<String>());
+                if (nestedElement.isInitialized()) {
+                    successors.add(nestedApplyModelPhase);
+                    continue;
+                }
+                
+                InitializeComponentPhase nestedInitializePhase = LifecyclePhaseFactory
+                        .initialize(nestedElement, model, nestedPath, nestedParent,
+                                nestedApplyModelPhase);
+                successors.add(nestedInitializePhase);
             }
         }
 

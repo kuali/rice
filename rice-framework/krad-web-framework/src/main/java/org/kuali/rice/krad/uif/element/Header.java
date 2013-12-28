@@ -28,7 +28,6 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -128,7 +127,6 @@ public class Header extends ContentElementBase {
             message.setGenerateSpan(false);
             
             this.setRichHeaderMessage(message);
-            ViewLifecycle.spawnSubLifecyle(model, this, "richHeaderMessage");
         }
     }
 

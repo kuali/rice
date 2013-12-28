@@ -73,7 +73,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
                 richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
-                ViewLifecycle.spawnSubLifecyle(model, this, "richOptions[" + richOptions.size() + "].message");
             }
         }
     }

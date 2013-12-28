@@ -318,8 +318,6 @@ public class CollectionGroupBuilder implements Serializable {
 
         // check for remote fields holder
         List<Field> lineFields = processAnyRemoteFieldsHolder(collectionGroup, lineItems);
-        collectionGroup.addLineFields(lineSuffix, lineFields);
-        ViewLifecycle.spawnSubLifecyle(model, collectionGroup, "lineFields["+lineSuffix+"]", null, null, false);
 
         // adjust binding path and id to match collection line path
         ComponentUtils.bindAndIdFieldList(lineFields, bindingPath, lineSuffix);
@@ -470,7 +468,6 @@ public class CollectionGroupBuilder implements Serializable {
         //add additional information to the group and fields to allow for correct add control selection
         String selector = "";
         if (lineIndex == -1) {
-            List<String> addIds = new ArrayList<String>();
             for (Field f : lineFields) {
                 if (f instanceof InputField) {
                     // sets up - skipping these fields in add area during standard form validation calls

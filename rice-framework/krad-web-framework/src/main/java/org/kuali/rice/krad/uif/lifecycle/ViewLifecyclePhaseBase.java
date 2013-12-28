@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -44,7 +45,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private String path;
     private ViewLifecyclePhaseBase predecessor;
 
-    private ViewLifecyclePhase nextPhase;
+    private ViewLifecyclePhaseBase nextPhase;
     
     private boolean processed;
     private boolean completed;
@@ -83,7 +84,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * @see LifecyclePhaseFactory
      */
     protected void prepare(LifecycleElement element, Object model,
-            String path, Component parent, ViewLifecyclePhase nextPhase) {
+            String path, Component parent, ViewLifecyclePhaseBase nextPhase) {
         if (element.getViewStatus().equals(getEndViewStatus())) {
             ViewLifecycle.reportIllegalState(
                     "Component is already in the expected end status " + getEndViewStatus()
@@ -348,7 +349,24 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         element.notifyCompleted(this);
 
         if (nextPhase != null) {
+            assert nextPhase.predecessor == null : this + " " + nextPhase;
+            
+            // Assign a predecessor to the next phase, to defer notification until
+            // after all phases in the chain have completed processing.
+            if (predecessor != null) {
+                // Common case: "catch up" phase automatically spawned to bring
+                // a component up to the right status before phase processing.
+                // Swap the next phase in for this phase in the graph.
+                nextPhase.predecessor = predecessor;
+            } else {
+                // Initial phase chain:  treat the next phase as a successor so that
+                // this phase (and therefore the controlling thread) will be notified
+                nextPhase.predecessor = this;
+                pendingSuccessors++;
+            }
+
             ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
+            return;
         }
         
         synchronized (this) {

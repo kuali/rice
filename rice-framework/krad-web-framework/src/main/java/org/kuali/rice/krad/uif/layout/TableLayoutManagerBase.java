@@ -451,10 +451,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             footerCalculationComponents.set(leftLabelColumnIndex, labelGroup);
         }
-
-        //perform the lifecycle for all the newly generated components as a result of processing the
-        //column calculations
-        ViewLifecycle.spawnSubLifecyle(model, container, "layoutManager.footerCalculationComponents");
     }
 
     /**
@@ -486,23 +482,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         } else if (cInfo.getColumnNumber() == leftLabelColumnIndex && this.isRenderOnlyLeftTotalLabels()) {
             //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
             //manager settings directly into the field
-            Label label = leftLabel.copy();
-
-            // The label will have just been created, or copied from a prototype, and will be
-            // processed as a child of the field. Spawn a sub-lifecycle phase to bring it up
-            // to the same status as the field prior to processing the field.
-            String fieldState = totalDataField.getViewStatus();
-            String labelPhase = null;
-            if (UifConstants.ViewStatus.INITIALIZED.equals(fieldState)) {
-                labelPhase = UifConstants.ViewPhases.INITIALIZE;
-            } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(fieldState)) {
-                labelPhase = UifConstants.ViewPhases.APPLY_MODEL;
-            }
-
-            totalDataField.setFieldLabel(label);
-            if (labelPhase != null) {
-                ViewLifecycle.spawnSubLifecyle(ViewLifecycle.getModel(), totalDataField, "fieldLabel", null, labelPhase, true);
-            }
+            totalDataField.setFieldLabel(leftLabel.<Label> copy());
         }
 
         if (this.isRenderOnlyLeftTotalLabels()) {
@@ -701,11 +681,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
             allRowFields.add(sequenceField);
-            
-            if (isAddLine) {
-                ViewLifecycle.spawnSubLifecyle(model, collectionGroup,
-                        "layoutManager.allRowFields[" + (allRowFields.size() - 1) + "]");
-            }
             
             extraColumns++;
 
@@ -1671,7 +1646,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * {@inheritDoc}
      */
     @Override
-    @ViewLifecycleRestriction
     public List<Component> getFooterCalculationComponents() {
         return footerCalculationComponents;
     }

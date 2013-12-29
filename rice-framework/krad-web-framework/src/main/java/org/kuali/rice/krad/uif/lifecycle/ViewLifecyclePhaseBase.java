@@ -15,11 +15,9 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;

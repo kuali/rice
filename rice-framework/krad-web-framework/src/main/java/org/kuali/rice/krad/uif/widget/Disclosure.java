@@ -51,7 +51,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Sets forceSessionPersistence when using the ajax retrieval option
      *
-     * @see Component#performApplyModel(Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -74,7 +74,9 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#getCollapsedIconClass()
+     * Setter for {@link Disclosure#getCollapsedIconClass()}.
+     * 
+     * @param collapsedIconClass property value
      */
     public void setCollapsedIconClass(String collapsedIconClass) {
         this.collapsedIconClass = collapsedIconClass;
@@ -92,7 +94,9 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#getExpandedIconClass()
+     * Setter for {@link Disclosure#getExpandedIconClass()}.
+     * 
+     * @param expandedIconClass property value
      */
     public void setExpandedIconClass(String expandedIconClass) {
         this.expandedIconClass = expandedIconClass;
@@ -108,9 +112,12 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#isRenderIcon()
+     * Setter for {@link #isRenderIcon()}.
+     * 
+     * @param renderIcon property value
      */
     public void setRenderIcon(boolean renderIcon) {
+        
         this.renderIcon = renderIcon;
     }
 

@@ -27,6 +27,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidation
 import java.util.Collection;
 
 /**
+ * @param <C> constraint type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> extends MandatoryElementConstraintProcessor<C> {

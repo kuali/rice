@@ -59,7 +59,7 @@ public abstract class ValidCharactersPatternConstraint extends ValidCharactersCo
      * should not include the start(^) and end($) symbols or any length related symbols (*, {0,},
      * etc)
      *
-     * @return
+     * @return regular expression
      */
     abstract protected String getRegexString();
 

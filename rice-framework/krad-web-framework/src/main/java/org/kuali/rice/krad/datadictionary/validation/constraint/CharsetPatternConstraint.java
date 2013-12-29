@@ -56,8 +56,9 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
     /**
      * Escapes every special character I could think of, to limit potential misuse of this pattern.
      *
-     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
+     * {@inheritDoc}
      */
+    @Override
     protected String getRegexString() {
         if (StringUtils.isEmpty(validChars)) {
             throw new IllegalStateException("validChars is empty");
@@ -111,7 +112,6 @@ public class CharsetPatternConstraint extends ValidCharactersPatternConstraint {
      * found in the component.  Used by the RiceDictionaryValidator.
      *
      * @param tracer Record of component's location
-     * @return A list of ErrorReports detailing errors found within the component and referenced within it
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

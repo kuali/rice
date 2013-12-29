@@ -26,6 +26,7 @@ import java.util.List;
  * CaseConstrainable}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> constrainable type
  */
 public class CaseConstraintResolver<T extends CaseConstrainable> implements ConstraintResolver<T> {
 

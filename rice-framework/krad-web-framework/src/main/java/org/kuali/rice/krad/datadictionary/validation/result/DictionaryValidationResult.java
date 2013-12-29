@@ -305,7 +305,7 @@ public class DictionaryValidationResult implements Iterable<ConstraintValidation
      * @param attributeName - the attribute name
      * @param attributePath - a string representation of specifically which attribute (at some depth) is being accessed
      * @param constraintName - a descriptive name of the current constraint processor
-     * @return
+     * @return validation result
      */
     private ConstraintValidationResult getConstraintValidationResult(String entryName, String attributeName,
             String attributePath, String constraintName) {

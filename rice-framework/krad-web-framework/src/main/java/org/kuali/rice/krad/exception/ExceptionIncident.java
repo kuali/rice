@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.exception;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.exception.KualiException;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.exception.KualiException;
 
 /**
  * Contains the exception incident information, exception, form and
@@ -55,8 +55,6 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * settings.
      *
      * @param exception Caught exception
-     * @param exceptionNames List of Kuali exception for determining the display exception
-     * message
      * @param properties Input information when the exception is caught
      * <p>Example:
      * <ul>
@@ -193,7 +191,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * </code>
      *
      * @param exception The caught exception
-     * @return
+     * @return report subject
      */
     private String createReportSubject(Exception exception) {
         if (LOG.isTraceEnabled()) {
@@ -242,7 +240,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * stackTrace: Exception stack trace here
      * </code>
      *
-     * @return
+     * @return report message body
      */
     private String createReportMessage() {
         if (LOG.isTraceEnabled()) {
@@ -285,7 +283,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
      * This method return the thrown exception stack trace as string.
      *
      * @param thrownException
-     * @return
+     * @return stack trace
      */
     public String getExceptionStackTrace(Exception thrownException) {
         if (LOG.isTraceEnabled()) {

@@ -57,9 +57,7 @@ public class ValidCharactersConstraintProcessor extends MandatoryElementConstrai
     private static final String CONSTRAINT_NAME = "valid characters constraint";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult,
-     *      Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable,
-     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * {@inheritDoc}
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value,

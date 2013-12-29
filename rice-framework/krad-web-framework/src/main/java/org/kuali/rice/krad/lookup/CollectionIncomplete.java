@@ -26,6 +26,7 @@ import java.util.RandomAccess;
 /**
  * Wraps a {@link List} and if truncated keeps the complete size
  *
+ * @param <T> list item type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializable {

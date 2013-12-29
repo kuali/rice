@@ -134,7 +134,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * Returns the maximum length for this field, if set.  If not set, it attempts to pull from
      * the embedded metadata, if any.
-     *
+     *z
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
     @BeanTagAttribute(name = "maxLength")

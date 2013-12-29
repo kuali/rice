@@ -30,6 +30,7 @@ import java.util.Map;
  * from which other constraint providers can be derived.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> constrainable type
  * @since 1.1
  */
 public abstract class BaseConstraintProvider<T extends Constrainable> implements ConstraintProvider<T> {

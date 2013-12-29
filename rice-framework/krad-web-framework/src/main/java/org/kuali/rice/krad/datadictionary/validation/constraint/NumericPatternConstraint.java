@@ -32,8 +32,9 @@ import org.kuali.rice.krad.uif.UifConstants;
 public class NumericPatternConstraint extends AllowCharacterConstraint {
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
+     * {@inheritDoc}
      */
+    @Override
     protected String getRegexString() {
         StringBuilder regexString = new StringBuilder("[0-9");
         regexString.append(this.getAllowedCharacterRegex());

@@ -455,7 +455,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
      * flags set. This string is intended to be placed within the or set of a regex, ie between the
      * [ ] symbols
      *
-     * @return
+     * @return regular expression for matching allowed characters
      */
     protected String getAllowedCharacterRegex() {
         StringBuilder regexString = new StringBuilder("");

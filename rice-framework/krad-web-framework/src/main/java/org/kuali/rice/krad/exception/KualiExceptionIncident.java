@@ -107,12 +107,12 @@ public interface KualiExceptionIncident {
     public Map<String, String> toProperties();
 
     /**
-     * This method checks the exception (set during construction) and return errror
+     * This method checks the exception (set during construction) and return error
      * message if it's Kuali type of exception (defined by the list of exception names).
      * Otherwise, it returns a generic message.
      *
-     * @param The caught exception
-     * @return
+     * @param exception The caught exception
+     * @return display message
      */
     public String getDisplayMessage(Exception exception);
 

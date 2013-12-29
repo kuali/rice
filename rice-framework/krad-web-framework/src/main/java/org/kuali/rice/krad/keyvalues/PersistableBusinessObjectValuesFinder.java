@@ -34,6 +34,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * This class is a Generic ValuesFinder that builds the list of KeyValuePairs it returns
  * in getKeyValues() based on a BO along with a keyAttributeName and labelAttributeName
  * that are specified.
+ * 
+ * @param <T> business object type
  */
 public class PersistableBusinessObjectValuesFinder <T extends PersistableBusinessObject> extends KeyValuesBase {
     private static final Log LOG = LogFactory.getLog(PersistableBusinessObjectValuesFinder.class);

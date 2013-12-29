@@ -179,8 +179,9 @@ public class Validator {
 
     /**
      * Validates the beans in a collection of xml files
-     *
+     * @param xmlFiles files to validate
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
+     * 
      * @return Returns true if the beans past validation
      */
     public boolean validate(String[] xmlFiles, boolean failOnWarning) {

@@ -46,8 +46,9 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
+     * {@inheritDoc}
      */
+    @Override
     protected String getRegexString() {
         StringBuffer regexString = new StringBuffer("[");
 

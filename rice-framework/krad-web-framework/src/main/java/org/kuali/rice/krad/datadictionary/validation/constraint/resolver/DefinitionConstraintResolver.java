@@ -30,6 +30,7 @@ import java.util.List;
  * An example is {@link LengthConstrainable}, where members of the definition itself need to be made available to the
  * ConstraintProcessor.
  *
+ * @param <T> constrainable type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DefinitionConstraintResolver<T extends Constrainable> implements ConstraintResolver<T> {

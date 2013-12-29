@@ -42,6 +42,14 @@
 				        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTableLayoutTotalingResources</value>
 					</list>
 				</entry>
+				<entry>
+					<key><value>labs</value></key>
+					<list>
+				        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
+				        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>
+				        <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP7Resources</value>
+					</list>
+				</entry>
 			</map>
 		</property>
 	</bean>

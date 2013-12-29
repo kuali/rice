@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.provider;
 
-import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
-import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
-
 import java.util.List;
+
+import org.kuali.rice.krad.datadictionary.validation.capability.CaseConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.krad.datadictionary.validation.capability.LengthConstrainable;
+import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 
 /**
  * ConstraintProvider determines a list of constraints for a given Constrainable definition for an attribute
@@ -31,8 +33,8 @@ import java.util.List;
  * <p>
  * These constraints can be looked up in a variety of ways. They may be:
  * <ol>
- * <li> member variables of the Constrainable definition itself {@see CaseConstrainable.class}</li>
- * <li> the Constrainable definition itself may extend Constraint {@see LengthConstrainable.class}</li>
+ * <li> member variables of the Constrainable definition itself {@link CaseConstrainable}</li>
+ * <li> the Constrainable definition itself may extend Constraint {@link LengthConstrainable}</li>
  * <li> provided from some external source, or generated on the fly</li>
  * </ol>
  * </p>
@@ -41,6 +43,7 @@ import java.util.List;
  * classes into the DictionaryValidationService implementation via dependency injection.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> constrainable type
  * @since 1.1
  */
 public interface ConstraintProvider<T extends Constrainable> {

@@ -72,6 +72,7 @@ public interface Document extends PersistableBusinessObject {
     void setDocumentNumber(String documentHeaderId);
 
     /**
+
      * This is the method to integrate with workflow, where we will actually populate the workflow defined data structure(s) so that
      * workflow can routed based on this data. This method is responsible for passing over the proper Kuali (client system) data
      * that will be used by workflow to determine how the document is actually routed.
@@ -89,21 +90,30 @@ public interface Document extends PersistableBusinessObject {
     /**
      * This method is used to get the xml that should be used in a Route Report.  In it's default implementation this will call the
      * methods prepareForSave() and populateDocumentForRouting().
+     * 
+     * @return XML data for routing
      */
     String getXmlForRouteReport();
 
     /**
      * method to integrate with workflow, where we will actually handle the transitions of levels for documents
+     * 
+     * @param levelChangeEvent route level change event
      */
     void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent);
 
     /**
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
+     * 
+     * @param event action taken event
      */
     void doActionTaken(ActionTakenEvent event);
 
     /**
      * method to integrate with workflow where we will be able to perform logic after an action taken being performed on a document
+     * 
+     * @param performed action type performed
+     * @param event action taken event
      * @since 2.1
      */
     public void afterActionTaken(ActionType performed, ActionTakenEvent event);
@@ -122,11 +132,14 @@ public interface Document extends PersistableBusinessObject {
 
     /**
      * This method will be called before the Workflow engine has begun processing a document.
+     * @return additional document IDs to lock prior to processing 
      */
     List<String> getWorkflowEngineDocumentIdsToLock();
 
     /**
      * Getter method to get the document title as it will appear in and be searchable in workflow.
+     * 
+     * @return document title
      */
     String getDocumentTitle();
 
@@ -134,6 +147,8 @@ public interface Document extends PersistableBusinessObject {
      * getter method to get the list of ad hoc route persons associated with a document at a point in time, this list is only valid
      * for a given users version of a document as this state is only persisted in workflow itself when someone takes an action on a
      * document
+     * 
+     * @return list of ad hoc route persons
      */
     List<AdHocRoutePerson> getAdHocRoutePersons();
 
@@ -141,6 +156,8 @@ public interface Document extends PersistableBusinessObject {
      * getter method to get the list of ad hoc route workgroups associated with a document at a point in time, this list is only
      * valid for a given users version of a document as this state is only persisted in workflow itself when someone takes an action
      * on a document
+     * 
+     * @return list of ad hoc route workgroups
      */
     List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups();
 
@@ -215,7 +232,7 @@ public interface Document extends PersistableBusinessObject {
 
    /**
      * Handle the doRouteStatusChange event from the post processor
-     *
+     * @param statusChangeEvent status change event
      */
    void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent);
 
@@ -282,6 +299,7 @@ public interface Document extends PersistableBusinessObject {
     /**
      * This method gets a list of the {@link PessimisticLock} objects associated with this document
      *
+     * @return list of pessimistic locks
      */
     List<PessimisticLock> getPessimisticLocks();
 
@@ -303,17 +321,19 @@ public interface Document extends PersistableBusinessObject {
     /**
      * Renamed:
      * @see Document#getLockClearingMethodNames()
+     * @return the list of method names of an action that should clear locks for the current user
      */
     @Deprecated
     List<String> getLockClearningMethodNames();
 
     /**
      * This is a method that is used by Kuali Pessimistic Locking to get the names (method to call values)
-     * of the {@link KualiDocumentActionBase} methods that should release locks
+     * of the KNS KualiDocumentActionBase methods that should release locks
      *
      * @return the list of method names of an action that should clear locks for the current user
      */
     List<String> getLockClearingMethodNames();
+    
     /**
      * Returns an evaluator object that determines whether a given property relative to the root object ({@link #wrapDocumentWithMetadataForXmlSerialization()}
      * is serializable during the document serialization process.

@@ -28,6 +28,8 @@ import java.util.Collection;
  * in that collection -- for example, a constraint that ensures that there are between 1 and 10 elements in a
  * collection.</p>
  *
+ * @param <T> collection type
+ * @param <C> constraint type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CollectionConstraintProcessor<T extends Collection<?>, C extends Constraint> extends ConstraintProcessor<T, C> {

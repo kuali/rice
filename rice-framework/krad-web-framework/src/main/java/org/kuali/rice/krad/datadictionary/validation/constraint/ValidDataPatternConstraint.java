@@ -53,6 +53,8 @@ public abstract class ValidDataPatternConstraint extends ValidCharactersConstrai
     /**
      * This method returns a string representing a regex with characters to match, this string should not
      * include the start(^) and end($) symbols
+     * 
+     * @return regular expression
      */
     abstract protected String getRegexString();
 

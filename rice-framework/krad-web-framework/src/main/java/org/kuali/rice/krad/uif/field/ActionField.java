@@ -27,6 +27,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
@@ -49,7 +50,6 @@ public class ActionField extends FieldBase {
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
      * content
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */
@@ -84,6 +84,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code methodToCall} property reference to the action.
+     * 
+     * @return method to call
      * @see org.kuali.rice.krad.uif.element.Action#getMethodToCall()
      */
     @BeanTagAttribute(name = "methodToCall")
@@ -92,6 +95,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code methodToCall} property reference to the action.
+     * 
+     * @param methodToCall method to call
      * @see org.kuali.rice.krad.uif.element.Action#setMethodToCall(java.lang.String)
      */
     public void setMethodToCall(String methodToCall) {
@@ -99,6 +105,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionLabel} property reference to the action.
+     * 
+     * @return action label
      * @see org.kuali.rice.krad.uif.element.Action#getActionLabel()
      */
     @BeanTagAttribute(name = "actionLabel")
@@ -107,6 +116,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionLabel} property reference to the action.
+     * 
+     * @param actionLabel action label
      * @see org.kuali.rice.krad.uif.element.Action#setActionLabel(java.lang.String)
      */
     public void setActionLabel(String actionLabel) {
@@ -114,14 +126,21 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionImage} property reference to the action.
+     * 
+     * @return action image
      * @see org.kuali.rice.krad.uif.element.Action#getActionImage()
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getActionImage() {
         return action.getActionImage();
     }
 
     /**
+     * Delegates {@code actionImage} property reference to the action.
+     * 
+     * @param actionImage action image
      * @see org.kuali.rice.krad.uif.element.Action#setActionImage(org.kuali.rice.krad.uif.element.Image)
      */
     public void setActionImage(Image actionImage) {

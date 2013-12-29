@@ -59,7 +59,18 @@ import org.springframework.util.StringUtils;
  */
 public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
+    /**
+     * Set of IDs that have been visited during the view's apply model phase.
+     * 
+     * <p>
+     * This reference is typically shared by all component apply model phases.
+     * </p>
+     */
     private Set<String> visitedIds;
+    
+    /**
+     * Mapping of context variables inherited from the view.
+     */
     private Map<String, Object> commonContext;
 
     /**
@@ -77,7 +88,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param element The element the model should be applied to
      * @param model Top level object containing the data
-     * @param index The position of this phase within the predecessor phase's successor queue.
+     * @param path The path to the element relative to the parent element.
      * @param parent The parent element.
      * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
@@ -141,7 +152,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * Gets global objects for the context map and pushes them to the context for the component
      * 
      * @return The common context elements to use while applying model elements to the view.
-     * @see #prepare(Component, Object, int, Component, ViewLifecyclePhase, Set)
+     * @see #prepare(LifecycleElement, Object, String, Component, ViewLifecyclePhaseBase, Set)
      */
     public Map<String, Object> getCommonContext() {
         return commonContext;
@@ -199,7 +210,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
                     + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
-            if (nestedElement != null) {
+            if (nestedElement != null && !nestedElement.isModelApplied()) {
                 Component nestedParent;
                 if (element instanceof Component) {
                     nestedParent = (Component) element;

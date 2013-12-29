@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -105,7 +106,6 @@ public class TreeGroup extends GroupBase implements DataBinding {
      * to be read by the renderer
      * </p>
      *
-     * @param view view instance the tree group belongs to
      * @param model object containing the view data from which the tree data will be retrieved
      */
     protected void buildTreeGroups(Object model) {
@@ -196,6 +196,44 @@ public class TreeGroup extends GroupBase implements DataBinding {
         return result;
     }
 
+    /**
+     * Gets all node components within the tree.
+     * 
+     * @return list of node components
+     */
+    public List<Component> getNodeComponents() {
+        List<Component> components = new ArrayList<Component>();
+        addNodeComponents(treeGroups.getRootElement(), components);
+        return components;
+    }
+
+    /**
+     * Gets all node components prototypes within the tree.
+     * 
+     * @return list of node component prototypes
+     */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        if (defaultNodePrototype != null) {
+            components.add(defaultNodePrototype.getLabelPrototype());
+            components.add(defaultNodePrototype.getDataGroupPrototype());
+        }
+
+        if (nodePrototypeMap != null) {
+            for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
+                NodePrototype prototype = prototypeEntry.getValue();
+                if (prototype != null) {
+                    components.add(prototype.getLabelPrototype());
+                    components.add(prototype.getDataGroupPrototype());
+                }
+            }
+        }
+
+        return components;
+    }
+    
     /**
      * Retrieves the <code>Component</code> instances from the node for building the nested
      * components list

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Map.Entry;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
@@ -43,6 +43,12 @@ import org.springframework.util.StringUtils;
  */
 public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
+    /**
+     * Lifecycle phase to render this component after finalization, if in-lifecycle rendering is
+     * enabled.
+     * 
+     * @see ViewLifecycle#isRenderInLifecycle()
+     */
     private RenderComponentPhase renderPhase;
 
     /**
@@ -59,7 +65,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param element The component instance the model should be applied to
      * @param model Top level object containing the data
-     * @param index The position of this phase within its predecessor phase's successor queue.
+     * @param path The path to the element relative to its parent.
      * @param parent The parent component.
      */
     protected void prepare(LifecycleElement element, Object model, String path, Component parent) {
@@ -131,7 +137,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                     + nestedComponentEntry.getKey();
             LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
-            if (nestedElement != null) {
+            if (nestedElement != null && !nestedElement.isFinal()) {
                 pendingChildren++;
                 
                 Component nestedParent;

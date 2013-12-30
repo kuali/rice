@@ -418,6 +418,40 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         builder.bean(beanAttributes) {
             copyProperties(delegate, beanNode, mfdCopyProperties)
             renameProperties(delegate, beanNode, mfdRenameProperties)
+            transformWebUILeaveFieldFunctionProperty(delegate,beanNode)
+        }
+    }
+
+    /**
+     * Replaces WebUILeaveFieldFunction Property with onBlurScript property. Translated the call back function and
+     * function parameters and a passes them to the function being called at onBlur event
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+
+    def transformWebUILeaveFieldFunctionProperty(NodeBuilder builder, Node beanNode) {
+        def attrPropMap = gatherPropertyTagsAndPropertyAttributes(beanNode, ["webUILeaveFieldFunction":"webUILeaveFieldFunction",
+                "webUILeaveFieldCallbackFunction":"webUILeaveFieldCallbackFunction"]);
+
+        if(attrPropMap?.get("webUILeaveFieldFunction")) {
+            def webUILeaveFieldCallbackFunction = attrPropMap?.get("webUILeaveFieldCallbackFunction");
+            String paramList = "this,";
+            if(webUILeaveFieldCallbackFunction){
+                paramList +=  webUILeaveFieldCallbackFunction + ",";
+            }
+
+            beanNode?.property?.find{"webUILeaveFieldFunctionParameters".equals(it?.@name)}?.list.value.each { valueNode ->
+                paramList += '{@' + valueNode.text() +"},"
+            }
+
+            if(paramList.length() > 1) {
+                paramList = paramList.substring(0,paramList.lastIndexOf(','))
+            }
+
+            addCommentIfNotExists(beanNode,"TODO - Check if javascript is still relevant and correct")  ;
+            builder.property(name:"onBlurScript", value:attrPropMap.get("webUILeaveFieldFunction") + "(" + paramList + ");");
         }
     }
 

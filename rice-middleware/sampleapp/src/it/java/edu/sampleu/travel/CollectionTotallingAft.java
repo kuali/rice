@@ -15,7 +15,6 @@
  */
 package edu.sampleu.travel;
 
-import com.thoughtworks.selenium.SeleneseTestBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -51,8 +50,7 @@ public class CollectionTotallingAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div/span[@class='uif-message']");
         Integer postValue=Integer.parseInt(getTextByXpath("//div[@id='Demo-CollectionTotaling-Section1']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div/span[@class='uif-message']"));
         Thread.sleep(2000);
-        if(postValue>preValue)
-        {
+        if(postValue>preValue) {
             jiraAwareFail("Totalling not working !");
         }        
         
@@ -62,8 +60,7 @@ public class CollectionTotallingAft extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tbody/tr[2]/td[2]/div/input[@name='list1[0].field1']","0");
         Integer postValueClient=Integer.parseInt(getTextByXpath("//div[@id='Demo-CollectionTotaling-Section2']/div[@role='grid']/table/tfoot/tr/th[2]/div/fieldset/div/div/span[@class='uif-message']"));
         Thread.sleep(2000);        
-        if(postValueClient>preValueClient)
-        {
+        if(postValueClient>preValueClient) {
             jiraAwareFail("Totalling not working !");
         }  
         

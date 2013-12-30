@@ -161,8 +161,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndTypeByName("list1[0].field3", "1");
         waitAndTypeByName("list1[0].field4", "1");
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
-        if(preValue>postValue)
-        {
+        if(preValue>postValue) {
             jiraAwareFail("Totalling not working !");
         }
     }
@@ -230,8 +229,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
         Thread.sleep(3000);
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
-        if(preValue>postValue)
-        {
+        if(preValue>postValue) {
             jiraAwareFail("Totalling not working !");
         }
     }

@@ -97,7 +97,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("deprecation")
     @Override
@@ -115,8 +115,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("deprecation")
     @Override
@@ -142,8 +141,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <li>Finalizes LayoutManager</li>
 	 * </ul>
 	 *
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("deprecation")
     @Override
@@ -205,9 +203,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
     /**
      * Performs sorting of the container items based on the order property
-     *
-     * @param view view instance containing the container
-     * @param model model object containing the view data
      */
     @Override
     public void sortItems() {

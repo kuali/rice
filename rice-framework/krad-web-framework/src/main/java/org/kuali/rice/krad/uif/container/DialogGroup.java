@@ -97,8 +97,7 @@ public class DialogGroup extends GroupBase {
      * are not already present</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -140,8 +139,7 @@ public class DialogGroup extends GroupBase {
      * </ul>
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -178,7 +176,6 @@ public class DialogGroup extends GroupBase {
      * </ul>
      * </p>
      *
-     * @param view view instance that should be finalized for rendering
      * @param model top level object containing the data
      * @param parent parent component
      */

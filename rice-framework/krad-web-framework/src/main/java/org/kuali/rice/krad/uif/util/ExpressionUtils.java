@@ -145,7 +145,7 @@ public class ExpressionUtils {
      *
      * @param exp
      * @param controlNames
-     * @return
+     * @return parsed expression, expressed as JS for client side evaluation
      */
     public static String parseExpression(String exp, List<String> controlNames) {
         // clean up expression to ease parsing

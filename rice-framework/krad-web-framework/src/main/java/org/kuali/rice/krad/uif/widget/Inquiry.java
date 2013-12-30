@@ -88,8 +88,7 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.WidgetBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -175,7 +174,6 @@ public class Inquiry extends WidgetBase {
      * by DirectInquiry.
      * </p>
      *
-     * @param view Container View
      * @param model model
      * @param field The parent Attribute field
      */
@@ -442,6 +440,7 @@ public class Inquiry extends WidgetBase {
      * be sent with the data object class for the request. Note the view id can be alternatively used to uniquely
      * identify the inquiry view
      * </p>
+     * @return view name
      */
     @BeanTagAttribute(name = "viewName")
     public String getViewName() {

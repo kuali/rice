@@ -175,7 +175,11 @@ public final class GlobalVariables {
     /**
      * Pushes a new GlobalVariables object onto the ThreadLocal GlobalVariables stack, invokes the runnable,
      * and pops the GlobalVariables off in a finally clause
+     * 
+     * @param <T> callable return type
      * @param callable the code to run under a new set of GlobalVariables
+     * @return return value from callable
+     * @throws Exception from {@link Callable#call()}
      */
     public static <T> T doInNewGlobalVariables(Callable<T> callable) throws Exception {
         return doInNewGlobalVariables(null, callable);
@@ -184,9 +188,12 @@ public final class GlobalVariables {
     /**
      * Convenience method that creates a new GlobalVariables stack frame, initialized with the provided
      * UserSession (which may be the previous UserSession).
+     *
+     * @param <T> callable return type
      * @param userSession the UserSession to initialize the new frame with (may be null)
      * @param callable the code to run under a new set of GlobalVariables
-     * @throws Exception
+     * @return return value from callable
+     * @throws Exception from {@link Callable#call()}
      */
     public static <T> T doInNewGlobalVariables(UserSession userSession, Callable<T> callable) throws Exception {
         try {

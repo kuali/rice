@@ -183,12 +183,11 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
     }
 
     /**
-     * Returns whether any of the restrictions defined in this class indicate that the attribute value potentially
-     * needs
-     * to be not shown to the user (i.e. masked, partial mask, hide).  Note that readonly does not fall in this
-     * category.
-     *
-     * @return
+     * Returns whether any of the restrictions defined in this class indicate that the attribute
+     * value potentially needs to be not shown to the user (i.e. masked, partial mask, hide). Note
+     * that readonly does not fall in this category.
+     * 
+     * @return true if the value should be hidden from the user
      */
     public boolean hasRestrictionThatRemovesValueFromUI() {
         return mask || partialMask || hide;

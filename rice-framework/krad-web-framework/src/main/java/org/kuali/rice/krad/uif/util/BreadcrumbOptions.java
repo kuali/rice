@@ -107,6 +107,8 @@ public class BreadcrumbOptions implements Serializable, Copyable {
      * performFinalize method.
      *
      * @param model the model
+     * @param parent parent container
+     * @param breadcrumbItem breadcrumb item to finalize
      */
     public void finalizeBreadcrumbs(Object model, Container parent, BreadcrumbItem breadcrumbItem) {
         View view = ViewLifecycle.getView();
@@ -302,6 +304,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
 
     /**
      * Copies the properties over for the copy method.
+     * @param <T> copyable type
      *
      * @param breadcrumbOptions The BreadcrumbOptions to copy
      */

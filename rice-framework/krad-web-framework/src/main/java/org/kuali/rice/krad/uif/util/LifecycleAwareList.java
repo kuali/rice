@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
  * <p>Mutability of the list will follow the semantics for the lifecycle element.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> list item type
  */
 public class LifecycleAwareList<T> implements List<T>, Copyable, UifCloneable, Serializable {
 

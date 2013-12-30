@@ -279,7 +279,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Setter for the view status
      * 
-     * @param viewStatus
+     * @param status view status
      */
     @Override
     public void setViewStatus(String status) {
@@ -293,7 +293,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Setter for the view status
      * 
-     * @param viewStatus
+     * @param phase completed view lifecycle phase
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
@@ -357,11 +357,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * The following updates are done here:
      * 
      * <ul>
-     * <li></li>
+     * <li>tooltip is removed if content is null</li>
      * </ul>
      * 
-     * @see org.kuali.rice.krad.uif.component.Component#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -378,8 +377,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * status to set the render status</li>
      * </ul>
      * 
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -408,8 +406,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      * 
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -1224,7 +1221,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setEditAuthz(boolean)
+     * Setter for {@link #isEditAuthz()}
+     * 
+     * @param editAuthz property value
      */
     public void setEditAuthz(Boolean editAuthz) {
         checkMutable(true);
@@ -1243,7 +1242,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setViewAuthz(boolean)
+     * Setter for {@link #isViewAuthz()}
+     * 
+     * @param viewAuthz property value
      */
     public void setViewAuthz(Boolean viewAuthz) {
         checkMutable(true);
@@ -1956,10 +1957,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see 
-     *      org.kuali.rice.krad.uif.component.Component#setRefreshWhenChangedPropertyNames(java.util.
-     *      List<java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public void setRefreshWhenChangedPropertyNames(List<String> refreshWhenChangedPropertyNames) {
         checkMutable(true);
         this.refreshWhenChangedPropertyNames = refreshWhenChangedPropertyNames == null ?
@@ -1968,18 +1968,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getAdditionalComponentsToRefresh()
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalComponentsToRefresh() {
         return additionalComponentsToRefresh;
     }
 
     /**
-     * @see 
-     *      org.kuali.rice.krad.uif.component.Component#setAdditionalComponentsToRefresh(java.util.List
-     *      <java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public void setAdditionalComponentsToRefresh(List<String> additionalComponentsToRefresh) {
         checkMutable(true);
         this.additionalComponentsToRefresh = additionalComponentsToRefresh == null
@@ -2263,7 +2263,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Set view status to {@link UifConstants.ViewStatus#CACHED} to prevent modification.
+     * Set view status to {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED} to prevent modification.
      * 
      * @see Copyable#preventModification()
      */

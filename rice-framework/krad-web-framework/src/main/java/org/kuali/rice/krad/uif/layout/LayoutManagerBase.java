@@ -133,9 +133,10 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * Setter for the view status
+     * Setter for the view status, invoked upon completion of a lifecycle phase.
      * 
-     * @param viewStatus
+     * @param phase The lifecycle phase that has just been completed.
+     * @see ViewLifecyclePhase#getEndViewStatus()
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
@@ -156,7 +157,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see LifecycleElement#performInitialization(Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -170,7 +171,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see LifecycleElement#performApplyModel(Object, Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement component) {
@@ -178,7 +179,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see LifecycleElement#performFinalize(Object, Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement component) {
@@ -553,7 +554,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
     
     /**
-     * Set view status to {@link UifConstants.ViewStatus#CACHED} to prevent modification.
+     * Set view status to {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED} to prevent modification.
      * 
      * @see Copyable#preventModification()
      */

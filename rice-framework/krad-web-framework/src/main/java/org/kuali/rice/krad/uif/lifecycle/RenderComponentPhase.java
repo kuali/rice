@@ -49,8 +49,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param element the component instance that should be updated
      * @param model top level object containing the data
-     * @param index The position of the assocaited finalize phase within it's predecessor's
-     *        successor queue.
+     * @param path Path to the component relative to the active view.
      * @param parent The parent component.
      * @param pendingChildren The number of child rendering phases to expect to be queued for
      *        processing before this phase.

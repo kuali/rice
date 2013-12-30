@@ -129,7 +129,9 @@ public class LookupForm extends UifFormBase {
     }
 
     /**
-     * @see LookupForm#getDataObjectClassName()
+     * Setter for {@link LookupForm#getDataObjectClassName()}
+     * 
+     * @param dataObjectClassName property value
      */
     public void setDataObjectClassName(String dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;

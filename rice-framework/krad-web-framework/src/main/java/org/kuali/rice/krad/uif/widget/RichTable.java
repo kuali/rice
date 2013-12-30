@@ -631,6 +631,7 @@ public class RichTable extends WidgetBase {
     /**
      * Construct the column options for a data field
      * 
+     * @param target column index
      * @param collectionGroup the collectionGroup in which the data field is defined
      * @param field the field to construction options for
      * @return options as valid for datatable
@@ -905,7 +906,7 @@ public class RichTable extends WidgetBase {
     /**
      * Get groupingOption
      * 
-     * @return
+     * @return grouping options as a JS string
      */
     public String getGroupingOptionsJSString() {
         return groupingOptionsJSString;
@@ -1019,7 +1020,7 @@ public class RichTable extends WidgetBase {
      * forceLocalJsonData. This setter is required for copyProperties()
      * </p>
      * 
-     * @return the generated aaData
+     * @param aaData the generated aaData
      */
     protected void setAaData(String aaData) {
         this.aaData = aaData;

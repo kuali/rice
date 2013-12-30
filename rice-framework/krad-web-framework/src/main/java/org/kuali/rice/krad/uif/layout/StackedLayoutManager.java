@@ -52,7 +52,7 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      * placed together with a separator.
      *
      * @return summary field names
-     * @see #buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
+     * @see StackedLayoutManagerBase#buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
      */
     List<String> getSummaryFields();
 
@@ -199,12 +199,12 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      * @param actionsInLineGroup
      */
     void setActionsInLineGroup(boolean actionsInLineGroup);
-
-    /**
-     * This method ...
-     * 
-     * @return
-     */
+    
+   /**
+    * Get a string representation of all style classes defined by this layout manager.
+    * 
+    * @return string representing CSS classes
+    */
     String getStyleClassesAsString();
 
 }

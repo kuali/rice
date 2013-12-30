@@ -63,8 +63,7 @@ public class Image extends ContentElementBase {
      * <li>Initializes the cutline message and caption header components if necessary</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -89,8 +88,7 @@ public class Image extends ContentElementBase {
      * <li>Set the cutline text on the cutline message</li>
      * </ul>
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object,
-     * org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {

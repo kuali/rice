@@ -57,8 +57,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     /**
      * Process rich message content that may be in the options, by creating and initializing the richOptions
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -80,8 +79,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     /**
      * Adds appropriate parent data to inputs internal to the controls that may be in rich content of options
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -132,7 +130,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * @see MultiValueControl#setOptions(java.util.List<org.kuali.rice.core.api.util.KeyValue>)
+     * {@inheritDoc}
      */
     public void setOptions(List<KeyValue> options) {
         this.options = options;

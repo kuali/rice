@@ -69,7 +69,8 @@ public class ListLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see ListLayoutManager#isOrderedList()
+     * Setter for {@link ListLayoutManager#isOrderedList()}.
+     * @param orderedList property value
      */
     public void setOrderedList(boolean orderedList) {
         this.orderedList = orderedList;

@@ -154,9 +154,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#performInitialization(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -268,8 +266,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * Sets up the grouping MessageField to be used in the first column of the table layout for
      * grouping collection content into groups based on values of the line's fields
      *
+     * @param model The model for the active lifecycle
      * @param collectionGroup collection group for this layout
-     * @param view the view
      */
     private void setupGrouping(Object model, CollectionGroup collectionGroup) {
         //Grouping setup
@@ -308,7 +306,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * Setup the column calculations functionality and components
      *
-     * @param view the view
      * @param model the model
      * @param container the parent container
      * @param totalColumns total number of columns in the table
@@ -498,11 +495,9 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * the given actions are set as the items for the action field. Finally the generated items are
      * assembled together into the allRowFields list with the given lineFields.
      *
-     * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.CollectionGroup, java.util.List,
-     *      java.util.List, java.lang.String, java.util.List, java.lang.String, java.lang.Object,
-     *      int)
+     * {@inheritDoc}
      */
+    @Override
     public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
             List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions,
             String idSuffix, Object currentLine, int lineIndex) {
@@ -1446,7 +1441,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * richTable.
      *
      * @param collectionGroup the CollectionGroup for this TableLayoutManager
-     * @param view the current view
      */
     public void setupDetails(CollectionGroup collectionGroup) {
         if (getRowDetailsGroup() == null || this.getRichTable() == null || !this.getRichTable().isRender()) {
@@ -2038,8 +2032,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * information on errors found in the component. Used by the RiceDictionaryValidator.
      *
      * @param tracer record of component's location
-     * @return a list of ErrorReports detailing errors found within the component and referenced
-     *         within it
      */
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean("TableLayoutManager", getId());

@@ -45,7 +45,7 @@ public class ViewHeader extends Header {
      * Sets the supportTitleMessage if one has not been set and unified header is being used, based on the value
      * of page title
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {

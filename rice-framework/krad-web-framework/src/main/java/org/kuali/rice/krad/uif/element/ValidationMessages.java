@@ -174,7 +174,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      * @param view
      * @param key
      * @param lists
-     * @return
+     * @return list of messages
      */
     private List<String> getMessages(View view, String key, List<List<ErrorMessage>> lists) {
         List<String> result = new ArrayList<String>();
@@ -199,7 +199,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      * used to match errors with their component and display them as part of its
      * ValidationMessages.
      *
-     * @return
+     * @return list of keys
      */
     protected List<String> getKeys(Component parent) {
         List<String> keyList = new ArrayList<String>();

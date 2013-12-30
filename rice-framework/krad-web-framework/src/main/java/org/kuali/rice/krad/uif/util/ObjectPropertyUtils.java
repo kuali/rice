@@ -259,6 +259,7 @@ public final class ObjectPropertyUtils {
     /**
      * Look up a property value.
      * 
+     * @param <T> property type
      * @param object The bean instance to look up a property value for.
      * @param propertyPath A valid property path expression in the context of the bean.
      * @return The value of the property referred to by the provided bean and property path.
@@ -372,8 +373,8 @@ public final class ObjectPropertyUtils {
      * @param propertyPath A property path expression in the context of the bean.
      * @param propertyValue The value to populate value in the property referred to by the provided
      *        bean and property path.
-     * @param ignore True if invalid property values should be ignored, false to throw a
-     *        RuntimeException if the property refernce is invalid.
+     * @param ignoreUnknown True if invalid property values should be ignored, false to throw a
+     *        RuntimeException if the property reference is invalid.
      * @see ObjectPathExpressionParser
      */
     public static void setPropertyValue(Object object, String propertyPath, Object propertyValue, boolean ignoreUnknown) {
@@ -462,7 +463,7 @@ public final class ObjectPropertyUtils {
      * If the type has not been explicitly defined at compile time, {@link Object} is returned.
      * </p>
      * 
-     * @param type The generic collection or map type.
+     * @param valueType The generic collection or map type.
      * @return component or value type, resolved from the generic type
      */
     public static Class<?> getUpperBound(Type valueType) {

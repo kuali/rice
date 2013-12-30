@@ -614,7 +614,7 @@ public class LookupUtils {
      *
      * @param lineDataObject   Object from which to extract values
      * @param fieldConversionKeys List of keys whose values have to be concatenated
-     * @return
+     * @return string representing the multivalue key 
      */
     public static String generateMultiValueKey(Object lineDataObject, List<String> fieldConversionKeys) {
         String lineIdentifier = "";

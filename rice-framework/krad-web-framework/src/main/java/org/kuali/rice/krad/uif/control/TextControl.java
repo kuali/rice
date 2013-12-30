@@ -18,73 +18,87 @@ package org.kuali.rice.krad.uif.control;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 /**
- * TODO mark don't forget to fill this in. 
+ * Interface representing a text input control component. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface TextControl extends Control {
 
     /**
-     * This method ...
+     * Gets the date picker widget, if applicable.
      * 
-     * @param maxLength
-     */
-    void setMaxLength(Integer maxLength);
-
-    /**
-     * This method ...
-     * 
-     * @param maxLength
-     */
-    void setSize(int maxLength);
-
-    /**
-     * This method ...
-     * 
-     * @param b
-     */
-    void setTextExpand(boolean b);
-
-    /**
-     * This method ...
-     * 
-     * @param minLength
-     */
-    void setMinLength(Integer minLength);
-
-    /**
-     * This method ...
-     * 
-     * @param watermark
-     */
-    void setWatermarkText(String watermark);
-
-    /**
-     * This method ...
-     * 
-     * @return
+     * @return date picker, null if not a date input field
      */
     DatePicker getDatePicker();
 
     /**
-     * This method ...
+     * Gets the size of the text input.
      * 
-     * @return
+     * @return text input size
      */
     int getSize();
 
     /**
-     * This method ...
+     * Gets the min length of the text input.
      * 
-     * @return
+     * @return min length
+     */
+    Integer getMinLength();
+
+    /**
+     * Gets the max length of the text input.
+     * 
+     * @return max length
      */
     Integer getMaxLength();
 
     /**
-     * This method ...
+     * Indicates if the text expand popup should be used.
      * 
-     * @return
+     * @return true if the text expand popup should be used
      */
     boolean isTextExpand();
+
+    /**
+     * Gets the watermark text.
+     * 
+     * @return watermark text
+     */
+    String getWatermarkText();
+
+    /**
+     * Setter for {@link #getMaxLength()}
+     * 
+     * @param maxLength property value
+     */
+    void setMaxLength(Integer maxLength);
+
+    /**
+     * Setter for {@link #getSize()}
+     * 
+     * @param size property value
+     */
+    void setSize(int size);
+
+    /**
+     * Setter for {@link #isTextExpand()}
+     * 
+     * @param b property value
+     */
+    void setTextExpand(boolean b);
+
+    /**
+     * Setter for {@link #getMinLength()}
+     * 
+     * @param minLength property value
+     */
+    void setMinLength(Integer minLength);
+
+    /**
+     * Setter for {@link #getWatermarkText()}
+     * 
+     * @param watermark property value
+     */
+    void setWatermarkText(String watermark);
 
 }

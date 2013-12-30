@@ -36,7 +36,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
     /**
      * This method returns the module configuration.
      *
-     * @return
+     * @return module configuration
      */
     public ModuleConfiguration getModuleConfiguration();
 
@@ -44,7 +44,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * This method determines whether this service is responsible for the business object class passed in, or not.
      *
      * @param businessObjectClass
-     * @return
+     * @return true if this module is responsible for the business object
      */
     public boolean isResponsibleFor(Class businessObjectClass);
 
@@ -52,7 +52,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * This method returns the list of primary keys for the EBO.
      *
      * @param businessObjectInterfaceClass
-     * @return
+     * @return list of primary key field names
      */
     public List listPrimaryKeyFieldNames(Class businessObjectInterfaceClass);
 
@@ -74,7 +74,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * This method gets the business object dictionary entry for the passed in externalizable business object class.
      *
      * @param businessObjectInterfaceClass
-     * @return
+     * @return business object
      */
     public BusinessObjectEntry getExternalizableBusinessObjectDictionaryEntry(Class businessObjectInterfaceClass);
 
@@ -83,7 +83,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      *
      * @param businessObjectClass
      * @param fieldValues
-     * @return
+     * @return business object
      */
     public <T extends ExternalizableBusinessObject> T getExternalizableBusinessObject(Class<T> businessObjectClass,
             Map<String, Object> fieldValues);
@@ -94,7 +94,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      *
      * @param businessObjectClass
      * @param fieldValues
-     * @return
+     * @return list of business objects
      */
     public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsList(
             Class<T> businessObjectClass, Map<String, Object> fieldValues);
@@ -107,7 +107,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * @param businessObjectClass
      * @param fieldValues
      * @param unbounded
-     * @return
+     * @return list of business objects
      */
     public <T extends ExternalizableBusinessObject> List<T> getExternalizableBusinessObjectsListForLookup(
             Class<T> businessObjectClass, Map<String, Object> fieldValues, boolean unbounded);
@@ -153,7 +153,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * This method gets the lookup url for the given externalizable business object properties.
      *
      * @param parameters
-     * @return
+     * @return lookup url
      * @deprecated legacy KNS call, replaced by {@link #getExternalizableDataObjectLookupUrl(Class, java.util.Properties)}
      * in KRAD
      */
@@ -168,7 +168,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * @param businessObject
      * @param currentInstanceExternalizableBO
      * @param externalizableRelationshipName
-     * @return
+     * @return business object
      */
     public <T extends ExternalizableBusinessObject> T retrieveExternalizableBusinessObjectIfNecessary(
             BusinessObject businessObject, T currentInstanceExternalizableBO, String externalizableRelationshipName);
@@ -181,7 +181,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * @param businessObject
      * @param externalizableRelationshipName
      * @param externalizableClazz
-     * @return
+     * @return list of externalizable business objects
      */
     public <T extends ExternalizableBusinessObject> List<T> retrieveExternalizableBusinessObjectsList(
             BusinessObject businessObject, String externalizableRelationshipName, Class<T> externalizableClazz);
@@ -190,26 +190,26 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * This method determines whether or not a bo class is externalizable.
      *
      * @param boClass
-     * @return
+     * @return true if the class is externalizable
      */
     public boolean isExternalizable(Class boClass);
 
     /**
      * @param boClass
-     * @return
+     * @return true if the class is lookupable and externalizable
      */
     public boolean isExternalizableBusinessObjectLookupable(Class boClass);
 
     /**
      * @param boClass
-     * @return
+     * @return true if the class is inquirable and externalizable
      */
     public boolean isExternalizableBusinessObjectInquirable(Class boClass);
 
     /**
-     * @param <T>
-     * @param boClass
-     * @return
+     * @param <T> business object type
+     * @param boClass business object class
+     * @return business object
      */
     public <T extends ExternalizableBusinessObject> T createNewObjectFromExternalizableClass(Class<T> boClass);
 
@@ -227,7 +227,7 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
     /**
      * This method determines whether or not the central rice server should be used for lookups.
      *
-     * @return
+     * @return true if the central rice server should be used for lookups
      */
     public boolean goToCentralRiceForInquiry();
 }

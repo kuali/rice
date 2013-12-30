@@ -62,7 +62,7 @@ public class Label extends ContentElementBase {
     /**
      * Sets up rich message content for the label, if any exists
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -87,8 +87,7 @@ public class Label extends ContentElementBase {
      * <ul>
      * <li>If label text is blank, set render to false for field</li>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {

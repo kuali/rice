@@ -44,7 +44,7 @@ public class LocationSuggest extends Suggest {
     /**
      * Process the objectIdPropertyName, if set
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -183,7 +183,7 @@ public class LocationSuggest extends Suggest {
      * construction).
      * </p>
      *
-     * @return
+     * @return mapping of additional request parameters
      */
     @BeanTagAttribute(name = "additionalRequestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalRequestParameters() {

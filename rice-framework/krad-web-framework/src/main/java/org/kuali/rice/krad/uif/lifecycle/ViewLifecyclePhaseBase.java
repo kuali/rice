@@ -72,7 +72,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * 
      * @param element The element to be processed by this phase.
      * @param model The model associated with the lifecycle at this phase.
-     * @param index The position within the predecessor phase's successor list of this phase.
+     * @param path Path to the component relative to the active view.
      * @param parent The parent element. For top-down phases, this component will be associated
      *        with the predecessor phase. For bottom-up phases (rendering), this element will be
      *        associated with a successor phases.

@@ -20,8 +20,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 
 /**
  * Annotation for {@link Copyable} fields to indicate that a delayed copy proxy should be used

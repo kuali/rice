@@ -38,7 +38,7 @@ public interface DataDictionaryMapper {
      * This method gets the business object entry for a concrete class
      *
      * @param className
-     * @return
+     * @return business object entry
      */
     @Deprecated
     public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(DataDictionaryIndex index, String className);
@@ -121,7 +121,8 @@ public interface DataDictionaryMapper {
     /**
      * Returns mapped document type based on the given document type.
      *
-     * @param documentType
+     * @param index data dictionary index
+     * @param documentTypeName document type name to check for
      * @return new document type or null if given documentType was not found.
      */
     public String getDocumentTypeName(DataDictionaryIndex index, String documentTypeName);

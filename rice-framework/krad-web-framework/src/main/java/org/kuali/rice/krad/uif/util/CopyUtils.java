@@ -227,6 +227,7 @@ public final class CopyUtils {
     /**
      * Mix-in copy implementation for objects that implement the {@link Copyable} interface}
      * 
+     * @param <T> copyable type
      * @param obj The object to copy.
      * @return A deep copy of the object.
      */
@@ -276,6 +277,7 @@ public final class CopyUtils {
     /**
      * Determine if shallow copying is available on an object.
      * 
+     * @param <T> copyable type
      * @param obj The object to check.
      * @return True if {@link #getShallowCopy(Object)} may be expected to return a shallow copy of
      *         the object. False if a null return value is expected.
@@ -308,6 +310,7 @@ public final class CopyUtils {
      * This method simplifies access to the clone() method.
      * </p>
      * 
+     * @param <T> copyable type
      * @param obj The object to clone.
      * @return A shallow copy of obj, or null if obj is null.
      * @throws CloneNotSupportedException If copying is not available on the object, or if thrown by
@@ -453,7 +456,6 @@ public final class CopyUtils {
      * all copyable instances located by a deep traversal of the object.
      * 
      * @param obj The object to prepare for caching.
-     * @return A deep copy of the object.
      */
     public static void preventModification(Copyable obj) {
         CopyState copyState = RecycleUtils.getRecycledInstance(CopyState.class);
@@ -497,6 +499,7 @@ public final class CopyUtils {
      * Prepare a copyable object for caching by calling {@link Copyable#preventModification()} on
      * all copyable instances located by a deep traversal of the object.
      * 
+     * @param <T> copyable type
      * @param obj The object to prepare for caching.
      * @return A deep copy of the object.
      */
@@ -549,6 +552,7 @@ public final class CopyUtils {
     /**
      * Get a deep copy of an object using cloning.
      * 
+     * @param <T> copyable type
      * @param obj The object to get a deep copy of.
      * @return A deep copy of the object.
      */
@@ -848,13 +852,16 @@ public final class CopyUtils {
         /**
          * Sets the a value.
          * 
-         * @param obj The value to set.
+         * @param value The value to set.
          */
         @Override
         public void set(Object value) {
             this.value = targetClass.cast(value);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void clean() {
             this.value = null;
@@ -958,7 +965,7 @@ public final class CopyUtils {
         /**
          * Set a value for the field on the target object.
          * 
-         * @param obj The value to set for the field on the target object.
+         * @param value The value to set for the field on the target object.
          */
         @Override
         public void set(Object value) {
@@ -969,6 +976,9 @@ public final class CopyUtils {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void clean() {
             source = null;
@@ -1220,13 +1230,16 @@ public final class CopyUtils {
         /**
          * Modify the list item.
          * 
-         * @param The value to modify the list item as.
+         * @param value The value to modify the list item as.
          */
         @Override
         public void set(Object value) {
             target.set(index, targetClass.cast(value));
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void clean() {
             targetClass = null;
@@ -1331,13 +1344,16 @@ public final class CopyUtils {
         /**
          * Modify the map entry.
          * 
-         * @param The value to modify the map entry with.
+         * @param value The value to modify the map entry with.
          */
         @Override
         public void set(Object value) {
             target.put(sourceEntry.getKey(), targetClass.cast(value));
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void clean() {
             targetClass = null;

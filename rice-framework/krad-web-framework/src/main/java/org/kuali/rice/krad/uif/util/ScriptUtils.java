@@ -235,8 +235,8 @@ public class ScriptUtils {
      * Escapes the ' character present in collection names so it can be properly used in js without
      * causing javascript errors due to an early completion of a ' string.
      * 
-     * @param name
-     * @return
+     * @param name name to escape
+     * @return name, with single quotes escape
      */
     public static String escapeName(String name) {
         name = name.replace("'", "\\'");

@@ -43,7 +43,7 @@ public class WorkflowProperty implements Serializable {
      * Returns the path to the property that is serializable, relative to the {@link WorkflowPropertyGroup} that
      * contains this object
      *
-     * @return
+     * @return path
      */
     @BeanTagAttribute(name = "path")
     public String getPath() {

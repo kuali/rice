@@ -49,7 +49,7 @@ public interface Helpable {
      * This is used by the helper to set the help content to the tooltip.
      * </p>
      *
-     *  @parm Tooltip with the help for the container
+     *  @param tooltip Tooltip with the help for the container
      */
     void setTooltipOfComponent(Tooltip tooltip);
 

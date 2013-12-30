@@ -104,7 +104,7 @@ public class DataTable extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(java.util.Set<java.lang.String>)
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(Set)
      */
     public void setHiddenColumns(Set<String> hiddenColumns) {
         if (richTable != null) {
@@ -125,7 +125,7 @@ public class DataTable extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(java.util.Set<java.lang.String>)
+     * @see org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(Set)
      */
     public void setSortableColumns(Set<String> sortableColumns) {
         if (richTable != null) {

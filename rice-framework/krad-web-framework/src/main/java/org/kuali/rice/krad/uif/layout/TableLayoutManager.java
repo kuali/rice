@@ -313,24 +313,32 @@ public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutM
     void setNumberOfDataColumns(int numberOfDataColumns);
 
     /**
+     * Gets a set of property names defining hidden columns.
+     * 
+     * @return set of property names
      * @see org.kuali.rice.krad.uif.widget.RichTable#getHiddenColumns()
      */
     Set<String> getHiddenColumns();
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.RichTable#setHiddenColumns(java.util.Set<java.lang.String>
-     *      )
+     * Setter for {@link #getHiddenColumns()}.
+     * 
+     * @param hiddenColumns set of property names
      */
     void setHiddenColumns(Set<String> hiddenColumns);
 
     /**
+     * Gets a set of property names defining sortable columns.
+     * 
+     * @return set of property names
      * @see org.kuali.rice.krad.uif.widget.RichTable#getSortableColumns()
      */
     Set<String> getSortableColumns();
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.RichTable#setSortableColumns(java.util.Set<java.lang.String
-     *      >)
+     * Setterfor {@link #getSortableColumns()}.
+     * 
+     * @param sortableColumns set of property names
      */
     void setSortableColumns(Set<String> sortableColumns);
 
@@ -715,10 +723,10 @@ public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutM
     void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses);
 
     /**
-     * This method ...
+     * Gets a list of column calculation components.
      * 
-     * @return
+     * @return list of column calculation components
      */
-    List<Component> getColumnCalculationComponents();
+   List<Component> getColumnCalculationComponents();
 
 }

@@ -56,6 +56,7 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
     /**
      * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
      * delimiter
+     * @param cellCssClasses list of cell CSS classes
      *
      * @return class attribute string
      */

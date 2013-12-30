@@ -458,7 +458,7 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
      * added. JSTL: defaultExistenceChecks is a Map of Reference elements, whose entries are keyed by attributeName.
      * </p>
      *
-     * @return
+     * @return list of reference definitions
      */
     @BeanTagAttribute(name = "defaultExistenceChecks", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ReferenceDefinition> getDefaultExistenceChecks() {

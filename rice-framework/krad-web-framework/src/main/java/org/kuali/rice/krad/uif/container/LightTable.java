@@ -309,7 +309,6 @@ public class LightTable extends GroupBase implements DataBinding {
      * @param view the view instance the table is being built within
      * @param rowTemplate the first row of the collection in html generated from the ftl
      * @param model the model
-     * @return the full set of rows for the table in html(String) to be used by the calling ftl
      */
     public void buildRows(View view, String rowTemplate, UifFormBase model) {
         if (StringUtils.isBlank(rowTemplate)) {

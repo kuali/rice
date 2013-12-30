@@ -47,8 +47,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 * immediately before the <code>Field</code> item the label applies to.
 	 * Finally the new list of components is set on the group
 	 *
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void performModification(Object model, Component component) {

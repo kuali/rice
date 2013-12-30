@@ -111,8 +111,7 @@ public class Header extends ContentElementBase {
     /**
      * Sets up rich message content for the label, if any exists
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -137,8 +136,7 @@ public class Header extends ContentElementBase {
      * <li>Set render on header group to false if no items are configured</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {

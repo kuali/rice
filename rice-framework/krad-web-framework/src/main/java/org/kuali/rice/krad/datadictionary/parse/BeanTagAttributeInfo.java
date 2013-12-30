@@ -114,7 +114,7 @@ public class BeanTagAttributeInfo {
      * Returns true if valueType, type, and name match
      *
      * @param obj
-     * @return
+     * @return true if valueType, type, and name match
      */
     @Override
     public boolean equals(Object obj) {

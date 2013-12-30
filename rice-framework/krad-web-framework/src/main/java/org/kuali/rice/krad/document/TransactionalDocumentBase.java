@@ -47,7 +47,7 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
     /**
      * This method to check whether the document class implements SessionDocument
      *
-     * @return
+     * @return true if the document is a session document
      */
     public boolean isSessionDocument() {
         return SessionDocument.class.isAssignableFrom(this.getClass());

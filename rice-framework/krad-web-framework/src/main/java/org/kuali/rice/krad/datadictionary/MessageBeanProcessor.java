@@ -66,65 +66,63 @@ public class MessageBeanProcessor extends DictionaryBeanProcessorBase {
     }
 
     /**
-     * @see DictionaryBeanProcessor#processNestedBeanDefinition(java.lang.String,
-     *      org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
-     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public void processNestedBeanDefinition(String beanName, BeanDefinition beanDefinition, String propertyName,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
         processBeanMessages(beanName, beanDefinition, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processStringPropertyValue(java.lang.String, java.lang.String,
-     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public String processStringPropertyValue(String propertyName, String propertyValue,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
         return processMessagePlaceholders(propertyValue, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processCollectionBeanDefinition(java.lang.String,
-     *      org.springframework.beans.factory.config.BeanDefinition, java.lang.String,
-     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public void processCollectionBeanDefinition(String beanName, BeanDefinition beanDefinition, String propertyName,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
         processBeanMessages(beanName, beanDefinition, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processArrayStringPropertyValue(java.lang.String, java.lang.Object[],
-     *      java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public String processArrayStringPropertyValue(String propertyName, Object[] propertyValue, String elementValue,
             int elementIndex, Stack<BeanDefinitionHolder> nestedBeanStack) {
         return processMessagePlaceholders(elementValue, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processListStringPropertyValue(java.lang.String, java.util.List<?>,
-     *      java.lang.String, int, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public String processListStringPropertyValue(String propertyName, List<?> propertyValue, String elementValue,
             int elementIndex, Stack<BeanDefinitionHolder> nestedBeanStack) {
         return processMessagePlaceholders(elementValue, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processSetStringPropertyValue(java.lang.String, java.util.Set<?>, java.lang.String,
-     *      java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public String processSetStringPropertyValue(String propertyName, Set<?> propertyValue, String elementValue,
             Stack<BeanDefinitionHolder> nestedBeanStack) {
         return processMessagePlaceholders(elementValue, nestedBeanStack);
     }
 
     /**
-     * @see DictionaryBeanProcessor#processMapStringPropertyValue(java.lang.String, java.util.Map<?,?>,
-     *      java.lang.String, java.lang.Object, java.util.Stack<org.springframework.beans.factory.config.BeanDefinitionHolder>)
+     * {@inheritDoc}
      */
+    @Override
     public String processMapStringPropertyValue(String propertyName, Map<?, ?> propertyValue, String elementValue,
             Object elementKey, Stack<BeanDefinitionHolder> nestedBeanStack) {
         return processMessagePlaceholders(elementValue, nestedBeanStack);

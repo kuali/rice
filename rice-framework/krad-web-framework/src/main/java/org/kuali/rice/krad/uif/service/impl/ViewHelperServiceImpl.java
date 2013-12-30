@@ -294,7 +294,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class ElementState {
+        
+        /**
+         * Property path of the element at the current state, relative to the view.
+         */
         private String path;
+        
+        /**
+         * Element found at the path relative to the view.
+         */
         private LifecycleElement element;
     }
     
@@ -302,8 +310,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Gets a potentially recycled component state helper, for use with
      * {@link ViewHelperServiceImpl#preprocessView(View)}
      * 
-     * @param original The original component.
-     * @param copy The copy of the component, for storage as initial component.
+     * @param path property path of the element
+     * @param element lifecycle element
      * @return component state helper
      */
     private static ElementState getElementState(String path, LifecycleElement element) {

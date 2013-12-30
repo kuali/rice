@@ -38,6 +38,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(Component component, Object model, String path) {
@@ -50,7 +51,7 @@ public final class LifecyclePhaseFactory {
      * @param element The element.
      * @param model The model
      * @param parent The parent element.
-     * @param index The index of the phase within the nested component list.
+     * @param path Path to the component relative to the active view.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @return lifecycle processing task for processing the initialize phase on the component
@@ -67,6 +68,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, String path) {
@@ -79,6 +81,7 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param parent The component.
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model,
@@ -92,7 +95,7 @@ public final class LifecyclePhaseFactory {
      * @param element The element.
      * @param model The model
      * @param parent The parent component.
-     * @param index The index of the phase within the nested component list.
+     * @param path Path to the component relative to the active view.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @param visitedIds The set of visited IDs to track while applying model.
@@ -111,6 +114,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, String path) {
@@ -123,7 +127,7 @@ public final class LifecyclePhaseFactory {
      * @param element The component.
      * @param model The model
      * @param parent The parent component.
-     * @param index The index of the phase within the nested component list.
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(LifecycleElement element, Object model,
@@ -138,8 +142,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component to render.
      * @param model The model associated with the component.
-     * @param index The position of the associated finalize phase's within its predecessor's
-     *        successor queue.
+     * @param path Path to the component relative to the active view.
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(Component component, Object model, String path) {

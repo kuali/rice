@@ -32,7 +32,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * Represents a property reference in a path expression, for use in implementing
- * {@link ObjectPropertyUtils.PathEntry}.
+ * {@link ObjectPathExpressionParser.PathEntry}.
  * 
  * <p>
  * This class defers the actual resolution of property references nodes in a path expression until
@@ -41,8 +41,7 @@ import org.kuali.rice.krad.util.KRADUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @version 2.4
- * @see ObjectPropertyUtils#parsePathExpression(Object, String,
- *      org.kuali.rice.krad.uif.util.ObjectPropertyUtils.PathEntry)
+ * @see ObjectPathExpressionParser#parsePathExpression(Object, String, PathEntry)
  */
 public class ObjectPropertyReference {
 
@@ -78,8 +77,8 @@ public class ObjectPropertyReference {
     private static final class ReferencePathEntry implements PathEntry {
 
         /**
-         * Determine if {@link ObjectPropertyReference#get()} or
-         * {@link ObjectPropertyReference#grow()} should be used.
+         * Determines whether or not {@link ObjectPropertyReference#initialize(Object, Class)}
+         * should be used to create an object when a property reference resolves to null.
          */
         private final boolean grow;
 
@@ -94,9 +93,6 @@ public class ObjectPropertyReference {
          * Transition from one path entry to the next while parsing a bean property expression.
          * 
          * {@inheritDoc}
-         * 
-         * @see org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry#parse(java.lang.Object,
-         *      java.lang.String, boolean)
          */
         @Override
         public Object parse(String parentPath, Object node, String next) {
@@ -159,9 +155,8 @@ public class ObjectPropertyReference {
     /**
      * Get the property value for a specific bean property of a known bean class.
      * 
-     * @param bean The bean.
-     * @param bc The bean class.
-     * @param name The name of the property.
+     * @param propertyValue existing property value
+     * @param propertyType the property type to initialize if the existing value is null
      * @return The property value for the specific bean property on the given bean.
      */
     private static Object initialize(Object propertyValue, Class<?> propertyType) {
@@ -227,7 +222,7 @@ public class ObjectPropertyReference {
      * 
      * @param array The array.
      * @param name A string representation of the index in the array.
-     * @param The property value to set in the array.
+     * @param value The property value to set in the array.
      */
     private static void setArray(Object array, String name, Object value) {
         Array.set(array, Integer.parseInt(name), value);
@@ -241,7 +236,7 @@ public class ObjectPropertyReference {
      * list index, or the list is null, then null is returned.
      * </p>
      * 
-     * @param array The list.
+     * @param list The list.
      * @param name The name of the property value.
      * @return The property value for the named entry in the list. When name is 'size' or 'length',
      *         then the length of the list is returned, otherwise the property name is converted to
@@ -272,7 +267,7 @@ public class ObjectPropertyReference {
     /**
      * Set a property value in a list.
      * 
-     * @param array The list.
+     * @param list The list.
      * @param name A string representation of the list index.
      * @param value The value to add to the list.
      */
@@ -288,7 +283,7 @@ public class ObjectPropertyReference {
     /**
      * Get a property value from an map.
      * 
-     * @param array The map.
+     * @param map The map.
      * @param name The name of the property value.
      * @return The property value for the named entry in the map.
      */
@@ -302,7 +297,7 @@ public class ObjectPropertyReference {
     /**
      * Determine if a warning should be logged on when an invalid property is encountered
      * on the current thread.
-     * @param warning True to log warnings when invalid properties are encountered, false to ignore
+     * @return True to log warnings when invalid properties are encountered, false to ignore
      *        invalid properties.
      */
     public static boolean isWarning() {
@@ -327,8 +322,8 @@ public class ObjectPropertyReference {
      * Resolve a path expression on a bean.
      * 
      * @param bean The bean.
+     * @param beanClass The bean class.
      * @param propertyPath The property path expression.
-     * @param resolver Logical resolver implementation.
      * @param grow True to create objects while traversing the path, false to traverse class
      *        structure only when referring to null.
      * @return A reference to the final parse node involved in parsing the path expression.
@@ -376,7 +371,7 @@ public class ObjectPropertyReference {
      *
      * @param bean The bean.
      * @param beanClass The bean class.
-     * @param property The property name.
+     * @param propertyPath The property path.
      * @return A single-use reference to the final parse node involved in parsing the path
      *         expression. Note that the reference returned by this method will be reused and
      *         modified by the next call, so should not be set to a variable.
@@ -538,7 +533,6 @@ public class ObjectPropertyReference {
      * Convert a property value to the targeted property type.
      * 
      * @param propertyValue The property value.
-     * @param propertyType The property type.
      * @return The property value, converted to the property type.
      */
     private Object convertToPropertyType(Object propertyValue) {
@@ -692,9 +686,6 @@ public class ObjectPropertyReference {
     /**
      * Get the property value for a specific bean property of a known bean class.
      * 
-     * @param bean The bean.
-     * @param bc The bean class.
-     * @param name The name of the property.
      * @return The property value for the specific bean property on the given bean.
      */
     public Object getFromReadMethod() {
@@ -800,8 +791,6 @@ public class ObjectPropertyReference {
     /**
      * Get the type of a specific property on a given bean class.
      * 
-     * @param bc The bean class.
-     * @param name The name of the property;
      * @return The type of the specific property on the given bean class.
      */
     private Class<?> getPropertyTypeFromReadOrWriteMethod() {

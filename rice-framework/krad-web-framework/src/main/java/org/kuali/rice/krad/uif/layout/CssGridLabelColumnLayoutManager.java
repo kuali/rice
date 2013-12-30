@@ -26,7 +26,6 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.util.KRADUtils;
 
 /**
@@ -47,8 +46,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     /**
      * CssGridLabelColumnLayoutManager's performFinalize method calculates and separates the items into rows
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement component) {
@@ -187,7 +185,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager#getLabelColumnCssClass()
+     * Setter for {@link #getLabelColumnCssClass()}.
+     * 
+     * @param labelColumnCssClass property value
      */
     public void setLabelColumnCssClass(String labelColumnCssClass) {
         this.labelColumnCssClass = labelColumnCssClass;
@@ -209,7 +209,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager#getLabelColumnCssClass()
+     * Setter for {@link #getNumberOfLabelColumns()}.
+     * 
+     * @param numberOfLabelColumns property value
      */
     public void setNumberOfLabelColumns(int numberOfLabelColumns) {
         this.numberOfLabelColumns = numberOfLabelColumns;

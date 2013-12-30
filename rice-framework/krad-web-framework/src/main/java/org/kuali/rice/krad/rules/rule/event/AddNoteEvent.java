@@ -52,7 +52,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
     /**
      * This method retrieves the note associated with this event.
      *
-     * @return
+     * @return note
      */
     public Note getNote() {
         return note;

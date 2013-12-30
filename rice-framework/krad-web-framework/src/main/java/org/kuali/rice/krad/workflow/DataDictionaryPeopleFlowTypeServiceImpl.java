@@ -35,6 +35,7 @@ import org.kuali.rice.krad.util.BeanPropertyComparator;
 
 import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,18 +48,18 @@ import java.util.Map;
 public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeService {
 
     /**
-     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#filterToSelectableRoleIds(java.lang.String,
-     *      java.util.List<java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public List<String> filterToSelectableRoleIds(@WebParam(name = "kewTypeId") String kewTypeId,
             @WebParam(name = "roleIds") List<String> roleIds) {
         return roleIds;
     }
 
     /**
-     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#resolveRoleQualifiers(java.lang.String,
-     *      java.lang.String, org.kuali.rice.kew.api.document.Document, org.kuali.rice.kew.api.document.DocumentContent)
+     * {@inheritDoc}
      */
+    @Override
     public Map<String, String> resolveRoleQualifiers(@WebParam(name = "kewTypeId") String kewTypeId,
             @WebParam(name = "roleId") String roleId, @WebParam(name = "document") Document document,
             @WebParam(name = "documentContent") DocumentContent documentContent) {
@@ -150,9 +151,9 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#validateAttributes(java.lang.String,
-     *      java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public List<RemotableAttributeError> validateAttributes(@WebParam(name = "kewTypeId") String kewTypeId,
             @WebParam(name = "attributes") @XmlJavaTypeAdapter(
                     value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException {
@@ -160,9 +161,9 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#validateAttributesAgainstExisting(java.lang.String,
-     *      java.util.Map<java.lang.String,java.lang.String>, java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public List<RemotableAttributeError> validateAttributesAgainstExisting(
             @WebParam(name = "kewTypeId") String kewTypeId, @WebParam(name = "newAttributes") @XmlJavaTypeAdapter(
             value = MapStringStringAdapter.class) Map<String, String> newAttributes,

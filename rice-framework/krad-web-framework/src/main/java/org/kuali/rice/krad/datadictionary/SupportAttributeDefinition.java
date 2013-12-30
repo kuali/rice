@@ -59,8 +59,7 @@ public class SupportAttributeDefinition extends PrimitiveAttributeDefinition {
     /**
      * Directly validate simple fields.
      *
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {

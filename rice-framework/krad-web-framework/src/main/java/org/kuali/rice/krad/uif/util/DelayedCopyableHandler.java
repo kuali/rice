@@ -93,6 +93,8 @@ public class DelayedCopyableHandler implements InvocationHandler {
     
     /**
      * Get a proxy instance providing delayed copy behavior on a source component.
+     * @param source The source object
+     * @return proxy instance wrapping the object
      */
     public static Copyable getDelayedCopy(Copyable source) {
         Class<?> sourceClass = source.getClass();

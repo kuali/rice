@@ -41,8 +41,7 @@ public class AccordionGroup extends GroupBase {
     private Accordion accordionWidget;
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -53,7 +52,7 @@ public class AccordionGroup extends GroupBase {
     /**
      * Only groups are supported for this group.
      *
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -77,7 +76,7 @@ public class AccordionGroup extends GroupBase {
     /**
      * Set the accordionWidget
      *
-     * @param the accordionWidget to set
+     * @param accordionWidget the accordionWidget to set
      */
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;

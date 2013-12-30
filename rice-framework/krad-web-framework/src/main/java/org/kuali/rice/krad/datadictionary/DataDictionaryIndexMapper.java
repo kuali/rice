@@ -87,8 +87,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getBusinessObjectEntryForConcreteClass(java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(DataDictionaryIndex ddIndex, String className) {
         if (StringUtils.isBlank(className)) {
             throw new IllegalArgumentException("invalid (blank) className");
@@ -104,9 +105,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getDictionaryObjectEntry(org.kuali.rice.krad.datadictionary.DataDictionaryIndex,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public DataDictionaryEntry getDictionaryObjectEntry(DataDictionaryIndex ddIndex, String className) {
         if (StringUtils.isBlank(className)) {
             throw new IllegalArgumentException("invalid (blank) className");
@@ -264,9 +265,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getImmutableViewById(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public View getImmutableViewById(UifDictionaryIndex index, String viewId) {
         if (StringUtils.isBlank(viewId)) {
             throw new IllegalArgumentException("invalid (blank) view id");
@@ -276,9 +277,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewByTypeIndex(UifDictionaryIndex,
-     *      java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
+    @Override
     public View getViewByTypeIndex(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
             Map<String, String> indexKey) {
         if (viewTypeName == null) {
@@ -292,9 +293,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex,
-     * org.kuali.rice.krad.uif.UifConstants.ViewType, java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public String getViewIdByTypeIndex(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
             Map<String, String> indexKey) {
         if (viewTypeName == null) {
@@ -309,9 +310,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryIndexMapper#viewByTypeExist(UifDictionaryIndex,
-     *      java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
+    @Override
     public boolean viewByTypeExist(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
             Map<String, String> indexKey) {
         if (viewTypeName == null) {
@@ -325,9 +326,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewPropertiesById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public PropertyValues getViewPropertiesById(UifDictionaryIndex index, String viewId) {
         if (StringUtils.isBlank(viewId)) {
             throw new IllegalArgumentException("invalid (blank) view id");
@@ -337,9 +338,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryIndexMapper#getViewPropertiesByType(UifDictionaryIndex,
-     *      java.lang.String, java.util.Map)
+     * {@inheritDoc}
      */
+    @Override
     public PropertyValues getViewPropertiesByType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
             Map<String, String> indexKey) {
         if (viewTypeName == null) {
@@ -353,9 +354,9 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewsForType(UifDictionaryIndex,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
+    @Override
     public List<View> getViewsForType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName) {
         if (viewTypeName == null) {
             throw new IllegalArgumentException("invalid (blank) view type name");

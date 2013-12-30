@@ -83,13 +83,14 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
 
     /**
      * Text to display as the toggle menu toggle link
-     *
+     * 
      * <p>
-     * This text will appear as a link for the user to click on, which then will bring up the toggle menu menu. This
-     * property is a shortcut for {@link #getToggleMessage().setMessageText()}. This text is not required, in which
+     * This text will appear as a link for the user to click on, which then will bring up the toggle
+     * menu menu. This property is a shortcut for {@link #getToggleMessage()}
+     * {@link Message#setMessageText(String) .setMessageText}. This text is not required, in which
      * case only the caret will render
      * </p>
-     *
+     * 
      * @return text to display for the toggle menu toggle link
      */
     @BeanTagAttribute(name = "toggleText")

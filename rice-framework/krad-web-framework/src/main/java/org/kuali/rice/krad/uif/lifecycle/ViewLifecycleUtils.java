@@ -53,7 +53,7 @@ public final class ViewLifecycleUtils {
      * indicated view phase.
      * 
      * @param element The lifecycle element.
-     * @param The view phase to retrieve restrictions for.
+     * @param viewPhase The view phase to retrieve restrictions for.
      * @return set of property names
      */
     public static Set<String> getLifecycleRestrictedProperties(LifecycleElement element, String viewPhase) {
@@ -70,29 +70,29 @@ public final class ViewLifecycleUtils {
      * Gets the next lifecycle phase to be executed on the provided element.
      * 
      * <dl>
-     * <dt>{@link UifConstants.ViewStatus#CREATED CREATED}</dt>
-     * <dt>{@link UifConstants.ViewStatus#CACHED CACHED}</dt>
-     * <dd>{@link UifConstants.ViewPhases#INITIALIZE INITIALIZE}</dd>
+     * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CREATED CREATED}</dt>
+     * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED CACHED}</dt>
+     * <dd>{@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#INITIALIZE INITIALIZE}</dd>
      * 
-     * <dt>{@link UifConstants.ViewStatus#INITIALIZED INITIALIZED}</dt>
-     * <dd>{@link UifConstants.ViewPhases#APPLY_MODEL APPLY_MODEL}</dd>
+     * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#INITIALIZED INITIALIZED}</dt>
+     * <dd>{@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#APPLY_MODEL APPLY_MODEL}</dd>
      * 
-     * <dt>{@link UifConstants.ViewStatus#MODEL_APPLIED MODEL_APPLIED}</dt>
-     * <dd>{@link UifConstants.ViewPhases#FINALIZE FINALIZE}</dd>
+     * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#MODEL_APPLIED MODEL_APPLIED}</dt>
+     * <dd>{@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#FINALIZE FINALIZE}</dd>
      * 
-     * <dt>{@link UifConstants.ViewStatus#FINALIZED FINALIZED}</dt>
-     * <dd>{@link UifConstants.ViewPhases#RENDER RENDER}</dd>
+     * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#FINAL FINAL}</dt>
+     * <dd>{@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#RENDER RENDER}</dd>
      * </dl>
      * 
      * <p>
-     * If the view status is null, invalid, or {@link UifConstants.ViewStatus#RENDERED RENDERED},
-     * then {@link UifConstants.ViewPhases#INITIALIZE} will be returned and a warning logged.
+     * If the view status is null, invalid, or {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#RENDERED RENDERED},
+     * then {@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#INITIALIZE} will be returned and a warning logged.
      * </p>
      * 
      * @param element The lifecycle element.
      * @return The next phase in the element's lifecycle based on view status
      * @see LifecycleElement#getViewStatus()
-     * @see UifConstants.ViewPhases
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
      */
     public static String getNextLifecyclePhase(LifecycleElement element) {
         if (element == null) {
@@ -126,8 +126,7 @@ public final class ViewLifecycleUtils {
      * Gets sub-elements for lifecycle processing.
      * 
      * @param element The element to scan.
-     * @param viewPhase The view phase to return subcomponents for.
-     * @return lifecycle elements
+     * @return map of lifecycle elements
      */
     public static Map<String, LifecycleElement> getElementsForLifecycle(LifecycleElement element) {
         return getElementsForLifecycle(element, getNextLifecyclePhase(element));
@@ -441,7 +440,7 @@ public final class ViewLifecycleUtils {
         /**
          * Creates a new metadata wrapper for a bean class.
          * 
-         * @param beanClass The bean class.
+         * @param elementClass The element class.
          */
         private ElementMetadata(Class<?> elementClass) {
             Set<String> restrictedPropertyNames = ObjectPropertyUtils

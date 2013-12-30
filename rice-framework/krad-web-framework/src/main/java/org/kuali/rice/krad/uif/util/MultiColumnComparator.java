@@ -302,7 +302,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
 
     /**
      * Compare the string values based on the given sortType, which must match one of the constants
-     * in {@link UifConstants.TableToolsValues}.
+     * in {@link org.kuali.rice.krad.uif.UifConstants.TableToolsValues}.
      * 
      * @param val1 The first string value for comparison
      * @param val2 The second string value for comparison

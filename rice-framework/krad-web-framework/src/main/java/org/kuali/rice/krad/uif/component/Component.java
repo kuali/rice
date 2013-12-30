@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -100,7 +101,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     /**
      * Set the view lifecycle processing status for this component, explicitly.
      * 
-     * @param phase The view status for this component.
+     * @param status The view status for this component.
      */
     void setViewStatus(String status);
 
@@ -154,7 +155,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * e.g. 'uif_text'
      * </p>
      *
-     * @return
+     * @return template name
      */
     public String getTemplateName();
 
@@ -207,8 +208,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return List of component modifiers
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * @see RunComponentModifiersTask
      */
     List<ComponentModifier> getComponentModifiers();
 
@@ -1190,16 +1190,16 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     public void setPostRenderContent(String postRenderContent);
 
     /**
-     * This method ...
+     * Gets the method to call on refresh.
      * 
-     * @return
+     * @return method to call
      */
     String getMethodToCallOnRefresh();
 
     /**
-     * This method ...
+     * Gets a string representing all CSS style classes.
      * 
-     * @return
+     * @return string representation of CSS classes
      */
     String getStyleClassesAsString();
 

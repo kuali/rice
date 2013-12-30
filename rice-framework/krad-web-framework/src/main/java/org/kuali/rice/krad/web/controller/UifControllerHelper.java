@@ -125,6 +125,11 @@ public class UifControllerHelper {
     /**
      * After the controller logic is executed, the form is placed into session
      * and the corresponding view is prepared for rendering
+     * @param request servlet request
+     * @param response servlet response
+     * @param handler handler instance
+     * @param modelAndView model and view
+     * @throws Exception 
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
@@ -218,7 +223,8 @@ public class UifControllerHelper {
     /**
      * Prepares the <code>View</code> instance contained on the form for rendering
      *
-     * @param request - request object
+     * @param request servlet request
+     * @param response servlet response
      * @param form - form instance containing the data and view instance
      */
     public static void prepareViewForRendering(

@@ -42,6 +42,8 @@ public interface UifDefaultingService {
      * been included.
      *
      * If no special information is found in the metadata, it will return a standard/default text control.
+     * @param attrDef attribute definition
+     * @return derived control
      */
     Control deriveControlAttributeFromMetadata( AttributeDefinition attrDef );
 
@@ -53,11 +55,14 @@ public interface UifDefaultingService {
      *
      * In the case that the name given is a nested property, only the portion of the
      * name after the last period will be used.
+     * @param camelCasedName property name, in camel case
+     * @return human friendly property name
      */
     String deriveHumanFriendlyNameFromPropertyName(String camelCasedName);
 
     /**
      * Derives a default valid characters constraint definition given the metadata in the {@link AttributeDefinition}
+     * @param attrDef attribute definition
      *
      * @return A {@link ValidCharactersConstraint} object or null if no information in the {@link AttributeDefinition} suggests an appropriate default.
      */
@@ -71,6 +76,8 @@ public interface UifDefaultingService {
      * In the present implementation, all non-hidden properties on the DataObjectEntry
      * will be added to the inquiry.  Additionally, any collections on the object will be
      * displayed in their own sections.
+     * @param dataObjectEntry data object entry
+     * @return inquiry view based on the data object
      */
     InquiryView deriveInquiryViewFromMetadata( DataObjectEntry dataObjectEntry );
 
@@ -81,6 +88,8 @@ public interface UifDefaultingService {
      *
      * In the present implementation, all non-hidden properties on the DataObjectEntry
      * will be added to the lookup search criteria and results.
+     * @param dataObjectEntry data object entry
+     * @return lookup view based on the data object
      */
     LookupView deriveLookupViewFromMetadata( DataObjectEntry dataObjectEntry );
 }

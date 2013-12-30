@@ -48,7 +48,7 @@ public interface KualiExceptionIncidentService extends KualiFeedbackService {
      * <li>User name</li>
      * <li>Component name</li>
      * </ul>
-     * @return
+     * @return incident report
      */
     public KualiExceptionIncident getExceptionIncident(
             Exception exception, Map<String, String> properties);
@@ -60,7 +60,7 @@ public interface KualiExceptionIncidentService extends KualiFeedbackService {
      *
      * @param properties The list of name-value pairs containing the thrown exception
      * information
-     * @return
+     * @return incident report
      */
     public KualiExceptionIncident getExceptionIncident(Map<String, String> properties);
 }

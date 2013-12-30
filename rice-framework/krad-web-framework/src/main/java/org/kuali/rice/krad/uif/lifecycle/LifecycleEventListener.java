@@ -31,7 +31,7 @@ public interface LifecycleEventListener {
      * @param lifecycleEvent event that occurred
      * @param view view instance the lifecycle is being processed for
      * @param model object containing the model data
-     * @param eventComponent component instance the event occurred on/for
+     * @param eventElement element instance the event occurred on/for
      */
     void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
             LifecycleElement eventElement);

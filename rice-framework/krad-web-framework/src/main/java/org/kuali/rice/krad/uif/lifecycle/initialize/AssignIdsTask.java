@@ -64,6 +64,7 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      * </p>
      * 
      * @param element The lifecycle element for which to generate an ID.
+     * @param view View containing the lifecycle element.
      * @return An ID, unique within the current view, for the given element.
      * 
      * @see ViewIndex#observeAssignedId(String)

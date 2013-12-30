@@ -49,7 +49,7 @@ public class NavigationGroup extends GroupBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {

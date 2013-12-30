@@ -71,7 +71,7 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
      * e.g. 'uif_grid'
      * </p>
      *
-     * @return
+     * @return template name
      */
     public String getTemplateName();
 

@@ -39,9 +39,7 @@ public class DummyLoginForm extends UifFormBase {
         login_message = "";
     }
 
-    /**
-     * Below are basic getters and setters for this data object  *
-     */
+    // Below are basic getters and setters for this data object
 
     public String getLogin_user() {
         return login_user;

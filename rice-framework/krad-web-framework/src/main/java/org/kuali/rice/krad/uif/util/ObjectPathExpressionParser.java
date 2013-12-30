@@ -293,8 +293,9 @@ public final class ObjectPathExpressionParser {
      * This method is used to eliminate parsing and object creation overhead when resolving an
      * object property reference with a non-complex property path.
      * </p>
+     * @param propertyName property name
      *
-     * @return True if the name is a path, false if a plain reference.
+     * @return true if the name is a path, false if a plain reference
      */
     public static boolean isPath(String propertyName) {
         if (propertyName == null) {
@@ -318,12 +319,10 @@ public final class ObjectPathExpressionParser {
      * @param root The root object.
      * @param path The path expression.
      * @param pathEntry The path entry adaptor to use for processing parse node transition.
-     * @param <T> Reference type representing the next parse node.
-     * @param <S> The parse node type.
      * 
      * @return The valid of the bean property indicated by the given path expression, null if the
      *         path expression doesn't resolve to a valid property.
-     * @see ObjectPathExpressionParser#getPropertyValue(Object, String)
+     * @see ObjectPropertyUtils#getPropertyValue(Object, String)
      */
     public static Object parsePathExpression(Object root, String path, final PathEntry pathEntry) {
 

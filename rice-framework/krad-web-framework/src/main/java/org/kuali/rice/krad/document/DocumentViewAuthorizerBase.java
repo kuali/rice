@@ -61,9 +61,7 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
     private DocumentAuthorizer documentAuthorizer;
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewAuthorizer#getActionFlags(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.view.ViewModel, org.kuali.rice.kim.api.identity.Person,
-     *      java.util.Set<java.lang.String>)
+     * {@inheritDoc}
      */
     @Override
     public Set<String> getActionFlags(View view, ViewModel model, Person user, Set<String> actions) {

@@ -57,6 +57,7 @@ public class ViewModelUtils {
      * </p>
      *
      * @param view view instance providing the context (abstract map)
+     * @param model the model
      * @param propertyPath full path to property to retrieve type for (relative to the form class)
      * @return Class<?> type of property in model, or Null if type could not be determined
      * @see org.kuali.rice.krad.uif.view.View#getObjectPathToConcreteClassMapping()

@@ -158,7 +158,6 @@ public class Action extends ContentElementBase {
     /**
      * Sets the disabledExpression, if any, evaluates it and sets the disabled property
      *
-     * @param view view instance to which the component belongs
      * @param model top level object containing the data (could be the form or a
      * @param parent
      */
@@ -187,8 +186,7 @@ public class Action extends ContentElementBase {
      * changed property names</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -1014,7 +1012,7 @@ public class Action extends ContentElementBase {
      * itself will be the Action, if no value is set the default is ALWAYS LEFT, you must explicitly set
      * blank/null/IMAGE_ONLY to use ONLY the image as the Action.
      *
-     * @return
+     * @param actionImagePlacement action image placement indicator
      */
     public void setActionImagePlacement(String actionImagePlacement) {
         this.actionImagePlacement = actionImagePlacement;

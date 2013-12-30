@@ -72,7 +72,7 @@ public class Message extends ContentElementBase {
      * Message perfom apply model parses message text for rich text functionality if the messageText contains
      * [ or ] special characters
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -90,7 +90,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {

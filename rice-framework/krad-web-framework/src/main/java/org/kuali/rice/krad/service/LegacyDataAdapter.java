@@ -127,7 +127,7 @@ public interface LegacyDataAdapter {
      *
      * @param clazz
      * @param fieldValues
-     * @return
+     * @return collection of business objects
      */
     <T> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending);
     // PersistenceService
@@ -144,7 +144,6 @@ public interface LegacyDataAdapter {
 
     /**
      * @param persistableObject object whose objects need to be filled in based on primary keys
-     * @return the object whose key fields have just been retrieved
      * @throws IllegalArgumentException if the given Object is null
      * @throws org.kuali.rice.krad.exception.ClassNotPersistableException if the given object is of a type not described in the OJB repository
      */
@@ -300,7 +299,7 @@ public interface LegacyDataAdapter {
      *
      * @param boClass
      * @param referenceName
-     * @return
+     * @return true if the reference exists
      */
     boolean hasReference(Class<?> boClass, String referenceName);
 
@@ -309,7 +308,7 @@ public interface LegacyDataAdapter {
      *
      * @param boClass
      * @param collectionName
-     * @return
+     * @return true if a collection is defined
      */
     boolean hasCollection(Class<?> boClass, String collectionName);
 
@@ -481,9 +480,9 @@ public interface LegacyDataAdapter {
     boolean areNotesSupported(Class<?> dataObjectClass);
 
     /**
-     *
-     * @param dataObject
-     * @return
+     * Gets the identifier for a data object
+     * @param dataObject data object
+     * @return data object identifier
      */
     String getDataObjectIdentifierString(Object dataObject);
 

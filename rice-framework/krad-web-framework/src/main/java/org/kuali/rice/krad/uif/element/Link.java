@@ -62,8 +62,7 @@ public class Link extends ContentElementBase {
      * <li>Initialize the nested lightBox widget if open in lightbox is true</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(java.lang.Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {

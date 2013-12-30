@@ -341,8 +341,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * This method assumes that the property type for externalizable relationship in the business object is an interface
      * and gets the concrete implementation for it
      *
-     * @see org.kuali.rice.krad.service.ModuleService#retrieveExternalizableBusinessObjectIfNecessary(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public <T extends ExternalizableBusinessObject> T retrieveExternalizableBusinessObjectIfNecessary(
@@ -404,8 +403,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
      * This method assumes that the externalizableClazz is an interface
      * and gets the concrete implementation for it
      *
-     * @see org.kuali.rice.krad.service.ModuleService#retrieveExternalizableBusinessObjectIfNecessary(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public List<? extends ExternalizableBusinessObject> retrieveExternalizableBusinessObjectsList(

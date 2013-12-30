@@ -165,8 +165,8 @@ public class ClientValidationUtils {
     /**
      * Returns the add method jquery validator call for the regular expression stored in
      * validCharactersConstraint.
-     * 
-     * @param validCharactersConstraint
+     * @param field input field
+     * @param validCharactersConstraint constraint providing the regex
      * @return js validator.addMethod script
      */
     public static String getRegexMethod(InputField field, ValidCharactersConstraint validCharactersConstraint) {
@@ -199,8 +199,9 @@ public class ClientValidationUtils {
      * Returns the add method jquery validator call for the regular expression stored in
      * validCharactersConstraint that explicitly checks a boolean. Needed because one method accepts
      * params and the other doesn't.
+     * @param field input field
+     * @param validCharactersConstraint constraint providing the regex
      * 
-     * @param validCharactersConstraint
      * @return js validator.addMethod script
      */
     public static String getRegexMethodWithBooleanCheck(InputField field,
@@ -235,9 +236,13 @@ public class ClientValidationUtils {
      * processWhenConstraint for each WhenConstraint that exists in this constraint. It adds a
      * "dependsOn" css class to this field for the field which the CaseConstraint references.
      * 
-     * @param view
+     * @param field input field
+     * @param view active view
+     * @param constraint case constraint providing the field reference
      * @param andedCase the boolean logic to be anded when determining if this case is satisfied
      *        (used for nested CaseConstraints)
+     * @param validationState validation state
+     * @param stateMapping state mapping
      */
     public static void processCaseConstraint(InputField field, View view, CaseConstraint constraint, String andedCase,
             String validationState, StateMapping stateMapping) {
@@ -353,8 +358,9 @@ public class ClientValidationUtils {
     /**
      * Adds the script to the view to execute on a jQuery document ready event.
      * 
-     * @param view
-     * @param script
+     * @param view active view
+     * @param field input field
+     * @param script script to run on the document ready event
      */
     public static void addScriptToPage(View view, InputField field, String script) {
         String prefixScript = "";
@@ -369,8 +375,8 @@ public class ClientValidationUtils {
      * Determines which fields are being evaluated in a boolean statement, so handlers can be
      * attached to them if needed, returns these names in a list.
      * 
-     * @param statement
-     * @return
+     * @param statement statement to parse
+     * @return list of field names
      */
     private static List<String> parseOutFields(String statement) {
         List<String> fieldNames = new ArrayList<String>();
@@ -404,7 +410,7 @@ public class ClientValidationUtils {
      * @param booleanStatement the booleanstatement in js - should return true when the validation
      *        rule should be applied
      * @param view
-     * @return
+     * @return rule based on the constraint
      */
     @SuppressWarnings("boxing")
     private static String createRule(InputField field, Constraint constraint, String booleanStatement, View view,
@@ -530,8 +536,9 @@ public class ClientValidationUtils {
     /**
      * Simpler version of processPrerequisiteConstraint
      * 
-     * @param constraint
-     * @param view
+     * @param field input field
+     * @param constraint prerequisite constraint to process
+     * @param view active view
      * @see ClientValidationUtils#processPrerequisiteConstraint(org.kuali.rice.krad.uif.field.InputField,
      *      PrerequisiteConstraint, View, String)
      */
@@ -543,8 +550,9 @@ public class ClientValidationUtils {
      * Processes a Prerequisite constraint that should be applied when the booleanStatement passed
      * in evaluates to true.
      * 
-     * @param constraint prerequisiteConstraint
-     * @param view
+     * @param field input field
+     * @param constraint prerequisite constraint to process
+     * @param view active view
      * @param booleanStatement the booleanstatement in js - should return true when the validation
      *        rule should be applied
      */
@@ -588,7 +596,7 @@ public class ClientValidationUtils {
      * @param constraint prerequisiteConstraint
      * @param booleanStatement the booleanstatement in js - should return true when the validation
      *        rule should be applied
-     * @return
+     * @return statement derived from the constraint
      */
     private static String getPrerequisiteStatement(InputField field, View view, PrerequisiteConstraint constraint,
             String booleanStatement) {
@@ -657,7 +665,7 @@ public class ClientValidationUtils {
      * @param constraint prerequisiteConstraint
      * @param booleanStatement the booleanstatement in js - should return true when the validation
      *        rule should be applied
-     * @return
+     * @return statement derived from the constraint
      */
     private static String getPostrequisiteStatement(InputField field, PrerequisiteConstraint constraint,
             String booleanStatement) {
@@ -712,8 +720,9 @@ public class ClientValidationUtils {
      * add rule calls for the jquery validation plugin necessary for applying this constraint to
      * this field.
      * 
-     * @param view
-     * @param mc
+     * @param field input field
+     * @param view active view
+     * @param mc must occur constraint to process
      * @param booleanStatement the booleanstatement in js - should return true when the validation
      *        rule should be applied
      */
@@ -752,8 +761,8 @@ public class ClientValidationUtils {
      * the mustOccurCheck method. Nested mustOccurConstraints are ored against the result of the
      * mustOccurCheck by calling this method recursively.
      * 
-     * @param constraint
-     * @return
+     * @param constraint must occur constraint
+     * @return statement derived from the constraint
      */
     @SuppressWarnings("boxing")
     private static String getMustOccurStatement(InputField field, MustOccurConstraint constraint) {
@@ -812,8 +821,9 @@ public class ClientValidationUtils {
      * that, the message will still be accurate but may be confusing for the user - this
      * auto-generated message however will work in MOST use cases.
      * 
-     * @param view
-     * @return
+     * @param view active view
+     * @param constraint must occur constraint
+     * @return message generated from for the must occur contraint
      */
     private static String getMustOccursMessage(View view, MustOccurConstraint constraint) {
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
@@ -907,7 +917,9 @@ public class ClientValidationUtils {
      * InputField during user interaction with the field using the jQuery validation plugin and
      * custom code.
      * 
-     * @param field
+     * @param field input field
+     * @param view active view
+     * @param model active model
      */
     @SuppressWarnings("boxing")
     public static void processAndApplyConstraints(InputField field, View view, Object model) {

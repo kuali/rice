@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Annotation for {@link LifecycleElement} bean properties to restrict which view lifecycle phases
@@ -45,7 +45,7 @@ public @interface ViewLifecycleRestriction {
      * the property will be excluded from all phases.
      * 
      * @return lifecycle phases at which to include the annotated property
-     * @see UifConstants.ViewPhases
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
      */
     String[] value() default {};
 

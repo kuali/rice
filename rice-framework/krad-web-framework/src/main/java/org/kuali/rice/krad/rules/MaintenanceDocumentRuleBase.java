@@ -759,7 +759,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * DataDictionary.
      *
      * @param dataObjectClass
-     * @return
+     * @return human-readable string representation of the primary key field names
      */
     protected String getHumanReadablePrimaryKeyFieldNames(Class<?> dataObjectClass) {
         String delim = "";

@@ -335,7 +335,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * else throws an error that at least one recipient is required.
      *
      * @param document
-     * @return
+     * @return true if all adhoc route recipients are valid
      */
     protected boolean isAdHocRouteRecipientsValid(Document document) {
         boolean isValid = true;

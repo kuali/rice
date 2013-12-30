@@ -50,7 +50,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     /**
      * Sets up rich message content for the label, if any exists
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -120,7 +120,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
 
     /**
      * Returns true if checked, false if not checked.
-     * @return
+     * @return true if checked
      */
     public boolean isChecked() {
         return checked;

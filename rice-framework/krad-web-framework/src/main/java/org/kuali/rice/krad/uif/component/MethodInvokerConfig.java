@@ -132,7 +132,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
 
     /**
      * @see Copyable#copy()
-     * @see CloneUtils#copy(Copyable)
+     * @see CopyUtils#copy(Copyable)
      */
     public final <T> T copy() {
         return CopyUtils.copy(this);

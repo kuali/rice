@@ -73,7 +73,8 @@ public class ComponentUtils {
 
     /**
      * Copy a list of components
-     *
+     * 
+     * @param <T> component type
      * @param components the list of components to copy
      * @return the copied list
      */
@@ -106,6 +107,10 @@ public class ComponentUtils {
     /**
      * Equivalent to {@link #copyFieldList(java.util.List, String, String)} but does not copy the given list of fields
      * first.
+     * @param <T> component type
+     * @param fields list of fields to bind and id
+     * @param addBindingPrefix prefix to add to the binding path
+     * @param idSuffix id suffix
      */
     public static <T extends Field> void bindAndIdFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
         updateIdsWithSuffixNested(fields, idSuffix);
@@ -221,7 +226,7 @@ public class ComponentUtils {
      * 
      * @param component The component to search.
      * @return All nested children of the component.
-     * @see Component#getComponentsForLifecycle()
+     * @see ViewLifecycleUtils#getElementsForLifecycle(LifecycleElement)
      */
     public static List<Component> getAllNestedComponents(Component component) {
         if (component == null) {
@@ -403,7 +408,7 @@ public class ComponentUtils {
      * <p>If there are features that depend on a static id of this
      * component, this call may cause errors.</p>
      *
-     * @param component A list of component to clear all IDs from.
+     * @param components A list of component to clear all IDs from.
      * 
      * @see AssignIdsTask For a complete description of the algorithm.
      */
@@ -470,6 +475,7 @@ public class ComponentUtils {
     /**
      * Traverse a component tree, setting a property on all components for which the property is writable.
      * 
+     * @param <T> component type
      * @param components The components to traverse.
      * @param propertyPath The property path to set.
      * @param propertyValue The property value to set.
@@ -519,7 +525,7 @@ public class ComponentUtils {
     /**
      * Traverse a component tree, setting a property on all components for which the property is writable.
      * 
-     * @param components The component to traverse.
+     * @param component The component to traverse.
      * @param propertyPath The property path to set.
      * @param propertyValue The property value to set.
      * @see ObjectPropertyUtils#isWritableProperty(Object, String)
@@ -708,12 +714,13 @@ public class ComponentUtils {
      * items share the same order value, all but the last item found in the list
      * will be removed.
      * </p>
-     *
+     * 
+     * @param <T> ordered type
      * @param items
      * @param defaultOrderSequence
      * @return List<Ordered> sorted items
      * @see org.kuali.rice.krad.uif.component.Component#getOrder()
-     * @see @see org.springframework.core.Ordered
+     * @see org.springframework.core.Ordered
      */
     public static <T extends Ordered> List<T> sort(List<T> items, int defaultOrderSequence) {
         if (items == null) {
@@ -768,6 +775,7 @@ public class ComponentUtils {
      * every sub-container that is a child of this container.  When called from the top level
      * View this will be every InputField across all pages.
      *
+     * @param container container to scan for input fields
      * @return every InputField that is a child at any level of this container
      */
     public static List<InputField> getAllInputFieldsWithinContainer(Container container) {

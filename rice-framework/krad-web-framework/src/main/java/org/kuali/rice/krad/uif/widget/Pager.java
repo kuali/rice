@@ -46,7 +46,6 @@ public class Pager extends WidgetBase {
      * performFinalize calculates the pagesStart and pagesEnd properties (using numberOfPages, currentPage, and
      * maxNumberedLinksShown - these must be set) which determines pages shown by the widget
      *
-     * @param view the current view
      * @param model the current model
      * @param parent parent container
      */
@@ -208,7 +207,7 @@ public class Pager extends WidgetBase {
     /**
      * The first page number to render; this is set by the framework
      *
-     * @return
+     * @return pages start
      */
     public int getPagesStart() {
         return pagesStart;
@@ -217,7 +216,7 @@ public class Pager extends WidgetBase {
     /**
      * The last page number to render; this is set by the framework
      *
-     * @return
+     * @return last page number to render
      */
     public int getPagesEnd() {
         return pagesEnd;

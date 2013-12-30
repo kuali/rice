@@ -186,7 +186,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
+     * Setter for {@link #getActionParameters()}
+     * 
+     * @param actionParameters action parameters
      */
     public void setActionParameters(Map<String, String> actionParameters) {
         action.setActionParameters(actionParameters);
@@ -201,7 +203,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setAdditionalSubmitData(java.util.Map<java.lang.String,java.lang.String>)
+     * Setter for {@link #getAdditionalSubmitData()}
+     *
+     * @param additionalSubmitData property value
      */
     public void setAdditionalSubmitData(Map<String, String> additionalSubmitData) {
         action.setAdditionalSubmitData(additionalSubmitData);

@@ -198,7 +198,7 @@ public interface CollectionGroup extends Group, DataBinding {
      * list will be used
      *
      * @return add line field list
-     * @see CollectionGroup#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see CollectionGroup#performInitialization(Object)
      */
     List<? extends Component> getAddLineItems();
 

@@ -53,8 +53,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -152,7 +151,6 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     /**
      * Configures the field's quickfinder for a user lookup
      *
-     * @param view view instance that contains the field
      * @param model object containing the view's data
      * @param field field instance the quickfinder should be associated with
      */

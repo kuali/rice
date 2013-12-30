@@ -57,8 +57,7 @@ public class Help extends WidgetBase {
      * help action component</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -88,8 +87,7 @@ public class Help extends WidgetBase {
      * <li>Set render to false if help not configured</li>
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.widget.WidgetBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -121,7 +119,6 @@ public class Help extends WidgetBase {
      * Set the html title attribute of the help icon.
      * </p>
      *
-     * @param view used to get the default namespace
      * @param parent used to get the help title text used in the html title attribute of the help icon
      */
     protected void buildExternalHelp(LifecycleElement parent) {

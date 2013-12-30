@@ -98,6 +98,7 @@ public class MessageStructureUtils {
      * @param messageText message text to be parsed
      * @param componentList the inlineComponent list
      * @param view the current view
+     * @param parseComponents true to parse components
      * @return list of components representing the parsed message structure
      */
     public static List<Component> parseMessage(String messageId, String messageText, List<Component> componentList,

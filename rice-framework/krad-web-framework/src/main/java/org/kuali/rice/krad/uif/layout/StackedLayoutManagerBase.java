@@ -235,7 +235,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * property expressions map to set the title for the line group (which will have the item context variable set)
      * </p>
      *
-     * @param view view instance the collection belongs to, used to get the expression evaluator
      * @param line Collection line containing data
      * @param lineGroup Group instance for rendering the line and whose title should be built
      * @return header text for line

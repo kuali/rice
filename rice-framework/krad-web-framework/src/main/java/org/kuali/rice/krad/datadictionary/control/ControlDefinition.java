@@ -185,7 +185,7 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     /**
      * Gets the flag that indicates if the labels the ValuesFinder class returns should include the key.
      *
-     * @param includeKeyInLabel
+     * @return true if the key should be included in the label
      */
     public Boolean getIncludeKeyInLabel();
 

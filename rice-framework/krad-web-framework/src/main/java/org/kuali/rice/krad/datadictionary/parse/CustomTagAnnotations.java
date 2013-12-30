@@ -138,7 +138,6 @@ public class CustomTagAnnotations {
      * Generate the custom schema for KRAD based on the custom tag annotations on KRAD classes
      *
      * @param doc the RescourceBundle containing the documentation
-     * @return the
      */
     public static void generateSchemaFile(ResourceBundle doc) {
         Map<String, Map<String, BeanTagInfo>> nameTagMap = new HashMap<String, Map<String, BeanTagInfo>>();

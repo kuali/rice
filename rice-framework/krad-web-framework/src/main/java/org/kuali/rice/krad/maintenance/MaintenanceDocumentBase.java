@@ -959,7 +959,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * The {@link NoteType} for maintenance documents is determined by whether or not the underlying {@link
      * Maintainable} supports business object notes or not.  This is determined via a call to {@link
-     * Maintainable#   isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the
+     * Maintainable#isNotesEnabled()}.  The {@link NoteType} is then derived as follows: <p/> <ul> <li>If the
      * {@link
      * Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}. <li>Otherwise, delegate
      * to
@@ -1050,7 +1050,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      *
      * TODO: move to KNS maintenance document base
      *
-     * @return
+     * @return true if the document is a session document
      */
     public boolean isSessionDocument() {
         return SessionDocument.class.isAssignableFrom(this.getClass());

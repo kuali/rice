@@ -70,8 +70,10 @@ public class Suggest extends WidgetBase {
      * <ul>
      * <li>Invoke expression evaluation on the suggestQuery</li>
      * </ul>
+     * 
+     * {@inheritDoc}
      */
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (suggestQuery != null) {
@@ -88,8 +90,7 @@ public class Suggest extends WidgetBase {
      * <li>TODO: determine query if render is true and query is not set</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {

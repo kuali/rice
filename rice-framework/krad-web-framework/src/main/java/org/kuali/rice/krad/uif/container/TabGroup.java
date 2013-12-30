@@ -54,7 +54,7 @@ public class TabGroup extends GroupBase {
     /**
      * Only groups are supported for this group.
      *
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {

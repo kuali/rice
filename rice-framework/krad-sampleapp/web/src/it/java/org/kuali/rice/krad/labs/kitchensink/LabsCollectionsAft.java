@@ -51,21 +51,21 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     {
     	//Collection Group 1 - CollectionGroupTableLayout
     	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine']/tbody/tr[@class='uif-collectionAddItem']");
-    	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine']/tbody/tr/td[@class='uif-collection-column-action uif-collection-column-action']");
+    	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine']/tbody/tr/td[@class='uif-collection-column-action']");
     
     	//Collection Group 2 - CollectionGroupTableLayout with jQuery table features on
     	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']");
     	assertElementPresentByXpath("//div[@class='dataTables_length']/label/select");
     	
     	//Collection Group 6 - CollectionGroupTableLayout with jQuery table features on
-    	assertElementPresentByXpath("//div[@class='uif-collectionItem uif-tableCollectionItem uif-collectionAddItem']/table[@class='table table-condensed table-bordered uif-gridLayout']");
-    	assertElementPresentByXpath("//div[@class='dataTables_scrollBody']/table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td[@class='uif-collection-column-action uif-collection-column-action ']");
+    	assertElementPresentByXpath("//div[@class='uif-collectionItem uif-tableCollectionItem uif-collectionAddItem']/table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']");
+    	assertElementPresentByXpath("//div[@class='dataTables_scrollBody']/table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td[@class='uif-collection-column-action ']");
     	
     	//Collection Group 3 - Stacked
-    	assertElementPresentByXpath("//div[@id='collection3_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div/table");
+    	assertElementPresentByXpath("//div[@id='collection3_disclosureContent']/div/table");
     	
     	//Collection Group 4 - Stacked Collection with a Table subcollection
-    	assertElementPresentByXpath("//div[@id='collection4_disclosureContent']/div[@class='uif-stackedCollectionLayout']/div/table");
+    	assertElementPresentByXpath("//div[@id='collection4_disclosureContent']/div/table");
     	waitAndClickByXpath("//span[contains(text(),'SubCollection - (3 lines)')]");
     	assertElementPresentByXpath("//div[@id='subCollection1_line0_disclosureContent']");
     	

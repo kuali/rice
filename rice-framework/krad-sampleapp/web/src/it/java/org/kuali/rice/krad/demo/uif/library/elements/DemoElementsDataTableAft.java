@@ -42,7 +42,8 @@ public class DemoElementsDataTableAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsDataTable() throws Exception {
-        waitForElementPresentByXpath("//div[@id='Demo-DataTable-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='dataTables_scroll']/div[@class='dataTables_scrollBody']/table/tbody/tr/td/span");
+        waitForElementPresentByXpath("//div[@id='Demo-DataTable-Example1']/div[2]/div/div[2]/table/tbody/tr/td/span");
+        waitForElementPresentByXpath("//div[@class='dataTables_scrollBody']");
     }
     
     @Test

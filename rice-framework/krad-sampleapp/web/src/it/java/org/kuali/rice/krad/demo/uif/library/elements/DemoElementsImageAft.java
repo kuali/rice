@@ -42,7 +42,7 @@ public class DemoElementsImageAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsImage() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Image-Example1']/div[@class='uif-verticalBoxLayout clearfix']/img");
+        assertElementPresentByXpath("//div[@id='Demo-Image-Example1']/img");
     }
     
     @Test

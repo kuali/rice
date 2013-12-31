@@ -42,17 +42,22 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsLink() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example1']/div[@class='uif-verticalBoxLayout clearfix']/a[@target='_self']");
+        assertElementPresentByXpath("//div[@id='Demo-Link-Example1']/a[@target='_self']");
     }
     
     protected void testLibraryElementsCustomTarget() throws Exception {
         waitAndClickByLinkText("Custom Target");
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example2']/div[@class='uif-verticalBoxLayout clearfix']/a[@target='_blank']");
+        assertElementPresentByXpath("//div[@id='Demo-Link-Example2']/a[@target='_blank']");
     }
     
     protected void testLibraryElementsLinkUsingLightbox() throws Exception {
         waitAndClickByLinkText("Link using lightbox");
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example3']/div[@class='uif-verticalBoxLayout clearfix']/a");
+        assertElementPresentByXpath("//div[@id='Demo-Link-Example3']/a");
+    }
+    
+    protected void testLibraryElementsLinkUsingBootstrapIcon() throws Exception {
+        waitAndClickByLinkText("Link with a bootstrap icon");
+        assertElementPresentByXpath("//div[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
     }
     
     @Test
@@ -60,6 +65,7 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
         testLibraryElementsLink();
         testLibraryElementsCustomTarget();
         testLibraryElementsLinkUsingLightbox();
+        testLibraryElementsLinkUsingBootstrapIcon();
         passed();
     }
 
@@ -68,6 +74,7 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
         testLibraryElementsLink();
         testLibraryElementsCustomTarget();
         testLibraryElementsLinkUsingLightbox();
+        testLibraryElementsLinkUsingBootstrapIcon();
         passed();
     }  
 }

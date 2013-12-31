@@ -248,8 +248,8 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
         assertTrue(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
 
-        // backspace input1
-        driver.findElement(By.id("ST-DemoCheckboxControlExample7-Input1_control")).sendKeys(Keys.BACK_SPACE);
+        // space input1
+        driver.findElement(By.id("ST-DemoCheckboxControlExample7-Input1_control")).sendKeys(Keys.SPACE);
 
         // check that checkbox controls is visible, not selected and disabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));

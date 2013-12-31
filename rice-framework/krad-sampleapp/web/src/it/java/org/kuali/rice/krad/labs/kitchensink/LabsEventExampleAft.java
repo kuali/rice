@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,8 +46,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testKitchenSinkEventExamples() throws InterruptedException 
-    {
+    protected void testKitchenSinkEventExamples() throws InterruptedException {
     	//OnClick examples on various components
         waitAndClickByName("field100"); // Field Label
     	alertAccept();

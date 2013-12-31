@@ -44,7 +44,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
         String[][] lightBoxLabeledText = {{"Id:", "10000"},
                  {"Travel Authorization Document Id:", "10000"},
                  {"Primary Destination:", "10000"},
-                 {"Date of Use:", getTodaysDate()},
+//                 {"Date of Use:", getDateToday()},
                  {"Breakfast Value:", "10"}, 
                  {"Lunch Value:", "10"},
                  {"Dinner Value:", "15"},
@@ -61,7 +61,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
          String[][] LabeledText = {{"Id:", "10000"},
         		 {" Travel Authorization Document Id: ","10000"},
                  {"Primary Destination:", "10000"},
-                 {"Date of Use:", getTodaysDate()}
+//                 {"Date of Use:", getDateToday()}
                  };
          assertLabeledTextPresent(LabeledText);
          clickCollapseAll();

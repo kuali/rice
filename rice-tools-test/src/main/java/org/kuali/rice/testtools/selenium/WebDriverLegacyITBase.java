@@ -623,7 +623,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void addAdHocRecipients(String[][] adHocRecipients) throws InterruptedException {
-        String today = getTodaysDate();
+        String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
@@ -1646,7 +1646,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String groupDescription = "GD" + random;
         String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         String nameSpace = "KR-IDM";
-        String today = getTodaysDate();
+        String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
@@ -1712,10 +1712,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
-    protected String getTodaysDate() {
+    protected String getDateToday() {
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         return sdf.format(now);
+    }
+
+    protected String getDateTomorrow() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DATE, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        return sdf.format(now.getTime());
     }
 
     protected void testAttributeDefinitionLookUp() throws Exception {

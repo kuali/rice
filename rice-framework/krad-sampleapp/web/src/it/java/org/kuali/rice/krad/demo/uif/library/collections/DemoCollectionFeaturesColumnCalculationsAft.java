@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.uif.library.collections;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.openqa.selenium.By;

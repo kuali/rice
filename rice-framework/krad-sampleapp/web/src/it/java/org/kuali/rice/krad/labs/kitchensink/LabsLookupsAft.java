@@ -25,8 +25,6 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=49dbef40-65ef-424a-ae8a-1741cf947fee&cacheKey=eu0yn3vhdhhb753reybcvd&pageId=UifCompView-Page6&lightbox=true#UifCompView-Page6";
 
-    private static final String SEARCH_BTN_XPATH="//div[@data-parent='uLookupCriteria']/div[@class='uif-horizontalBoxLayout clearfix']/button[1]";
-    
     private static final String IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
     @Override

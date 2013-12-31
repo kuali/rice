@@ -50,7 +50,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                                           {"Travel Company Name:", "Discount Travel"},
                                           {"Expense Type:", "ME"},
                                           {"Expense Description:", "Family Related"}, 
-                                          {"Expense Date:", getTodaysDate()},
+//                                          {"Expense Date:", getDateTomorrow()},
                                           {"Expense Amount:", "1,278.97"},
                                           {"Reimbursable:", "true"},
                                           {"Taxable:", "true"}};

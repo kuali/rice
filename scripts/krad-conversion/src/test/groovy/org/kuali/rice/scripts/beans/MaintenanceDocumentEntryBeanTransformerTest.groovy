@@ -318,6 +318,67 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
     }
 
+    /**
+     * Tests transformation of the webScriptFiles property to additionalScriptFiles
+     *
+     */
+    @Test
+    public void transformWebScriptFilesTest() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) };
+        try {
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+        checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
+
+        def resultMDENode = ddRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
+        checkBeanPropertyExists(resultMDENode, "additionalScriptFiles");
+
+        def foundComment = false;
+        beanNode.parent().meta.findAll { it.@key == "comment" }.each {
+            if (it?.@value?.equals("TODO: Check if script files are still relevant and correct")) {
+                foundComment = true;
+            }
+        };
+        Assert.assertTrue("No comment found for custom additionalScriptFiles", foundComment);
+
+        def noOfFiles = resultMDENode.property.find { "additionalScriptFiles".equals(it.@name) }.list.value.size();
+        Assert.assertEquals("No of Script Files", noOfFiles, 4);
+
+        def customRootNode = getFileRootNode(customTestFilePath);
+        customRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
+        // def webScriptFileNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }.property.find{"webScriptFiles".equals(it.@name)};
+
+        // System.out.println("webScriptFileNode::"+ddRootNode.children().getProperties());
+        //boolean removed = ddRootNode.children().getProperties().remove(webScriptFileNode) ;
+        //System.out.println("removed::"+removed);
+
+        def noScriptFiles = customRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) };
+        try {
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(noScriptFiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+
+        checkBeanParentExists(customRootNode, "Uif-MaintenanceView");
+
+        def resultNode = customRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
+        checkBeanPropertyNotExists(resultNode, "additionalScriptFiles");
+
+        foundComment = false;
+        resultNode.parent().meta.findAll { it.@key == "comment" }.each {
+            if (it?.@value?.equals("TODO: Check if script files are still relevant and correct")) {
+                foundComment = true;
+            }
+        };
+        Assert.assertFalse("No comment found for additionalScriptFiles", foundComment);
+
+    }
 
     /**
      * retrieves collection definition from a maintenance document entry

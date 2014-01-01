@@ -65,7 +65,7 @@ class BeanTransformerTestBase {
         def tagAssertion = beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0;
         def attrAssertion = beanNode.attributes().findAll {
             it.key instanceof QName && propertyName.equals(it.key.localPart) }.size() > 0;
-        Assert.assertTrue("bean should contains property " + propertyName, tagAssertion || attrAssertion);
+        Assert.assertTrue("bean should contain property " + propertyName, tagAssertion || attrAssertion);
     }
 
     public void checkBeanPropertyNotExists(def beanNode, String propertyName) {
@@ -75,7 +75,6 @@ class BeanTransformerTestBase {
     public void checkBeanPropertyValueExists(def beanNode, String propertyName, String propertyValue) {
         checkBeanPropertyExists(beanNode,propertyName)
         def value = beanNode.property.find { propertyName.equals(it.@name) }?.@value;
-        //System.out.println("Value::"+value);
         Assert.assertTrue("property should contains value " + propertyName, value?.equals(propertyValue));
     }
 

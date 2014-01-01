@@ -34,13 +34,13 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     def mdeCopyProperties = ["businessObjectClass", "businessRulesClass", "maintainableClass", "documentTypeName",
              "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
     def mdeRenameProperties = [:]
-    def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass"]
+    def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
     def mdeIgnoreOnCarryoverAttributes = []
 
     // UMV Conversion Components - include
-    def umvCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "documentAuthorizerClass", "lockingKeys"]
+    def umvCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "lockingKeys"]
     def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"]
-    def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections"]
+    def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections","documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
     def umvIgnoreOnCarryoverAttributes = []
 
 
@@ -77,13 +77,15 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                     copyProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
                     renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
                     transformTitleProperty(delegate, beanNode);
+                    transformWebScriptFilesProperty(delegate, beanNode);
                     transformMaintainableSectionsProperty(delegate, beanNode)
                 }
                 addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
                 bean(mdeBeanAttributes) {
-                    copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties)
-                    transformDocumentAuthorizerClassProperty(delegate, beanNode)
-                    transformDocumentPresentationControllerClassProperty(delegate, beanNode)
+                    copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties) ;
+                    transformDocumentAuthorizerClassProperty(delegate, beanNode);
+                    transformDocumentPresentationControllerClassProperty(delegate, beanNode);
+
                 }
             }
         }
@@ -399,6 +401,27 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
 
     }
+
+    /**
+     * Replaces webScriptFiles property with additionalScriptFiles
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformWebScriptFilesProperty(NodeBuilder builder, Node beanNode) {
+        if (beanNode?.property?.find { "webScriptFiles".equals(it.@name) }) {
+            addCommentIfNotExists(beanNode.parent(), "TODO: Check if script files are still relevant and correct")
+            builder.property(name: "additionalScriptFiles") {
+                list {
+                    beanNode?.property?.find { "webScriptFiles".equals(it?.@name) }?.list.value.each { valueNode -> builder.createNode("value", null, valueNode.text()); }
+
+                }
+            }
+        }
+
+    }
+
     /**
      * Replaces a maintainable field definition bean with a Uif-InputField bean
      *

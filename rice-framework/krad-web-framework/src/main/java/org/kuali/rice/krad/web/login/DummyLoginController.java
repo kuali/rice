@@ -74,7 +74,9 @@ public class DummyLoginController extends UifControllerBase {
 
         Properties props = new Properties();
         String user = uifForm.getLogin_user();
-        props.put("__login_user", user);
+        if (StringUtils.isNotBlank(user)){
+            props.put("__login_user", user);
+        }
 
         String password = uifForm.getLogin_pw();
         if (StringUtils.isNotBlank(password)){

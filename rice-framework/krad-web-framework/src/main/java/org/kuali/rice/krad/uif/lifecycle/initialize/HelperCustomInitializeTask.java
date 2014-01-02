@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Perform custom initialization for the component defined by the helper.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelperCustomInitializeTask extends ViewLifecycleTaskBase {
+public class HelperCustomInitializeTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Create a task to assign component IDs during the initialize phase.
@@ -32,7 +33,7 @@ public class HelperCustomInitializeTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for the component.
      */
     public HelperCustomInitializeTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, LifecycleElement.class);
     }
 
     /**

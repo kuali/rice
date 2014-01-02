@@ -105,7 +105,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
+    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
         if (!(getElement() instanceof Component)) {
             return;
         }

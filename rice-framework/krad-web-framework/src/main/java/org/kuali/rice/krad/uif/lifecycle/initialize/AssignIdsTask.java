@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.view.ViewIndex;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AssignIdsTask extends ViewLifecycleTaskBase {
+public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Create a task to assign component IDs during the initialize phase.
@@ -37,7 +37,7 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for the component.
      */
     public AssignIdsTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, LifecycleElement.class);
     }
 
     /**

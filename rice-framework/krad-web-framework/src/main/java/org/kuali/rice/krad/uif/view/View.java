@@ -441,16 +441,13 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
         super.initializePendingTasks(phase, pendingTasks);
-        
-        if (UifConstants.ViewPhases.FINALIZE.equals(phase.getViewPhase())) {
-            pendingTasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, phase));
-        }
-        
+
+        // TODO: this logic doesn't belong here, and could be problematic
         if (!isRendered()) {
             // do indexing                               
             if (LOG.isDebugEnabled()) {

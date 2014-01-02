@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.model;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -24,7 +25,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
+public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Create a task to assign component IDs during the apply model phase.
@@ -32,7 +33,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public ComponentDefaultApplyModelTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

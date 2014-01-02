@@ -207,20 +207,6 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.DataField#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
-            pendingTasks.offer(LifecycleTaskFactory.getTask(InitializeDataFieldFromDictionaryTask.class, phase));
-        }
-        
-        super.initializePendingTasks(phase, pendingTasks);
-    }
-
-    /**
      * Creates a new {@link org.kuali.rice.krad.uif.widget.Inquiry} and then invokes the lifecycle process for
      * the inquiry to determine if a relationship was found, if so the inquiry is assigned to the field
      *

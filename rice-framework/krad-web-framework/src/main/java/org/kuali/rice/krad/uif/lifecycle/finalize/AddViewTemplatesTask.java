@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddViewTemplatesTask extends ViewLifecycleTaskBase {
+public class AddViewTemplatesTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ public class AddViewTemplatesTask extends ViewLifecycleTaskBase {
      * @param phase The finalize phase for the component.
      */
     public AddViewTemplatesTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

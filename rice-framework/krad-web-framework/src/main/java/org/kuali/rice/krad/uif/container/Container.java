@@ -205,4 +205,11 @@ public interface Container extends Component, Helpable {
      */
     void sortItems();
 
+    /**
+     * Determine if remote field holders should be processed for this container.
+     * 
+     * @return True if remote field holders should be processed for this container.
+     */
+    boolean isProcessRemoteFieldHolders();
+
 }

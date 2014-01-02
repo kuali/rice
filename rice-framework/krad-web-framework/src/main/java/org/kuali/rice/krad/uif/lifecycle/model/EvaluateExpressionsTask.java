@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
+public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public EvaluateExpressionsTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

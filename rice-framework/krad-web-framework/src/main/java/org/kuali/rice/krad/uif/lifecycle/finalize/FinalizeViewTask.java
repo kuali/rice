@@ -33,7 +33,7 @@ import org.kuali.rice.krad.util.KRADConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FinalizeViewTask extends ViewLifecycleTaskBase {
+public class FinalizeViewTask extends ViewLifecycleTaskBase<View> {
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase {
      * @param phase The finalize phase for the component.
      */
     public FinalizeViewTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, View.class);
     }
 
     /**

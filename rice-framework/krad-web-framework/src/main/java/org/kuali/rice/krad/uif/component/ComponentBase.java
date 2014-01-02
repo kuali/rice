@@ -542,35 +542,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.util.Queue)
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        String viewPhase = phase.getViewPhase();
-        if (viewPhase.equals(UifConstants.ViewPhases.INITIALIZE)) {
-            if (!(this instanceof View)) {
-                pendingTasks.offer(LifecycleTaskFactory
-                        .getTask(AddComponentStateToViewIndexTask.class, phase));
-            }
-
-            pendingTasks.offer(LifecycleTaskFactory
-                    .getTask(PopulateComponentFromExpressionGraphTask.class, phase));
-            pendingTasks.offer(LifecycleTaskFactory
-                    .getTask(ComponentDefaultInitializeTask.class, phase));
-            pendingTasks.offer(LifecycleTaskFactory
-                    .getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, phase));
-        
-        } else if (viewPhase.equals(UifConstants.ViewPhases.APPLY_MODEL)) {
-            pendingTasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, phase));
-
-        } else if (viewPhase.equals(UifConstants.ViewPhases.FINALIZE)) {
-            pendingTasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, phase));
-            pendingTasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, phase));
-        }
-        
-        pendingTasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, phase));
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
     }
     
     /**

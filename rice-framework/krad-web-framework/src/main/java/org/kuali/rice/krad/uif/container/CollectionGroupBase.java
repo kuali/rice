@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -40,9 +39,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -192,7 +189,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * @see org.kuali.rice.krad.uif.container.ContainerBase#isProcessRemoteFieldHolders()
      */
     @Override
-    protected boolean isProcessRemoteFieldHolders() {
+    public boolean isProcessRemoteFieldHolders() {
         return false;
     }
 
@@ -338,16 +335,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         // TODO: is this necessary to call again?
         // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
         pushCollectionGroupToReference();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        super.initializePendingTasks(phase, pendingTasks);
-
-        // TODO (moved from ViewHelperServiceImpl): Add task to initialize from dictionary
     }
 
     /**

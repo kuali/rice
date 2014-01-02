@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SyncClientSideStateTask extends ViewLifecycleTaskBase {
+public class SyncClientSideStateTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class SyncClientSideStateTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public SyncClientSideStateTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

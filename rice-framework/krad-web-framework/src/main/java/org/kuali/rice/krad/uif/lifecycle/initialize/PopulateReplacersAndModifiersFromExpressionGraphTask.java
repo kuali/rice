@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase {
+public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
      * @param phase The initialize phase for the component.
      */
     public PopulateReplacersAndModifiersFromExpressionGraphTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

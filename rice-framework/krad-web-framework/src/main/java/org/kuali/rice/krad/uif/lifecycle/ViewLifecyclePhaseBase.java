@@ -108,7 +108,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * 
      * @param tasks The queue of tasks to perform.
      */
-    protected abstract void initializePendingTasks(Queue<ViewLifecycleTask> tasks);
+    protected abstract void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks);
 
     /**
      * Initializes queue of successor phases.
@@ -184,7 +184,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * {@inheritDoc}
      */
     @Override
-    public ViewLifecycleTask getCurrentTask() {
+    public ViewLifecycleTask<?> getCurrentTask() {
         return this.currentTask;
     }
 
@@ -272,14 +272,16 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 }
                 element.setPath(getPath());
                 
-                Queue<ViewLifecycleTask> pendingTasks = new LinkedList<ViewLifecycleTask>();
+                Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                 initializePendingTasks(pendingTasks);
 
                 while (!pendingTasks.isEmpty()) {
-                    ViewLifecycleTask task = pendingTasks.poll();
-                    currentTask = task;
-                    task.run();
-                    currentTask = null;
+                    ViewLifecycleTask<?> task = pendingTasks.poll();
+                    if (task.getElementType().isInstance(element)) {
+                        currentTask = task;
+                        task.run();
+                        currentTask = null;
+                    }
                 }
 
                 element.setViewStatus(this);

@@ -21,16 +21,16 @@ import java.util.List;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
  * Process any remote fields holder that might be in the containers items.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
+public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase<Container> {
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for this container.
      */
     public ProcessRemoteFieldsHolderTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Container.class);
     }
 
     /**
@@ -49,6 +49,10 @@ public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         Container container = (Container) getPhase().getElement();
+        
+        if (!container.isProcessRemoteFieldHolders()) {
+            return;
+        }
         
         List<Component> processedItems = new ArrayList<Component>();
 

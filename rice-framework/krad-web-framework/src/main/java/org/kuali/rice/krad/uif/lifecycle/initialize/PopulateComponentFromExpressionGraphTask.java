@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.util.ExpressionUtils;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskBase {
+public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskBase<UifDictionaryBean> {
 
     /**
      * Constructor.
@@ -33,7 +33,7 @@ public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskB
      * @param phase The initialize phase for the component.
      */
     public PopulateComponentFromExpressionGraphTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, UifDictionaryBean.class);
     }
 
     /**

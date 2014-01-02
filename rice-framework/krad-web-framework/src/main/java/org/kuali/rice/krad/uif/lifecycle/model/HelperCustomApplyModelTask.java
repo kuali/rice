@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.model;
 
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -24,7 +25,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelperCustomApplyModelTask extends ViewLifecycleTaskBase {
+public class HelperCustomApplyModelTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -32,7 +33,7 @@ public class HelperCustomApplyModelTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public HelperCustomApplyModelTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

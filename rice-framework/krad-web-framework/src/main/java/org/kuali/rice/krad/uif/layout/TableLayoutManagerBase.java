@@ -202,7 +202,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         UifFormBase formBase = (UifFormBase) model;
 
-        CollectionGroup collectionGroup = (CollectionGroup) parent;
+        CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
 
         int totalColumns = getNumberOfDataColumns();
         if (renderSequenceField) {

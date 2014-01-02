@@ -38,7 +38,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
+public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public ApplyAuthAndPresentationLogicTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

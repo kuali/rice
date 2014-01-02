@@ -33,7 +33,7 @@ import freemarker.template.TemplateModel;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RenderComponentTask extends ViewLifecycleTaskBase {
+public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public class RenderComponentTask extends ViewLifecycleTaskBase {
      * @param phase The render phase for the component.
      */
     public RenderComponentTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

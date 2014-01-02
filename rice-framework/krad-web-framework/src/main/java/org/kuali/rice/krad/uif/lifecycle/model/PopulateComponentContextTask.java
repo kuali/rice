@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateComponentContextTask extends ViewLifecycleTaskBase {
+public class PopulateComponentContextTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public PopulateComponentContextTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, LifecycleElement.class);
     }
 
     /**

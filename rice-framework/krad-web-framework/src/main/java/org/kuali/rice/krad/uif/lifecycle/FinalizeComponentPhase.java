@@ -22,7 +22,11 @@ import java.util.Queue;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.springframework.util.StringUtils;
 
@@ -113,8 +117,13 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
+    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        tasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, this));
         getElement().initializePendingTasks(this, tasks);
+        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
     }
 

@@ -26,7 +26,12 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.lifecycle.finalize.SetReadOnlyOnDataBindingTask;
+import org.kuali.rice.krad.uif.lifecycle.model.ApplyAuthAndPresentationLogicTask;
+import org.kuali.rice.krad.uif.lifecycle.model.ComponentDefaultApplyModelTask;
+import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
 import org.kuali.rice.krad.uif.lifecycle.model.HelperCustomApplyModelTask;
+import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
+import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewTheme;
@@ -187,8 +192,15 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
      */
     @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
+    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        String viewPhase = this.getViewPhase();
+        tasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, this));
+        tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, this));
         getElement().initializePendingTasks(this, tasks);
+        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomApplyModelTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(SetReadOnlyOnDataBindingTask.class, this));
     }

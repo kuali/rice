@@ -28,7 +28,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase {
+public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase<DataBinding> {
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase {
      * @param phase The finalize phase for the component.
      */
     public SetReadOnlyOnDataBindingTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, DataBinding.class);
     }
 
     /**

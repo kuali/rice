@@ -32,7 +32,7 @@ import org.springframework.util.MethodInvoker;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
+public class InvokeFinalizerTask extends ViewLifecycleTaskBase<Component> {
     
     private final Logger LOG = LoggerFactory.getLogger(InvokeFinalizerTask.class);
 
@@ -42,7 +42,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public InvokeFinalizerTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

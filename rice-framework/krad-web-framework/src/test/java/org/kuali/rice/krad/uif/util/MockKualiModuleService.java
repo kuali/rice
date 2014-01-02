@@ -57,6 +57,9 @@ public class MockKualiModuleService implements KualiModuleService, ApplicationCo
         Map<Class, Class> externalizableBusinessObjectImplementations = new HashMap<Class, Class>();
         externalizableBusinessObjectImplementations.put(boClass, boClass);
         rv.setExternalizableBusinessObjectImplementations(externalizableBusinessObjectImplementations);
+        List<String> packagePrefixes = new ArrayList<String>();
+        packagePrefixes.add(boClass.getPackage().getName());
+        rv.setPackagePrefixes(packagePrefixes);
         rv.setResourceBundleNames(bootstrap.resourceBundleNames.get(namespaceCode));
         return rv;
     }

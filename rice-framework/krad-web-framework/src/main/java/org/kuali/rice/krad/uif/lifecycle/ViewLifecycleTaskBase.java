@@ -23,20 +23,24 @@ import org.slf4j.LoggerFactory;
  * Base abstract implementation for a lifecycle task.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> Top level element type for this task
  */
-public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
+public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
 
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
+    private final Class<T> elementType;
     private ViewLifecyclePhase phase;
 
     /**
      * Creates a lifecycle processing task for a specific phase.
      * 
      * @param phase The phase this task is a part of.
+     * @param elementType Top level element type.
      */
-    protected ViewLifecycleTaskBase(ViewLifecyclePhase phase) {
+    protected ViewLifecycleTaskBase(ViewLifecyclePhase phase, Class<T> elementType) {
         this.phase = phase;
+        this.elementType = elementType;
     }
 
     /**
@@ -57,6 +61,14 @@ public abstract class ViewLifecycleTaskBase implements ViewLifecycleTask {
     @Override
     public ViewLifecyclePhase getPhase() {
         return phase;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<T> getElementType() {
+        return this.elementType;
     }
 
     /**

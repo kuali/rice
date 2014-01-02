@@ -119,8 +119,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, LifecycleElement parent) {
-        super.performFinalize(model, parent);
+    public void performFinalize(Object model, LifecycleElement element) {
+        super.performFinalize(model, element);
+        
+        Component parent = ViewLifecycle.getPhase().getParent();
 
         // Calculate the number of pages for the pager widget if we are using server paging
         if (parent instanceof CollectionGroup

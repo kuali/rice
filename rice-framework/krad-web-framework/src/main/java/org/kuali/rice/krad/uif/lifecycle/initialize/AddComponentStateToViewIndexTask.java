@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
+public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -33,7 +33,7 @@ public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for the component.
      */
     public AddComponentStateToViewIndexTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**

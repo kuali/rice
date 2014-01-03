@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -40,6 +41,7 @@ public class DemoTravelAccountTypeInquiryAft extends WebDriverLegacyITBase {
     }
 
     @Test
+    @Ignore // link has been removed
     public void testTravelAccountTypeInquiryNav() throws Exception {
         testTravelAccountTypeInquiry();
         passed();

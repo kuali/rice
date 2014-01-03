@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -104,18 +105,21 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     }
 
     @Test
+    @Ignore // link has been removed
     public void testInquiryCollapseExpandNav() throws Exception {
         testCollapseExpand();
         passed();
     }
 
     @Test
+    @Ignore // link has been removed
     public void testInquiryLightBoxNav() throws Exception {
         testInquiryLightBox();
         passed();
     }
 
     @Test
+    @Ignore // link has been removed
     public void testInquiryBackButtonNav() throws Exception {
         testInquiryBackButton();
         passed();

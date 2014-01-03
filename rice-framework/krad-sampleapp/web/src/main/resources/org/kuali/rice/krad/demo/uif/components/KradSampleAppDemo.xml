@@ -694,7 +694,9 @@
     <property name="page.items">
       <list>
         <ref bean="KradSampleAppDemo-Travel"/>
+        <ref bean="KradSampleAppDemo-Inquiries"/>
         <ref bean="KradSampleAppDemo-Lookups"/>
+        <ref bean="KradSampleAppDemo-Maintenance"/>
       </list>
     </property>
   </bean>
@@ -705,9 +707,6 @@
         <ref bean="KradSampleAppTravelDemo-Row1"/>
         <ref bean="KradSampleAppTravelDemo-Row2"/>
         <ref bean="KradSampleAppTravelDemo-Row3"/>
-        <ref bean="KradSampleAppTravelDemo-Row4"/>
-        <ref bean="KradSampleAppTravelDemo-Row5"/>
-        <ref bean="KradSampleAppTravelDemo-Row6"/>
       </list>
     </property>
   </bean>
@@ -750,27 +749,21 @@
     </property>
     <property name="items">
       <list>
-        <bean id="KradSampleAppTravelDemo-Row3-Demo1" parent="KradSampleAppDemo-DemoGroup">
-          <property name="items">
-            <list merge="true">
-              <!-- Allows demo to sneakily add to a hidden collection -->
-              <bean parent="Uif-TableCollectionGroup" p:hidden="true">
-                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-                <property name="propertyName" value="travelAccounts" />
-                <property name="collectionLookup">
-                  <bean parent="Uif-QuickFinder" p:fieldConversions="number:number,name:name"/>
-                </property>
-              </bean>
-            </list>
-          </property>
-        </bean>
+        <bean id="KradSampleAppTravelDemo-Row3-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppTravelDemo-Row3-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row3-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>
 
-  <bean id="KradSampleAppTravelDemo-Row4" parent="Uif-HorizontalBoxGroup">
+  <bean id="KradSampleAppDemo-Inquiries" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <ref bean="KradSampleAppInquiriesDemo-Row1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KradSampleAppInquiriesDemo-Row1" parent="Uif-HorizontalBoxGroup">
     <property name="cssClasses">
       <list merge="true">
         <value>demo-demoRow</value>
@@ -778,39 +771,7 @@
     </property>
     <property name="items">
       <list>
-        <bean id="KradSampleAppTravelDemo-Row4-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row4-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row4-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="KradSampleAppTravelDemo-Row5" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>demo-demoRow</value>
-      </list>
-    </property>
-    <property name="items">
-      <list>
-        <bean id="KradSampleAppTravelDemo-Row5-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row5-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row5-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="KradSampleAppTravelDemo-Row6" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>demo-demoRow</value>
-      </list>
-    </property>
-    <property name="items">
-      <list>
-        <bean id="KradSampleAppTravelDemo-Row6-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row6-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
-        <bean id="KradSampleAppTravelDemo-Row6-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppInquiriesDemo-Row1-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>
@@ -864,9 +825,46 @@
     <property name="items">
       <list>
         <bean id="KradSampleAppLookupsDemo-Row3-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppLookupsDemo-Row3-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppLookupsDemo-Row3-Demo3" parent="KradSampleAppDemo-DemoGroup">
+          <property name="items">
+            <list merge="true">
+              <!-- Allows demo to sneakily add to a hidden collection -->
+              <bean parent="Uif-TableCollectionGroup" p:hidden="true">
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                <property name="propertyName" value="travelAccounts" />
+                <property name="collectionLookup">
+                  <bean parent="Uif-QuickFinder" p:fieldConversions="number:number,name:name"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
-  </bean>  
+  </bean>
+
+  <bean id="KradSampleAppDemo-Maintenance" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <ref bean="KradSampleAppMaintenanceDemo-Row1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KradSampleAppMaintenanceDemo-Row1" parent="Uif-HorizontalBoxGroup">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-demoRow</value>
+      </list>
+    </property>
+    <property name="items">
+      <list>
+        <bean id="KradSampleAppMaintenanceDemo-Row1-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppMaintenanceDemo-Row1-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
+      </list>
+    </property>
+  </bean>
 
   <bean id="KradSampleAppDemo-DemoGroup" abstract="true" parent="Uif-VerticalBoxGroup">
     <property name="cssClasses">

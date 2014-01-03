@@ -67,9 +67,18 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 		}
 	}
 
-	public Class<?> getObjectType() {
-		return Object.class;
-	}
+    public Class<?> getObjectType() {
+        if (getServiceName() == null) {
+            return null;
+        } else {
+            try {
+                // getObject throws java.lang.Exception
+                return getObject().getClass();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
 
 	public boolean isSingleton() {
 		return singleton;

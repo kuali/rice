@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -22,9 +23,15 @@ import org.junit.Test;
  */
 public class EdocLiteOaaIngestNavAft extends EdocLiteXmlIngesterBase {
 
+    @Override
+    @Before
+    public void testSetUp() {
+        setUpResourceDir("OAA");
+        super.testSetUp();
+    }
+
     @Test
     public void testEdocLiteOaaIngestNav() throws Exception {
-        setUpResourceDir("OAA");
         testEdocLiteIngestion();
         assertTextPresent("InterviewRequest");
         assertTextPresent("OfferRequest");

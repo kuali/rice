@@ -12,14 +12,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package edu.sampleu.admin;
+ */
+package edu.sampleu.admin;
 
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -78,8 +90,51 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         try {
             setUpFiles("src/it/resources/" + resourceDir);
         } catch (Exception e) {
-            jiraAwareFail("Files not found. If running from Intellij make sure working directory is rice-middleware/sampleapp");
+            System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-middleware/sampleapp attempt to load as resource.");
+            try {
+                setUpResourceFiles(resourceDir);
+            } catch (Exception e1) {
+                System.out.println("Problems loading files as resources " + e1.getMessage());
+                e1.printStackTrace();
+            }
         }
+    }
+
+    protected void setUpResourceFiles(String resourceDir) throws Exception {
+        String[] resources = getResourceListing(getClass(), resourceDir);
+        fileUploadList = new ArrayList<File>();
+
+        for (String resource : resources) {
+            InputStream inputStream = getClass().getResourceAsStream(resource);
+            File file = new File(System.getProperty("java.io.tmpdir") + File.separator + resource);
+            OutputStream outputStream = new FileOutputStream(file);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.close();
+            fileUploadList.add(file);
+        }
+        Collections.sort(fileUploadList);
+    }
+
+    protected String[] getResourceListing(Class clazz, String pathStartsWith) throws Exception {
+        String classPath = clazz.getName().replace(".", "/")+".class";
+        URL dirUrl = clazz.getClassLoader().getResource(classPath);
+        if (!dirUrl.getProtocol().equals("jar")) {
+            throw new UnsupportedOperationException("Cannot list files for URL " + dirUrl);
+        }
+
+        String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!")); //strip out only the JAR file
+        JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+        Enumeration<JarEntry> entries = jar.entries();
+        Set<String> result = new HashSet<String>();
+
+        while(entries.hasMoreElements()) {
+            String entry = entries.nextElement().getName();
+            if (entry.startsWith(pathStartsWith) && !entry.endsWith("/")) { //filter according to the pathStartsWith skipping directories
+                result.add(entry);
+            }
+        }
+
+        return result.toArray(new String[result.size()]);
     }
 
     protected void setUpFiles(String path) throws Exception {

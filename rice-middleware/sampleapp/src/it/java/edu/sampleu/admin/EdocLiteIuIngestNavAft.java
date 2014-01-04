@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -22,9 +23,15 @@ import org.junit.Test;
  */
 public class EdocLiteIuIngestNavAft extends EdocLiteXmlIngesterBase {
 
+    @Override
+    @Before
+    public void testSetUp() {
+        setUpResourceDir("IU");
+        super.testSetUp();
+    }
+
     @Test
     public void testEdocLiteIuIngestNav() throws Exception {
-        setUpResourceDir("IU");
         testEdocLiteIngestion();
         assertTextPresent("PhDCommencement");
         assertTextPresent("CommitteeChange.Doctype");

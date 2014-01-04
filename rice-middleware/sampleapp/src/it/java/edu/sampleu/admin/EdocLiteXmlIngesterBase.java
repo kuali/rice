@@ -204,7 +204,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         waitIsVisible(By.className("error")); // messages appear in error too.
         if (!isTextPresent("without allowOverwrite set")) { // docs should still be present
             // from previous run, if not we'll fail when we assert they exist.
-            assertTextPresent("Ingested xml doc: " + file.getName());
+            waitForTextPresent("Ingested xml doc: " + file.getName());
         }
     }
 }

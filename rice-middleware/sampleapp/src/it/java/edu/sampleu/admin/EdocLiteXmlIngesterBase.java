@@ -68,7 +68,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             cnt++;
         }
         waitAndClickByXpath("//*[@id='imageField']");
-        Thread.sleep(1000);
+        Thread.sleep(8000);
         // confirm all files were uploaded successfully
     }
 
@@ -94,8 +94,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             try {
                 setUpResourceFiles(resourceDir);
             } catch (Exception e1) {
-                System.out.println("Problems loading files as resources " + e1.getMessage());
                 e1.printStackTrace();
+                jiraAwareFail("Problems loading files as resources " + e1.getMessage());
             }
         }
     }
@@ -139,8 +139,6 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
 
     protected void setUpFiles(String path) throws Exception {
         fileUploadList = new ArrayList<File>();
-        // Load the directory as a resource
-        // Turn the resource into a File object
 
         File dir = new File(path);
 
@@ -160,7 +158,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
     }
 
     protected void testEdocLiteIngestion() throws Exception {
-        testXMLIngesterSuccessfulFileUpload();
+        testXmlIngesterSuccessfulFileUpload();
 
         Thread.sleep(2000);
         driver.switchTo().defaultContent();
@@ -182,7 +180,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
      * Uploads each sublist from main fileUploadList if size greater than 10.
      *
      */
-    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+    public void testXmlIngesterSuccessfulFileUpload() throws Exception {
         if (fileUploadList == null && fileUploadList.isEmpty()) {
             return;
         }
@@ -196,6 +194,9 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             }
         } else {
             fileIngester(fileUploadList);
+            for (File file : fileUploadList) {
+                checkMessages(file);
+            }
         }
     }
 

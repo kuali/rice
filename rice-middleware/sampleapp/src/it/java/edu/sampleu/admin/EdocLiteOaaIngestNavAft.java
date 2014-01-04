@@ -33,11 +33,7 @@ public class EdocLiteOaaIngestNavAft extends EdocLiteXmlIngesterBase {
     @Test
     public void testEdocLiteOaaIngestNav() throws Exception {
         testEdocLiteIngestion();
-        assertTextPresent("InterviewRequest");
-        assertTextPresent("OfferRequest");
-        assertTextPresent("SearchStatus");
-        assertTextPresent("VacancyNotice");
-        assertTextPresent("WaiverRequest");
+        assertTextPresent(new String[] {"InterviewRequest", "OfferRequest", "SearchStatus", "VacancyNotice", "WaiverRequest"});
         waitAndClickLogout();
         passed();
     }

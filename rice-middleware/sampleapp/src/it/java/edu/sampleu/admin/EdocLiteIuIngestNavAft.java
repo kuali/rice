@@ -33,11 +33,7 @@ public class EdocLiteIuIngestNavAft extends EdocLiteXmlIngesterBase {
     @Test
     public void testEdocLiteIuIngestNav() throws Exception {
         testEdocLiteIngestion();
-        assertTextPresent("PhDCommencement");
-        assertTextPresent("CommitteeChange.Doctype");
-        assertTextPresent("Committee.Doctype");
-        assertTextPresent("MAAdvancedDegree");
-        assertTextPresent("PhDDefense");
+        assertTextPresent(new String[] {"PhDCommencement", "CommitteeChange.Doctype", "Committee.Doctype", "MAAdvancedDegree", "PhDDefense"});
         waitAndClickLogout();
         passed();
     }

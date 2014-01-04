@@ -30,6 +30,7 @@
       <list>
         <ref bean="Demo-Message-Example1"/>
         <ref bean="Demo-Message-Example2"/>
+        <ref bean="Demo-Message-Example3"/>
       </list>
     </property>
   </bean>
@@ -51,6 +52,16 @@
         <!-- ex:Demo-Message-Example2 start-->
         <bean parent="Uif-Message" p:messageText="This message has [b]bold[/b] text."/>
         <!-- ex:Demo-Message-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Message-Example3"  parent="Uif-VerticalBoxSection" p:headerText="Message with Custom CSS">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Message-Example3 start-->
+        <bean parent="Uif-Message" p:additionalCssClasses="badge" p:messageText="This message has custom CSS."/>
+        <!-- ex:Demo-Message-Example3 end-->
       </list>
     </property>
   </bean>

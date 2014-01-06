@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -28,12 +25,14 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for controls that accept/display multiple values
@@ -98,7 +97,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                     UrlInfo url = ((UifKeyValueLocation) option).getLocation();
 
-                    ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
+                    ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(url, false);
                     expressionEvaluator.evaluateExpressionsOnConfigurable(view, url, view.getContext());
                 }
             }

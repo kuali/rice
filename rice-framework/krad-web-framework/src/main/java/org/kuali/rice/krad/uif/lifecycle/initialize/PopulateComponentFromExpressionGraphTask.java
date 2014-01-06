@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
  * Populate property values on the component from the expression graph.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
-     * 
+     *
      * @param phase The initialize phase for the component.
      */
     public PopulateComponentFromExpressionGraphTask(ViewLifecyclePhase phase) {
@@ -42,7 +42,7 @@ public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskB
     protected void performLifecycleTask() {
         // the component can have an expression graph for which the expressions need pulled to
         // the list the expression service will evaluate
-        ExpressionUtils.populatePropertyExpressionsFromGraph(getPhase().getComponent(), true);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(getPhase().getComponent(), true);
     }
 
 }

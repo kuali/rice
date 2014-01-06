@@ -30,7 +30,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -200,7 +199,8 @@ public class Action extends ContentElementBase {
                 && !disabledExpression.equalsIgnoreCase("true")
                 && !disabledExpression.equalsIgnoreCase("false")) {
             disabledConditionControlNames = new ArrayList<String>();
-            disabledConditionJs = ExpressionUtils.parseExpression(disabledExpression, disabledConditionControlNames);
+            disabledConditionJs = ViewLifecycle.getExpressionEvaluator().parseExpression(disabledExpression,
+                    disabledConditionControlNames, this.getContext());
         }
 
         List<String> adjustedDisablePropertyNames = new ArrayList<String>();

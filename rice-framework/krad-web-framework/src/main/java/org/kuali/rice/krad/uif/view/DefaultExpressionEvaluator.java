@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -25,6 +27,7 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -35,6 +38,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +99,302 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      */
     public DefaultExpressionEvaluator() {
         cachedExpressions = new HashMap<String, Expression>();
+    }
+
+    /**
+     * @see ExpressionEvaluator#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, boolean)
+     */
+    @Override
+    public void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable, boolean buildRefreshGraphs) {
+        if (expressionConfigurable == null || expressionConfigurable.getExpressionGraph() == null) {
+            return;
+        }
+
+        // will hold graphs to populate the refreshExpressionGraph property on each expressionConfigurable
+        // key is the path to the expressionConfigurable and value is the map of nested property names to expressions
+        Map<String, Map<String, String>> refreshExpressionGraphs = new HashMap<String, Map<String, String>>();
+
+        Map<String, String> expressionGraph = expressionConfigurable.getExpressionGraph();
+        for (Map.Entry<String, String> expressionEntry : expressionGraph.entrySet()) {
+            String propertyName = expressionEntry.getKey();
+            String expression = expressionEntry.getValue();
+
+            // by default assume expression belongs with passed in expressionConfigurable
+            UifDictionaryBean configurableWithExpression = expressionConfigurable;
+
+            // if property name is nested, we need to move the expression to the last expressionConfigurable
+            String adjustedPropertyName = propertyName;
+            if (StringUtils.contains(propertyName, ".")) {
+                String configurablePath = StringUtils.substringBeforeLast(propertyName, ".");
+                adjustedPropertyName = StringUtils.substringAfterLast(propertyName, ".");
+
+                Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
+                if ((nestedObject == null) || !(nestedObject instanceof UifDictionaryBean)) {
+                    throw new RiceRuntimeException(
+                            "Object for which expression is configured on is null or does not implement UifDictionaryBean: '"
+                                    + configurablePath
+                                    + "'");
+                }
+
+                // use nested object as the expressionConfigurable which will get the property expression
+                configurableWithExpression = (UifDictionaryBean) nestedObject;
+
+                // now add the expression to the refresh graphs
+                if (buildRefreshGraphs) {
+                    String currentPath = "";
+
+                    String[] configurablePathNames = StringUtils.split(configurablePath, ".");
+                    for (String configurablePathName : configurablePathNames) {
+                        if (StringUtils.isNotBlank(currentPath)) {
+                            currentPath += ".";
+                        }
+                        currentPath += configurablePathName;
+
+                        Map<String, String> graphExpressions = null;
+                        if (refreshExpressionGraphs.containsKey(currentPath)) {
+                            graphExpressions = refreshExpressionGraphs.get(currentPath);
+                        } else {
+                            graphExpressions = new HashMap<String, String>();
+                            refreshExpressionGraphs.put(currentPath, graphExpressions);
+                        }
+
+                        // property name in refresh graph should be relative to expressionConfigurable
+                        String configurablePropertyName = StringUtils.substringAfter(propertyName, currentPath + ".");
+                        graphExpressions.put(configurablePropertyName, expression);
+                    }
+                }
+            }
+
+            configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+        }
+
+        // set the refreshExpressionGraph property on each expressionConfigurable an expression was found for
+        if (buildRefreshGraphs) {
+            for (String configurablePath : refreshExpressionGraphs.keySet()) {
+                Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
+                // note if nested object is not a expressionConfigurable, then it can't be refresh and we can safely ignore
+                if ((nestedObject != null) && (nestedObject instanceof UifDictionaryBean)) {
+                    ((UifDictionaryBean) nestedObject).setRefreshExpressionGraph(refreshExpressionGraphs.get(
+                            configurablePath));
+                }
+            }
+
+            // the expression graph for the passed in expressionConfigurable will be its refresh graph as well
+            expressionConfigurable.setRefreshExpressionGraph(expressionGraph);
+        }
+    }
+
+    /**
+     * @see ExpressionEvaluator#parseExpression(String, java.util.List, java.util.Map)
+     */
+    @Override
+    public String parseExpression(String exp, List<String> controlNames, Map<String, Object> context) {
+        // clean up expression to ease parsing
+        exp = exp.trim();
+        if (exp.startsWith("@{")) {
+            exp = StringUtils.removeStart(exp, "@{");
+            if (exp.endsWith("}")) {
+                exp = StringUtils.removeEnd(exp, "}");
+            }
+        }
+
+        // Clean up the expression for parsing consistency
+        exp = StringUtils.replace(exp, "!=", " != ");
+        exp = StringUtils.replace(exp, "==", " == ");
+        exp = StringUtils.replace(exp, ">", " > ");
+        exp = StringUtils.replace(exp, "<", " < ");
+        exp = StringUtils.replace(exp, "<=", " <= ");
+        exp = StringUtils.replace(exp, ">=", " >= ");
+        exp = StringUtils.replace(exp, "&&", " && ");
+        exp = StringUtils.replace(exp, "||", " || ");
+        exp = StringUtils.replace(exp, "  ", " ");
+        exp = StringUtils.replace(exp, " )", ")");
+        exp = StringUtils.replace(exp, "( ", "(");
+        exp = StringUtils.replace(exp, " ,", ",");
+
+        Map<String, String> serverEvaluations = new HashMap<String, String>();
+        String spelMethodRegex = "(\\s?#(.*?\\(.*?\\)))(\\s|$)";
+        Pattern pattern = Pattern.compile(spelMethodRegex);
+
+        // Evaluate server side method calls and constants
+        Matcher matcher = pattern.matcher(exp);
+        while(matcher.find()) {
+            String spelMethodCall = matcher.group(1);
+
+            Object value = this.evaluateExpression(context, spelMethodCall);
+
+            // Convert the value to expected js equivalent
+            if (value == null) {
+                serverEvaluations.put(spelMethodCall, "null");
+            } else if (value instanceof String) {
+                serverEvaluations.put(spelMethodCall, "\"" + value + "\"");
+            } else if (value instanceof Boolean || NumberUtils.isNumber(value.toString())) {
+                serverEvaluations.put(spelMethodCall, value.toString());
+            } else {
+                // Corner case, assume the object gives us something meaningful from toString, wrap in quotes
+                serverEvaluations.put(spelMethodCall, "\"" + value.toString() + "\"");
+            }
+        }
+
+        String conditionJs = exp;
+        controlNames.addAll(findControlNamesInExpression(exp));
+
+        // Replace all known accepted strings with javascript equivalent
+        conditionJs = conditionJs.replaceAll("\\s(?i:ne)\\s", " != ").replaceAll("\\s(?i:eq)\\s", " == ").replaceAll(
+                "\\s(?i:gt)\\s", " > ").replaceAll("\\s(?i:lt)\\s", " < ").replaceAll("\\s(?i:lte)\\s", " <= ")
+                .replaceAll("\\s(?i:gte)\\s", " >= ").replaceAll("\\s(?i:and)\\s", " && ").replaceAll("\\s(?i:or)\\s",
+                        " || ").replaceAll("\\s(?i:not)\\s", " != ").replaceAll("\\s(?i:null)\\s?", " '' ").replaceAll(
+                        "\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)").replaceAll("\\s?(?i:#listContains)\\((.*?)\\)",
+                        "listContains($1)").replaceAll("\\s?(?i:#emptyList)\\((.*?)\\)", "emptyList($1)");
+
+        // Handle matches method conversion
+        if (conditionJs.contains("matches")) {
+            conditionJs = conditionJs.replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" + "$0" + "/) != null ");
+            conditionJs = conditionJs.replaceAll("\\(/\\s+(?i:matches)\\s+'", "(/");
+            conditionJs = conditionJs.replaceAll("'\\s*/\\)", "/)");
+        }
+
+        for (String serverEvalToken: serverEvaluations.keySet()) {
+            String evaluatedValue = serverEvaluations.get(serverEvalToken);
+            conditionJs = conditionJs.replace(serverEvalToken, evaluatedValue);
+        }
+
+        List<String> removeControlNames = new ArrayList<String>();
+        List<String> addControlNames = new ArrayList<String>();
+        //convert property names to use coerceValue function and convert arrays to js arrays
+        for (String propertyName : controlNames) {
+            //array definitions are caught in controlNames because of the nature of the parse - convert them and remove
+            if(propertyName.trim().startsWith("{") && propertyName.trim().endsWith("}")){
+                String array = propertyName.trim().replace('{', '[');
+                array = array.replace('}', ']');
+                conditionJs = conditionJs.replace(propertyName, array);
+                removeControlNames.add(propertyName);
+                continue;
+            }
+
+            //handle not
+            if (propertyName.startsWith("!")){
+                String actualPropertyName = StringUtils.removeStart(propertyName, "!");
+                conditionJs = conditionJs.replace(propertyName,
+                        "!coerceValue(\"" + actualPropertyName + "\")");
+                removeControlNames.add(propertyName);
+                addControlNames.add(actualPropertyName);
+            } else {
+                conditionJs = conditionJs.replace(propertyName, "coerceValue(\"" + propertyName + "\")");
+            }
+        }
+
+        controlNames.removeAll(removeControlNames);
+        controlNames.addAll(addControlNames);
+
+        // Simple short circuit logic below
+        boolean complexCondition = conditionJs.contains(" (") || conditionJs.startsWith("(");
+
+        // Always remove AND'ed true
+        if (conditionJs.contains("true && ") || conditionJs.contains(" && true")) {
+            conditionJs = conditionJs.replace(" && true", "");
+            conditionJs = conditionJs.replace("true && ", "");
+        }
+
+        // An AND'ed false, or an OR'ed true, or true/false by themselves will always evaluate to the same outcome
+        // in a simple condition, so no need for client evaluation (server will handle the evaluation)
+        if (!complexCondition && (conditionJs.contains("false &&")) || conditionJs.contains("&& false") || conditionJs
+                .contains("|| true") || conditionJs.contains("true ||") || conditionJs.equals("true") || conditionJs
+                .equals("false")) {
+            conditionJs = "";
+        }
+
+        return conditionJs;
+    }
+
+    /**
+     * @see ExpressionEvaluator#findControlNamesInExpression(String)
+     */
+    @Override
+    public List<String> findControlNamesInExpression(String exp) {
+        List<String> controlNames = new ArrayList<String>();
+        String stack = "";
+
+        boolean expectingSingleQuote = false;
+        boolean ignoreNext = false;
+        for (int i = 0; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+            if (!expectingSingleQuote && !ignoreNext && (c == '(' || c == ' ' || c == ')')) {
+                evaluateCurrentStack(stack.trim(), controlNames);
+                //reset stack
+                stack = "";
+                continue;
+            } else if (!ignoreNext && c == '\'') {
+                stack = stack + c;
+                expectingSingleQuote = !expectingSingleQuote;
+            } else if (c == '\\') {
+                stack = stack + c;
+                ignoreNext = !ignoreNext;
+            } else {
+                stack = stack + c;
+                ignoreNext = false;
+            }
+        }
+
+        if (StringUtils.isNotEmpty(stack)) {
+            evaluateCurrentStack(stack.trim(), controlNames);
+        }
+
+        return controlNames;
+    }
+
+    /**
+     * Used internally by parseExpression to evalute if the current stack is a property
+     * name (ie, will be a control on the form)
+     *
+     * @param stack
+     * @param controlNames
+     */
+    protected void evaluateCurrentStack(String stack, List<String> controlNames) {
+        if (StringUtils.isBlank(stack)) {
+            return;
+        }
+
+        // These are special matches that can be directly replaced to a js equivalent (so skip evaluation of these)
+        if (!(stack.equals("==")
+                || stack.equals("!=")
+                || stack.equals(">")
+                || stack.equals("<")
+                || stack.equals(">=")
+                || stack.equals("<=")
+                || stack.equalsIgnoreCase("ne")
+                || stack.equalsIgnoreCase("eq")
+                || stack.equalsIgnoreCase("gt")
+                || stack.equalsIgnoreCase("lt")
+                || stack.equalsIgnoreCase("lte")
+                || stack.equalsIgnoreCase("gte")
+                || stack.equalsIgnoreCase("matches")
+                || stack.equalsIgnoreCase("null")
+                || stack.equalsIgnoreCase("false")
+                || stack.equalsIgnoreCase("true")
+                || stack.equalsIgnoreCase("and")
+                || stack.equalsIgnoreCase("or")
+                || stack.startsWith("#")
+                || stack.equals("!")
+                || stack.startsWith("'")
+                || stack.endsWith("'"))) {
+
+
+                boolean isNumber = NumberUtils.isNumber(stack);
+
+                // If it is not a number must be check to see if it is a name of a control
+                if (!(isNumber)) {
+                    //correct argument of a custom function ending in comma
+                    if(StringUtils.endsWith(stack, ",")){
+                        stack = StringUtils.removeEnd(stack, ",").trim();
+                    }
+
+                    if (!controlNames.contains(stack)) {
+                        controlNames.add(stack);
+                    }
+                }
+        }
+
     }
 
     /**

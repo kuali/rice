@@ -137,7 +137,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     private void processParentViewDerivedContent(View parentView, String parentViewId, View currentView,
             Object currentModel, Map<String, Object> currentContext) {
         //populate expression graph
-        ExpressionUtils.populatePropertyExpressionsFromGraph(parentView, false);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(parentView, false);
 
         //chain parent locations if not null on parent
         if (((View) parentView).getParentLocation() != null) {
@@ -202,8 +202,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
             BreadcrumbItem breadcrumbItem = parentView.getBreadcrumbItem();
 
             if (breadcrumbItem != null) {
-                expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, breadcrumbItem,
-                        currentContext);
+                expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, breadcrumbItem, currentContext);
             }
 
             if (pageBreadcrumbItem != null && pageBreadcrumbItem.getUrl() != null && StringUtils.isNotBlank(
@@ -226,7 +225,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                 }
 
                 //populate from expression graph
-                ExpressionUtils.populatePropertyExpressionsFromGraph(thePage, false);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(thePage, false);
 
                 Header pageHeader = thePage.getHeader();
 
@@ -237,15 +236,13 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
                                 thePage.getPropertyExpressions().get(UifConstants.ComponentProperties.HEADER_TEXT));
                     }
 
-                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageHeader,
-                            currentContext);
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageHeader, currentContext);
                 }
 
                 BreadcrumbItem pageBreadcrumb = thePage.getBreadcrumbItem();
 
                 if (pageBreadcrumb != null) {
-                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageBreadcrumb,
-                            currentContext);
+                    expressionEvaluator.evaluateExpressionsOnConfigurable(parentView, pageBreadcrumb, currentContext);
                 }
             }
         } catch (RuntimeException e) {

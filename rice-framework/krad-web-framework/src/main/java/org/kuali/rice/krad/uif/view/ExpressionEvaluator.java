@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -97,7 +98,7 @@ public interface ExpressionEvaluator {
      * should evaluate against when that name is found
      * @param expressionTemplate string that should be evaluated for el expressions
      * @return String formed by replacing any el expressions in the original expression template with
-     * their corresponding evaluation results
+     *         their corresponding evaluation results
      */
     public String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate);
 
@@ -161,4 +162,60 @@ public interface ExpressionEvaluator {
      * @return the adjusted expression String
      */
     public String replaceBindingPrefixes(View view, Object object, String expression);
+
+    /**
+     * Pulls expressions within the expressionConfigurable's expression graph and moves them to the property
+     * expressions
+     * map for the expressionConfigurable or a nested expressionConfigurable (for the case of nested expression property
+     * names)
+     *
+     * <p>
+     * Expressions that are configured on properties and pulled out by the {@link org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor}
+     * and put in the {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getExpressionGraph()} for the bean
+     * that is
+     * at root (non nested) level. Before evaluating the expressions, they need to be moved to the
+     * {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions()} map for the
+     * expressionConfigurable that
+     * property
+     * is on.
+     * </p>
+     *
+     * @param expressionConfigurable expressionConfigurable instance to process expressions for
+     * @param buildRefreshGraphs indicates whether the expression graphs for component refresh should be built
+     */
+    public void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable,
+            boolean buildRefreshGraphs);
+
+    /**
+     * Takes in an expression and a list to be filled in with names(property names)
+     * of controls found in the expression.
+     *
+     * <p>This method returns a js expression which can
+     * be executed on the client to determine if the original exp was satisfied before
+     * interacting with the server - ie, this js expression is equivalent to the one passed in.</p>
+     *
+     * <p>There are limitations on the Spring expression language that can be used as this method.
+     * It is only used to parse expressions which are valid case statements for determining if
+     * some action/processing should be performed.  ONLY Properties, comparison operators, booleans,
+     * strings, matches expression, and boolean logic are supported.  Server constants and calls will be evaluated
+     * early.  The isValueEmpty, listContains, and emptyList custom KRAD functions, however, will be converted
+     * to a js equivalent function.  Properties must be a valid property on the form, and should have a visible control
+     * within the view. </p>
+     *
+     * <p>Example valid exp: "account.name == 'Account Name'"</p>
+     *
+     * @param exp the expression to convert to a js condition
+     * @param controlNames the list to populate with control names found in the expression (these may later be used
+     * to add js change handlers)
+     * @return the converted expression into an equivalent js condition
+     */
+    public String parseExpression(String exp, List<String> controlNames, Map<String, Object> context);
+
+    /**
+     * Find the control names (ie, propertyNames) used in the passed in expression
+     *
+     * @param exp the expression to search
+     * @return the list of control names found (ie, propertyNames)
+     */
+    public List<String> findControlNamesInExpression(String exp);
 }

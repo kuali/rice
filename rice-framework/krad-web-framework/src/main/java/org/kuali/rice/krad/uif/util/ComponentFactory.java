@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,11 +77,17 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Factory class for creating new UIF components from their base definitions
@@ -194,7 +195,8 @@ public class ComponentFactory {
         final Component origComponent = view.getViewIndex().getComponentById(id);
 
         if (origComponent == null) {
-            throw new RuntimeException(id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
+            throw new RuntimeException(
+                    id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
         }
 
         Component component = null;
@@ -204,7 +206,8 @@ public class ComponentFactory {
         } else {
             component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
                     origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '" + id
+            LOG.debug("getNewInstanceForRefresh: id '"
+                    + id
                     + "' was NOT found in initialStates. New one fetched from DD");
         }
 
@@ -228,16 +231,15 @@ public class ComponentFactory {
         if (cache.containsKey(beanId)) {
             component = cache.get(beanId);
         } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
-                    .getDictionaryObject(beanId);
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
 
             // clear id before returning so duplicates do not occur
             component.setId(null);
             component.setBaseId(null);
 
             // populate property expressions from expression graph
-            ExpressionUtils.populatePropertyExpressionsFromGraph(component, true);
-            
+            ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(component, true);
+
             CopyUtils.preventModification(component);
 
             // add to cache
@@ -245,7 +247,7 @@ public class ComponentFactory {
                 cache.put(beanId, component);
             }
         }
-        
+
         component = ComponentUtils.copy(component);
         return component;
     }
@@ -1059,7 +1061,6 @@ public class ComponentFactory {
     public static CollectionGroup getCollectionWithDisclosureGroup() {
         return (CollectionGroup) getNewComponentInstance(COLLECTION_WITH_DISCLOSURE_GROUP);
     }
-
 
     /**
      * Gets the collection group table layout

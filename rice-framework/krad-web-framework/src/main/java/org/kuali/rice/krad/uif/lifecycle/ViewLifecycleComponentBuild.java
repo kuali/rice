@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -32,16 +29,18 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * TODO mark don't forget to fill this in. 
- * 
+ * TODO mark don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecycleComponentBuild implements Runnable {
@@ -51,7 +50,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
 
     /**
      * Constructor.
-     * 
+     *
      * @param origId The ID of the original component, which component was based on.
      * @param component The component to build.
      */
@@ -61,8 +60,6 @@ public class ViewLifecycleComponentBuild implements Runnable {
     }
 
     /**
-     * 
-     * 
      * @see java.lang.Runnable#run()
      */
     @Override
@@ -74,15 +71,14 @@ public class ViewLifecycleComponentBuild implements Runnable {
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("begin-component-lifecycle:" + component.getId());
         }
-        
+
         Component newComponent = component;
         Component origComponent = view.getViewIndex().getComponentById(origId);
 
         // check if the component is nested in a box layout in order to
         // reapply the layout item style
         List<String> origCss = origComponent.getCssClasses();
-        if (origCss != null && (model instanceof UifFormBase)
-                && ((UifFormBase) model).isUpdateComponentRequest()) {
+        if (origCss != null && (model instanceof UifFormBase) && ((UifFormBase) model).isUpdateComponentRequest()) {
 
             if (origCss.contains(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS)) {
                 component.addStyleClass(UifConstants.BOX_LAYOUT_HORIZONTAL_ITEM_CSS);
@@ -93,8 +89,8 @@ public class ViewLifecycleComponentBuild implements Runnable {
 
         Map<String, Object> origContext = origComponent.getContext();
 
-        Component parent = origContext == null ? null : (Component) origContext
-                .get(UifConstants.ContextVariableNames.PARENT);
+        Component parent = origContext == null ? null : (Component) origContext.get(
+                UifConstants.ContextVariableNames.PARENT);
 
         // update context on all components within the refresh component to catch context set by parent
         if (origContext != null) {
@@ -118,7 +114,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
         Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
                 newComponent.getBaseId());
         newComponent.setExpressionGraph(expressionGraph);
-        ExpressionUtils.populatePropertyExpressionsFromGraph(newComponent, false);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(newComponent, false);
 
         // binding path should stay the same
         if (newComponent instanceof DataBinding) {
@@ -147,11 +143,11 @@ public class ViewLifecycleComponentBuild implements Runnable {
                         ((DataField) newComponent).getBindingInfo().getBindingPath());
             }
         }
-        
+
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("ready:" + newComponent.getId());
         }
-        
+
         processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model));
 
         if (ViewLifecycle.isTrace()) {
@@ -169,8 +165,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
         // set the sub collection id prefix from the original component (this is needed when the group being
         // refreshed is part of another collection)
         if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(
-                    origComponent,
+            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(origComponent,
                     CollectionGroup.class);
             List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
                     CollectionGroup.class);
@@ -192,8 +187,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             // Handle LightTables, as well
             List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
                     LightTable.class);
-            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent,
-                    LightTable.class);
+            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent, LightTable.class);
 
             for (int i = 0; i < lightTables.size(); i++) {
                 LightTable origLightTable = origLightTables.get(i);
@@ -235,37 +229,37 @@ public class ViewLifecycleComponentBuild implements Runnable {
         // make sure id, binding, and label settings stay the same as initial
         // TODO: this currently doesn't work because IDS don't get generated the same, needs reworked
         // to use paths once that functionality is in palce
-//        if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-//            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
-//            List<Component> originalNestedGroupComponents = ComponentUtils
-//                    .getAllNestedComponents(origComponent);
-//
-//            for (Component nestedComponent : nestedGroupComponents) {
-//                Component origNestedComponent = ComponentUtils.findComponentInList(
-//                        originalNestedGroupComponents,
-//                        nestedComponent.getId());
-//
-//                if (origNestedComponent != null) {
-//                    // update binding
-//                    if (nestedComponent instanceof DataBinding) {
-//                        ((DataBinding) nestedComponent).setBindingInfo(
-//                                ((DataBinding) origNestedComponent).getBindingInfo());
-//                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-//                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-//                    }
-//
-//                    // update label rendered flag
-//                    if (nestedComponent instanceof Field) {
-//                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
-//                                .isLabelRendered());
-//                    }
-//
-//                    if (origNestedComponent.isRefreshedByAction()) {
-//                        nestedComponent.setRefreshedByAction(true);
-//                    }
-//                }
-//            }
-//        }
+        //        if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
+        //            List<Component> nestedGroupComponents = ComponentUtils.getAllNestedComponents(newComponent);
+        //            List<Component> originalNestedGroupComponents = ComponentUtils
+        //                    .getAllNestedComponents(origComponent);
+        //
+        //            for (Component nestedComponent : nestedGroupComponents) {
+        //                Component origNestedComponent = ComponentUtils.findComponentInList(
+        //                        originalNestedGroupComponents,
+        //                        nestedComponent.getId());
+        //
+        //                if (origNestedComponent != null) {
+        //                    // update binding
+        //                    if (nestedComponent instanceof DataBinding) {
+        //                        ((DataBinding) nestedComponent).setBindingInfo(
+        //                                ((DataBinding) origNestedComponent).getBindingInfo());
+        //                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+        //                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+        //                    }
+        //
+        //                    // update label rendered flag
+        //                    if (nestedComponent instanceof Field) {
+        //                        ((Field) nestedComponent).setLabelRendered(((Field) origNestedComponent)
+        //                                .isLabelRendered());
+        //                    }
+        //
+        //                    if (origNestedComponent.isRefreshedByAction()) {
+        //                        nestedComponent.setRefreshedByAction(true);
+        //                    }
+        //                }
+        //            }
+        //        }
 
         // get script for generating growl messages
         String growlScript = ViewLifecycle.getHelper().buildGrowlScript();

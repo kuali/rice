@@ -17,11 +17,12 @@ package org.kuali.rice.krad.uif.util;
 
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Test class for {@link ExpressionUtils}
@@ -56,7 +57,7 @@ public class ExpressionUtilsTest {
 
         configurable.setExpressionGraph(expressionGraph);
 
-        ExpressionUtils.populatePropertyExpressionsFromGraph(configurable, false);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(configurable, false);
 
         assertEquals("Expression count not correct in root configurable", 3,
                 configurable.getPropertyExpressions().size());
@@ -100,7 +101,7 @@ public class ExpressionUtilsTest {
 
         configurable.setExpressionGraph(expressionGraph);
 
-        ExpressionUtils.populatePropertyExpressionsFromGraph(configurable, true);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(configurable, true);
 
         assertEquals("Refresh expression count not correct in root configurable", 5,
                 configurable.getRefreshExpressionGraph().size());

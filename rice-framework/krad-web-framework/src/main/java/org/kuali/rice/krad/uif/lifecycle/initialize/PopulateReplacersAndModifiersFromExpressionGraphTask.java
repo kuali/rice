@@ -15,26 +15,26 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import java.util.List;
-
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
+
+import java.util.List;
 
 /**
  * Populate property values on the all property replacers and component modifiers from the
  * expression graph.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase {
 
     /**
      * Constructor.
-     * 
+     *
      * @param phase The initialize phase for the component.
      */
     public PopulateReplacersAndModifiersFromExpressionGraphTask(ViewLifecyclePhase phase) {
@@ -47,19 +47,19 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
     @Override
     protected void performLifecycleTask() {
         Component component = getPhase().getComponent();
-        
+
         // move expressions on property replacers and component modifiers
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
         if (componentPropertyReplacers != null) {
             for (PropertyReplacer replacer : componentPropertyReplacers) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(replacer, true);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(replacer, true);
             }
         }
 
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers != null) {
             for (ComponentModifier modifier : component.getComponentModifiers()) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph(modifier, true);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(modifier, true);
             }
         }
     }

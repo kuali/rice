@@ -40,7 +40,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Pager;
@@ -195,7 +195,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
         super.performApplyModel(model, component);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
+            ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(cInfo, false);
         }
     }
 

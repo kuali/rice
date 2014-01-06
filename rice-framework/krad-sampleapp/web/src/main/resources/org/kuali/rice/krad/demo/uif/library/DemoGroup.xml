@@ -205,6 +205,13 @@
             <list>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField11"/>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField12"/>
+              <bean parent="Uif-VerticalBoxSubSection" p:headerText="SubSection" p:disclosure.render="true">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField13"/>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
@@ -213,8 +220,8 @@
         <bean parent="Uif-Disclosure-HorizontalBoxSection" p:headerText="Predefined Disclosure Section">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField13"/>
               <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField14"/>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:propertyName="inputField15"/>
             </list>
           </property>
         </bean>

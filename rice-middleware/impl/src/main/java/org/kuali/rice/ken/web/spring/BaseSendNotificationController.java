@@ -164,62 +164,30 @@ public class BaseSendNotificationController extends MultiActionController {
     }
 
     /**
-     * This method handles submitting the actual event notification message.
-     * @param request
-     * @param response
-     * @return ModelAndView
+     * Submits the actual event notification message.
+     *
+     * @param request the servlet request
+     * @param routeMessage the message to attach to the route action
+     * @param viewName the name of the view to forward to after completion
+     *
+     * @return the next view to show
      * @throws javax.servlet.ServletException
      * @throws java.io.IOException
      */
-    protected ModelAndView submitNotificationMessage(HttpServletRequest request, HttpServletResponse response, String routeMessage, String viewName)
+    protected ModelAndView submitNotificationMessage(HttpServletRequest request, String routeMessage, String viewName)
             throws ServletException, IOException {
         LOG.debug("remoteUser: " + request.getRemoteUser());
 
         // obtain a workflow user object first
         //WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
         String initiatorId = getPrincipalIdFromIdOrName( request.getRemoteUser());
-        LOG.debug("initiatorId="+initiatorId);
+        LOG.debug("initiatorId: " + initiatorId);
 
         // now construct the workflow document, which will interact with workflow
-        WorkflowDocument document;
         Map<String, Object> model = new HashMap<String, Object>();
 
         try {
-            document = NotificationWorkflowDocument.createNotificationDocument(initiatorId,
-                    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
-
-            //parse out the application content into a Notification BO
-            NotificationBo notification = populateNotificationInstance(request, model);
-
-            // now get that content in an understandable XML format and pass into document
-            String notificationAsXml = getNotificationMessageContentService().generateNotificationMessage(notification);
-
-            Map<String, String> attrFields = new HashMap<String,String>();
-            List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
-            int ui = 0;
-            int gi = 0;
-            for (NotificationChannelReviewerBo reviewer: reviewers) {
-                String prefix;
-                int index;
-                if (KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
-                    prefix = "user";
-                    index = ui;
-                    ui++;
-                } else if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
-                    prefix = "group";
-                    index = gi;
-                    gi++;
-                } else {
-                    LOG.error("Invalid type for reviewer " + reviewer.getReviewerId() + ": " + reviewer.getReviewerType());
-                    continue;
-                }
-                attrFields.put(prefix + index, reviewer.getReviewerId());
-            }
-            GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
-            document.setApplicationContent(notificationAsXml);
-            document.setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
-
-            document.setTitle(notification.getTitle());
+            WorkflowDocument document = createNotificationWorkflowDocument(request, initiatorId, model);
 
             document.route(routeMessage + initiatorId);
 
@@ -227,7 +195,6 @@ public class BaseSendNotificationController extends MultiActionController {
             ErrorList el = new ErrorList();
             el.addError("Notification(s) sent.");
             model.put("errors", el);
-
         } catch (ErrorList el) {
             // route back to the send form again
             Map<String, Object> model2 = setupModelForSendNotification(request);
@@ -241,19 +208,79 @@ public class BaseSendNotificationController extends MultiActionController {
     }
 
     /**
-     * This method creates a new Notification instance from the event form values.
-     * @param request
-     * @param model
-     * @return Notification
-     * @throws IllegalArgumentException
+     * Creates a notification {@link WorkflowDocument}.
+     *
+     * @param request the servlet request
+     * @param initiatorId the user sending the notification
+     * @param model the Spring MVC model
+     *
+     * @return a {@link WorkflowDocument} for the notification
+     * @throws java.lang.IllegalArgumentException
+     * @throws org.kuali.rice.ken.exception.ErrorList
      */
-    protected NotificationBo populateNotificationInstance(
-            HttpServletRequest request, Map<String, Object> model)
-            throws IllegalArgumentException, ErrorList {
+    protected WorkflowDocument createNotificationWorkflowDocument(HttpServletRequest request, String initiatorId,
+            Map<String, Object> model) throws IllegalArgumentException, ErrorList {
+        WorkflowDocument document = NotificationWorkflowDocument.createNotificationDocument(initiatorId,
+                NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
 
-        return null;
+        //parse out the application content into a Notification BO
+        NotificationBo notification = populateNotificationInstance(request, model);
+
+        // now get that content in an understandable XML format and pass into document
+        String notificationAsXml = getNotificationMessageContentService().generateNotificationMessage(notification);
+
+        Map<String, String> attrFields = new HashMap<String,String>();
+        List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
+        int ui = 0;
+        int gi = 0;
+        for (NotificationChannelReviewerBo reviewer: reviewers) {
+            String prefix;
+            int index;
+            if (KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode().equals(reviewer.getReviewerType())) {
+                prefix = "user";
+                index = ui;
+                ui++;
+            } else if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode().equals(reviewer.getReviewerType())) {
+                prefix = "group";
+                index = gi;
+                gi++;
+            } else {
+                LOG.error("Invalid type for reviewer " + reviewer.getReviewerId() + ": " + reviewer.getReviewerType());
+                continue;
+            }
+            attrFields.put(prefix + index, reviewer.getReviewerId());
+        }
+        GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
+        document.setApplicationContent(notificationAsXml);
+        document.setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
+
+        document.setTitle(notification.getTitle());
+
+        return document;
     }
 
+    /**
+     * Creates a new Notification instance.
+     *
+     * @param request the servlet request
+     * @param model the Spring MVC model
+     *
+     * @return a new notification
+     * @throws java.lang.IllegalArgumentException
+     * @throws org.kuali.rice.ken.exception.ErrorList
+     */
+    protected NotificationBo populateNotificationInstance(HttpServletRequest request, Map<String, Object> model)
+            throws IllegalArgumentException, ErrorList {
+        return new NotificationBo();
+    }
+
+    /**
+     * Prepares the model used for sending the notification.
+     *
+     * @param request the servlet request
+     *
+     * @return the Spring MVC model
+     */
     protected Map<String, Object> setupModelForSendNotification(HttpServletRequest request) {
         return new HashMap<String, Object>();
     }

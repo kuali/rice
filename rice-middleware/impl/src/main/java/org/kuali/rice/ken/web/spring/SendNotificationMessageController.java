@@ -175,10 +175,11 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
     }
 
     /**
-     * This method prepares the model used for the send simple notification message form.
-     * @param request
-     * @return Map<String, Object>
+     * {@inheritDoc}
+     *
+     * Populates values pertaining to a simple notification message.
      */
+    @Override
     protected Map<String, Object> setupModelForSendNotification(
             HttpServletRequest request) {
         Map<String, Object> model = new HashMap<String, Object>();
@@ -224,16 +225,15 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
         String routeMessage = "This message was submitted via the simple notification message submission form by user ";
         String viewName = "SendSimpleNotificationMessage";
 
-        return submitNotificationMessage(request, response, routeMessage, viewName);
+        return submitNotificationMessage(request, routeMessage, viewName);
     }
 
     /**
-     * This method creates a new Notification instance from the form values.
-     * @param request
-     * @param model
-     * @return Notification
-     * @throws IllegalArgumentException
+     * {@inheritDoc}
+     *
+     * Populates values pertaining to a simple notification message.
      */
+    @Override
     protected NotificationBo populateNotificationInstance(
             HttpServletRequest request, Map<String, Object> model)
             throws IllegalArgumentException, ErrorList {

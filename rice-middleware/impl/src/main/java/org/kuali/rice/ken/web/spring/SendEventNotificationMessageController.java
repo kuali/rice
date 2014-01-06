@@ -170,10 +170,11 @@ public class SendEventNotificationMessageController extends BaseSendNotification
     }
 
     /**
-     * This method prepares the model used for the send event notification message form.
-     * @param request
-     * @return Map<String, Object>
+     * {@inheritDoc}
+     *
+     * Populates values pertaining to an event notification message.
      */
+    @Override
     protected Map<String, Object> setupModelForSendNotification(
 	        HttpServletRequest request) {
         Map<String, Object> model = new HashMap<String, Object>();
@@ -225,16 +226,15 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         String routeMessage = "This message was submitted via the event notification message submission form by user ";
         String viewName = "SendEventNotificationMessage";
 
-        return submitNotificationMessage(request, response, routeMessage, viewName);
+        return submitNotificationMessage(request, routeMessage, viewName);
     }
 
     /**
-     * This method creates a new Notification instance from the event form values.
-     * @param request
-     * @param model
-     * @return Notification
-     * @throws IllegalArgumentException
+     * {@inheritDoc}
+     *
+     * Populates values pertaining to an event notification message.
      */
+    @Override
     protected NotificationBo populateNotificationInstance(
 	        HttpServletRequest request, Map<String, Object> model)
 	        throws IllegalArgumentException, ErrorList {

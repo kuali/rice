@@ -968,7 +968,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         View view = ViewLifecycle.getView();
         Object defaultValue = null;
 
-        if (StringUtils.isNotBlank(dataField.getDefaultValue())) {
+        // if dataField.defaultValue is not null and not empty empty string use it
+        if (dataField.getDefaultValue()!= null &&
+           !(dataField.getDefaultValue() instanceof String && StringUtils.isBlank((String)dataField.getDefaultValue()))) {
             defaultValue = dataField.getDefaultValue();
         } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
                 UifConstants.ComponentProperties.DEFAULT_VALUE)) {

@@ -77,7 +77,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     private String dictionaryObjectEntry;
 
     // value props
-    private String defaultValue;
+    private Object defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
     private Object[] defaultValues;
     private String forcedValue;
@@ -668,7 +668,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @return default value
      */
     @BeanTagAttribute(name = "defaultValue")
-    public String getDefaultValue() {
+    public Object getDefaultValue() {
         return this.defaultValue;
     }
 
@@ -677,7 +677,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @param defaultValue
      */
-    public void setDefaultValue(String defaultValue) {
+    public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
     }
 

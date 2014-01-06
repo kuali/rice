@@ -133,7 +133,7 @@ public class LookupInputField extends InputField {
         setMaxLength(100);
 
         // set default value for active field to true
-        if (StringUtils.isEmpty(getDefaultValue())) {
+        if (getDefaultValue() == null || (getDefaultValue() instanceof String && StringUtils.isEmpty((String)getDefaultValue()))) {
             if ((StringUtils.equals(getPropertyName(), KRADPropertyConstants.ACTIVE))) {
                 setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);
             }

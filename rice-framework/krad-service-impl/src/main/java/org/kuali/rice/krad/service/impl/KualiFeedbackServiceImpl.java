@@ -155,19 +155,27 @@ public class KualiFeedbackServiceImpl implements KualiFeedbackService {
         return msg;
 	}
 
-	protected String getFromAddress() {    
-		Person actualUser = GlobalVariables.getUserSession().getActualPerson();
-        
-        String fromEmail = actualUser.getEmailAddress();
-        if (StringUtils.isNotBlank(fromEmail)) {
-        	return fromEmail;
-    	} else {
-        	return this.getMessageTemplate().getFromAddress();
-    	}
+	protected String getFromAddress() {
+        // First check if message template already defines the mailing list
+        String email = this.getMessageTemplate().getFromAddress();
+
+        if (StringUtils.isBlank(email)) {
+            Person actualUser = GlobalVariables.getUserSession().getActualPerson();
+
+            if (StringUtils.isBlank(actualUser.getEmailAddress())) {
+                String em = "No email address available from the current user or messageTemplate does not have FromAddress already set.";
+                LOG.error(em);
+                throw new IllegalStateException(em);
+            } else {
+                return actualUser.getEmailAddress();
+            }
+        } else {
+            return email;
+        }
 	}
 	
 	protected Set<String> getToAddresses() {
-		// First check if message template already define mailing list
+		// First check if message template already defines the mailing list
         Set<String> emails = this.getMessageTemplate().getToAddresses();
         if (emails == null || emails.isEmpty()) {
     		String mailingList = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(this.getToAddressesPropertyName());

@@ -67,8 +67,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
             cnt++;
         }
-        waitAndClickByXpath("//*[@id='imageField']");
-        Thread.sleep(8000);
+        waitAndClickById("imageField");
+        Thread.sleep(16000); // seems like this times out in saucelabs
         // confirm all files were uploaded successfully
     }
 

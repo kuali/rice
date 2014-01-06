@@ -26,7 +26,7 @@
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.container.Group"/>
     <property name="docBookAnchor" value="d7339e4811"/>
-    <property name="exampleSize" value="LARGE"/>
+    <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Group-Example1"/>
@@ -35,6 +35,8 @@
         <ref bean="Demo-Group-Example4"/>
         <ref bean="Demo-Group-Example5"/>
         <ref bean="Demo-Group-Example6"/>
+        <ref bean="Demo-Group-Example7"/>
+        <ref bean="Demo-Group-Example8"/>
       </list>
     </property>
   </bean>
@@ -94,10 +96,67 @@
   </bean>
 
   <!-- Sections -->
-  <bean id="Demo-Group-Example4" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example4" parent="Uif-VerticalBoxSection" p:headerText="Section Vertical"
+          p:instructionalText="Sections are a KRAD term for Groups which have a header.">
     <property name="items">
       <list>
         <!-- ex:Demo-Group-Example4 start-->
+        <!-- Section usage -->
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField7"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 2">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField8"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-Group-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Group-Example5" parent="Uif-Page" p:headerText="Section Horizontal" p:layoutManager.orientation="HORIZONTAL">
+  <!--<bean id="Demo-Group-Example5" parent="Uif-HorizontalBoxSection" p:headerText="Section Horizontal">-->
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Group-Example5 start-->
+        <!-- Section usage -->
+        <!--<bean parent="Uif-HorizontalBoxSection">
+          <property name="items">
+            <list>-->
+              <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField9"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-VerticalBoxSection" p:headerText="Section 2">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField10"/>
+                  </list>
+                </property>
+              </bean>
+            <!--</list>
+          </property>
+        </bean> -->
+        <!-- ex:Demo-Group-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Group-Example6" parent="Uif-VerticalBoxSection" p:headerText="Sub-Sections"
+        p:instructionalText="Sections are a KRAD term for Groups which have a header.  Section and Subsection beans are provided by the framework to allow correct header ordering (nest Subsections in Sections).">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Group-Example6 start-->
         <!-- Section usage -->
         <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
           <property name="items">
@@ -123,16 +182,17 @@
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-Group-Example4 end-->
+        <!-- ex:Demo-Group-Example6 end-->
       </list>
     </property>
   </bean>
 
   <!-- disclosure -->
-  <bean id="Demo-Group-Example5" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example7" parent="Uif-VerticalBoxSection" p:headerText="Disclosure"
+          p:instructionalText="Groups can be disclosed, click on the header to activate.  For more info, see Disclosure widget exhibit.">
     <property name="items">
       <list>
-        <!-- ex:Demo-Group-Example5 start-->
+        <!-- ex:Demo-Group-Example7 start-->
         <bean parent="Uif-HorizontalBoxSection" p:headerText="Disclosure Section">
           <!-- property to activate disclosure -->
           <property name="disclosure.render" value="true"/>
@@ -153,16 +213,17 @@
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-Group-Example5 end-->
+        <!-- ex:Demo-Group-Example7 end-->
       </list>
     </property>
   </bean>
 
   <!-- scroll -->
-  <bean id="Demo-Group-Example6" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Group-Example8" parent="Uif-VerticalBoxSection" p:headerText="Scrollpane"
+          p:instructionalText="Groups can make their content scrollable through an option.">
     <property name="items">
       <list>
-        <!-- ex:Demo-Group-Example6 start-->
+        <!-- ex:Demo-Group-Example8 start-->
         <bean parent="Uif-VerticalBoxGroup">
           <!-- property to activate scrollpane -->
           <property name="scrollpane">
@@ -178,7 +239,7 @@
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-Group-Example6 end-->
+        <!-- ex:Demo-Group-Example8 end-->
       </list>
     </property>
   </bean>

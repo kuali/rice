@@ -381,7 +381,7 @@ public class Book {
       <para>Implementations of this can be made to determine the default value in whatever
                 manner necessary. Previous to KRAD, this was helpful for retrieving the default
                 value from a system parameter. However, with KRAD EL, you can do this with the
-                defaultValue property using the <emphasis role="keyword">getParm</emphasis>
+                defaultValue property using the <emphasis role="keyword">getParam</emphasis>
                 function.</para>
       <para>Let's create a default value finder class that calls a service to retrieve the value.
         Our finder class would be setup like:</para>

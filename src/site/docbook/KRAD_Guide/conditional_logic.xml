@@ -405,13 +405,13 @@
                 </para>
               </listitem>
               <listitem>
-                <para>String #getParm(String namespaceCode, String componentCode,
+                <para>String #getParam(String namespaceCode, String componentCode,
                   String parameterName) – Retrieves the value for a system
                   parameter as a String
                 </para>
               </listitem>
               <listitem>
-                <para>Boolean #getParmInd(String namespaceCode, String componentCode,
+                <para>Boolean #getParamAsBoolean(String namespaceCode, String componentCode,
                   String parameterName) – Retrieves the value for a system
                   parameter as a Boolean
                 </para>

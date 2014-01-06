@@ -234,7 +234,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
      * Convert the noInquiry attribute to inquiry.render.  The boolean value needs to be inverted as well.
      */
     def gatherNoInquiryAttribute = { Node beanNode ->
-        def noInquiry = beanNode.attributes().find { matchesAttr("*noInquiry", it.key.toString()) };
+        def noInquiry = beanNode?.attributes()?.clone().find { matchesAttr("*noInquiry", it.key.toString()) };
         if (noInquiry?.value == "true") {
             return ["p:inquiry.render": "false"];
         } else if (noInquiry?.value == "false") {

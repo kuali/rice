@@ -67,9 +67,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
     @Test
     void testTransformMaintenanceDocumentEntryBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
-        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
-
-        def beanNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }
+        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) }
 
         try {
             maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
@@ -80,7 +78,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
         checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
-        def mdeCheckedProperties = [];
+        def mdeCheckedProperties = ["documentClass","allowsRecordDeletion"];
         checkBeanStructure(resultMDENode, mdeCheckedProperties, ["businessObjectEntry"]);
 
         //checks if the default documentPresentationControllerClass has been added

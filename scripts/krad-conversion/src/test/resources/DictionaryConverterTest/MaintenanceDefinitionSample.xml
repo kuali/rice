@@ -28,8 +28,10 @@
 
   <bean id="AttachmentSampleMaintenanceDocument-parentBean" abstract="true"
         parent="MaintenanceDocumentEntry" p:businessObjectClass="edu.sampleu.travel.bo.AttachmentSample"
+        p:documentClass="edu.sampleu.travel.bo.AttachmentSample"
         p:maintainableClass="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"
-        p:businessRulesClass="org.kuali.rice.kns.maintenance.SampleRuleImpl">
+        p:businessRulesClass="org.kuali.rice.kns.maintenance.SampleRuleImpl"
+        p:allowsRecordDeletion="false">
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase" />
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase" />
     <property name="webScriptFiles">

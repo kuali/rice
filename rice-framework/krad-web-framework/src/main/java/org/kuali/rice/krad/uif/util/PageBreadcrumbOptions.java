@@ -97,41 +97,8 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
             breadcrumbItem.setRender(false);
         }
 
-        //special breadcrumb request param handling
-        if (breadcrumbItem.getUrl().getControllerMapping() == null
-                && breadcrumbItem.getUrl().getViewId() == null
-                && model instanceof UifFormBase
-                && breadcrumbItem.getUrl().getRequestParameters() == null
-                && ((UifFormBase) model).getInitialRequestParameters() != null) {
-            //add the current request parameters if controllerMapping, viewId, and requestParams are null
-            //(this means that no explicit breadcrumbItem customization was set)
-            Map<String, String[]> requestParameters = ((UifFormBase) model).getInitialRequestParameters();
-
-            //remove ajax properties because breadcrumb should always be a full view request
-            requestParameters.remove("ajaxReturnType");
-            requestParameters.remove("ajaxRequest");
-
-            //remove pageId because this should be set by the BreadcrumbItem setting
-            requestParameters.remove("pageId");
-
-            breadcrumbItem.getUrl().setRequestParameters(KRADUtils.translateRequestParameterMap(requestParameters));
-        }
-
-        //form key handling
-        if (breadcrumbItem.getUrl().getFormKey() == null
-                && model instanceof UifFormBase
-                && ((UifFormBase) model).getFormKey() != null) {
-            breadcrumbItem.getUrl().setFormKey(((UifFormBase) model).getFormKey());
-        }
-
-        //automatically set breadcrumbItem UifUrl properties below, if not set
-        if (breadcrumbItem.getUrl().getControllerMapping() == null && model instanceof UifFormBase) {
-            breadcrumbItem.getUrl().setControllerMapping(((UifFormBase) model).getControllerMapping());
-        }
-
-        if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(ViewLifecycle.getView().getId());
-        }
+        // set breadcrumb url attributes
+        finalizeBreadcrumbsUrl(model, parent, breadcrumbItem);
 
         if (breadcrumbItem.getUrl().getPageId() == null) {
             breadcrumbItem.getUrl().setPageId(parent.getId());

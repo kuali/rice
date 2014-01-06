@@ -122,6 +122,39 @@ public class BreadcrumbOptions implements Serializable, Copyable {
             breadcrumbItem.setRender(false);
         }
 
+        // set breadcrumb url attributes
+        finalizeBreadcrumbsUrl(model, parent, breadcrumbItem);
+
+        //explicitly set the page to default for the view breadcrumb when not using path based (path based will pick
+        //up the breadcrumb pageId from the form data automatically)
+        if (breadcrumbItem.getUrl().getPageId() == null && !view.getBreadcrumbs().isUsePathBasedBreadcrumbs()) {
+            //set breadcrumb to default to the default page if an explicit page id for view breadcrumb is not set
+            if (view.getEntryPageId() != null) {
+                breadcrumbItem.getUrl().setPageId(view.getEntryPageId());
+            } else if (view.isSinglePageView() && view.getPage() != null) {
+                //single page
+                breadcrumbItem.getUrl().setPageId(view.getPage().getId());
+            } else if (!view.getItems().isEmpty() && view.getItems().get(0) != null) {
+                //multi page
+                breadcrumbItem.getUrl().setPageId(view.getItems().get(0).getId());
+            }
+        }
+
+        //add to breadcrumbItem to current items if it is set to use in path based
+        if (model instanceof UifFormBase && ((UifFormBase) model).getHistoryFlow() != null) {
+            ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(view.getBreadcrumbItem());
+        }
+
+    }
+
+    /**
+     * Finalize the setup of url for the BreadcrumbItem.
+     *
+     * @param model the model
+     * @param parent the parent
+     * @param breadcrumbItem the breadcrumb item
+     */
+    protected void finalizeBreadcrumbsUrl(Object model, Container parent, BreadcrumbItem breadcrumbItem) {
         //special breadcrumb request param handling
         if (breadcrumbItem.getUrl().getControllerMapping() == null
                 && breadcrumbItem.getUrl().getViewId() == null
@@ -155,29 +188,8 @@ public class BreadcrumbOptions implements Serializable, Copyable {
         }
 
         if (breadcrumbItem.getUrl().getViewId() == null) {
-            breadcrumbItem.getUrl().setViewId(view.getId());
+            breadcrumbItem.getUrl().setViewId(ViewLifecycle.getView().getId());
         }
-
-        //explicitly set the page to default for the view breadcrumb when not using path based (path based will pick
-        //up the breadcrumb pageId from the form data automatically)
-        if (breadcrumbItem.getUrl().getPageId() == null && !view.getBreadcrumbs().isUsePathBasedBreadcrumbs()) {
-            //set breadcrumb to default to the default page if an explicit page id for view breadcrumb is not set
-            if (view.getEntryPageId() != null) {
-                breadcrumbItem.getUrl().setPageId(view.getEntryPageId());
-            } else if (view.isSinglePageView() && view.getPage() != null) {
-                //single page
-                breadcrumbItem.getUrl().setPageId(view.getPage().getId());
-            } else if (!view.getItems().isEmpty() && view.getItems().get(0) != null) {
-                //multi page
-                breadcrumbItem.getUrl().setPageId(view.getItems().get(0).getId());
-            }
-        }
-
-        //add to breadcrumbItem to current items if it is set to use in path based
-        if (model instanceof UifFormBase && ((UifFormBase) model).getHistoryFlow() != null) {
-            ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(view.getBreadcrumbItem());
-        }
-
     }
 
     /**

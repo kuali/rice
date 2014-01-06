@@ -425,6 +425,32 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
     }
 
     /**
+     * Tests to confirm the creation of a help property and Uif-Help bean
+     *
+     */
+    @Test
+    public void testTransformHelpUrlProperty() {
+        // setup root bean and locate bean with helpurl property
+        def evalBeanParentName = "AttachmentSampleMaintenanceDocument-EditAttachment-parentBean";
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def beanNode = ddRootNode.bean.find{ evalBeanParentName.equals(it.@id) };
+
+        // run conversion on property
+        def resultBean = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceGridSection") {
+               maintenanceDocumentEntryBeanTransformer.transformHelpUrlProperty(delegate, beanNode);
+            }
+        }
+
+        // confirm property has been replaced with help property containing uif help bean
+        checkBeanPropertyExists(resultBean, "help");
+        def helpProperty = resultBean.property.find { "help".equals(it.@name)};
+        def helpBeanCount = helpProperty.bean.findAll { "Uif-Help".equals(it.@parent)}.size();
+            Assert.assertEquals("number of converted section definitions", 1, helpBeanCount);
+    }
+
+
+    /**
      * Tests conversion of lookup definition's result fields into appropriate property
      *
      */

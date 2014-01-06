@@ -68,7 +68,7 @@ public class UifPercentageEditor extends PropertyEditorSupport implements Serial
             throw new FormatException("formatting", RiceKeyConstants.ERROR_PERCENTAGE, this.getValue().toString(), iae);
         }
 
-        return stringValue + " percent";
+        return stringValue;
     }
 
     /**

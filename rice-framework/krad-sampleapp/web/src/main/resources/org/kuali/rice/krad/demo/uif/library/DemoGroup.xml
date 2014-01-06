@@ -166,7 +166,6 @@
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField7"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField8"/>
                   </list>
                 </property>
               </bean>
@@ -174,11 +173,17 @@
               <bean parent="Uif-HorizontalBoxSubSection" p:headerText="SubSection 2">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField9"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField10"/>
+                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField8"/>
                   </list>
                 </property>
               </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 2">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField9"/>
             </list>
           </property>
         </bean>

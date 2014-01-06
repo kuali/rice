@@ -141,15 +141,6 @@ public class SendEventNotificationMessageController extends BaseSendNotification
     }
 
     /**
-     * Sets the messageContentService attribute value.
-     * @param messageContentService
-     */
-    public void setMessageContentService(
-	    NotificationMessageContentService notificationMessageContentService) {
-	this.messageContentService = notificationMessageContentService;
-    }
-
-    /**
      * Sets the businessObjectDao attribute value.
      * @param businessObjectDao The businessObjectDao to set.
      */
@@ -171,7 +162,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	String view = "SendEventNotificationMessage";
 	LOG.debug("remoteUser: " + request.getRemoteUser());
 
-	Map<String, Object> model = setupModelForSendEventNotification(request);
+	Map<String, Object> model = setupModelForSendNotification(request);
 	model.put("errors", new ErrorList()); // need an empty one so we don't have an NPE
 
 	return new ModelAndView(view, model);
@@ -182,7 +173,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @param request
      * @return Map<String, Object>
      */
-    private Map<String, Object> setupModelForSendEventNotification(
+    protected Map<String, Object> setupModelForSendNotification(
 	    HttpServletRequest request) {
 	Map<String, Object> model = new HashMap<String, Object>();
 	model.put("defaultSender", request.getRemoteUser());
@@ -226,81 +217,13 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @throws ServletException
      * @throws IOException
      */
-    public ModelAndView submitEventNotificationMessage(
-	    HttpServletRequest request, HttpServletResponse response)
+    public ModelAndView submitEventNotificationMessage(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	LOG.debug("remoteUser: " + request.getRemoteUser());
 
-	// obtain a workflow user object first
-	//WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
-    String initiatorId = getPrincipalIdFromIdOrName( request.getRemoteUser());
-    LOG.debug("initiatorId="+initiatorId);
+        String routeMessage = "This message was submitted via the event notification message submission form by user ";
+        String viewName = "SendEventNotificationMessage";
 
-	// now construct the workflow document, which will interact with workflow
-	WorkflowDocument document;
-	Map<String, Object> model = new HashMap<String, Object>();
-        String view;
-	try {
-	    document = NotificationWorkflowDocument.createNotificationDocument(
-	    		initiatorId,
-			    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
-
-	    //parse out the application content into a Notification BO
-	    NotificationBo notification = populateNotificationInstance(request, model);
-
-	    // now get that content in an understandable XML format and pass into document
-	    String notificationAsXml = messageContentService
-		    .generateNotificationMessage(notification);
-
-            Map<String, String> attrFields = new HashMap<String,String>();
-            List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
-            int ui = 0;
-            int gi = 0;
-            for (NotificationChannelReviewerBo reviewer: reviewers) {
-                String prefix;
-                int index;
-                if (KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
-                    prefix = "user";
-                    index = ui;
-                    ui++;
-                } else if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
-                    prefix = "group";
-                    index = gi;
-                    gi++;
-                } else {
-                    LOG.error("Invalid type for reviewer " + reviewer.getReviewerId() + ": " + reviewer.getReviewerType());
-                    continue;
-                }
-                attrFields.put(prefix + index, reviewer.getReviewerId());
-            }
-            GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
-            document.setApplicationContent(notificationAsXml);
-            document.setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
-
-            document.setTitle(notification.getTitle());
-
-	    document.route("This message was submitted via the event notification message submission form by user "
-			    + initiatorId);
-
-	    view = "SendEventNotificationMessage";
-	    
-	    // This ain't pretty, but it gets the job done for now.
-	    ErrorList el = new ErrorList();
-	    el.addError("Notification(s) sent.");
-	    model.put("errors", el);
-	    
-	} catch (ErrorList el) {
-	    // route back to the send form again
-	    Map<String, Object> model2 = setupModelForSendEventNotification(request);
-	    model.putAll(model2);
-	    model.put("errors", el);
-
-	    view = "SendEventNotificationMessage";
-	} catch (Exception e) {
-	    throw new RuntimeException(e);
-	}
-
-	return new ModelAndView(view, model);
+        return submitNotificationMessage(request, response, routeMessage, viewName);
     }
 
     /**
@@ -310,7 +233,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @return Notification
      * @throws IllegalArgumentException
      */
-    private NotificationBo populateNotificationInstance(
+    protected NotificationBo populateNotificationInstance(
 	    HttpServletRequest request, Map<String, Object> model)
 	    throws IllegalArgumentException, ErrorList {
 	ErrorList errors = new ErrorList();

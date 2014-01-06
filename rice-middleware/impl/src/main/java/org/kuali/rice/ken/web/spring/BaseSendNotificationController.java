@@ -20,18 +20,35 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
+import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
+import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
+import org.kuali.rice.ken.core.NotificationServiceLocator;
+import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
+import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.exception.ErrorList;
+import org.kuali.rice.ken.service.NotificationMessageContentService;
+import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.rule.GenericAttributeContent;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for KEN controllers for sending notifications
@@ -50,6 +67,7 @@ public class BaseSendNotificationController extends MultiActionController {
     private static IdentityService identityService;
     private static GroupService groupService;
     private static NamespaceService namespaceService;
+    private static NotificationMessageContentService notificationMessageContentService;
 
     protected static IdentityService getIdentityService() {
         if ( identityService == null ) {
@@ -70,6 +88,13 @@ public class BaseSendNotificationController extends MultiActionController {
             namespaceService = CoreServiceApiServiceLocator.getNamespaceService();
         }
         return namespaceService;
+    }
+
+    protected static NotificationMessageContentService getNotificationMessageContentService() {
+        if ( notificationMessageContentService == null ) {
+            notificationMessageContentService = GlobalNotificationServiceLocator.getInstance().getNotificationMessageContentService();
+        }
+        return notificationMessageContentService;
     }
     
     protected String[] parseUserRecipients(HttpServletRequest request) {
@@ -136,5 +161,100 @@ public class BaseSendNotificationController extends MultiActionController {
             throw new RiceIllegalArgumentException("Could not locate a principal as initiator with the given remoteUser of " + principalIdOrName);
         }
         return principal.getPrincipalId();
+    }
+
+    /**
+     * This method handles submitting the actual event notification message.
+     * @param request
+     * @param response
+     * @return ModelAndView
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
+     */
+    protected ModelAndView submitNotificationMessage(HttpServletRequest request, HttpServletResponse response, String routeMessage, String viewName)
+            throws ServletException, IOException {
+        LOG.debug("remoteUser: " + request.getRemoteUser());
+
+        // obtain a workflow user object first
+        //WorkflowIdDTO initiator = new WorkflowIdDTO(request.getRemoteUser());
+        String initiatorId = getPrincipalIdFromIdOrName( request.getRemoteUser());
+        LOG.debug("initiatorId="+initiatorId);
+
+        // now construct the workflow document, which will interact with workflow
+        WorkflowDocument document;
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        try {
+            document = NotificationWorkflowDocument.createNotificationDocument(initiatorId,
+                    NotificationConstants.KEW_CONSTANTS.SEND_NOTIFICATION_REQ_DOC_TYPE);
+
+            //parse out the application content into a Notification BO
+            NotificationBo notification = populateNotificationInstance(request, model);
+
+            // now get that content in an understandable XML format and pass into document
+            String notificationAsXml = getNotificationMessageContentService().generateNotificationMessage(notification);
+
+            Map<String, String> attrFields = new HashMap<String,String>();
+            List<NotificationChannelReviewerBo> reviewers = notification.getChannel().getReviewers();
+            int ui = 0;
+            int gi = 0;
+            for (NotificationChannelReviewerBo reviewer: reviewers) {
+                String prefix;
+                int index;
+                if (KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                    prefix = "user";
+                    index = ui;
+                    ui++;
+                } else if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(reviewer.getReviewerType())) {
+                    prefix = "group";
+                    index = gi;
+                    gi++;
+                } else {
+                    LOG.error("Invalid type for reviewer " + reviewer.getReviewerId() + ": " + reviewer.getReviewerType());
+                    continue;
+                }
+                attrFields.put(prefix + index, reviewer.getReviewerId());
+            }
+            GenericAttributeContent gac = new GenericAttributeContent("channelReviewers");
+            document.setApplicationContent(notificationAsXml);
+            document.setAttributeContent("<attributeContent>" + gac.generateContent(attrFields) + "</attributeContent>");
+
+            document.setTitle(notification.getTitle());
+
+            document.route(routeMessage + initiatorId);
+
+            // This ain't pretty, but it gets the job done for now.
+            ErrorList el = new ErrorList();
+            el.addError("Notification(s) sent.");
+            model.put("errors", el);
+
+        } catch (ErrorList el) {
+            // route back to the send form again
+            Map<String, Object> model2 = setupModelForSendNotification(request);
+            model.putAll(model2);
+            model.put("errors", el);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ModelAndView(viewName, model);
+    }
+
+    /**
+     * This method creates a new Notification instance from the event form values.
+     * @param request
+     * @param model
+     * @return Notification
+     * @throws IllegalArgumentException
+     */
+    protected NotificationBo populateNotificationInstance(
+            HttpServletRequest request, Map<String, Object> model)
+            throws IllegalArgumentException, ErrorList {
+
+        return null;
+    }
+
+    protected Map<String, Object> setupModelForSendNotification(HttpServletRequest request) {
+        return new HashMap<String, Object>();
     }
 }

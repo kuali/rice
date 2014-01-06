@@ -157,15 +157,16 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @return a ModelAndView object
      */
     public ModelAndView sendEventNotificationMessage(
-	    HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-	String view = "SendEventNotificationMessage";
-	LOG.debug("remoteUser: " + request.getRemoteUser());
+	        HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+        String view = "SendEventNotificationMessage";
 
-	Map<String, Object> model = setupModelForSendNotification(request);
-	model.put("errors", new ErrorList()); // need an empty one so we don't have an NPE
+        LOG.debug("remoteUser: " + request.getRemoteUser());
 
-	return new ModelAndView(view, model);
+        Map<String, Object> model = setupModelForSendNotification(request);
+        model.put("errors", new ErrorList()); // need an empty one so we don't have an NPE
+
+        return new ModelAndView(view, model);
     }
 
     /**
@@ -174,28 +175,29 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @return Map<String, Object>
      */
     protected Map<String, Object> setupModelForSendNotification(
-	    HttpServletRequest request) {
-	Map<String, Object> model = new HashMap<String, Object>();
-	model.put("defaultSender", request.getRemoteUser());
-	model.put("channels", notificationChannelService
-		.getAllNotificationChannels());
-	model.put("priorities", businessObjectDao
-		.findAll(NotificationPriorityBo.class));
-        // set sendDateTime to current datetime if not provided
-	String sendDateTime = request.getParameter("sendDateTime");
-	String currentDateTime = Util.getCurrentDateTime();
-	if (StringUtils.isEmpty(sendDateTime)) {
-	    sendDateTime = currentDateTime;
-	}
-	model.put("sendDateTime", sendDateTime);
+	        HttpServletRequest request) {
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("defaultSender", request.getRemoteUser());
+        model.put("channels", notificationChannelService
+            .getAllNotificationChannels());
+        model.put("priorities", businessObjectDao
+            .findAll(NotificationPriorityBo.class));
+            // set sendDateTime to current datetime if not provided
+        String sendDateTime = request.getParameter("sendDateTime");
+        String currentDateTime = Util.getCurrentDateTime();
+        if (StringUtils.isEmpty(sendDateTime)) {
+            sendDateTime = currentDateTime;
+        }
+        model.put("sendDateTime", sendDateTime);
 
-	// retain the original date time or set to current if
-	// it was not in the request
-	if (request.getParameter("originalDateTime") == null) {
-	   model.put("originalDateTime", currentDateTime);
-	} else {
-	   model.put("originalDateTime", request.getParameter("originalDateTime"));
-	}
+        // retain the original date time or set to current if
+        // it was not in the request
+        if (request.getParameter("originalDateTime") == null) {
+           model.put("originalDateTime", currentDateTime);
+        } else {
+           model.put("originalDateTime", request.getParameter("originalDateTime"));
+        }
+
         model.put("summary", request.getParameter("summary"));
         model.put("description", request.getParameter("description"));
         model.put("location", request.getParameter("location"));
@@ -206,7 +208,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
         model.put("workgroupRecipients", request.getParameter("workgroupRecipients"));
         model.put("workgroupNamespaceCodes", request.getParameter("workgroupNamespaceCodes"));
 
-	return model;
+        return model;
     }
 
     /**
@@ -234,112 +236,112 @@ public class SendEventNotificationMessageController extends BaseSendNotification
      * @throws IllegalArgumentException
      */
     protected NotificationBo populateNotificationInstance(
-	    HttpServletRequest request, Map<String, Object> model)
-	    throws IllegalArgumentException, ErrorList {
-	ErrorList errors = new ErrorList();
+	        HttpServletRequest request, Map<String, Object> model)
+	        throws IllegalArgumentException, ErrorList {
+        ErrorList errors = new ErrorList();
 
-	NotificationBo notification = new NotificationBo();
+        NotificationBo notification = new NotificationBo();
 
-	// grab data from form
-	// channel name
-	String channelName = request.getParameter("channelName");
+        // grab data from form
+        // channel name
+        String channelName = request.getParameter("channelName");
         if (StringUtils.isEmpty(channelName) || StringUtils.equals(channelName, NONE_CHANNEL)) {
-	    errors.addError("You must choose a channel.");
-	} else {
-	    model.put("channelName", channelName);
-	}
+            errors.addError("You must choose a channel.");
+        } else {
+            model.put("channelName", channelName);
+        }
 
-	// priority name
-	String priorityName = request.getParameter("priorityName");
-	if (StringUtils.isEmpty(priorityName)) {
-	    errors.addError("You must choose a priority.");
-	} else {
-	    model.put("priorityName", priorityName);
-	}
+        // priority name
+        String priorityName = request.getParameter("priorityName");
+        if (StringUtils.isEmpty(priorityName)) {
+            errors.addError("You must choose a priority.");
+        } else {
+            model.put("priorityName", priorityName);
+        }
 
-	// sender names
-	String senderNames = request.getParameter("senderNames");
-	String[] senders = null;
-	if (StringUtils.isEmpty(senderNames)) {
-	    errors.addError("You must enter at least one sender.");
-	} else {
-	    senders = StringUtils.split(senderNames, ",");
+        // sender names
+        String senderNames = request.getParameter("senderNames");
+        String[] senders = null;
+        if (StringUtils.isEmpty(senderNames)) {
+            errors.addError("You must enter at least one sender.");
+        } else {
+            senders = StringUtils.split(senderNames, ",");
 
-	    model.put("senderNames", senderNames);
-	}
+            model.put("senderNames", senderNames);
+        }
 
-	// delivery type
-	String deliveryType = request.getParameter("deliveryType");
-	if (StringUtils.isEmpty(deliveryType)) {
-	    errors.addError("You must choose a type.");
-	} else {
-	    if (deliveryType
-		    .equalsIgnoreCase(NotificationConstants.DELIVERY_TYPES.FYI)) {
-		deliveryType = NotificationConstants.DELIVERY_TYPES.FYI;
-	    } else {
-		deliveryType = NotificationConstants.DELIVERY_TYPES.ACK;
-	    }
-	    model.put("deliveryType", deliveryType);
-	}
+        // delivery type
+        String deliveryType = request.getParameter("deliveryType");
+        if (StringUtils.isEmpty(deliveryType)) {
+            errors.addError("You must choose a type.");
+        } else {
+            if (deliveryType
+                    .equalsIgnoreCase(NotificationConstants.DELIVERY_TYPES.FYI)) {
+                deliveryType = NotificationConstants.DELIVERY_TYPES.FYI;
+            } else {
+                deliveryType = NotificationConstants.DELIVERY_TYPES.ACK;
+            }
+            model.put("deliveryType", deliveryType);
+        }
 
-	//get datetime when form was initially rendered
-	String originalDateTime = request.getParameter("originalDateTime");
-	Date origdate = null;
-	Date senddate = null;
-	Date removedate = null;
-	try {
+        // get datetime when form was initially rendered
+        String originalDateTime = request.getParameter("originalDateTime");
+        Date origdate = null;
+        Date senddate = null;
+        Date removedate = null;
+        try {
             origdate = Util.parseUIDateTime(originalDateTime);
         } catch (ParseException pe) {
             errors.addError("Original date is invalid.");
         }
-	// send date time
-	String sendDateTime = request.getParameter("sendDateTime");
-	if (StringUtils.isBlank(sendDateTime)) {
-	    sendDateTime = Util.getCurrentDateTime();
-	}
+        // send date time
+        String sendDateTime = request.getParameter("sendDateTime");
+        if (StringUtils.isBlank(sendDateTime)) {
+            sendDateTime = Util.getCurrentDateTime();
+        }
 
-	try {
+	    try {
             senddate = Util.parseUIDateTime(sendDateTime);
         } catch (ParseException pe) {
             errors.addError("You specified an invalid Send Date/Time.  Please use the calendar picker.");
         }
 
-        if(senddate != null && senddate.before(origdate)) {
+        if (senddate != null && senddate.before(origdate)) {
             errors.addError("Send Date/Time cannot be in the past.");
         }
 
         model.put("sendDateTime", sendDateTime);
 
-	// auto remove date time
-	String autoRemoveDateTime = request.getParameter("autoRemoveDateTime");
-	if (StringUtils.isNotBlank(autoRemoveDateTime)) {
-	    try {
+        // auto remove date time
+        String autoRemoveDateTime = request.getParameter("autoRemoveDateTime");
+        if (StringUtils.isNotBlank(autoRemoveDateTime)) {
+            try {
                 removedate = Util.parseUIDateTime(autoRemoveDateTime);
             } catch (ParseException pe) {
                 errors.addError("You specified an invalid Auto-Remove Date/Time.  Please use the calendar picker.");
             }
 
-            if(removedate != null) {
-        	if(removedate.before(origdate)) {
-        	    errors.addError("Auto-Remove Date/Time cannot be in the past.");
-        	} else if (senddate != null && removedate.before(senddate)){
-        	    errors.addError("Auto-Remove Date/Time cannot be before the Send Date/Time.");
-        	}
+            if (removedate != null) {
+                if (removedate.before(origdate)) {
+                    errors.addError("Auto-Remove Date/Time cannot be in the past.");
+                } else if (senddate != null && removedate.before(senddate)) {
+                    errors.addError("Auto-Remove Date/Time cannot be before the Send Date/Time.");
+                }
             }
-	}
+        }
 
-	model.put("autoRemoveDateTime", autoRemoveDateTime);
+        model.put("autoRemoveDateTime", autoRemoveDateTime);
 
-	// user recipient names
-	String[] userRecipients = parseUserRecipients(request);
+        // user recipient names
+        String[] userRecipients = parseUserRecipients(request);
 
-	// workgroup recipient names
-	String[] workgroupRecipients = parseWorkgroupRecipients(request);
+        // workgroup recipient names
+        String[] workgroupRecipients = parseWorkgroupRecipients(request);
 
-	// workgroup namespace names
-	String[] workgroupNamespaceCodes = parseWorkgroupNamespaceCodes(request);
+        // workgroup namespace names
+        String[] workgroupNamespaceCodes = parseWorkgroupNamespaceCodes(request);
 	
-	// title
+	    // title
         String title = request.getParameter("title");
         if (!StringUtils.isEmpty(title)) {
             model.put("title", title);
@@ -347,17 +349,17 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             errors.addError("You must fill in a title");
         }
 
-	// message
-	String message = request.getParameter("message");
-	if (StringUtils.isEmpty(message)) {
-	    errors.addError("You must fill in a message.");
-	} else {
-	    model.put("message", message);
-	}
+        // message
+        String message = request.getParameter("message");
+        if (StringUtils.isEmpty(message)) {
+            errors.addError("You must fill in a message.");
+        } else {
+            model.put("message", message);
+        }
 
         // all event fields are mandatory for event type
 
-	// start date time
+	    // start date time
         String startDateTime = request.getParameter("startDateTime");
         if (StringUtils.isEmpty(startDateTime)) {
             errors.addError("You must fill in a start date/time.");
@@ -397,96 +399,94 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             model.put("location", location);
         }
 
-	// stop processing if there are errors
-	if (errors.getErrors().size() > 0) {
-	    throw errors;
-	}
+        // stop processing if there are errors
+        if (errors.getErrors().size() > 0) {
+            throw errors;
+        }
 
-	// now populate the notification BO instance
-	NotificationChannelBo channel = Util.retrieveFieldReference("channel",
-		"name", channelName, NotificationChannelBo.class,
-		businessObjectDao);
-	notification.setChannel(channel);
+        // now populate the notification BO instance
+        NotificationChannelBo channel = Util.retrieveFieldReference("channel",
+            "name", channelName, NotificationChannelBo.class,
+            businessObjectDao);
+        notification.setChannel(channel);
 
-	NotificationPriorityBo priority = Util.retrieveFieldReference("priority",
-		"name", priorityName, NotificationPriorityBo.class,
-		businessObjectDao);
-	notification.setPriority(priority);
+        NotificationPriorityBo priority = Util.retrieveFieldReference("priority",
+            "name", priorityName, NotificationPriorityBo.class,
+            businessObjectDao);
+        notification.setPriority(priority);
 
-	NotificationContentTypeBo contentType = Util.retrieveFieldReference(
-		"contentType", "name",
-		NotificationConstants.CONTENT_TYPES.EVENT_CONTENT_TYPE,
-		NotificationContentTypeBo.class, businessObjectDao);
-	notification.setContentType(contentType);
+        NotificationContentTypeBo contentType = Util.retrieveFieldReference(
+            "contentType", "name",
+            NotificationConstants.CONTENT_TYPES.EVENT_CONTENT_TYPE,
+            NotificationContentTypeBo.class, businessObjectDao);
+        notification.setContentType(contentType);
 
-	NotificationProducerBo producer = Util
-		.retrieveFieldReference(
-			"producer",
-			"name",
-			NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
-			NotificationProducerBo.class, businessObjectDao);
-	notification.setProducer(producer);
+        NotificationProducerBo producer = Util
+            .retrieveFieldReference("producer", "name",
+                    NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME, NotificationProducerBo.class,
+                    businessObjectDao);
+        notification.setProducer(producer);
 
-	for (String senderName : senders) {
-	    if (StringUtils.isEmpty(senderName)) {
-		errors.addError("A sender's name cannot be blank.");
-	    } else {
-		NotificationSenderBo ns = new NotificationSenderBo();
-		ns.setSenderName(senderName.trim());
-		notification.addSender(ns);
-	    }
-	}
+        for (String senderName : senders) {
+            if (StringUtils.isEmpty(senderName)) {
+            errors.addError("A sender's name cannot be blank.");
+            } else {
+            NotificationSenderBo ns = new NotificationSenderBo();
+            ns.setSenderName(senderName.trim());
+            notification.addSender(ns);
+            }
+        }
 
-	boolean recipientsExist = false;
+        boolean recipientsExist = false;
 
-	if (userRecipients != null && userRecipients.length > 0) {
-	    recipientsExist = true;
-	    for (String userRecipientId : userRecipients) {
-	        if (isUserRecipientValid(userRecipientId, errors)) {
-        		NotificationRecipientBo recipient = new NotificationRecipientBo();
-        		recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
-        		recipient.setRecipientId(userRecipientId);
-        		notification.addRecipient(recipient);
-	        }
-	    }
-	}
+        if (userRecipients != null && userRecipients.length > 0) {
+            recipientsExist = true;
+            for (String userRecipientId : userRecipients) {
+                if (isUserRecipientValid(userRecipientId, errors)) {
+                    NotificationRecipientBo recipient = new NotificationRecipientBo();
+                    recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
+                    recipient.setRecipientId(userRecipientId);
+                    notification.addRecipient(recipient);
+                }
+            }
+        }
 
-	if (workgroupRecipients != null && workgroupRecipients.length > 0) {
-	    recipientsExist = true;
-	    if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
-	    	if (workgroupNamespaceCodes.length == workgroupRecipients.length) {
-	    		for (int i = 0; i < workgroupRecipients.length; i++) {
-	    			if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
-	    				NotificationRecipientBo recipient = new NotificationRecipientBo();
-	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
-	    				recipient.setRecipientId(
-	    						getGroupService().getGroupByNamespaceCodeAndName(workgroupNamespaceCodes[i],
-                                        workgroupRecipients[i]).getId());
-	    				notification.addRecipient(recipient);
-	    			}
-	    		}
-	    	} else {
-	    		errors.addError("The number of groups must match the number of namespace codes");
-	    	}
-	    } else {
-			errors.addError("You must specify a namespace code for every group name");
-		}
-	} else if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
-		errors.addError("You must specify a group name for every namespace code");
-	}
+        if (workgroupRecipients != null && workgroupRecipients.length > 0) {
+            recipientsExist = true;
+            if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+                if (workgroupNamespaceCodes.length == workgroupRecipients.length) {
+                    for (int i = 0; i < workgroupRecipients.length; i++) {
+                        if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
+                            NotificationRecipientBo recipient = new NotificationRecipientBo();
+                            recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
+                            recipient.setRecipientId(
+                                    getGroupService().getGroupByNamespaceCodeAndName(workgroupNamespaceCodes[i],
+                                            workgroupRecipients[i]).getId());
+                            notification.addRecipient(recipient);
+                        }
+                    }
+                } else {
+                    errors.addError("The number of groups must match the number of namespace codes");
+                }
+            } else {
+                errors.addError("You must specify a namespace code for every group name");
+            }
+        } else if (workgroupNamespaceCodes != null && workgroupNamespaceCodes.length > 0) {
+            errors.addError("You must specify a group name for every namespace code");
+        }
 
-	// check to see if there were any errors
-	if (errors.getErrors().size() > 0) {
-	    throw errors;
-	}
+        // check to see if there were any errors
+        if (errors.getErrors().size() > 0) {
+            throw errors;
+        }
 
         notification.setTitle(title);
 
-	notification.setDeliveryType(deliveryType);
+	    notification.setDeliveryType(deliveryType);
 
         Date startDate = null;
         Date stopDate = null;
-	// simpledateformat is not threadsafe, have to sync and validate
+	    // simpledateformat is not threadsafe, have to sync and validate
         Date d = null;
         if (StringUtils.isNotBlank(sendDateTime)) {
             try {
@@ -536,25 +536,35 @@ public class SendEventNotificationMessageController extends BaseSendNotification
             errors.addError("You must specify at least one user or group recipient.");
         }
 
-	// check to see if there were any errors
-	if (errors.getErrors().size() > 0) {
-	    throw errors;
-	}
+        // check to see if there were any errors
+        if (errors.getErrors().size() > 0) {
+            throw errors;
+        }
 
-	notification
-		.setContent(NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_EVENT_OPEN
-			+ NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN
-			+ message
-			+ NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE
-                        + "<event>\n"
-                        + "  <summary>" + summary + "</summary>\n"
-                        + "  <description>" + description + "</description>\n"
-                        + "  <location>" + location + "</location>\n"
-                        + "  <startDateTime>" + Util.toUIDateTimeString(startDate) + "</startDateTime>\n"
-                        + "  <stopDateTime>" + Util.toUIDateTimeString(stopDate) + "</stopDateTime>\n"
-                        + "</event>"
-			+ NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_CLOSE);
+        notification
+            .setContent(NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_EVENT_OPEN
+                    + NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN
+                    + message
+                    + NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE
+                    + "<event>\n"
+                    + "  <summary>"
+                    + summary
+                    + "</summary>\n"
+                    + "  <description>"
+                    + description
+                    + "</description>\n"
+                    + "  <location>"
+                    + location
+                    + "</location>\n"
+                    + "  <startDateTime>"
+                    + Util.toUIDateTimeString(startDate)
+                    + "</startDateTime>\n"
+                    + "  <stopDateTime>"
+                    + Util.toUIDateTimeString(stopDate)
+                    + "</stopDateTime>\n"
+                    + "</event>"
+                    + NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_CLOSE);
 
-	return notification;
+        return notification;
     }
 }

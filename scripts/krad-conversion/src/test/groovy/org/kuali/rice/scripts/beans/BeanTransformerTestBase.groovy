@@ -98,13 +98,31 @@ class BeanTransformerTestBase {
      * Used to check bean structure has been transformed appropriately.  Helpful for cases which carry over properties
      * that should not be included in the new bean.
      *
-     * @param beanNode - bean being validated
-     * @param containsProperties - properties that should exist in the bean structure
-     * @param invalidProperties - properties that should not exist in the bean structure
+     * @param beanNode bean being validated
+     * @param containsProperties properties that should exist in the bean structure
+     * @param invalidProperties properties that should not exist in the bean structure
      */
     public void checkBeanStructure(Node beanNode, List containsProperties, List invalidProperties) {
         containsProperties?.each { property -> checkBeanPropertyExists(beanNode, property); }
         invalidProperties?.each { property -> checkBeanPropertyNotExists(beanNode, property); }
+    }
+
+    /**
+     * Checks property name exists with expected value within the bean (either as a property tag or namespace attr)
+     *
+     * @param beanNode bean being reviewed for property
+     * @param propertyName
+     * @param propertyValue expected value tied to property name
+     * @return
+     */
+    public boolean hasPropertyValue(Node beanNode, String propertyName, String propertyValue) {
+        if(beanNode?.property?.find { it.@name == propertyName  && it.@value == propertyValue}) {
+            return true;
+        } else if (beanNode.attributes()?.find { key, value -> key instanceof QName &&
+                ((QName) key).getLocalPart() == propertyName  && value == propertyValue}) {
+            return true;
+        }
+        return false;
     }
 
 }

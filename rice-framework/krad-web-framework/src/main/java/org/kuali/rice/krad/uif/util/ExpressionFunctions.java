@@ -139,7 +139,7 @@ public class ExpressionFunctions {
      * @param parameterName name of the parameter to retrieve
      * @return String value of parameter as a string or null if parameter does not exist
      */
-    public static String getParm(String namespaceCode, String componentCode, String parameterName) {
+    public static String getParam(String namespaceCode, String componentCode, String parameterName) {
         return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode, componentCode,
                 parameterName);
     }
@@ -153,7 +153,7 @@ public class ExpressionFunctions {
      * @param parameterName name of the parameter to retrieve
      * @return Boolean value of parameter as a boolean or null if parameter does not exist
      */
-    public static Boolean getParmInd(String namespaceCode, String componentCode, String parameterName) {
+    public static Boolean getParamAsBoolean(String namespaceCode, String componentCode, String parameterName) {
         return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(namespaceCode,
                 componentCode, parameterName);
     }

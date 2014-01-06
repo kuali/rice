@@ -15,21 +15,37 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.view.View;
+import org.mockito.Mockito;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.element.Message;
-
 /**
  * test various FieldBase methods
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FieldBaseTest {
+
+    View view = null;
+
+    @Before
+    public void setUp() {
+        view = Mockito.mock(View.class);
+        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+        when(view.getViewHelperService()).thenReturn(mockViewHelperService);
+        when(view.copy()).thenReturn(view);
+    }
 
     @Test
     /**
@@ -40,33 +56,40 @@ public class FieldBaseTest {
     public void testRequiredMessageDisplay() throws Exception {
 
         // create mock component
-//        View mockView =  mock(View.class);
-//        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
-//        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
-//        when(mockView.copy()).thenReturn(mockView);
-//        when(mockView.clone()).thenReturn(mockView);
-        Object nullModel = null;
-        Component mockComponent = mock(Component.class);
+        //        View mockView =  mock(View.class);
+        //        ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
+        //        when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
+        //        when(mockView.copy()).thenReturn(mockView);
+        //        when(mockView.clone()).thenReturn(mockView);
 
-        // build asterisk required message and mock label to test rendering
-        Label mockLabel = new Label();
-        Message message = new Message();
-        message.setMessageText("*");
-        message.setRender(true);
+        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable() {
+            @Override
+            public void run() {
+                Object nullModel = null;
+                Component mockComponent = mock(Component.class);
 
-        FieldBase fieldBase = new FieldBase();
-        fieldBase.setFieldLabel(mockLabel);
-        fieldBase.setRequired(true);
-        fieldBase.setReadOnly(false);
+                // build asterisk required message and mock label to test rendering
+                Label mockLabel = new Label();
+                Message message = new Message();
+                message.setMessageText("*");
+                message.setRender(true);
 
-        FieldBase fieldBaseCopy = fieldBase.<FieldBase> copy();
-        fieldBaseCopy.performFinalize(nullModel, mockComponent);
-        assertTrue(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
+                FieldBase fieldBase = new FieldBase();
+                fieldBase.setFieldLabel(mockLabel);
+                fieldBase.setRequired(true);
+                fieldBase.setReadOnly(false);
 
-        // required and readonly -  do not render
-        fieldBaseCopy = fieldBase.<FieldBase> copy();
-        fieldBaseCopy.setReadOnly(true);
-        fieldBaseCopy.performFinalize(nullModel, mockComponent);
-        assertFalse(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
+                FieldBase fieldBaseCopy = fieldBase.<FieldBase>copy();
+                fieldBaseCopy.performFinalize(nullModel, mockComponent);
+                assertTrue(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
+
+                // required and readonly -  do not render
+                fieldBaseCopy = fieldBase.<FieldBase>copy();
+                fieldBaseCopy.setReadOnly(true);
+                fieldBaseCopy.performFinalize(nullModel, mockComponent);
+                assertFalse(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
+            }
+        });
+
     }
 }

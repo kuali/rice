@@ -48,8 +48,8 @@
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="foId" />
-              <bean parent="Uif-InputField" p:propertyName="createDate"/>
+              <bean parent="Uif-InputField" p:propertyName="foId"/>
+              <bean parent="Uif-InputField" p:propertyName="createDate" p:readOnly="true" p:defaultValue="#{T(org.joda.time.DateTime).now().toDate()}"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
             </list>
           </property>

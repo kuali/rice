@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -140,9 +141,11 @@ public final class Utilities {
                 return routeLevelCompareVal;
             }
 
-            if (ar1.isActive() && ar2.isPending()) {
+            if (StringUtils.equals(ar1.getStatus(), ar2.getStatus())){
+                return super.compare(ar1, ar2);
+            } else if (ar1.isActive() && ar2.isInitialized()) {
                 return -1;
-            } else if (ar2.isActive() && ar1.isPending()) {
+            } else if (ar2.isActive() && ar1.isInitialized()) {
                 return 1;
             }
 

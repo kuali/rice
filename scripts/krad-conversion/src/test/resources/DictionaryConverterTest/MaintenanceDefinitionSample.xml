@@ -89,7 +89,10 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="description"/>
-        <bean parent="MaintainableFieldDefinition" p:name="attachmentFile"/>
+        <bean parent="MaintainableFieldDefinition" p:name="license" p:required="true" p:defaultValueFinderClass="edu.sampleu.attachments.licenseTypeValueFinder"/>
+        <bean parent="MaintainableFieldDefinition" p:name="attachmentFile"
+                                                   p:additionalDisplayAttributeName="contentType"
+                                                   p:alternateDisplayAttributeName="fileName"/>
       </list>
     </property>
   </bean>

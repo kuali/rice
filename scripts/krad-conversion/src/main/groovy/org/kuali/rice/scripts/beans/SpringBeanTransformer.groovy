@@ -133,12 +133,17 @@ class SpringBeanTransformer {
      * @param propertyName
      * @return
      */
-    public Object getPropertyValue(Object bean, String propertyName) {
+     def getPropertyValue(Node beanNode, String propertyName) {
         def propertyValue = null;
 
-        def property = bean.property.find { it.@name == propertyName };
-        if (property != null) {
-            propertyValue = property.@value;
+        // get standard property value,
+        propertyValue = beanNode?.property?.find { propertyName.equals(it.@name)  }?.@value;
+
+        // if null check namespace attribute
+        if (propertyValue == null) {
+            propertyValue = beanNode?.attributes()?.find {
+                key, value -> key instanceof QName && propertyName.equals(((QName) key).getLocalPart())
+            }?.value;
         }
 
         return propertyValue;
@@ -581,7 +586,10 @@ class SpringBeanTransformer {
 
         // transform namespace properties (p:*) (copy, rename, transform)
         def copiedNamespaceProperties = collectCopyNamespaceProperties(beanNode, copyProperties);
-        def renamedNamespaceProperties = collectRenameNamespaceProperties(beanNode, renameProperties)
+        def renamedNamespaceProperties = collectRenameNamespaceProperties(beanNode, renameProperties);
+
+        log.fine "copied properties for " + copyProperties.join(",") + " " + copiedNamespaceProperties;
+        log.fine "renamed properties for " + renameProperties.keySet().join(",") + renamedNamespaceProperties;
         namespaceProperties.putAll(copiedNamespaceProperties + renamedNamespaceProperties);
 
         if(useCarryoverProperties) {

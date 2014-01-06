@@ -166,7 +166,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             itemsList.add(gatherNameAttribute(beanItem));
                         } else {
                             if (itemsList.size() > 0) {
-                                builder.bean(parent: 'MaintenanceGridSection') {
+                                builder.bean(parent: 'Uif-MaintenanceGridSection') {
                                     copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
                                     property(name: "items") {
                                         list {
@@ -331,7 +331,16 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     }
 
     def transformMaintainableItemsProperty(NodeBuilder builder, Node beanNode) {
-        transformPropertyBeanList(builder, beanNode, ["maintainableItems": "items"], gatherNameAttribute, inputFieldBeanTransform);
+        def maintainableItemsProperty = beanNode.property.find { "maintainableItems".equals(it.@name) };
+        if (maintainableItemsProperty) {
+            builder.property(name: "items") {
+                list {
+                    maintainableItemsProperty.list.bean.each { itemBean ->
+                        transformMaintainableFieldDefinitionBean(builder, itemBean);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -431,16 +440,20 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      */
     def transformMaintainableFieldDefinitionBean(NodeBuilder builder, Node beanNode) {
         // copy and rename properties
-        def mfdCopyProperties = ["required"];
-        def mfdRenameProperties = ["name":"attributeName"];
+        def mfdCopyProperties = ["required", "defaultValueFinderClass"];
+        def mfdRenameProperties = ["name":"propertyName",
+                "alternateDisplayAttributeName": "readOnlyDisplayReplacement",
+                "additionalDisplayAttributeName": "readOnlyDisplaySuffix"];
+
+        def mfdIgnoreProperties = ["externalHelpUrl"];
 
         // collect attributes and replace parent node with input field
         def beanAttributes = convertBeanAttributes(beanNode, "MaintainableFieldDefinition", "Uif-InputField", [],[:], [],
                 mfdCopyProperties, mfdRenameProperties, []);
         beanAttributes.putAt("parent", "Uif-InputField");
         builder.bean(beanAttributes) {
-            copyProperties(delegate, beanNode, mfdCopyProperties)
-            renameProperties(delegate, beanNode, mfdRenameProperties)
+            copyProperties(builder, beanNode, mfdCopyProperties)
+            renameProperties(builder, beanNode, mfdRenameProperties)
             transformWebUILeaveFieldFunctionProperty(delegate,beanNode)
         }
     }

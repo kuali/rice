@@ -16,15 +16,15 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.test.document.bo.Account;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.location.api.state.State;
-import org.kuali.rice.location.impl.state.StateBo;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -39,7 +39,8 @@ import static org.junit.Assert.*;
 @KRADTestCase.Legacy
 public class BusinessObjectServiceTest extends KRADTestCase {
 
-    public BusinessObjectServiceTest() {}
+    static final String DELEGATE_ID =  "delegateTypeBo1";
+    static final String ROLE_ID = "1";
 
     /**
      * This method tests saving a BO with a collection member
@@ -49,25 +50,10 @@ public class BusinessObjectServiceTest extends KRADTestCase {
     @Test
     public void testSave() throws Exception {
         BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
-        
-        AccountManager am = new AccountManager();
-        am.setUserName("bhutchin");
-        List<Account> accounts = new ArrayList<Account>();
-        Account account1 = new Account();
-        account1.setNumber("1");
-        account1.setName("account 1");
-        account1.setAccountManager(am);
-        accounts.add(account1);
 
-        Account account2 = new Account();
-        account2.setNumber("2");
-        account2.setName("account 2");
-        account2.setAccountManager(am);
+        DelegateTypeBo delegateTypeBo = createDelegateTypeBo();
 
-        accounts.add(account2);
-        am.setAccounts(accounts);
-
-        businessObjectService.save(am);
+        businessObjectService.save(delegateTypeBo);
     }
     
     /**
@@ -75,40 +61,69 @@ public class BusinessObjectServiceTest extends KRADTestCase {
      */
     @Test
     public void testRetrieve() {
-    	BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
-    	
-    	AccountManager manager = new AccountManager();
-    	manager.setUserName("mgorilla");
-    	List<Account> accounts = new ArrayList<Account>();
-    	Account account1 = new Account();
-    	account1.setNumber("MG1");
-    	account1.setName("Manilla Gorilla Account");
-    	account1.setAccountManager(manager);
-    	accounts.add(account1);
-    	manager.setAccounts(accounts);
-    	
-    	manager = (AccountManager)businessObjectService.save(manager);
-    	
-    	AccountManager manager2 = (AccountManager)businessObjectService.retrieve(manager);
-    	assertNotNull("manager2 should not be null", manager2);
-    	assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
-    	
-    	AccountManager manager3 = new AccountManager();
-    	manager3.setAmId(manager.getAmId());
-    	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
-    	assertNotNull("manager2 should not be null", manager2);
-    	assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
-    	
-    	manager3.setAmId(-99L);
-    	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
-    	assertNull("manager2 should be null", manager2);
-        
-        AccountManager manager4 = new AccountManager();
-        manager4.setAmId(manager.getAmId());
-        manager2 = (AccountManager)businessObjectService.findBySinglePrimaryKey(AccountManager.class, manager4.getAmId());
-        assertNotNull("manager2 should not be null", manager2);
-        assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
+        BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
 
+        DelegateTypeBo originalDelegateType = createDelegateTypeBo();
+
+        originalDelegateType = (DelegateTypeBo)businessObjectService.save(originalDelegateType);
+
+        DelegateTypeBo delegateTypeBo2 = (DelegateTypeBo)businessObjectService.retrieve(originalDelegateType);
+    	assertNotNull("delegateTypeBo2 should not be null", delegateTypeBo2);
+    	assertEquals("delegateTypeBo2 should have the same Kim Type ID as originalDelegateType",
+                originalDelegateType.getKimTypeId(), delegateTypeBo2.getKimTypeId());
+
+        DelegateTypeBo delegateTypeBo3 = new DelegateTypeBo();
+        delegateTypeBo3.setDelegationId(originalDelegateType.getDelegationId());
+        delegateTypeBo2 = (DelegateTypeBo)businessObjectService.retrieve(delegateTypeBo3);
+    	assertNotNull("delegateTypeBo2 should not be null", delegateTypeBo2);
+    	assertEquals("delegateTypeBo2 should have the same Kim Type ID as originalDelegateType",
+                originalDelegateType.getKimTypeId(), delegateTypeBo2.getKimTypeId());
+
+        delegateTypeBo3.setDelegationId("doesNotExist");
+        delegateTypeBo2 = (DelegateTypeBo)businessObjectService.retrieve(delegateTypeBo3);
+    	assertNull("delegateTypeBo2 should be null", delegateTypeBo2);
+
+        DelegateTypeBo delegateTypeBo4 = new DelegateTypeBo();
+        delegateTypeBo4.setDelegationId(originalDelegateType.getDelegationId());
+        delegateTypeBo2 = (DelegateTypeBo)businessObjectService.findBySinglePrimaryKey(DelegateTypeBo.class,
+                delegateTypeBo4.getDelegationId());
+        assertNotNull("delegateTypeBo2 should not be null", delegateTypeBo2);
+        assertEquals("delegateTypeBo2 should have the same Kim Type ID as originalDelegateType.",
+                originalDelegateType.getKimTypeId(), delegateTypeBo2.getKimTypeId());
     }
 
+    protected DelegateTypeBo createDelegateTypeBo() {
+        DelegateTypeBo delegateTypeBo = new DelegateTypeBo();
+        delegateTypeBo.setActive(true);
+        delegateTypeBo.setDelegationId(DELEGATE_ID);
+        delegateTypeBo.setDelegationType(DelegationType.PRIMARY);
+        delegateTypeBo.setKimTypeId("1");
+        delegateTypeBo.setRoleId(ROLE_ID);
+
+        // Create delegate member1
+        DelegateMemberBo member1 = new DelegateMemberBo();
+        member1.setDelegationId("delegateMemberBo1");
+        member1.setAttributes(Collections.<String, String>emptyMap());
+        member1.setDelegationId(DELEGATE_ID);
+        member1.setMemberId("delegateMemberBoUser1");
+        member1.setRoleMemberId(ROLE_ID);
+        member1.setType( MemberType.PRINCIPAL );
+
+        // Create delegate member2
+        DelegateMemberBo member2 = new DelegateMemberBo();
+        member2.setDelegationId("delegateMemberBo2");
+        member2.setAttributes(Collections.<String, String>emptyMap());
+        member2.setDelegationId(DELEGATE_ID);
+        member2.setMemberId("delegateMemberBoUser2");
+        member2.setRoleMemberId(ROLE_ID);
+        member2.setType( MemberType.PRINCIPAL );
+
+        List<DelegateMemberBo> delegateMemberBos = new ArrayList<DelegateMemberBo>();
+        delegateMemberBos.add(member1);
+        delegateMemberBos.add(member2);
+
+        delegateTypeBo.setMembers(delegateMemberBos);
+
+        return delegateTypeBo;
+    }
 }

@@ -625,6 +625,43 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
 
     }
 
+    @Test
+    public void testQueryCustomizerNoMatchMultipleCustomizers() throws Exception {
+        EntityManagerFactory factory = (EntityManagerFactory) context.getBean("entityManagerFactory");
+        assertNotNull(factory);
+
+        TestEntity9 testEntity1 = new TestEntity9();
+        testEntity1.setName("MyAwesomeTestEntity1");
+
+        TestRelatedExtension extension = new TestRelatedExtension();
+        extension.setAccountTypeCode("TS");
+
+        EntityManager entityManager = factory.createEntityManager();
+
+        try {
+            testEntity1 = new TestEntity9();
+            testEntity1.setName("MyCustomFilter");
+            entityManager.persist(testEntity1);
+            extension.setNumber(testEntity1.getNumber());
+            entityManager.persist(extension);
+            entityManager.flush();
+        } finally {
+            entityManager.close();
+        }
+
+        //Now confirm that the entity fetch found travel extension
+        try {
+            entityManager = factory.createEntityManager();
+            testEntity1 = entityManager.find(TestEntity9.class, testEntity1.getNumber());
+            assertTrue("Match found for base entity", testEntity1 != null && StringUtils.equals("MyCustomFilter",
+                    testEntity1.getName()));
+            assertTrue("Found no travel extension that matches", testEntity1.getAccountExtension() == null);
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
     @Entity
     @Table(name = "TRV_ACCT")
     public static class TestEntity6 extends ParentTestEntity2 {
@@ -777,6 +814,48 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
         @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
                 insertable = false, updatable = false) @QueryCustomizerGenerator(attributeName = "accountTypeCode",
                 attributeResolverClass = "org.kuali.rice.krad.data.jpa.testbo.TestQueryCustomizerValue")
+        private TestRelatedExtension accountExtension;
+
+        @Column(name = "ACCT_NAME")
+        private String name;
+
+        @Column(name = "ACCT_FO_ID")
+        private Long amId;
+
+        public Long getAmId() {
+            return amId;
+        }
+
+        public void setAmId(Long amId) {
+            this.amId = amId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public TestRelatedExtension getAccountExtension() {
+            return accountExtension;
+        }
+
+        public void setAccountExtension(TestRelatedExtension accountExtension) {
+            this.accountExtension = accountExtension;
+        }
+    }
+
+    @Entity
+    @Table(name = "TRV_ACCT")
+    public static class TestEntity9 extends ParentTestEntity2 {
+
+        @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
+                insertable = false, updatable = false)
+        @QueryCustomizerGenerators({
+        @QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeValue = "TS"),
+        @QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeValue = "NM")})
         private TestRelatedExtension accountExtension;
 
         @Column(name = "ACCT_NAME")

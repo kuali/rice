@@ -22,6 +22,7 @@ import org.eclipse.persistence.exceptions.DescriptorException;
 import org.eclipse.persistence.internal.databaseaccess.Accessor;
 import org.eclipse.persistence.internal.descriptors.OptimisticLockingPolicy;
 import org.eclipse.persistence.internal.helper.DatabaseField;
+import org.eclipse.persistence.internal.jpa.metadata.listeners.EntityClassListener;
 import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.sequencing.Sequence;
@@ -40,6 +41,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -93,8 +95,8 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     }
 
     /**
-     * Load Query Customizer based on annotations on fields
-     *
+     * Load Query Customizer based on annotations on fields and call customizer to
+     * modify descriptor
      * @param session
      */
     protected void loadQueryCustomizers(Session session) {
@@ -102,19 +104,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         for (Class<?> entityClass : descriptors.keySet()) {
             for (Field field : entityClass.getDeclaredFields()) {
                 String queryCustEntry = entityClass.getName() + "_" + field.getName();
-                Annotation[] annotations = field.getAnnotations();
-
-                for (Annotation annotation : annotations) {
-                    if (annotation instanceof QueryCustomizerGenerator) {
-                        List<QueryCustomizerGenerator> queryCustomizers = queryCustomizerMap.get(queryCustEntry);
-                        if (queryCustomizers == null) {
-                            List<QueryCustomizerGenerator> queryCustomizerList =
-                                    new ArrayList<QueryCustomizerGenerator>();
-                            queryCustomizerList.add((QueryCustomizerGenerator) annotation);
-                            queryCustomizers = queryCustomizerMap.putIfAbsent(queryCustEntry, queryCustomizerList);
-                        }
-                    }
-                }
+                buildQueryCustomizers(entityClass,field,queryCustEntry);
 
                 List<QueryCustomizerGenerator> queryCustomizers = queryCustomizerMap.get(queryCustEntry);
                 if (queryCustomizers != null && !queryCustomizers.isEmpty()) {
@@ -123,6 +113,37 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             }
         }
 
+    }
+
+    /**
+     * Build and populate map of QueryCustomizer annotations
+     * @param entityClass
+     * @param field
+     * @param key
+     */
+    protected void buildQueryCustomizers(Class<?> entityClass,Field field, String key){
+        QueryCustomizerGenerators customizers = field.getAnnotation(QueryCustomizerGenerators.class);
+        List<QueryCustomizerGenerator> queryCustomizerGenerators = new ArrayList<QueryCustomizerGenerator>();
+        if(customizers != null){
+            queryCustomizerGenerators.addAll(Arrays.asList(customizers.value()));
+        } else {
+            QueryCustomizerGenerator customizer = field.getAnnotation(QueryCustomizerGenerator.class);
+            if(customizer != null){
+                queryCustomizerGenerators.add(customizer);
+            }
+        }
+        for(QueryCustomizerGenerator customizer : queryCustomizerGenerators){
+            List<QueryCustomizerGenerator> queryCustomizers = queryCustomizerMap.get(key);
+            if (queryCustomizers == null) {
+                queryCustomizers =
+                        new ArrayList<QueryCustomizerGenerator>();
+                queryCustomizers.add(customizer);
+                queryCustomizerMap.putIfAbsent(key, queryCustomizers);
+            } else {
+                queryCustomizers.add(customizer);
+                queryCustomizerMap.put(key,queryCustomizers);
+            }
+        }
     }
 
     /**

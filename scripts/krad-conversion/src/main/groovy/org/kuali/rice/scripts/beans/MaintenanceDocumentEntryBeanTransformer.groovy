@@ -125,17 +125,9 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     def transformMaintainableSectionDefinitionBean(NodeBuilder builder, Node beanNode) {
         if (!beanNode.property.list.bean.find { "MaintainableCollectionDefinition".equals(it.@parent) }) {
-            def beanAttributes = [parent: 'Uif-MaintenanceGridSection']
-            if (beanNode.@id) {
-                beanAttributes.put("id", beanNode.@id)
-            }
-            builder.bean(beanAttributes) {
-                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
-                transformHelpUrlProperty(delegate, beanNode)
-                transformMaintainableItemsProperty(delegate, beanNode);
-            }
-        } else {
+            def maintainableBeanItems = beanNode.property.list.bean;
+            transformMaintainableItems(builder, beanNode, maintainableBeanItems, beanNode.@id);
+           } else {
             transformMaintainableSectionDefinitionBeanWithCollection(builder, beanNode);
         }
     }
@@ -163,22 +155,9 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 list {
                     beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
                         if (!"MaintainableCollectionDefinition".equals(beanItem.@parent)) {
-                            itemsList.add(gatherNameAttribute(beanItem));
+                            itemsList.add(beanItem);
                         } else {
-                            if (itemsList.size() > 0) {
-                                builder.bean(parent: 'Uif-MaintenanceGridSection') {
-                                    copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
-                                    property(name: "items") {
-                                        list {
-                                            itemsList.each { attributes ->
-                                                attributes.put("parent", "Uif-InputField");
-                                                genericBeanTransform(builder, attributes);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
+                            transformMaintainableItems(builder, beanNode, itemsList, null);
                             itemsList = [];
                             builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
                                 copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
@@ -193,10 +172,51 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             }
                         }
                     }
+
+                    transformMaintainableItems(builder, beanNode, itemsList, null);
+                    itemsList = [];
                 }
             }
         }
     }
+
+    /**
+     * Transforms a list of MaintainableFieldDefinitions into a Uif-MaintenanceGridSection
+     *
+     * @param builder
+     * @param beanNode
+     * @param beanItems  List of MaintainableFieldDefinition inside of maintainableItems
+     * @param beanId Bean Id to be added to the new Uif-MaintenanceGridSection
+     * @return
+     */
+    def transformMaintainableItems(NodeBuilder builder, Node beanNode, List beanItems, String beanId) {
+        if (beanItems.size() > 0) {
+            def beanAttributes = [parent: 'Uif-MaintenanceGridSection']
+            if (beanId) {
+                beanAttributes.put("id", beanId)
+            }
+
+            builder.bean(beanAttributes) {
+                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+
+                renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
+                transformHelpUrlProperty(delegate, beanNode)
+
+                property(name: "items") {
+                    list {
+                        beanItems.each { maintainableField  ->
+                            // Using  transform field definition instead of generic transform node
+                            transformMaintainableFieldDefinitionBean(builder, maintainableField);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+
+
 
     /**
      * Converts title property to view name property

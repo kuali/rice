@@ -420,11 +420,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
         def customRootNode = getFileRootNode(customTestFilePath);
         customRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
-        // def webScriptFileNode = ddRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) }.property.find{"webScriptFiles".equals(it.@name)};
-
-        // System.out.println("webScriptFileNode::"+ddRootNode.children().getProperties());
-        //boolean removed = ddRootNode.children().getProperties().remove(webScriptFileNode) ;
-        //System.out.println("removed::"+removed);
 
         def noScriptFiles = customRootNode.bean.find { "MaintenanceDocumentEntry".equals(it.@parent) };
         try {
@@ -490,9 +485,6 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
         def refSize = resultNode.property.find { "items".equals(it.@name) }.list.bean.size();
         Assert.assertEquals("number of beans created", 1, refSize)
-        //def sectionSize = resultNode.property.list.bean.findAll { ["Uif-MaintenanceGridSection", "Uif-MaintenanceStackedCollectionSection"].contains(it.@parent) }.size();
-        //Assert.assertEquals("number of converted section definitions", 2, sectionSize);
-
     }
 
     /**

@@ -149,8 +149,20 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     public void testClientResponsivenessProgressiveDisclosureNav() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAll();
         passed();
-    }  
-    
+    }
+
+    @Test
+    public void testClientResponsivenessProgressiveDisclosureConditionalOptionsBookmark() throws Exception {
+        testClientResonsivenessProgressiveDisclosureConditionalOptions();
+        passed();
+    }
+
+    @Test
+    public void testClientResponsivenessProgressiveDisclosureConditionalOptionsNav() throws Exception {
+        testClientResonsivenessProgressiveDisclosureConditionalOptions();
+        passed();
+    }
+
     private void testClientResponsivenessProgressiveDisclosureAll() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
         testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
@@ -160,6 +172,6 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         testClientResonsivenessProgressiveDisclosureConditionalRefresh();
         testClientResonsivenessProgressiveDisclosureRefreshBasedOnTimer();
         testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
-        testClientResonsivenessProgressiveDisclosureConditionalOptions();
+//        testClientResonsivenessProgressiveDisclosureConditionalOptions();
     }
 }

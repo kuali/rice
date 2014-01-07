@@ -1,0 +1,70 @@
+/*
+ * Copyright 2006-2014 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.kuali.rice.krad.data.jpa.eclipselink;
+
+/**
+ *  Defines a query customizer generator that will alter the query for an annotated field
+ *
+ * <pre>
+ *   Examples:
+ *
+ *   &#064;QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeResolverClass =
+ *         "org.kuali.rice.krad.data.bo.TestQueryCustomizerValue")
+ *         private TestRelatedExtension accountExtension;
+ * </pre>
+ *
+ * <p>Current, in order for this annotation to work properly, the {@link KradEclipseLinkCustomizer} must be configured
+ * for the EclipseLink persistence unit. This can be done manually using
+ * {@link org.eclipse.persistence.config.PersistenceUnitProperties#SESSION_CUSTOMIZER}, or it will be done automatically
+ * when using {@link KradEclipseLinkEntityManagerFactoryBean}</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ **/
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Target({TYPE, METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface QueryCustomizerGenerator {
+
+    /**
+     * (Required) The attribute name to have the customization applied in the query
+     */
+    String attributeName();
+
+    /**
+     * (Optional) Operator that will be used for this fragment expression
+     */
+    String operator() default "=";
+
+    /**
+     * (Optional) The value that the attribute named will be used to build expression fragment
+     */
+    String attributeValue() default "";
+
+    /**
+     * (Optional) The class that resolves the value that the attribute named will be used to build expression
+     * fragment
+     */
+    String attributeResolverClass() default "";
+}

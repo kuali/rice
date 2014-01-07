@@ -27,12 +27,6 @@
     <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelMileageRate"/>
     <property name="documentTypeName" value="TravelMileageRateMaintenanceDocument"/>
     <property name="preserveLockingKeysOnCopy" value="true"/>
-    <property name="lockingKeys">
-      <list>
-        <value>mileageRateCd</value>
-        <value>mileageRateName</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="TravelMileageRate-MaintenanceView" parent="Uif-MaintenanceView">

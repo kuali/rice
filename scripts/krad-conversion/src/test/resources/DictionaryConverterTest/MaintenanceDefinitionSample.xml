@@ -88,8 +88,8 @@
     <property name="defaultOpen" value="true"/>
     <property name="maintainableItems">
       <list>
-        <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="description"/>
+        <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true" p:readOnlyAfterAdd="true" />
+        <bean parent="MaintainableFieldDefinition" p:name="description" p:unconditionallyReadOnly="false" />
         <bean parent="MaintainableFieldDefinition" p:name="license" p:required="true" p:defaultValueFinderClass="edu.sampleu.attachments.licenseTypeValueFinder"/>
         <bean parent="MaintainableFieldDefinition" p:name="attachmentFile"
                                                    p:additionalDisplayAttributeName="contentType"

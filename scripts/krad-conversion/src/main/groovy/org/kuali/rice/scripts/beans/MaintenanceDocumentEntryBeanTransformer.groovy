@@ -480,7 +480,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 "alternateDisplayAttributeName": "readOnlyDisplayReplacement",
                 "additionalDisplayAttributeName": "readOnlyDisplaySuffix"];
 
-        def mfdIgnoreProperties = ["externalHelpUrl"];
+        def mfdIgnoreProperties = ["externalHelpUrl", "unconditionallyReadOnly","readOnlyAfterAdd"];
 
         // collect attributes and replace parent node with input field
         def beanAttributes = convertBeanAttributes(beanNode, "MaintainableFieldDefinition", "Uif-InputField", [],[:], [],
@@ -489,7 +489,28 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         builder.bean(beanAttributes) {
             copyProperties(builder, beanNode, mfdCopyProperties)
             renameProperties(builder, beanNode, mfdRenameProperties)
+            transformReadOnlyProperty(delegate,beanNode)
             transformWebUILeaveFieldFunctionProperty(delegate,beanNode)
+        }
+    }
+
+    /**
+     * Sets readOnly property based on maintainableFieldDefinition values for unconditionallyRead©tOnly
+     * and readOnlyAfterAdd
+     *
+     * @param builder
+     * @param beanNode
+     */
+    def transformReadOnlyProperty(NodeBuilder builder, Node beanNode) {
+        def attrPropMap = gatherPropertyTagsAndPropertyAttributes(beanNode,
+                ["unconditionallyReadOnly":"unconditionallyReadOnly",
+                "readOnlyAfterAdd":"readOnlyAfterAdd"]);
+
+        if(attrPropMap?.get("unconditionallyReadOnly")) {
+            builder.property(name:"readOnly", value:attrPropMap?.get("unconditionallyReadOnly"));
+        }
+        else if(attrPropMap?.get("readOnlyAfterAdd")) {
+            builder.property(name:"readOnly", value:"@{!#isAddLine}");
         }
     }
 

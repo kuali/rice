@@ -520,6 +520,43 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         Assert.assertEquals("number of converted section definitions", 1, helpBeanCount);
     }
 
+
+    /**
+     * Tests to confirm the creation of a readonly property
+     *
+     */
+    @Test
+    public void testTransformReadOnlyProperty() {
+        // setup root bean and locate beans with readonly-related property
+        def evalBeanParentName = "AttachmentSampleMaintenanceDocument-DocumentMaintenance-parentBean";
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { evalBeanParentName.equals(it.@id) };
+        def fieldBeans = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean;
+
+        // test unconditionally read only
+        def descriptionFieldBean = fieldBeans.find { hasPropertyValue(it, "name", "description") }
+
+        // run conversion on property
+        def resultBean = descriptionFieldBean.replaceNode { bean {
+                maintenanceDocumentEntryBeanTransformer.transformReadOnlyProperty(delegate, descriptionFieldBean);
+            }
+        }
+
+        checkBeanPropertyValueExists(resultBean, "readOnly", "false");
+
+        // test readOnlyAfterAdd
+        def idFieldBean = fieldBeans.find { hasPropertyValue(it, "name", "id") }
+
+        resultBean = idFieldBean.replaceNode { bean {
+                maintenanceDocumentEntryBeanTransformer.transformReadOnlyProperty(delegate, idFieldBean);
+            }
+        }
+
+        checkBeanPropertyValueExists(resultBean, "readOnly", "@{!#isAddLine}");
+
+    }
+
+
     /**
      * Tests conversion of lookup definition's result fields into appropriate property
      *

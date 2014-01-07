@@ -54,7 +54,6 @@
                 <property name="businessObjectClass" value="edu.sampleu.travel.bo.MultiAttachmentSample"/>
                 <property name="name" value="attachments"/>
                 <property name="sourceClassName" value="edu.sampleu.travel.bo.newMultiAttachmentSample"/>
-                <property name="alwaysAllowCollectionDeletion" value="true"/>
                 <property name="includeAddLine" value="true"/>
                 <property name="includeMultipleLookupLine" value="true"/>
                 <property name="summaryTitle" value="Multi Attachment"/>

@@ -187,6 +187,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                                 transformMaintainableFieldsProperty(delegate, beanItem);
                                 transformSummaryFieldsProperty(delegate, beanNode);
                                 transformIncludeAddLineProperty(delegate,beanItem);
+                                transformAlwaysAllowCollectionDeletion(delegate, beanItem)
                                 transformIncludeMultipleLookupLineProperty(delegate,beanItem);
 
                             }
@@ -254,17 +255,51 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     }
 
     /**
+     *  KNS's default is that only newly added lines can be deleted while in KRAD all lines can be deleted by default.
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     */
+    def transformAlwaysAllowCollectionDeletion(NodeBuilder builder, Node beanNode) {
+        if(beanNode?.property?.findAll { "alwaysAllowCollectionDeletion".equals(it.@name) }?.size > 0) {
+
+            boolean alwaysAllowCollectionDeletion = Boolean.parseBoolean(beanNode?.property?.find  { "alwaysAllowCollectionDeletion".equals(it.@name) }.@value);
+
+            if (!alwaysAllowCollectionDeletion) {
+                addUifDeleteLineAction(builder)
+            }
+        } else {
+            // KNS's default is that only newly added lines can be deleted while in KRAD all lines can be deleted by default.
+            addUifDeleteLineAction(builder)
+        }
+    }
+
+    /**
+     * Add Uif-DeleteLineAction.
+     *
+     * @param builder
+     * @return
+     */
+    def addUifDeleteLineAction(NodeBuilder builder) {
+        builder.property(name: "lineActions") {
+            list('xmlns:p': 'http://www.springframework.org/schema/p') {
+                bean(parent: "Uif-DeleteLineAction", 'p:render': "@{isAddedCollectionItem(#line)}")
+                bean(parent: "Uif-SaveLineAction")
+            }
+        }
+    }
+
+    /**
      * Transforms includeMultipleLookupLine property with a collectionLookup property initialized with the
      * Uif-CollectionQuickfinder bean. sourceClassName is translated to dataObjectClassName if specified and
      * includeMultipleLookupLine is not set to false.  templates are translated to field conversions.
-
      *
      * @param builder
      * @param beanNode
      * @return
      *
      */
-
     def transformIncludeMultipleLookupLineProperty(NodeBuilder builder, Node beanNode) {
         if(beanNode?.property?.findAll { "includeMultipleLookupLine".equals(it.@name) }?.size > 0) {
             String includeMultipleLookupLine = beanNode?.property?.find  { "includeMultipleLookupLine".equals(it.@name) }.@value;

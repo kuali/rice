@@ -545,4 +545,25 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         checkBeanStructure(idField, ["required"], []);
     }
 
+    /**
+     * Tests conversion of always allow collection deletion into appropriate property.
+     */
+    @Test
+    public void testTransformAlwaysAllowCollectionDeletion() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+
+        // run conversion on property
+        def resultBean = beanNode.replaceNode {
+            bean(parent: "Uif-MaintenanceStackedCollectionSection") {
+                maintenanceDocumentEntryBeanTransformer.transformAlwaysAllowCollectionDeletion(delegate, beanNode);
+            }
+        }
+
+        // confirm alwaysAllowCollectionDeletion has been replaced with lineAction delete
+        checkBeanPropertyExists(resultBean, "lineActions");
+        def resultsItem = resultBean.find { "lineActions".equals(it.@name) };
+        Assert.assertNotNull(resultsItem.list.bean.find { "Uif-DeleteLineAction".equals(it.@parent) })
+        Assert.assertNotNull(resultsItem.list.bean.find { "Uif-SaveLineAction".equals(it.@parent) })
+    }
 }

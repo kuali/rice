@@ -26,7 +26,7 @@
     <property name="javaFullClassPath"
               value="org.kuali.rice.krad.uif.layout.GridLayoutManager"/>
     <property name="docBookAnchor" value="d7339e4811"/>
-    <property name="exampleSize" value="LARGE"/>
+    <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-GridLayoutManager-Example1"/>
@@ -189,7 +189,7 @@
       <list>
         <!-- ex:Demo-GridLayoutManager-Example6 start-->
         <bean parent="Uif-GridGroup"
-              p:layoutManager.numberOfColumns="2"
+              p:layoutManager.numberOfColumns="2" p:layoutManager.applyDefaultCellWidths="false"
               p:layoutManager.renderAlternatingHeaderColumns="false">
           <property name="items">
             <list>
@@ -215,8 +215,14 @@
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField14"/>
-              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField15"/>
-              <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="inputField16"/>
+              <bean parent="Uif-HorizontalFieldGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField15"/>
+                    <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="inputField16"/>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
@@ -237,6 +243,7 @@
               <bean parent="Uif-GridSection">
                 <property name="headerText" value="Section Title"/>
                 <property name="layoutManager.numberOfColumns" value="4"/>
+                <property name="layoutManager.applyDefaultCellWidths" value="false"/>
                 <property name="instructionalText" value="GroupGridLayout number of columns = 4"/>
                 <property name="disclosure.render" value="false"/>
                 <property name="cssClasses" value="group_header"/>
@@ -254,6 +261,7 @@
               <bean parent="Uif-GridSection">
                 <property name="headerText" value="Section Title"/>
                 <property name="layoutManager.numberOfColumns" value="4"/>
+                <property name="layoutManager.applyDefaultCellWidths" value="false"/>
                 <property name="instructionalText"
                           value="GroupGridLayout number of columns = 4, fields have colspan settings"/>
                 <property name="disclosure.render" value="false"/>
@@ -279,7 +287,7 @@
   <bean id="Demo-GridLayoutManager-TestInputField" parent="Uif-InputField-LabelTop" abstract="true" p:label="Field Label" p:required="true"
         p:instructionalText="Instructions" p:constraintText="Constraint text">
     <property name="control">
-      <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Enter Data"/>
+      <bean parent="Uif-TextControl" p:size="20" p:watermarkText="Enter Data"/>
     </property>
   </bean>
 

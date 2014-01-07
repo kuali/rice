@@ -4527,6 +4527,18 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
+    protected void waitForTextPresent(String text, int secondsToWait) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (!isTextPresent(text)) {
+            jiraAwareFail(text + " is not present for " + this.getClass().toString());
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
     protected void waitForTextNotPresent(String text) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;

@@ -68,8 +68,6 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             cnt++;
         }
         waitAndClickById("imageField");
-        Thread.sleep(16000); // seems like this times out in saucelabs
-        // confirm all files were uploaded successfully
     }
 
     /**
@@ -118,7 +116,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
     protected String[] getResourceListing(Class clazz, String pathStartsWith) throws Exception {
         String classPath = clazz.getName().replace(".", "/")+".class";
         URL dirUrl = clazz.getClassLoader().getResource(classPath);
-        if (!dirUrl.getProtocol().equals("jar")) {
+
+        if (!"jar".equals(dirUrl.getProtocol())) {
             throw new UnsupportedOperationException("Cannot list files for URL " + dirUrl);
         }
 
@@ -204,7 +203,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         waitIsVisible(By.className("error")); // messages appear in error too.
         if (!isTextPresent("without allowOverwrite set")) { // docs should still be present
             // from previous run, if not we'll fail when we assert they exist.
-            waitForTextPresent("Ingested xml doc: " + file.getName());
+            // xml ingestion can take a long, long time
+            waitForTextPresent("Ingested xml doc: " + file.getName(), 360);
         }
     }
 }

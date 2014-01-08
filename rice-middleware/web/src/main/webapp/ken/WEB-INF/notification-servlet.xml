@@ -222,6 +222,7 @@
       <property name="notificationWorkflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>
       <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
       <property name="notificationRecipientService"> <ref bean="notificationRecipientService"/> </property>
+      <property name="notificationMessageContentService"> <ref bean="messageContentService"/> </property>
       <property name="businessObjectDao"> <ref bean="kenGenericDao"/> </property>
    </bean>
    
@@ -240,6 +241,7 @@
       <property name="notificationWorkflowDocumentService"><ref bean="notificationWorkflowDocumentService"/></property>
       <property name="notificationChannelService"> <ref bean="notificationChannelService"/> </property>
       <property name="notificationRecipientService"> <ref bean="notificationRecipientService"/> </property>
+      <property name="notificationMessageContentService"> <ref bean="messageContentService"/> </property>
       <property name="businessObjectDao"> <ref bean="kenGenericDao"/> </property>
    </bean>
    

@@ -53,7 +53,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Page Footer");
         waitAndClickByLinkText("Sticky page footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -61,7 +61,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky View Footer");
         waitAndClickByLinkText("Sticky view footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -69,7 +69,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky View Footer and Page Footer");
         waitAndClickByLinkText("Sticky page and view footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -77,28 +77,68 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Everything");
         waitAndClickByLinkText("All footer content sticky");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//div[@class='uif-stickyFooter' and @data-sticky_footer='true']");
         assertElementPresentByXpath("//div[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderBookmark() throws Exception {
-        testGeneralFeaturesExample5();
-        testGeneralFeaturesExample4();
-        testGeneralFeaturesExample3();
-        testGeneralFeaturesExample2();
-        testGeneralFeaturesExample1();
+    public void testGeneralFeaturesUnifiedViewFooter1Bookmark() throws Exception{
+    	testGeneralFeaturesExample1();
         passed();
     }
-
+    
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderNav() throws Exception {
-        testGeneralFeaturesExample5();
-        testGeneralFeaturesExample4();
-        testGeneralFeaturesExample3();
-        testGeneralFeaturesExample2();
-        testGeneralFeaturesExample1();
+    public void testGeneralFeaturesUnifiedViewFooter1Nav() throws Exception{
+    	testGeneralFeaturesExample1();
         passed();
-    }  
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter2Bookmark() throws Exception{
+    	testGeneralFeaturesExample2();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter2Nav() throws Exception{
+    	testGeneralFeaturesExample2();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter3Bookmark() throws Exception{
+    	testGeneralFeaturesExample3();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter3Nav() throws Exception{
+    	testGeneralFeaturesExample3();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter4Bookmark() throws Exception{
+    	testGeneralFeaturesExample4();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter4Nav() throws Exception{
+    	testGeneralFeaturesExample4();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter5Bookmark() throws Exception{
+    	testGeneralFeaturesExample5();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewFooter5Nav() throws Exception{
+    	testGeneralFeaturesExample5();
+        passed();
+    }
 }

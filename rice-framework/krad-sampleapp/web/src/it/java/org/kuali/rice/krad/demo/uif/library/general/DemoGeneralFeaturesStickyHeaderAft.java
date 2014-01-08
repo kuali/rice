@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.uif.library.general;
 
 import org.junit.Test;
-
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -43,24 +42,23 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
 
     protected void testGeneralFeaturesExample1() throws Exception {
         waitAndClickByLinkText("Sticky View Header");
-        waitAndClickByLinkText("Sticky View header");
+        waitAndClickByXpath("//div[@id='Demo-StickyHeader-Example1']/a");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
+        assertElementPresentByXpath("//div[@id='Uif-ApplicationHeader-Wrapper']");
         switchToWindow("Kuali");
     }
     
     protected void testGeneralFeaturesExample2() throws Exception {
         waitAndClickByLinkText("Sticky Application Header and View Header");
-        waitAndClickByLinkText("Sticky application header and View header");
+        waitAndClickByXpath("//div[@id='Demo-StickyHeader-Example2']/a");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
-        assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
         switchToWindow("Kuali");
     }
     
     protected void testGeneralFeaturesExample3() throws Exception {
         waitAndClickByLinkText("Sticky Breadcrumbs, Application Header and View Header");
-        waitAndClickByLinkText("Sticky application header, breadcrumbs, and View header");
+        waitAndClickByXpath("//div[@id='Demo-StickyHeader-Example3']/a");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-BreadcrumbWrapper' and @data-sticky='true']");
         switchToWindow("Kuali");
@@ -68,10 +66,9 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesExample4() throws Exception {
         waitAndClickByLinkText("Sticky Application Header, Top Group and View Header");
-        waitAndClickByLinkText("Sticky application header, top group, and View header");
+        waitAndClickByXpath("//div[@id='Demo-StickyHeader-Example4']/a");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-TopGroupWrapper' and @data-sticky='true']");
-        assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
         switchToWindow("Kuali");
     }
     
@@ -80,28 +77,67 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("All header content sticky");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//div[@id='Uif-TopGroupWrapper' and @data-sticky='true']");
-        assertElementPresentByXpath("//div[@class='uif-viewHeader-contentWrapper uif-sticky' and @data-sticky='true']");
         assertElementPresentByXpath("//div[@id='Uif-BreadcrumbWrapper' and @data-sticky='true']");
         switchToWindow("Kuali");
     }
     
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderBookmark() throws Exception {
-        testGeneralFeaturesExample5();
-        testGeneralFeaturesExample4();
-        testGeneralFeaturesExample3();
-        testGeneralFeaturesExample2();
-        testGeneralFeaturesExample1();
+    public void testGeneralFeaturesUnifiedViewHeader1Bookmark() throws Exception{
+    	testGeneralFeaturesExample1();
         passed();
     }
-
+    
     @Test
-    public void testGeneralFeaturesUnifiedViewHeaderNav() throws Exception {
-        testGeneralFeaturesExample5();
-        testGeneralFeaturesExample4();
-        testGeneralFeaturesExample3();
-        testGeneralFeaturesExample2();
-        testGeneralFeaturesExample1();
+    public void testGeneralFeaturesUnifiedViewHeader1Nav() throws Exception{
+    	testGeneralFeaturesExample1();
         passed();
-    }  
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader2Bookmark() throws Exception{
+    	testGeneralFeaturesExample2();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader2Nav() throws Exception{
+    	testGeneralFeaturesExample2();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader3Bookmark() throws Exception{
+    	testGeneralFeaturesExample3();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader3Nav() throws Exception{
+    	testGeneralFeaturesExample3();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader4Bookmark() throws Exception{
+    	testGeneralFeaturesExample4();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader4Nav() throws Exception{
+    	testGeneralFeaturesExample4();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader5Bookmark() throws Exception{
+    	testGeneralFeaturesExample5();
+        passed();
+    }
+    
+    @Test
+    public void testGeneralFeaturesUnifiedViewHeader5Nav() throws Exception{
+    	testGeneralFeaturesExample5();
+        passed();
+    }
 }

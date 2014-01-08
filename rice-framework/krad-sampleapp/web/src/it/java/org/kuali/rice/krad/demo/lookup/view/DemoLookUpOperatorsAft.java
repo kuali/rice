@@ -87,13 +87,12 @@ public class DemoLookUpOperatorsAft extends WebDriverLegacyITBase {
     private void waitAndTestTravelAccountInput(String inputValue, String [] assertPresentStringValue, String assertNotPresentStringValue) throws InterruptedException{
     	 waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER,inputValue);
          waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-         if(assertPresentStringValue!=null){
-        	 for(int i=0; i<assertPresentStringValue.length ; i++)
-        	 {
+         if(assertPresentStringValue!=null) {
+        	 for(int i=0; i<assertPresentStringValue.length ; i++) {
         		 waitForElementPresentByXpath("//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
         	 }
          }
-         if(assertNotPresentStringValue!=null){
+         if(assertNotPresentStringValue!=null) {
         	 waitForElementNotPresent(By.xpath(assertNotPresentStringValue));
          }
          waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
@@ -102,13 +101,12 @@ public class DemoLookUpOperatorsAft extends WebDriverLegacyITBase {
     private void waitAndTestTravelAccountNameInput(String inputValue, String [] assertPresentStringValue, String assertNotPresentStringValue) throws InterruptedException{
    	 waitAndTypeByName(TRAVEL_ACCOUNT_NAME,inputValue);
         waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-        if(assertPresentStringValue!=null){
-        	for(int i=0; i<assertPresentStringValue.length ; i++)
-	       	 {
+        if(assertPresentStringValue!=null) {
+        	for(int i=0; i<assertPresentStringValue.length ; i++) {
 	       		 waitForElementPresentByXpath("//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
 	       	 }
         }
-        if(assertNotPresentStringValue!=null){
+        if(assertNotPresentStringValue!=null) {
         	waitForElementNotPresent(By.xpath(assertNotPresentStringValue));
         }
         waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);

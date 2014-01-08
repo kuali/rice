@@ -51,13 +51,12 @@ public class ServerSideTestViewAft extends WebDriverLegacyITBase {
        Thread.sleep(4000);
        assertTextPresent("MinMax Length test: Must be between 2 and 5 characters long");
        assertTextPresent("MinMax Value test: Value must be greater than 2 and no more than 50");
-       assertTextPresent("Required constraint: 4 errors");
+       assertTextPresent(new String[]{"Required constraint", "4 errors"});
        
        //PreRequisite constraint
        waitForElementPresentByXpath("//input[@name='field7' and @disabled]");
-       waitAndClickByXpath("//input[@type='textbox' and @name='booleanField']");
-       if(isElementPresentByXpath("//input[@name='field7' and @disabled]"))
-       {
+       waitAndClickByXpath("//input[@type='checkbox' and @name='booleanField']");
+       if(isElementPresentByXpath("//input[@name='field7' and @disabled]")) {
            fail("PreRequisite Constraint isn't working !");
        }
        

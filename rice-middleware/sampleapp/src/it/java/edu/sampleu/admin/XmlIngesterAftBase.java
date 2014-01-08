@@ -146,7 +146,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
         // confirm all files were uploaded successfully
         Thread.sleep(1000);
         for(File file: fileUploadList) {
-            waitForTextPresent("Ingested xml doc: " + file.getName());
+            waitForTextPresent("Ingested xml doc: " + file.getName(), 360);
         }
     }
 

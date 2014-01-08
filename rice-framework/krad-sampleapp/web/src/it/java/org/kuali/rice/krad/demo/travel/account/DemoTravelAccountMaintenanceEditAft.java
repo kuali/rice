@@ -101,7 +101,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUB_ACCOUNT_FIELD,"blah");
         waitAndTypeByName(SUB_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
+//        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer an input field
 //        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText("Save");
         Thread.sleep(1000);

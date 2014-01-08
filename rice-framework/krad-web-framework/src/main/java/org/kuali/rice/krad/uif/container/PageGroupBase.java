@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -28,6 +29,7 @@ import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,6 +107,24 @@ public class PageGroupBase extends GroupBase implements PageGroup {
         }
 
         breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getAdditionalTemplates() {
+        List<String> additionalTemplates = super.getAdditionalTemplates();
+
+        Header viewHeader = ViewLifecycle.getView().getHeader();
+        if (viewHeader != null) {
+            if (additionalTemplates.isEmpty()) {
+                additionalTemplates = new ArrayList<String>();
+            }
+            additionalTemplates.add(viewHeader.getTemplate());
+        }
+
+        return additionalTemplates;
     }
 
     /**

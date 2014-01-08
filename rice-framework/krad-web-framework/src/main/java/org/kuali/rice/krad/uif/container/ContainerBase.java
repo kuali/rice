@@ -166,10 +166,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
         if (layoutManager != null) {
             if (additionalTemplates.isEmpty()) {
-                return Collections.singletonList(layoutManager.getTemplate());
-            } else {
-                additionalTemplates.add(layoutManager.getTemplate());
+                additionalTemplates = new ArrayList<String>();
             }
+            additionalTemplates.add(layoutManager.getTemplate());
         }
         
         return additionalTemplates;

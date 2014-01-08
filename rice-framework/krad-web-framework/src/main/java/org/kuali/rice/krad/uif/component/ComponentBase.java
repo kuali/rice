@@ -2215,7 +2215,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             return script;
         }
 
-        String selector = "var dataComponent = jQuery('#" + this.getId() + "');";
+        String id = this.getId().replace(".", "\\\\.");
+        String selector = "var dataComponent = jQuery('#" + id + "');";
         script = ScriptUtils.appendScript(script, selector);
 
         for (Map.Entry<String, String> data : getScriptDataAttributes().entrySet()) {

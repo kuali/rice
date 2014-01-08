@@ -155,6 +155,7 @@ public class FreeMarkerInlineRenderUtils {
     public static void renderTemplate(Environment env, Component component, String body,
             boolean componentUpdate, boolean includeSrc, Map<String, TemplateModel> tmplParms)
             throws TemplateException, IOException {
+        String dataJsScripts = "";
         String templateJsScripts = "";
 
         if (component == null) {
@@ -205,7 +206,7 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             if (StringUtils.hasText(s = component.getScriptDataAttributesJs())) {
-                templateJsScripts += s;
+                dataJsScripts += s;
             }
 
             if (StringUtils.hasText(s = component.getPostRenderContent())) {
@@ -215,6 +216,7 @@ public class FreeMarkerInlineRenderUtils {
         }
 
         if (componentUpdate) {
+            renderScript(dataJsScripts, component, UifConstants.RoleTypes.DATA_SCRIPT, out);
             renderScript(templateJsScripts, component, null, out);
             return;
         }
@@ -274,9 +276,8 @@ public class FreeMarkerInlineRenderUtils {
             }
         }
 
-        if (StringUtils.hasText(templateJsScripts)) {
-            renderScript(templateJsScripts, component, null, out);
-        }
+        renderScript(dataJsScripts, component, UifConstants.RoleTypes.DATA_SCRIPT, out);
+        renderScript(templateJsScripts, component, null, out);
 
         renderTooltip(component, out);
     }

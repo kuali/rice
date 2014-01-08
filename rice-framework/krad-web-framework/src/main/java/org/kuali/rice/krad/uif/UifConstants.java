@@ -359,6 +359,7 @@ public class UifConstants {
     public static final class RoleTypes {
         public static final String ACTION = "Action";
         public static final String CONTROL = "Control";
+        public static final String DATA_SCRIPT = "dataScript";
         public static final String INPUT_FIELD = "InputField";
         public static final String GROUP = "Group";
         public static final String GROUP_TOTAL = "groupTotal";

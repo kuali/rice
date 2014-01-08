@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 
@@ -53,7 +54,9 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
         }
         jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
         jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
-		// jpaProperties.put(PersistenceUnitProperties.WEAVING, "false");
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty("rice.krad.data.weaving.disable", false)) {
+            jpaProperties.put(PersistenceUnitProperties.WEAVING, "false");
+        }
 		LOG.info("EclipseLink JPA properties " + jpaProperties);
     }
 

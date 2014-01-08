@@ -47,8 +47,12 @@ class BeanTransformerTestBase {
         return config;
     }
 
-    public void checkBeanParentExists(def rootNode, String parentName) {
-        Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    public void checkBeanExistsByParentId(def rootNode, String parentName) {
+        Assert.assertTrue("root should contains bean with parent id " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    }
+
+    public void checkBeanExistsById(def rootNode, String beanId) {
+        Assert.assertTrue("root should contains bean with id " + beanId, rootNode.bean.findAll { beanId.equals(it.@id) }.size() > 0);
     }
 
     public File getTestResourceFile(String relativeFilePath) {
@@ -75,7 +79,7 @@ class BeanTransformerTestBase {
     public void checkBeanPropertyValueExists(def beanNode, String propertyName, String propertyValue) {
         checkBeanPropertyExists(beanNode,propertyName)
         def value = beanNode.property.find { propertyName.equals(it.@name) }?.@value;
-        Assert.assertEquals("property should contains value " + propertyName, propertyValue, value);
+        Assert.assertEquals("" + propertyName + "exists but should contains value", propertyValue, value);
     }
 
     public Node getFileRootNode(String filepath) {

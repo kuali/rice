@@ -58,7 +58,7 @@ class LookupDefinitionBeanTransformerTest extends BeanTransformerTestBase {
         }
 
         // confirm a uif inquiry view was generated and has the correct elements
-        checkBeanParentExists(ddRootNode, "Uif-LookupView");
+        checkBeanExistsByParentId(ddRootNode, "Uif-LookupView");
         checkBeanPropertyExists(resultNode, "criteriaFields");
         checkBeanPropertyExists(resultNode, "resultFields");
     }

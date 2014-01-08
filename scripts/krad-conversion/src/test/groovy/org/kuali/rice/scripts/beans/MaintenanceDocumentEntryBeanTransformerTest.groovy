@@ -45,21 +45,30 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
      * Verifies maintenance document entry has been converted into a valid maintenance doc entry and view
      */
     @Test
-    void testTransformMaintenanceDocumentEntryBeanPlaceholder() {
+    void testTransformMaintenanceDocumentEntryBeanWithPlaceholder() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
-        ddRootNode.bean.each { bean -> maintenanceDocumentEntryBeanTransformer.fixNamespaceProperties(bean) }
-
-        def beanNode = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@parent) }
+        def parentBeanId = "AttachmentSampleMaintenanceDocument-parentBean";
+        def childBeanId = "AttachmentSampleMaintenanceDocument";
+        def parentBeanNode = ddRootNode.bean.find { parentBeanId.equals(it.@id) }
+        def childBeanNode = ddRootNode.bean.find { childBeanId.equals(it.@id) }
 
         try {
-            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(beanNode);
+            // ensure relationship between parent and child bean is setup before conversion
+            maintenanceDocumentEntryBeanTransformer.parentBeans.put("AttachmentSampleMaintenanceDocument","AttachmentSampleMaintenanceDocument-parentBean");
+            maintenanceDocumentEntryBeanTransformer.parentBeans.put("AttachmentSampleMaintenanceDocument-parentBean","MaintenanceDocumentEntry");
+
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(childBeanNode);
+            maintenanceDocumentEntryBeanTransformer.transformMaintenanceDocumentEntryBean(parentBeanNode);
+
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(ddRootNode, "AttachmentSampleMaintenanceDocument-uifMaintenanceDocumentEntry-parentBean");
-        checkBeanParentExists(ddRootNode, "AttachmentSampleMaintenanceDocument-MaintenanceView-parentBean");
+        checkBeanExistsById(ddRootNode, "AttachmentSampleMaintenanceDocument-uifMaintenanceDocumentEntry-parentBean");
+        checkBeanExistsById(ddRootNode, "AttachmentSampleMaintenanceDocument-MaintenanceView-parentBean");
+        checkBeanExistsById(ddRootNode, "AttachmentSampleMaintenanceDocument-uifMaintenanceDocumentEntry");
+        checkBeanExistsById(ddRootNode, "AttachmentSampleMaintenanceDocument-MaintenanceView");
     }
 
     /**
@@ -77,7 +86,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        checkBeanExistsByParentId(ddRootNode, "uifMaintenanceDocumentEntry");
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
         def mdeCheckedProperties = ["documentClass","allowsRecordDeletion"];
         checkBeanStructure(resultMDENode, mdeCheckedProperties, ["businessObjectEntry"]);
@@ -91,7 +100,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
                 "org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase");
 
         def umvCheckedProperties = ["dataObjectClassName"];
-        checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
+        checkBeanExistsByParentId(ddRootNode, "Uif-MaintenanceView");
         def resultMVNode = ddRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
         checkBeanStructure(resultMVNode, umvCheckedProperties, ["maintainableSections"]);
 
@@ -114,7 +123,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        checkBeanExistsByParentId(ddRootNode, "uifMaintenanceDocumentEntry");
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
         checkBeanPropertyValueExists(resultMDENode, "documentPresentationControllerClass", "");
 
@@ -145,7 +154,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(ddRootNode, "uifMaintenanceDocumentEntry");
+        checkBeanExistsByParentId(ddRootNode, "uifMaintenanceDocumentEntry");
         def resultMDENode = ddRootNode.bean.find { "uifMaintenanceDocumentEntry".equals(it.@parent) }
         checkBeanPropertyValueExists(resultMDENode, "documentAuthorizerClass", "");
 
@@ -402,7 +411,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             e.printStackTrace();
             Assert.fail("exception occurred in testing");
         }
-        checkBeanParentExists(ddRootNode, "Uif-MaintenanceView");
+        checkBeanExistsByParentId(ddRootNode, "Uif-MaintenanceView");
 
         def resultMDENode = ddRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
         checkBeanPropertyExists(resultMDENode, "additionalScriptFiles");
@@ -429,7 +438,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
             Assert.fail("exception occurred in testing");
         }
 
-        checkBeanParentExists(customRootNode, "Uif-MaintenanceView");
+        checkBeanExistsByParentId(customRootNode, "Uif-MaintenanceView");
 
         def resultNode = customRootNode.bean.find { "Uif-MaintenanceView".equals(it.@parent) }
         checkBeanPropertyNotExists(resultNode, "additionalScriptFiles");

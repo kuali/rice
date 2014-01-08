@@ -503,38 +503,42 @@ class SpringBeanTransformer {
      * @param beanNode
      */
     def isPlaceholder(Node beanNode) {
-        if (beanNode.property.size() == 0) {
-            return true;
+        if (beanNode?.property?.size() > 0) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     def collectBeanCopyAttributes(Node beanNode, List<String> copyAttributes) {
-      return beanNode?.attributes()?.clone()?.findAll { copyAttributes.contains(it.key)};
+        def returnAttributes = beanNode?.attributes()?.clone()?.findAll { copyAttributes.contains(it.key) };
+        return returnAttributes != null ? returnAttributes : [:];
     }
 
     def collectBeanRenameAttributes(Node beanNode, Map<String, String> renameAttributes) {
-        return beanNode?.attributes()?.clone()?.findAll { key, value ->
-            renameAttributes.keySet().contains(key)
-        }.collectEntries { key, value ->
+        def copyAttributes = new ArrayList<String>(renameAttributes?.keySet());
+        def beanAttributes = collectBeanCopyAttributes(beanNode, copyAttributes);
+        def returnAttributes = beanAttributes?.collectEntries { key, value ->
             [renameAttributes.get(key),value]
         };
+
+        return returnAttributes != null ? returnAttributes : [:];
     }
 
     def collectCopyNamespaceProperties(Node beanNode, List<String> copyProperties) {
-        return beanNode?.attributes()?.clone()?.findAll { key, value ->
-            key instanceof QName && copyProperties?.contains(((QName)key).getLocalPart())
-         };
+        def beanNSAttributes = beanNode?.attributes()?.clone()?.findAll { it.key instanceof QName};
+        def returnProperties = beanNSAttributes?.findAll { copyProperties?.contains(((QName)it.key).getLocalPart()) };
+        return returnProperties != null ? returnProperties : [:];
     }
 
     def collectRenameNamespaceProperties(Node beanNode, Map<String, String> renameProperties) {
-        return beanNode?.attributes()?.clone()?.findAll { key, value ->
-            // find all namespace propertier that are in the renameProperties keyset
-            key instanceof QName && renameProperties?.keySet()?.contains(((QName)key).getLocalPart())
-        }.collectEntries { QName key, value ->
+        def copyProperties = new ArrayList<String>(renameProperties?.keySet());
+        def beanAttributes = collectCopyNamespaceProperties(beanNode, copyProperties);
+        def returnProperties = beanAttributes?.collectEntries { QName key, value ->
             [new QName(key.getNamespaceURI(), renameProperties.get(key.getLocalPart()), key.getPrefix()), value]
         }
+
+        return returnProperties != null ? returnProperties : [:];
     }
 
     /**
@@ -566,11 +570,11 @@ class SpringBeanTransformer {
         def renamedAttributes = collectBeanRenameAttributes(beanNode, renameAttributes);
         beanAttributes.putAll(copiedAttributes + renamedAttributes);
 
-        if (useCarryoverAttributes) {
+        if (useCarryoverAttributes && beanNode?.attributes()?.size() > 0) {
             carryoverBeanAttributes = beanNode?.attributes()?.clone();
-            carryoverBeanAttributes.keySet().removeAll{it instanceof QName};
-            carryoverBeanAttributes.keySet().removeAll(copyAttributes);
-            carryoverBeanAttributes.keySet().removeAll(renameAttributes.keySet());
+            carryoverBeanAttributes?.keySet()?.removeAll{it instanceof QName};
+            carryoverBeanAttributes?.keySet()?.removeAll(copyAttributes);
+            carryoverBeanAttributes?.keySet()?.removeAll(renameAttributes.keySet());
 
             if (ignoreAttributes.size() > 0) {
                 carryoverBeanAttributes.keySet().removeAll(ignoreAttributes);
@@ -588,11 +592,11 @@ class SpringBeanTransformer {
         def copiedNamespaceProperties = collectCopyNamespaceProperties(beanNode, copyProperties);
         def renamedNamespaceProperties = collectRenameNamespaceProperties(beanNode, renameProperties);
 
-        log.fine "copied properties for " + copyProperties.join(",") + " " + copiedNamespaceProperties;
-        log.fine "renamed properties for " + renameProperties.keySet().join(",") + renamedNamespaceProperties;
+        log.fine "copied properties for " + copyProperties.join(",") + " " + copiedNamespaceProperties?.keySet().join(",");
+        log.fine "renamed properties for " + renameProperties.keySet().join(",") + renamedNamespaceProperties?.keySet().join(",");
         namespaceProperties.putAll(copiedNamespaceProperties + renamedNamespaceProperties);
 
-        if(useCarryoverProperties) {
+        if(useCarryoverProperties && beanNode?.attributes()?.size() > 0) {
             carryoverBeanAttributes = beanNode?.attributes()?.clone();
             carryoverBeanAttributes.keySet().removeAll{!(it instanceof QName)};
             carryoverBeanAttributes.keySet().removeAll{
@@ -650,7 +654,8 @@ class SpringBeanTransformer {
         namespaceProperties = collectNamespaceProperties(beanNode, copyProperties, renameProperties, ignoreProperties);
 
         // return the set with ordering id, attributes, properties, and parent
-        return idAttribute + beanAttributes + namespaceProperties + parentAttribute;
+        def returnAttributes = idAttribute + beanAttributes + namespaceProperties + parentAttribute;
+        return returnAttributes;
     }
 
     public static String getNodeString(Node rootNode) {
@@ -665,12 +670,12 @@ class SpringBeanTransformer {
      *
      * @param beanNode
      */
-    def fixNamespaceProperties(beanNode) {
+    def fixNamespaceProperties(Node beanNode) {
         def count = 0;
-        log.finer "loading " + beanNode.attributes()
+        log.finer "loading " + beanNode?.attributes()?.clone()
         def remAttrs = []
-        if (beanNode.attributes()) {
-            def attrs = beanNode.attributes()
+        if (beanNode?.attributes()?.size()) {
+            def attrs = beanNode?.attributes()?.clone()
 
             attrs.keySet().each {
                 count++

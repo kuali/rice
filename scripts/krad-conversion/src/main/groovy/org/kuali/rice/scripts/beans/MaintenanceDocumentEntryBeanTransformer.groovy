@@ -38,8 +38,8 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     def mdeIgnoreOnCarryoverAttributes = []
 
     // UMV Conversion Components - include
-    def umvCopyProperties = ["businessObjectClass", "maintainableClass", "documentTypeName", "lockingKeys"]
-    def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName", "dataObjectClass": "dataObjectClassName"]
+    def umvCopyProperties = ["maintainableClass", "documentTypeName", "lockingKeys"]
+    def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName"] // , "dataObjectClass": "dataObjectClassName"
     def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections","documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
     def umvIgnoreOnCarryoverAttributes = []
 
@@ -52,7 +52,6 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformMaintenanceDocumentEntryBean(Node beanNode) {
-        fixNamespaceProperties(beanNode);
         def maintDocParentBeanNode = beanNode;
 
         def mdeBeanAttributes = convertBeanAttributes(beanNode, maintenanceDefinitionBeanType, maintenanceDocEntryBeanType, [],[:], mdeIgnoreOnCarryoverAttributes,
@@ -71,7 +70,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry");
             beanNode.plus{ bean(umvBeanAttributes) }
         } else {
-            beanNode.replaceNode {
+            beanNode?.replaceNode {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance View")
                 bean(umvBeanAttributes) {
                     copyProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
@@ -95,7 +94,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     def findCarryoverProperties(Node beanNode, def copyPropertiesList, def renamePropertiesList, def ignorePropertiesList) {
         def carryoverPropertiesList = []
-        if (useCarryoverProperties) {
+        if (useCarryoverProperties && beanNode?.property?.size() > 0) {
             carryoverPropertiesList = beanNode.property.collect { it.@name };
             carryoverPropertiesList.removeAll(copyPropertiesList);
             carryoverPropertiesList.removeAll(renamePropertiesList);
@@ -529,7 +528,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         if(attrPropMap?.get("unconditionallyReadOnly")) {
             builder.property(name:"readOnly", value:attrPropMap?.get("unconditionallyReadOnly"));
         }
-        else if(attrPropMap?.get("readOnlyAfterAdd")) {
+        else if(attrPropMap?.get("readOnlyAfterAdd")?.equals("true")) {
             builder.property(name:"readOnly", value:"@{!#isAddLine}");
         }
     }

@@ -76,7 +76,7 @@ class BusinessObjectEntryBeanTransformerTest extends BeanTransformerTestBase {
 
             log.finer("resulting node is " + getNodeString(beanNode));
             def constraintProperty = beanNode.property.find { "validCharactersConstraint".equals(it.@name) };
-            checkBeanParentExists(constraintProperty, "NumericPatternConstraint");
+            checkBeanExistsByParentId(constraintProperty, "NumericPatternConstraint");
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail("exception occurred in testing");
@@ -91,7 +91,7 @@ class BusinessObjectEntryBeanTransformerTest extends BeanTransformerTestBase {
             businessObjectEntryBeanTransformer.transformValidationPatternProperty(beanNode, true);
             checkBeanPropertyExists(beanNode, "validCharactersConstraint");
             def constraintProperty = beanNode.property.find { "validCharactersConstraint".equals(it.@name) };
-            checkBeanParentExists(constraintProperty, "JavaClassPatternConstraint");
+            checkBeanExistsByParentId(constraintProperty, "JavaClassPatternConstraint");
             def constraintBean = constraintProperty.bean.find { "JavaClassPatternConstraint".equals(it.@parent) };
             checkBeanPropertyExists(constraintBean, "value");
             checkBeanPropertyExists(constraintBean, "messageKey");

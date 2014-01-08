@@ -16,12 +16,9 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
-import groovy.xml.XmlUtil
-import org.codehaus.plexus.util.FileUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.scripts.ConversionUtils
 
 /**
  * Tests for the {@link org.kuali.rice.scripts.beans.InquiryDefinitionBeanTransformer} class.
@@ -56,7 +53,7 @@ class InquiryDefinitionBeanTransformerTest extends BeanTransformerTestBase {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def beanNode = ddRootNode.bean.find { inquiryDefinitionBeanType.equals(it.@parent) };
         def resultNode = inquiryDefinitionBeanTransformer.transformInquiryDefinitionBean(beanNode);
-        checkBeanParentExists(ddRootNode, "Uif-InquiryView");
+        checkBeanExistsByParentId(ddRootNode, "Uif-InquiryView");
         checkBeanPropertyExists(resultNode, "items");
 
     }

@@ -105,6 +105,18 @@
     </property>
   </bean>
 
+  <bean id="AttachmentSampleMaintenanceDocument-ReadOnlyProperty-parentBean"
+        abstract="true" parent="MaintainableSectionDefinition">
+    <property name="title" value="Attachment Sample Maintenance"/>
+    <property name="defaultOpen" value="true"/>
+    <property name="maintainableItems">
+      <list>
+        <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true" p:readOnlyAfterAdd="true" />
+        <bean parent="MaintainableFieldDefinition" p:name="description" p:unconditionallyReadOnly="false"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="AttachmentSampleMaintenanceDocument-EditAttachment-parentBean" abstract="true"
         parent="MaintainableSectionDefinition">
     <property name="id" value="Edit attachment"/>

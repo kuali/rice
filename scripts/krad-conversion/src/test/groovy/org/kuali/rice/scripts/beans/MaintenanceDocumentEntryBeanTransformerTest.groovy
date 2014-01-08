@@ -447,46 +447,27 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
     @Test
     public void transformWebUILeaveFunction() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
-        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-DocumentMaintenance-parentBean".equals(it.@id) };
+        def parentBeanId = "AttachmentSampleMaintenanceDocument-DocumentMaintenance-parentBean";
+        def parentBean = ddRootNode.bean.find { parentBeanId.equals(it.@id) };
+        def fieldBeans = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean;
 
-        def descriptionFieldBean = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean.
-                find { hasPropertyValue(it, "name", "description") }
+        // each test case contains [<bean name>, <expected onBlurScript value after conversion> ]
+        def testCases = [
+                ["description", "onblur_alertDescription(this);"],
+                ["license", "onblur_alertLicense(this,onblur_alertLicense_CallBack);"],
+                ["attachmentFile", "onblur_attachmentFile(this,{@license});"]];
 
-        def resultBean = descriptionFieldBean.replaceNode {
-            maintenanceDocumentEntryBeanTransformer.
-                    transformMaintainableFieldDefinitionBean(delegate, descriptionFieldBean);
+        testCases.each { beanName, expectedValue ->
+            def fieldBean = fieldBeans.find { hasPropertyValue(it, "name", beanName) }
+            def resultBean = fieldBean.replaceNode {
+                maintenanceDocumentEntryBeanTransformer.
+                        transformMaintainableFieldDefinitionBean(delegate, fieldBean);
+            }
+
+            checkBeanPropertyValueExists(resultBean, "onBlurScript", expectedValue);
         }
-
-        checkBeanPropertyExists(resultBean, "onBlurScript");
-        def onBlurScript = resultBean.property.find { "onBlurScript".equals(it.@name) }.@value;
-        Assert.assertNotNull(onBlurScript);
-        Assert.assertEquals("onblur_alertDescription(this);", onBlurScript);
-
-        def licenseFieldBean = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean.
-                find { hasPropertyValue(it, "name", "license") }
-
-        resultBean = licenseFieldBean.replaceNode {
-            maintenanceDocumentEntryBeanTransformer.
-                    transformMaintainableFieldDefinitionBean(delegate, licenseFieldBean);
-        }
-
-        checkBeanPropertyExists(resultBean, "onBlurScript");
-        onBlurScript = resultBean.property.find { "onBlurScript".equals(it.@name) }.@value;
-        Assert.assertNotNull(onBlurScript);
-        Assert.assertEquals("onblur_alertLicense(this,onblur_alertLicense_CallBack);", onBlurScript);
-
-        def attachmentFieldBean = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean.
-                find { hasPropertyValue(it, "name", "attachmentFile") }
-        resultBean = attachmentFieldBean.replaceNode {
-            maintenanceDocumentEntryBeanTransformer.
-                    transformMaintainableFieldDefinitionBean(delegate, attachmentFieldBean);
-        }
-        checkBeanPropertyExists(resultBean, "onBlurScript");
-        onBlurScript = resultBean.property.find { "onBlurScript".equals(it.@name) }.@value;
-        Assert.assertNotNull(onBlurScript);
-        Assert.assertEquals("onblur_attachmentFile(this,{@license});", onBlurScript);
-
     }
+
 
     /**
      * retrieves collection definition from a maintenance document entry

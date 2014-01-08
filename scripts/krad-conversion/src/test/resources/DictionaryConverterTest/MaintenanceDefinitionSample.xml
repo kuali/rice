@@ -89,11 +89,18 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="id" p:required="true" p:readOnlyAfterAdd="true" />
-        <bean parent="MaintainableFieldDefinition" p:name="description" p:unconditionallyReadOnly="false" />
-        <bean parent="MaintainableFieldDefinition" p:name="license" p:required="true" p:defaultValueFinderClass="edu.sampleu.attachments.licenseTypeValueFinder"/>
+        <bean parent="MaintainableFieldDefinition" p:name="description" p:unconditionallyReadOnly="false" p:webUILeaveFieldFunction="onblur_alertDescription"/>
+        <bean parent="MaintainableFieldDefinition" p:name="license" p:required="true" p:defaultValueFinderClass="edu.sampleu.attachments.licenseTypeValueFinder"
+              p:webUILeaveFieldFunction="onblur_alertLicense" p:webUILeaveFieldCallbackFunction ="onblur_alertLicense_CallBack"/>
         <bean parent="MaintainableFieldDefinition" p:name="attachmentFile"
                                                    p:additionalDisplayAttributeName="contentType"
-                                                   p:alternateDisplayAttributeName="fileName"/>
+                                                   p:alternateDisplayAttributeName="fileName" p:webUILeaveFieldFunction="onblur_attachmentFile">
+          <property name="webUILeaveFieldFunctionParameters">
+            <list>
+              <value>license</value>
+            </list>
+          </property>
+        </bean>  />
       </list>
     </property>
   </bean>

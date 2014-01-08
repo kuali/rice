@@ -188,10 +188,9 @@ public class Header extends ContentElementBase {
         if (help != null) {
             String helpTemplate = help.getTemplate();
             if (additionalTemplates.isEmpty()) {
-                return Collections.singletonList(helpTemplate);
-            } else {
-                additionalTemplates.add(helpTemplate);
+                additionalTemplates = new ArrayList<String>();
             }
+            additionalTemplates.add(helpTemplate);
         }
         
         return additionalTemplates;

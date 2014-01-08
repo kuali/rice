@@ -240,7 +240,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
     }
 
     @Test
-    public void testTransformFieldDefinitionBean() {
+    public void testTransformMaintainableFieldDefinitionBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-DocumentMaintenance-parentBean".equals(it.@id) };
 
@@ -537,39 +537,29 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
         Assert.assertEquals("number of converted section definitions", 1, helpBeanCount);
     }
 
-
     /**
      * Tests to confirm the creation of a readonly property
-     *
-     */
+     **/
     @Test
     public void testTransformReadOnlyProperty() {
         // setup root bean and locate beans with readonly-related property
-        def evalBeanParentName = "AttachmentSampleMaintenanceDocument-DocumentMaintenance-parentBean";
         def ddRootNode = getFileRootNode(defaultTestFilePath);
-        def parentBean = ddRootNode.bean.find { evalBeanParentName.equals(it.@id) };
+        def parentBeanId = "AttachmentSampleMaintenanceDocument-ReadOnlyProperty-parentBean";
+        def parentBean = ddRootNode.bean.find { parentBeanId.equals(it.@id) };
         def fieldBeans = parentBean.property.find { "maintainableItems".equals(it.@name) }.list.bean;
 
-        // test unconditionally read only
-        def descriptionFieldBean = fieldBeans.find { hasPropertyValue(it, "name", "description") }
+        // each test case contains [<bean name>, <expected readOnly value after conversion> ]
+        def testCases = [["description", "false"], ["id", "@{!#isAddLine}"]];
 
-        // run conversion on property
-        def resultBean = descriptionFieldBean.replaceNode { bean {
-                maintenanceDocumentEntryBeanTransformer.transformReadOnlyProperty(delegate, descriptionFieldBean);
+        testCases.each { beanName, expectedValue ->
+            def fieldBean = fieldBeans.find { hasPropertyValue(it, "name", beanName) }
+            def resultBean = fieldBean.replaceNode {
+                maintenanceDocumentEntryBeanTransformer.
+                        transformMaintainableFieldDefinitionBean(delegate, fieldBean);
             }
+
+            checkBeanPropertyValueExists(resultBean, "readOnly", expectedValue);
         }
-
-        checkBeanPropertyValueExists(resultBean, "readOnly", "false");
-
-        // test readOnlyAfterAdd
-        def idFieldBean = fieldBeans.find { hasPropertyValue(it, "name", "id") }
-
-        resultBean = idFieldBean.replaceNode { bean {
-                maintenanceDocumentEntryBeanTransformer.transformReadOnlyProperty(delegate, idFieldBean);
-            }
-        }
-
-        checkBeanPropertyValueExists(resultBean, "readOnly", "@{!#isAddLine}");
 
     }
 

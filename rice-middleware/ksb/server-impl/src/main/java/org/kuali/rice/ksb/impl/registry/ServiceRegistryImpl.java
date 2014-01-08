@@ -180,7 +180,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
             getDataObjectService().deleteMatching(ServiceInfoBo.class,builder.build());
 
             builder = QueryByCriteria.Builder.create();
-            builder.setPredicates(equal("descriptor",serviceInfoBo.getServiceDescriptorId()));
+            builder.setPredicates(equal("id",serviceInfoBo.getServiceDescriptorId()));
             getDataObjectService().deleteMatching(ServiceDescriptorBo.class,builder.build());
 			return endpointPriorRemoval;
 		}

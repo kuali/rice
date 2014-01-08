@@ -38,7 +38,7 @@ public interface ServiceInfoContract extends Versioned {
 	 * @return the identifier for the service, will only be null if the
 	 * service has not yet been published to the registry
 	 */
-	public String getServiceId();
+	String getServiceId();
 
 	/**
 	 * Returns the name of the service as a qualified name consisting of a
@@ -46,28 +46,28 @@ public interface ServiceInfoContract extends Versioned {
 	 * 
 	 * @return the name of the service, should never be null
 	 */
-	public QName getServiceName();
+	QName getServiceName();
 
 	/**
 	 * Returns the URL of the service as a string.
 	 * 
 	 * @return the url of the service, should never be null or blank
 	 */
-	public String getEndpointUrl();
+	String getEndpointUrl();
 	
 	/**
 	 * Returns the id of the instance that published and owns the service.
 	 * 
 	 * @return the instance id of this service, should never be null or blank
 	 */
-	public String getInstanceId();
+	String getInstanceId();
 	
 	/**
 	 * Returns the id of the application that published and owns the service.
 	 * 
 	 * @return the application id of this service, should never be null or blank
 	 */
-	public String getApplicationId();
+	String getApplicationId();
 
 	/**
 	 * Return the IP address of the server on which the application is running which
@@ -76,7 +76,7 @@ public interface ServiceInfoContract extends Versioned {
 	 * 
 	 * @return the IP address of this service, should never be null or blank
 	 */
-	public String getServerIpAddress();
+	String getServerIpAddress();
 	
 	/**
 	 * Returns the type of this service.  Will generally distinguish the format
@@ -85,7 +85,7 @@ public interface ServiceInfoContract extends Versioned {
 	 * 
 	 * @return the type of this service, should never be null or blank
 	 */
-	public String getType();
+	String getType();
 	
 	/**
 	 * Returns the version information of this service.  The publisher of the
@@ -96,14 +96,14 @@ public interface ServiceInfoContract extends Versioned {
 	 * @return the version of this service, or {@link CoreConstants.Versions#UNSPECIFIED}
 	 * if no version has been secified, should never return a null or blank value
 	 */
-	public String getServiceVersion();
+	String getServiceVersion();
 	
 	/**
 	 * Return the status of the service endpoint represented by this service.
 	 * 
 	 * @return the status of this service
 	 */
-	public ServiceEndpointStatus getStatus();
+	ServiceEndpointStatus getStatus();
 	
 	/**
 	 * Returns the id of the service descriptor for this service.  This id can
@@ -113,7 +113,7 @@ public interface ServiceInfoContract extends Versioned {
 	 * @return the id of the service descriptor for this service, will only return
 	 * a null value if the service has not yet been published
 	 */
-	public String getServiceDescriptorId();
+	String getServiceDescriptorId();
 
 	/**
 	 * Returns a checksum value for the {@link ServiceConfiguration} stored in the
@@ -122,6 +122,17 @@ public interface ServiceInfoContract extends Versioned {
 	 * 
 	 * @return the checksum for this service, should never return a null or blank value
 	 */
-	public String getChecksum();
+	String getChecksum();
+
+    /**
+     * Deprecated value which previously stored version number for optimistic locking purposes. Optimistic locking was
+     * never really necessary for service info. This method will always return 1.
+     * 
+     * @deprecated will always return 1
+     * @return 1
+     */
+    @Deprecated
+    @Override
+    Long getVersionNumber();
 	
 }

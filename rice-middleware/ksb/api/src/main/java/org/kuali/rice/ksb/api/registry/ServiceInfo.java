@@ -96,9 +96,10 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
     
     @XmlElement(name = Elements.CHECKSUM, required = true)
     private final String checksum;
-    
+
+    @Deprecated
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
-    private final Long versionNumber;
+    private final Long versionNumber = Long.valueOf(1);
     
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -120,7 +121,6 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
         this.status = null;
         this.serviceDescriptorId = null;
         this.checksum = null;
-        this.versionNumber = null;
     }
 
     private ServiceInfo(Builder builder) {
@@ -136,7 +136,6 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
         this.status = builderStatus == null ? null : builderStatus.getCode();
         this.serviceDescriptorId = builder.getServiceDescriptorId();
         this.checksum = builder.getChecksum();
-        this.versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -220,7 +219,6 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
         private ServiceEndpointStatus status;
         private String serviceDescriptorId;
         private String checksum;
-        private Long versionNumber;
 
         private Builder() {}
 
@@ -244,7 +242,6 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
             builder.setStatus(contract.getStatus());
             builder.setServiceDescriptorId(contract.getServiceDescriptorId());
             builder.setChecksum(contract.getChecksum());
-            builder.setVersionNumber(contract.getVersionNumber());
             return builder;
         }
 
@@ -308,9 +305,10 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
             return this.checksum;
         }
 
+        @Deprecated
         @Override
         public Long getVersionNumber() {
-            return this.versionNumber;
+            return Long.valueOf(1);
         }
 
         public void setServiceId(String serviceId) {
@@ -366,8 +364,14 @@ public final class ServiceInfo extends AbstractDataTransferObject implements Ser
             this.checksum = checksum;
         }
 
+        /**
+         * Version number is deprecated, so this method does nothing.
+         *
+         * @deprecated version number is no longer used
+         */
+        @Deprecated
         public void setVersionNumber(Long versionNumber) {
-            this.versionNumber = versionNumber;
+            // no longer does anything
         }
         
         private void assertNotNull(String name, Object object) {

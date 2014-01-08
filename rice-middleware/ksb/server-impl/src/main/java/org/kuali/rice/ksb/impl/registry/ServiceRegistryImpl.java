@@ -142,7 +142,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		ServiceInfoBo serviceInfoBo = ServiceInfoBo.from(serviceInfo);
 		serviceDescriptorBo = getDataObjectService().save(serviceDescriptorBo);
 		serviceInfoBo.setServiceDescriptorId(serviceDescriptorBo.getId());
-        getDataObjectService().save(serviceInfoBo);
+        serviceInfoBo = getDataObjectService().save(serviceInfoBo);
 		
 		
 		return ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),

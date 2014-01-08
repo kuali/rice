@@ -542,7 +542,6 @@ public class ServiceBusImpl extends BaseLifecycle implements ServiceBus, Initial
 		ServiceEndpoint.Builder builder = ServiceEndpoint.Builder.create(originalEndpoint);
 		builder.getInfo().setServiceId(registryServiceInfo.getServiceId());
 		builder.getInfo().setServiceDescriptorId(registryServiceInfo.getServiceDescriptorId());
-		builder.getInfo().setVersionNumber(registryServiceInfo.getVersionNumber());
 		builder.getDescriptor().setId(registryServiceInfo.getServiceDescriptorId());
 		return builder.build();
 	}

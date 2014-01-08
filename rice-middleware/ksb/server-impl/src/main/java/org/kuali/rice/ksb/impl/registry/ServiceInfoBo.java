@@ -25,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import javax.xml.namespace.QName;
 import java.io.Serializable;
 
@@ -78,10 +77,14 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 	
 	@Column(name = "CHKSM", length = 30)
 	private String checksum;
-	
-	@Version
+
+    @Deprecated
 	@Column(name = "VER_NBR")
 	private Long versionNumber;
+
+    public ServiceInfoBo() {
+        this.versionNumber = Long.valueOf(1);
+    }
 
     public String getServiceId() {
         return serviceId;
@@ -179,8 +182,14 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
         return versionNumber;
     }
 
+    /**
+     * Version number is deprecated, so this method does nothing.
+     *
+     * @deprecated version number is no longer used
+     */
+    @Deprecated
     public void setVersionNumber(Long versionNumber) {
-        this.versionNumber = versionNumber;
+        // no longer does anything
     }
 
     @Override

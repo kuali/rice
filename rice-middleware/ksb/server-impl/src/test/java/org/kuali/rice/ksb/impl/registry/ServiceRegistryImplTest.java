@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
@@ -103,7 +102,6 @@ public class ServiceRegistryImplTest {
         serviceInfo.setStatusCode("A");
         serviceInfo.setServiceDescriptorId(nextId());
         serviceInfo.setChecksum("abcdefg");
-        serviceInfo.setVersionNumber(1L);
         return serviceInfo;
     }
 

@@ -307,13 +307,17 @@ h<#--
 -->
 <#macro formRadioButtons id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
+    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
-    <span>
+    <span class="uif-tooltip">
     <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
+    <#if option.message.richMessage>
+        <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
+    <#else>
+        <label for="${controlId}">${option.value!}</label>
+    </#if>
     </span>
     ${separator}
     </#list>
@@ -335,14 +339,18 @@ h<#--
 -->
 <#macro formCheckboxes id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
+    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
     <#local isSelected = contains(status.actualValue?default([""]), option.key)>
-    <span>
+    <span class="uif-tooltip">
     <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+    <#if option.message.richMessage>
+        <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+    <#else>
+        <label for="${controlId}">${option.value!}</label>
+    </#if>
     </span>
     ${separator}
     </#list>

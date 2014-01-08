@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var actionDefaults = jQuery("div[data-role='view']").data(kradVariables.ACTION_DEFAULTS);
 
 /**
  * Initialize action data for the action by merging any custom settings with global default settings

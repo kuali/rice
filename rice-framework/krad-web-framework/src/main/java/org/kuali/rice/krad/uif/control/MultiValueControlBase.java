@@ -67,12 +67,25 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
             for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
-                message.setMessageText(option.getValue());
+
+                String key = option.getKey();
+                if (key.contains("@{")) {
+                    key = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
+                            key);
+                }
+
+                String value = option.getValue();
+                if (value.contains("@{")) {
+                    value = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
+                            value);
+                }
+
+                message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
 
                 ViewLifecycle.spawnSubLifecyle(model, message, this);
-                richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
+                richOptions.add(new KeyMessage(key, value, message));
             }
         }
     }

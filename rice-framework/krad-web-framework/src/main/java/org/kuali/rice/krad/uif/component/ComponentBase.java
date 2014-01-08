@@ -171,6 +171,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<PropertyReplacer> propertyReplacers;
 
     private Map<String, String> dataAttributes;
+    private Map<String, String> scriptDataAttributes;
 
     private String preRenderContent;
     private String postRenderContent;
@@ -195,6 +196,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
+        scriptDataAttributes = Collections.emptyMap();
         templateOptions = Collections.emptyMap();
 
         cssClasses = Collections.emptyList();
@@ -2108,16 +2110,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Get the dataAttributes setup for this component - to be written to the html/jQuery data
-     *
-     * <p>
-     * The attributes that are complex objects (contain {}) they will be written through script. The
-     * attritubes that are simple (contain no objects) will be written directly to the html of the
-     * component using standard data-. Either way they can be access through .data() call in jQuery
-     * </p>
-     *
-     * @return map of dataAttributes
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
         if (dataAttributes == Collections.EMPTY_MAP) {
@@ -2128,11 +2123,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * DataAttributes that will be written to the html and/or through script to be consumed by
-     * jQuery.
-     *
-     * @param dataAttributes the data attributes to set for this component
+     * {@inheritDoc}
      */
+    @Override
     public void setDataAttributes(Map<String, String> dataAttributes) {
         checkMutable(true);
         if (dataAttributes == null) {
@@ -2143,11 +2136,30 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Add a data attribute to the dataAttributes map - to be written to the html/jQuery data.
-     *
-     * @param key key of the data attribute
-     * @param value value of the data attribute
+     * {@inheritDoc}
      */
+    @Override
+    @BeanTagAttribute(name = "scriptDataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getScriptDataAttributes() {
+        if (scriptDataAttributes == Collections.EMPTY_MAP) {
+            scriptDataAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+
+        return scriptDataAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setScriptDataAttributes(Map<String, String> scriptDataAttributes) {
+        this.scriptDataAttributes = scriptDataAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addDataAttribute(String key, String value) {
         checkMutable(true);
 
@@ -2159,23 +2171,21 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Add a data attribute to the dataAttributes map if the given value is non null or the empty
-     * string
-     *
-     * @param key key for the data attribute entry
-     * @param value value for the data attribute
+     * {@inheritDoc}
      */
-    public void addDataAttributeIfNonEmpty(String key, String value) {
-        if (StringUtils.isNotBlank(value)) {
-            addDataAttribute(key, value);
+    @Override
+    public void addScriptDataAttribute(String key, String value) {
+        checkMutable(true);
+
+        if (scriptDataAttributes == Collections.EMPTY_MAP) {
+            scriptDataAttributes = new LifecycleAwareMap<String, String>(this);
         }
+
+        scriptDataAttributes.put(key, value);
     }
 
     /**
-     * Returns a string that can be put into a the tag of a component to add all data attributes
-     * inline.
-     *
-     * @return html string for data attributes for the simple attributes
+     * {@inheritDoc}
      */
     @Override
     public String getSimpleDataAttributes() {
@@ -2193,6 +2203,30 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         return attributes;
+    }
+
+
+    @Override
+    public String getScriptDataAttributesJs() {
+
+        String script = "";
+
+        if (getScriptDataAttributes() == null || getScriptDataAttributes().isEmpty()) {
+            return script;
+        }
+
+        String selector = "var dataComponent = jQuery('#" + this.getId() + "');";
+        script = ScriptUtils.appendScript(script, selector);
+
+        for (Map.Entry<String, String> data : getScriptDataAttributes().entrySet()) {
+            if (data != null && data.getValue() != null) {
+                script = ScriptUtils.appendScript(script,
+                        "dataComponent.data('" + data.getKey() + "'," + ScriptUtils.convertToJsValue(data.getValue())
+                                + ");");
+            }
+        }
+
+        return script;
     }
 
     /**

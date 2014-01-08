@@ -364,8 +364,10 @@ public class UifConstants {
         public static final String GROUP_TOTAL = "groupTotal";
         public static final String TOTAL = "total";
         public static final String TOTALS_BLOCK = "totalsBlock";
+        public static final String PAGE = "Page";
         public static final String PAGE_TOTAL = "pageTotal";
         public static final String ROW_GROUPING = "RowGrouping";
+        public static final String VIEW = "View";
     }
 
     public static final class DataAttributes {

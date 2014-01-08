@@ -99,7 +99,7 @@ public class PageGroup extends Group {
     public void performFinalize(Object model, Component parent) {
         super.performFinalize(model, parent);
 
-        this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Page");
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {

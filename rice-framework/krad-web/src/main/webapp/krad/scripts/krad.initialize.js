@@ -42,6 +42,11 @@ var clientErrorStorage = new Object();
 var summaryTextExistence = new Object();
 var clientErrorExistsCheck = false;
 var skipPageSetup = false;
+var groupValidationDefaults;
+var fieldValidationDefaults;
+
+// Action option defaults
+var actionDefaults;
 
 // dirty form state management
 var dirtyFormState;
@@ -155,6 +160,8 @@ jQuery(document).ready(function () {
     });
 
     time(false, "viewSetup-phase-2");
+
+
 });
 
 /**
@@ -725,6 +732,16 @@ function setupPage(validate) {
     handleStickyFooterContent();
     initStickyContent();
 
+    // Initialize global validation defaults
+    if (groupValidationDefaults == undefined || fieldValidationDefaults == undefined) {
+        groupValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+        fieldValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+    }
+
+    if (actionDefaults == undefined) {
+        actionDefaults = jQuery("div[data-role='View']").data(kradVariables.ACTION_DEFAULTS);
+    }
+
     //Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
     messageSummariesShown = false;
@@ -743,7 +760,7 @@ function setupPage(validate) {
 
     prevPageMessageTotal = 0;
     //skip input field iteration and validation message writing, if no server messages
-    var hasServerMessagesData = jQuery("[data-type='Page']").data(kradVariables.SERVER_MESSAGES);
+    var hasServerMessagesData = jQuery("[data-role='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
         //Handle messages at field, if any
         jQuery("div[data-role='InputField']").each(function () {

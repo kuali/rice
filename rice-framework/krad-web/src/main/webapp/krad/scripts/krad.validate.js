@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 var prevPageMessageTotal = 0;
-var groupValidationDefaults = jQuery("div[data-role='view']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
-var fieldValidationDefaults = jQuery("div[data-role='view']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+
 
 /**
  * Get validation data for the component element by merging custom settings with defaults
@@ -786,7 +785,7 @@ function isSingularMessage(newList) {
 function writeMessagesForPage() {
     clientErrorStorage = new Object();
     var summaryTextExistence = new Object();
-    var page = jQuery("[data-type='Page']");
+    var page = jQuery("[data-role='Page']");
     var pageId = page.attr("id");
     var data = getValidationData(page, true);
 
@@ -1871,7 +1870,7 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
         if (id) {
             indicator = label.data("req_indicator");
             if (indicator === undefined) {
-                indicator = jQuery("div[data-role='view']").data("req_indicator");
+                indicator = jQuery("div[data-role='View']").data("req_indicator");
             }
         }
 

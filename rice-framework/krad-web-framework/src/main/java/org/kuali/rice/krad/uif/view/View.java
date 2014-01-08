@@ -424,16 +424,17 @@ public class View extends ContainerBase {
                 UifConstants.REQUIRED_INDICATOR_ID);
 
         // Add data defaults for common components to the view for use in js (to reduce size of individual components)
-        this.addDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
-                (Map<String, String>) groupValidationDataDefaults));
-        this.addDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
-                (Map<String, String>) fieldValidationDataDefaults));
-        this.addDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS, ScriptUtils.convertToJsValue(
-                (Map<String, String>) actionDataDefaults));
-        this.addDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, (String) requiredIndicator);
+        this.addScriptDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS,
+                ScriptUtils.convertToJsValue((Map<String, String>) groupValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS,
+                ScriptUtils.convertToJsValue((Map<String, String>) fieldValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS,
+                ScriptUtils.convertToJsValue((Map<String, String>) actionDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR,
+                (String) requiredIndicator);
 
         // give view role attribute for js selections
-        this.addDataAttribute(UifConstants.DataAttributes.ROLE, "view");
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.VIEW);
     }
 
     /**

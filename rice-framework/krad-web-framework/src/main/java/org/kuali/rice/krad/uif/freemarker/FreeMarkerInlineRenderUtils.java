@@ -204,6 +204,10 @@ public class FreeMarkerInlineRenderUtils {
                 templateJsScripts += s;
             }
 
+            if (StringUtils.hasText(s = component.getScriptDataAttributesJs())) {
+                templateJsScripts += s;
+            }
+
             if (StringUtils.hasText(s = component.getPostRenderContent())) {
                 out.append(StringEscapeUtils.escapeHtml(s));
             }

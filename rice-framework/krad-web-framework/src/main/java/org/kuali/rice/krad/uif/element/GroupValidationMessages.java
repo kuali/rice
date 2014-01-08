@@ -166,7 +166,7 @@ public class GroupValidationMessages extends ValidationMessages {
                 UifConstants.DataAttributes.SERVER_INFO, ScriptUtils.escapeHtml(this.getInfos()));
 
         if (!validationMessagesDataAttributes.isEmpty()){
-            parent.addDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
+            parent.addScriptDataAttribute(UifConstants.DataAttributes.VALIDATION_MESSAGES, ScriptUtils.translateValue(
                     validationMessagesDataAttributes));
         }
     }

@@ -59,6 +59,7 @@ public class Message extends ContentElementBase {
     private List<Component> messageComponentStructure;
 
     private boolean parseComponents;
+    private boolean richMessage;
 
     public Message() {
         super();
@@ -82,6 +83,7 @@ public class Message extends ContentElementBase {
         if (messageText != null && messageText.contains(KRADConstants.MessageParsing.LEFT_TOKEN) &&
                 messageText.contains(KRADConstants.MessageParsing.RIGHT_TOKEN) &&
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
+            richMessage = true;
 
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
@@ -261,6 +263,16 @@ public class Message extends ContentElementBase {
      */
     public void setParseComponents(boolean parseComponents) {
         this.parseComponents = parseComponents;
+    }
+
+    /**
+     * If this message is considered a rich message (is using some rich message functionality with by using
+     * the special [] tags), returns true
+     *
+     * @return return true if this message contains rich message content
+     */
+    public boolean isRichMessage() {
+        return richMessage;
     }
 
     /**

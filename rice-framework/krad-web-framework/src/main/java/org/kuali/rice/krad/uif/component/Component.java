@@ -1215,20 +1215,9 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setRefreshTimer(int refreshTimer);
 
     /**
-     * Add a data attribute to the dataAttributes map
+     * The DataAttributes that will be written to the html element for this component as data-
      *
-     * @param key
-     * @param value
-     */
-    void addDataAttribute(String key, String value);
-
-    /**
-     * The DataAttributes that will be written to the html and/or through script to be consumed by jQuery
-     *
-     * <p>The attributes that are complex objects (contain {}) they will be written through script.
-     * The attributes that are simple (contain no objects) will be written directly to the html of the
-     * component using standard data-.</p>
-     * <p>Either way they can be access through .data() call in jQuery.</p>
+     * <p>They can be access through .data() call in jQuery.</p>
      *
      * @return map of data attributes, where key is data attribute name and the map value is the data
      * attribute value
@@ -1243,14 +1232,53 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setDataAttributes(Map<String, String> dataAttributes);
 
     /**
+     * Setter for script data attributes to include for the component
+     *
+     * @param dataAttributes
+     */
+    void setScriptDataAttributes(Map<String, String> dataAttributes);
+
+    /**
+     * The DataAttributes that will be written to the html as a script call to data for this component (these cannot be
+     * used for jQuery selection directly)
+     *
+     * <p>They can be accessed through .data() call in jQuery.</p>
+     *
+     * @return map of data attributes, where key is data attribute name and the map value is the data
+     * attribute value
+     */
+    Map<String, String> getScriptDataAttributes();
+
+
+    /**
+     * Add a data attribute to the dataAttributes map
+     *
+     * @param key
+     * @param value
+     */
+    void addDataAttribute(String key, String value);
+
+    /**
+     * Add a script data attribute to the scriptDataAttributes map
+     *
+     * @param key
+     * @param value
+     */
+    void addScriptDataAttribute(String key, String value);
+
+    /**
      * The string that can be put into a the tag of a component to add data attributes inline
      *
-     * <p>
-     * This does not include the complex attributes which contain {}</p>
-     *
-     * @return html string for data attributes for the simple attributes
+     * @return html string for data attributes as html formatted element attributes
      */
     String getSimpleDataAttributes();
+
+    /**
+     * Returns a js string that can be used to right js data attributes to for the component
+     *
+     * @return html string for the js required to add the script data attributes
+     */
+    String getScriptDataAttributesJs();
 
     /**
      * Validates different requirements of component compiling a series of reports detailing information on errors

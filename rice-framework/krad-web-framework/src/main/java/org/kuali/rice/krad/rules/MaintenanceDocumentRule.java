@@ -17,6 +17,7 @@ package org.kuali.rice.krad.rules;
 
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 
 /**
@@ -59,6 +60,16 @@ public interface MaintenanceDocumentRule {
      * @see org.kuali.rice.krad.rules.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
      */
     public abstract boolean processApproveDocument(ApproveDocumentEvent approveEvent);
+
+    /**
+     * Runs all business rules needed prior to adding a collection to a line. This includes both common rules for all
+     * maintenance documents, plus class-specific business rules.
+     *
+     * Will return false if any business rule fails.
+     *
+     * @see org.kuali.rice.krad.rules.rule.AddCollectionLineRule#processAddCollectionLine(org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent)
+     */
+    public abstract boolean processAddCollectionLine(AddCollectionLineEvent addEvent);
 
     /**
      * Sets the convenience objects like newAccount and oldAccount, so you have short and easy handles to the new and

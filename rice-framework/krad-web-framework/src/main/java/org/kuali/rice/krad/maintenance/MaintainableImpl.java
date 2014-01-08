@@ -40,10 +40,12 @@ import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
+import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KualiRuleService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -82,6 +84,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     private transient EncryptionService encryptionService;
     private transient DataObjectService dataObjectService;
     private transient MaintenanceDocumentService maintenanceDocumentService;
+    private transient KualiRuleService kualiRuleService;
 
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#retrieveObjectForEditOrCopy(MaintenanceDocument, java.util.Map)
@@ -521,6 +524,19 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         }
     }
 
+    @Override
+    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        boolean isValidLine = true;
+
+        if (model instanceof MaintenanceDocumentForm) {
+            MaintenanceDocumentForm form = ((MaintenanceDocumentForm) model);
+            isValidLine = getKualiRuleService()
+                    .applyRules(new AddCollectionLineEvent(form.getDocument(), collectionGroup.getPropertyName(), addLine));
+        }
+
+        return isValidLine;
+    }
+
     /**
      * Retrieves the document number configured on this maintainable
      *
@@ -713,5 +729,16 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     public void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
         this.maintenanceDocumentService = maintenanceDocumentService;
+    }
+
+    public KualiRuleService getKualiRuleService() {
+        if (kualiRuleService == null) {
+            kualiRuleService = KRADServiceLocatorWeb.getKualiRuleService();
+        }
+        return kualiRuleService;
+    }
+
+    public void setKualiRuleService(KualiRuleService kualiRuleService) {
+        this.kualiRuleService = kualiRuleService;
     }
 }

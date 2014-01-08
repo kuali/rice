@@ -42,12 +42,14 @@ import org.kuali.rice.krad.document.TransactionalDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.AddAdHocRoutePersonRule;
 import org.kuali.rice.krad.rules.rule.AddAdHocRouteWorkgroupRule;
+import org.kuali.rice.krad.rules.rule.AddCollectionLineRule;
 import org.kuali.rice.krad.rules.rule.AddNoteRule;
 import org.kuali.rice.krad.rules.rule.ApproveDocumentRule;
 import org.kuali.rice.krad.rules.rule.CompleteDocumentRule;
 import org.kuali.rice.krad.rules.rule.RouteDocumentRule;
 import org.kuali.rice.krad.rules.rule.SaveDocumentRule;
 import org.kuali.rice.krad.rules.rule.SendAdHocRequestsRule;
+import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
@@ -71,7 +73,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule,
-        AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule, CompleteDocumentRule {
+        AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule, CompleteDocumentRule,
+        AddCollectionLineRule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
 
     private static PersonService personService;
@@ -240,6 +243,32 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * @return boolean True if the rules checks passed, false otherwise.
      */
     protected boolean processCustomApproveDocumentBusinessRules(ApproveDocumentEvent approveEvent) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * This base implementation just runs the custom rules.
+     */
+    @Override
+    public boolean processAddCollectionLine(AddCollectionLineEvent addEvent) {
+        boolean isValid = true;
+
+        isValid = processCustomAddCollectionLineBusinessRules(addEvent);
+
+        return isValid;
+    }
+
+
+    /**
+     * This method should be overridden to provide custom rules for processing adding to collections.
+     *
+     * @param addEvent the event containing all of the object necessary to run the rules
+     *
+     * @return true if validation succeeds, false otherwise
+     */
+    protected boolean processCustomAddCollectionLineBusinessRules(AddCollectionLineEvent addEvent) {
         return true;
     }
 

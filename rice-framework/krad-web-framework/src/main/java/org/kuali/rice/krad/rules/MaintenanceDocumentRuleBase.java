@@ -40,6 +40,7 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
@@ -52,6 +53,7 @@ import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
@@ -382,6 +384,43 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // return the original set of items to the errorPath, to ensure no impact
         // on other upstream or downstream items that rely on the errorPath
         resumeErrorPath();
+
+        return success;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation additionally performs existence and duplicate checks.
+     */
+    @Override
+    public boolean processAddCollectionLine(AddCollectionLineEvent addEvent) {
+        MaintenanceDocument maintenanceDocument = (MaintenanceDocument) addEvent.getDocument();
+        String collectionName = addEvent.getCollectionName();
+        Object addLine = addEvent.getAddLine();
+
+        // setup convenience pointers to the old & new bo
+        setupBaseConvenienceObjects(maintenanceDocument);
+
+        // from here on, it is in a default-success mode, and will add the line unless one of the
+        // business rules stop it.
+        boolean success = true;
+
+        // TODO: Will be covered by KULRICE-7666
+        /*
+        // apply rules that check whether child objects that cannot be hooked up by normal means exist and are active
+        success &= dictionaryValidationService.validateDefaultExistenceChecksForNewCollectionItem(
+                document.getNewMaintainableObject().getDataObject(), addLine, collectionName);
+        */
+
+        // TODO: Will be covered by KULRICE-10710
+        /*
+        // apply rules that check whether the added line has the same data as an existing line
+        success &= validateDuplicateIdentifierInDataDictionary(maintenanceDocument, collectionName, addLine);
+        */
+
+        // apply rules that are specific to the class of the maintenance document (if implemented)
+        success &= processCustomAddCollectionLineBusinessRules(maintenanceDocument, collectionName, addLine);
 
         return success;
     }
@@ -881,9 +920,19 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      * This method should be overridden to provide custom rules for processing document approval.
      *
      * @param document
-     * @return booelan
+     * @return boolean
      */
     protected boolean processCustomApproveDocumentBusinessRules(MaintenanceDocument document) {
+        return true;
+    }
+
+    /**
+     * This method should be overridden to provide custom rules for processing adding collection lines.
+     *
+     * @param document
+     * @return boolean
+     */
+    protected boolean processCustomAddCollectionLineBusinessRules(MaintenanceDocument document, String collectionName, Object line) {
         return true;
     }
 
@@ -1266,11 +1315,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected final Object getOldDataObject() {
         return oldDataObject;
-    }
-
-    public boolean processCustomAddCollectionLineBusinessRules(MaintenanceDocument document, String collectionName,
-            PersistableBusinessObject line) {
-        return true;
     }
 
     protected final ConfigurationService getConfigService() {

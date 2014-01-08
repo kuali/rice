@@ -670,43 +670,31 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Performs validation on the new collection line before it is added to the corresponding
-     * collection
+     * Performs validation on the new collection line before it is added to the corresponding collection.
      * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param addLine new line instance to validate
-     * @param model object instance that contain's the views data
-     * @return true if the line is valid and it should be added to the collection, false if it was
-     *         not valid and should not be added to the collection
+     * @param model object instance that contains the views data
+     *
+     * @return true if the line is valid and it should be added to the collection, false if it was not valid and should
+     *         not be added to the collection
      */
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model,
-            Object addLine) {
-        boolean isValid = true;
-
-        // TODO: this should invoke rules, subclasses like the document view
-        // should create the document add line event
-
-        return isValid;
+    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        return true;
     }
 
     /**
-     * Performs validation on the collection line before it is removed from the corresponding
-     * collection
+     * Performs validation on the collection line before it is removed from the corresponding collection.
      * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param deleteLine line that will be removed
-     * @return true if the action is allowed and the line should be removed, false if the line
-     *         should not be removed
+     *
+     * @return true if the action is allowed and the line should be removed, false if the line should not be removed
      */
     protected boolean performDeleteLineValidation(View view, CollectionGroup collectionGroup, Object deleteLine) {
-        boolean isValid = true;
-
-        // TODO: this should invoke rules, sublclasses like the document view
-        // should create the document delete line event
-
-        return isValid;
+       return true;
     }
 
     /**

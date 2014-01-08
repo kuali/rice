@@ -69,13 +69,13 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 Message message = ComponentFactory.getMessage();
 
                 String key = option.getKey();
-                if (key.contains("@{")) {
+                if (key.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
                     key = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
                             key);
                 }
 
                 String value = option.getValue();
-                if (value.contains("@{")) {
+                if (value.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
                     value = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
                             value);
                 }

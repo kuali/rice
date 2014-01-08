@@ -554,7 +554,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 paramList +=  webUILeaveFieldCallbackFunction + ",";
             }
 
-            beanNode?.property?.find{"webUILeaveFieldFunctionParameters".equals(it?.@name)}?.list.value.each { valueNode ->
+            beanNode?.property?.find{"webUILeaveFieldFunctionParameters".equals(it?.@name)}?.list?.value.each { valueNode ->
                 paramList += '{@' + valueNode.text() +"},"
             }
 

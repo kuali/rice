@@ -64,7 +64,7 @@ public abstract class PropertySerializabilityEvaluatorBase implements PropertySe
     /**
      * Returns whether a child property of a given containing object should be serialized, based on the metadata provided in the data dictionary.
      *
-     * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(org.kuali.rice.krad.util.documentserializer.DocumentSerializationState, java.lang.Object, java.lang.String, java.lang.Object)
+     * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#isPropertySerializable(SerializationState, Object, String, Object)
      */
     @Override
     public boolean isPropertySerializable(SerializationState state, Object containingObject, String childPropertyName, Object childPropertyValue) {

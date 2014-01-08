@@ -41,7 +41,6 @@ public interface DataField extends DataBinding, Helpable, Field {
      * already contains a value for a property, the definitions value is not
      * used.
      *
-     * @param view view instance the field belongs to
      * @param attributeDefinition AttributeDefinition instance the property values should be
      * copied from
      */

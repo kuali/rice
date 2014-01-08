@@ -364,7 +364,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * Creates a new {@link org.kuali.rice.krad.uif.widget.QuickFinder} and then invokes the lifecycle process for
      * the quickfinder to determine if a relationship was found, if so the quickfinder is assigned to the field
      *
-     * @param view view instance being processed
      * @param model object containing the view data
      */
     protected void buildAutomaticQuickfinder(Object model) {
@@ -413,7 +412,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * Overriding to check quickfinder when masked is being applied. If quickfinder is configured set the component
      * to widgetInputOnly, else set to readOnly
      *
-     * @see DataField#setAlternateAndAdditionalDisplayValue(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {

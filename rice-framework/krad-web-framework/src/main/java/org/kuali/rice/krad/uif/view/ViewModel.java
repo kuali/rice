@@ -171,7 +171,7 @@ public interface ViewModel extends Serializable {
     /**
      * Setter for the view's request parameter map
      *
-     * @param viewRequestParameters
+     * @param viewRequestParameters map of request parameters
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters);
 

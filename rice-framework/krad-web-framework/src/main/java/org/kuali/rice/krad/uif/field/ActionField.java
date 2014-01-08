@@ -42,13 +42,16 @@ public class ActionField extends FieldBase {
 
     private Action action;
 
+    /**
+     * Initializes wrapped action instance.
+     */
     public ActionField() {
         action = new Action();
     }
 
     /**
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
-     * content
+     * content.
      *
      * @param model the model
      * @param parent the parent component
@@ -65,7 +68,7 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * Nested action component
+     * Nested action component.
      *
      * @return Action instance
      */
@@ -75,9 +78,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * Setter for the nested action component
+     * Setter for the nested action component.
      *
-     * @param action
+     * @param action property value
      */
     public void setAction(Action action) {
         this.action = action;
@@ -148,7 +151,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getNavigateToPageId()
+     * Delegates to {@link org.kuali.rice.krad.uif.element.Action#getNavigateToPageId()}.
+     *
+     * @return page ID to navigate to
      */
     @BeanTagAttribute(name = "navigateToPageId")
     public String getNavigateToPageId() {
@@ -156,14 +161,18 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setNavigateToPageId(java.lang.String)
+     * Setter for {@link Action#setNavigateToPageId(java.lang.String)}.
+     *
+     * @param navigateToPageId property value
      */
     public void setNavigateToPageId(String navigateToPageId) {
         action.setNavigateToPageId(navigateToPageId);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionEvent()
+     * Delegates to {@link org.kuali.rice.krad.uif.element.Action#getActionEvent()}.
+     *
+     * @return action event
      */
     @BeanTagAttribute(name = "actionEvent")
     public String getActionEvent() {
@@ -171,7 +180,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionEvent(java.lang.String)
+     * Setter for {@link org.kuali.rice.krad.uif.element.Action#setActionEvent(java.lang.String)}.
+     *
+     * @param actionEvent property value
      */
     public void setActionEvent(String actionEvent) {
         action.setActionEvent(actionEvent);

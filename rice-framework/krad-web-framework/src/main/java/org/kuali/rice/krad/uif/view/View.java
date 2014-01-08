@@ -243,8 +243,7 @@ public class View extends ContainerBase {
      * views list of dialog groups</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -339,8 +338,7 @@ public class View extends ContainerBase {
      * up the validator for this view</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -2130,7 +2128,6 @@ public class View extends ContainerBase {
      * Returns the general context that is available before the apply model phase (during the
      * initialize phase)
      * 
-     * @param view view instance for context
      * @return context map
      */
     public Map<String, Object> getPreModelContext() {

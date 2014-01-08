@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Accordion;
 
 /**
- * Accordion group class used to stack groups by there header titles in an accordion layout
+ * Accordion group class used to stack groups by there header titles in an accordion layout.
  */
 @BeanTags({@BeanTag(name = "accordionGroup-bean", parent = "Uif-AccordionGroup"),
         @BeanTag(name = "accordionSection-bean", parent = "Uif-AccordionSection"),
@@ -64,7 +64,7 @@ public class AccordionGroup extends GroupBase {
 
     /**
      * Gets the widget which contains any configuration for the accordion widget component used to render
-     * this AccordionGroup
+     * this AccordionGroup.
      *
      * @return the accordionWidget
      */
@@ -74,7 +74,7 @@ public class AccordionGroup extends GroupBase {
     }
 
     /**
-     * Set the accordionWidget
+     * Set the accordionWidget.
      *
      * @param accordionWidget the accordionWidget to set
      */
@@ -83,7 +83,7 @@ public class AccordionGroup extends GroupBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

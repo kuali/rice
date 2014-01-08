@@ -34,6 +34,11 @@ import org.kuali.rice.krad.uif.util.RecycleUtils;
 public final class LifecyclePhaseFactory {
 
     /**
+     * Private constructor - utility class only.
+     */
+    private LifecyclePhaseFactory() {}
+
+    /**
      * Creates a new lifecycle phase processing task for performing initialization on a component.
      * 
      * @param component The component.

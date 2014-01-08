@@ -39,7 +39,7 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
     /**
      * Reads the data dictionary to determine which properties of the document should be serialized.
      *
-     * @see org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.krad.document.Document)
+     * {@inheritDoc}
      */
 	@Override
     public void initializeEvaluatorForDocument(Document document) {

@@ -36,7 +36,7 @@ public class FreeMarkerCollectionGroupAdaptor implements InlineTemplateAdaptor, 
     /**
      * Render a collection group component inline.
      * 
-     * @see freemarker.core.InlineKradAdaptor#accept(freemarker.core.Environment)
+     * @see freemarker.core.InlineTemplateAdaptor#accept(freemarker.core.Environment)
      */
     @Override
     public void accept(Environment env) throws TemplateException, IOException {

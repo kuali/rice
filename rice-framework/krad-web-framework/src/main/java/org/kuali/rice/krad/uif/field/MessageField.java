@@ -52,7 +52,6 @@ public class MessageField extends FieldBase {
     /**
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's content
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */

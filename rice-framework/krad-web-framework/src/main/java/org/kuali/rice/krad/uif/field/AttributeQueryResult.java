@@ -153,7 +153,7 @@ public class AttributeQueryResult implements Serializable, Copyable {
     /**
      * Copies the properties over for the copy method.
      *
-     * @param attributeQuery The AttributeQuery to copy
+     * @param attributeQueryResultCopy The AttributeQuery to copy
      */
     protected void copyProperties(AttributeQueryResult attributeQueryResultCopy) {
 

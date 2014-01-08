@@ -210,7 +210,6 @@ public class DataFieldBase extends FieldBase implements DataField {
      * Creates a new {@link org.kuali.rice.krad.uif.widget.Inquiry} and then invokes the lifecycle process for
      * the inquiry to determine if a relationship was found, if so the inquiry is assigned to the field
      *
-     * @param view view instance being processed
      * @param model object containing the view data
      * @param enableDirectInquiry whether direct inquiry should be enabled if an inquiry is found
      */

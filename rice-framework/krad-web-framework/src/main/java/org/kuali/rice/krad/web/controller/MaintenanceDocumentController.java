@@ -261,8 +261,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     /**
      * Override route to retrieve the maintenance object if it is an attachment
      *
-     * @see DocumentControllerBase.route
-     *      (DocumentFormBase, HttpServletRequest, HttpServletResponse)
+     * {@inheritDoc}
      */
     @Override
     @RequestMapping(params = "methodToCall=route")

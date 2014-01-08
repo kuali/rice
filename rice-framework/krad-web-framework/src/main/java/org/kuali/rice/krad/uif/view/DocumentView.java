@@ -59,8 +59,7 @@ public class DocumentView extends FormView {
      * <li>Set up the document view authorizer and presentation controller</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {

@@ -410,7 +410,6 @@ public class FreeMarkerInlineRenderUtils {
      * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
@@ -424,7 +423,7 @@ public class FreeMarkerInlineRenderUtils {
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
-     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
      * 
@@ -466,7 +465,7 @@ public class FreeMarkerInlineRenderUtils {
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
-     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
      * 
@@ -509,7 +508,6 @@ public class FreeMarkerInlineRenderUtils {
      * template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
      * @param group The collection group to render.
      * @throws IOException If rendering is interrupted due to an I/O error.
      * @throws TemplateException If FreeMarker rendering fails.
@@ -573,8 +571,10 @@ public class FreeMarkerInlineRenderUtils {
      * template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
-     * @param group The collection group to render.
+     * @param env The FreeMarker environment
+     * @param items List of items to render in a stacked layout
+     * @param manager Layout manager for the container
+     * @param container Container to render
      * @throws IOException If rendering is interrupted due to an I/O error.
      * @throws TemplateException If FreeMarker rendering fails.
      */

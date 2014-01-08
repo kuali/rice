@@ -27,7 +27,7 @@ public interface PropertySerializabilityMetadata {
          * Indicates that the property represented by this metadata object should be serialized (i.e. have an open
          * and close XML tag rendered) as well as all of the property's primitives.  It does not mean that all child
          * non-primitive properties should be serialized.  Child non-primitives are only serialized if a call to
-         * {@link PropertySerializabilityMetadata#getSerializableSubProperty(String)} returns a non-null result when
+         * {@link PropertySerializabilityMetadata#getSerializableChildProperty(String)} returns a non-null result when
          * the child property name is passed in.
          */
         SERIALIZE_OBJECT_AND_ALL_PRIMITIVES,
@@ -35,7 +35,7 @@ public interface PropertySerializabilityMetadata {
         /**
          * Indicates that the property represented by this metadata object should be serialized (i.e. have an open
          * and close XML tag rendered).  Child properties (primitive or otherwise) are only serialized if a call to
-         * {@link PropertySerializabilityMetadata#getSerializableSubProperty(String)} returns a non-null result when
+         * {@link PropertySerializabilityMetadata#getSerializableChildProperty(String)} returns a non-null result when
          * the child property name is passed in.
          */
         SERIALIZE_OBJECT

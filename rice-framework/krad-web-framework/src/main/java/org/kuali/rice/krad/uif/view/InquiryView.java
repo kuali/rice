@@ -60,7 +60,7 @@ public class InquiryView extends FormView {
      * <li>Set the abstractTypeClasses map for the inquiry object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {

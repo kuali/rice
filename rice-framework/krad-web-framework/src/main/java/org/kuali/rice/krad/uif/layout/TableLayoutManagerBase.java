@@ -1768,6 +1768,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @Override
     public Action getExpandDetailsActionPrototype() {
         return expandDetailsActionPrototype;

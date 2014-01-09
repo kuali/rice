@@ -454,14 +454,23 @@
                 <exclude>db/impex/**</exclude>
                 <exclude>config/ide/**</exclude>
                 <exclude>**/.idea/**</exclude>
-                <exclude>rice-middleware/it/**</exclude>
-                <exclude>rice-framework/krad-it/**</exclude>
                 <exclude>src/site/docbook/**</exclude>
-                <exclude>**/src/it/**</exclude>
                 <exclude>rice-framework/krad-web/src/main/webapp/plugins/**</exclude>
                 <exclude>rice-framework/config/ide/**</exclude>
                 <exclude>rice-middleware/config/ide/**</exclude>
                 <exclude>rice-middleware/web/src/main/webapp/kr/scripts/jscalendar-1.0/**</exclude>
+
+                <!-- all IT tests license headers are skipped TODO don't skip IT java files -->
+                <exclude>rice-middleware/it/**</exclude>
+                <exclude>rice-framework/krad-it/**</exclude>
+
+                <!-- test generation files -->
+                <!-- rice-middleware/sampleapp/src/it/resources/Gen/*.ftl are used to generate java so ftl headers cause errors, update manually -->
+                <exclude>rice-middleware/sampleapp/src/it/resources/Gen/*.ftl</exclude>
+                <!-- rice-middleware/sampleapp/src/it/resources/XML/*.ftl are used to generate js or xml so ftl headers cause errors, update manually -->
+                <exclude>rice-middleware/sampleapp/src/it/resources/XML/*.ftl</exclude>
+                <!-- rice-framework/krad-sampleapp/web/src/test/resources/jmeter/KRAD-JMeter.ftl is used to generate jmx so ftl headers cause errors, update manually -->
+                <exclude>rice-framework/krad-sampleapp/web/src/test/resources/jmeter/KRAD-JMeter.ftl</exclude>
 
                 <!-- js plugin folders -->
                 <exclude>**/datatables/**</exclude>

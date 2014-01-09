@@ -165,6 +165,11 @@ class ConversionUtils {
         return ConversionUtils.getConfig(defaultConfigFilePath, "")
     }
 
+    public static File getResourceFile(String relativeFilePath) {
+        log.info "trying to open " + relativeFilePath;
+        return new File(ConversionUtils.getClassLoader().getResource(relativeFilePath).file);
+    }
+
     /**
      * loads default config and project config, merging one on top of the other
      *
@@ -172,9 +177,9 @@ class ConversionUtils {
      * @param projectConfigFilePath
      * @return
      */
-    public static def getConfig(defaultConfigFilePath, projectConfigFilePath) {
-        def defaultConfigFile = new File(defaultConfigFilePath)
-        def config = new ConfigSlurper().parse(defaultConfigFile.toURL())
+    public static def getConfig(String defaultConfigFilePath, String projectConfigFilePath) {
+        def defaultConfigFile = getResourceFile(defaultConfigFilePath);
+        def config = new ConfigSlurper().parse(defaultConfigFile.toURL());
 
         if (projectConfigFilePath != null && projectConfigFilePath != "") {
             File altConfigFile = new File(projectConfigFilePath)

@@ -36,7 +36,7 @@ class FormConverterTest {
 
     @Before
     void setUp() {
-        config = ConversionUtils.getConfig(testResourcesDir + "test.config.properties")
+        config = ConversionUtils.getConfig("test.config.properties")
         formConverter = new FormConverter(config)
     }
 

@@ -34,7 +34,7 @@ class ScaffoldGeneratorTest {
 
     @Before
     void setUp() {
-        def config = ConversionUtils.getConfig(testResourceDir + "test.config.properties")
+        def config = ConversionUtils.getConfig("test.config.properties")
         scaffold = new org.kuali.rice.scripts.ScaffoldGenerator(config)
     }
 

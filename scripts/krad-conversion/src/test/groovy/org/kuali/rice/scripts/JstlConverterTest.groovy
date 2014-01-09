@@ -36,7 +36,7 @@ class JstlConverterTest
 
     @Before
     void setUp() {
-        configFilePath = testResourceDir + "test.config.properties"
+        configFilePath = "test.config.properties"
         config = ConversionUtils.getConfig(configFilePath)
     }
 

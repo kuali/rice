@@ -28,10 +28,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -681,7 +683,116 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *         not be added to the collection
      */
     protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        boolean isValid = true;
+
+        Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(model,
+                collectionGroup.getBindingInfo().getBindingPath());
+        List<String> duplicateLinePropertyNames = collectionGroup.getDuplicateLinePropertyNames();
+
+        if (containsDuplicateLine(addLine, collectionItems, duplicateLinePropertyNames)) {
+            isValid = false;
+            GlobalVariables.getMessageMap().putErrorForSectionId(collectionGroup.getId(),
+                    RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, getCollectionLabel(collectionGroup),
+                    getDuplicateLineLabelString(collectionGroup, duplicateLinePropertyNames));
+        }
+
+        return isValid;
+    }
+
+    /**
+     * Determines whether the new line matches one of the entries in the existing collection, based on the
+     * {@code duplicateLinePropertyNames}.
+     *
+     * @param addLine new line instance to validate
+     * @param collectionItems items in the collection
+     * @param duplicateLinePropertyNames property names to check for duplicates
+     *
+     * @return true if there is a duplicate line, false otherwise
+     */
+    private boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems, List<String> duplicateLinePropertyNames) {
+        if (collectionItems.isEmpty() || duplicateLinePropertyNames.isEmpty()) {
+            return false;
+        }
+
+        for (Object collectionItem : collectionItems) {
+            if (isDuplicateLine(addLine, collectionItem, duplicateLinePropertyNames)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether the new {@code addLine} is a duplicate of {@code collectionItem}, based on the
+     * {@code duplicateLinePropertyNames}.
+     *
+     * @param addLine new line instance to validate
+     * @param collectionItem existing instance to validate
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     *
+     * @return true if {@code addLine} is a duplicate of {@code collectionItem}, false otherwise
+     */
+    private boolean isDuplicateLine(Object addLine, Object collectionItem, List<String> duplicateLinePropertyNames) {
+        if (duplicateLinePropertyNames.isEmpty()) {
+            return false;
+        }
+
+        for (String duplicateLinePropertyName : duplicateLinePropertyNames) {
+            Object addLinePropertyValue = ObjectPropertyUtils.getPropertyValue(addLine, duplicateLinePropertyName);
+            Object duplicateLinePropertyValue = ObjectPropertyUtils.getPropertyValue(collectionItem, duplicateLinePropertyName);
+
+            if (!ObjectUtils.equals(addLinePropertyValue, duplicateLinePropertyValue)) {
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    /**
+     * Gets the label for the collection in a human-friendly format.
+     *
+     * @param collectionGroup collection group component for the collection
+     *
+     * @return a human-friendly collection label
+     */
+    private String getCollectionLabel(CollectionGroup collectionGroup) {
+        String collectionLabel = collectionGroup.getHeaderText();
+
+        if (StringUtils.isBlank(collectionLabel)) {
+            String propertyName = collectionGroup.getPropertyName();
+            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(propertyName);
+        }
+
+        return collectionLabel;
+    }
+
+    /**
+     * Gets a comma-separated list of the data field labels that are keyed a duplicates.
+     *
+     * @param collectionGroup collection group component for the collection
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     *
+     * @return a comma-separated list of labels
+     */
+    private String getDuplicateLineLabelString(CollectionGroup collectionGroup, List<String> duplicateLinePropertyNames) {
+        List<String> duplicateLineLabels = new ArrayList<String>();
+
+        for (Component addLineItem : collectionGroup.getAddLineItems()) {
+            if (addLineItem instanceof DataField) {
+                DataField addLineField = (DataField) addLineItem;
+
+                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
+                    String label = addLineField.getLabel();
+                    String shortLabel = addLineField.getShortLabel();
+                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                }
+            }
+
+        }
+
+        return StringUtils.join(duplicateLineLabels, ", ");
     }
 
     /**

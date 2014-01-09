@@ -413,12 +413,6 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 document.getNewMaintainableObject().getDataObject(), addLine, collectionName);
         */
 
-        // TODO: Will be covered by KULRICE-10710
-        /*
-        // apply rules that check whether the added line has the same data as an existing line
-        success &= validateDuplicateIdentifierInDataDictionary(maintenanceDocument, collectionName, addLine);
-        */
-
         // apply rules that are specific to the class of the maintenance document (if implemented)
         success &= processCustomAddCollectionLineBusinessRules(maintenanceDocument, collectionName, addLine);
 

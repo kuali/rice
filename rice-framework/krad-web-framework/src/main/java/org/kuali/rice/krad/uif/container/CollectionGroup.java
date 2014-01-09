@@ -134,6 +134,8 @@ public class CollectionGroup extends Group implements DataBinding {
     private CollectionFilter activeCollectionFilter;
     private List<CollectionFilter> filters;
 
+    private List<String> duplicateLinePropertyNames;
+
     private List<BindingInfo> unauthorizedLineBindingInfos;
 
     private List<CollectionGroup> subCollections;
@@ -173,6 +175,7 @@ public class CollectionGroup extends Group implements DataBinding {
         addLinePlacement = "TOP";
 
         filters = Collections.emptyList();
+        duplicateLinePropertyNames = Collections.emptyList();
         lineActions = Collections.emptyList();
         addLineItems = Collections.emptyList();
         addLineActions = Collections.emptyList();
@@ -858,6 +861,21 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     *  List of property names that should be checked for duplicates in the collection.
+     */
+    @BeanTagAttribute(name = "duplicateLinePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getDuplicateLinePropertyNames() {
+        return this.duplicateLinePropertyNames;
+    }
+
+    /**
+     * @see CollectionGroup#getDuplicateLinePropertyNames()
+     */
+    public void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames) {
+        this.duplicateLinePropertyNames = duplicateLinePropertyNames;
+    }
+
+    /**
      *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
      */
     public List<BindingInfo> getUnauthorizedLineBindingInfos() {
@@ -1405,6 +1423,10 @@ public class CollectionGroup extends Group implements DataBinding {
         if (this.filters != null && !this.filters.isEmpty()) {
             collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
         }
+
+        if (this.duplicateLinePropertyNames != null && !this.duplicateLinePropertyNames.isEmpty()) {
+            collectionGroupCopy.setDuplicateLinePropertyNames(new ArrayList<String>(this.duplicateLinePropertyNames));
+        }
         
         collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
@@ -1427,6 +1449,7 @@ public class CollectionGroup extends Group implements DataBinding {
         collectionGroupCopy.setRenderInactiveToggleButton(this.renderInactiveToggleButton);
         collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
         collectionGroupCopy.setFilters(this.filters);
+        collectionGroupCopy.setDuplicateLinePropertyNames(this.duplicateLinePropertyNames);
 
         collectionGroupCopy.setRenderLineActions(this.renderLineActions);
         collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);

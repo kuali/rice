@@ -526,11 +526,11 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     @Override
     protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        boolean isValidLine = true;
+        boolean isValidLine = super.performAddLineValidation(view, collectionGroup, model, addLine);
 
         if (model instanceof MaintenanceDocumentForm) {
             MaintenanceDocumentForm form = ((MaintenanceDocumentForm) model);
-            isValidLine = getKualiRuleService()
+            isValidLine &= getKualiRuleService()
                     .applyRules(new AddCollectionLineEvent(form.getDocument(), collectionGroup.getPropertyName(), addLine));
         }
 

@@ -61,7 +61,7 @@
                 </#local>
 
                 <#if field.multiLineReadOnlyDisplay>
-                    <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                    <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
                 </#if>
 
                 <span id="${field.id}_control" class="uif-readOnlyContent">

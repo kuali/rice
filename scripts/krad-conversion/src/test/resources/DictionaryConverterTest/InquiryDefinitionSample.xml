@@ -387,11 +387,12 @@
             </list>
           </property>
         </bean>
-        <bean parent="InquirySectionDefinition" p:title="Traveler Detail Emergency Contacts Inquiry">
-          <property name="numberOfColumns" value="1" />
+        <bean id="InquirySectionDefinition-transformInquiryCollectionDefinition" parent="InquirySectionDefinition" p:title="Traveler Detail Emergency Contacts Inquiry">
+          <property name="numberOfColumns" value="2" />
           <property name="inquiryFields">
             <list>
               <bean parent="InquiryCollectionDefinition" p:attributeName="emergencyContacts" p:businessObjectClass="edu.sampleu.travel.approval.dataobject.TravelerDetailEmergencyContact">
+                <property name="numberOfColumns" value="1" />
                 <property name="inquiryFields">
                   <list>
                     <bean parent="FieldDefinition" p:attributeName="id" />
@@ -446,5 +447,62 @@
       </list>
     </property>
   </bean>
-
+  <bean id="TestCase-InquirySectionDefinitionWithNestedCollection" parent="InquirySectionDefinition">
+    <property name="title" value="Address"/>
+    <property name="numberOfColumns" value="1"/>
+    <property name="inquiryFields">
+      <list>
+        <bean id="TestCase-InquirySectionDefinitionWithNestedCollection-Collection" parent="InquiryCollectionDefinition">
+          <property name="attributeName" value="vendorAddresses"/>
+          <property name="businessObjectClass" value="edu.sampleu.travel.approval.dataobject.VendorAddress"/>
+          <property name="numberOfColumns" value="2"/>
+          <property name="inquiryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="vendorAddressTypeCode"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorCountryCode"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorLine1Address"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorAttentionName"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorLine2Address"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorBusinessToBusinessUrlAddress"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorCityName"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorFaxNumber"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorStateCode"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorAddressEmailAddress"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorZipCode"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorDefaultAddressIndicator"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorAddressInternationalProvinceName"/>
+              <bean parent="FieldDefinition" p:attributeName="active"/>
+            </list>
+          </property>
+          <property name="inquiryCollections">
+            <list>
+              <bean id="TestCase-InquirySectionDefinitionWithNestedCollection-NestedCollection" parent="InquiryCollectionDefinition">
+                <property name="attributeName" value="vendorDefaultAddresses"/>
+                <property name="businessObjectClass" value="edu.sampleu.travel.approval.dataobject.VendorDefaultAddress"/>
+                <property name="numberOfColumns" value="1"/>
+                <property name="summaryTitle" value="Default Address"/>
+                <property name="inquiryFields">
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="vendorCampusCode"/>
+                    <bean parent="FieldDefinition" p:attributeName="active"/>
+                  </list>
+                </property>
+                <property name="summaryFields">
+                  <list>
+                    <bean parent="FieldDefinition" p:attributeName="vendorCampusCode"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="summaryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="vendorAddressTypeCode"/>
+              <bean parent="FieldDefinition" p:attributeName="vendorCityName"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

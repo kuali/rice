@@ -134,6 +134,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     protected void testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh() throws Exception {
     	waitAndClickByLinkText("Collection Group With Refresh");
     	waitAndTypeByXpath(CWGR_GENERIC_XPATH+"/div/table/tbody/tr[2]/td/div/input","ref");
+        fireEvent("focus", "collection1[0].field1");
     	waitForTextPresent("Loading...");
     	//Test cannot be written ahead as there is a freemarker error in page
         checkForIncidentReport();
@@ -163,6 +164,18 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
+    @Test
+    public void testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefreshBookmark() throws Exception {
+        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
+        passed();
+    }
+
+    @Test
+    public void testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefreshNav() throws Exception {
+        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
+        passed();
+    }
+
     private void testClientResponsivenessProgressiveDisclosureAll() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
         testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
@@ -171,7 +184,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         testClientResonsivenessProgressiveDisclosureofGroup();
         testClientResonsivenessProgressiveDisclosureConditionalRefresh();
         testClientResonsivenessProgressiveDisclosureRefreshBasedOnTimer();
-        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
+//        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
 //        testClientResonsivenessProgressiveDisclosureConditionalOptions();
     }
 }

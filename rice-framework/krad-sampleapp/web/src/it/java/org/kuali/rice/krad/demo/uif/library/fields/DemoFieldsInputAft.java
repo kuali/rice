@@ -60,7 +60,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         waitAndType(By.cssSelector("#" + controlId), "Test InputField");
 
         // validate that the value comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + input[id='" + controlId + "']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + input[id='" + controlId + "']"),
                 exampleDiv);
     }
 
@@ -83,7 +83,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         waitAndType(By.cssSelector("#" + controlId), "Test InputField");
 
         // validate that the value comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + textarea[id='" + controlId + "']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + textarea[id='" + controlId + "']"),
                 exampleDiv);
     }
 
@@ -99,7 +99,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         assertTextPresent("Instructions for this field", "#" + instructionalTextId, "InputField value not correct");
 
         // validate that the instructional text comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + span[id='" + instructionalTextId + "']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + span[id='" + instructionalTextId + "']"),
                 exampleDiv);
 
         // validate that the value comes after the instructional text
@@ -120,7 +120,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
                 "InputField value not correct");
 
         // validate that the value comes after the label
-        findElement(By.cssSelector("span[data-label_for='" + fieldId + "'] + input[id='" + controlId + "']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + input[id='" + controlId + "']"),
                 exampleDiv);
 
         // validate that the constraint text comes after the value
@@ -141,7 +141,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
             fail("Label text does not match");
         }
 
-        WebElement labelSpan = findElement(By.cssSelector("span[data-label_for='" + fieldId + "']"), field);
+        WebElement labelSpan = findElement(By.cssSelector("label[data-label_for='" + fieldId + "']"), field);
         // top and bottom add the uif-labelBlock class
         if (!labelSpan.getAttribute("class").contains("uif-labelBlock")) {
             fail("Label span does not contain the appropriate class expected");
@@ -165,7 +165,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         }
 
         // validate that the label comes after the value
-        findElement(By.cssSelector("input[id='" + controlId + "'] + span[data-label_for='" + fieldId + "']"),
+        findElement(By.cssSelector("input[id='" + controlId + "'] + label[data-label_for='" + fieldId + "']"),
                 exampleDiv);
     }
 

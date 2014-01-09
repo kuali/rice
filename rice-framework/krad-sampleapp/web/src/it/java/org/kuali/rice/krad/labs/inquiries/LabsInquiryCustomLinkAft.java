@@ -47,7 +47,7 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
         String[][] lightBoxLabeledText = {{"Travel Account Number:", "a3"},
                                           {"Travel Account Name:", "Travel Account 3"},
                                           {"Code And Description:", "IAT - Income"},
-                                          {"Subsidized Percent:", "20 percent"},
+                                          {"Subsidized Percent:", "20"},
 //                                          {"Date Created:", ""}, // skip Date Created till a good way to handle empty strings is figured out
                                           {"Fiscal Officer:", "frank"},
                                           {"Fiscal Officer User ID:", "frank"},

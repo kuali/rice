@@ -162,7 +162,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndTypeByName("list1[0].field4", "1");
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
         if(preValue>postValue) {
-            jiraAwareFail("Totalling not working !");
+            jiraAwareFail("Totalling not working in " + getClass().toString());
         }
     }
 
@@ -188,7 +188,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        assertTrue(isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/button"));
+        assertTrue(getClass().toString(), isElementPresentByXpath("//tr[2]/td[6]/div/fieldset/div/button"));
 
         // check if actions column is LEFT
         //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-collection2']//tr[2]/td[1]//button[contains(.,\"delete\")]"));
@@ -201,7 +201,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        assertTrue(isElementPresentByXpath("//tr/td/div/fieldset/div/button[@id='Collections-ColumnSequence-TableLeft_add']"));
+        assertTrue(getClass().toString(), isElementPresentByXpath("//tr/td/div/fieldset/div/button[@id='Collections-ColumnSequence-TableLeft_add']"));
 
         // check if actions column is 3rd in a sub collection
         //assertTrue(isElementPresent("//div[@id='ConfigurationTestView-subCollection2_line0']//tr[2]/td[3]//button[contains(.,\"delete\")]"));
@@ -214,7 +214,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
-        assertTrue(isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/button"));
+        assertTrue(getClass().toString(), isElementPresentByXpath("//tr[2]/td[3]/div/fieldset/div/button"));
     }
 
     protected void testAddViaLightbox() throws Exception {
@@ -230,7 +230,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         Thread.sleep(3000);
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
         if(preValue>postValue) {
-            jiraAwareFail("Totalling not working !");
+            jiraAwareFail("Totalling not working in " + getClass().toString());
         }
     }
 
@@ -249,7 +249,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         testIfRowHasBeenAdded();
 
         //Check for the added if delete is present or not
-        assertTrue(isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
+        assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
     }
 
     protected void testSequencerow() throws Exception {
@@ -267,7 +267,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         testIfRowHasBeenAdded();
 
         //Check for the added if delete is present or not
-        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
+        assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
         //        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
     }
 

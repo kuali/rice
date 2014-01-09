@@ -179,7 +179,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
     protected void assertEquals(String expected, String actual) {
         if (!expected.equals(actual)) {
-            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead");
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead in " + getClass().toString());
         }
     }
 

@@ -76,7 +76,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer input field
         waitAndClickByXpath("//input[@value='CAT']");
 
         waitAndClickByLinkText("Notes and Attachments (0)");
@@ -101,7 +101,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer an input field
         waitAndClickByXpath("//input[@value='CAT']");
 
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");

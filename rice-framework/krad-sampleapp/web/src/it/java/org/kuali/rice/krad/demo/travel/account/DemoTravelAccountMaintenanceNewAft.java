@@ -119,7 +119,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
+//        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer input field
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText("Save");
         Thread.sleep(1000);

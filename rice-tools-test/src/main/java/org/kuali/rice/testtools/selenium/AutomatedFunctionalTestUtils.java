@@ -203,7 +203,10 @@ public class AutomatedFunctionalTestUtils {
             return "\nHTTP Status 500 stacktrace: " + extract500Exception(contents);
         }
 
-        if (contents.contains("Java backtrace for programmers:") || contents.contains("Java stack trace (for programmers):")) { // freemarker exception
+        // freemarker exception
+        if (contents.contains("Java backtrace for programmers:")
+                || contents.contains("Java stack trace (for programmers):")
+                || contents.contains("FreeMarker template error:")) {
             try {
                 return freemarkerExceptionMessage(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {

@@ -82,13 +82,10 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
 
     public boolean isAlertPresent()
     {
-        try
-        {
+        try {
             driver.switchTo().alert();
             return true;
-        }   // try
-        catch (Exception Ex)
-        {
+        }  catch (Exception Ex) {
             return false;
         }   // catch
     }   // isAlertPresent()

@@ -136,6 +136,7 @@
         <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentStatusLookupView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentTypeInquiryView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/employment/EmploymentTypeLookupView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/DebugViews.xml</value>
 
         <!-- KEW -->
         <value>classpath:edu/sampleu/kew/uif/RuleAttributeInquiry.xml</value>

@@ -457,7 +457,6 @@
                 <exclude>rice-middleware/it/**</exclude>
                 <exclude>rice-framework/krad-it/**</exclude>
                 <exclude>src/site/docbook/**</exclude>
-                <exclude>**/src/it/**</exclude>
                 <exclude>rice-framework/krad-web/src/main/webapp/plugins/**</exclude>
                 <exclude>rice-framework/config/ide/**</exclude>
                 <exclude>rice-middleware/config/ide/**</exclude>

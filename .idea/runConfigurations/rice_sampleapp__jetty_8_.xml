@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice sampleapp (jetty 8)" type="JettyConfiguration" factoryName="Local">
+  <configuration default="false" name="rice sampleapp (jetty 8)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8.0.1.v20110908">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
+    <option name="COMMON_VM_ARGUMENTS" value="-Dlog4j.debug -Dalt.log4j.configuration=43950-log4j.properties -Dalt.config.location=$PROJECT_DIR$/43950-sampleapp-config.xml -Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
     <deployment>
       <artifact name="rice-sampleapp:war exploded">
         <settings DEPLOYMENT_METHOD="contexts">
@@ -152,6 +152,12 @@
             </JettyConfigFile>
             <JettyConfigFile>
               <option name="path" value="etc\jetty-annotations.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-annotations.xml" />
+            </JettyConfigFile>
+            <JettyConfigFile>
+              <option name="path" value="etc/jetty-monitor.xml" />
             </JettyConfigFile>
           </list>
         </option>

@@ -122,7 +122,12 @@
 				</exclusion>
 			  </exclusions>
 			</dependency>
-		</dependencies>
+		  <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>rice-development-tools</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies> 
       </plugin>
     </plugins>
   </build>
@@ -275,5 +280,10 @@
       <artifactId>jaxb-impl</artifactId>
     </dependency>
 
-  </dependencies>
+    <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>rice-development-tools</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies> 
 </project>

@@ -65,6 +65,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewIndex;
@@ -94,8 +95,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ConfigurationService configurationService;
     private transient DataDictionaryService dataDictionaryService;
     private transient LegacyDataAdapter legacyDataAdapter;
-
     private transient ViewDictionaryService viewDictionaryService;
+    private transient ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
     /**
      * Helper function to determine whether if column should be displayed. Used to help extract
@@ -1322,6 +1323,27 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
         this.viewDictionaryService = viewDictionaryService;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExpressionEvaluatorFactory getExpressionEvaluatorFactory() {
+        if (expressionEvaluatorFactory == null) {
+            expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+        }
+
+        return expressionEvaluatorFactory;
+    }
+
+    /**
+     * Setter for {@link #getExpressionEvaluatorFactory()}.
+     *
+     * @param expressionEvaluatorFactory expression evaluator factory
+     */
+    public void setExpressionEvaluatorFactory(ExpressionEvaluatorFactory expressionEvaluatorFactory) {
+        this.expressionEvaluatorFactory = expressionEvaluatorFactory;
     }
 
     /**

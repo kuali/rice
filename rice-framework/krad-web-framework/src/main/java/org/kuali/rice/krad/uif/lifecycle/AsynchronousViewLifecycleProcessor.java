@@ -267,7 +267,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         expressionEvaluator = expressionEvaluatorPool.poll();
         if (expressionEvaluator == null) {
             // Create a new expression evaluator if a pooled instance is not available.
-            expressionEvaluator = new DefaultExpressionEvaluator();
+            expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluatorFactory().createExpressionEvaluator();
             expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
         }
 

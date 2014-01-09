@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
 /**
@@ -72,6 +73,7 @@ public class KRADServiceLocatorWeb {
     public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
     public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
     public static final String UIF_DEFAULTING_SERVICE = "uifDefaultingService";
+    public static final String EXPRESSION_EVALUATOR_FACTORY = "expressionEvaluatorFactory";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -183,6 +185,15 @@ public class KRADServiceLocatorWeb {
 
     public static UifDefaultingService getUifDefaultingService() {
         return getService(UIF_DEFAULTING_SERVICE);
+    }
+
+    /**
+     * Gets a globally defined instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory}.
+     *
+     * @return globally defined expression evaluator factory
+     */
+    public static ExpressionEvaluatorFactory getExpressionEvaluatorFactory() {
+        return getService(EXPRESSION_EVALUATOR_FACTORY);
     }
 
     /**

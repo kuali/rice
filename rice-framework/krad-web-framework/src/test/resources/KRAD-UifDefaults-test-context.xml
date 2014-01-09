@@ -47,6 +47,8 @@
 	
 	<bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
 
+  <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
+
 	<util:list id="uifDictionaryBeans">
 		<value>classpath:/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>

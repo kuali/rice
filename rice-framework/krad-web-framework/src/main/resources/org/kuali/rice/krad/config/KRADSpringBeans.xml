@@ -638,6 +638,8 @@
         class="org.kuali.rice.krad.service.impl.LegacyAppFrameworkAdapterServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter" />
 
+  <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
+
   <import resource="KRADSpringBeans-data.xml"/>
   <import resource="KRADSpringBeans-jpa.xml"/>
 

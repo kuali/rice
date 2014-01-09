@@ -106,40 +106,26 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="rice" target="1.6" />
-      <module name="rice-archetype" target="1.6" />
-      <module name="rice-archetype-quickstart" target="1.6" />
       <module name="rice-checkstyle" target="1.6" />
       <module name="rice-client-contrib" target="1.6" />
-      <module name="rice-config" target="1.6" />
-      <module name="rice-core" target="1.6" />
       <module name="rice-core-api" target="1.6" />
       <module name="rice-core-framework" target="1.6" />
       <module name="rice-core-impl" target="1.6" />
-      <module name="rice-core-service" target="1.6" />
       <module name="rice-core-service-api" target="1.6" />
       <module name="rice-core-service-framework" target="1.6" />
       <module name="rice-core-service-impl" target="1.6" />
       <module name="rice-core-service-web" target="1.6" />
       <module name="rice-core-web" target="1.6" />
-      <module name="rice-db" target="1.6" />
       <module name="rice-deploy" target="1.6" />
       <module name="rice-development-tools" target="1.6" />
-      <module name="rice-dist" target="1.6" />
-      <module name="rice-edl" target="1.6" />
       <module name="rice-edl-framework" target="1.6" />
       <module name="rice-edl-impl" target="1.6" />
-      <module name="rice-framework" target="1.6" />
-      <module name="rice-impex" target="1.6" />
-      <module name="rice-impex-client" target="1.6" />
       <module name="rice-impex-client-bootstrap" target="1.6" />
       <module name="rice-impex-client-demo" target="1.6" />
       <module name="rice-impex-master" target="1.6" />
-      <module name="rice-impex-server" target="1.6" />
       <module name="rice-impex-server-bootstrap" target="1.6" />
       <module name="rice-impex-server-demo" target="1.6" />
       <module name="rice-impl" target="1.6" />
-      <module name="rice-it" target="1.6" />
       <module name="rice-it-config" target="1.6" />
       <module name="rice-it-core" target="1.6" />
       <module name="rice-it-edl" target="1.6" />
@@ -156,13 +142,10 @@
       <module name="rice-it-location" target="1.6" />
       <module name="rice-it-remote" target="1.6" />
       <module name="rice-it-vc" target="1.6" />
-      <module name="rice-ken" target="1.6" />
       <module name="rice-ken-api" target="1.6" />
-      <module name="rice-kew" target="1.6" />
       <module name="rice-kew-api" target="1.6" />
       <module name="rice-kew-framework" target="1.6" />
       <module name="rice-kew-impl" target="1.6" />
-      <module name="rice-kim" target="1.6" />
       <module name="rice-kim-api" target="1.6" />
       <module name="rice-kim-framework" target="1.6" />
       <module name="rice-kim-impl" target="1.6" />
@@ -180,22 +163,18 @@
       <module name="rice-krad-theme-builder-test" target="1.6" />
       <module name="rice-krad-web" target="1.6" />
       <module name="rice-krad-web-framework" target="1.6" />
-      <module name="rice-krms" target="1.6" />
       <module name="rice-krms-api" target="1.6" />
       <module name="rice-krms-framework" target="1.6" />
       <module name="rice-krms-gen" target="1.6" />
       <module name="rice-krms-impl" target="1.6" />
-      <module name="rice-ksb" target="1.6" />
       <module name="rice-ksb-api" target="1.6" />
       <module name="rice-ksb-client-impl" target="1.6" />
       <module name="rice-ksb-server-impl" target="1.6" />
       <module name="rice-ksb-web" target="1.6" />
-      <module name="rice-location" target="1.6" />
       <module name="rice-location-api" target="1.6" />
       <module name="rice-location-framework" target="1.6" />
       <module name="rice-location-impl" target="1.6" />
       <module name="rice-location-web" target="1.6" />
-      <module name="rice-middleware" target="1.6" />
       <module name="rice-sampleapp" target="1.6" />
       <module name="rice-serviceregistry" target="1.6" />
       <module name="rice-sql" target="1.6" />

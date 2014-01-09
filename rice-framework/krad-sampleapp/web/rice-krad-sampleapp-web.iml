@@ -341,8 +341,8 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas:3.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.1.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.codemodel:codemodel:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.codemodel:codemodel:2.4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: no.geosoft:filemonitor:1.0-kuali" level="project" />
     <orderEntry type="library" name="Maven: com.sun:tools:1.6" level="project" />
     <orderEntry type="module" module-name="rice-tools-test" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.11" level="project" />
@@ -389,8 +389,6 @@
     <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
-    <orderEntry type="module" module-name="rice-development-tools" />
-    <orderEntry type="library" name="Maven: com.google.code.javaparser:javaparser:1.0.9" level="project" />
   </component>
 </module>
 

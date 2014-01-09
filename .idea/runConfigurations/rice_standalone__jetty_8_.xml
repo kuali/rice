@@ -1,7 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice standalone (jetty 8)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8.0.1.v20110908">
+  <configuration default="false" name="rice standalone (jetty 8)" type="JettyConfiguration" factoryName="Local">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="COMMON_VM_ARGUMENTS" value="-Dlog4j.debug -Dalt.log4j.configuration=43950-log4j.properties -Dalt.config.location=$PROJECT_DIR$/43950-standalone-config.xml -Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml" />
+    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/kr-dev/" />
+    <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml" />
     <option name="UPDATING_POLICY" value="update-resources" />
     <deployment>
       <artifact name="rice-standalone:war exploded">
@@ -153,12 +154,6 @@
             </JettyConfigFile>
             <JettyConfigFile>
               <option name="path" value="etc\jetty-annotations.xml" />
-            </JettyConfigFile>
-            <JettyConfigFile>
-              <option name="path" value="etc/jetty-annotations.xml" />
-            </JettyConfigFile>
-            <JettyConfigFile>
-              <option name="path" value="etc/jetty-monitor.xml" />
             </JettyConfigFile>
           </list>
         </option>

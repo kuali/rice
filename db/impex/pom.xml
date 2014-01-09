@@ -81,9 +81,15 @@
     <impex.mysql.sql.drop>
       DROP DATABASE IF EXISTS ${impex.database}
       /
+      GRANT USAGE ON *.* TO '${impex.username}'@'%'
+      IDENTIFIED BY '${impex.password}'
+      /
       GRANT USAGE ON *.* TO '${impex.username}'@'localhost'
       IDENTIFIED BY
       '${impex.password}'
+      /
+      DROP
+      USER '${impex.username}'@'%'
       /
       DROP
       USER '${impex.username}'@'localhost'
@@ -97,10 +103,16 @@
       '${sql.mysql.collate}'
       /
 
+      CREATE USER '${impex.username}'@'%' IDENTIFIED
+      BY '${impex.password}'
+      /
+      CREATE USER '${impex.username}'@'localhost' IDENTIFIED
+      BY '${impex.password}'
+      /
     </impex.mysql.sql.create>
     <impex.mysql.sql.grants>
       GRANT ALL ON ${impex.database}.*
-      TO '${impex.username}'@'localhost'
+      TO '${impex.username}'@'%'
       WITH GRANT OPTION
       /
     </impex.mysql.sql.grants>

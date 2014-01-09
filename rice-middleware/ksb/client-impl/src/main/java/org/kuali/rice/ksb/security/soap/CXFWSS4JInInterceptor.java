@@ -80,9 +80,8 @@ public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 		props.put("org.apache.ws.security.crypto.merlin.keystore.alias", ConfigContext.getCurrentContextConfig().getKeystoreAlias());
 	    props.put("org.apache.ws.security.crypto.merlin.file", ConfigContext.getCurrentContextConfig().getKeystoreFile());
 
-//        if (LOG.isDebugEnabled()) {
-		if (true) {
-			LOG.error("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Using keystore location " + ConfigContext.getCurrentContextConfig().getKeystoreFile());
 		}
 		return props;
 	}

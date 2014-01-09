@@ -213,15 +213,6 @@
   <!-- Action Registry -->
   <bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
 
-  <bean id="enEncryptionService" class="org.kuali.rice.core.impl.encryption.DemonstrationGradeEncryptionServiceImpl"
-        lazy-init="true">
-    <property name="secretKey">
-      <bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
-        <property name="name" value="encryption.key"/>
-      </bean>
-    </property>
-  </bean>
-
   <bean id="kewIdentityHelperService" class="org.kuali.rice.kew.identity.service.impl.IdentityHelperServiceImpl"/>
 
   <bean id="rice.kew.responsibilityChangeQueue"

@@ -191,8 +191,6 @@ public final class KEWServiceLocator {
 
 	public static final String TRANSFORMATION_SERVICE = "enTransformationService";
 
-	public static final String ENCRYPTION_SERVICE = "enEncryptionService";
-
 	public static final String REMOVE_REPLACE_DOCUMENT_SERVICE = "enRemoveReplaceDocumentService";
 
 	public static final String EXTRACT_SERVICE = "enExtractService";
@@ -357,10 +355,6 @@ public final class KEWServiceLocator {
 
 	public static ActionRegistry getActionRegistry() {
 		return (ActionRegistry) getBean(ACTION_REGISTRY);
-	}
-
-    public static EncryptionService getEncryptionService() {
-		return (EncryptionService) getBean(ENCRYPTION_SERVICE);
 	}
 
     public static BranchService getBranchService() {

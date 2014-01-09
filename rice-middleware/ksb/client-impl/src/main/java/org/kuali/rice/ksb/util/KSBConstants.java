@@ -83,7 +83,6 @@ public final class KSBConstants {
         public static final String BUS_OUT_INTERCEPTORS = "ksbOutInterceptors";
     	public static final String CXF_BUS = "cxf";
     	public static final String DIGITAL_SIGNATURE_SERVICE = "rice.ksb.digitalSignatureService";
-    	public static final String ENCRYPTION_SERVICE = "enEncryptionService";
         public static final String EXCEPTION_MESSAGING_SERVICE = "rice.ksb.exceptionMessagingService";
         public static final String JAVA_SECURITY_MANAGEMENT_SERVICE = "rice.ksb.javaSecurityManagementService";
         public static final String JTA_TRANSACTION_MANAGER = "jtaTransactionManager";

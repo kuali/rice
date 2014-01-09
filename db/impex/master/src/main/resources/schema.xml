@@ -2904,7 +2904,7 @@
         </index>
     </table>
     <table name="KRMS_ATTR_DEFN_T">
-        <column name="ATTR_DEFN_ID" primaryKey="true" size="255" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="NM" required="true" size="100" type="VARCHAR"/>
         <column name="NMSPC_CD" required="true" size="40" type="VARCHAR"/>
         <column name="LBL" size="40" type="VARCHAR"/>
@@ -3358,7 +3358,7 @@
         <column name="TYP_ATTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="SEQ_NO" required="true" size="5" type="DECIMAL"/>
         <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="ATTR_DEFN_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="ATTR_DEFN_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_ATTR_DEFN_T" name="KRMS_TYP_ATTR_FK1">

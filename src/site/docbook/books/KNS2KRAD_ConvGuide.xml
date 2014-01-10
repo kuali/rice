@@ -2569,6 +2569,12 @@
             &lt;bean parent="MaintainableFieldDefinition" p:name="value"/>
           &lt;/list>
         &lt;/property>
+        &lt;property name="duplicateIdentificationFields">
+          &lt;list>
+            &lt;bean parent="MaintainableFieldDefinition" p:name="name"/>
+            &lt;bean parent="MaintainableFieldDefinition" p:name="value"/>
+          &lt;/list>
+        &lt;/property>
       &lt;/bean>
     &lt;/list>
   &lt;/property>
@@ -2629,6 +2635,12 @@
     &lt;list>
       &lt;bean parent="Uif-DataField" p:attributeName="name"/>
       &lt;bean parent="Uif-DataField" p:attributeName="value"/>
+    &lt;/list>
+  &lt;/property>
+  &lt;property name="duplicateLinePropertyNames">
+    &lt;list>
+      &lt;value>name&lt;/value>
+      &lt;value>value&lt;/value>
     &lt;/list>
   &lt;/property>
 &lt;/bean></programlisting>
@@ -2720,6 +2732,53 @@
                 </imageobject>
               </inlinemediaobject>
             </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  <section>
+    <title>Collections</title>
+      <para>
+        <itemizedlist>
+          <listitem xml:id="MC1">
+            <para>The class of the collection is now specified by the <emphasis role="keyword"
+                    >collectionObjectCLass</emphasis> property instead of the <emphasis role="keyword"
+                    >businessObjectClass</emphasis> property. [KNS line: 41, KRAD line: 43] <inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+              </imageobject>
+            </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="MC2">
+            <para>The name of the collection within the parent object is now specified by the
+              <emphasis role="keyword">propertyName</emphasis> property instead of the
+              <emphasis role="keyword">name</emphasis> property. [KNS line: 42, KRAD line: 44]
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="MC3">
+            <para>The list of fields is now specified by the <emphasis role="keyword"
+                    >items</emphasis> property instead of the <emphasis role="keyword"
+                    >maintainableFields</emphasis> property. [KNS line: 43-47, KRAD line: 50-55]
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem xml:id="MC4">
+            <para>To indicate which fields should be used to check for duplicate records is
+              now specified by the <emphasis role="keyword">duplicateLinePropertyNames</emphasis>
+              and is a simple list of property names, instead of the <emphasis role="keyword">
+              duplicateIdentificationFields</emphasis> property. [KNS line: 49-54, KRAD line: 56-61]
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
         </itemizedlist>
       </para>

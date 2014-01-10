@@ -28,24 +28,41 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-FieldGroup-Example1"/>
+        <ref bean="Demo-FieldGroup-Example2"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-FieldGroup-Example1" parent="Uif-VerticalBoxSection">
+  <bean id="Demo-FieldGroup-Example1" parent="Uif-VerticalBoxSection" p:headerText="Field Group Vertical">
     <property name="items">
       <list>
         <!-- ex:Demo-FieldGroup-Example1 start-->
-        <bean parent="Uif-FieldGroupBase">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="InputField 1" p:propertyName="inputField1"/>
-              <bean parent="Uif-InputField" p:label="InputField 2" p:propertyName="inputField2"/>
-              <bean parent="Uif-InputField" p:label="InputField 3" p:propertyName="inputField3"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField1"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField2"/>
             </list>
           </property>
         </bean>
         <!-- ex:Demo-FieldGroup-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-FieldGroup-Example2" parent="Uif-VerticalBoxSection" p:headerText="Field Group Horizontal">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-FieldGroup-Example2 start-->
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Field Group">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField1" p:width="15em"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField2" p:width="5em"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-FieldGroup-Example2 end-->
       </list>
     </property>
   </bean>

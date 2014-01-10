@@ -212,7 +212,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         exp = StringUtils.replace(exp, " ,", ",");
 
         Map<String, String> serverEvaluations = new HashMap<String, String>();
-        String spelMethodRegex = "(\\s?#(.*?\\(.*?\\)))(\\s|$)";
+        String spelMethodRegex = "(\\s?!?(#|get|is)(.*?\\(.*?\\)))(\\s|$)";
         Pattern pattern = Pattern.compile(spelMethodRegex);
 
         // Evaluate server side method calls and constants

@@ -1182,11 +1182,11 @@
       <para><emphasis role="bold">KRAD code example:</emphasis></para>
       <para>
         <programlisting linenumbering="numbered">&lt;bean id="EntityType-InquiryView" parent="Uif-InquiryView">
-  &lt;property name="headerText" value="Entity Type"/>
+  &lt;property name="headerText" value="Entity Type Inquiry"/>
   &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="viewHelperServiceClass" value="org.kuali.rice.kim.inquiry.EntityTypeInquirableImpl"/>
   &lt;property name="authorizerClass" value="org.kuali.rice.kim.authorization.EntityTypeAuthorizer"/>
-  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.view.EntityTypeViewPresentationController"/>
+  &lt;property name="presentationControllerClass" value="org.kuali.rice.kim.presentation.EntityTypePresentationController"/>
   &lt;property name="items">
     &lt;list>
       &lt;bean id="EntityType-InquiryView-General" parent="Uif-Disclosure-GridSection">
@@ -1274,21 +1274,31 @@
           </listitem>
           <listitem xml:id="IBB5">
             <para>The <emphasis role="keyword">authorizerClass</emphasis> has now moved to the view.
-              See below for more information. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
+              Conversion will copy the property.  [KNS line: 4, KRAD line: 5]  <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
-              </inlinemediaobject>
-            </para>
+              </inlinemediaobject>  Custom implementations of the <emphasis role="keyword"
+                >InquiryAuthorizer</emphasis> class will need refactoring.  See InquiryAuthorizer
+              below for more information. <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="IBB6">
             <para>The <emphasis role="keyword">presentationControllerClass</emphasis> has now moved
-              to the view. See below for more information. [KNS line: 5, KRAD line: 6] <inlinemediaobject>
+              to the view.  Conversion will copy the property.  [KNS line: 5, KRAD line: 6] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
-              </inlinemediaobject>
-            </para>
+              </inlinemediaobject>  Custom implementations of the <emphasis role="keyword"
+                >InquiryPresentationController</emphasis> class will need refactoring. See
+              InquiryPresentationController below for more information.   <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
         </itemizedlist>
       </para>
@@ -1354,11 +1364,11 @@
           </listitem>
           <listitem xml:id="IS6">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.addAdditionalSections() has been removed
-              in KRAD. To add additional sections dynamically to an inquiry override <emphasis
+              in KRAD. To add additional sections dynamically to an inquiry, override the <emphasis
                 role="keyword"> performCustomInitialization</emphasis> method of ViewHelperService
               instead and add custom components. The custom Inquirable implementation can be
               specified using the <emphasis role="keyword"> viewHelperServiceClass</emphasis>
-              property of the view which in turn would extend <emphasis role="keyword"
+              property of the view, which in turn would extend <emphasis role="keyword"
                 >org.kuali.rice.krad.inquiry.InquirableImpl</emphasis>.<inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -1373,7 +1383,7 @@
           </listitem>
           <listitem xml:id="IS7">
             <para>The org.kuali.rice.kns.inquiry.Inquirable.getSection() has been removed in KRAD.
-              To modify existing sections dynamically in an inquiry override <emphasis
+              To modify existing sections dynamically in an inquiry, override the <emphasis
                 role="keyword"> performCustomInitialization</emphasis> method of ViewHelperService. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -1454,8 +1464,8 @@
           </listitem>
           <listitem xml:id="IC3">
             <para>The <emphasis role="keyword">attributeName</emphasis> property of the collection
-              has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 28,
-              KRAD line: 26] <inlinemediaobject>
+              has been changed to <emphasis role="keyword">propertyName</emphasis>. [KNS line: 29,
+              KRAD line: 27] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1465,7 +1475,7 @@
           <listitem xml:id="IC4">
             <para>The property that contains the inquiry display fields was renamed from <emphasis
                 role="keyword">inquiryFields</emphasis> to <emphasis role="keyword"
-              >items</emphasis>. [KNS line: 29, KRAD line: 30] <inlinemediaobject>
+              >items</emphasis>. [KNS line: 30, KRAD line: 28] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1474,8 +1484,8 @@
           </listitem>
           <listitem xml:id="IC5">
             <para>The property <emphasis role="keyword">summaryTitle</emphasis> has been moved to
-                <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 35, KRAD
-              line: 33] <inlinemediaobject>
+                <emphasis role="keyword">layoutManager.summaryTitle</emphasis>. [KNS line: 36, KRAD
+              line: 34] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1485,7 +1495,7 @@
           <listitem xml:id="IC6">
             <para>The container <emphasis role="keyword">summaryFields</emphasis> has been moved to
                 <emphasis role="keyword">layoutManager.summaryFields</emphasis> and simplified to
-              just take a list of values. [KNS line: 36, KRAD line: 34] <inlinemediaobject>
+              just take a list of values. [KNS line: 37, KRAD line: 35] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1494,8 +1504,8 @@
           </listitem>
           <listitem xml:id="IC7">
             <para>In general, only simple nestings such as the ones shown above are supported by the
-              conversion script. Any other combinations, such as <emphasis role="keyword"
-                >InquiryCollectionDefinition</emphasis>s directly inside an <emphasis role="keyword"
+              conversion script. Any other combinations, such as a <emphasis role="keyword"
+                >InquiryCollectionDefinition</emphasis> directly inside an <emphasis role="keyword"
                 >inquiryFields</emphasis> property or inside another <emphasis role="keyword"
                 >InquiryCollectionDefinition</emphasis> are not supported and will need to be
               converted manually. <inlinemediaobject>
@@ -1523,7 +1533,7 @@
               <emphasis role="keyword"
               >org.kuali.rice.krad.uif.widget.Inquiry.buildInquiryLink</emphasis> to automatically
             build the link or define a completely new link by calling <emphasis role="keyword"
-              >inquiry.getInquiryLink().setHref</emphasis>. <inlinemediaobject>
+              >Inquiry.getInquiryLink().setHref</emphasis>. <inlinemediaobject>
               <imageobject>
                 <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
               </imageobject>
@@ -1536,11 +1546,11 @@
       <title>InquiryAuthorizer</title>
       <para>KRAD moves the functionality of <emphasis role="keyword">InquiryAuthorizer</emphasis> to
           <emphasis role="keyword">InquiryViewAuthorizer</emphasis>. While the data dictionary entry
-        will be automatically converted, if it points to a custom implementation of <emphasis
-          role="keyword">InquiryAuthorizer</emphasis>, then the custom class will need to be
-        reparented to <emphasis role="keyword">InquiryViewAuthorizer</emphasis> and the methods will
-        need to be migrated to <emphasis role="keyword">canViewGroup</emphasis> (for sections) and
-          <emphasis role="keyword">canViewField</emphasis> (for fields). <inlinemediaobject>
+        remains the same, if it points to a custom implementation of <emphasis role="keyword"
+          >InquiryAuthorizer</emphasis>, then the custom class will need to be reparented to
+          <emphasis role="keyword">InquiryViewAuthorizer</emphasis> and the methods will need to be
+        migrated to <emphasis role="keyword">canViewGroup</emphasis> (for sections) and <emphasis
+          role="keyword">canViewField</emphasis> (for fields). <inlinemediaobject>
           <imageobject>
             <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
           </imageobject>
@@ -1551,8 +1561,8 @@
       <title>InquiryPresentationController</title>
       <para>KRAD moves the functionality of <emphasis role="keyword"
           >InquiryPresentationController</emphasis> to <emphasis role="keyword"
-          >InquiryViewPresentationController</emphasis>. While the data dictionary entry will be
-        automatically converted, if it points to a custom implementation of <emphasis role="keyword"
+          >InquiryViewPresentationController</emphasis>. While the data dictionary entr remains the
+        same, if it points to a custom implementation of <emphasis role="keyword"
           >InquiryPresentationController</emphasis>, then the custom class will need to be
         reparented to <emphasis role="keyword">InquiryViewPresentationController</emphasis> and the
         methods will need to be migrated to <emphasis role="keyword">canViewGroup</emphasis> (for

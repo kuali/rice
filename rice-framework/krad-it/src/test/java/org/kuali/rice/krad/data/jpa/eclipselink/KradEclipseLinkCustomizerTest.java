@@ -813,7 +813,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
 
         @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
                 insertable = false, updatable = false) @QueryCustomizerGenerator(attributeName = "accountTypeCode",
-                attributeResolverClass = "org.kuali.rice.krad.data.jpa.testbo.TestQueryCustomizerValue")
+                attributeResolverClass = org.kuali.rice.krad.data.jpa.testbo.TestQueryCustomizerValue.class)
         private TestRelatedExtension accountExtension;
 
         @Column(name = "ACCT_NAME")

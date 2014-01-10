@@ -47,20 +47,25 @@ public class QueryCustomizer {
             exp = databaseMapping.buildSelectionCriteria();
             mapping = (ForeignReferenceMapping) databaseMapping;
         } else {
-            throw new RuntimeException("Mapping type not implemented for query customizer");
+            throw new RuntimeException("Mapping type not implemented for query customizer for property "+propertyName);
         }
 
         for (QueryCustomizerGenerator queryCustomizerGenerator : queryCustomizerGenerators) {
+            QueryCustomizerOperators operator = queryCustomizerGenerator.operator();
+            if(!operator.equals(QueryCustomizerOperators.EQUAL)){
+                throw new UnsupportedOperationException("Operator "+operator.getValue()
+                        +" not supported in QueryCustomizer");
+            }
             String attributeName = queryCustomizerGenerator.attributeName();
             Object attributeValue = queryCustomizerGenerator.attributeValue();
-            String attributeValueClass = queryCustomizerGenerator.attributeResolverClass();
+            Class<?> attributeValueClass = queryCustomizerGenerator.attributeResolverClass();
 
             if (exp != null && mapping != null) {
                 ExpressionBuilder builder = exp.getBuilder();
-                if (StringUtils.isNotBlank(attributeValueClass)) {
+                if (!attributeValueClass.equals(Void.class)) {
                     try {
-                        QueryCustomizerValue queryCustomizerValue = (QueryCustomizerValue) Class.forName(
-                                attributeValueClass).newInstance();
+                        QueryCustomizerValue queryCustomizerValue =
+                                (QueryCustomizerValue) attributeValueClass.newInstance();
                         attributeValue = queryCustomizerValue.getValue();
                     } catch (Exception e) {
                         throw new RuntimeException(

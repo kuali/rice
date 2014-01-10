@@ -54,7 +54,7 @@ public @interface QueryCustomizerGenerator {
     /**
      * (Optional) Operator that will be used for this fragment expression
      */
-    String operator() default "=";
+    QueryCustomizerOperators operator() default QueryCustomizerOperators.EQUAL;
 
     /**
      * (Optional) The value that the attribute named will be used to build expression fragment
@@ -65,5 +65,5 @@ public @interface QueryCustomizerGenerator {
      * (Optional) The class that resolves the value that the attribute named will be used to build expression
      * fragment
      */
-    String attributeResolverClass() default "";
+    Class<?> attributeResolverClass() default Void.class;
 }

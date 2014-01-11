@@ -649,6 +649,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AuthorizationView"/>
         <bean parent="Uif-Link" p:linkText="Additional CSS Classes"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AdditionalCssClassesView"/>
+        <bean parent="Uif-Link" p:linkText="Data Attributes"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataAttributesView"/>
         <!--<bean parent="Uif-Link" p:linkText="Validation Messages"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ValidationMessagesView"/>-->
         <!--        <bean parent="Uif-Link" p:linkText="Incident Page"

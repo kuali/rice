@@ -455,7 +455,7 @@
                 </property>
                 <property name="subCollections">
                   <list>
-                    <ref bean="Lab-LayoutTest-StackedSub"/>
+                    <ref bean="Lab-LayoutTest-Sub"/>
                   </list>
                 </property>
               </bean>

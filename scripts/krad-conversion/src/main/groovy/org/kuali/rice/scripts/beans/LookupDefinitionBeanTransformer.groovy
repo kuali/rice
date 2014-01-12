@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -185,7 +185,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
      * Convert the noLookup attribute to quickfinder.render.  The boolean value needs to be inverted as well.
      */
     def gatherNoLookupAttribute = { Node beanNode ->
-        def noLookup = beanNode.attributes().find { matchesAttr("*noLookup", it.key.toString()) };
+        def noLookup = beanNode?.attributes()?.clone().find { matchesAttr("*noLookup", it.key.toString()) };
         if (noLookup?.value == "true") {
             return ["p:quickfinder.render": "false"];
         } else if (noLookup?.value == "false") {

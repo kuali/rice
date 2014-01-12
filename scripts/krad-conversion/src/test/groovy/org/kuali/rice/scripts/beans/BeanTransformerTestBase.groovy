@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,8 +47,12 @@ class BeanTransformerTestBase {
         return config;
     }
 
-    public void checkBeanParentExists(def rootNode, String parentName) {
-        Assert.assertTrue("root should contains parent bean " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    public void checkBeanExistsByParentId(def rootNode, String parentName) {
+        Assert.assertTrue("root should contains bean with parent id " + parentName, rootNode.bean.findAll { parentName.equals(it.@parent) }.size() > 0);
+    }
+
+    public void checkBeanExistsById(def rootNode, String beanId) {
+        Assert.assertTrue("root should contains bean with id " + beanId, rootNode.bean.findAll { beanId.equals(it.@id) }.size() > 0);
     }
 
     public File getTestResourceFile(String relativeFilePath) {
@@ -65,11 +69,17 @@ class BeanTransformerTestBase {
         def tagAssertion = beanNode.property.findAll { propertyName.equals(it.@name) }.size() > 0;
         def attrAssertion = beanNode.attributes().findAll {
             it.key instanceof QName && propertyName.equals(it.key.localPart) }.size() > 0;
-        Assert.assertTrue("bean should contains property " + propertyName, tagAssertion || attrAssertion);
+        Assert.assertTrue("bean should contain property " + propertyName + " " + beanNode.toString(), tagAssertion || attrAssertion);
     }
 
     public void checkBeanPropertyNotExists(def beanNode, String propertyName) {
         Assert.assertTrue("bean should not contain property " + propertyName, beanNode.property.findAll { propertyName.equals(it.@name) }.size() == 0);
+    }
+
+    public void checkBeanPropertyValueExists(def beanNode, String propertyName, String propertyValue) {
+        checkBeanPropertyExists(beanNode,propertyName)
+        def value = beanNode.property.find { propertyName.equals(it.@name) }?.@value;
+        Assert.assertEquals("" + propertyName + "exists but should contains value", propertyValue, value);
     }
 
     public Node getFileRootNode(String filepath) {
@@ -92,13 +102,31 @@ class BeanTransformerTestBase {
      * Used to check bean structure has been transformed appropriately.  Helpful for cases which carry over properties
      * that should not be included in the new bean.
      *
-     * @param beanNode - bean being validated
-     * @param containsProperties - properties that should exist in the bean structure
-     * @param invalidProperties - properties that should not exist in the bean structure
+     * @param beanNode bean being validated
+     * @param containsProperties properties that should exist in the bean structure
+     * @param invalidProperties properties that should not exist in the bean structure
      */
     public void checkBeanStructure(Node beanNode, List containsProperties, List invalidProperties) {
         containsProperties?.each { property -> checkBeanPropertyExists(beanNode, property); }
         invalidProperties?.each { property -> checkBeanPropertyNotExists(beanNode, property); }
+    }
+
+    /**
+     * Checks property name exists with expected value within the bean (either as a property tag or namespace attr)
+     *
+     * @param beanNode bean being reviewed for property
+     * @param propertyName
+     * @param propertyValue expected value tied to property name
+     * @return
+     */
+    public boolean hasPropertyValue(Node beanNode, String propertyName, String propertyValue) {
+        if(beanNode?.property?.find { it.@name == propertyName  && it.@value == propertyValue}) {
+            return true;
+        } else if (beanNode.attributes()?.find { key, value -> key instanceof QName &&
+                ((QName) key).getLocalPart() == propertyName  && value == propertyValue}) {
+            return true;
+        }
+        return false;
     }
 
 }

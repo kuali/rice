@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,10 +76,15 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
                 }
 
                 if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) || "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
-                    def attributes = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder"]);
+                    def classAttribute = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder" ]);
+                    def attributes = genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInDescription",
+                            "*includeBlankRow": "p:includeBlankRow","*keyAttribute": "p:keyAttribute",
+                            "*labelAttribute": "p:labelAttribute" ]);
                     controlProperty.plus {
                         property(name: "optionsFinder") {
-                            bean(class: attributes.get("p:optionsFinder").value)
+                            bean(class: classAttribute.get("p:optionsFinder").value) {
+                                attributes.each { property (name: it.key, value: it.value) }
+                            }
                         }
                     }
                 }

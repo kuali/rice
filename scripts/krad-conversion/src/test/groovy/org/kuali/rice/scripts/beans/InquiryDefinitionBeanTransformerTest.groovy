@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,9 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
-import groovy.xml.XmlUtil
-import org.codehaus.plexus.util.FileUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.scripts.ConversionUtils
 
 /**
  * Tests for the {@link org.kuali.rice.scripts.beans.InquiryDefinitionBeanTransformer} class.
@@ -56,7 +53,7 @@ class InquiryDefinitionBeanTransformerTest extends BeanTransformerTestBase {
         def ddRootNode = getFileRootNode(defaultTestFilePath);
         def beanNode = ddRootNode.bean.find { inquiryDefinitionBeanType.equals(it.@parent) };
         def resultNode = inquiryDefinitionBeanTransformer.transformInquiryDefinitionBean(beanNode);
-        checkBeanParentExists(ddRootNode, "Uif-InquiryView");
+        checkBeanExistsByParentId(ddRootNode, "Uif-InquiryView");
         checkBeanPropertyExists(resultNode, "items");
 
     }

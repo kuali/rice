@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,11 +63,11 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
     @Rule
     public TemporaryFolder folder= new TemporaryFolder();
 
-    @Ignore
+    @Ignore // empty test, XML Ingester does not have Create New Cancel functionality
     @Override
     public void testCreateNewCancel() throws Exception {}
 
-    @Ignore
+    @Ignore // empty test, XML Ingester does not have Edit Cancel functionality
     @Override
     public void testEditCancel() throws Exception {}
 

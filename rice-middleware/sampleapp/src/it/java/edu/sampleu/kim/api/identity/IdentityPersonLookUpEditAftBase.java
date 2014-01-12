@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         // This tests only runs correctly the first time.
         selectFrameIframePortlet();
         waitAndTypeByName("principalName","fran");
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         selectFrameIframePortlet();
         waitAndClickByXpath("//a[@title='edit Person withPrincipal ID=fran ']");
         waitAndTypeByName("document.documentHeader.documentDescription", "Test description of person");

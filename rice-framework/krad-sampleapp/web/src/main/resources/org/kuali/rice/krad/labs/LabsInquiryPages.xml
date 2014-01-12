@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -149,7 +149,9 @@
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with Authorizer configured" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-Authorizer&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
               <bean parent="Uif-Link" p:linkText="Link to Inquiry with Component Security and Attribute Security configured on the view." p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-Authorizer&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000"/>
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-AuthorizerSecurity&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000&amp;backdoorId=admin"/>
+              <bean parent="Uif-Link" p:linkText="Link to Inquiry with Component Security and Attribute Security overriden by Kim Permissions." p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?viewId=LabsInquiry-AuthorizerSecurity&amp;methodToCall=start&amp;travelPerDiemExpenseId=10000&amp;backdoorId=dev1"/>
             </list>
           </property>
         </bean>

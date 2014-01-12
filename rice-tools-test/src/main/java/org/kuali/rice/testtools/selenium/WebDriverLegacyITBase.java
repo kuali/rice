@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -340,6 +340,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String SEARCH_XPATH_3 = "//button[contains(text(),'earch')]";
 
     /**
+     * (//input[@name='methodToCall.search'])[2]
+     */
+    public static final String SEARCH_SECOND = "(//input[@name='methodToCall.search'])[2]";
+
+    /**
      * //input[@name='methodToCall.route' and @alt='submit']
      */
     public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
@@ -618,7 +623,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void addAdHocRecipients(String[][] adHocRecipients) throws InterruptedException {
-        String today = getTodaysDate();
+        String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
@@ -787,13 +792,22 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
-        // get growl text
-        String growlText = waitForElementPresent(By.className("jGrowl-message")).getText();
+        waitForElementPresent(By.className("jGrowl-message"));
 
-        WebDriverUtils.stepMessage("Is jGrowl text '" + jGrowlText + "'? " + jGrowlText.equals(growlText));
+        // get growl texts
+        StringBuilder sb = new StringBuilder("");
+        List<WebElement> jGrowls = findElements(By.className("jGrowl-message"));
+        for (WebElement jGrowl : jGrowls) {
+            if (jGrowl.getText() != null) {
+                sb.append(jGrowl.getText()).append("\n");
+            }
+        }
+        String growlText = sb.toString();
+
+        WebDriverUtils.stepMessage("Do jGrowls contain text '" + jGrowlText + "'? " + growlText.contains(jGrowlText));
 
         //check growl text is present
-        assertEquals(jGrowlText, growlText);
+        assertTrue(growlText + " does not contain " + jGrowlText, growlText.contains(jGrowlText));
     }
 
     protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {
@@ -1632,7 +1646,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String groupDescription = "GD" + random;
         String groupName = "BrownGroup " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         String nameSpace = "KR-IDM";
-        String today = getTodaysDate();
+        String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
@@ -1698,10 +1712,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
-    protected String getTodaysDate() {
+    protected String getDateToday() {
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
         return sdf.format(now);
+    }
+
+    protected String getDateTomorrow() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DATE, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        return sdf.format(now.getTime());
     }
 
     protected void testAttributeDefinitionLookUp() throws Exception {
@@ -1771,18 +1792,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
         String agendaName = "Agenda Date :" + Calendar.getInstance().getTime().toString();
         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
         fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
+        Thread.sleep(1000);
+        // extra focus and blur to work around KULRICE-11534 Create New Agenda requires two blur events to fully render Type when Context is typed in (first renders label, second renders select)
         fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
         selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickByXpath("//div[2]/button");
-        waitAndClickByXpath("//div[2]/button[3]");
-        waitForPageToLoad();
-        selectTopFrame();
-        waitAndClickByXpath("(//input[@name='imageField'])[2]");
+        waitAndClickButtonByText("submit");
+        assertTextPresent(new String[] {"Document was successfully submitted.", "ENROUTE"});
         passed();
     }
 
@@ -2153,7 +2175,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");
+        waitAndClickReturnValue();
         String docId = waitForDocId();
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Role " + dtsTwo);
@@ -2164,7 +2186,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName(
                 "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickByXpath(SEARCH_XPATH, "No search button to click.");
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "No return value link");
+        waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
         blanketApproveTest();
@@ -2661,18 +2683,18 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertFocusTypeBlurValidation("field75", new String[]{"02/35/12"},new String[]{"02/28/12"});
         assertFocusTypeBlurValidation("field82", new String[]{"13:22"},new String[]{"02:33"});
         assertFocusTypeBlurValidation("field83", new String[]{"25:22"},new String[]{"14:33"});
+        assertFocusTypeBlurValidation("field56", new String[]{"2020-06-02"},new String[]{"2020-06-02 03:30:30.22"});
         assertFocusTypeBlurValidation("field57", new String[]{"0"},new String[]{"2020"});
         assertFocusTypeBlurValidation("field58", new String[]{"13"},new String[]{"12"});
         assertFocusTypeBlurValidation("field61", new String[]{"5555-444"},new String[]{"55555-4444"});
         assertFocusTypeBlurValidation("field62", new String[]{"aa5bb6_a"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"});
-        assertFocusTypeBlurValidation("field63", new String[]{"fff555"},new String[]{"aa22 _/"});
+        assertFocusTypeBlurValidation("field63", new String[]{"#fff555"},new String[]{"aa22 _/"});
         assertFocusTypeBlurValidation("field64", new String[]{"AABB55"},new String[]{"ABCDEFGHIJKLMNOPQRSTUVWXY,Z abcdefghijklmnopqrstuvwxy,z"});
         assertFocusTypeBlurValidation("field76", new String[]{"AA~BB%"},new String[]{"abcABC %$#@&<>\\{}[]*-+!=.()/\"\"',:;?"});
         assertFocusTypeBlurValidation("field65", new String[]{"sdfs$#$# dsffs"},new String[]{"sdfs$#$#sffs"});
         assertFocusTypeBlurValidation("field66", new String[]{"abcABCD"},new String[]{"ABCabc"});
         assertFocusTypeBlurValidation("field67", new String[]{"(111)B-(222)A"},new String[]{"(12345)-(67890)"});
         assertFocusTypeBlurValidation("field68", new String[]{"A.66"},new String[]{"a.4"});
-        assertFocusTypeBlurValidation("field56", new String[]{"2020-06-02"},new String[]{"2020-06-02 03:30:30.22"});
     }
 
     protected void assertFocusTypeBlurValidation(String field, String[] errorInputs, String[] validInputs) throws InterruptedException {
@@ -2707,10 +2729,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
 
         // testing for https://groups.google.com/a/kuali.org/group/rice.usergroup.krad/browse_thread/thread/1e501d07c1141aad#
-        String styleValue = waitAndGetAttributeByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']",
+        String styleValue = waitAndGetAttributeByXpath("//label[@id='" + idPrefix + "TextInputField_label']",
                 "style");
 
         // log.info("styleValue is " + styleValue);
@@ -2749,7 +2771,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineWithSpecificTime(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
         String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
         String inputTime = "7:06";
@@ -2767,7 +2789,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
         String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
         String inputTime = "5:20";
@@ -2781,20 +2803,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//span[@id='" + idPrefix + "TextInputField_label_span']");
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
         confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
 
         //store number of rows before adding the lines
-        String cssCountRows = "div#ConfigurationTestView-ProgressiveRender-TimeInfoSection.uif-group div#ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent.uif-disclosureContent table tbody tr";
-        int rowCount = (getCssCount(cssCountRows));
         String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClickByXpath(allDayId);
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
         Thread.sleep(5000); //allow for line to be added
 
+        WebElement table = findElement(By.id("ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent"));
+        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'delete')]"), table);
         //confirm that line has been added (by checking for the new delete button)
-        assertEquals("line was not added", rowCount + 1, (getCssCount(cssCountRows)));
+        assertEquals("line was not added", 3, columns.size());
     }
 
     //    protected void testTravelAccountTypeLookup() throws Exception {
@@ -3661,8 +3683,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testViewHelp() throws Exception {
         // test tooltip help
+        fireEvent("field102", "blur");
         fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        assertEquals("Sample text for view help", getText("td.jquerybubblepopup-innerHtml"));
+        Thread.sleep(500);
+        assertEquals("Sample text for view help", getTextByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
 
         // test external help
         waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");
@@ -4364,7 +4388,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickReturnValue() throws InterruptedException {
-        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT);
+        waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT, "Unable to click return value " + this.getClass().toString());
     }
 
     protected void waitAndClickReturnValue(String message) throws InterruptedException {
@@ -4385,6 +4409,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitAndClickSearch3() throws InterruptedException {
         waitAndClickByXpath(SEARCH_XPATH_3);
+    }
+
+    protected void waitAndClickSearchSecond() throws InterruptedException {
+        waitAndClickByXpath(SEARCH_SECOND);
     }
 
     protected String waitForDocId() throws InterruptedException {
@@ -4499,6 +4527,18 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
+    protected void waitForTextPresent(String text, int secondsToWait) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        while (!isTextPresent(text) && secondsToWait > 0) {
+            secondsToWait -= 1000;
+            Thread.sleep(1000);
+        }
+        if (!isTextPresent(text)) {
+            jiraAwareFail(text + " is not present for " + this.getClass().toString());
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
     protected void waitForTextNotPresent(String text) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
@@ -4593,7 +4633,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementVisibleBy(By.cssSelector(elementLocator), message);
     }
 
-    protected void waitForElementVisibleBy(By by, String message) throws InterruptedException {
+    protected WebElement waitForElementVisibleBy(By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         boolean failed = false;
@@ -4615,7 +4655,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (failed) {
             jiraAwareFail("timeout of " + waitSeconds + " seconds waiting for " + by + " " + message + " " + driver
                     .getCurrentUrl());
+            return null;
         }
+        return driver.findElements(by).get(0);
     }
 
     protected void waitForElementVisibleById(String id, String message) throws InterruptedException {

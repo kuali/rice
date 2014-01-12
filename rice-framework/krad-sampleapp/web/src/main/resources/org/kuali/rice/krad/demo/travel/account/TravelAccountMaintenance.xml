@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@
                   <bean parent="Uif-QuickFinderByScript"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="foId" />
-              <bean parent="Uif-InputField" p:propertyName="createDate"/>
+              <bean parent="Uif-InputField" p:propertyName="foId"/>
+              <bean parent="Uif-InputField" p:propertyName="createDate" p:readOnly="true" p:defaultValue="#{T(org.joda.time.DateTime).now().toDate()}"/>
               <bean parent="Uif-InputField" p:propertyName="subsidizedPercent"/>
             </list>
           </property>
@@ -60,8 +60,14 @@
           <property name="propertyName" value="subAccounts"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true"/>
-              <bean parent="Uif-InputField" p:propertyName="subAccountName" />
+              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:readOnly="@{!#isAddLine}"/>
+              <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/>
+            </list>
+          </property>
+          <property name="lineActions">
+            <list>
+              <bean parent="Uif-DeleteLineAction" p:render="@{isAddedCollectionItem(#line)}"/>
+              <bean parent="Uif-SaveLineAction"/>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Sub Account"/>

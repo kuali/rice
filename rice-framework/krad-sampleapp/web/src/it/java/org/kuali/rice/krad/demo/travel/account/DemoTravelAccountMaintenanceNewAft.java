@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
 
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Account Maintenance (New)");
+        waitAndClickByLinkText("Travel Account Maintenance (New)");
     }
 
     protected void testTravelAccountMaintenanceNew() throws Exception {
@@ -119,7 +119,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>");
+//        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer input field
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText("Save");
         Thread.sleep(1000);
@@ -148,7 +148,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();

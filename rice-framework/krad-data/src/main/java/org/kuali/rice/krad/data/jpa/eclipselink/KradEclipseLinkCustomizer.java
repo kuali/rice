@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import org.eclipse.persistence.exceptions.DescriptorException;
 import org.eclipse.persistence.internal.databaseaccess.Accessor;
 import org.eclipse.persistence.internal.descriptors.OptimisticLockingPolicy;
 import org.eclipse.persistence.internal.helper.DatabaseField;
+import org.eclipse.persistence.internal.jpa.metadata.listeners.EntityClassListener;
 import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.sequencing.Sequence;
@@ -36,9 +37,11 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 import javax.sql.DataSource;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -58,11 +61,14 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class KradEclipseLinkCustomizer implements SessionCustomizer {
 
-    private static ConcurrentMap<String, List<Sequence>> sequenceMap =
-            new ConcurrentHashMap<String, List<Sequence>>(8, 0.9f, 1);
+    private static ConcurrentMap<String, List<Sequence>> sequenceMap = new ConcurrentHashMap<String, List<Sequence>>(8,
+            0.9f, 1);
 
     /* Keyed by the session name determines if the class descriptors have been modified for the current session. */
     private static ConcurrentMap<String, Boolean> modDescMap = new ConcurrentHashMap<String, Boolean>();
+
+    private static ConcurrentMap<String, List<QueryCustomizerGenerator>> queryCustomizerMap =
+            new ConcurrentHashMap<String, List<QueryCustomizerGenerator>>();
 
     @Override
     public void customize(Session session) throws Exception {
@@ -77,6 +83,8 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             }
         }
 
+        loadQueryCustomizers(session);
+
         DatabaseLogin login = session.getLogin();
         for (Sequence sequence : sequences) {
             login.addSequence(sequence);
@@ -84,6 +92,58 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
 
         handleDescriptorModifications(session);
 
+    }
+
+    /**
+     * Load Query Customizer based on annotations on fields and call customizer to
+     * modify descriptor
+     * @param session
+     */
+    protected void loadQueryCustomizers(Session session) {
+        Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
+        for (Class<?> entityClass : descriptors.keySet()) {
+            for (Field field : entityClass.getDeclaredFields()) {
+                String queryCustEntry = entityClass.getName() + "_" + field.getName();
+                buildQueryCustomizers(entityClass,field,queryCustEntry);
+
+                List<QueryCustomizerGenerator> queryCustomizers = queryCustomizerMap.get(queryCustEntry);
+                if (queryCustomizers != null && !queryCustomizers.isEmpty()) {
+                    QueryCustomizer.customizeField(queryCustomizers, descriptors.get(entityClass), field.getName());
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Build and populate map of QueryCustomizer annotations
+     * @param entityClass
+     * @param field
+     * @param key
+     */
+    protected void buildQueryCustomizers(Class<?> entityClass,Field field, String key){
+        QueryCustomizerGenerators customizers = field.getAnnotation(QueryCustomizerGenerators.class);
+        List<QueryCustomizerGenerator> queryCustomizerGenerators = new ArrayList<QueryCustomizerGenerator>();
+        if(customizers != null){
+            queryCustomizerGenerators.addAll(Arrays.asList(customizers.value()));
+        } else {
+            QueryCustomizerGenerator customizer = field.getAnnotation(QueryCustomizerGenerator.class);
+            if(customizer != null){
+                queryCustomizerGenerators.add(customizer);
+            }
+        }
+        for(QueryCustomizerGenerator customizer : queryCustomizerGenerators){
+            List<QueryCustomizerGenerator> queryCustomizers = queryCustomizerMap.get(key);
+            if (queryCustomizers == null) {
+                queryCustomizers =
+                        new ArrayList<QueryCustomizerGenerator>();
+                queryCustomizers.add(customizer);
+                queryCustomizerMap.putIfAbsent(key, queryCustomizers);
+            } else {
+                queryCustomizers.add(customizer);
+                queryCustomizerMap.put(key,queryCustomizers);
+            }
+        }
     }
 
     /**
@@ -104,7 +164,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         }
 
         if (Boolean.FALSE.equals(descModified)) {
-            modDescMap.put(sessionName,Boolean.TRUE);
+            modDescMap.put(sessionName, Boolean.TRUE);
             handleDisableVersioning(session);
             handleRemoveMapping(session);
         }
@@ -113,6 +173,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     /**
      * Checks class descriptors for {@link @DisableVersioning} annotations at the class level and removes the version
      * database mapping for optimistic locking.
+     *
      * @param session the current session
      */
     protected void handleDisableVersioning(Session session) {
@@ -134,7 +195,8 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     }
 
     /**
-     * Checks class descriptors for {@link @RemoveMapping} and {@link RemoveMappings} annotations at the class level and
+     * Checks class descriptors for {@link @RemoveMapping} and {@link RemoveMappings} annotations at the class level
+     * and
      * removes any specified mappings from the ClassDescriptor.
      *
      * @param session the current session
@@ -185,13 +247,12 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         return removeMappings;
     }
 
-
     protected List<Sequence> loadSequences(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
         List<PortableSequenceGenerator> sequenceGenerators = new ArrayList<PortableSequenceGenerator>();
         for (Class<?> entityClass : descriptors.keySet()) {
-            PortableSequenceGenerator sequenceGenerator =
-                    AnnotationUtils.findAnnotation(entityClass, PortableSequenceGenerator.class);
+            PortableSequenceGenerator sequenceGenerator = AnnotationUtils.findAnnotation(entityClass,
+                    PortableSequenceGenerator.class);
             if (sequenceGenerator != null) {
                 sequenceGenerators.add(sequenceGenerator);
             }
@@ -245,6 +306,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         public boolean shouldAcquireValueAfterInsert() {
             return false;
         }
+
         @Override
         public boolean shouldUseTransaction() {
             return true;

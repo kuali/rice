@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -615,6 +615,7 @@ color:#FFF;">
         <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date2" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
+              <property name="disabled" value="@{'#{T(org.kuali.rice.krad.util.KRADConstants).KR_MODULE_NAME}' eq 'kr'}"/>
               <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="button"/>
@@ -636,6 +637,7 @@ color:#FFF;">
         <bean id="date3" parent="Uif-InputField-LabelTop" p:propertyName="field132" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
+              <property name="disabled" value="@{'#{T(org.kuali.rice.krad.util.KRADConstants).KR_MODULE_NAME}' eq #form.field132}"/>
               <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="button"/>
@@ -660,6 +662,8 @@ color:#FFF;">
           </property>
           <property name="control">
             <bean parent="Uif-DateControl">
+              <property name="disabled"
+                        value="@{#isAssignableFrom(T(java.lang.String),T(java.lang.String))}"/>
               <property name="datePicker.templateOptions">
                 <map>
                   <entry key="showOn" value="button"/>

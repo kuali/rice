@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,14 +54,14 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@id='Demo-LightTable-Example2']/div[@class='uif-verticalBoxLayout clearfix']/a");
         switchToWindow("Kuali :: Light Table test");
         switchToWindow("Kuali :: Light Table test");
-        waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td/div/span/a");
-        assertElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td[5]/div/fieldset/div/div/button");
+        waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td/div/a");
+        assertElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td[5]/div/fieldset/div/button");
         switchToWindow("Kuali");
      }
     
     protected void testCollectionFeaturesLightTableConditionalRender() throws Exception {
         waitAndClickByLinkText("Conditional Render");
-        waitAndClickByXpath("//div[@id='Demo-LightTable-Example3']/div[@class='uif-verticalBoxLayout clearfix']/a");
+        waitAndClickByXpath("//div[@id='Demo-LightTable-Example3']/a");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup3_lightTable']/tbody/tr/td[3]");
         switchToWindow("Kuali");
@@ -69,7 +69,7 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesLightTableBasicInput() throws Exception {
         waitAndClickByLinkText("Basic Input");
-        waitAndClickByLinkText("Basic Inputs");
+        waitAndClickByXpath("//a[@href='http://env14.rice.kuali.org/kr-krad/uicomponents?viewId=Demo-LightTable-View4&methodToCall=start']");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup4_lightTable']/tbody/tr/td/div/input");
         assertElementPresentByXpath("//table[@id='Demo-LightTableGroup4_lightTable']/tbody/tr/td[3]/div/input[@type='checkbox']");

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,14 +171,18 @@ public class AutomatedFunctionalTestUtils {
         String errorMessage = incidentReportMessage(contents, linkLocator, message);
 
         if (errorMessage != null) {
-            failable.fail(errorMessage);
+            if (message != null && message.isEmpty()) {
+                failable.jiraAwareFail(errorMessage, message);
+            } else {
+                failable.jiraAwareFail(errorMessage, contents);
+            }
         }
     }
 
     protected static String incidentReportMessage(String contents, String linkLocator, String message) {
         if (incidentReported(contents)) {
             try {
-                processIncidentReport(contents, linkLocator, message);
+                return processIncidentReport(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
                 return "\nIncident report detected "
                                 + message
@@ -199,7 +203,10 @@ public class AutomatedFunctionalTestUtils {
             return "\nHTTP Status 500 stacktrace: " + extract500Exception(contents);
         }
 
-        if (contents.contains("Java backtrace for programmers:") || contents.contains("Java stack trace (for programmers):")) { // freemarker exception
+        // freemarker exception
+        if (contents.contains("Java backtrace for programmers:")
+                || contents.contains("Java stack trace (for programmers):")
+                || contents.contains("FreeMarker template error:")) {
             try {
                 return freemarkerExceptionMessage(contents, linkLocator, message);
             } catch (IndexOutOfBoundsException e) {
@@ -231,11 +238,11 @@ public class AutomatedFunctionalTestUtils {
     private static String extractIncidentReportInfo(String contents, String linkLocator, String message) {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
-        docId = docId.substring(0, docId.indexOf("</span>"));
+        docId = docId.substring(0, docId.indexOf("</div>"));
         docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
 
         String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
-        viewId = viewId.substring(0, viewId.indexOf("</span>"));
+        viewId = viewId.substring(0, viewId.indexOf("</div>"));
         viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
 
         String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());

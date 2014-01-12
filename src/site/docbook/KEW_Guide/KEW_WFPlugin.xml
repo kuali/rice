@@ -391,11 +391,6 @@ JTATransactionManagerClass=org.kuali.rice.ojb.TransactionManagerFactory
                                     <entry>Provides callbacks for notifications within the system
                                     </entry>
                                 </row>
-                                <row>
-                                    <entry>enEncryptionService </entry>
-                                    <entry>org.kuali.rice.core.service.EncryptionService </entry>
-                                    <entry>Allows for pluggable encryption implementations </entry>
-                                </row>
                             </tbody>
                         </tgroup>
                     </table>

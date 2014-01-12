@@ -1,3 +1,20 @@
+<#--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 h<#--
 
     Copyright 2005-2013 The Kuali Foundation
@@ -176,7 +193,10 @@ h<#--
     <#if fieldType != "file" && fieldType != "password">
         <#local value='value="${stringStatusValue}"'/>
     </#if>
-    <input id="${id!}" type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
+    <#if id?has_content>
+        <#local idAttr="id='${id!}'"/>
+    </#if>
+    <input ${idAttr!} type="${fieldType}" name="${status.expression}" ${value!} ${attributes}<@closeTag/>
 </#macro>
 
 <#--
@@ -287,13 +307,17 @@ h<#--
 -->
 <#macro formRadioButtons id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
+    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
-    <span>
+    <span class="uif-tooltip">
     <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
+    <#if option.message.richMessage>
+        <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
+    <#else>
+        <label for="${controlId}">${option.value!}</label>
+    </#if>
     </span>
     ${separator}
     </#list>
@@ -315,14 +339,18 @@ h<#--
 -->
 <#macro formCheckboxes id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <span class="uif-tooltip" style="width:100%;height:0px;"></span>
+    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
     <#local isSelected = contains(status.actualValue?default([""]), option.key)>
-    <span>
+    <span class="uif-tooltip">
     <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+    <#if option.message.richMessage>
+        <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+    <#else>
+        <label for="${controlId}">${option.value!}</label>
+    </#if>
     </span>
     ${separator}
     </#list>

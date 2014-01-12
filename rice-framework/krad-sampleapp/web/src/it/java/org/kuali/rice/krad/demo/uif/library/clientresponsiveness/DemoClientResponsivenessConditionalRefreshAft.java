@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class DemoClientResponsivenessConditionalRefreshAft extends WebDriverLega
         waitAndClickByLinkText("Advanced Example");
         selectByName("inputField5","Apple");
         selectByName("inputField4","Vegetables");
-        selectByName("inputField5","Beans");
+        waitAndSelectByName("inputField5","Beans");
     }
     
     @Test

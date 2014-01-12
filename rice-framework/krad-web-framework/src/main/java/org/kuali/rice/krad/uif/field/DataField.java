@@ -178,14 +178,14 @@ public interface DataField extends DataBinding, Helpable, Field {
      *
      * @return default value
      */
-    String getDefaultValue();
+    Object getDefaultValue();
 
     /**
      * Setter for the fields default value
      *
      * @param defaultValue
      */
-    void setDefaultValue(String defaultValue);
+    void setDefaultValue(Object defaultValue);
 
     /**
      * Gives Class that should be invoked to produce the default value for the

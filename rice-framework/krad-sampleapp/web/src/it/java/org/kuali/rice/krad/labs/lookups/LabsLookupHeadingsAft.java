@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,8 +51,10 @@ public class LabsLookupHeadingsAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupHeadings()throws Exception {
-        waitForElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-upperGroup']/div[2]/span");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-lowerGroup']/div[2]/span");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-rightGroup']/div[2]/span");
-    }//button[contains(text(), '" + buttonText + "')]
+        waitForElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-upperGroup clearfix']/span");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-lowerGroup clearfix']/span");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-rightGroup']/span");
+        waitAndClickButtonByText("Custom Button");
+        alertAccept();
+    }
 }

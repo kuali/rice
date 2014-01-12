@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,6 +155,14 @@ public class KradSampleAppController extends UifControllerBase {
         GlobalVariables.getMessageMap().putError("inputField4", "serverTestError");
         GlobalVariables.getMessageMap().putWarning("inputField4", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("inputField4", "serverTestInfo");
+
+        return getUIFModelAndView(form);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customRefresh")
+    public ModelAndView customRefresh(@ModelAttribute("KualiForm") UifFormBase form,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().addGrowlMessage("Test", "serverTestInfo");
 
         return getUIFModelAndView(form);
     }

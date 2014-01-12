@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,6 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	waitAndClickByXpath("//input[@name='field24' and @value='case1']");
     	waitAndTypeByName("field25","");
     	waitAndTypeByName("field26","");
-    	assertElementPresentByXpath("//input[@name='field25' and @class='form-control input-sm uif-textControl dependsOn-field24 error']");
+    	assertElementPresentByXpath("//input[@name='field25' and @class='form-control input-sm uif-textControl dependsOn-field24 required error']");
     }
 }

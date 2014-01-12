@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package edu.sampleu.krad.configview;
-
-import org.junit.Ignore;
-import org.junit.Test;
+package org.kuali.rice.krad.data.jpa.eclipselink;
 
 /**
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
-public class Help2NavAft extends Help2AftBase {
-
-    @Ignore // TODO fix
-    @Test
-    public void testHelp2Nav() throws Exception {
-        testHelp2Nav(this);
-    }
+ * Used to provide a common interface for QueryCustomizer annotation(attributeResolverClass element)
+ * on a data object field that you want to customize and want to dynamically generate a value.
+ **/
+public interface QueryCustomizerValue {
+    public abstract Object getValue();
 }

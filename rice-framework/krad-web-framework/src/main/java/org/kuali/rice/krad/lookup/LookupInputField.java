@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ public class LookupInputField extends InputFieldBase {
         setMaxLength(100);
 
         // set default value for active field to true
-        if (StringUtils.isEmpty(getDefaultValue())) {
+        if (getDefaultValue() == null || (getDefaultValue() instanceof String && StringUtils.isEmpty((String)getDefaultValue()))) {
             if ((StringUtils.equals(getPropertyName(), KRADPropertyConstants.ACTIVE))) {
                 setDefaultValue(KRADConstants.YES_INDICATOR_VALUE);
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var actionDefaults = jQuery("div[data-role='view']").data(kradVariables.ACTION_DEFAULTS);
 
 /**
  * Initialize action data for the action by merging any custom settings with global default settings
@@ -496,7 +494,8 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
     var eventType = "change.disable-" + disableCompId;
 
     if (onKeyUp && (theControl.is("textarea") || theControl.is("input[type='text'], input[type='password']"))) {
-        eventType = "keyup.disable-" + disableCompId;
+        // Uses input event to account for all text changes
+        eventType = "input.disable-" + disableCompId;
     }
 
     if (disableCompType == "radioGroup" || disableCompType == "checkboxGroup") {

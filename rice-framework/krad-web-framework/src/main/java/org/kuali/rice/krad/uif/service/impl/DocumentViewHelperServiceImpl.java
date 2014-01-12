@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,17 +45,16 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
      *         the collection
      */
     @Override
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model,
-            Object addLine) {
-        boolean isValidLine = true;
+    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+        boolean isValidLine = super.performAddLineValidation(view, collectionGroup, model, addLine);
 
         if (model instanceof DocumentFormBase && addLine instanceof AdHocRoutePerson) {
             DocumentFormBase form = (DocumentFormBase) model;
-            isValidLine = getKualiRuleService()
+            isValidLine &= getKualiRuleService()
                     .applyRules(new AddAdHocRoutePersonEvent(form.getDocument(), (AdHocRoutePerson) addLine));
         } else if (model instanceof DocumentFormBase && addLine instanceof AdHocRouteWorkgroup) {
             DocumentFormBase form = (DocumentFormBase) model;
-            isValidLine = getKualiRuleService()
+            isValidLine &= getKualiRuleService()
                     .applyRules(new AddAdHocRouteWorkgroupEvent(form.getDocument(), (AdHocRouteWorkgroup) addLine));
         }
 

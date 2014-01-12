@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -837,20 +837,23 @@ public class WebDriverUtils {
         driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
 
         boolean failed = false;
+        WebElement element = null;
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
             if (second >= waitSeconds)
                 failed = true;
             try {
-                if (failed || (driver.findElements(by)).size() > 0) {
+                if (failed) {
+                    break;
+                } else if ((driver.findElements(by)).size() > 0) {
+                    element = findElement(driver, by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
+                    highlightElement(driver, element);
                     break;
                 }
             } catch (Exception e) {}
         }
 
-        WebElement element = findElement(driver, by);  // NOTICE just the find, no action, so by is found, but might not be visible or enabled.
-        highlightElement(driver, element);
         driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                                           {"Travel Company Name:", "Discount Travel"},
                                           {"Expense Type:", "ME"},
                                           {"Expense Description:", "Family Related"}, 
-                                          {"Expense Date:", getTodaysDate()},
+//                                          {"Expense Date:", getDateTomorrow()},
                                           {"Expense Amount:", "1,278.97"},
                                           {"Reimbursable:", "true"},
                                           {"Taxable:", "true"}};
@@ -80,7 +80,6 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"State", "CA"},
                 {"Zip:", "95616"},
                 {"Country:", "US"},
-                {"Citizenship:", "US"},
                 {"Email Address:", ""},
                 {"Gender:", "M"},
                 {"Phone Number:", "******1212"},

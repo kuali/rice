@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ public abstract class RichMessagesAftBase extends WebDriverLegacyITBase {
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();
-        waitAndClickByXpath("(//a[contains(text(),'Rich Messages')])[2]");
-        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);        
+        waitAndClickByLinkText("Rich Messages");
+        switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
         checkForIncidentReport(RICH_MESSAGES_WINDOW_TITLE);
         Thread.sleep(9000);
     }

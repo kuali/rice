@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -28,13 +25,15 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for controls that accept/display multiple values
@@ -68,10 +67,23 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
             for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
-                message.setMessageText(option.getValue());
+
+                String key = option.getKey();
+                if (key.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
+                    key = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
+                            key);
+                }
+
+                String value = option.getValue();
+                if (value.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
+                    value = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
+                            value);
+                }
+
+                message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
                 message.setGenerateSpan(false);
-                richOptions.add(new KeyMessage(option.getKey(), option.getValue(), message));
+                richOptions.add(new KeyMessage(key, value, message));
             }
         }
     }
@@ -95,7 +107,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                     UrlInfo url = ((UifKeyValueLocation) option).getLocation();
 
-                    ExpressionUtils.populatePropertyExpressionsFromGraph(url, false);
+                    ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(url, false);
                     expressionEvaluator.evaluateExpressionsOnConfigurable(view, url, view.getContext());
                 }
             }

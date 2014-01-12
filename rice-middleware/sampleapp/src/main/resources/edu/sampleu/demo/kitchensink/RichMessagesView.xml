@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -188,7 +188,7 @@
               <property name="options">
                 <list>
                   <bean parent="Uif-KeyLabelPair" p:key="1" p:value="[color=blue]Blue[/color]"/>
-                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="[color=red]Red[/color]"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="[color=red]Red[/color] @{fakeTotal}"/>
                   <bean parent="Uif-KeyLabelPair" p:key="3" p:value="[color=gold]Yellow[/color]"/>
                   <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Other: [id=Demo-SampleMessageInput4]"/>
                 </list>

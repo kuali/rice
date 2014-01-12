@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 // global vars
 var jq = jQuery.noConflict();
 
@@ -43,6 +42,11 @@ var clientErrorStorage = new Object();
 var summaryTextExistence = new Object();
 var clientErrorExistsCheck = false;
 var skipPageSetup = false;
+var groupValidationDefaults;
+var fieldValidationDefaults;
+
+// Action option defaults
+var actionDefaults;
 
 // dirty form state management
 var dirtyFormState;
@@ -156,6 +160,8 @@ jQuery(document).ready(function () {
     });
 
     time(false, "viewSetup-phase-2");
+
+
 });
 
 /**
@@ -560,7 +566,7 @@ function initFieldHandlers() {
         refreshDatatableCellRedraw(this);
     });
 
-    jQuery(document).on("keyup", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
+    jQuery(document).on("input", "table.dataTable div[data-role='InputField'][data-total='keyup'] :input", function () {
         var input = this;
         delay(function () {
             refreshDatatableCellRedraw(input)
@@ -726,6 +732,16 @@ function setupPage(validate) {
     handleStickyFooterContent();
     initStickyContent();
 
+    // Initialize global validation defaults
+    if (groupValidationDefaults == undefined || fieldValidationDefaults == undefined) {
+        groupValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+        fieldValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+    }
+
+    if (actionDefaults == undefined) {
+        actionDefaults = jQuery("div[data-role='View']").data(kradVariables.ACTION_DEFAULTS);
+    }
+
     //Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
     messageSummariesShown = false;
@@ -744,7 +760,7 @@ function setupPage(validate) {
 
     prevPageMessageTotal = 0;
     //skip input field iteration and validation message writing, if no server messages
-    var hasServerMessagesData = jQuery("[data-type='Page']").data(kradVariables.SERVER_MESSAGES);
+    var hasServerMessagesData = jQuery("[data-role='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
         //Handle messages at field, if any
         jQuery("div[data-role='InputField']").each(function () {

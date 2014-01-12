@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,12 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
@@ -794,43 +796,140 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Performs validation on the new collection line before it is added to the corresponding
-     * collection
+     * Performs validation on the new collection line before it is added to the corresponding collection.
      * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param addLine new line instance to validate
-     * @param model object instance that contain's the views data
-     * @return true if the line is valid and it should be added to the collection, false if it was
-     *         not valid and should not be added to the collection
+     * @param model object instance that contains the views data
+     *
+     * @return true if the line is valid and it should be added to the collection, false if it was not valid and should
+     *         not be added to the collection
      */
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model,
-            Object addLine) {
+    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
         boolean isValid = true;
 
-        // TODO: this should invoke rules, subclasses like the document view
-        // should create the document add line event
+        Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(model,
+                collectionGroup.getBindingInfo().getBindingPath());
+        List<String> duplicateLinePropertyNames = collectionGroup.getDuplicateLinePropertyNames();
+
+        if (containsDuplicateLine(addLine, collectionItems, duplicateLinePropertyNames)) {
+            isValid = false;
+            GlobalVariables.getMessageMap().putErrorForSectionId(collectionGroup.getId(),
+                    RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, getCollectionLabel(collectionGroup),
+                    getDuplicateLineLabelString(collectionGroup, duplicateLinePropertyNames));
+        }
 
         return isValid;
     }
 
     /**
-     * Performs validation on the collection line before it is removed from the corresponding
-     * collection
+     * Determines whether the new line matches one of the entries in the existing collection, based on the
+     * {@code duplicateLinePropertyNames}.
+     *
+     * @param addLine new line instance to validate
+     * @param collectionItems items in the collection
+     * @param duplicateLinePropertyNames property names to check for duplicates
+     *
+     * @return true if there is a duplicate line, false otherwise
+     */
+    private boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems, List<String> duplicateLinePropertyNames) {
+        if (collectionItems.isEmpty() || duplicateLinePropertyNames.isEmpty()) {
+            return false;
+        }
+
+        for (Object collectionItem : collectionItems) {
+            if (isDuplicateLine(addLine, collectionItem, duplicateLinePropertyNames)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether the new {@code addLine} is a duplicate of {@code collectionItem}, based on the
+     * {@code duplicateLinePropertyNames}.
+     *
+     * @param addLine new line instance to validate
+     * @param collectionItem existing instance to validate
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     *
+     * @return true if {@code addLine} is a duplicate of {@code collectionItem}, false otherwise
+     */
+    private boolean isDuplicateLine(Object addLine, Object collectionItem, List<String> duplicateLinePropertyNames) {
+        if (duplicateLinePropertyNames.isEmpty()) {
+            return false;
+        }
+
+        for (String duplicateLinePropertyName : duplicateLinePropertyNames) {
+            Object addLinePropertyValue = ObjectPropertyUtils.getPropertyValue(addLine, duplicateLinePropertyName);
+            Object duplicateLinePropertyValue = ObjectPropertyUtils.getPropertyValue(collectionItem, duplicateLinePropertyName);
+
+            if (!ObjectUtils.equals(addLinePropertyValue, duplicateLinePropertyValue)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Gets the label for the collection in a human-friendly format.
+     *
+     * @param collectionGroup collection group component for the collection
+     *
+     * @return a human-friendly collection label
+     */
+    private String getCollectionLabel(CollectionGroup collectionGroup) {
+        String collectionLabel = collectionGroup.getHeaderText();
+
+        if (StringUtils.isBlank(collectionLabel)) {
+            String propertyName = collectionGroup.getPropertyName();
+            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(propertyName);
+        }
+
+        return collectionLabel;
+    }
+
+    /**
+     * Gets a comma-separated list of the data field labels that are keyed a duplicates.
+     *
+     * @param collectionGroup collection group component for the collection
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     *
+     * @return a comma-separated list of labels
+     */
+    private String getDuplicateLineLabelString(CollectionGroup collectionGroup, List<String> duplicateLinePropertyNames) {
+        List<String> duplicateLineLabels = new ArrayList<String>();
+
+        for (Component addLineItem : collectionGroup.getAddLineItems()) {
+            if (addLineItem instanceof DataField) {
+                DataField addLineField = (DataField) addLineItem;
+
+                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
+                    String label = addLineField.getLabel();
+                    String shortLabel = addLineField.getShortLabel();
+                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                }
+            }
+
+        }
+
+        return StringUtils.join(duplicateLineLabels, ", ");
+    }
+
+    /**
+     * Performs validation on the collection line before it is removed from the corresponding collection.
      * 
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param deleteLine line that will be removed
-     * @return true if the action is allowed and the line should be removed, false if the line
-     *         should not be removed
+     *
+     * @return true if the action is allowed and the line should be removed, false if the line should not be removed
      */
     protected boolean performDeleteLineValidation(View view, CollectionGroup collectionGroup, Object deleteLine) {
-        boolean isValid = true;
-
-        // TODO: this should invoke rules, sublclasses like the document view
-        // should create the document delete line event
-
-        return isValid;
+       return true;
     }
 
     /**
@@ -1091,7 +1190,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         View view = ViewLifecycle.getView();
         Object defaultValue = null;
 
-        if (StringUtils.isNotBlank(dataField.getDefaultValue())) {
+        // if dataField.defaultValue is not null and not empty empty string use it
+        if (dataField.getDefaultValue()!= null &&
+           !(dataField.getDefaultValue() instanceof String && StringUtils.isBlank((String)dataField.getDefaultValue()))) {
             defaultValue = dataField.getDefaultValue();
         } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
                 UifConstants.ComponentProperties.DEFAULT_VALUE)) {

@@ -50,7 +50,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -189,7 +188,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         super.performApplyModel(model, parent);
 
         for (ColumnCalculationInfo cInfo : columnCalculations) {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(cInfo, false);
+            ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(cInfo, false);
         }
     }
 

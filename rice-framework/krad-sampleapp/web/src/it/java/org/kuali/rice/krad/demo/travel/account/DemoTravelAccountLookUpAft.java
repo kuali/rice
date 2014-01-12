@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,21 +48,6 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
      */
     public static final String TRAVEL_ACCOUNT_NAME_FIELD = "lookupCriteria[name]";
 
-    /**
-     * Sub account field
-     */
-    public static final String SUB_ACCOUNT_FIELD = "lookupCriteria[subAccount]";
-
-    /**
-     * Sub account name field
-     */
-    public static final String SUB_ACCOUNT_NAME_FIELD = "lookupCriteria[subAccountName]";
-
-    /**
-     * Fiscal officer user id
-     */
-    public static final String FISCCAL_OFFICER_USER_ID = "lookupCriteria[fiscalOfficer.principalName]";
-
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -75,14 +60,12 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountLookUp() throws Exception {
-        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"a1");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a1");
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
-        Thread.sleep(3000);
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         assertElementPresentByXpath("//a[contains(text(), 'a2')]");
     }
 
@@ -91,7 +74,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(1000);
         if(isAlertPresent())    {
-            fail(fieldName + " caused XSS.");
+            jiraAwareFail(fieldName + " caused XSS.");
         }
         waitAndClickButtonByText(CLEAR_VALUES);
         Thread.sleep(1000);
@@ -99,13 +82,10 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
 
     public boolean isAlertPresent()
     {
-        try
-        {
+        try {
             driver.switchTo().alert();
             return true;
-        }   // try
-        catch (Exception Ex)
-        {
+        }  catch (Exception Ex) {
             return false;
         }   // catch
     }   // isAlertPresent()

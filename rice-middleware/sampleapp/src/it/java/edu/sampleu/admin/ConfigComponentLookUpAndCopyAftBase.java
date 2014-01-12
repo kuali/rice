@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,10 +59,9 @@ public abstract class ConfigComponentLookUpAndCopyAftBase extends AdminTmplMthdA
         passed();
     }    
     
-    public void testConfigComponentLookUpAndCopy() throws Exception
-    {
+    public void testConfigComponentLookUpAndCopy() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByLinkText("copy");
         String fourLetters = RandomStringUtils.randomAlphabetic(4);
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component copy " + AutomatedFunctionalTestUtils

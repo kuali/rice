@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,16 +60,10 @@ public class DemoContainersGroupBasicAft extends DemoLibraryBase {
     @Test
     public void testBasicGroupBookmark() throws Exception {
         navigationMenu();
-
-        WebElement element = driver.findElement(By.id("Demo-Group-Example1"));
-        element.findElement(By.tagName("h3"));
-
-        getElementByDataAttributeValue(UifConstants.DataAttributes.MESSAGES_FOR, "Demo-Group-Example1");
-
-        element.findElement(By.className("uif-instructionalMessage"));
-
-        List<WebElement> inputFields = element.findElements(By.className("uif-inputField"));
-        assertTrue("group does not contain correct number of items", inputFields.size() == 4);
+        waitForElementPresentByXpath("//div[@id='Demo-Group-Example1']/div/h3");
+        waitForElementPresentByXpath("//div[@id='Demo-Group-Example1']/span[@class='uif-instructionalMessage']");
+        assertElementPresentByXpath("//input[@name='inputField1']");
+        assertElementPresentByXpath("//input[@name='inputField2']");
         passed();
     }
 }

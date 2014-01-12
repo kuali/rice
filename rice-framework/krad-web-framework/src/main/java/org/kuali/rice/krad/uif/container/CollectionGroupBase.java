@@ -136,6 +136,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private CollectionFilter activeCollectionFilter;
     private List<CollectionFilter> filters;
 
+    private List<String> duplicateLinePropertyNames;
+
     private List<BindingInfo> unauthorizedLineBindingInfos;
 
     @DelayedCopy
@@ -176,6 +178,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         addLinePlacement = "TOP";
 
         filters = Collections.emptyList();
+        duplicateLinePropertyNames = Collections.emptyList();
         lineActions = Collections.emptyList();
         addLineItems = Collections.emptyList();
         addLineActions = Collections.emptyList();
@@ -695,6 +698,21 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
+     *  List of property names that should be checked for duplicates in the collection.
+     */
+    @BeanTagAttribute(name = "duplicateLinePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getDuplicateLinePropertyNames() {
+        return this.duplicateLinePropertyNames;
+    }
+
+    /**
+     * @see CollectionGroup#getDuplicateLinePropertyNames()
+     */
+    public void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames) {
+        this.duplicateLinePropertyNames = duplicateLinePropertyNames;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1200,6 +1218,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
         }
         
+        if (this.duplicateLinePropertyNames != null && !this.duplicateLinePropertyNames.isEmpty()) {
+            collectionGroupCopy.setDuplicateLinePropertyNames(new ArrayList<String>(this.duplicateLinePropertyNames));
+        }
+        
         collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
         collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
         collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
@@ -1221,6 +1243,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         collectionGroupCopy.setRenderInactiveToggleButton(this.renderInactiveToggleButton);
         collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
         collectionGroupCopy.setFilters(this.filters);
+        collectionGroupCopy.setDuplicateLinePropertyNames(this.duplicateLinePropertyNames);
 
         collectionGroupCopy.setRenderLineActions(this.renderLineActions);
         collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);

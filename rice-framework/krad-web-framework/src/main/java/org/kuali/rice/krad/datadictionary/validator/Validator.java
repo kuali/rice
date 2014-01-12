@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
@@ -39,6 +34,11 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A validator for Rice Dictionaries that stores the information found during its validation.
@@ -214,7 +214,7 @@ public class Validator {
     private void runValidationsOnComponents(Component component, ValidationTrace tracer) {
 
         try {
-            ExpressionUtils.populatePropertyExpressionsFromGraph(component, false);
+            ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(component, false);
         } catch (Exception e) {
             String value[] = {"view = " + component.getId()};
             tracerTemp.createError("Error Validating Bean View while loading expressions", value);
@@ -266,7 +266,7 @@ public class Validator {
                 continue;
             }
             if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ExpressionUtils.populatePropertyExpressionsFromGraph((UifDictionaryBean) temp, false);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph((UifDictionaryBean) temp, false);
             }
             if (((Component) temp).isRender()) {
                 ((DataDictionaryEntry) temp).completeValidation(tracer.getCopy());
@@ -342,33 +342,8 @@ public class Validator {
         expression = StringUtils.replace(expression, "<=", " <= ");
         expression = StringUtils.replace(expression, ">=", " >= ");
 
-        String stack = "";
         ArrayList<String> controlNames = new ArrayList<String>();
-
-        boolean expectingSingleQuote = false;
-        boolean ignoreNext = false;
-        for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
-            if (!expectingSingleQuote && !ignoreNext && (c == '(' || c == ' ' || c == ')')) {
-                ExpressionUtils.evaluateCurrentStack(stack.trim(), controlNames);
-                //reset stack
-                stack = "";
-                continue;
-            } else if (!ignoreNext && c == '\'') {
-                stack = stack + c;
-                expectingSingleQuote = !expectingSingleQuote;
-            } else if (c == '\\') {
-                stack = stack + c;
-                ignoreNext = !ignoreNext;
-            } else {
-                stack = stack + c;
-                ignoreNext = false;
-            }
-        }
-
-        if (StringUtils.isNotEmpty(stack)) {
-            ExpressionUtils.evaluateCurrentStack(stack.trim(), controlNames);
-        }
+        controlNames.addAll(ViewLifecycle.getExpressionEvaluator().findControlNamesInExpression(expression));
 
         return controlNames;
     }

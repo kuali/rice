@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,9 +67,18 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 		}
 	}
 
-	public Class<?> getObjectType() {
-		return Object.class;
-	}
+    public Class<?> getObjectType() {
+        if (getServiceName() == null) {
+            return null;
+        } else {
+            try {
+                // getObject throws java.lang.Exception
+                return getObject().getClass();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
 
 	public boolean isSingleton() {
 		return singleton;

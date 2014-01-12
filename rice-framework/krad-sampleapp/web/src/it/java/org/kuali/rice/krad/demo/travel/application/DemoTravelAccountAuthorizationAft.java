@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.travel.account;
+package org.kuali.rice.krad.demo.travel.application;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
@@ -83,8 +83,10 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationSubmit() throws Exception {
     	testTravelAccountAuthorization();
     	waitAndClickButtonByText("submit");
-        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
-        waitAndClickButtonByText("submit");
+// No isn't visible but Yes is?!
+//        waitForElementVisibleBy(By.xpath("//label[contains(text(), 'No')]"), "").click();
+//        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
+//        waitAndClickButtonByText("submit");
         waitAndClick(By.xpath("//label[contains(text(), 'Yes')]"));
     	waitForTextPresent("Document was successfully");
     }

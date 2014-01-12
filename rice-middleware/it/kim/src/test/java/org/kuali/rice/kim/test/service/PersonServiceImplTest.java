@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -358,7 +359,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		private String anAttribute;
 		private String anotherAttribute;
 		private String personPrincipalId;
-		private Person personAttribute;
+		private PersonImpl personAttribute;
 		private List<SampleChildBOWithPerson> childBos = new AutoPopulatingList(SampleChildBOWithPerson.class);
 		public String getAnAttribute() {
 			return this.anAttribute;
@@ -378,11 +379,11 @@ public class PersonServiceImplTest extends KIMTestCase {
 		public void setPersonPrincipalId(String personPrincipalId) {
 			this.personPrincipalId = personPrincipalId;
 		}
-		public Person getPersonAttribute() {
-			personAttribute = KimApiServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute );
+		public PersonImpl getPersonAttribute() {
+			personAttribute = (PersonImpl) KimApiServiceLocator.getPersonService().updatePersonIfNecessary( personPrincipalId, personAttribute );
 			return personAttribute;
 		}
-		public void setPersonAttribute(Person personAttribute) {
+		public void setPersonAttribute(PersonImpl personAttribute) {
 			this.personAttribute = personAttribute;
 		}
 		public void refresh() {}
@@ -398,7 +399,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 
 		private String childsAttribute;
 		private String childsPersonPrincipalId;
-		private Person childsPersonAttribute;
+		private PersonImpl childsPersonAttribute;
 
 
 
@@ -414,11 +415,11 @@ public class PersonServiceImplTest extends KIMTestCase {
 		public void setChildsPersonPrincipalId(String childsPersonPrincipalId) {
 			this.childsPersonPrincipalId = childsPersonPrincipalId;
 		}
-		public Person getChildsPersonAttribute() {
-			childsPersonAttribute = KimApiServiceLocator.getPersonService().updatePersonIfNecessary( childsPersonPrincipalId, childsPersonAttribute );
+		public PersonImpl getChildsPersonAttribute() {
+			childsPersonAttribute = (PersonImpl) KimApiServiceLocator.getPersonService().updatePersonIfNecessary( childsPersonPrincipalId, childsPersonAttribute );
 			return childsPersonAttribute;
 		}
-		public void setChildsPersonAttribute(Person childsPersonAttribute) {
+		public void setChildsPersonAttribute(PersonImpl childsPersonAttribute) {
 			this.childsPersonAttribute = childsPersonAttribute;
 		}
 		public void refresh() {}

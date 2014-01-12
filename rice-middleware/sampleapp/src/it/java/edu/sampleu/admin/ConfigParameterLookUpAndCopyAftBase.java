@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public abstract class ConfigParameterLookUpAndCopyAftBase extends AdminTmplMthdA
     {
         selectFrameIframePortlet();
         waitAndTypeByName("name","*email*");
-        waitAndClickByXpath("(//input[@name='methodToCall.search'])[2]");
+        waitAndClickSearchSecond();
         waitAndClickByXpath("//a[@title='copy Parameter withParameter Name=EMAIL_NOTIFICATION_TEST_ADDRESS Application ID=KUALI Namespace Code=KR-WKFLW Component=ActionList ']");
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of parameter copy " + AutomatedFunctionalTestUtils
                 .createUniqueDtsPlusTwoRandomCharsNot9Digits());

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ public class DemoCollectionFeaturesActionPlacementAft extends WebDriverLegacyITB
     }
 
     protected void testCollectionFeaturesActionPlacement() throws Exception {
-    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[1]/div/fieldset/div/div[@class='uif-horizontalBoxLayout clearfix']/button");
-    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[2]/div/fieldset/div/div[@class='uif-horizontalBoxLayout clearfix']/button");
+    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[1]/div/fieldset/div/button");
+    	waitForElementPresentByXpath("//table/tbody/tr[1]/td[2]/div/fieldset/div/button");
     }
     
     @Test

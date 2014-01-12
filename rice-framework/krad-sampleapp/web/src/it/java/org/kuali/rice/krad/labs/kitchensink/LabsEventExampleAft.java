@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,8 +46,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testKitchenSinkEventExamples() throws InterruptedException 
-    {
+    protected void testKitchenSinkEventExamples() throws InterruptedException {
     	//OnClick examples on various components
         waitAndClickByName("field100"); // Field Label
     	alertAccept();

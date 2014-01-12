@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
-import org.kuali.rice.core.api.mo.ModelObjectBasic;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
-import org.kuali.rice.ksb.api.registry.ServiceDescriptorContract;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.kuali.rice.core.api.mo.ModelObjectBasic;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
+import org.kuali.rice.ksb.api.registry.ServiceDescriptorContract;
 
 @Entity
 @Table(name="KRSB_SVC_DSCRPTR_T")
@@ -38,7 +38,7 @@ public class ServiceDescriptorBo implements ServiceDescriptorContract, ModelObje
 	private String id;
 	
 	@Lob
-	@Column(name="DSCRPTR", length = 4000)
+	@Column(name="DSCRPTR", length = 4000, columnDefinition="CLOB NOT NULL")
 	private String descriptor;
 
     public String getId() {

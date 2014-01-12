@@ -92,7 +92,7 @@ public class PageGroupBase extends GroupBase implements PageGroup {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Page");
+        this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {

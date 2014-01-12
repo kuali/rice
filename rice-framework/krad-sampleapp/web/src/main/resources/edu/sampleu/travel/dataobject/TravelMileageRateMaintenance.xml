@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -26,9 +26,11 @@
   <bean id="TravelMileageRateMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelMileageRate"/>
     <property name="documentTypeName" value="TravelMileageRateMaintenanceDocument"/>
+    <property name="preserveLockingKeysOnCopy" value="true"/>
     <property name="lockingKeys">
       <list>
-        <value>mileageRateId</value>
+        <value>mileageRateCd</value>
+        <value>mileageRateName</value>
       </list>
     </property>
   </bean>

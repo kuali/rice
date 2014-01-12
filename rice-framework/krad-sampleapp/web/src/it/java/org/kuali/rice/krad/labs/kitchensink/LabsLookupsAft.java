@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=49dbef40-65ef-424a-ae8a-1741cf947fee&cacheKey=eu0yn3vhdhhb753reybcvd&pageId=UifCompView-Page6&lightbox=true#UifCompView-Page6";
 
-    private static final String SEARCH_BTN_XPATH="//div[@data-parent='uLookupCriteria']/div[@class='uif-horizontalBoxLayout clearfix']/button[1]";
-    
     private static final String IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
     @Override
@@ -52,21 +50,37 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
     }
     
     protected void testLookups() throws InterruptedException {
-    	assertElementPresentByXpath("//input[@title='Direct Inquiry']");
+        waitAndClickByLinkText("a2");
+        gotoLightBox();
+        assertTextPresent(new String[] {"Travel Account Number:", "a2", "Travel Account Name:", "Travel Account 2", "Code And Description:", "EAT - Expense"});
+        waitAndClickButtonByText("Close");
+
     	clearTextByName("field72");
     	waitAndTypeByName("field72","a2");
-    	clearTextByName("field70");
+        fireEvent("field72", "blur");
     	waitForTextPresent("Travel Account 2");
-    	waitAndTypeByName("field76","");
-    	clearTextByName("field70");
+
+        clearTextByName("field76");
+    	waitAndTypeByName("field76","a1");
+        fireEvent("field76", "blur");
         waitForTextPresent("Travel Account 1");
+
+        waitAndTypeByName("field79", "");
+        fireEvent("field79", "blur");
+        waitForTextPresent("Travel Account 3");
+
     	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickButtonByText("Search");
-    	waitAndClickLinkContainingText("return value","");
+    	waitAndClickReturnValue();
     	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickButtonByText("Search");
-    	waitAndClickLinkContainingText("return value","");
+        waitAndClickReturnValue();
+
+        waitAndClickByXpath("//input[@title='Direct Inquiry']");
+        gotoLightBox();
+        assertTextPresent(new String[] {"Travel Account Number:", "a1", "Travel Account Name:", "Travel Account 1", "Code And Description:", "IAT - Income"});
+        waitAndClickButtonByText("Close");
     }
 }

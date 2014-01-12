@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -72,8 +76,9 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer input field
         waitAndClickByXpath("//input[@value='CAT']");
+
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
@@ -82,10 +87,12 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
-        waitForElementPresent("img[src*=\"info.png\"]");
+//        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
+        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
+            failOnDocErrors();
+        }
 
-        assertTextPresent("Document was successfully approved.");
-        assertTextPresent("ENROUTE");
+        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
     }
 
     protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(String account)throws Exception {
@@ -94,11 +101,13 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012");
+//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer an input field
         waitAndClickByXpath("//input[@value='CAT']");
+
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
         waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account");
         waitAndClickButtonByText("add");
+
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
         waitAndClickByXpath("//button[@title='Add a Note']");
@@ -107,8 +116,22 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
-        waitForElementPresent("img[src*=\"info.png\"]");
-        assertTextPresent("Document was successfully approved.");
-        assertTextPresent("ENROUTE");
+//        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
+        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
+            failOnDocErrors();
+        }
+
+        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
+    }
+
+    private void failOnDocErrors() {
+        List<WebElement> errors = findElements(By.xpath("//li[@class='uif-errorMessageItem']"));
+        if (errors != null && errors.size() > 0) {
+            StringBuilder sb = new StringBuilder("");
+            for (WebElement error : errors) {
+                sb.append(error.getText()).append("\n");
+            }
+            jiraAwareFail(sb.toString());
+        }
     }
 }

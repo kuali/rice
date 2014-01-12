@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -38,10 +39,11 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
     }
 
     protected void testInquiryDocumentHeader() throws InterruptedException {
+        String docId = waitForElementPresent(By.name("documentNumber")).getAttribute("value");
     	waitAndClickByXpath("//input[@type='image' and @title='Direct Inquiry']");
         gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Document Number:", "3013"},
-                                          {"Document Description:", "Travel Authorization Description"}};
+        String[][] lightBoxLabeledText = {{"Document Number:", docId},
+                                          {"Document Description:", "Test"}};
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

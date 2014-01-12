@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,9 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
         waitAndClickLinkContainingText("a14");
         gotoLightBox();
         String[][] lightBoxTravelAccountLabeledText = {{"Travel Account Number:", "a14"},
-                                          {"Account Name:", "Travel Account 14"},
-                                          {"Account Type:", "CAT - Clearing"},
+                                          {"Travel Account Name:", "Travel Account 14"},
+                                          {"Code And Description:", "CAT - Clearing"},
                                         //{"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
-                                      	  {"Date Created:", getTodaysDate()}, 
                                           };
         String[][] lightBoxFiscalOfficerLabeledText = {{"Travel Account Number:", "a14"},
                 {"Fiscal Officer User ID:", "fran"},

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
     
     protected void testLibraryElementsDropdownWithToggleButton() throws Exception {
         waitAndClickByLinkText("Dropdown with Toggle Button");
-        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div/div/a/span[@class='caret']");
+        waitAndClickByXpath("//div[@id='Demo-DropdownMenu-Example6']/div[2]/a/span[@class='caret']");
         assertElementPresentByXpath("//a[contains(text(),'Preferences')]");
         assertElementPresentByXpath("//a[contains(text(),'Logout')]");
     }

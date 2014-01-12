@@ -1,26 +1,37 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package edu.sampleu.admin;
+ */
+package edu.sampleu.admin;
 
-import org.junit.Assert;
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -56,9 +67,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
             cnt++;
         }
-        waitAndClickByXpath("//*[@id='imageField']");
-        Thread.sleep(1000);
-        // confirm all files were uploaded successfully
+        waitAndClickById("imageField");
     }
 
     /**
@@ -79,14 +88,56 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         try {
             setUpFiles("src/it/resources/" + resourceDir);
         } catch (Exception e) {
-            jiraAwareFail("Files not found. If running from Intellij make sure working directory is rice-middleware/sampleapp");
+            System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-middleware/sampleapp attempt to load as resource.");
+            try {
+                setUpResourceFiles(resourceDir);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                jiraAwareFail("Problems loading files as resources " + e1.getMessage());
+            }
         }
+    }
+
+    protected void setUpResourceFiles(String resourceDir) throws Exception {
+        String[] resources = getResourceListing(getClass(), resourceDir);
+        fileUploadList = new ArrayList<File>();
+
+        for (String resource : resources) {
+            InputStream inputStream = getClass().getResourceAsStream(resource);
+            File file = new File(System.getProperty("java.io.tmpdir") + File.separator + resource);
+            OutputStream outputStream = new FileOutputStream(file);
+            IOUtils.copy(inputStream, outputStream);
+            outputStream.close();
+            fileUploadList.add(file);
+        }
+        Collections.sort(fileUploadList);
+    }
+
+    protected String[] getResourceListing(Class clazz, String pathStartsWith) throws Exception {
+        String classPath = clazz.getName().replace(".", "/")+".class";
+        URL dirUrl = clazz.getClassLoader().getResource(classPath);
+
+        if (!"jar".equals(dirUrl.getProtocol())) {
+            throw new UnsupportedOperationException("Cannot list files for URL " + dirUrl);
+        }
+
+        String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!")); //strip out only the JAR file
+        JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+        Enumeration<JarEntry> entries = jar.entries();
+        Set<String> result = new HashSet<String>();
+
+        while(entries.hasMoreElements()) {
+            String entry = entries.nextElement().getName();
+            if (entry.startsWith(pathStartsWith) && !entry.endsWith("/")) { //filter according to the pathStartsWith skipping directories
+                result.add(entry);
+            }
+        }
+
+        return result.toArray(new String[result.size()]);
     }
 
     protected void setUpFiles(String path) throws Exception {
         fileUploadList = new ArrayList<File>();
-        // Load the directory as a resource
-        // Turn the resource into a File object
 
         File dir = new File(path);
 
@@ -106,7 +157,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
     }
 
     protected void testEdocLiteIngestion() throws Exception {
-        testXMLIngesterSuccessfulFileUpload();
+        testXmlIngesterSuccessfulFileUpload();
 
         Thread.sleep(2000);
         driver.switchTo().defaultContent();
@@ -128,7 +179,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
      * Uploads each sublist from main fileUploadList if size greater than 10.
      *
      */
-    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+    public void testXmlIngesterSuccessfulFileUpload() throws Exception {
         if (fileUploadList == null && fileUploadList.isEmpty()) {
             return;
         }
@@ -142,6 +193,9 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
             }
         } else {
             fileIngester(fileUploadList);
+            for (File file : fileUploadList) {
+                checkMessages(file);
+            }
         }
     }
 
@@ -149,7 +203,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         waitIsVisible(By.className("error")); // messages appear in error too.
         if (!isTextPresent("without allowOverwrite set")) { // docs should still be present
             // from previous run, if not we'll fail when we assert they exist.
-            assertTextPresent("Ingested xml doc: " + file.getName());
+            // xml ingestion can take a long, long time
+            waitForTextPresent("Ingested xml doc: " + file.getName(), 360);
         }
     }
 }

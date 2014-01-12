@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class LabsInputFieldsAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=eb46f9b0-e36b-4672-acb6-be28444dcda7&cacheKey=iqwjs719elkjfbfnctpnx9bq5x&pageId=UifCompView-Page1#UifCompView-Page1";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page1#UifCompView-Page1";
    
     @Override
     protected String getBookmarkUrl() {
@@ -47,11 +47,10 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testInputFields() throws InterruptedException 
-    {
+    protected void testInputFields() throws InterruptedException {
     	//Label
-    	assertElementPresentByXpath("//span[@class='labelTop uif-labelBlock']/label[contains(text(),'Field Label:')]");
-    	assertElementPresentByXpath("//span[@class='uif-label']/label[contains(text(),'Field Label:')]");
+    	assertElementPresentByXpath("//label[@class='labelTop uif-labelBlock uif-tooltip' and contains(text(),'Field Label')]");
+    	assertElementPresentByXpath("//label[@class='uif-label' and contains(text(),'Field Label:')]");
     	assertElementPresentByXpath("//span[@class='uif-constraintMessage']");
     	
     	//TextBox

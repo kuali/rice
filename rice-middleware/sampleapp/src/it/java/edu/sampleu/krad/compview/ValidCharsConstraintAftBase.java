@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,14 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
 
     protected void navigation() throws Exception {
         waitAndClickKRAD();
-        waitAndClickByXpath(KITCHEN_SINK_XPATH);
+        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+        waitAndClickByLinkText("Validation");
+        waitAndClickByLinkText("Validation - Regex");
     }
 
     protected void testValidCharsConstraintNav(JiraAwareFailable failable) throws Exception {
         navigation();
-        waitAndClickByLinkText("Validation - Regex");
         testValidCharsConstraintIT();
         passed();
     }

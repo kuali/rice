@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
     protected void assertEquals(String expected, String actual) {
         if (!expected.equals(actual)) {
-            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead");
+            jiraAwareFail("Expected \"" + expected + "\" but saw \"" + actual + "\" instead in " + getClass().toString());
         }
     }
 
@@ -463,8 +463,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String message) {
-        checkForIncidentReport("", message);
-        JiraAwareFailureUtils.fail(message, this);
+        jiraAwareFail("", message, null, this);
     }
 
     /**
@@ -476,8 +475,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String contents, String message) {
-        checkForIncidentReport(contents, message);
-        JiraAwareFailureUtils.fail(contents, message, this);
+        jiraAwareFail(contents, message, null, this);
     }
 
     /**
@@ -488,7 +486,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param throwable to check for a Jira match
      */
     protected void jiraAwareFail(By by, String message, Throwable throwable) {
-        jiraAwareFail(by.toString(), message, throwable);
+        jiraAwareFail(by.toString(), message, throwable, this);
     }
 
     /**
@@ -501,8 +499,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     @Override
     public void jiraAwareFail(String contents, String message, Throwable throwable) {
-        checkForIncidentReport(contents, message);
-        JiraAwareFailureUtils.fail(contents, message, throwable, this);
+        jiraAwareFail(contents, message, throwable, this);
     }
 
     /**
@@ -514,7 +511,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to call fail on
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
-        checkForIncidentReport(contents, message);
+        String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
+        if (errorMessage != null) {
+            JiraAwareFailureUtils.failOnMatchedJira(errorMessage, message, failable);
+            JiraAwareFailureUtils.fail(errorMessage, message, throwable, failable);
+        }
         JiraAwareFailureUtils.fail(contents, message, throwable, failable);
     }
 
@@ -541,11 +542,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message, failable);
             WebElement element = findElement(by);
-//            String name = element.getAttribute("name");
-//            if (name == null || "".equals(name)) {
-//                name = element.getAttribute("id");
+            // possible future code of outputting clicked components in a more generic way, but need to look into duplicates, don't delete
+//            String jgrowl = element.getAttribute("name");
+//            if (jgrowl == null || "".equals(jgrowl)) {
+//                jgrowl = element.getAttribute("id");
 //            }
-//            WebDriverUtils.jGrowl(getDriver(), "Click " + name, false, "Click " + name);
+//            if (jgrowl == null || "".equals(jgrowl)) {
+//                jgrowl = by.toString();
+//            }
+//            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
             element.click();
         } catch (Exception e) {
             failable.jiraAwareFail(by.toString(), message, e);

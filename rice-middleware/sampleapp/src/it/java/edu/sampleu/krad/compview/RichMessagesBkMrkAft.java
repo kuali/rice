@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.sampleu.krad.compview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +22,6 @@ import org.junit.Test;
  */
 public class RichMessagesBkMrkAft extends RichMessagesAftBase {
 
-    @Ignore // TODO fix
     @Test
     public void testRichMessagesBookmark() throws Exception {
         testRichMessagesBookmark(this);

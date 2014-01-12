@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.impl.registry;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
@@ -103,7 +102,6 @@ public class ServiceRegistryImplTest {
         serviceInfo.setStatusCode("A");
         serviceInfo.setServiceDescriptorId(nextId());
         serviceInfo.setChecksum("abcdefg");
-        serviceInfo.setVersionNumber(1L);
         return serviceInfo;
     }
 

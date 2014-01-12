@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		ServiceInfoBo serviceInfoBo = ServiceInfoBo.from(serviceInfo);
 		serviceDescriptorBo = getDataObjectService().save(serviceDescriptorBo);
 		serviceInfoBo.setServiceDescriptorId(serviceDescriptorBo.getId());
-        getDataObjectService().save(serviceInfoBo);
+        serviceInfoBo = getDataObjectService().save(serviceInfoBo);
 		
 		
 		return ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),

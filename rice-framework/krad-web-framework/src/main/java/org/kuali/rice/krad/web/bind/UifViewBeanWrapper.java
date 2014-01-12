@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -215,12 +215,26 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     @Override
     public void setPropertyValue(PropertyValue pv) throws BeansException {
         registerEditorFromView(pv.getName());
+
+        // Convert blank string values to null so empty strings are not set on the form as values (useful for legacy
+        // checks) Jira: KULRICE-11424
+        if(pv != null && pv.getValue() != null && pv.getValue() instanceof String && pv.getValue().equals("")) {
+            pv = new PropertyValue(pv, null);
+        }
+
         super.setPropertyValue(pv);
     }
 
     @Override
     public void setPropertyValue(String propertyName, Object value) throws BeansException {
         registerEditorFromView(propertyName);
+
+        // Convert blank string values to null so empty strings are not set on the form as values (useful for legacy
+        // checks) Jira: KULRICE-11424
+        if(value != null && value instanceof String && value.equals("")) {
+            value = null;
+        }
+
         super.setPropertyValue(propertyName, value);
     }
 

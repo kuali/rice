@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -49,7 +50,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
-import org.springframework.util.StringUtils;
 
 /**
  * View for the ComponentLibrary demo examples of Uif Components
@@ -221,6 +221,8 @@ public class ComponentLibraryView extends FormView {
                 schemaTable = "";
             }
 
+            String componentName = StringUtils.defaultIfBlank(StringUtils.defaultString(getComponentName()) + " ", "");
+
             String javadocTitle = messageService.getMessageText("KR-SAP", null, "componentLibrary.javaDoc");
             String kradGuideTitle = messageService.getMessageText("KR-SAP", null, "componentLibrary.kradGuide");
             String devDocumentationTitle = messageService.getMessageText("KR-SAP", null,
@@ -247,7 +249,7 @@ public class ComponentLibraryView extends FormView {
 
             //initialize the documentation content
             String documentationMessageContent =
-                    "<H3 class=\"uif-documentationHeader\">" + this.getComponentName() + " " + devDocumentationTitle + "</H3>" +
+                    "<H3 class=\"uif-documentationHeader\">" + componentName + devDocumentationTitle + "</H3>" +
                             docLinkDiv + classMessage + "<H3>" + beanDefsTitle + "</H3>" + schemaTable;
 
             List<String> propertyDescriptions = new ArrayList<String>();
@@ -494,7 +496,7 @@ public class ComponentLibraryView extends FormView {
         while (matcher.find()) {
             String spaces = matcher.group(1);
 
-            int count = StringUtils.countOccurrencesOf(spaces, "&#32;");
+            int count = StringUtils.countMatches(spaces, "&#32;");
             if (toRemove == -1 || count < toRemove) {
                 toRemove = count;
             }

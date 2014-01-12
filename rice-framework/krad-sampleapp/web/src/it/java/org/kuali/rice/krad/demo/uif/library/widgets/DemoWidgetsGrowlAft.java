@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class DemoWidgetsGrowlAft extends DemoLibraryBase {
         selectByName("exampleShown","Client-side Growls");
 
         //create growl
-        waitAndClickByXpath("//div[@id='Demo-Growls-Example2']/div[@class='uif-verticalBoxLayout clearfix']/button");
+        waitAndClickByXpath("//div[@id='Demo-Growls-Example2']/button");
 
         //give it a half second to display
         Thread.sleep(500);

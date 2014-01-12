@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2011 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.sampleu.admin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -113,7 +111,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForTextPresent("Export options:");
     }
 
-    @Ignore // TODO fix
     @Test
     public void testDetailedDocSearchBookmark() throws Exception{
         //createAndSaveDoc();
@@ -124,7 +121,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='detailed search']");
-        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']", "DocSearchAft.testDetailedDocSearch");
         //waitAndTypeByName("documentTypeName", parentName);
         waitAndTypeByName("initiatorPrincipalName", "admin");
         //waitAndTypeByName("documentId", docId);
@@ -161,7 +158,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
-        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']", "DocSearchAft.testSuperUserSearch");
         waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
         waitAndClickByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a");
         selectTopFrame();
@@ -192,7 +189,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitForPageToLoad();
-        WebElement select1 = driver.findElement(By.xpath("//select[@id='savedSearchToLoadAndExecute']"));
+        WebElement select1 = findElement(By.xpath("//select[@id='savedSearchToLoadAndExecute']"));
         List<WebElement> options = select1.findElements(By.tagName("option"));
         int count= options.size();
         assertEquals(5,count);

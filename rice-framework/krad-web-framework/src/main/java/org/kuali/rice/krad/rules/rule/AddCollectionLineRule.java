@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.kuali.rice.krad.rules.rule;
 
-package edu.sampleu.krad.configview;
-
-import org.junit.Ignore;
-import org.junit.Test;
+import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 
 /**
+ * Defines a rule which gets invoked immediately before an object is added to a collection.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Help2BkMrkAft extends Help2AftBase {
+public interface AddCollectionLineRule extends BusinessRule {
 
-    @Ignore // TODO fix
-    @Test
-    public void testHelp2Bookmark() throws Exception {
-        testHelp2Bookmark(this);
-    }
+    /**
+     * Run the rules associated with adding an object to a collection.
+     *
+     * @param addEvent the event containing all of the object necessary to run the rules
+     *
+     * @return true if validation succeeds, false otherwise
+     */
+    boolean processAddCollectionLine(AddCollectionLineEvent addEvent);
 }

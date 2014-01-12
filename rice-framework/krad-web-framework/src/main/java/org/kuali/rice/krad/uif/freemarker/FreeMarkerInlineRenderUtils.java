@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,6 +155,7 @@ public class FreeMarkerInlineRenderUtils {
     public static void renderTemplate(Environment env, Component component, String body,
             boolean componentUpdate, boolean includeSrc, Map<String, TemplateModel> tmplParms)
             throws TemplateException, IOException {
+        String dataJsScripts = "";
         String templateJsScripts = "";
 
         if (component == null) {
@@ -204,6 +205,10 @@ public class FreeMarkerInlineRenderUtils {
                 templateJsScripts += s;
             }
 
+            if (StringUtils.hasText(s = component.getScriptDataAttributesJs())) {
+                dataJsScripts += s;
+            }
+
             if (StringUtils.hasText(s = component.getPostRenderContent())) {
                 out.append(StringEscapeUtils.escapeHtml(s));
             }
@@ -211,6 +216,7 @@ public class FreeMarkerInlineRenderUtils {
         }
 
         if (componentUpdate || UifConstants.ViewStatus.RENDERED.equals(component.getViewStatus())) {
+            renderScript(dataJsScripts, component, UifConstants.RoleTypes.DATA_SCRIPT, out);
             renderScript(templateJsScripts, component, null, out);
             return;
         }
@@ -270,9 +276,8 @@ public class FreeMarkerInlineRenderUtils {
             }
         }
 
-        if (StringUtils.hasText(templateJsScripts)) {
-            renderScript(templateJsScripts, component, null, out);
-        }
+        renderScript(dataJsScripts, component, UifConstants.RoleTypes.DATA_SCRIPT, out);
+        renderScript(templateJsScripts, component, null, out);
 
         renderTooltip(component, out);
     }

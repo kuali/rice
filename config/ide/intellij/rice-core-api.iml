@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../rice-middleware/core/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-test-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/api/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/maven-status" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../rice-middleware/core/api/target/wsdl" />
     </content>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -441,8 +441,7 @@ public class ViewIndex implements Serializable {
      * 
      * @return Map<String, Map<String, String>> key is component id and value is expression graph
      *         map
-     * @see org.kuali.rice.krad.uif.util.ExpressionUtils#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean,
-     *      boolean)
+     * @see ExpressionEvaluator#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, boolean)
      */
     public Map<String, Map<String, String>> getComponentExpressionGraphs() {
         return componentExpressionGraphs;

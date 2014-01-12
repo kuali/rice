@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -137,8 +137,11 @@ public class JiraAwareFailureUtils {
      */
     public static void fail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         failOnMatchedJira(contents, message, failable);
-        failOnMatchedJira(ExceptionUtils.getStackTrace(throwable), throwable.getMessage(), failable);
-        failable.fail(contents + " " + message + " " + throwable.getMessage() + "\n\t" + ExceptionUtils.getStackTrace(throwable));
+        if (throwable != null) {
+            failOnMatchedJira(ExceptionUtils.getStackTrace(throwable), throwable.getMessage(), failable);
+            failable.fail(contents + " " + message + " " + throwable.getMessage() + "\n\t" + ExceptionUtils.getStackTrace(throwable));
+        }
+        failable.fail(contents + " " + message + " " + contents);
     }
 
     /**

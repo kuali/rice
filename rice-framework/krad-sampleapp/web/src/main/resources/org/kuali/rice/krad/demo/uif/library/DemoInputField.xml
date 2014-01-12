@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -144,8 +144,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example8 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField8"
-              p:widgetInputOnly="true" p:instructionalText="Instructions are not displayed on readOnly fields">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField8" p:label="Quickfinder Field" p:widgetInputOnly="true">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:inputField8"/>

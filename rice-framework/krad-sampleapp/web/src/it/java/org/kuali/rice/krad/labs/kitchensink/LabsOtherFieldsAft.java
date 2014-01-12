@@ -1,5 +1,5 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,10 +107,10 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     
     	//Basic String Data tree and Tree with Data Group
     	assertElementPresentByXpath("//div[@id='UifCompView-OtherField2_tree']/ul/li/a/span[contains(text(),'Item 1 ')]");
-    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-verticalBoxLayout clearfix']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     
     	//Scrollable Groups
-    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4']/div[@style='height: 100px;overflow: auto;']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroups']/div[@style='height: 100px;overflow: auto;']");
     	assertElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
     }
 

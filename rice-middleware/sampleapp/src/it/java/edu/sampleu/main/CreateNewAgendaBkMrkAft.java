@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2012 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package edu.sampleu.main;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -29,7 +27,6 @@ public class CreateNewAgendaBkMrkAft extends CreateNewAgendaAftBase {
         return BOOKMARK_URL;
     }
 
-    @Ignore // TODO fix
     @Test
     public void testCreateNewAgendaBookmark() throws Exception {
         testCreateNewAgendaBookmark(this);

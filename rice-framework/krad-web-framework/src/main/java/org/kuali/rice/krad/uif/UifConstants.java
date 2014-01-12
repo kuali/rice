@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -359,13 +359,16 @@ public class UifConstants {
     public static final class RoleTypes {
         public static final String ACTION = "Action";
         public static final String CONTROL = "Control";
+        public static final String DATA_SCRIPT = "dataScript";
         public static final String INPUT_FIELD = "InputField";
         public static final String GROUP = "Group";
         public static final String GROUP_TOTAL = "groupTotal";
         public static final String TOTAL = "total";
         public static final String TOTALS_BLOCK = "totalsBlock";
+        public static final String PAGE = "Page";
         public static final String PAGE_TOTAL = "pageTotal";
         public static final String ROW_GROUPING = "RowGrouping";
+        public static final String VIEW = "View";
     }
 
     public static final class DataAttributes {

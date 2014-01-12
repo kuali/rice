@@ -1,11 +1,11 @@
-/*
- * Copyright 2005-2013 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -22,15 +23,17 @@ import org.junit.Test;
  */
 public class EdocLiteIuIngestNavAft extends EdocLiteXmlIngesterBase {
 
-    @Test
-    public void test() throws Exception {
+    @Override
+    @Before
+    public void testSetUp() {
         setUpResourceDir("IU");
+        super.testSetUp();
+    }
+
+    @Test
+    public void testEdocLiteIuIngestNav() throws Exception {
         testEdocLiteIngestion();
-        assertTextPresent("PhDCommencement");
-        assertTextPresent("CommitteeChange.Doctype");
-        assertTextPresent("Committee.Doctype");
-        assertTextPresent("MAAdvancedDegree");
-        assertTextPresent("PhDDefense");
+        assertTextPresent(new String[] {"PhDCommencement", "CommitteeChange.Doctype", "Committee.Doctype", "MAAdvancedDegree", "PhDDefense"});
         waitAndClickLogout();
         passed();
     }

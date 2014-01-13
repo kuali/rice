@@ -132,7 +132,7 @@
             <list>
               <bean id="Demo-StackedLayoutManager-Collection2-Action1" parent="Uif-PrimaryActionButton"
                     p:disabled="@{#line.field1 eq '1'}"/>
-              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-NavigationActionLink"
+              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-PrimaryActionButton"
                     p:onClickScript="alert('foo');" p:methodToCall="deleteLine"/>
             </list>
           </property>

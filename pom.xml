@@ -46,6 +46,7 @@
   </ciManagement>
 
   <properties>
+    <kuali-cm.version>1.2.9</kuali-cm.version>
     <properties.resolve>false</properties.resolve>
 
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->

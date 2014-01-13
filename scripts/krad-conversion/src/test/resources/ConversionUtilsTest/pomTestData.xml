@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>edu.sampleu.commons</groupId>
+    <artifactId>sampleu-common</artifactId>
+    <version>3.3.17</version>
+  </parent>
+  <groupId>edu.sampleu.travel</groupId>
+  <artifactId>travel-app</artifactId>
+  <packaging>pom</packaging>
+  <name>SampleU Travel Management</name>
+  <version>2.0.0-SNAPSHOT</version>
+  <description>SampleU Travel Management is a mock travel application used as a testing template for krad conversion script</description>
+  <url>http://www.kuali.org/sampleu</url>
+  <modules>
+    <module>db</module>
+    <module>core</module>
+    <module>web</module>
+  </modules>
+</project>

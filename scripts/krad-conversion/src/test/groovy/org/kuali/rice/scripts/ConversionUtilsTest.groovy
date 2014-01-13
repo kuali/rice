@@ -15,29 +15,53 @@
  */
 package org.kuali.rice.scripts
 
+import groovy.util.logging.Log
 import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 
 /**
  * This class //TODO ...
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Log
 class ConversionUtilsTest {
 
-    static def testResourceDir = "./src/test/resources/"
-    static def dictTestDir = testResourceDir + "DictionaryConverterTest/"
+    static def convTestDir = "ConversionUtilsTest/";
+    public String tempFolderPath;
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
+    @Before
+    public void setupTestDir() {
+        tempFolderPath = folder.getRoot().absolutePath;
+        File createdFile= folder.newFile("AttributePropertySample.xml");
+    }
 
     @Test
     void testFindFilesByName() {
-        def files = ConversionUtils.findFilesByName(testResourceDir, "AttributePropertySample.xml")
-        Assert.assertEquals("file count does not match", 1, files.size())
+        def files = ConversionUtils.findFilesByName(tempFolderPath, "AttributePropertySample.xml");
+        Assert.assertEquals("file count does not match", 1, files.size());
     }
 
     @Test
     void testFindFilesByPattern() {
         def attrPattern = ~/AttributePropertySample\.xml$/
-        def files = ConversionUtils.findFilesByPattern(testResourceDir, attrPattern)
-        Assert.assertEquals("file count does not match", 1, files.size())
+        def files = ConversionUtils.findFilesByPattern(tempFolderPath, attrPattern);
+        Assert.assertEquals("file count does not match", 1, files.size());
+    }
+
+    @Test
+    void testGetPomData() {
+        def pomFileName = "pomTestData.xml";
+        def pomFile = ConversionUtils.getResourceFile(convTestDir + pomFileName);
+        def actualPomData = ConversionUtils.getPomData(pomFile.getParentFile().absolutePath, pomFileName);
+        Assert.assertEquals("Project parent artifactId", "sampleu-common",actualPomData.parent.artifactId);
+        Assert.assertEquals("Project artifactId", "travel-app",actualPomData.artifact.artifactId);
+        Assert.assertEquals("Project modules count", 3, actualPomData.modules.size());
     }
 }

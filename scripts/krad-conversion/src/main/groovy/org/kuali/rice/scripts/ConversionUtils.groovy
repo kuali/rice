@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.scripts
+package org.kuali.rice.scripts;
 
-import groovy.text.GStringTemplateEngine
-import groovy.util.logging.Log
-import org.apache.commons.io.FileExistsException
-import org.apache.commons.io.FilenameUtils
-import org.codehaus.plexus.util.StringUtils
+import groovy.text.GStringTemplateEngine;
+import groovy.util.logging.Log;
+import org.apache.commons.io.FileExistsException;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Utilities related to conversion script
@@ -29,7 +29,7 @@ import org.codehaus.plexus.util.StringUtils
 @Log
 class ConversionUtils {
 
-    static def baseResourcesDir = "./src/main/resources/"
+    static def baseResourcesDir = "./src/main/resources/";
 
     /**
      * converts java package name into a file path
@@ -38,7 +38,7 @@ class ConversionUtils {
      * @return string
      */
     public static def getRelativePathFromPackage(filePackage) {
-        return filePackage.replaceAll(~/\./, "/")
+        return filePackage.replaceAll(~/\./, "/");
     }
 
     /**
@@ -49,22 +49,59 @@ class ConversionUtils {
      * @return
      */
     public static def getRelativePath(parentDir, fullFilePath) {
-        def relativePath = ""
+        def relativePath = "";
 
         // perform file path cleanup
-        parentDir = FilenameUtils.normalize(parentDir, true)
-        fullFilePath = FilenameUtils.normalize(fullFilePath, true)
-        def filePath = FilenameUtils.getFullPath(fullFilePath)
+        parentDir = FilenameUtils.normalize(parentDir, true);
+        fullFilePath = FilenameUtils.normalize(fullFilePath, true);
+        def filePath = FilenameUtils.getFullPath(fullFilePath);
 
         if (parentDir == filePath) {
-            return ""
+            return "";
         }
 
-        def relative_match = filePath =~ /(?:$parentDir)(.*?)$/
+        def relative_match = filePath =~ /(?:$parentDir)(.*?)$/;
         if (relative_match != null && relative_match.size() > 0) {
-            relativePath = relative_match[0][1]
+            relativePath = relative_match[0][1];
         }
-        return relativePath
+        return relativePath;
+    }
+
+    /**
+     * Processes a valid pom.xml to obtain relevant information (artifact and parent data, any modules)
+     *
+     * @param pomFileDirectory
+     * @return Map result contains app, artifact, parent, and module data
+     */
+    public static Map getPomData(String pomFileDirectory, String pomFileName) {
+        def pomData = [app:"", artifact:[:], parent:[:], modules:[], dependencies:[]];
+
+        String pomFilePath =  FilenameUtils.normalizeNoEndSeparator(pomFileDirectory) + "/" + pomFileName;
+        def pomFile = new File(pomFilePath);
+
+        if(pomFile.exists()) {
+            def pom = new XmlSlurper( false, false ).parse( pomFilePath );
+
+            if(pom) {
+                pomData.packaging = StringUtils.isNotEmpty(pom?.packaging?.text()) ?pom?.packaging.text() : "jar";
+
+                pom.modules?.module?.each { moduleName ->
+                    pomData.modules.add(moduleName.text());
+                }
+
+                pomData.app = pom.artifactId?.text();
+                pomData.artifact = ["artifactId":pom.artifactId?.text(), groupId:pom.groupId?.text(), version:pom.version?.text(), type:pom?.packaging.text()];
+                if(pom."parent") {
+                    pomData.parent = ["artifactId":pom."parent"?.artifactId?.text(), groupId:pom."parent"?.groupId?.text(), version:pom."parent"?.version?.text()];
+                }
+            }
+        }
+
+        return pomData;
+    }
+
+    public static Map getPomData(String pomFileDirectory) {
+       return ConversionUtils.getPomData(pomFileDirectory, "pom.xml");
     }
 
     /**
@@ -77,13 +114,13 @@ class ConversionUtils {
      * @return
      */
     public static def getObjectName(fileName, fileType) {
-        def objName = FilenameUtils.getBaseName(fileName)
+        def objName = FilenameUtils.getBaseName(fileName);
         // remove filetype (MaintenanceDocument, etc..) or Document suffix from object name
         if (!StringUtils.isEmpty(fileType)) {
             if (objName.contains(fileType)) {
-                objName = StringUtils.stripEnd(objName, fileType)
+                objName = StringUtils.stripEnd(objName, fileType);
             } else if (objName.contains("Document")) {
-                objName = StringUtils.stripEnd(objName, "Document")
+                objName = StringUtils.stripEnd(objName, "Document");
             }
         }
         return objName
@@ -122,8 +159,8 @@ class ConversionUtils {
     }
 
     public static def findFilesByName(searchDirPath, fileName) {
-        def filePattern = ~/${fileName}$/
-        return findFilesByPattern(searchDirPath, filePattern)
+        def filePattern = ~/${fileName}$/;
+        return findFilesByPattern(searchDirPath, filePattern);
     }
 
     /**
@@ -134,7 +171,7 @@ class ConversionUtils {
      * @return
      */
     public static def findFilesByPattern(searchDirPath, inclPattern) {
-        return findFilesByPattern(searchDirPath, inclPattern, null)
+        return findFilesByPattern(searchDirPath, inclPattern, null);
     }
 
     /**
@@ -146,27 +183,27 @@ class ConversionUtils {
      * @return
      */
     public static def findFilesByPattern(searchDirPath, inclPattern, exclPattern) {
-        def dir = new File(searchDirPath)
-        def files = []
-        log.finer "searching " + searchDirPath + " for files matching pattern: " + inclPattern
+        def dir = new File(searchDirPath);
+        def files = [];
+        log.finer "searching " + searchDirPath + " for files matching pattern: " + inclPattern;
         dir.eachFileRecurse { resultFile ->
-            String fileRelativePath = ConversionUtils.getRelativePath(searchDirPath, resultFile.path) + resultFile.name
-            boolean isInclFile = inclPattern != null && fileRelativePath.find(inclPattern)
-            boolean isExclFile = exclPattern != null && fileRelativePath.find(exclPattern)
+            String fileRelativePath = ConversionUtils.getRelativePath(searchDirPath, resultFile.path) + resultFile.name;
+            boolean isInclFile = inclPattern != null && fileRelativePath.find(inclPattern);
+            boolean isExclFile = exclPattern != null && fileRelativePath.find(exclPattern);
 
             if (isInclFile && !isExclFile) {
-                files << resultFile
+                files << resultFile;
             }
         }
         return files
     }
 
     public static def getConfig(defaultConfigFilePath) {
-        return ConversionUtils.getConfig(defaultConfigFilePath, "")
+        return ConversionUtils.getConfig(defaultConfigFilePath, "");
     }
 
     public static File getResourceFile(String relativeFilePath) {
-        log.info "trying to open " + relativeFilePath;
+        log.fine "opening file " + relativeFilePath;
         return new File(ConversionUtils.getClassLoader().getResource(relativeFilePath).file);
     }
 
@@ -182,10 +219,10 @@ class ConversionUtils {
         def config = new ConfigSlurper().parse(defaultConfigFile.toURL());
 
         if (projectConfigFilePath != null && projectConfigFilePath != "") {
-            File altConfigFile = new File(projectConfigFilePath)
+            File altConfigFile = new File(projectConfigFilePath);
             if (altConfigFile.exists()) {
-                def altConfig = new ConfigSlurper().parse(altConfigFile.toURL())
-                config.merge(altConfig)
+                def altConfig = new ConfigSlurper().parse(altConfigFile.toURL());
+                config.merge(altConfig);
             }
         }
 
@@ -193,7 +230,7 @@ class ConversionUtils {
     }
 
     static def modifyFileWithText(file, replacePattern, text) {
-        file.write(file.text.replaceFirst(replacePattern, java.util.regex.Matcher.quoteReplacement(text) + "\$1"))
+        file.write(file.text.replaceFirst(replacePattern, java.util.regex.Matcher.quoteReplacement(text) + "\$1"));
     }
 
     /**
@@ -205,18 +242,18 @@ class ConversionUtils {
      * @return
      */
     static def buildDirectoryStructure(baseDirPath, relDirPathList, safeToDelete) {
-        def baseDir = new File(baseDirPath)
+        def baseDir = new File(baseDirPath);
         if (baseDir.exists() && safeToDelete) {
-            baseDir.deleteDir()
-            log.info "deleted existing base directory: " + baseDir.path
+            baseDir.deleteDir();
+            log.info "deleted existing base directory: " + baseDir.path;
         }
         baseDir.mkdirs()
         log.info "created new base directory: " + baseDir.path
 
         relDirPathList.each {
-            def relPathDir = new File(baseDirPath + it)
-            relPathDir.mkdirs()
-            log.info "created new directory: " + relPathDir.path
+            def relPathDir = new File(baseDirPath + it);
+            relPathDir.mkdirs();
+            log.info "created new directory: " + relPathDir.path;
         }
     }
 
@@ -230,12 +267,12 @@ class ConversionUtils {
      * @param binding
      */
     static def buildTemplateFile(outputFileDir, outputFileName, templateFileDir, templateFileName, binding) {
-        def fileText = buildTemplateToString(templateFileDir, templateFileName, binding)
-        buildFile(outputFileDir, outputFileName, fileText)
+        def fileText = buildTemplateToString(templateFileDir, templateFileName, binding);
+        buildFile(outputFileDir, outputFileName, fileText);
     }
 
     static def getTemplateDir() {
-        return baseResourcesDir + "templates/"
+        return baseResourcesDir + "templates/";
     }
 
     /**
@@ -247,15 +284,15 @@ class ConversionUtils {
      * @return file
      */
     static def buildFile(outputFileDirPath, outputFileName, fileText) {
-        outputFileDirPath = FilenameUtils.normalize(outputFileDirPath, true)
+        outputFileDirPath = FilenameUtils.normalize(outputFileDirPath, true);
 
-        def outputDir = new File(outputFileDirPath)
-        outputDir.mkdirs()
-        def outputFile = new File(outputDir, outputFileName)
-        log.info "create a new file from template: " + outputFile.path
-        outputFile.createNewFile()
-        outputFile.write(fileText)
-        return outputFile
+        def outputDir = new File(outputFileDirPath);
+        outputDir.mkdirs();
+        def outputFile = new File(outputDir, outputFileName);
+        log.info "create a new file from template: " + outputFile.path;
+        outputFile.createNewFile();
+        outputFile.write(fileText);
+        return outputFile;
     }
 
     /**
@@ -268,9 +305,9 @@ class ConversionUtils {
      */
     static def buildTemplateToString(templateFileDir, templateFileName, binding) {
         // TODO: replace base resource dir with getResource
-        def templateFile = new File(templateFileDir, templateFileName)
-        def engine = new GStringTemplateEngine()
-        def processedTemplate = engine.createTemplate(templateFile).make(binding)
-        processedTemplate.toString()
+        def templateFile = new File(templateFileDir, templateFileName);
+        def engine = new GStringTemplateEngine();
+        def processedTemplate = engine.createTemplate(templateFile).make(binding);
+        processedTemplate.toString();
     }
 }

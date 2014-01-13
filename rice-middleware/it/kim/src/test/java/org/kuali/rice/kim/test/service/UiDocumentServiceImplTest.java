@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -32,7 +36,10 @@ import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
+import org.kuali.rice.kim.api.role.RoleMember;
+import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
@@ -49,6 +56,7 @@ import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -61,6 +69,7 @@ import org.kuali.rice.test.BaselineTestCase;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -402,5 +411,67 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docEmpInfo.getBaseSalaryAmount(), entityEmpInfo.getBaseSalaryAmount());
 	}
 
+    @Test
+    public void test_KimDocumentRoleMember_copyProperties() {
+        //
+        // KimDocumentRoleMember.copyProperties is called by the UiDocumentServiceImpl.getRoleMembers
+        // method.  This test verifies that KimDocumentRoleMember.copyProperties is working as
+        // expected and also will fail if fields are added to KimDocumentRoleMember to ensure that
+        // KimDocumentRoleMember.copyProperties is kept up to date.
+        //
 
+        DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        String ROLE_MEMBER_ID = "1";
+        String ROLE_ID = "23";
+        Map<String, String> ATTRIBUTES = new HashMap<String, String>();
+        String MEMBER_NAME = "WorkflowAdmin";
+        String MEMBER_NAMESPACE_CODE = "KR-WKFLW";
+        String MEMBER_ID = "1";
+        MemberType MEMBER_TYPE = MemberType.GROUP;
+        String ACTIVE_FROM_STRING = "2011-01-01 12:00:00";
+        DateTime ACTIVE_FROM = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING));
+        String ACTIVE_TO_STRING = "2115-01-01 12:00:00";
+        DateTime ACTIVE_TO = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING));
+        String OBJ_ID = "123";
+        long VER_NUM = 4;
+
+        KimDocumentRoleMember newKimDocumentRoleMember = new KimDocumentRoleMember();
+
+        RoleMemberContract rmc = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM,
+                ACTIVE_TO, ATTRIBUTES, MEMBER_NAME, MEMBER_NAMESPACE_CODE).build();
+        RoleMember rm = RoleMember.Builder.create(rmc).build();
+        RoleMemberBo roleMemberBo = RoleMemberBo.from(rm);
+        roleMemberBo.setObjectId(OBJ_ID);
+        roleMemberBo.setVersionNumber(VER_NUM);
+
+        KimDocumentRoleMember.copyProperties(newKimDocumentRoleMember, roleMemberBo);
+
+        assertTrue("newKimDocumentRoleMember should have a roleId of " + ROLE_ID,
+                newKimDocumentRoleMember.getRoleId().equals(ROLE_ID));
+        assertTrue("newKimDocumentRoleMember should have a MemberId of " + MEMBER_ID,
+                newKimDocumentRoleMember.getMemberId().equals(MEMBER_ID));
+        assertTrue("newKimDocumentRoleMember should have a MemberName of " + MEMBER_NAME,
+                newKimDocumentRoleMember.getMemberName().equals(MEMBER_NAME));
+        assertTrue("newKimDocumentRoleMember should have a MemberNamespaceCode of " + MEMBER_NAMESPACE_CODE,
+                newKimDocumentRoleMember.getMemberNamespaceCode().equals(MEMBER_NAMESPACE_CODE));
+        assertTrue("newKimDocumentRoleMember should be active.",
+                newKimDocumentRoleMember.isActive());
+        assertTrue("newKimDocumentRoleMember should have a ActiveToDate of " + MEMBER_NAMESPACE_CODE,
+                newKimDocumentRoleMember.getActiveToDate().equals(roleMemberBo.getActiveToDateValue()));
+        assertTrue("newKimDocumentRoleMember should have a ActiveFromDate of " + ACTIVE_FROM_STRING,
+                newKimDocumentRoleMember.getActiveFromDate().equals(roleMemberBo.getActiveFromDateValue()));
+        assertTrue("newKimDocumentRoleMember should have a VersionNumber of " + VER_NUM,
+                newKimDocumentRoleMember.getVersionNumber().equals(VER_NUM));
+        assertTrue("newKimDocumentRoleMember should have a ObjectId of " + OBJ_ID,
+                newKimDocumentRoleMember.getObjectId().equals(OBJ_ID));
+
+        Class<?> c = newKimDocumentRoleMember.getClass();
+        Field[] fields = c.getDeclaredFields();
+        List<Field> fieldsList = Arrays.asList(fields);
+
+        int numberOfFieldsInKimDocumentRoleMember = 11;
+        assertTrue("KimDocumentRoleMember.copyProperties may need to be updated if the number of fields"
+                + "in KimDocumentRoleMember does not equal " + numberOfFieldsInKimDocumentRoleMember + ".  Size is " +
+                fieldsList.size(), fieldsList.size() == numberOfFieldsInKimDocumentRoleMember);
+    }
 }

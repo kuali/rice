@@ -81,7 +81,7 @@
     <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
   </bean>
 
-  <bean id="AgendaEditorView-Agenda-Page-Parent" parent="Uif-Page">
+  <bean id="AgendaEditorView-Agenda-Page-Parent" parent="Uif-Disclosure-Page">
     <property name="items">
       <list>
         <bean parent="AgendaEditorView-AgendaSection" />
@@ -92,7 +92,7 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-AddRule-Page-Parent" parent="Uif-Page">
+  <bean id="AgendaEditorView-AddRule-Page-Parent" parent="Uif-Disclosure-Page">
     <property name="items">
       <list>
         <bean parent="ruleEditorBody">
@@ -118,7 +118,7 @@
    </property>
   </bean>
 
-  <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Uif-Page">
+  <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Uif-Disclosure-Page">
     <!-- property name="headerText" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
       <list>
@@ -140,7 +140,7 @@
    </property>
   </bean>
 
-  <bean id="AgendaEditorView-ViewRule-Page-Parent" parent="Uif-Page">
+  <bean id="AgendaEditorView-ViewRule-Page-Parent" parent="Uif-Disclosure-Page">
     <!-- property name="headerText" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
       <list>

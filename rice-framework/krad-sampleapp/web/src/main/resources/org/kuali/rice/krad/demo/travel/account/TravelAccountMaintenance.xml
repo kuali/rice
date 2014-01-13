@@ -64,6 +64,12 @@
               <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/>
             </list>
           </property>
+          <property name="duplicateLinePropertyNames">
+            <list>
+              <value>subAccount</value>
+              <value>subAccountName</value>
+            </list>
+          </property>
           <property name="lineActions">
             <list>
               <bean parent="Uif-DeleteLineAction" p:render="@{isAddedCollectionItem(#line)}"/>

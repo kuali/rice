@@ -70,7 +70,7 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testTravelPerDiemLookUpNav() throws Exception {
         testTravelPerDiemLookUp();
         passed();

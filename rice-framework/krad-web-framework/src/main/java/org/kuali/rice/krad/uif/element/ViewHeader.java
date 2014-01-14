@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.CssConstants;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
@@ -75,27 +76,9 @@ public class ViewHeader extends Header {
             }
         }
 
-/*        if ((StringUtils.isBlank(this.getHeaderText()) || this.getHeaderText().equals("&nbsp;"))
-                && this.getRichHeaderMessage() == null
-                && this.getUpperGroup() == null
-                && this.getLowerGroup() == null
-                && this.getRightGroup() == null
-                && (this.getSupportTitleMessage() == null || StringUtils.isBlank(
-                this.getSupportTitleMessage().getMessageText()))
-                && (this.getAreaTitleMessage() == null || StringUtils.isBlank(
-                this.getAreaTitleMessage().getMessageText()))
-                && (this.getMetadataMessage() == null || StringUtils.isBlank(
-                this.getMetadataMessage().getMessageText()))
-                && this.getTemplateName().equals("uif_viewHeader")) {
-            this.setRender(false);
+        if (this.getUpperGroup() == null && this.getLowerGroup() == null && this.isSticky()) {
+            this.addDataAttribute(UifConstants.DataAttributes.STICKY, "true");
         }
-
-        if (this.getUpperGroup() == null && this.getLowerGroup() == null && this.getRightGroup() == null
-                && !this.isSticky()
-                && (this.getMetadataMessage() == null || StringUtils.isBlank(this.getMetadataMessage().getMessageText()))
-                && this.getTemplateName().equals("uif_viewHeader")) {
-            this.setRenderWrapper(false);
-        }*/
     }
 
     /**

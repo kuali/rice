@@ -410,6 +410,7 @@ public class UifConstants {
         public static final String CONTROL_FOR = "control_for";
         public static final String ADD_CONTROLS = "add_controls";
         public static final String HEADER_FOR = "header_for";
+        public static final String STICKY = "sticky";
         public static final String STICKY_FOOTER = "sticky_footer";
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
         public static final String TAB_FOR = "tabfor";

@@ -19,6 +19,8 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.util.DataTypeUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,8 +39,17 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
     public List<String> getCleanSearchableValues(String attributeKey) throws AttributeValidationException {
         Class<?> attributeType = getType(attributeKey);
         Object rawValue = getValue(attributeKey);
+        String attributeInValue = "";
 
-        String attributeInValue = rawValue != null ? rawValue.toString() : "";
+        if (rawValue != null) {
+            //if a date force the format
+            if (rawValue instanceof java.util.Date) {
+                attributeInValue = new SimpleDateFormat("MM-dd-yyyy").format(rawValue);
+            } else {
+                attributeInValue = rawValue.toString();
+            }
+        }
+
         String attributeDataType = DataTypeUtil.determineDataType(attributeType);
         return SQLUtils.getCleanedSearchableValues(attributeInValue, attributeDataType);
     }

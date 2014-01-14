@@ -189,7 +189,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		return files == null ? Collections.<String>emptyList() : parseFileList(files);
 	}
 	
-	private List<String> parseFileList(String files) {
+	protected List<String> parseFileList(String files) {
 		final List<String> parsedFiles = new ArrayList<String>();
 		for (String file : Arrays.asList(files.split(","))) {
 			final String trimmedFile = file.trim();
@@ -306,7 +306,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		}
 		
 		if (!files.isEmpty()) {
-			ResourceLoader rl = RiceResourceLoaderFactory.createRootRiceResourceLoader(servletContext, files,
+			ResourceLoader rl = createResourceLoader(servletContext, files,
                     getModuleName());
 			rl.start();
 			GlobalResourceLoader.addResourceLoader(rl);
@@ -317,6 +317,11 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		for (ResourceLoader rl : rls) {
 			GlobalResourceLoader.addResourceLoader(rl);
 		}
+	}
+	
+	protected ResourceLoader createResourceLoader(ServletContext servletContext, List<String> files, String moduleName) {
+	    return RiceResourceLoaderFactory.createRootRiceResourceLoader(servletContext, files,
+                getModuleName());
 	}
 	
 	protected Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
@@ -338,5 +343,9 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	@Override
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
+	}
+	
+	protected ServletContext getServletContext() {
+	       return servletContext;
 	}
 }

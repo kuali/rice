@@ -18,6 +18,7 @@ package org.kuali.rice.core.data;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
@@ -48,7 +49,7 @@ import static org.junit.Assert.*;
  * Tests to confirm JPA mapping for the Core Service module data objects
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
-public class CoreServiceJpaDataTest extends KRADTestCase {
+public class CoreServiceJpaDataTest extends CORETestCase {
     public static final String DERIVED_COMPONENT_SET_ID = "DD:TSTKR";
 
     public static final String NAMESPACE = "KR-TST";
@@ -124,6 +125,7 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
 
     @Test
     public void testComponentServiceImpl() throws Exception{
+        setupNameSpaceBoDataObjectAndSave();
         setupComponentBoDataObjectAndSave();
         setupDerivedComponentBoDataObjectAndSave();
 
@@ -207,6 +209,13 @@ public class CoreServiceJpaDataTest extends KRADTestCase {
     }
 
     private void setupParameterBoDataObjectAndSave(){
+        NamespaceBo namespaceBo = new NamespaceBo();
+        namespaceBo.setActive(true);
+        namespaceBo.setApplicationId("RICE");
+        namespaceBo.setCode("TST_NM_SPACE");
+        namespaceBo.setName("Another Test Namespace");
+        KRADServiceLocator.getDataObjectService().save(namespaceBo);
+
         ParameterTypeBo parameterType = KradDataServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
         assertTrue("Parameter type must be created first",parameterType != null);
         ParameterBo parameterBo = new ParameterBo();

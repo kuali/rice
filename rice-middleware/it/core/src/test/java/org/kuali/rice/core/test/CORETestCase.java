@@ -15,9 +15,13 @@
  */
 package org.kuali.rice.core.test;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.runners.BootstrapTest;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
 
@@ -28,6 +32,8 @@ import javax.xml.namespace.QName;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(CORETestCase.BootstrapTest.class)
 public abstract class CORETestCase extends BaselineTestCase {
 
     private static final String CORE_MODULE_NAME = "core";
@@ -42,4 +48,10 @@ public abstract class CORETestCase extends BaselineTestCase {
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}
+
+    public static final class BootstrapTest extends CORETestCase  {
+        @Test
+        public void bootstrapTest() {};
+    }
+
 }

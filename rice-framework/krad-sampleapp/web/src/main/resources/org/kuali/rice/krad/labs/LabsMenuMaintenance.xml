@@ -178,8 +178,8 @@
           <list>
             <bean parent="Uif-Link" p:linkText="Maintenance Sample - Disable Delete"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR3C3"/>
-            <bean parent="Uif-Message" p:messageText="Show attempt to delete company when allowsRecordDeletion is
-            set to false within the data dictinary."/>
+            <bean parent="Uif-Message" p:messageText="Show attempt to delete a travel account when allowsRecordDeletion is
+            set to false within the data dictionary."/>
           </list>
           </property>
         </bean>

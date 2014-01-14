@@ -206,15 +206,16 @@
         <bean id="KradMaintenanceSampleItems-PageR3C3" parent="Uif-VerticalBoxSection"
               p:headerText="Demo of disabling delete record through the data dictionary."
               p:instructionalText="To disable the ability to delete records of a specific business object, set the
-              allowsRecordDeletion property to false in the Maintenance Document Entry .xml for the object.  In this
-              example, TravelCompanyMaintenance.xml was modified.  The first link below attempts to delete a travelCompany record.
+              allowsRecordDeletion property to false in the Maintenance Document Entry .xml for the object.  Note, that
+              the default value for this property is false.  In this
+              example, Travel Account is used.  The first link below attempts to delete a travel account record.
               After blanket approving the document, you can use the second link to test that the document still exists.">
           <property name="items">
             <list>
-              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Delete"
-                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceDelete&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
-              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Edit"
-                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany"/>
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Basic Delete"
+                    p:href="maintenance?number=a14&amp;methodToCall=maintenanceDelete&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Sample - Basic Edit"
+                    p:href="maintenance?number=a14&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
             </list>
           </property>
         </bean>

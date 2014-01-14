@@ -1123,8 +1123,8 @@
       inquiry definitions to a view and displays all inquiries in a lightbox by default. The
       conversion script will automate part of the conversion for your inquiries to the view format,
       but some inquiry attributes require no conversion since they are virtually identical between
-      KNS and KRAD. The following sections provide a typical conversion sample and identify the
-      Business Object bean properties, Sections, Collections, helper classes, and other features
+      the KNS and KRAD. The following sections provide a typical conversion sample and identify the
+      business object bean properties, sections, collections, helper classes, and other features
       which are converted by the script and those which require manual conversion. </para>
     <section>
       <title>InquiryDefinition in KNS Data Dictionary to InquiryView in KRAD</title>
@@ -1676,7 +1676,15 @@
   </section>
   <section>
     <title>Lookup Conversion</title>
-    <para>&lt;add overview here></para>
+    <para>Lookups allow users to search for data entries (typically ones created by a maintenance
+      document) in order to view the results and take actions (if any) on those entries.  They
+      allow controlling how much information is shown and what actions the user can currently
+      take on the entry.  KRAD moves all lookup definitions to a view.  The conversion script
+      will automate part of the conversion for your lookups to the view format, but some lookup
+      attributes require no conversion since they are virtually identical between the KNS and KRAD.
+      The following sections provide a typical conversion sample and identify the business object
+      bean properties, criteria fields, result fields, helper classes, and other features which
+      are converted by the script and those that require manual conversion.</para>
     <section>
       <title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
       <note>
@@ -2526,7 +2534,18 @@
   </section>
   <section>
     <title>Maintenance Conversion</title>
-    <para>&lt;add overview here></para>
+    <para>Maintenance documents provide an easy way to create and edit simple data entries.
+      They provide layout definitions to display base objects and collections for entering data
+      and editing it, as well as controlling access to data, providing links to attachments,
+      applying rules, and routing the document through several reviewers before finalizing
+      and applying the changes to the database.  KRAD modifies the maintenance document entries
+      and moves all relevant display definitions to a view.  The conversion script will automate
+      part of the conversion for your maintenance documents to the view format, but some
+      maintenance attributes require no conversion since they are virtually identical between
+      the KNS and KRAD.  The following sections provide a typical conversion sample and identify
+      the business object bean properties, sections, collections, lookup definitions, helper
+      classes, and other features which are converted by the script and those that require manual
+      conversion.</para>
     <section>
       <title>MaintenanceDefinition in KNS Data Dictionary to MaintenanceView in KRAD</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>

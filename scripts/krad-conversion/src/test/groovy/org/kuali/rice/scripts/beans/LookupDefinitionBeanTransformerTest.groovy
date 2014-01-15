@@ -108,4 +108,31 @@ class LookupDefinitionBeanTransformerTest extends BeanTransformerTestBase {
         Assert.assertEquals("number of converted data fields did not match", 11, dataFieldSize);
     }
 
+    /**
+     * transform lookup definition is responsible for converting a lookup definition into
+     * a uif lookup view.  Verifies that kns disableSearchButtons property generates correct renderCriteriaActions
+     *
+     */
+    @Test
+    void testTransformLookupDefinitionBeanTestCase() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def resultNode;
+        defaultTestBeanID  = "TestCase-lookupDefinition-parentBean";
+        def beanNode = ddRootNode.bean.find { defaultTestBeanID.equals(it.@id) };
+        try {
+            resultNode = lookupDefinitionBeanTransformer.transformLookupDefinitionBean(beanNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
+        }
+
+        // confirm a uif lookup view was generated and has the correct elements
+        checkBeanExistsByParentId(ddRootNode, "Uif-LookupView");
+
+        checkBeanPropertyExists(resultNode, "renderCriteriaActions");
+        def renderCriteriaActionsNode = resultNode.property.find { "renderCriteriaActions".equals(it.@name) };
+        String renderCriteriaActionsProperty =  getNodeString(renderCriteriaActionsNode);
+        Assert.assertTrue("renderCriteriaActions property should have false for value",renderCriteriaActionsProperty.contains("value=\"false\""));
+    }
+
 }

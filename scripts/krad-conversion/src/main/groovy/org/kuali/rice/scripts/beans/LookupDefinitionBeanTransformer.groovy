@@ -165,7 +165,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
     def transformDisableSearchButtons(NodeBuilder builder, Node node) {
         def disableSearchButtons = getPropertyValue(node, "disableSearchButtons");
         if (disableSearchButtons != null && disableSearchButtons == "true") {
-            // builder.property(name: "renderSearchButtons", value: "false");
+            builder.property(name: "renderCriteriaActions", value: "false");
         }
     }
 

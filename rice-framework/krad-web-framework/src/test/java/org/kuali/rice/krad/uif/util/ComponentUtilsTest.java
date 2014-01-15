@@ -468,8 +468,7 @@ public class ComponentUtilsTest {
         return result;
     }
 
-    @Ignore
-    // Ignored for now, but this is a proof of concept for using reflection to test copying
+    @Ignore // Ignored for now, this is a proof of concept for using reflection to test copying
     @Test
     /**
      * test {@link ComponentUtils#copyUsingCloning} using a DataField object

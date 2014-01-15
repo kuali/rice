@@ -363,7 +363,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param booleanToAssertTrue
      */
     protected void assertTrue(boolean booleanToAssertTrue) {
-        JiraAwareWebDriverUtils.assertTrue(booleanToAssertTrue, this);
+        JiraAwareWebDriverUtils.assertTrue(getClass().toString(), booleanToAssertTrue, this);
     }
 
     /**

@@ -2377,37 +2377,34 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testPeopleFlow() throws Exception {
         selectFrameIframePortlet();
 
-        //Click Main Menu and Create New
-        // waitAndCreateNew();
-        // waitForPageToLoad();
-        jGrowl("Create New");
         waitAndClickByLinkText("Create New");
 
-        //jiraAwareWaitAndClick(By.linkText("Create New"));
         //Save docId
-        waitForElementPresent("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-        String docId = getText("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
+        waitForElementPresent("div[data-label='Document Number']");
+        String docId = getText("div[data-label='Document Number']");
+        assertTrue(docId != null);
         jGrowlSticky("Doc Id is " + docId);
+
         findElement(By.name("document.documentHeader.documentDescription")).clear();
-        findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
-        new Select(findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
         findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + AutomatedFunctionalTestUtils.DTS);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" + AutomatedFunctionalTestUtils.DTS);
 
         jGrowl("Add Member kr");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
-        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "kr");
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
         Thread.sleep(3000);
         checkForIncidentReport();
 
         jGrowl("Add Member admin");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
-        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
         Thread.sleep(3000);
 
-        findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
+        waitAndClickButtonByText("blanket approve");
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");

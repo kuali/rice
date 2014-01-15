@@ -82,6 +82,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid]";
 
     /**
+     * backdoorId
+     */
+    public static final String BACKDOOR_ID_TEXT = "backdoorId";
+
+    /**
+     * "//input[@title='Click to login.']"
+     */
+    public static final String BACKDOOR_LOGIN_BUTTON_XPATH = "//input[@title='Click to login.']";
+
+    /**
      * methodToCall.blanketApprove
      */
     public static final String BLANKET_APPROVE_NAME = "methodToCall.blanketApprove";
@@ -626,7 +636,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String nextYear = sdf.format(nextYearCal.getTime());
 
         waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
@@ -1568,6 +1578,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.switchTo().window(locator);
     }
 
+    protected void selectChildWindow() {
+        selectWindow(driver.getWindowHandles().toArray()[1].toString());
+    }
+
     protected void selectByXpath(String locator, String selectText) throws InterruptedException {
         select(By.xpath(locator), selectText);
     }
@@ -1714,14 +1728,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected String getDateToday() {
         Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         return sdf.format(now);
     }
 
     protected String getDateTomorrow() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DATE, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         return sdf.format(now.getTime());
     }
 
@@ -4210,6 +4224,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
         jGrowl("Click " + buttonText + " button.");
         waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
+    }
+
+    protected void waitAndClickAllByName(String name) throws InterruptedException{
+        List<WebElement> elements = driver.findElements(By.name(name));
+        for(WebElement ele : elements){
+            ele.click();
+        }
     }
 
     /**

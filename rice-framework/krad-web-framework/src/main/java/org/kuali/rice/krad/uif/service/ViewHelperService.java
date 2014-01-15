@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
@@ -372,5 +373,12 @@ public interface ViewHelperService {
      * @see org.kuali.rice.krad.uif.component.RequestParameter
      */
     void populateViewFromRequestParameters(Map<String, String> parameters);
+
+    /**
+     * Gets an expression evaluator factory for use with the current view.
+     *
+     * @returns expression evaluator factory
+     */
+    ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
 
 }

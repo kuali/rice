@@ -30,14 +30,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.validator.ValidationController;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -57,7 +60,6 @@ public class ViewLifecycle implements Serializable {
 
     private static Boolean strict;
     private static Boolean renderInLifecycle;
-    private static Boolean asynchronousLifecycle;
     private static Boolean trace;
 
     /**
@@ -225,12 +227,9 @@ public class ViewLifecycle implements Serializable {
      *         synchronous operation
      */
     public static boolean isAsynchronousLifecycle() {
-        if (asynchronousLifecycle == null) {
-            asynchronousLifecycle = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+        Config config = ConfigContext.getCurrentContextConfig();
+        return config != null && config.getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
-        }
-
-        return asynchronousLifecycle;
     }
 
     /**
@@ -302,7 +301,7 @@ public class ViewLifecycle implements Serializable {
     /**
      * The helper service active on this context.
      */
-    private final ViewHelperService helper;
+    final ViewHelperService helper;
 
     /**
      * The view being processed by this lifecycle.
@@ -610,7 +609,13 @@ public class ViewLifecycle implements Serializable {
         ViewLifecycleProcessor processor = PROCESSOR.get();
 
         if (processor == null) {
-            return new DefaultExpressionEvaluator();
+            ExpressionEvaluatorFactory factory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+
+            if (factory == null) {
+                return new DefaultExpressionEvaluator();
+            } else {
+                return factory.createExpressionEvaluator();
+            }
         }
         
         return processor.getExpressionEvaluator();
@@ -633,7 +638,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the servlet request for this lifecycle.
-     * 
+     *
      * @return servlet request for this lifecycle
      */
     public static HttpServletRequest getRequest() {
@@ -648,7 +653,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the current phase of the active lifecycle, or null if no phase is currently active.
-     * 
+     *
      * @return current phase of the active lifecycle
      */
     public static ViewLifecyclePhase getPhase() {
@@ -658,7 +663,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the rendering context for this lifecycle.
-     * 
+     *
      * @return rendering context for this lifecycle
      */
     public static LifecycleRenderingContext getRenderingContext() {

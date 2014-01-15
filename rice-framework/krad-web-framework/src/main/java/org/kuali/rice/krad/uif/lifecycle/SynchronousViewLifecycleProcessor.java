@@ -18,7 +18,13 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 
 /**
  * Single-threaded view lifecycle processor implementation.
@@ -26,6 +32,8 @@ import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBase {
+
+    private static final Logger LOG = Logger.getLogger(SynchronousViewLifecycleProcessor.class);
 
     /**
      * Pending lifecycle phases.
@@ -43,12 +51,34 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     private LifecycleRenderingContext renderingContext;
 
     /**
+     * The expression evaluator to use with this lifecycle.
+     */
+    private final ExpressionEvaluator expressionEvaluator;
+
+    /**
      * Creates a new synchronous processor for a lifecycle.
      * 
      * @param lifecycle The lifecycle to process.
      */
     public SynchronousViewLifecycleProcessor(ViewLifecycle lifecycle) {
         super(lifecycle);
+
+        // The null conditions noted here should not happen in full configured environments
+        // Conditional fallback support is in place primary for unit testing.
+        ExpressionEvaluatorFactory expressionEvaluatorFactory;
+        if (lifecycle.helper == null) {
+            LOG.warn("No helper is defined for the view lifecycle, using global expression evaluation factory");
+            expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+        } else {
+            expressionEvaluatorFactory = lifecycle.helper.getExpressionEvaluatorFactory();
+        }
+
+        if (expressionEvaluatorFactory == null) {
+            LOG.warn("No global expression evaluation factory is defined, using DefaultExpressionEvaluator");
+            expressionEvaluator = new DefaultExpressionEvaluator();
+        } else {
+            expressionEvaluator = expressionEvaluatorFactory.createExpressionEvaluator();
+        }
     }
 
     /**

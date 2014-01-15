@@ -130,7 +130,8 @@ public class GlobalResourceLoader {
 		}
 		LOG.debug("GlobalResourceLoader fetching service " + serviceName);
 		try {
-			return getResourceLoader().<T>getService(serviceName);
+            ResourceLoader resourceLoader = getResourceLoader();
+			return resourceLoader == null ? null : resourceLoader.<T>getService(serviceName);
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn(ex.getMessage());
 			return null;

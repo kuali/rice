@@ -31,10 +31,15 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
+import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -69,6 +74,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
 
     private final Queue<LifecycleRenderingContext> renderingContextPool =
             ViewLifecycle.isRenderInLifecycle() ? new ConcurrentLinkedQueue<LifecycleRenderingContext>() : null;
+    private final Queue<ExpressionEvaluator> expressionEvaluatorPool =
+            new ConcurrentLinkedQueue<ExpressionEvaluator>();
 
     private Throwable error;
 
@@ -250,6 +257,55 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
      * {@inheritDoc}
      */
     @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        AsynchronousLifecyclePhase aphase = ACTIVE_PHASE.get();
+
+        // If a rendering context has already been assigned to this phase, return it.
+        ExpressionEvaluator expressionEvaluator = aphase == null ? null : aphase.expressionEvaluator;
+        if (expressionEvaluator != null) {
+            return expressionEvaluator;
+        }
+
+        // Get a reusable expression evaluator from a pool private to the current lifecycle. 
+        expressionEvaluator = expressionEvaluatorPool.poll();
+        if (expressionEvaluator == null) {
+            // Create a new expression evaluator if a pooled instance is not available.
+            ExpressionEvaluatorFactory expressionEvaluatorFactory;
+            ViewHelperService helper = ViewLifecycle.getHelper();
+            if (helper != null) {
+                expressionEvaluatorFactory = helper.getExpressionEvaluatorFactory();
+            } else {
+                expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+            }
+
+            if (expressionEvaluatorFactory == null) {
+                expressionEvaluator = new DefaultExpressionEvaluator();
+            } else {
+                expressionEvaluator = expressionEvaluatorFactory.createExpressionEvaluator();
+            }
+
+            if (ViewLifecycle.isActive()) {
+                try {
+                    expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
+                } catch (IllegalStateException e) {
+                    // Model is unavailable - may happen in unit test environments
+                    LOG.warn("Model is not available", e);
+                }
+            }
+        }
+
+        // Assign the rendering context to the current thread.
+        if (aphase != null) {
+            aphase.expressionEvaluator = expressionEvaluator;
+        }
+        
+        return expressionEvaluator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase aphase = getAsynchronousPhase(phase);
         if (phase.getStartViewStatus().equals(phase.getComponent().getViewStatus())) {
@@ -369,6 +425,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         aphase.processor = null;
         aphase.phase = null;
         aphase.globalVariables = null;
+        aphase.expressionEvaluator = null;
         RecycleUtils.recycle(aphase);
     }
 
@@ -395,6 +452,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         private AsynchronousViewLifecycleProcessor processor;
         private ViewLifecyclePhase phase;
         private LifecycleRenderingContext renderingContext;
+        private ExpressionEvaluator expressionEvaluator;
     }
 
     /**

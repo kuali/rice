@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,49 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.kuali.rice.coreservice.impl.component;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-import javax.persistence.Column
-import org.apache.commons.lang.builder.EqualsBuilder
-import org.apache.commons.lang.builder.HashCodeBuilder
-import org.apache.commons.lang.builder.ToStringBuilder
+import javax.persistence.Column;
+import java.io.Serializable;
 
 public class ComponentId implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-	@Column(name="NMSPC_CD")
-    def final String namespaceCode;
+
+    @Column(name="NMSPC_CD")
+    private final String namespaceCode;
 
     @Column(name="CMPNT_CD")
-    def final String code;
+    private  final String code;
 
     /** this ctor should never be called.  It is only present for hibernate */
     private ComponentId() {
-        namespaceCode = null
-        code = null
+        namespaceCode = null;
+        code = null;
     }
-    
+
     public ComponentId(String namespaceCode, String code) {
-    	this.namespaceCode = namespaceCode
-    	this.code = code
+        this.namespaceCode = namespaceCode;
+        this.code = code;
     }
-	
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return EqualsBuilder.reflectionEquals(obj, this);
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-	
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(obj, this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
 }
-

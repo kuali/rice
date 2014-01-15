@@ -24,7 +24,6 @@ import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.api.parameter.ParameterKey;
-import org.kuali.rice.coreservice.api.parameter.ParameterType;
 import org.kuali.rice.coreservice.api.style.Style;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.ComponentId;
@@ -36,7 +35,6 @@ import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.coreservice.impl.style.StyleBo;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;

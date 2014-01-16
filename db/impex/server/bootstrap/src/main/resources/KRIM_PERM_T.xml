@@ -370,11 +370,11 @@
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="This permissions allows display of the hidden authorization document id"
         NM="ViewTravelPerDiem_AuthDocId" NMSPC_CD="KR-KRAD"
-        OBJ_ID="F00D4A2628DED76EE0406E0AC31D18D0" PERM_ID="KRSAP12000"
+        OBJ_ID="F011990E3CAC73B9E0406E0AC31D4989" PERM_ID="KRSAP12000"
         PERM_TMPL_ID="56" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="This permissions allows display of the hidden cost estimates section"
         NM="ViewTravelPerDiem_CostEstimates" NMSPC_CD="KR-KRAD"
-        OBJ_ID="F00D4A2628E2D76EE0406E0AC31D18D0" PERM_ID="KRSAP13000"
+        OBJ_ID="F011990E3CB073B9E0406E0AC31D4989" PERM_ID="KRSAP13000"
         PERM_TMPL_ID="58" VER_NBR="1"/>
 </dataset>

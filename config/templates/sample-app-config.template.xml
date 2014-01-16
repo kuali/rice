@@ -82,7 +82,7 @@
 	<param name="RouteQueue.timeIncrement">1000</param>
 
 	<!-- XML ingester directories -->
-	<param name="data.xml.root.location">/opt/ears/${environment}/kew/xml</param>
+	<param name="data.xml.root.location">${java.io.tmpdir}/${environment}/kew/xml</param>
 	<param name="data.xml.pending.location">${data.xml.root.location}pending</param>
 	<param name="data.xml.loaded.location">${data.xml.root.location}loaded</param>
 	<param name="data.xml.problem.location">${data.xml.root.location}problem</param>

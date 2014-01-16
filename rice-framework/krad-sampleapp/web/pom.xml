@@ -226,6 +226,24 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-deploy</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-sql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-xml</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-it-krad</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>

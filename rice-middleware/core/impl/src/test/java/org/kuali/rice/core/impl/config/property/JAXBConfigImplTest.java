@@ -18,6 +18,7 @@ package org.kuali.rice.core.impl.config.property;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.kuali.rice.core.api.config.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Unit testing for JAXBConfigImpl
  */
@@ -41,6 +44,74 @@ public class JAXBConfigImplTest {
     private static final Logger logger = LoggerFactory.getLogger(JAXBConfigImplTest.class);
     private static final String SIMPLE = "classpath:org/kuali/rice/core/impl/config/property/simple.xml";
     private static final String OTHER = "classpath:org/kuali/rice/core/impl/config/property/other.xml";
+    private static final String BREAKFAST = "classpath:org/kuali/rice/core/impl/config/property/breakfast.xml";
+    private static final String CEREAL = "classpath:org/kuali/rice/core/impl/config/property/cereal.xml";
+
+    @Test
+    public void testParseValue() throws IOException {
+        Properties props = new Properties();
+        props.setProperty("db.vendor", "mysql");
+        props.setProperty("mysql.driver", "foo");
+        props.setProperty("oracle.driver", "bar");
+        props.setProperty("jdbc.driver", "${${db.vendor}.driver}");
+
+        Param param = new Param();
+        param.setSystem(true);
+        param.setName("foo");
+        param.setValue("${bar} plus ${baz} = ${jdbc.driver}");
+
+        JAXBConfigImpl config = new JAXBConfigImpl(props);
+        config.setSystemOverride(true);
+        config.doSystem(param);
+        config.resolveRawToCache();
+
+        String foo1 = config.getProperty("foo");
+        String foo2 = config.getRawProperties().getProperty("foo");
+        String foo3 = System.getProperty("foo");
+
+        List<String> foos = ImmutableList.of(foo1, foo2, foo3);
+
+        logger.info("{}", foos);
+
+        System.out.println();
+    }
+
+    @Test
+    public void testPlaceholderResolution() throws IOException {
+        Properties overrides = new Properties();
+        //overrides.setProperty("cereal.flavor", "chocolate");
+        JAXBConfigImpl config = new JAXBConfigImpl(CEREAL, overrides);
+        config.parseConfig();
+        //Assert.assertEquals("chocolate cheerios", config.getProperty("cereal.type")); // 2.99 is the value in breakfast.xml
+        info(config.getProperties());
+        config.putProperty("cereal.flavor", "chocolate");
+        info(config.getProperties());
+        System.out.print("");
+    }
+
+    @Test
+    public void testLocationBasedPropertyOverride() throws IOException {
+        String key = "milk.price";
+        String value = "2.50";
+        Properties overrides = new Properties();
+        overrides.setProperty(key, value);
+        JAXBConfigImpl config = new JAXBConfigImpl(BREAKFAST, overrides);
+        config.parseConfig();
+        Assert.assertEquals("2.99", config.getProperty(key)); // 2.99 is the value in breakfast.xml
+        config.putProperties(overrides);
+        Assert.assertEquals(value, config.getProperty(key)); // 2.50 is the value in the overrides properties
+    }
+
+    @Test
+    public void testLocationBasedPropertyWins() throws IOException {
+        String key = "milk.price";
+        String value = "2.50";
+        Properties properties = new Properties();
+        properties.setProperty(key, value);
+        JAXBConfigImpl config = new JAXBConfigImpl(BREAKFAST, properties);
+        config.parseConfig();
+        Assert.assertEquals("2.99", config.getProperty(key)); // 2.99 is the value in breakfast.xml
+    }
 
     @Test
     public void testTheBasics() throws IOException {
@@ -241,4 +312,18 @@ public class JAXBConfigImplTest {
         return jci;
     }
 
+    protected static void info(Properties properties) {
+        logger.info("Displaying {} properties\n\n{}\n", properties.size(), toString(properties));
+    }
+
+    protected static String toString(Properties properties) {
+        List<String> keys = new ArrayList<String>(properties.stringPropertyNames());
+        Collections.sort(keys);
+        StringBuilder sb = new StringBuilder();
+        for (String key : keys) {
+            String value = properties.getProperty(key).replace("\r", " ").replace("\n", " ");
+            sb.append(key + "=[" + value + "]\n");
+        }
+        return sb.toString();
+    }
 }

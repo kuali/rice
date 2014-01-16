@@ -55,6 +55,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+  <context:annotation-config/>
 
   <bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-SAP"/>

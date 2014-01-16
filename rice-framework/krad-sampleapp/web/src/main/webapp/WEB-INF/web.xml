@@ -31,6 +31,12 @@
     <param-value>${bootstrap.spring.file}</param-value>
   </context-param>
 
+  <!-- Change this to bootstrap a different Spring PSC -->
+  <context-param>
+    <param-name>web.bootstrap.spring.psc</param-name>
+    <param-value>${bootstrap.spring.psc}</param-value>
+  </context-param>
+
   <context-param>
     <param-name>defaultHtmlEscape</param-name>
     <param-value>true</param-value>

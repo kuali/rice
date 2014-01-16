@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.sql;
+package org.kuali.rice.xml.project;
 
 import org.kuali.common.util.project.model.KualiGroup;
 import org.kuali.common.util.project.model.ProjectIdentifier;
 
-public abstract class SqlProjectConstants {
+/**
+ * Defines the constants for the workflow XML ingestion process.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class XmlProjectConstants {
 
 	// The groupId and artifactId used here must exactly match what is in the pom
-	public static final ProjectIdentifier ID = new ProjectIdentifier(KualiGroup.RICE.getId(), "rice-sql");
+	public static final ProjectIdentifier ID = new ProjectIdentifier(KualiGroup.RICE.getId(), "rice-xml");
 
 }

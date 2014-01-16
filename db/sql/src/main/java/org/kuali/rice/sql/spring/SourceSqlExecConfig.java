@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,26 @@
 package org.kuali.rice.sql.spring;
 
 import org.kuali.common.jdbc.reset.JdbcResetExecConfig;
+import org.kuali.common.util.execute.Executable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * Central configuration file for launching the database reset process.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Configuration
-@Import({ SourceDbConfig.class, JdbcResetExecConfig.class })
-public class SourceDbExecConfig {
+@Import({ SourceSqlConfig.class, JdbcResetExecConfig.class })
+public class SourceSqlExecConfig {
+
+    @Autowired
+    JdbcResetExecConfig config;
+
+    @Bean
+    public Executable sourceSqlExecutable() {
+        return config.executable();
+    }
 }

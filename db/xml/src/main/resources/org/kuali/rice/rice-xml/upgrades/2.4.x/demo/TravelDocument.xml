@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2014 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -19,26 +19,12 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType>
-      <name>TravelMileageRateMaintenanceDocument</name>
+      <name>TravelDocument</name>
       <parent>RiceDocument</parent>
-      <description>Create a Travel Mileage Rate Maintenance Document</description>
-      <label>Travel Mileage Rate Maintenance Document</label>
-      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <docHandler>${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelMileageRate</docHandler>
+      <description>Parent Document Type for all Travel Documents</description>
+      <label>Travel Document</label>
       <active>true</active>
       <routingVersion>2</routingVersion>
-      <routePaths>
-        <routePath>
-          <start name="Initiated" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="Initiated">
-          <activationType>P</activationType>
-          <mandatoryRoute>false</mandatoryRoute>
-          <finalApproval>false</finalApproval>
-        </start>
-      </routeNodes>
     </documentType>
   </documentTypes>
 </data>

@@ -18,7 +18,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" value="#{bootstrapConfig.getProperties()}" />
 	</bean>
 
@@ -36,11 +36,15 @@
 			<list><ref bean="bootstrapConfig"/></list>
 		</property>
 	</bean>
+
+  <bean class="org.kuali.rice.sql.spring.SourceSqlRunOnceConfig" init-method="executable"/>
 	
 	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
 	
 	<import resource="classpath:SampleAppModuleBeans.xml"/>
-	 
+
+  <bean class="org.kuali.rice.xml.spring.IngestXmlRunOnceConfig" />
+
 </beans>

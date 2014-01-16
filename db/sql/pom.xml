@@ -48,8 +48,8 @@
                   <goal>load</goal>
                 </goals>
                 <configuration>
-                  <propertySourcesConfig>org.kuali.rice.sql.spring.SourceDbPSC</propertySourcesConfig>
-                  <annotatedClass>org.kuali.rice.sql.spring.SourceDbExecConfig</annotatedClass>
+                  <propertySourcesConfig>org.kuali.rice.sql.spring.SourceSqlPSC</propertySourcesConfig>
+                  <annotatedClass>org.kuali.rice.sql.spring.SourceSqlExecConfig</annotatedClass>
                 </configuration>
               </execution>
             </executions>
@@ -151,6 +151,17 @@
     <dependency>
       <groupId>org.kuali.common</groupId>
       <artifactId>kuali-deploy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

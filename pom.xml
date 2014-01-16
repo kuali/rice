@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>3.3.36</version>
+    <version>3.3.43</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -46,7 +46,6 @@
   </ciManagement>
 
   <properties>
-  
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 

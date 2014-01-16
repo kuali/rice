@@ -37,6 +37,7 @@
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
+  <param name="project.home">${external.config.home}/${project.artifactId}</param>
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
   <param name="sampleapp.growl.testmsg">{0} was a great year, wasn't it?</param>
 

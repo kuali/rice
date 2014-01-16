@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ import org.kuali.common.util.metainf.spring.MetaInfGroup;
 import org.kuali.common.util.project.ProjectService;
 import org.kuali.common.util.project.model.Project;
 import org.kuali.common.util.project.spring.ProjectServiceConfig;
-import org.kuali.common.util.spring.env.EnvironmentService;
-import org.kuali.rice.sql.SqlProjectConstants;
+import org.kuali.rice.sql.project.SqlProjectConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,12 +42,14 @@ import org.springframework.context.annotation.Import;
 import com.google.common.collect.ImmutableList;
 
 /**
- * This config class is used by developers (to reset their local db), CI (to validate changes), and by the deploy process to reset the database for instances of the running
- * application.
+ * Used by developers (to reset their local db), CI (to validate changes), and by the deploy process to reset the
+ * database for instances of the running application.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Configuration
 @Import({ DbaContextConfig.class, SuppliersFactoryConfig.class, ProjectServiceConfig.class, DefaultJdbcResetConfig.class })
-public class SourceDbConfig implements JdbcContextsConfig {
+public class SourceSqlConfig implements JdbcContextsConfig {
 
 	@Autowired
 	DbaContextConfig dba;
@@ -64,9 +65,6 @@ public class SourceDbConfig implements JdbcContextsConfig {
 
 	@Autowired
 	DataSourceConfig dataSources;
-
-	@Autowired
-	EnvironmentService env;
 
 	@Bean
 	public Project riceSqlProject() {

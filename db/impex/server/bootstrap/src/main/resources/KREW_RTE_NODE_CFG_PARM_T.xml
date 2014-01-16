@@ -154,4 +154,52 @@
         RTE_NODE_CFG_PARM_ID="2473" RTE_NODE_ID="2917" VAL="false"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2474" RTE_NODE_ID="2917" VAL="Template"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
+        RTE_NODE_CFG_PARM_ID="2485" RTE_NODE_ID="2925" VAL="&lt;requests name=&quot;PeopleFlows&quot;>&#xa;&lt;activationType>R&lt;/activationType>&#xa;&lt;rulesEngine executorClass=&quot;edu.sampleu.travel.workflow.TravelAccountRulesEngineExecutor&quot;/>&#xa;&lt;/requests>&#xa;"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
+        RTE_NODE_CFG_PARM_ID="2486" RTE_NODE_ID="2925" VAL="R"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="rulesEngine"
+        RTE_NODE_CFG_PARM_ID="2487" RTE_NODE_ID="2925"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
+        RTE_NODE_CFG_PARM_ID="2488" RTE_NODE_ID="2925" VAL="Template"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
+        RTE_NODE_CFG_PARM_ID="2489" RTE_NODE_ID="2924" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
+        RTE_NODE_CFG_PARM_ID="2490" RTE_NODE_ID="2924" VAL="P"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
+        RTE_NODE_CFG_PARM_ID="2491" RTE_NODE_ID="2924" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
+        RTE_NODE_CFG_PARM_ID="2492" RTE_NODE_ID="2924" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
+        RTE_NODE_CFG_PARM_ID="2493" RTE_NODE_ID="2924" VAL="Template"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
+        RTE_NODE_CFG_PARM_ID="2505" RTE_NODE_ID="2930" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
+        RTE_NODE_CFG_PARM_ID="2506" RTE_NODE_ID="2930" VAL="P"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
+        RTE_NODE_CFG_PARM_ID="2507" RTE_NODE_ID="2930" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
+        RTE_NODE_CFG_PARM_ID="2508" RTE_NODE_ID="2930" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
+        RTE_NODE_CFG_PARM_ID="2509" RTE_NODE_ID="2930" VAL="Template"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
+        RTE_NODE_CFG_PARM_ID="2510" RTE_NODE_ID="2932" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
+        RTE_NODE_CFG_PARM_ID="2511" RTE_NODE_ID="2932" VAL="P"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
+        RTE_NODE_CFG_PARM_ID="2512" RTE_NODE_ID="2932" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
+        RTE_NODE_CFG_PARM_ID="2513" RTE_NODE_ID="2932" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
+        RTE_NODE_CFG_PARM_ID="2514" RTE_NODE_ID="2932" VAL="Template"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
+        RTE_NODE_CFG_PARM_ID="2515" RTE_NODE_ID="2934" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
+        RTE_NODE_CFG_PARM_ID="2516" RTE_NODE_ID="2934" VAL="P"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
+        RTE_NODE_CFG_PARM_ID="2517" RTE_NODE_ID="2934" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
+        RTE_NODE_CFG_PARM_ID="2518" RTE_NODE_ID="2934" VAL="false"/>
+    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
+        RTE_NODE_CFG_PARM_ID="2519" RTE_NODE_ID="2934" VAL="Template"/>
 </dataset>

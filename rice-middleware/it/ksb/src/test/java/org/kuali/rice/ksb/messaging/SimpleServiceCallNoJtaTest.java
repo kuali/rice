@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  * This test is currently being ignored.  See KULRICE-1852 for details.
  */
-@Ignore
+@Ignore // See KULRICE-1852 for details
 public class SimpleServiceCallNoJtaTest extends SimpleServiceCallTest {
 
 	@Test public void testAsyncJavaCall() throws Exception  {

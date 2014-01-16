@@ -19,7 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.test.KRADTestCase;
 
-@Ignore
+@Ignore // everything is commented out
 public class DocumentAuthorizerBaseTest extends KRADTestCase {
 	// TODO rewrite this test
 //    private static final Logger LOG = Logger.getLogger(DocumentAuthorizerBaseTest.class);

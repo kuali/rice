@@ -36,8 +36,7 @@ import static org.junit.Assert.assertTrue;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-// deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
-@Ignore
+@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
 	// NOTE: this value is highly dependent on test data 
 	private static final int EXPECTED_SUCCESSES = 6;

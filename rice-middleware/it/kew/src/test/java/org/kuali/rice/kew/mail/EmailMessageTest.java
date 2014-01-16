@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.mail;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
@@ -38,7 +37,6 @@ import static org.junit.Assert.*;
  * Tests email content generation
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Ignore
 public class EmailMessageTest extends KEWTestCase {
     private ActionListEmailServiceImpl actionListEmailService = new ActionListEmailServiceImpl();
     private StyleableEmailContentServiceImpl styleableContentService = new StyleableEmailContentServiceImpl();

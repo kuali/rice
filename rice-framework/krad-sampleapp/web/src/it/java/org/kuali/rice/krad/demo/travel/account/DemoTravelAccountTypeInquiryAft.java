@@ -41,7 +41,7 @@ public class DemoTravelAccountTypeInquiryAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // link has been removed
+    @Ignore // link removed
     public void testTravelAccountTypeInquiryNav() throws Exception {
         testTravelAccountTypeInquiry();
         passed();

@@ -48,7 +48,6 @@ import static org.junit.Assert.*;
  * Tests NotificationMessageDeliveryResolverServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-// deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 // Make sure KCB has some deliverers configured for the test users, so message deliveries get created and the messages aren't removed
 @PerTestUnitTestData(
 		@UnitTestData(
@@ -63,7 +62,7 @@ import static org.junit.Assert.*;
 				}
 		)
 )
-@Ignore
+@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data

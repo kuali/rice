@@ -18,7 +18,6 @@ package org.kuali.rice.kew.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SimpleSplitNode;
@@ -30,7 +29,6 @@ import org.kuali.rice.kew.engine.node.SplitResult;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Ignore
 public class TestSplitNode extends SimpleSplitNode {
 
 	private static boolean leftBranch = true;
@@ -52,15 +50,19 @@ public class TestSplitNode extends SimpleSplitNode {
 		}
 		return branchNames;
 	}
+
 	public static void setLeftBranch(boolean leftBranch) {
 		TestSplitNode.leftBranch = leftBranch;
 	}
+
 	public static boolean isLeftBranch() {
 		return TestSplitNode.leftBranch;
 	}
+
 	public static void setRightBranch(boolean rightBranch) {
 		TestSplitNode.rightBranch = rightBranch;
-	}		
+	}
+
 	public static boolean isRightBranch() {
 		return TestSplitNode.rightBranch;
 	}  	

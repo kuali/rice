@@ -23,7 +23,7 @@ import org.junit.Test;
  */
 public class MaintenanceConstraintTextNavAft extends MaintenanceConstraintTextAftBase {
 
-    @Ignore // link remove
+    @Ignore // link removed
     @Test
     public void testMaintenanceConstraintTextNav() throws Exception {
         testMaintenanceConstraintTextNav(this);

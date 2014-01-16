@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.Document;
@@ -916,13 +915,13 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /**
-     * Tests that the hidding of fields and columns works properly to resolve EN-53.
+     * Tests that the hiding of fields and columns works properly to resolve EN-53.
      *
      * TODO this is currently commented out because we can't test this properly through the unit
      * test since the filtering of the column actually happens in the web-tier.  Shoudl this be
      * the case?  Maybe we need to re-examine when we refactor document search.
      */
-    @Ignore
+    @Ignore // can't test this properly through the unit test since the filtering of the column actually happens in the web-tier
     @Test public void testSearchableAttributeWithHiddens() throws Exception {
         // for the following document, the chart field should not show up in the result set and the org field
         // should not show up in the criteriaw

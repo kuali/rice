@@ -33,15 +33,15 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NotificationRecipientServiceKimImplTest extends KENTestCase
-{
+public class NotificationRecipientServiceKimImplTest extends KENTestCase {
+
     NotificationRecipientServiceKimImpl nrski = new NotificationRecipientServiceKimImpl();
+
     /**
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#getGroupMembers(java.lang.String)}.
      */
     @Test
-    public void testGetGroupMembersValid()
-    {
+    public void testGetGroupMembersValid() {
         Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                 Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(
                 TestConstants.VALID_KIM_GROUP_NAME_1));
@@ -52,9 +52,8 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#getUserDisplayName(java.lang.String)}.
      */
     @Test
-    @Ignore
-    public final void testGetUserDisplayName()
-    {
+    @Ignore //  empty testGetUserDisplayName
+    public final void testGetUserDisplayName() {
         //hoping gary will take care of this when he does KEW user conversion
         fail("Not yet implemented"); // TODO
     }
@@ -63,8 +62,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#isGroupRecipientValid(java.lang.String)}.
      */
     @Test
-    public final void testIsGroupRecipientValid()
-    {
+    public final void testIsGroupRecipientValid() {
         Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                 Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(
                 TestConstants.VALID_KIM_GROUP_NAME_1));
@@ -75,8 +73,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#isRecipientValid(java.lang.String, java.lang.String)}.
      */
     @Test
-    public final void testIsRecipientValid()
-    {
+    public final void testIsRecipientValid() {
         assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()));
         assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()));
 
@@ -91,9 +88,7 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
      * Test method for {@link org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl#isUserRecipientValid(java.lang.String)}.
      */
     @Test
-    public final void testIsUserRecipientValid()
-    {
+    public final void testIsUserRecipientValid() {
         assertTrue( nrski.isUserRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME ));
     }
-
 }

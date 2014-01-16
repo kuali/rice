@@ -21,10 +21,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kns.KNSTestCase;
-import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,15 +36,15 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupResultsServiceTest extends KNSTestCase {
-	public final static String MOCK_PARAMETER_NMSPC = "KR-NS";
-	public final static String MOCK_PARAMETER_DETAIL_TYPE_CODE = "All";
-	public final static String MOCK_PARAMETER_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
-	public final static String MOCK_PERSON = "quickstart";
+
+	public static final String MOCK_PARAMETER_NMSPC = "KR-NS";
+	public static final String MOCK_PARAMETER_DETAIL_TYPE_CODE = "All";
+	public static final String MOCK_PARAMETER_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
+	public static final String MOCK_PERSON = "quickstart";
 
 	/**
 	 * Tests that lookup ids work
 	 */
-	// @Ignore
 	@Test public void testLookupIds() {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);
@@ -67,7 +64,6 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 * Tests that PersistableBusinessObjectSearches work
 	 *
 	 */
-	// @Ignore
 	@Test public void testPersistableBusinessObjectSearch() throws Exception {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("namespaceCode", MOCK_PARAMETER_NMSPC);

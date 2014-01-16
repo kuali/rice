@@ -28,7 +28,7 @@ public class MaintenanceConstraintTextBkMrkAft extends MaintenanceConstraintText
         return BOOKMARK_URL;
     }
 
-    @Ignore // link remove
+    @Ignore // link removed
     @Test
     public void testMaintenanceConstraintTextBookmark() throws Exception {
         testMaintenanceConstraintTextBookmark(this);

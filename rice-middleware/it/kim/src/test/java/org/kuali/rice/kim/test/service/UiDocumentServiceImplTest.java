@@ -18,7 +18,6 @@ package org.kuali.rice.kim.test.service;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -64,7 +63,6 @@ import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.lang.reflect.Field;
@@ -170,7 +168,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	// test principal membership
 	@Test
-	@Ignore
 	public void testSetAttributeEntry() throws Exception {
 		PersonDocumentRole personDocRole = initPersonDocRole();
         KimTypeService kimTypeService = (DataDictionaryTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getServiceName());

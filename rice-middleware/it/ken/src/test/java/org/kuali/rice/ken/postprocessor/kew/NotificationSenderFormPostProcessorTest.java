@@ -18,6 +18,6 @@ package org.kuali.rice.ken.postprocessor.kew;
 import org.junit.Ignore;
 import org.kuali.rice.ken.test.KENTestCase;
 
-@Ignore
+@Ignore // no test methods
 public class NotificationSenderFormPostProcessorTest extends KENTestCase {
 }

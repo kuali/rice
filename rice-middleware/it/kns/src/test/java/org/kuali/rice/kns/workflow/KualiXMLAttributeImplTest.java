@@ -17,7 +17,6 @@ package org.kuali.rice.kns.workflow;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -60,7 +59,6 @@ import org.junit.Assert;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Ignore
 public class KualiXMLAttributeImplTest extends KRADTestCase {
     private static Log LOG = LogFactory.getLog(KualiXMLAttributeImplTest.class);
 

@@ -19,12 +19,12 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
   <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
     <documentType>
-      <name>TravelMileageRateMaintenanceDocument</name>
-      <parent>RiceDocument</parent>
-      <description>Create a Travel Mileage Rate Maintenance Document</description>
-      <label>Travel Mileage Rate Maintenance Document</label>
+      <name>TravelerDetailMaintenanceDocument</name>
+      <parent>TravelDocument</parent>
+      <description>Create a Traveler Detail Maintenance Document</description>
+      <label>Travel Traveler Detail Maintenance Document</label>
       <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
-      <docHandler>${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelMileageRate</docHandler>
+      <docHandler>${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail</docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>
       <routePaths>

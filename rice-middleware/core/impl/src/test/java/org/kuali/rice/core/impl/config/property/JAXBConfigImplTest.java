@@ -57,7 +57,7 @@ public class JAXBConfigImplTest {
 
         Param param = new Param();
         param.setSystem(true);
-        param.setName("foo");
+        param.setName("barbaz");
         param.setValue("${bar} plus ${baz} = ${jdbc.driver}");
 
         JAXBConfigImpl config = new JAXBConfigImpl(props);
@@ -65,15 +65,13 @@ public class JAXBConfigImplTest {
         config.doSystem(param);
         config.resolveRawToCache();
 
-        String foo1 = config.getProperty("foo");
-        String foo2 = config.getRawProperties().getProperty("foo");
-        String foo3 = System.getProperty("foo");
+        String barbaz1 = config.getProperty("barbaz");
+        String barbaz2 = config.getRawProperties().getProperty("barbaz");
+        String barbaz3 = System.getProperty("barbaz");
 
-        List<String> foos = ImmutableList.of(foo1, foo2, foo3);
+        List<String> barbazes = ImmutableList.of(barbaz1, barbaz2, barbaz3);
 
-        logger.info("{}", foos);
-
-        System.out.println();
+        logger.info("{}", barbazes);
     }
 
     @Test

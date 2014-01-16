@@ -140,8 +140,8 @@ public interface DataObjectService {
     MetadataRepository getMetadataRepository();
 
     /**
-     * Wraps the given data object an accessor which provides numerous utility and helper methods related to accessing
-     * data and attributes on the data object.
+     * Wraps the given data object in an accessor which provides numerous utility and helper methods related to
+     * accessing data and attributes on the data object.
      *
      * @param dataObject the data object to wrap, must be non-null
      * @param <T> the type of the data object

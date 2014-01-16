@@ -203,7 +203,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     public ModelAndView maintenanceDelete(@ModelAttribute("KualiForm") MaintenanceDocumentForm form,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_DELETE);
+        GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_DELETE);
 
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_DELETE_ACTION);
 

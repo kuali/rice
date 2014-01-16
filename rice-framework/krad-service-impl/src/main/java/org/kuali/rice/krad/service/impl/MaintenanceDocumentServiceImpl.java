@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -48,6 +49,8 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.factory.annotation.Required;
+
+import javax.xml.bind.annotation.XmlElementDecl;
 
 /**
  * Service implementation for the MaintenanceDocument structure. This is the
@@ -125,6 +128,13 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
             Map<String, String[]> requestParameters) {
         document.getNewMaintainableObject().setMaintenanceAction(maintenanceAction);
         document.getOldMaintainableObject().setMaintenanceAction(maintenanceAction);
+
+        // if action is delete, check that object can be deleted
+        if (KRADConstants.MAINTENANCE_DELETE_ACTION.equals(maintenanceAction))
+        {
+            checkMaintenanceActionAuthorization(document, document.getOldMaintainableObject(),
+                    maintenanceAction, requestParameters);
+        }
 
         // if action is edit or copy first need to retrieve the old record
         if (!KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) &&
@@ -209,6 +219,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
             boolean allowsDelete = getDataObjectAuthorizationService()
                     .canMaintain(oldBusinessObject, GlobalVariables.getUserSession().getPerson(),
                             document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
+
             if (!allowsDelete) {
                 LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName() +
                         " does not allow delete actions.");
@@ -216,6 +227,19 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                         GlobalVariables.getUserSession().getPerson().getPrincipalId(), "delete",
                         document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
             }
+
+            boolean dataObjectAllowsDelete = getDocumentDictionaryService().getAllowsRecordDeletion(
+                    document.getOldMaintainableObject().getDataObject().getClass());
+
+            if (!dataObjectAllowsDelete) {
+                LOG.error("Document type " + document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName() +
+                        " does not allow delete actions.");
+                GlobalVariables.getMessageMap().removeAllWarningMessagesForProperty(KRADConstants.GLOBAL_MESSAGES);
+                GlobalVariables.getMessageMap().putError(KRADConstants.DOCUMENT_ERRORS,
+                        RiceKeyConstants.MESSAGE_DELETE_ACTION_NOT_SUPPORTED);
+
+            }
+
         }
     }
 

@@ -802,7 +802,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
-        waitForElementPresent(By.className("jGrowl-message"));
+        waitForElementPresentByClassName("jGrowl-message");
+
+        // wait for any flash not present errors to fade out
+        while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
+            driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+        }
 
         // get growl texts
         StringBuilder sb = new StringBuilder("");

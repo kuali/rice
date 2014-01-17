@@ -1,0 +1,433 @@
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- DataAttributes demo -->
+  <bean id="Demo-IconsView" parent="ComponentLibraryView" p:componentName="Icons">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoIcons.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.LayoutManager"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-Icons-Example1"/>
+        <ref bean="Demo-Icons-Example2"/>
+        <ref bean="Demo-Icons-Example3"/>
+        <ref bean="Demo-Icons-Example4"/>
+        <ref bean="Demo-Icons-Example5"/>
+        <ref bean="Demo-Icons-Example6"/>
+        <ref bean="Demo-Icons-Example7"/>
+        <ref bean="Demo-Icons-Example8"/>
+        <ref bean="Demo-Icons-Example10"/>
+        <ref bean="Demo-Icons-Example11"/>
+        <ref bean="Demo-Icons-Example12"/>
+        <ref bean="Demo-Icons-Example13"/>
+        <ref bean="Demo-Icons-Example14"/>
+        <ref bean="Demo-Icons-Example15"/>
+        <ref bean="Demo-Icons-Example16"/>
+        <ref bean="Demo-Icons-Example17"/>
+        <ref bean="Demo-Icons-Example18"/>
+        <ref bean="Demo-Icons-Example19"/>
+        <ref bean="Demo-Icons-Example20"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example1" parent="Uif-VerticalBoxSection" p:headerText="Icons 1">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example1 start-->
+        <bean parent="Uif-Label" p:labelText="icon-home" p:renderColon="false" p:cssClasses="icon-home" />
+        <bean parent="Uif-Label" p:labelText="icon-home2" p:renderColon="false" p:cssClasses="icon-home2" />
+        <bean parent="Uif-Label" p:labelText="icon-home3" p:renderColon="false" p:cssClasses="icon-home3" />
+        <bean parent="Uif-Label" p:labelText="icon-office" p:renderColon="false" p:cssClasses="icon-office" />
+        <bean parent="Uif-Label" p:labelText="icon-newspaper" p:renderColon="false" p:cssClasses="icon-newspaper" />
+        <bean parent="Uif-Label" p:labelText="icon-pencil" p:renderColon="false" p:cssClasses="icon-pencil" />
+        <bean parent="Uif-Label" p:labelText="icon-pencil2" p:renderColon="false" p:cssClasses="icon-pencil2" />
+        <bean parent="Uif-Label" p:labelText="icon-quill" p:renderColon="false" p:cssClasses="icon-quill" />
+        <bean parent="Uif-Label" p:labelText="icon-pen" p:renderColon="false" p:cssClasses="icon-pen" />
+        <bean parent="Uif-Label" p:labelText="icon-blog" p:renderColon="false" p:cssClasses="icon-blog" />
+        <!-- ex:Demo-Icons-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example2" parent="Uif-VerticalBoxSection" p:headerText="Icons 2">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example2 start-->
+        <bean parent="Uif-Label" p:labelText="icon-droplet" p:renderColon="false" p:cssClasses="icon-droplet" />
+        <bean parent="Uif-Label" p:labelText="icon-paint-format" p:renderColon="false" p:cssClasses="icon-paint-format" />
+        <bean parent="Uif-Label" p:labelText="icon-image" p:renderColon="false" p:cssClasses="icon-image" />
+        <bean parent="Uif-Label" p:labelText="icon-image2" p:renderColon="false" p:cssClasses="icon-image2" />
+        <bean parent="Uif-Label" p:labelText="icon-images" p:renderColon="false" p:cssClasses="icon-images" />
+        <bean parent="Uif-Label" p:labelText="icon-camera" p:renderColon="false" p:cssClasses="icon-camera" />
+        <bean parent="Uif-Label" p:labelText="icon-music" p:renderColon="false" p:cssClasses="icon-music" />
+        <bean parent="Uif-Label" p:labelText="icon-headphones" p:renderColon="false" p:cssClasses="icon-headphones" />
+        <bean parent="Uif-Label" p:labelText="icon-play" p:renderColon="false" p:cssClasses="icon-play" />
+        <bean parent="Uif-Label" p:labelText="icon-film" p:renderColon="false" p:cssClasses="icon-film" />
+        <!-- ex:Demo-Icons-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example3" parent="Uif-VerticalBoxSection" p:headerText="Icons 3">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example3 start-->
+        <bean parent="Uif-Label" p:labelText="icon-camera2" p:renderColon="false" p:cssClasses="icon-camera2" />
+        <bean parent="Uif-Label" p:labelText="icon-dice" p:renderColon="false" p:cssClasses="icon-dice" />
+        <bean parent="Uif-Label" p:labelText="icon-pacman" p:renderColon="false" p:cssClasses="icon-pacman" />
+        <bean parent="Uif-Label" p:labelText="icon-spades" p:renderColon="false" p:cssClasses="icon-spades" />
+        <bean parent="Uif-Label" p:labelText="icon-clubs" p:renderColon="false" p:cssClasses="icon-clubs" />
+        <bean parent="Uif-Label" p:labelText="icon-diamonds" p:renderColon="false" p:cssClasses="icon-diamonds" />
+        <bean parent="Uif-Label" p:labelText="icon-pawn" p:renderColon="false" p:cssClasses="icon-pawn" />
+        <bean parent="Uif-Label" p:labelText="icon-bullhorn" p:renderColon="false" p:cssClasses="icon-bullhorn" />
+        <bean parent="Uif-Label" p:labelText="icon-connection" p:renderColon="false" p:cssClasses="icon-connection" />
+        <bean parent="Uif-Label" p:labelText="icon-podcast" p:renderColon="false" p:cssClasses="icon-podcast" />
+        <!-- ex:Demo-Icons-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example4" parent="Uif-VerticalBoxSection" p:headerText="Icons 4">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example4 start-->
+        <bean parent="Uif-Label" p:labelText="icon-feed" p:renderColon="false" p:cssClasses="icon-feed" />
+        <bean parent="Uif-Label" p:labelText="icon-book" p:renderColon="false" p:cssClasses="icon-book" />
+        <bean parent="Uif-Label" p:labelText="icon-books" p:renderColon="false" p:cssClasses="icon-books" />
+        <bean parent="Uif-Label" p:labelText="icon-library" p:renderColon="false" p:cssClasses="icon-library" />
+        <bean parent="Uif-Label" p:labelText="icon-file" p:renderColon="false" p:cssClasses="icon-file" />
+        <bean parent="Uif-Label" p:labelText="icon-profile" p:renderColon="false" p:cssClasses="icon-profile" />
+        <bean parent="Uif-Label" p:labelText="icon-file2" p:renderColon="false" p:cssClasses="icon-file2" />
+        <bean parent="Uif-Label" p:labelText="icon-file3" p:renderColon="false" p:cssClasses="icon-file3" />
+        <bean parent="Uif-Label" p:labelText="icon-file4" p:renderColon="false" p:cssClasses="icon-file4" />
+        <bean parent="Uif-Label" p:labelText="icon-copy" p:renderColon="false" p:cssClasses="icon-copy" />
+        <!-- ex:Demo-Icons-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example5" parent="Uif-VerticalBoxSection" p:headerText="Icons 5">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example5 start-->
+        <bean parent="Uif-Label" p:labelText="icon-copy2" p:renderColon="false" p:cssClasses="icon-copy2" />
+        <bean parent="Uif-Label" p:labelText="icon-copy3" p:renderColon="false" p:cssClasses="icon-copy3" />
+        <bean parent="Uif-Label" p:labelText="icon-paste" p:renderColon="false" p:cssClasses="icon-paste" />
+        <bean parent="Uif-Label" p:labelText="icon-paste2" p:renderColon="false" p:cssClasses="icon-paste2" />
+        <bean parent="Uif-Label" p:labelText="icon-paste3" p:renderColon="false" p:cssClasses="icon-paste3" />
+        <bean parent="Uif-Label" p:labelText="icon-stack" p:renderColon="false" p:cssClasses="icon-stack" />
+        <bean parent="Uif-Label" p:labelText="icon-folder" p:renderColon="false" p:cssClasses="icon-folder" />
+        <bean parent="Uif-Label" p:labelText="icon-folder-open" p:renderColon="false" p:cssClasses="icon-folder-open" />
+        <bean parent="Uif-Label" p:labelText="icon-tag" p:renderColon="false" p:cssClasses="icon-tag" />
+        <bean parent="Uif-Label" p:labelText="icon-tags" p:renderColon="false" p:cssClasses="icon-tags" />
+        <!-- ex:Demo-Icons-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example6" parent="Uif-VerticalBoxSection" p:headerText="Icons 6">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example6 start-->
+        <bean parent="Uif-Label" p:labelText="icon-barcode" p:renderColon="false" p:cssClasses="icon-barcode" />
+        <bean parent="Uif-Label" p:labelText="icon-qrcode" p:renderColon="false" p:cssClasses="icon-qrcode" />
+        <bean parent="Uif-Label" p:labelText="icon-ticket" p:renderColon="false" p:cssClasses="icon-ticket" />
+        <bean parent="Uif-Label" p:labelText="icon-cart" p:renderColon="false" p:cssClasses="icon-cart" />
+        <bean parent="Uif-Label" p:labelText="icon-cart2" p:renderColon="false" p:cssClasses="icon-cart2" />
+        <bean parent="Uif-Label" p:labelText="icon-cart3" p:renderColon="false" p:cssClasses="icon-cart3" />
+        <bean parent="Uif-Label" p:labelText="icon-coin" p:renderColon="false" p:cssClasses="icon-coin" />
+        <bean parent="Uif-Label" p:labelText="icon-credit" p:renderColon="false" p:cssClasses="icon-credit" />
+        <bean parent="Uif-Label" p:labelText="icon-calculate" p:renderColon="false" p:cssClasses="icon-calculate" />
+        <bean parent="Uif-Label" p:labelText="icon-support" p:renderColon="false" p:cssClasses="icon-support" />
+        <!-- ex:Demo-Icons-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example7" parent="Uif-VerticalBoxSection" p:headerText="Icons 7">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example7 start-->
+        <bean parent="Uif-Label" p:labelText="icon-phone" p:renderColon="false" p:cssClasses="icon-phone" />
+        <bean parent="Uif-Label" p:labelText="icon-phone-hang-up" p:renderColon="false" p:cssClasses="icon-phone-hang-up" />
+        <bean parent="Uif-Label" p:labelText="icon-address-book" p:renderColon="false" p:cssClasses="icon-address-book" />
+        <bean parent="Uif-Label" p:labelText="icon-notebook" p:renderColon="false" p:cssClasses="icon-notebook" />
+        <bean parent="Uif-Label" p:labelText="icon-envelope" p:renderColon="false" p:cssClasses="icon-envelope" />
+        <bean parent="Uif-Label" p:labelText="icon-pushpin" p:renderColon="false" p:cssClasses="icon-pushpin" />
+        <bean parent="Uif-Label" p:labelText="icon-location" p:renderColon="false" p:cssClasses="icon-location" />
+        <bean parent="Uif-Label" p:labelText="icon-location2" p:renderColon="false" p:cssClasses="icon-location2" />
+        <bean parent="Uif-Label" p:labelText="icon-compass" p:renderColon="false" p:cssClasses="icon-compass" />
+        <bean parent="Uif-Label" p:labelText="icon-map" p:renderColon="false" p:cssClasses="icon-map" />
+        <!-- ex:Demo-Icons-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example8" parent="Uif-VerticalBoxSection" p:headerText="Icons 8">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example8 start-->
+        <bean parent="Uif-Label" p:labelText="icon-map2" p:renderColon="false" p:cssClasses="icon-map2" />
+        <bean parent="Uif-Label" p:labelText="icon-history" p:renderColon="false" p:cssClasses="icon-history" />
+        <bean parent="Uif-Label" p:labelText="icon-clock" p:renderColon="false" p:cssClasses="icon-clock" />
+        <bean parent="Uif-Label" p:labelText="icon-clock2" p:renderColon="false" p:cssClasses="icon-clock2" />
+        <bean parent="Uif-Label" p:labelText="icon-alarm" p:renderColon="false" p:cssClasses="icon-alarm" />
+        <bean parent="Uif-Label" p:labelText="icon-alarm2" p:renderColon="false" p:cssClasses="icon-alarm2" />
+        <bean parent="Uif-Label" p:labelText="icon-bell" p:renderColon="false" p:cssClasses="icon-bell" />
+        <bean parent="Uif-Label" p:labelText="icon-stopwatch" p:renderColon="false" p:cssClasses="icon-stopwatch" />
+        <bean parent="Uif-Label" p:labelText="icon-calendar" p:renderColon="false" p:cssClasses="icon-calendar" />
+        <bean parent="Uif-Label" p:labelText="icon-calendar2" p:renderColon="false" p:cssClasses="icon-calendar2" />
+        <!-- ex:Demo-Icons-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example9" parent="Uif-VerticalBoxSection" p:headerText="Icons 9">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example9 start-->
+        <bean parent="Uif-Label" p:labelText="icon-print" p:renderColon="false" p:cssClasses="icon-print" />
+        <bean parent="Uif-Label" p:labelText="icon-keyboard" p:renderColon="false" p:cssClasses="icon-keyboard" />
+        <bean parent="Uif-Label" p:labelText="icon-screen" p:renderColon="false" p:cssClasses="icon-screen" />
+        <bean parent="Uif-Label" p:labelText="icon-laptop" p:renderColon="false" p:cssClasses="icon-laptop" />
+        <bean parent="Uif-Label" p:labelText="icon-mobile" p:renderColon="false" p:cssClasses="icon-mobile" />
+        <bean parent="Uif-Label" p:labelText="icon-mobile2" p:renderColon="false" p:cssClasses="icon-mobile2" />
+        <bean parent="Uif-Label" p:labelText="icon-tablet" p:renderColon="false" p:cssClasses="icon-tablet" />
+        <bean parent="Uif-Label" p:labelText="icon-tv" p:renderColon="false" p:cssClasses="icon-tv" />
+        <bean parent="Uif-Label" p:labelText="icon-cabinet" p:renderColon="false" p:cssClasses="icon-cabinet" />
+        <bean parent="Uif-Label" p:labelText="icon-drawer" p:renderColon="false" p:cssClasses="icon-drawer" />
+        <!-- ex:Demo-Icons-Example9 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example10" parent="Uif-VerticalBoxSection" p:headerText="Icons 10">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example10 start-->
+        <bean parent="Uif-Label" p:labelText="icon-drawer2" p:renderColon="false" p:cssClasses="icon-drawer2" />
+        <bean parent="Uif-Label" p:labelText="icon-drawer3" p:renderColon="false" p:cssClasses="icon-drawer3" />
+        <bean parent="Uif-Label" p:labelText="icon-box-add" p:renderColon="false" p:cssClasses="icon-box-add" />
+        <bean parent="Uif-Label" p:labelText="icon-box-remove" p:renderColon="false" p:cssClasses="icon-box-remove" />
+        <bean parent="Uif-Label" p:labelText="icon-download" p:renderColon="false" p:cssClasses="icon-download" />
+        <bean parent="Uif-Label" p:labelText="icon-upload" p:renderColon="false" p:cssClasses="icon-upload" />
+        <bean parent="Uif-Label" p:labelText="icon-disk" p:renderColon="false" p:cssClasses="icon-disk" />
+        <bean parent="Uif-Label" p:labelText="icon-storage" p:renderColon="false" p:cssClasses="icon-storage" />
+        <bean parent="Uif-Label" p:labelText="icon-undo" p:renderColon="false" p:cssClasses="icon-undo" />
+        <bean parent="Uif-Label" p:labelText="icon-redo" p:renderColon="false" p:cssClasses="icon-redo" />
+        <!-- ex:Demo-Icons-Example10 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example11" parent="Uif-VerticalBoxSection" p:headerText="Icons 11">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example11 start-->
+        <bean parent="Uif-Label" p:labelText="icon-flip" p:renderColon="false" p:cssClasses="icon-flip" />
+        <bean parent="Uif-Label" p:labelText="icon-flip2" p:renderColon="false" p:cssClasses="icon-flip2" />
+        <bean parent="Uif-Label" p:labelText="icon-undo2" p:renderColon="false" p:cssClasses="icon-undo2" />
+        <bean parent="Uif-Label" p:labelText="icon-redo2" p:renderColon="false" p:cssClasses="icon-redo2" />
+        <bean parent="Uif-Label" p:labelText="icon-forward" p:renderColon="false" p:cssClasses="icon-forward" />
+        <bean parent="Uif-Label" p:labelText="icon-reply" p:renderColon="false" p:cssClasses="icon-reply" />
+        <bean parent="Uif-Label" p:labelText="icon-bubble" p:renderColon="false" p:cssClasses="icon-bubble" />
+        <bean parent="Uif-Label" p:labelText="icon-bubbles" p:renderColon="false" p:cssClasses="icon-bubbles" />
+        <bean parent="Uif-Label" p:labelText="icon-bubbles2" p:renderColon="false" p:cssClasses="icon-bubbles2" />
+        <bean parent="Uif-Label" p:labelText="icon-bubble2" p:renderColon="false" p:cssClasses="icon-bubble2" />
+        <!-- ex:Demo-Icons-Example11 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example12" parent="Uif-VerticalBoxSection" p:headerText="Icons 12">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example12 start-->
+        <bean parent="Uif-Label" p:labelText="icon-bubbles3" p:renderColon="false" p:cssClasses="icon-bubbles3" />
+        <bean parent="Uif-Label" p:labelText="icon-bubbles4" p:renderColon="false" p:cssClasses="icon-bubbles4" />
+        <bean parent="Uif-Label" p:labelText="icon-user" p:renderColon="false" p:cssClasses="icon-user" />
+        <bean parent="Uif-Label" p:labelText="icon-users" p:renderColon="false" p:cssClasses="icon-users" />
+        <bean parent="Uif-Label" p:labelText="icon-user2" p:renderColon="false" p:cssClasses="icon-user2" />
+        <bean parent="Uif-Label" p:labelText="icon-users2" p:renderColon="false" p:cssClasses="icon-users2" />
+        <bean parent="Uif-Label" p:labelText="icon-user3" p:renderColon="false" p:cssClasses="icon-user3" />
+        <bean parent="Uif-Label" p:labelText="icon-user4" p:renderColon="false" p:cssClasses="icon-user4" />
+        <bean parent="Uif-Label" p:labelText="icon-quotes-left" p:renderColon="false" p:cssClasses="icon-quotes-left" />
+        <bean parent="Uif-Label" p:labelText="icon-busy" p:renderColon="false" p:cssClasses="icon-busy" />
+        <!-- ex:Demo-Icons-Example12 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example13" parent="Uif-VerticalBoxSection" p:headerText="Icons 13">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example13 start-->
+        <bean parent="Uif-Label" p:labelText="icon-spinner" p:renderColon="false" p:cssClasses="icon-spinner" />
+        <bean parent="Uif-Label" p:labelText="icon-spinner2" p:renderColon="false" p:cssClasses="icon-spinner2" />
+        <bean parent="Uif-Label" p:labelText="icon-spinner3" p:renderColon="false" p:cssClasses="icon-spinner3" />
+        <bean parent="Uif-Label" p:labelText="icon-spinner4" p:renderColon="false" p:cssClasses="icon-spinner4" />
+        <bean parent="Uif-Label" p:labelText="icon-spinner5" p:renderColon="false" p:cssClasses="icon-spinner5" />
+        <bean parent="Uif-Label" p:labelText="icon-spinner6" p:renderColon="false" p:cssClasses="icon-spinner6" />
+        <bean parent="Uif-Label" p:labelText="icon-binoculars" p:renderColon="false" p:cssClasses="icon-binoculars" />
+        <bean parent="Uif-Label" p:labelText="icon-search" p:renderColon="false" p:cssClasses="icon-search" />
+        <bean parent="Uif-Label" p:labelText="icon-zoom-in" p:renderColon="false" p:cssClasses="icon-zoom-in" />
+        <bean parent="Uif-Label" p:labelText="icon-zoom-out" p:renderColon="false" p:cssClasses="icon-zoom-out" />
+        <!-- ex:Demo-Icons-Example13 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example14" parent="Uif-VerticalBoxSection" p:headerText="Icons 14">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example14 start-->
+        <bean parent="Uif-Label" p:labelText="icon-expand" p:renderColon="false" p:cssClasses="icon-expand" />
+        <bean parent="Uif-Label" p:labelText="icon-contract" p:renderColon="false" p:cssClasses="icon-contract" />
+        <bean parent="Uif-Label" p:labelText="icon-expand2" p:renderColon="false" p:cssClasses="icon-expand2" />
+        <bean parent="Uif-Label" p:labelText="icon-contract2" p:renderColon="false" p:cssClasses="icon-contract2" />
+        <bean parent="Uif-Label" p:labelText="icon-key" p:renderColon="false" p:cssClasses="icon-key" />
+        <bean parent="Uif-Label" p:labelText="icon-key2" p:renderColon="false" p:cssClasses="icon-key2" />
+        <bean parent="Uif-Label" p:labelText="icon-lock" p:renderColon="false" p:cssClasses="icon-lock" />
+        <bean parent="Uif-Label" p:labelText="icon-lock2" p:renderColon="false" p:cssClasses="icon-lock2" />
+        <bean parent="Uif-Label" p:labelText="icon-unlocked" p:renderColon="false" p:cssClasses="icon-unlocked" />
+        <bean parent="Uif-Label" p:labelText="icon-wrench" p:renderColon="false" p:cssClasses="icon-wrench" />
+        <!-- ex:Demo-Icons-Example14 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example15" parent="Uif-VerticalBoxSection" p:headerText="Icons 15">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example15 start-->
+        <bean parent="Uif-Label" p:labelText="icon-settings" p:renderColon="false" p:cssClasses="icon-settings" />
+        <bean parent="Uif-Label" p:labelText="icon-equalizer" p:renderColon="false" p:cssClasses="icon-equalizer" />
+        <bean parent="Uif-Label" p:labelText="icon-cog" p:renderColon="false" p:cssClasses="icon-cog" />
+        <bean parent="Uif-Label" p:labelText="icon-cogs" p:renderColon="false" p:cssClasses="icon-cogs" />
+        <bean parent="Uif-Label" p:labelText="icon-cog2" p:renderColon="false" p:cssClasses="icon-cog2" />
+        <bean parent="Uif-Label" p:labelText="icon-hammer" p:renderColon="false" p:cssClasses="icon-hammer" />
+        <bean parent="Uif-Label" p:labelText="icon-wand" p:renderColon="false" p:cssClasses="icon-wand" />
+        <bean parent="Uif-Label" p:labelText="icon-aid" p:renderColon="false" p:cssClasses="icon-aid" />
+        <bean parent="Uif-Label" p:labelText="icon-bug" p:renderColon="false" p:cssClasses="icon-bug" />
+        <bean parent="Uif-Label" p:labelText="icon-pie" p:renderColon="false" p:cssClasses="icon-pie" />
+        <!-- ex:Demo-Icons-Example15 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example16" parent="Uif-VerticalBoxSection" p:headerText="Icons 16">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example16 start-->
+        <bean parent="Uif-Label" p:labelText="icon-stats" p:renderColon="false" p:cssClasses="icon-stats" />
+        <bean parent="Uif-Label" p:labelText="icon-bars" p:renderColon="false" p:cssClasses="icon-bars" />
+        <bean parent="Uif-Label" p:labelText="icon-bars2" p:renderColon="false" p:cssClasses="icon-bars2" />
+        <bean parent="Uif-Label" p:labelText="icon-gift" p:renderColon="false" p:cssClasses="icon-gift" />
+        <bean parent="Uif-Label" p:labelText="icon-trophy" p:renderColon="false" p:cssClasses="icon-trophy" />
+        <bean parent="Uif-Label" p:labelText="icon-glass" p:renderColon="false" p:cssClasses="icon-glass" />
+        <bean parent="Uif-Label" p:labelText="icon-mug" p:renderColon="false" p:cssClasses="icon-mug" />
+        <bean parent="Uif-Label" p:labelText="icon-food" p:renderColon="false" p:cssClasses="icon-food" />
+        <bean parent="Uif-Label" p:labelText="icon-leaf" p:renderColon="false" p:cssClasses="icon-leaf" />
+        <bean parent="Uif-Label" p:labelText="icon-rocket" p:renderColon="false" p:cssClasses="icon-rocket" />
+        <!-- ex:Demo-Icons-Example16 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example17" parent="Uif-VerticalBoxSection" p:headerText="Icons 17">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example17 start-->
+        <bean parent="Uif-Label" p:labelText="icon-meter" p:renderColon="false" p:cssClasses="icon-meter" />
+        <bean parent="Uif-Label" p:labelText="icon-meter2" p:renderColon="false" p:cssClasses="icon-meter2" />
+        <bean parent="Uif-Label" p:labelText="icon-dashboard" p:renderColon="false" p:cssClasses="icon-dashboard" />
+        <bean parent="Uif-Label" p:labelText="icon-hammer2" p:renderColon="false" p:cssClasses="icon-hammer2" />
+        <bean parent="Uif-Label" p:labelText="icon-fire" p:renderColon="false" p:cssClasses="icon-fire" />
+        <bean parent="Uif-Label" p:labelText="icon-lab" p:renderColon="false" p:cssClasses="icon-lab" />
+        <bean parent="Uif-Label" p:labelText="icon-magnet" p:renderColon="false" p:cssClasses="icon-magnet" />
+        <bean parent="Uif-Label" p:labelText="icon-remove" p:renderColon="false" p:cssClasses="icon-remove" />
+        <bean parent="Uif-Label" p:labelText="icon-remove2" p:renderColon="false" p:cssClasses="icon-remove2" />
+        <bean parent="Uif-Label" p:labelText="icon-briefcase" p:renderColon="false" p:cssClasses="icon-briefcase" />
+        <!-- ex:Demo-Icons-Example17 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example18" parent="Uif-VerticalBoxSection" p:headerText="Icons 18">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example18 start-->
+        <bean parent="Uif-Label" p:labelText="icon-airplane" p:renderColon="false" p:cssClasses="icon-airplane" />
+        <bean parent="Uif-Label" p:labelText="icon-truck" p:renderColon="false" p:cssClasses="icon-truck" />
+        <bean parent="Uif-Label" p:labelText="icon-road" p:renderColon="false" p:cssClasses="icon-road" />
+        <bean parent="Uif-Label" p:labelText="icon-accessibility" p:renderColon="false" p:cssClasses="icon-accessibility" />
+        <bean parent="Uif-Label" p:labelText="icon-target" p:renderColon="false" p:cssClasses="icon-target" />
+        <bean parent="Uif-Label" p:labelText="icon-shield" p:renderColon="false" p:cssClasses="icon-shield" />
+        <bean parent="Uif-Label" p:labelText="icon-lightning" p:renderColon="false" p:cssClasses="icon-lightning" />
+        <bean parent="Uif-Label" p:labelText="icon-switch" p:renderColon="false" p:cssClasses="icon-switch" />
+        <bean parent="Uif-Label" p:labelText="icon-power-cord" p:renderColon="false" p:cssClasses="icon-power-cord" />
+        <bean parent="Uif-Label" p:labelText="icon-signup" p:renderColon="false" p:cssClasses="icon-signup" />
+        <!-- ex:Demo-Icons-Example18 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example19" parent="Uif-VerticalBoxSection" p:headerText="Icons 19">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example19 start-->
+        <bean parent="Uif-Label" p:labelText="icon-list" p:renderColon="false" p:cssClasses="icon-list" />
+        <bean parent="Uif-Label" p:labelText="icon-list2" p:renderColon="false" p:cssClasses="icon-list2" />
+        <bean parent="Uif-Label" p:labelText="icon-numbered-list" p:renderColon="false" p:cssClasses="icon-numbered-list" />
+        <bean parent="Uif-Label" p:labelText="icon-menu" p:renderColon="false" p:cssClasses="icon-menu" />
+        <bean parent="Uif-Label" p:labelText="icon-menu2" p:renderColon="false" p:cssClasses="icon-menu2" />
+        <bean parent="Uif-Label" p:labelText="icon-tree" p:renderColon="false" p:cssClasses="icon-tree" />
+        <bean parent="Uif-Label" p:labelText="icon-cloud" p:renderColon="false" p:cssClasses="icon-cloud" />
+        <bean parent="Uif-Label" p:labelText="icon-cloud-download" p:renderColon="false" p:cssClasses="icon-cloud-download" />
+        <bean parent="Uif-Label" p:labelText="icon-cloud-upload" p:renderColon="false" p:cssClasses="icon-cloud-upload" />
+        <bean parent="Uif-Label" p:labelText="icon-download2" p:renderColon="false" p:cssClasses="icon-download2" />
+        <!-- ex:Demo-Icons-Example19 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-Icons-Example20" parent="Uif-VerticalBoxSection" p:headerText="Icons 20">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Icons-Example20 start-->
+        <bean parent="Uif-Label" p:labelText="icon-upload2" p:renderColon="false" p:cssClasses="icon-upload2" />
+        <bean parent="Uif-Label" p:labelText="icon-download3" p:renderColon="false" p:cssClasses="icon-download3" />
+        <bean parent="Uif-Label" p:labelText="icon-upload3" p:renderColon="false" p:cssClasses="icon-upload3" />
+        <bean parent="Uif-Label" p:labelText="icon-globe" p:renderColon="false" p:cssClasses="icon-globe" />
+        <bean parent="Uif-Label" p:labelText="icon-earth" p:renderColon="false" p:cssClasses="icon-earth" />
+        <bean parent="Uif-Label" p:labelText="icon-link" p:renderColon="false" p:cssClasses="icon-link" />
+        <bean parent="Uif-Label" p:labelText="icon-flag" p:renderColon="false" p:cssClasses="icon-flag" />
+        <bean parent="Uif-Label" p:labelText="icon-attachment" p:renderColon="false" p:cssClasses="icon-attachment" />
+        <bean parent="Uif-Label" p:labelText="icon-eye" p:renderColon="false" p:cssClasses="icon-eye" />
+        <bean parent="Uif-Label" p:labelText="icon-eye-blocked" p:renderColon="false" p:cssClasses="icon-eye-blocked" />
+        <!-- ex:Demo-Icons-Example20 end-->
+      </list>
+    </property>
+  </bean>
+</beans>

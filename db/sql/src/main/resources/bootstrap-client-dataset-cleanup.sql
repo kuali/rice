@@ -47,7 +47,7 @@ BEGIN
 END;
 /
 
--- delete all sample app tables
+-- delete all sample app and test tables
 DECLARE
    CURSOR tables_cursor IS
       SELECT table_name
@@ -57,6 +57,7 @@ DECLARE
             table_name like 'TRAV#_%' escape '#' OR
             table_name like 'TRV#_%' escape '#' OR
             table_name like 'TRVL#_%' escape '#' OR
+            table_name like 'KRTST#_%' escape '#' OR
             table_name = 'ACCT_DD_ATTR_DOC' OR
             table_name = 'TST_SEARCH_ATTR_INDX_TST_DOC_T'
          ORDER BY table_name;
@@ -67,7 +68,7 @@ BEGIN
 END;
 /
 
--- delete all sample app sequences
+-- delete all sample app and test sequences
 DECLARE
    CURSOR sequences_cursor IS
       SELECT sequence_name
@@ -77,7 +78,8 @@ DECLARE
             sequence_name like 'BK#_%S' escape '#' OR
             sequence_name like 'TRAV#_%S' escape '#' OR
             sequence_name like 'TRVL#_%SEQ' escape '#' OR
-            sequence_name like 'TRV#_%S' escape '#'
+            sequence_name like 'TRV#_%S' escape '#' OR
+            sequence_name like 'KRTST#_%S' escape '#' OR
          ORDER BY sequence_name;
 BEGIN
    FOR r IN sequences_cursor LOOP

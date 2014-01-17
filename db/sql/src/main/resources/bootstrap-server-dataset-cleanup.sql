@@ -84,6 +84,16 @@ delete from krew_doc_typ_t where doc_typ_nm='FiscalOfficerInfoMaintenanceDocumen
 /
 delete from krew_doc_typ_t where doc_typ_nm='TravelDocument'
 /
+delete from krew_doc_typ_t where doc_typ_nm='TravelAttachmentSampleMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='TravelCompanyMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='TravelDestinationMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='TravelMileageRateMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='TravelerDetailMaintenanceDocument'
+/
 delete from krew_doc_typ_attr_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
 /
 delete from krew_doc_typ_plcy_reln_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
@@ -453,6 +463,13 @@ delete from krim_role_mbr_t where role_id in (select role_id from krim_role_t wh
 delete from krim_role_t where nmspc_cd = 'KR-SAP'
 /
 delete from krim_typ_t where nmspc_cd = 'KR-SAP'
+/
+
+delete from krim_role_rsp_t where rsp_id in (select rsp_id from krim_rsp_t where nmspc_cd = 'KR-SAP')
+/
+delete from krim_rsp_attr_data_t where rsp_id in (select rsp_id from krim_rsp_t where nmspc_cd = 'KR-SAP')
+/
+delete from krim_rsp_t where nmspc_cd = 'KR-SAP'
 /
 
 drop table kr_kim_test_bo

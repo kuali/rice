@@ -199,7 +199,7 @@ public interface RoleTypeService extends KimTypeService {
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      *
-     * @since 2.3.3
+     * @since 2.3.4
      * @param namespaceCode the namespace code the role is in. cannot be blank or null.
      * @param roleName the name of the role.  cannot be blank or null.
      * @param memberRoleNamespaceCode the namespace code the member role is in. cannot be blank or null.

@@ -28,7 +28,22 @@ public class ActionListNavAft extends ActionListAftBase {
     }
 
     @Test
-    public void testActionListApproveFullNav() throws Exception {
-        testActionListApproveFullNav();
+    public void testActionListDisapproveNav() throws Exception {
+        testActionListDisapproveNav(this);
+    }
+
+    @Test
+    public void testActionListCompleteNav() throws Exception {
+        testActionListCompleteNav(this);
+    }
+
+    @Test
+    public void testActionListAcknowledgeNav() throws Exception {
+        testActionListAcknowledgeNav(this);
+    }
+
+    @Test
+    public void testActionListFYINav() throws Exception {
+        testActionListFYINav(this);
     }
 }

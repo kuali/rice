@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.testtools.selenium;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -41,8 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -422,6 +425,23 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     String sessionId = null;
 
+    private static final Map<String, String> actionRequestLabelMap;
+    private static Map<String, String> actionRequestButtonMap;
+    static{
+        actionRequestLabelMap = new HashMap();
+        actionRequestLabelMap.put("A","APPROVE");
+        actionRequestLabelMap.put("F","FYI");
+        actionRequestLabelMap.put("C","COMPLETE");
+        actionRequestLabelMap.put("K","ACKNOWLEDGE");
+        actionRequestLabelMap.put("D","APPROVE");
+        actionRequestButtonMap = new HashMap();
+        actionRequestButtonMap.put("A","methodToCall.approve");
+        actionRequestButtonMap.put("F","methodToCall.fyi");
+        actionRequestButtonMap.put("C","methodToCall.complete");
+        actionRequestButtonMap.put("K","methodToCall.acknowledge");
+        actionRequestButtonMap.put("D","methodToCall.disapprove");
+    }
+    
     /**
      * If WebDriverUtils.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
      * {@link WebDriverUtils#chromeDriverCreateCheck()}
@@ -620,6 +640,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // No-op for convenience
     }
 
+    protected void impersonateUser(String user) throws InterruptedException {
+        waitAndTypeByName(BACKDOOR_ID_TEXT,user);
+        waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
+    }
+
     /**
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
@@ -643,12 +668,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         for (int i = 0, s = adHocRecipients.length; i < s; i++) {
             selectOptionByName("newAdHocRoutePerson.actionRequested", adHocRecipients[i][1]);
             waitAndTypeByName("newAdHocRoutePerson.id", adHocRecipients[i][0]);
-            if (isElementPresentByName("member.activeFromDate")) {
-                waitAndTypeByName("member.activeFromDate", today);
-            }
-            if (isElementPresentByName("member.activeFromDate")) {
-                waitAndTypeByName("member.activeFromDate", nextYear);
-            }
+//            if (isElementPresentByName("member.activeFromDate")) {
+//                waitAndTypeByName("member.activeFromDate", today);
+//            }
+//            if (isElementPresentByName("member.activeFromDate")) {
+//                waitAndTypeByName("member.activeFromDate", nextYear);
+//            }
             WebDriverUtils.jGrowl(getDriver(), "Click Add Person", false, "Click Add Person");
             waitAndClickByName("methodToCall.insertAdHocRoutePerson");
         }
@@ -701,23 +726,30 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectTopFrame();
         waitAndClickActionList();
         selectFrameIframePortlet();
-        if ("F".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "FYI"});
-            selectOptionByName("defaultActionToTake", actionListOptionValue);
-            WebDriverUtils.jGrowl(getDriver(), "Click Apply Default Action", false, "Click Apply Default Action");
-            waitAndClickByXpath("//img[@src='images/tinybutton-applydflt.gif']");
-            WebDriverUtils.jGrowl(getDriver(), "Click Take Mass Action", false, "Click Take Mass Action");
-            waitAndClickById("takeMassActions");
-            waitForTextNotPresent(docId);
-        } else if ("A".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "APPROVE"});
+        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
+        waitAndClickLinkContainingText(docId);
+        selectChildWindow();
+        waitAndClickByName(actionRequestButtonMap.get(actionListOptionValue));
+
+        // Disapprove requires another step before checking outbox
+        if ("D".equals(actionListOptionValue)) {
+            waitAndTypeByName("reason","blah");
+            waitAndClickByName("methodToCall.processAnswer.button0");
         } else if ("C".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "COMPLETE"});
-        } else if ("K".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "ACKNOWLEDGE"});
-        } else {
-            throw new IllegalArgumentException(actionListOptionValue + " is not a valid action list option VALUE");
+            waitAndClickByName("methodToCall.close");
         }
+        waitForTextNotPresent(docId);
+        assertOutbox(docId);
+    }
+
+    protected void assertOutbox(String docId) throws InterruptedException {
+        // find it in outbox
+        waitAndClickLinkContainingText("Outbox");
+        waitForTextPresent(docId);
+
+        // clear all items in the outbox
+        waitAndClickAllByName("outboxItems");
+        waitAndClickByName("methodToCall.removeOutboxItems");
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {

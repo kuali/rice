@@ -33,7 +33,22 @@ public class ActionListBkMrkAft extends ActionListAftBase {
     }
 
     @Test
-    public void testActionListApproveFullBookmark() throws Exception {
-        testActionListApproveFull();
+    public void testActionListDisapproveBookmark() throws Exception {
+        testActionListDisapproveBookmark(this);
+    }
+
+    @Test
+    public void testActionListCompleteBookmark() throws Exception {
+        testActionListCompleteBookmark(this);
+    }
+
+    @Test
+    public void testActionListAcknowledgeBookmark() throws Exception {
+        testActionListAcknowledgeBookmark(this);
+    }
+
+    @Test
+    public void testActionListFYIBookmark() throws Exception {
+        testActionListFYIBookmark(this);
     }
 }

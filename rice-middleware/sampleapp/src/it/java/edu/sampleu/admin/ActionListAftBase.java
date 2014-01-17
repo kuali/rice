@@ -61,6 +61,46 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
         passed();
     }
 
+    public void testActionListDisapproveBookmark(JiraAwareFailable failable) throws Exception {
+        testActionListDisapprove();
+        passed();
+    }
+
+    public void testActionListDisapproveNav(JiraAwareFailable failable) throws Exception {
+        testActionListDisapprove();
+        passed();
+    }
+
+    public void testActionListCompleteBookmark(JiraAwareFailable failable) throws Exception {
+        testActionListComplete();
+        passed();
+    }
+
+    public void testActionListCompleteNav(JiraAwareFailable failable) throws Exception {
+        testActionListComplete();
+        passed();
+    }
+
+    public void testActionListAcknowledgeBookmark(JiraAwareFailable failable) throws Exception {
+        testActionListAcknowledge();
+        passed();
+    }
+
+    public void testActionListAcknowledgeNav(JiraAwareFailable failable) throws Exception {
+        testActionListAcknowledge();
+        passed();
+    }
+
+    public void testActionListFYIBookmark(JiraAwareFailable failable) throws Exception {
+        testActionListFYI();
+        passed();
+    }
+
+    public void testActionListFYINav(JiraAwareFailable failable) throws Exception {
+        testActionListFYI();
+        passed();
+    }
+
     protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component create new");
         selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
@@ -98,77 +138,57 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * @throws Exception
      */
     public void testActionListApprove() throws Exception {
-        // create some doc to generate actions in the action list
         String docId = testCreateActionRequest("fred", "A");
-
-        // impersonate fred
-        waitAndTypeByName(BACKDOOR_ID_TEXT,"fred");
-        waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
-
-        // assert his approve action
+        impersonateUser("fred");
         assertActionList(docId, "A");
-
-        // approve the action
-        waitAndClickLinkContainingText(docId);
-        selectChildWindow();
-        waitAndClickByName("methodToCall.approve");
-
-        // assert that approve action is no longer in list
-        waitForTextNotPresent(docId);
-
-        // find it in outbox
-        waitAndClickLinkContainingText("Outbox");
-        waitForTextPresent(docId);
-
-        // clear outbox ??
-        waitAndClickAllByName("outboxItems");
-        waitAndClickByName("methodToCall.removeOutboxItems");
-
-        // close child window
-        // driver.close();
         selectTopFrame();
-
     }
 
     /**
-     * tests the Approve ActionRequest.
-     * Creates an approve request for a user. Then performs the Approve action.
+     * tests the  ActionRequest.
+     * Creates an approve request for a user. Then performs the Disapprove action.
      * @throws Exception
      */
     public void testActionListDisapprove() throws Exception {
-        // create some doc to generate actions in the action list
-        String docId = testCreateActionRequest("fred", "A");
-
-        // impersonate fred
-        waitAndTypeByName(BACKDOOR_ID_TEXT,"fred");
-        waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
-
-        // assert his approve action
-        assertActionList(docId, "A");
-
-        // approve the action
-        waitAndClickLinkContainingText(docId);
-        selectChildWindow();
-        waitAndClickByName("methodToCall.approve");
-
-        // assert that approve action is no longer in list
-        waitForTextNotPresent(docId);
-
-        // find it in outbox
-        waitAndClickLinkContainingText("Outbox");
-        waitForTextPresent(docId);
-
-        // clear outbox ??
-        waitAndClickAllByName("outboxItems");
-        waitAndClickByName("methodToCall.removeOutboxItems");
-
-        // close child window
-        // driver.close();
+        String docId = testCreateActionRequest("fred", "D");
+        impersonateUser("fred");
+        assertActionList(docId, "D");
         selectTopFrame();
     }
 
-    public void testActionListApproveFull() throws Exception {
-        fourLetters = RandomStringUtils.randomAlphabetic(4);
-        createNewTemplateMethod();
+    /**
+     * tests the complete ActionRequest.
+     * Creates an complete request for a user. Then performs the Complete action.
+     * @throws Exception
+     */
+    public void testActionListComplete() throws Exception {
+        String docId = testCreateActionRequest("fran", "C");
+        impersonateUser("fran");
+        assertActionList(docId, "C");
+        selectTopFrame();
+    }
+
+    /**
+     * tests the Acknowledge ActionRequest.
+     * Creates an Acknowledge request for a user. Then performs the Acknowledge action.
+     * @throws Exception
+     */
+    public void testActionListAcknowledge() throws Exception {
+        String docId = testCreateActionRequest("erin", "K");
+        impersonateUser("erin");
+        assertActionList(docId, "K");
+        selectTopFrame();
+    }
+
+    /**
+     * tests the FYI ActionRequest.
+     * Creates an FYI request for a user. Then performs the FYI action.
+     * @throws Exception
+     */
+    public void testActionListFYI() throws Exception {
+        String docId = testCreateActionRequest("eric", "F");
+        impersonateUser("eric");
+        assertActionList(docId, "F");
+        selectTopFrame();
     }
 }

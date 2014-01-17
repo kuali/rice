@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -27,6 +24,9 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Css Grid Layout which only takes fields as its content and separates out the field's labels into
@@ -113,11 +113,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
                 // rendered with the attribute
                 field.setLabelRendered(true);
             } else {
-                throw new RuntimeException("Label must exist when separateFieldLabelsIntoColumns option is "
-                        + "true for CssGridLayouts. Item class: "
+                throw new RuntimeException("Label must exist on fields in CssGridLabelColumnLayoutManager. Item class: "
                         + item.getClass().getName()
-                        +
-                        " in Container id: "
+                        + " in Container id: "
                         + container.getId());
             }
 
@@ -172,8 +170,6 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
         }
     }
 
-
-
     /**
      * The css class to use on the label column's div "cells"
      *
@@ -186,7 +182,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
 
     /**
      * Setter for {@link #getLabelColumnCssClass()}.
-     * 
+     *
      * @param labelColumnCssClass property value
      */
     public void setLabelColumnCssClass(String labelColumnCssClass) {
@@ -210,7 +206,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
 
     /**
      * Setter for {@link #getNumberOfLabelColumns()}.
-     * 
+     *
      * @param numberOfLabelColumns property value
      */
     public void setNumberOfLabelColumns(int numberOfLabelColumns) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.framework.persistence.jpa.criteria;
+package org.kuali.rice.krad.data.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -23,7 +23,7 @@ import javax.persistence.Query;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Deprecated
-public class QueryByCriteria {
+class QueryByCriteria {
 
     private EntityManager entityManager;
     private Criteria criteria;
@@ -31,11 +31,11 @@ public class QueryByCriteria {
     
     public enum QueryByCriteriaType {SELECT, UPDATE, DELETE}
     
-    public QueryByCriteria(EntityManager entityManager, Criteria criteria) {
+    QueryByCriteria(EntityManager entityManager, Criteria criteria) {
         this(entityManager, criteria, QueryByCriteriaType.SELECT);
     }
 
-    public QueryByCriteria(EntityManager entityManager, Criteria criteria, QueryByCriteriaType type) {
+    QueryByCriteria(EntityManager entityManager, Criteria criteria, QueryByCriteriaType type) {
         this.entityManager = entityManager;
         this.criteria = criteria;
         this.type = type;

@@ -25,7 +25,6 @@ import org.kuali.rice.krad.dao.impl.BusinessObjectDaoOjb;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
-import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -168,20 +167,6 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
 		return getDao(clazz).findMatching(clazz, fieldValues);
 	}
-
-	/**
-	 * Has the proxied DAO handle the criteria
-	 * @see org.kuali.rice.krad.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
-	 */
-	//public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
-	//	Class clazz = null;
-	//	try {
-	//		clazz = Class.forName(criteria.getEntityName());
-	//	} catch (ClassNotFoundException cnfe) {
-	//		throw new RuntimeException("Attempted to run JPA Criteria which uses a non-existent class to query against: "+criteria.getEntityName(), cnfe);
-	//	}
-	//	return getDao(clazz).findMatching(criteria);
-	//}
 
 	/**
 	 * @see org.kuali.rice.krad.dao.BusinessObjectDao#findMatchingActive(java.lang.Class, java.util.Map)

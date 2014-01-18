@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.framework.persistence.jpa.criteria;
+package org.kuali.rice.krad.data.jpa;
 
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.TypeUtils;
@@ -78,7 +78,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("unchecked")
 @Deprecated
-public class Criteria {
+class Criteria {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);
 	private static final Pattern APOS_PAT = Pattern.compile("'");
@@ -142,7 +142,7 @@ public class Criteria {
 	 * 
 	 * @param entityName The class name of the initial JPA entity.
 	 */
-	public Criteria(String entityName) {
+	Criteria(String entityName) {
 		this(entityName, "a", true);
 	}
 
@@ -154,7 +154,7 @@ public class Criteria {
 	 * @param entityName The class name of the initial JPA entity.
 	 * @param alias The alias to use for this entity; if it is null, a new alias will be auto-generated.
 	 */
-	public Criteria(String entityName, String alias) {
+	Criteria(String entityName, String alias) {
 		this(entityName, alias, true);
 	}
 	
@@ -166,7 +166,7 @@ public class Criteria {
 	 * @param entityName The class name of the initial JPA entity.
 	 * @param includeEntityInSelect Indicates whether this entity's alias should be added to the SELECT clause.
 	 */
-	public Criteria(String entityName, boolean includeEntityInSelect) {
+	Criteria(String entityName, boolean includeEntityInSelect) {
 		this(entityName, "a", includeEntityInSelect);
 	}
 	
@@ -179,7 +179,7 @@ public class Criteria {
 	 * @param alias The alias to use for this entity; if it is null, a new alias will be auto-generated.
 	 * @param includeEntityAliasInSelect Indicates whether this entity's alias should be added to the SELECT clause.
 	 */
-	public Criteria(String entityName, String alias, boolean includeEntityAliasInSelect) {
+	Criteria(String entityName, String alias, boolean includeEntityAliasInSelect) {
 		this.initialEntityName = entityName;
 		from(entityName, alias, includeEntityAliasInSelect);
 	}

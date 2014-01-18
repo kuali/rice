@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.jpa;
+package org.kuali.rice.krad.data.jpa;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.krad.data.jpa.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.KRADTestCase;
 
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * ReportQueryByCriteriaTest tests {@link Criteria#Criteria(String, String)} and
- * {@link Criteria#toQuery(org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType, String[])}
+ * {@link Criteria#toQuery(QueryByCriteria.QueryByCriteriaType, String[])}
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

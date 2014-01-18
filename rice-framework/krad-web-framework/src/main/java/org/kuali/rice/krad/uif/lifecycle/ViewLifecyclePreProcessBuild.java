@@ -15,31 +15,24 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.view.View;
+
 /**
- * Represents a discrete task within the view lifecycle. 
+ * Performs the pre-process phase on a view, for use prior to caching.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @param <T> top level lifecycle element type this task applies to
  */
-public interface ViewLifecycleTask<T> extends Runnable {
+public class ViewLifecyclePreProcessBuild implements Runnable {
     
     /**
-     * Gets the top level lifecycle element type that this task applies to.
-     * 
-     * <p>
-     * If an element is not a subclass of this type, then the task will not be performed on that
-     * element.
-     * </p>
-     * 
-     * @return lifecycle element type
+     * {@inheritDoc}
      */
-    Class<T> getElementType();
-
-    /**
-     * Gets the phase this lifecycle task is a part of.
-     * 
-     * @return lifecycle phase
-     */
-    LifecycleElementState getElementState();
+    @Override
+    public void run() {
+        View view = ViewLifecycle.getView();
+        ProcessLogger.trace("pre-view-lifecycle:" + view.getId());
+        ViewLifecycle.getProcessor().performPhase(LifecyclePhaseFactory.preProcess(view, ""));
+    }
     
 }

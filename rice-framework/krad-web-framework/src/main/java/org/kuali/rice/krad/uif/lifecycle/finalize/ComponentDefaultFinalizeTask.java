@@ -38,11 +38,11 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
      */
     @Override
-    public FinalizeComponentPhase getPhase() {
-        return (FinalizeComponentPhase) super.getPhase();
+    public FinalizeComponentPhase getElementState() {
+        return (FinalizeComponentPhase) super.getElementState();
     }
 
     /**
@@ -51,7 +51,7 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Componen
     @SuppressWarnings("deprecation")
     @Override
     protected void performLifecycleTask() {
-        FinalizeComponentPhase phase = getPhase();
+        FinalizeComponentPhase phase = getElementState();
         phase.getElement().performFinalize(phase.getModel(), phase.getParent());
     }
 

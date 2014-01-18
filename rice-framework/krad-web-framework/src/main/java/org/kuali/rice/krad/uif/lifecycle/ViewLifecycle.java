@@ -582,6 +582,21 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
+     * Performs preliminary processing on a view, prior to caching.
+     * 
+     * <p>
+     * Logic evaluated at this preliminary phase result in global modifications to the view's
+     * subcomponents, so this method can be used apply additional logic to the View that is both
+     * pre-evaluated and shared by all instances of the component.
+     * </p>
+     * 
+     * @param view The view to preprocess.
+     */
+    public static void preProcess(View view) {
+        encapsulateLifecycle(view, null, null, null, new ViewLifecyclePreProcessBuild());
+    }
+    
+    /**
      * Executes the view lifecycle on the given <code>View</code> instance which will prepare it for
      * rendering
      * 

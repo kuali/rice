@@ -44,7 +44,7 @@ public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskB
         // the component can have an expression graph for which the expressions need pulled to
         // the list the expression service will evaluate
         ViewLifecycle.getExpressionEvaluator()
-            .populatePropertyExpressionsFromGraph((UifDictionaryBean) getPhase().getElement(), true);
+            .populatePropertyExpressionsFromGraph((UifDictionaryBean) getElementState().getElement(), true);
     }
 
 }

@@ -58,7 +58,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
      * @return original or adjusted id
      */
     public String adjustIdIfNecessary(LifecycleElement element) {
-        ApplyModelComponentPhase phase = (ApplyModelComponentPhase) getPhase();
+        ApplyModelComponentPhase phase = (ApplyModelComponentPhase) getElementState();
         String id = element.getId();
         
         if (phase.visit(element)) {
@@ -77,7 +77,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
     protected void performLifecycleTask() {
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         View view = ViewLifecycle.getView();
-        Component component = (Component) getPhase().getElement();
+        Component component = (Component) getElementState().getElement();
 
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
         if (componentPropertyReplacers != null) {

@@ -60,6 +60,20 @@ public interface LifecycleElement extends Serializable, Copyable {
      * 
      * @return property path
      */
+    String getViewPath();
+
+    /**
+     * Setter for {@link #getViewPath()}.
+     * 
+     * @param viewPath The property path.
+     */
+    void setViewPath(String viewPath);
+    
+    /**
+     * Gets the path relative the preceding state's component.
+     * 
+     * @return path relative the preceding state's component
+     */
     String getPath();
 
     /**

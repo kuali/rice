@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
@@ -34,10 +34,10 @@ public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
     /**
      * Create a task to assign component IDs during the initialize phase.
      * 
-     * @param phase The initialize phase for the component.
+     * @param elementState The initialize phase for the component.
      */
-    public AssignIdsTask(ViewLifecyclePhase phase) {
-        super(phase, LifecycleElement.class);
+    public AssignIdsTask(LifecycleElementState elementState) {
+        super(elementState, LifecycleElement.class);
     }
 
     /**
@@ -80,8 +80,8 @@ public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
         
         // Add the element's path to the hash code.
         hash += prime;
-        if (element.getPath() != null) {
-            hash += element.getPath().hashCode();
+        if (element.getViewPath() != null) {
+            hash += element.getViewPath().hashCode();
         }
         
         // Eliminate negatives without losing precision, and express in base-36
@@ -101,7 +101,7 @@ public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
      */
     @Override
     protected void performLifecycleTask() {
-        LifecycleElement element = getPhase().getElement();
+        LifecycleElement element = getElementState().getElement();
 
         if (StringUtils.isBlank(element.getId())) {
             element.setId(generateId(element, ViewLifecycle.getView()));

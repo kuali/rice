@@ -45,8 +45,8 @@ public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase<DataBind
     @Override
     protected void performLifecycleTask() {
         // implement readonly request overrides
-        LifecycleElement element = getPhase().getElement();
-        ViewModel viewModel = (ViewModel) getPhase().getModel();
+        LifecycleElement element = getElementState().getElement();
+        ViewModel viewModel = (ViewModel) ViewLifecycle.getModel();
         if ((element instanceof DataBinding)
                 && ViewLifecycle.getView().isSupportsRequestOverrideOfReadOnlyFields()
                 && !viewModel.getReadOnlyFieldsList().isEmpty()) {

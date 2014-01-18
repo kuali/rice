@@ -38,6 +38,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Utilities for working with {@link LifecycleElement} instances.
@@ -484,7 +485,6 @@ public final class ViewLifecycleUtils {
 
             lifecycleRestrictedProperties = Collections.unmodifiableMap(mutableLifecycleRestrictedProperties);
         }
-
     }
 
 }

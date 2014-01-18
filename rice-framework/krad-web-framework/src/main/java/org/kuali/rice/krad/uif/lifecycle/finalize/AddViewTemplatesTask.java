@@ -43,7 +43,7 @@ public class AddViewTemplatesTask extends ViewLifecycleTaskBase<Component> {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getPhase().getElement();
+        Component component = (Component) getElementState().getElement();
         View view = ViewLifecycle.getView();
 
         // add the components template to the views list of components

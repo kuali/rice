@@ -38,11 +38,11 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleEle
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
      */
     @Override
-    public FinalizeComponentPhase getPhase() {
-        return (FinalizeComponentPhase) super.getPhase();
+    public FinalizeComponentPhase getElementState() {
+        return (FinalizeComponentPhase) super.getElementState();
     }
 
     /**
@@ -51,8 +51,9 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleEle
     @Override
     protected void performLifecycleTask() {
         // invoke service override hook
-        ViewLifecycle.getHelper().performCustomFinalize(getPhase().getElement(), getPhase().getModel(),
-                getPhase().getParent());
+        ViewLifecycle.getHelper().performCustomFinalize(getElementState().getElement(),
+                ViewLifecycle.getModel(),
+                getElementState().getParent());
     }
 
 }

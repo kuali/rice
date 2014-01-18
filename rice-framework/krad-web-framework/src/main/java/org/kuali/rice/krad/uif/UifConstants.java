@@ -201,6 +201,7 @@ public class UifConstants {
         public static final String APPLY_MODEL = "APPLY_MODEL";
         public static final String FINALIZE = "FINALIZE";
         public static final String RENDER = "RENDER";
+        public static final String PRE_PROCESS = "PRE_PROCESS";
     }
 
     public static class ViewStatus {

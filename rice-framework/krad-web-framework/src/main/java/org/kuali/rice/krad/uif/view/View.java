@@ -900,10 +900,6 @@ public class View extends ContainerBase {
      * @return id of the page that should be displayed
      */
     public String getCurrentPageId() {
-        if (!isFinal()) {
-            checkMutable(true);
-        }
-        
         // default current page if not set
         if (StringUtils.isBlank(currentPageId)) {
             if (StringUtils.isNotBlank(entryPageId)) {

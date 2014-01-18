@@ -48,8 +48,8 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase<View> {
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
      */
     @Override
-    public FinalizeComponentPhase getPhase() {
-        return (FinalizeComponentPhase) super.getPhase();
+    public FinalizeComponentPhase getElementState() {
+        return (FinalizeComponentPhase) super.getElementState();
     }
 
     /**
@@ -57,7 +57,7 @@ public class FinalizeViewTask extends ViewLifecycleTaskBase<View> {
      */
     @Override
     protected void performLifecycleTask() {
-        View view = (View) getPhase().getElement();
+        View view = (View) getElementState().getElement();
         assert view == ViewLifecycle.getView();
         Object model = ViewLifecycle.getModel();
 

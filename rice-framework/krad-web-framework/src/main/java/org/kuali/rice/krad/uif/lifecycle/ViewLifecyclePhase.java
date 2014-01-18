@@ -17,21 +17,13 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Represents a phase in the view lifecycle. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ViewLifecyclePhase extends Runnable {
-    
-    /**
-     * Gets the element this lifecycle phase is responsible for processing.
-     * 
-     * @return element this lifecycle phase is responsible for processing
-     */
-    LifecycleElement getElement();
+public interface ViewLifecyclePhase extends LifecycleElementState, Runnable {
     
     /**
      * Gets the model to use in processing this phase.
@@ -47,13 +39,6 @@ public interface ViewLifecyclePhase extends Runnable {
      */
     Component getParent();
 
-    /**
-     * Gets the path relative the predecessor phase's component.
-     * 
-     * @return path relative the predecessor phase's component
-     */
-    String getPath();
-    
     /**
      * Determines if this lifecycle phase has completed processing.
      * 
@@ -76,19 +61,11 @@ public interface ViewLifecyclePhase extends Runnable {
     boolean isComplete();
     
     /**
-     * Gets the view lifecycle phase constant that corresponds to this phase processing task.
-     * 
-     * @return view lifecycle phase constant corresponding to this phase
-     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
-     */
-    String getViewPhase();
-
-    /**
      * Gets the task currently running.
      * 
      * @return the task currently running, null if this phase is not active.
      */
-    ViewLifecycleTask getCurrentTask();
+    ViewLifecycleTask<?> getCurrentTask();
     
     /**
      * Gets the event to notify on completion.

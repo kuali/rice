@@ -53,15 +53,15 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> 
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getPhase().getElement();
+        Component component = (Component) getElementState().getElement();
         
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers == null) {
             return;
         }
 
-        Object model = getPhase().getModel();
-        String runPhase = getPhase().getViewPhase();
+        Object model = ViewLifecycle.getModel();
+        String runPhase = getElementState().getViewPhase();
         for (ComponentModifier modifier : component.getComponentModifiers()) {
             // if run phase is initialize, invoke initialize method on modifier first
             if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {

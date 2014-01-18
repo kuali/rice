@@ -51,7 +51,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase<Component> {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getPhase().getElement();
+        Component component = (Component) getElementState().getElement();
         String finalizeMethodToCall = component.getFinalizeMethodToCall();
         MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
 
@@ -82,7 +82,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase<Component> {
 
         Object[] arguments = new Object[2 + additionalArguments.size()];
         arguments[0] = component;
-        arguments[1] = getPhase().getModel();
+        arguments[1] = ViewLifecycle.getModel();
 
         int argumentIndex = 1;
         for (Object argument : additionalArguments) {

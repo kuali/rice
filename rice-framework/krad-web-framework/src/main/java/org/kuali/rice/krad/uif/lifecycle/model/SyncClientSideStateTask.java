@@ -22,8 +22,9 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -53,8 +54,8 @@ public class SyncClientSideStateTask extends ViewLifecycleTaskBase<Component> {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getPhase().getElement();
-        ViewModel model = (ViewModel) getPhase().getModel();
+        Component component = (Component) getElementState().getElement();
+        ViewModel model = (ViewModel) ViewLifecycle.getModel();
 
         // find the map of state that was sent for component (if any)
         Map<String, Object> clientSideState = model.getClientStateForSyncing();

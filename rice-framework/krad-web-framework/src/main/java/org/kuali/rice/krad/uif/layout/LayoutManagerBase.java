@@ -55,6 +55,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     private String id;
     private String path;
+    private String viewPath;
     private String template;
     private String templateName;
 
@@ -140,7 +141,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus())) {
+        if (!viewStatus.equals(phase.getStartViewStatus()) &&
+                !viewStatus.equals(phase.getEndViewStatus())) {
             ViewLifecycle.reportIllegalState("Component " + getClass().getName() + " is not in expected status "
                     + phase.getStartViewStatus() + " marking the completion of a lifecycle phase, found " + viewStatus
                     + "\nPhase: " + phase);
@@ -262,6 +264,23 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
+    public String getViewPath() {
+        return this.viewPath;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setViewPath(String viewPath) {
+        checkMutable(true);
+        this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getPath() {
         return this.path;
     }
@@ -271,6 +290,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     @Override
     public void setPath(String path) {
+        checkMutable(true);
         this.path = path;
     }
 

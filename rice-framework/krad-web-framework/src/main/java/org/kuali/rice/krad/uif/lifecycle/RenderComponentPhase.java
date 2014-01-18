@@ -49,18 +49,15 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * 
      * @param element the component instance that should be updated
      * @param model top level object containing the data
-     * @param path Path to the component relative to the active view.
-     * @param parent The parent component.
+     * @param path Path to the component relative to its parent component.
+     * @param renderParent The parent component.
      * @param pendingChildren The number of child rendering phases to expect to be queued for
      *        processing before this phase.
      */
-    protected void prepare(LifecycleElement element, Object model,
-            String path, RenderComponentPhase parent, int pendingChildren) {
-        Component parentComponent = parent == null ? null
-                : parent.getElement() instanceof Component ? (Component) parent.getElement()
-                        : parent.getParent();
+    protected void prepare(LifecycleElement element, Object model, String path,
+            Component parentComponent, RenderComponentPhase renderParent, int pendingChildren) {
         super.prepare(element, model, path, parentComponent, null);
-        this.renderParent = parent;
+        this.renderParent = renderParent;
         this.pendingChildren = pendingChildren;
     }
 

@@ -32,7 +32,6 @@ import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpress
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
-import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for initializing a component.
@@ -125,18 +124,19 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
         LifecycleElement element = getElement();
         Object model = getModel();
 
+        String nestedPathPrefix;
         Component nestedParent;
         if (element instanceof Component) {
             nestedParent = (Component) element;
+            nestedPathPrefix = "";
         } else {
             nestedParent = getParent();
+            nestedPathPrefix = element.getPath() + ".";
         }
         
         for (Entry<String, LifecycleElement> nestedElementEntry :
                 ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
-            String path = getPath();
-            String nestedPath = (StringUtils.isEmpty(path) ? "" : path + ".")
-                    + nestedElementEntry.getKey();
+            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
             if (nestedElement != null && !nestedElement.isInitialized()) {

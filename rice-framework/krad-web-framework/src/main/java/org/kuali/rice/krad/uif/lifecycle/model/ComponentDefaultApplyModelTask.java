@@ -16,9 +16,10 @@
 package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
  * Perform default apply model behavior defined for the component.
@@ -37,11 +38,11 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase<Compon
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
      */
     @Override
-    public ApplyModelComponentPhase getPhase() {
-        return (ApplyModelComponentPhase) super.getPhase();
+    public ApplyModelComponentPhase getElementState() {
+        return (ApplyModelComponentPhase) super.getElementState();
     }
 
     /**
@@ -50,8 +51,8 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase<Compon
     @SuppressWarnings("deprecation")
     @Override
     protected void performLifecycleTask() {
-        ApplyModelComponentPhase phase = getPhase();
-        phase.getElement().performApplyModel(phase.getModel(), phase.getParent());
+        ApplyModelComponentPhase phase = getElementState();
+        phase.getElement().performApplyModel(ViewLifecycle.getModel(), phase.getParent());
     }
 
 }

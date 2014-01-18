@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -40,6 +41,8 @@ import org.kuali.rice.krad.uif.util.ViewCleaner;
  */
 public class ViewIndex implements Serializable {
     private static final long serialVersionUID = 4700818801272201371L;
+    
+    private static final Logger LOG = Logger.getLogger(ViewIndex.class);
 
     protected Map<String, Component> index;
     protected Map<String, DataField> dataFieldIndex;
@@ -536,7 +539,11 @@ public class ViewIndex implements Serializable {
         if (this.index != null) {
             Map<String, Component> indexCopy = new HashMap<String, Component>();
             for (Map.Entry<String, Component> indexEntry : this.index.entrySet()) {
-                indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                if (indexEntry.getValue() instanceof View) {
+                    LOG.warn("view reference at " + indexEntry);
+                } else {
+                    indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                }
             }
 
             viewIndexCopy.index = indexCopy;

@@ -84,6 +84,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String id;
     private String baseId;
     private String path;
+    private String viewPath;
     private String template;
     private String templateName;
 
@@ -306,7 +307,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus())) {
+        if (!viewStatus.equals(phase.getStartViewStatus()) &&
+                !viewStatus.equals(phase.getEndViewStatus())) {
             ViewLifecycle.reportIllegalState("Component "
                     + getClass().getName()
                     + " is not in expected status "
@@ -604,6 +606,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setBaseId(String baseId) {
         checkMutable(true);
         this.baseId = baseId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getViewPath() {
+        return this.viewPath;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setViewPath(String viewPath) {
+        checkMutable(true);
+        this.viewPath = viewPath;
     }
 
     /**

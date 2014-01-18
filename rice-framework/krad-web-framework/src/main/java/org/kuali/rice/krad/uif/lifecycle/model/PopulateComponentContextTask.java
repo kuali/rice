@@ -44,8 +44,8 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase<Lifecycl
      * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
      */
     @Override
-    public ApplyModelComponentPhase getPhase() {
-        return (ApplyModelComponentPhase) super.getPhase();
+    public ApplyModelComponentPhase getElementState() {
+        return (ApplyModelComponentPhase) super.getElementState();
     }
 
     /**
@@ -53,9 +53,9 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase<Lifecycl
      */
     @Override
     protected void performLifecycleTask() {
-        LifecycleElement element = getPhase().getElement();
-        LifecycleElement parent = getPhase().getParent();
-        Map<String, Object> commonContext = getPhase().getCommonContext();
+        LifecycleElement element = getElementState().getElement();
+        LifecycleElement parent = getElementState().getParent();
+        Map<String, Object> commonContext = getElementState().getCommonContext();
         
         if (parent != null) {
             element.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, parent);

@@ -30,6 +30,7 @@ import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
@@ -121,9 +122,11 @@ public class UifDictionaryIndex implements Runnable {
             View view = ddBeans.getBean(beanName, View.class);
 
             ProcessLogger.trace("view:getBean");
-            view.getViewHelperService().preprocessView(view);
+            ViewLifecycle.preProcess(view);
 
             ProcessLogger.trace("view:preProcess");
+            
+            // TODO: remove
             CopyUtils.preventModification(view);
 
             ProcessLogger.trace("view:preventModification");

@@ -43,8 +43,8 @@ public class InitializeContainerFromHelperTask extends ViewLifecycleTaskBase<Con
     @Override
     protected void performLifecycleTask() {
         // invoke hook point for adding components through code
-        ViewLifecycle.getHelper().addCustomContainerComponents(getPhase().getModel(),
-                (Container) getPhase().getElement());
+        ViewLifecycle.getHelper().addCustomContainerComponents(ViewLifecycle.getModel(),
+                (Container) getElementState().getElement());
     }
 
 }

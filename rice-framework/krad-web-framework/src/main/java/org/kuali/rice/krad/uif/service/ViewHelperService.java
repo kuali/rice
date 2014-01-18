@@ -40,14 +40,6 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 public interface ViewHelperService {
     
     /**
-     * Preprocess the view prior to caching. This method may be used to set initial state common to
-     * all views, and reduce caching and indexing overhead after copying.
-     * 
-     * @param view The view to preprocess
-     */
-    void preprocessView(View view);
-
-    /**
      * Hook for service overrides to perform custom initialization prior to view initialization.
      * 
      * @param model The model.
@@ -385,7 +377,7 @@ public interface ViewHelperService {
     /**
      * Gets an expression evaluator factory for use with the current view.
      *
-     * @returns expression evaluator factory
+     * @return expression evaluator factory
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
 

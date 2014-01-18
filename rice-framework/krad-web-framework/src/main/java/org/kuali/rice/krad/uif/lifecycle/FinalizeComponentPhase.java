@@ -28,7 +28,6 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -136,25 +135,26 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         LifecycleElement element = getElement();
         Object model = getModel();
 
+        String nestedPathPrefix;
+        Component nestedParent;
+        if (element instanceof Component) {
+            nestedParent = (Component) element;
+            nestedPathPrefix = "";
+        } else {
+            nestedParent = getParent();
+            nestedPathPrefix = element.getPath() + ".";
+        }
+
         // initialize nested components
         int pendingChildren = 0;
 
         for (Entry<String, LifecycleElement> nestedComponentEntry :
                 ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
-            String path = getPath();
-            String nestedPath = (StringUtils.isEmpty(path) ? "" : path + ".")
-                    + nestedComponentEntry.getKey();
+            String nestedPath = nestedPathPrefix + nestedComponentEntry.getKey();
             LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
             if (nestedElement != null && !nestedElement.isFinal()) {
                 pendingChildren++;
-                
-                Component nestedParent;
-                if (element instanceof Component) {
-                    nestedParent = (Component) element;
-                } else {
-                    nestedParent = getParent();
-                }
                 
                 FinalizeComponentPhase nestedFinalizePhase = LifecyclePhaseFactory
                         .finalize(nestedElement, model, nestedPath, nestedParent);

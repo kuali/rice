@@ -215,21 +215,22 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         LifecycleElement element = getElement();
         Object model = getModel();
 
+        String nestedPathPrefix;
+        Component nestedParent;
+        if (element instanceof Component) {
+            nestedParent = (Component) element;
+            nestedPathPrefix = "";
+        } else {
+            nestedParent = getParent();
+            nestedPathPrefix = element.getPath() + ".";
+        }
+
         for (Entry<String, LifecycleElement> nestedElementEntry :
                 ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
-            String path = getPath();
-            String nestedPath = (StringUtils.isEmpty(path) ? "" : path + ".")
-                    + nestedElementEntry.getKey();
+            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
             if (nestedElement != null && !nestedElement.isModelApplied()) {
-                Component nestedParent;
-                if (element instanceof Component) {
-                    nestedParent = (Component) element;
-                } else {
-                    nestedParent = getParent();
-                }
-                
                 ApplyModelComponentPhase nestedApplyModelPhase = LifecyclePhaseFactory
                         .applyModel(nestedElement, model, nestedPath, nestedParent,
                                 null, visitedIds);

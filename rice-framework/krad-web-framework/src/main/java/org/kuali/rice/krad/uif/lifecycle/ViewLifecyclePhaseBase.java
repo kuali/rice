@@ -40,14 +40,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private LifecycleElement element;
     private Object model;
     private Component parent;
+    private String viewPath;
     private String path;
     private ViewLifecyclePhaseBase predecessor;
 
     private ViewLifecyclePhaseBase nextPhase;
-    
+
     private boolean processed;
     private boolean completed;
-  
+
     private int pendingSuccessors = -1;
 
     private ViewLifecycleTask currentTask;
@@ -60,6 +61,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         element = null;
         model = null;
         path = null;
+        viewPath = null;
         predecessor = null;
         nextPhase = null;
         processed = false;
@@ -72,13 +74,13 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * 
      * @param element The element to be processed by this phase.
      * @param model The model associated with the lifecycle at this phase.
-     * @param path Path to the component relative to the active view.
-     * @param parent The parent element. For top-down phases, this component will be associated
-     *        with the predecessor phase. For bottom-up phases (rendering), this element will be
+     * @param path Path to the component relative to its parent component.
+     * @param parent The parent element. For top-down phases, this component will be associated with
+     *        the predecessor phase. For bottom-up phases (rendering), this element will be
      *        associated with a successor phases.
      * @param nextPhase The lifecycle phase to queue directly upon completion of this phase, if
      *        applicable.
-     *        
+     * 
      * @see LifecyclePhaseFactory
      */
     protected void prepare(LifecycleElement element, Object model,
@@ -91,6 +93,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
         this.model = model;
         this.path = path;
+        
+        String parentViewPath = parent == null ? null : parent.getViewPath();
+        if (StringUtils.isEmpty(parentViewPath)) {
+            this.viewPath = path;
+        } else {
+            this.viewPath = parentViewPath + "." + path;
+        }
+        
         this.element = element;
         this.parent = parent;
         this.nextPhase = nextPhase;
@@ -154,6 +164,21 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     @Override
     public String getPath() {
         return this.path;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getViewPath() {
+        return this.viewPath;
+    }
+
+    /**
+     * @param viewPath the viewPath to set
+     */
+    public void setViewPath(String viewPath) {
+        this.viewPath = viewPath;
     }
 
     /**
@@ -239,7 +264,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
                 processor.setActivePhase(this);
 
-                if (!element.getViewStatus().equals(getStartViewStatus())) {
+                if (element.getViewStatus() != null &&
+                        !element.getViewStatus().equals(getStartViewStatus())) {
                     ViewLifecycle.reportIllegalState(
                             "Component is not in the expected status " + getStartViewStatus()
                                     + " at the start of this phase, found " + element.getClass()
@@ -247,41 +273,40 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                                     "\nThis phase: " + this);
                 }
 
-                trace("path-update " + element.getPath());
+                trace("path-update " + element.getViewPath());
                 View view = ViewLifecycle.getView();
-                
+
                 if (ViewLifecycle.isStrict()) {
                     if (element == view) {
-                        if (!StringUtils.isEmpty(path)) {
-                            ViewLifecycle.reportIllegalState("View path is not empty " + path);
+                        if (!StringUtils.isEmpty(viewPath)) {
+                            ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
                         }
                     } else {
                         LifecycleElement referredElement = (LifecycleElement)
-                                ObjectPropertyUtils.getPropertyValue(view, path);
+                                ObjectPropertyUtils.getPropertyValue(view, viewPath);
                         if (referredElement != null) {
                             referredElement = (LifecycleElement) referredElement.unwrap();
                             if (element != referredElement) {
-                                ViewLifecycle.reportIllegalState("Path " + path
+                                ViewLifecycle.reportIllegalState("View path " + viewPath
                                         + " refers to an element other than " + element.getClass()
-                                        + " " + element.getId() + " " + element.getPath()
+                                        + " " + element.getId() + " " + element.getViewPath()
                                         + (referredElement == null ? "" : " " + referredElement.getClass()
-                                                + " " + referredElement.getId() + " " + referredElement.getPath()));
+                                                + " " + referredElement.getId() + " " + referredElement.getViewPath()));
                             }
                         }
                     }
                 }
                 element.setPath(getPath());
-                
+                element.setViewPath(getViewPath());
+
                 Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                 initializePendingTasks(pendingTasks);
 
                 while (!pendingTasks.isEmpty()) {
                     ViewLifecycleTask<?> task = pendingTasks.poll();
-                    if (task.getElementType().isInstance(element)) {
-                        currentTask = task;
-                        task.run();
-                        currentTask = null;
-                    }
+                    currentTask = task;
+                    task.run();
+                    currentTask = null;
                 }
 
                 element.setViewStatus(this);
@@ -339,7 +364,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         trace("complete");
         assert !completed : this;
         completed = true;
-        
+
         LifecycleEvent event = getEventToNotify();
         if (event != null) {
             ViewLifecycle.getActiveLifecycle().invokeEventListeners(
@@ -350,7 +375,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
         if (nextPhase != null) {
             assert nextPhase.predecessor == null : this + " " + nextPhase;
-            
+
             // Assign a predecessor to the next phase, to defer notification until
             // after all phases in the chain have completed processing.
             if (predecessor != null) {
@@ -368,7 +393,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
             return;
         }
-        
+
         synchronized (this) {
             if (predecessor != null) {
                 synchronized (predecessor) {
@@ -396,7 +421,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         while (!toPrint.isEmpty()) {
             ViewLifecyclePhase tp = toPrint.poll();
 
-            if (tp.getModel() == null || tp.getElement() == null) {
+            if (tp.getElement() == null) {
                 sb.append("\n      ");
                 sb.append(tp.getClass().getSimpleName());
                 sb.append(" (recycled)");
@@ -405,8 +430,10 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
             String indent;
             if (tp == this) {
-                sb.append("Model: ");
-                sb.append(this.model.getClass().getSimpleName());
+                if (this.model != null) {
+                    sb.append("Model: ");
+                    sb.append(this.model.getClass().getSimpleName());
+                }
                 sb.append("\nProcessed? ");
                 sb.append(processed);
                 indent = "\n";
@@ -419,7 +446,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             sb.append(" ");
             sb.append(System.identityHashCode(tp));
             sb.append(" ");
-            sb.append(tp.getPath());
+            sb.append(tp.getViewPath());
             sb.append(" ");
             sb.append(tp.getElement().getClass().getSimpleName());
             sb.append(" ");

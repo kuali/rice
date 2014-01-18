@@ -39,11 +39,36 @@ public final class LifecyclePhaseFactory {
     private LifecyclePhaseFactory() {}
 
     /**
+     * Creates a new lifecycle phase processing task for pre-processing a lifecycle element.
+     * 
+     * @param element The element.
+     * @param path Path to the component relative to its parent component.
+     * @return lifecycle processing task for processing the initialize phase on the component
+     */
+    public static PreProcessElementPhase preProcess(LifecycleElement element, String path) {
+        return preProcess(element, path, null);
+    }
+    
+    /**
+     * Creates a new lifecycle phase processing task for pre-processing a lifecycle element.
+     * 
+     * @param element The element.
+     * @param path Path to the component relative to its parent component.
+     * @param parent The parent component.
+     * @return lifecycle processing task for processing the initialize phase on the component
+     */
+    public static PreProcessElementPhase preProcess(LifecycleElement element, String path, Component parent) {
+        PreProcessElementPhase preProcessPhase = RecycleUtils.getInstance(PreProcessElementPhase.class);
+        preProcessPhase.prepare(element, path, parent);
+        return preProcessPhase;
+    }
+    
+    /**
      * Creates a new lifecycle phase processing task for performing initialization on a component.
      * 
      * @param component The component.
      * @param model The model
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(Component component, Object model, String path) {
@@ -56,7 +81,7 @@ public final class LifecyclePhaseFactory {
      * @param element The element.
      * @param model The model
      * @param parent The parent element.
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @return lifecycle processing task for processing the initialize phase on the component
@@ -73,7 +98,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, String path) {
@@ -86,7 +111,7 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param parent The component.
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model,
@@ -100,7 +125,7 @@ public final class LifecyclePhaseFactory {
      * @param element The element.
      * @param model The model
      * @param parent The parent component.
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      *        initialize phase.
      * @param visitedIds The set of visited IDs to track while applying model.
@@ -119,7 +144,7 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component.
      * @param model The model
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, String path) {
@@ -132,7 +157,7 @@ public final class LifecyclePhaseFactory {
      * @param element The component.
      * @param model The model
      * @param parent The parent component.
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(LifecycleElement element, Object model,
@@ -147,12 +172,12 @@ public final class LifecyclePhaseFactory {
      * 
      * @param component The component to render.
      * @param model The model associated with the component.
-     * @param path Path to the component relative to the active view.
+     * @param path Path to the component relative to its parent component.
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(Component component, Object model, String path) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
-        renderPhase.prepare(component, model, path, null, 0);
+        renderPhase.prepare(component, model, path, null, null, 0);
         return renderPhase;
     }
 
@@ -160,17 +185,17 @@ public final class LifecyclePhaseFactory {
      * Creates a new lifecycle phase processing task for rendering a component.
      * 
      * @param finalizePhase The finalize component phase associated with this rendering phase.
-     * @param parent The rendering phase for the parent of the component associated with this phase.
+     * @param renderParent The rendering phase for the parent of the component associated with this phase.
      * @param pendingChildren The number of child phases to expect to be queued with this phase as
      *        their rendering parent.
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(
-            FinalizeComponentPhase finalizePhase, RenderComponentPhase parent, int pendingChildren) {
+            FinalizeComponentPhase finalizePhase, RenderComponentPhase renderParent, int pendingChildren) {
         LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
         renderPhase.prepare(element, finalizePhase.getModel(), finalizePhase.getPath(),
-                parent, pendingChildren);
+                finalizePhase.getParent(), renderParent, pendingChildren);
         return renderPhase;
     }
 

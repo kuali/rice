@@ -49,7 +49,7 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getPhase().getElement();
+        Component component = (Component) getElementState().getElement();
         LifecycleRenderingContext renderingContext = ViewLifecycle.getRenderingContext();
         renderingContext.clearRenderingBuffer();
 

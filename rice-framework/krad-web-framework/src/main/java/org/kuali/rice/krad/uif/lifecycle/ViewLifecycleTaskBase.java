@@ -29,17 +29,24 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
 
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
+    /**
+     * Property value for {@link #getElementType()}.
+     */
     private final Class<T> elementType;
-    private ViewLifecyclePhase phase;
+    
+    /**
+     * Property value for {@link #getElementState()}.
+     */
+    private LifecycleElementState elementState;
 
     /**
      * Creates a lifecycle processing task for a specific phase.
      * 
-     * @param phase The phase this task is a part of.
+     * @param elementState The phase this task is a part of.
      * @param elementType Top level element type.
      */
-    protected ViewLifecycleTaskBase(ViewLifecyclePhase phase, Class<T> elementType) {
-        this.phase = phase;
+    protected ViewLifecycleTaskBase(LifecycleElementState elementState, Class<T> elementType) {
+        this.elementState = elementState;
         this.elementType = elementType;
     }
 
@@ -52,15 +59,25 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
      * Resets this task to facilitate recycling.
      */
     void recycle() {
-        this.phase = null;
+        this.elementState = null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ViewLifecyclePhase getPhase() {
-        return phase;
+    public LifecycleElementState getElementState() {
+        return elementState;
+    }
+
+    /**
+     * Sets the phase on a recycled task.
+     * 
+     * @param elementState The phase to set.
+     * @see #getElementState()
+     */
+    void setElementState(LifecycleElementState elementState) {
+        this.elementState = elementState;
     }
 
     /**
@@ -69,16 +86,6 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     @Override
     public Class<T> getElementType() {
         return this.elementType;
-    }
-
-    /**
-     * Sets the phase on a recycled task.
-     * 
-     * @param phase The phase to set.
-     * @see #getPhase()
-     */
-    void setPhase(ViewLifecyclePhase phase) {
-        this.phase = phase;
     }
 
     /**
@@ -94,12 +101,17 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     @Override
     public final void run() {
         try {
-            if (ViewLifecycle.getPhase() != phase) {
-                throw new IllegalStateException("The phase this task is a part of is not active.");
+            if (!getElementType().isInstance(elementState.getElement())) {
+                return;
             }
 
+            // TODO: REMOVE this restriction
+            //            if (ViewLifecycle.getPhase() != elementState) {
+            //                throw new IllegalStateException("The phase this task is a part of is not active.");
+            //            }
+
             if (ProcessLogger.isTraceActive()) {
-                ProcessLogger.countBegin("lc-task-" + phase.getViewPhase());
+                ProcessLogger.countBegin("lc-task-" + elementState.getViewPhase());
             }
 
             try {
@@ -107,9 +119,14 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
             } finally {
 
                 if (ProcessLogger.isTraceActive()) {
-                    ProcessLogger.countEnd("lc-task-" + phase.getViewPhase(), getClass().getName() + " "
-                            + phase.getClass().getName() + " " + phase.getElement().getClass().getName() + " "
-                            + phase.getElement().getId());
+                    ProcessLogger.countEnd("lc-task-" + elementState.getViewPhase(),
+                            getClass().getName()
+                            + " "
+                            + elementState.getClass().getName()
+                            + " "
+                            + elementState.getElement().getClass().getName()
+                            + " "
+                            + elementState.getElement().getId());
                 }
             }
 
@@ -135,8 +152,8 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + " " + getPhase().getElement().getClass().getSimpleName()
-                + " " + getPhase().getElement().getId();
+                + " " + getElementState().getElement().getClass().getSimpleName()
+                + " " + getElementState().getElement().getId();
     }
 
 }

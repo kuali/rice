@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,35 +15,33 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
- * Perform default initialization defined for the component.
+ * Sort items in a container
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase<Component> {
+public class SortContainerTask extends ViewLifecycleTaskBase<Container> {
 
     /**
-     * Create a task to assign component IDs during the initialize phase.
+     * Creates an instance based on element state.
      * 
-     * @param phase The initialize phase for the component.
+     * @param elementState lifecycle element state information
      */
-    public ComponentDefaultInitializeTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    protected SortContainerTask(LifecycleElementState elementState) {
+        super(elementState, Container.class);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("deprecation")
     @Override
     protected void performLifecycleTask() {
-        // invoke component to initialize itself after properties have been set
-        getElementState().getElement().performInitialization(ViewLifecycle.getModel());
+            Container container = (Container) getElementState().getElement();
+            container.sortItems();
     }
 
 }

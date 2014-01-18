@@ -18,17 +18,18 @@ package org.kuali.rice.ksb.messaging.dao.impl;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Map;
@@ -83,14 +84,16 @@ public class MessageQueueDaoJpa implements MessageQueueDAO {
     }
 
     public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows) {
-        Criteria criteria = new Criteria(PersistedMessageBO.class.getName());
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PersistedMessageBO> query = builder.createQuery(PersistedMessageBO.class);
+        Root<PersistedMessageBO> message = query.from(PersistedMessageBO.class);
+        Predicate predicate = builder.conjunction();
         for (Map.Entry<String, String> entry : criteriaValues.entrySet()) {
-            criteria.eq(entry.getKey(), entry.getValue());
+            predicate = builder.and(predicate, builder.equal(message.get(entry.getKey()), entry.getValue()));
         }
-
-        QueryByCriteria query = new QueryByCriteria(entityManager, criteria);
-
-        return query.toQuery().getResultList();
+        query.where(predicate);
+        TypedQuery<PersistedMessageBO> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultList();
     }
 
     public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments) {

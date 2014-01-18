@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 
@@ -320,15 +319,12 @@ public class Criteria {
         tokens.add(new ExistsCriteria(exists));
     }
 	
-	public String toQuery(QueryByCriteriaType type) {
-		String queryType = type.toString();
-		if (type.equals(QueryByCriteriaType.SELECT)) {
-			if(distinct){
-				queryType += " " + "DISTINCT";
-			}
-
-			queryType += " " + alias;
+	public String toQuery() {
+		String queryType = "SELECT";
+		if(distinct){
+			queryType += " " + "DISTINCT";
 		}
+		queryType += " " + alias;
 		String queryString = queryType + " FROM " + entityName + " AS " + alias;
 		if (!tokens.isEmpty()) {
 			queryString += " WHERE " + buildWhere();
@@ -522,7 +518,7 @@ public class Criteria {
 		}
 		whereClause += subQuery.alias+"."+attribute + " = " + alias+"."+match;
 
-		tokens.add("EXISTS (" + subQuery.toQuery(QueryByCriteriaType.SELECT) + whereClause + " ) ");
+		tokens.add("EXISTS (" + subQuery.toQuery() + whereClause + " ) ");
 
 	}
 

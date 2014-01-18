@@ -20,11 +20,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="KRNS_LOOKUP_SEL_T")
+@NamedQueries({
+        @NamedQuery(name = "SelectedObjectIds.deleteOldSelectedObjectIds", query = "delete from SelectedObjectIds where lookupDate < :expirationDate")
+})
+
 public class SelectedObjectIds extends MultipleValueLookupMetadata {
     @Lob
 	@Basic(fetch=FetchType.LAZY)

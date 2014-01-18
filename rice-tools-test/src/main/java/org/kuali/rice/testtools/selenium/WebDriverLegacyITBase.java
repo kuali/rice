@@ -2846,8 +2846,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClickByXpath(allDaySelector);
         Thread.sleep(5000); //allow for ajax refresh
+        checkForIncidentReport();
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
-        Thread.sleep(5000); //allow for line to be added           
+        Thread.sleep(5000); //allow for line to be added
     }
 
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {

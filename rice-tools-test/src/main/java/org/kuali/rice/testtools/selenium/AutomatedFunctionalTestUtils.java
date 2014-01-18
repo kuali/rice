@@ -246,8 +246,8 @@ public class AutomatedFunctionalTestUtils {
         viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
 
         String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf("<pre>") + 5, stackTrace.length());
-        stackTrace = stackTrace.substring(0, stackTrace.indexOf("</"));
+        stackTrace = stackTrace.substring(stackTrace.indexOf("<pre") + 4, stackTrace.length());
+        stackTrace = stackTrace.substring(stackTrace.indexOf(">"), stackTrace.indexOf("</"));
 
         return "\nIncident report "
                 + message

@@ -2425,7 +2425,59 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected void testPeopleFlow() throws Exception {
+    protected void testPeopleFlowBlanketApprove() throws Exception {
+        String docId = peopleFlowCreateNew();
+
+        waitAndClickButtonByText("blanket approve");
+        Thread.sleep(3000);
+        checkForIncidentReport();
+        jGrowl("Blanket Approve");
+        Thread.sleep(5000);
+
+        //Close the Doc
+        //findElement(By.id("uif-close")).click();
+        //Thread.sleep(3000);
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
+        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Document Search is " + docId + " present?");
+        selectFrameIframePortlet();
+        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Is doc status final?");
+        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        driver.switchTo().defaultContent();
+        findElement(By.name("imageField")).click();
+        Thread.sleep(5000);
+        // TODO open the document and verify data is as we expect.
+    }
+
+    protected void testPeopleFlowCreateNew() throws Exception {
+        String docId = peopleFlowCreateNew();
+
+        waitAndClickButtonByText("submit");
+        Thread.sleep(3000);
+        checkForIncidentReport();
+
+        //Close the Doc
+        //findElement(By.id("uif-close")).click();
+        //Thread.sleep(3000);
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
+        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Document Search is " + docId + " present?");
+        selectFrameIframePortlet();
+        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Is doc status enroute?");
+        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        driver.switchTo().defaultContent();
+        findElement(By.name("imageField")).click();
+        Thread.sleep(5000);
+        // TODO open the document and verify data is as we expect.
+    }
+
+    private String peopleFlowCreateNew() throws InterruptedException {
         selectFrameIframePortlet();
 
         waitAndClickByLinkText("Create New");
@@ -2454,29 +2506,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
         waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
         Thread.sleep(3000);
-
-        waitAndClickButtonByText("blanket approve");
-        Thread.sleep(3000);
-        checkForIncidentReport();
-        jGrowl("Blanket Approve");
-        Thread.sleep(5000);
-
-        //Close the Doc
-        //findElement(By.id("uif-close")).click();
-        //Thread.sleep(3000);
-        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
-        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Document Search is " + docId + " present?");
-        selectFrameIframePortlet();
-        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Is doc status final?");
-        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
-        driver.switchTo().defaultContent();
-        findElement(By.name("imageField")).click();
-        Thread.sleep(5000);
-        // TODO open the document and verify data is as we expect.
+        return docId;
     }
 
     protected void testTermLookupAssertions() throws Exception {

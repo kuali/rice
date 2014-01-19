@@ -190,7 +190,16 @@ public class JiraAwareFailureUtils {
         Pattern pattern = null;
         Matcher matcher = null;
 
-        Iterator iter = regexJiraMatches.keySet().iterator();
+        Iterator iter = jiraMatches.keySet().iterator();
+
+        while (iter.hasNext()) {
+            key = (String)iter.next();
+            if (contents.contains(key)) {
+                return("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
+            }
+        }
+
+        iter = regexJiraMatches.keySet().iterator();
 
         while (iter.hasNext()) {
             key = (String)iter.next();
@@ -202,14 +211,6 @@ public class JiraAwareFailureUtils {
             }
         }
 
-        iter = jiraMatches.keySet().iterator();
-
-        while (iter.hasNext()) {
-            key = (String)iter.next();
-            if (contents.contains(key)) {
-                return("\n" + JIRA_BROWSE_URL + jiraMatches.get(key) + "\n\n" + contents);
-            }
-        }
         return "";
     }
 }

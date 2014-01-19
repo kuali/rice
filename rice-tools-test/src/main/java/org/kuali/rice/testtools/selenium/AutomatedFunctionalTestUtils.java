@@ -239,15 +239,15 @@ public class AutomatedFunctionalTestUtils {
         String chunk =  contents.substring(contents.indexOf("Incident Feedback"), contents.lastIndexOf("</div>") );
         String docId = chunk.substring(chunk.lastIndexOf("Document Id"), chunk.indexOf("View Id"));
         docId = docId.substring(0, docId.indexOf("</div>"));
-        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length());
+        docId = docId.substring(docId.lastIndexOf(">") + 2, docId.length()).trim();
 
         String viewId = chunk.substring(chunk.lastIndexOf("View Id"), chunk.indexOf("Error Message"));
         viewId = viewId.substring(0, viewId.indexOf("</div>"));
-        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length());
+        viewId = viewId.substring(viewId.lastIndexOf(">") + 2, viewId.length()).trim();
 
         String stackTrace = chunk.substring(chunk.lastIndexOf("(only in dev mode)"), chunk.length());
         stackTrace = stackTrace.substring(stackTrace.indexOf("<pre") + 4, stackTrace.length());
-        stackTrace = stackTrace.substring(stackTrace.indexOf(">"), stackTrace.indexOf("</"));
+        stackTrace = stackTrace.substring(stackTrace.indexOf(">") + 1, stackTrace.indexOf("</"));
 
         return "\nIncident report "
                 + message

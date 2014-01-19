@@ -34,6 +34,8 @@ import java.io.Serializable;
  */
 public abstract class IdClassBase implements Serializable {
 
+    private static final long serialVersionUID = -69571039682070713L;
+
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);

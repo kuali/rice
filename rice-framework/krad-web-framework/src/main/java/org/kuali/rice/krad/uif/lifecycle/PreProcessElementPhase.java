@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 
@@ -96,9 +97,10 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
             nestedParent = getParent();
             nestedPathPrefix = element.getPath() + ".";
         }
-        
-        for (Entry<String, LifecycleElement> nestedElementEntry :
-                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
+
+        Map<String, LifecycleElement> nestedElements =
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()); 
+        for (Entry<String, LifecycleElement> nestedElementEntry : nestedElements.entrySet()) {
             String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
@@ -108,6 +110,7 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
                         nestedElement, nestedPath, nestedParent));
             }
         }
+        ViewLifecycleUtils.recycleElementMap(nestedElements);
     }
 
     /**

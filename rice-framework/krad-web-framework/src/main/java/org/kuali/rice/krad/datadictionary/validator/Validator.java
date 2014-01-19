@@ -273,6 +273,8 @@ public class Validator {
                 runValidationsOnLifecycle(temp, tracer.getCopy());
             }
         }
+        
+        ViewLifecycleUtils.recycleElementMap(nestedComponents);
     }
 
     /**

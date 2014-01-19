@@ -147,6 +147,7 @@ public final class ViewLifecycleUtils {
      * @return map, or a newly created map if the provided map was empty and the nested element was
      *         not null.
      */
+    @SuppressWarnings("unchecked")
     private static Map<String, LifecycleElement> addElementToLifecycleMap(
             Map<String, LifecycleElement> map, String propertyName, LifecycleElement nestedElement) {
         if (nestedElement == null) {
@@ -155,7 +156,7 @@ public final class ViewLifecycleUtils {
 
         Map<String, LifecycleElement> returnMap = map;
         if (returnMap == Collections.EMPTY_MAP) {
-            returnMap = new LinkedHashMap<String, LifecycleElement>();
+            returnMap = RecycleUtils.getInstance(LinkedHashMap.class);
         }
 
         returnMap.put(propertyName, (LifecycleElement) nestedElement.unwrap());
@@ -220,6 +221,18 @@ public final class ViewLifecycleUtils {
         }
 
         return elements == Collections.EMPTY_MAP ? elements : Collections.unmodifiableMap(elements);
+    }
+    
+    /**
+     * Recycle a map returned by {@link #getElementsForLifecycle(LifecycleElement, String)}.
+     * 
+     * @param elementMap map to recycle
+     */
+    public static void recycleElementMap(Map<?, ?> elementMap) {
+        if (elementMap instanceof LinkedHashMap) {
+            elementMap.clear();
+            RecycleUtils.recycle(elementMap);
+        }
     }
 
     /**

@@ -225,8 +225,9 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
             nestedPathPrefix = element.getPath() + ".";
         }
 
-        for (Entry<String, LifecycleElement> nestedElementEntry :
-                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
+        Map<String, LifecycleElement> nestedElements =
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase());
+        for (Entry<String, LifecycleElement> nestedElementEntry : nestedElements.entrySet()) {
             String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
@@ -245,6 +246,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
                 successors.add(nestedInitializePhase);
             }
         }
+        ViewLifecycleUtils.recycleElementMap(nestedElements);
     }
 
 }

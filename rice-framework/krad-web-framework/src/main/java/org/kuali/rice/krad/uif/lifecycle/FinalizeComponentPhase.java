@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 
@@ -148,8 +149,10 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         // initialize nested components
         int pendingChildren = 0;
 
+        Map<String, LifecycleElement> nestedElements =
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase());
         for (Entry<String, LifecycleElement> nestedComponentEntry :
-                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()).entrySet()) {
+                nestedElements.entrySet()) {
             String nestedPath = nestedPathPrefix + nestedComponentEntry.getKey();
             LifecycleElement nestedElement = nestedComponentEntry.getValue();
 
@@ -177,7 +180,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                 successors.add(nestedInitializePhase);
             }
         }
-
+        ViewLifecycleUtils.recycleElementMap(nestedElements);
+        
         if (ViewLifecycle.isRenderInLifecycle()) {
             RenderComponentPhase parentRenderPhase = null;
             

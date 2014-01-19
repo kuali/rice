@@ -264,12 +264,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
                 processor.setActivePhase(this);
 
-                if (element.getViewStatus() != null &&
-                        !element.getViewStatus().equals(getStartViewStatus())) {
+                String viewStatus = element.getViewStatus();
+                if (viewStatus != null &&
+                        !viewStatus.equals(getStartViewStatus()) &&
+                        !viewStatus.equals(getEndViewStatus())) {
                     ViewLifecycle.reportIllegalState(
                             "Component is not in the expected status " + getStartViewStatus()
                                     + " at the start of this phase, found " + element.getClass()
-                                    + " " + element.getId() + " " + element.getViewStatus() +
+                                    + " " + element.getId() + " " + viewStatus +
                                     "\nThis phase: " + this);
                 }
 

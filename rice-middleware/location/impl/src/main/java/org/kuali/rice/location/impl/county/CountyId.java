@@ -16,29 +16,17 @@
 
 package org.kuali.rice.location.impl.county;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.io.Serializable;
-
-public final class CountyId implements Serializable {
+public class CountyId extends IdClassBase {
 
     private static final long serialVersionUID = 7565812479232764845L;
 
-    @Id
-    @Column(name = "COUNTY_CD")
-    private final String code;
+    private String code;
+    private String countryCode;
+    private String stateCode;
 
-    @Id
-    @Column(name = "POSTAL_CNTRY_CD")
-    private final String countryCode;
-
-    @Id
-    @Column(name = "STATE_CD")
-    private final String stateCode;
+    public CountyId() {}
 
     public CountyId(String code, String countryCode, String stateCode) {
         this.code = code;
@@ -56,21 +44,6 @@ public final class CountyId implements Serializable {
 
     public String getStateCode() {
         return stateCode;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 }

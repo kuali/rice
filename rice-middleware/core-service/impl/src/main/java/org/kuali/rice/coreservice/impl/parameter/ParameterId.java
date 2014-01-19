@@ -15,35 +15,18 @@
  */
 package org.kuali.rice.coreservice.impl.parameter;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-import javax.persistence.Column;
-import java.io.Serializable;
+public class ParameterId extends IdClassBase {
 
-public class ParameterId implements Serializable {
+    private static final long serialVersionUID = -4654502682966630371L;
 
-    private static final long serialVersionUID = 1L;
+    private String namespaceCode;
+    private String componentCode;
+    private String name;
+    private String applicationId;
 
-    @Column(name="NMSPC_CD")
-    private final String namespaceCode;
-
-    @Column(name="CMPNT_CD")
-    private final String componentCode;
-
-    @Column(name="PARM_NM")
-    private final String name;
-
-    @Column(name="APPL_ID")
-    private final String applicationId;
-
-    public ParameterId() {
-        namespaceCode = null;
-        componentCode = null;
-        name = null;
-        applicationId = null;
-    }
+    public ParameterId() {}
 
     public ParameterId(String namespaceCode, String componentCode, String name, String applicationId) {
         this.namespaceCode = namespaceCode;
@@ -66,21 +49,6 @@ public class ParameterId implements Serializable {
 
     public String getApplicationId() {
         return applicationId;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
     public String getCacheKey() {

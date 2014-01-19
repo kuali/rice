@@ -15,73 +15,34 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-
-import java.io.Serializable;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
 /**
  * Compound primary key for {@link DocumentTypePolicy}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentTypePolicyId implements Serializable {
+public class DocumentTypePolicyId extends IdClassBase {
 
     private static final long serialVersionUID = -8024479878884387727L;
 
     private String documentType;
     private String policyName;
 
-    public String getDocumentType() {
-        return documentType;
+    public DocumentTypePolicyId() {}
+
+    public DocumentTypePolicyId(String documentType, String policyName) {
+        this.documentType = documentType;
+        this.policyName = policyName;
     }
 
-    public void setDocumentType(String documentType) {
-        this.documentType = documentType;
+    public String getDocumentType() {
+        return documentType;
     }
 
     public String getPolicyName() {
         return policyName;
     }
-
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
-    }
-    
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime
-				* result
-				+ ((this.getDocumentType() == null) ? 0 : this.getDocumentType()
-						.hashCode());
-		result = prime * result
-				+ ((this.policyName == null) ? 0 : this.policyName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final DocumentTypePolicyId other = (DocumentTypePolicyId) obj;
-		if (this.getDocumentType() == null) {
-			if (other.getDocumentType() != null)
-				return false;
-		} else if (!this.getDocumentType().equals(other.getDocumentType()))
-			return false;
-		if (this.policyName == null) {
-			if (other.policyName != null)
-				return false;
-		} else if (!this.policyName.equals(other.policyName))
-			return false;
-		return true;
-	}
-
 
 }
 

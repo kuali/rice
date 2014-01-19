@@ -15,47 +15,28 @@
  */
 package org.kuali.rice.coreservice.impl.component;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-import javax.persistence.Column;
-import java.io.Serializable;
+public class ComponentId extends IdClassBase {
 
-public class ComponentId implements Serializable {
+    private static final long serialVersionUID = -5335910085543358227L;
 
-    private static final long serialVersionUID = 1L;
+    private String namespaceCode;
+    private String code;
 
-    @Column(name="NMSPC_CD")
-    private final String namespaceCode;
-
-    @Column(name="CMPNT_CD")
-    private  final String code;
-
-    /** this ctor should never be called.  It is only present for hibernate */
-    private ComponentId() {
-        namespaceCode = null;
-        code = null;
-    }
+    public ComponentId() {}
 
     public ComponentId(String namespaceCode, String code) {
         this.namespaceCode = namespaceCode;
         this.code = code;
     }
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public String getNamespaceCode() {
+        return namespaceCode;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public String getCode() {
+        return code;
     }
 
 }

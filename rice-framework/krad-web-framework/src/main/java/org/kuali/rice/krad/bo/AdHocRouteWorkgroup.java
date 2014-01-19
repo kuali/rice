@@ -26,7 +26,6 @@ import javax.persistence.UniqueConstraint;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@IdClass(org.kuali.rice.krad.bo.AdHocRouteWorkgroupId.class)
 @Entity
 @Table(name="KRNS_ADHOC_RTE_ACTN_RECIP_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_ADHOC_RTE_ACTN_RECIP_TC0",columnNames="OBJ_ID")

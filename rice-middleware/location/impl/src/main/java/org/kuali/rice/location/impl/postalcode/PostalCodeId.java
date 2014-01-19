@@ -16,25 +16,16 @@
 
 package org.kuali.rice.location.impl.postalcode;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.io.Serializable;
-
-public final class PostalCodeId implements Serializable {
+public class PostalCodeId extends IdClassBase {
 
     private static final long serialVersionUID = 5680559929187623010L;
 
-    @Id
-    @Column(name = "POSTAL_CNTRY_CD")
-    private final String countryCode;
+    private String countryCode;
+    private String code;
 
-    @Id
-    @Column(name = "POSTAL_CD")
-    private final String code;
+    public PostalCodeId() {}
 
     public PostalCodeId(String countryCode, String code) {
         this.countryCode = countryCode;
@@ -47,21 +38,6 @@ public final class PostalCodeId implements Serializable {
 
     public String getCode() {
         return code;
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
     }
 
 }

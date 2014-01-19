@@ -16,53 +16,30 @@
 
 package org.kuali.rice.location.impl.state;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.io.Serializable;
-
-public final class StateId implements Serializable {
+public class StateId extends IdClassBase {
 
     private static final long serialVersionUID = -5986624272928043193L;
 
-    @Id
-    @Column(name = "POSTAL_CNTRY_CD")
-    private final String countryCode;
+    private String code;
+    private String countryCode;
 
-    @Id
-    @Column(name = "POSTAL_STATE_CD")
-    private final String code;
+    public StateId() {}
 
-    public StateId(String countryCode, String code) {
-        this.countryCode = countryCode;
+    public StateId(String code, String countryCode) {
         this.code = code;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
+        this.countryCode = countryCode;
     }
 
     public String getCode() {
         return code;
     }
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(obj, this);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 }
 
 

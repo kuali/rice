@@ -15,24 +15,18 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
-public class ParentWithMultipleFieldKeyId {
+public class ParentWithMultipleFieldKeyId extends IdClassBase {
 
-    @Id
-    @Column(name="FIN_COA_CD")
-    String chartOfAccountsCode;
+    private static final long serialVersionUID = -1305288421139632L;
 
-    @Id
-    @Column(name="ACCOUNT_NBR")
-    String accountNumber;
+    private String chartOfAccountsCode;
+    private String accountNumber;
 
-    public ParentWithMultipleFieldKeyId() {
-    }
+    public ParentWithMultipleFieldKeyId() {}
 
     public ParentWithMultipleFieldKeyId(String chartOfAccountsCode, String accountNumber) {
-        super();
         this.chartOfAccountsCode = chartOfAccountsCode;
         this.accountNumber = accountNumber;
     }
@@ -41,17 +35,8 @@ public class ParentWithMultipleFieldKeyId {
         return this.chartOfAccountsCode;
     }
 
-    public void setChartOfAccountsCode(String chartOfAccountsCode) {
-        this.chartOfAccountsCode = chartOfAccountsCode;
-    }
-
     public String getAccountNumber() {
         return this.accountNumber;
     }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
 
 }

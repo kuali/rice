@@ -168,6 +168,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                                 transformIncludeAddLineProperty(delegate,beanItem);
                                 transformAlwaysAllowCollectionDeletion(delegate, beanItem)
                                 transformIncludeMultipleLookupLineProperty(delegate,beanItem);
+                                transformDuplicateIdentificationFieldsProperty(delegate,beanItem);
 
                             }
                         }
@@ -356,6 +357,36 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                         property(name:"fieldConversions", value:fieldConversion )
 
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * Transforms duplicateIdentificationFields property to duplicateLinePropertyName. The fields that should be used to
+     * check for duplicate records are converted in a list of  property names
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     *
+     */
+
+    def transformDuplicateIdentificationFieldsProperty(NodeBuilder builder, Node beanNode) {
+        if (beanNode?.property?.findAll { "duplicateIdentificationFields".equals(it.@name) }?.size > 0) {
+            def duplicateIdentificationFieldsProperty = beanNode.property.find { "duplicateIdentificationFields".equals(it.@name) };
+            builder.property(name: "duplicateLinePropertyNames") {
+                list {
+                    if (duplicateIdentificationFieldsProperty) {
+
+                        duplicateIdentificationFieldsProperty.list.bean.each { fieldBean ->
+                            def attrPropMap = gatherPropertyTagsAndPropertyAttributes(fieldBean, ["*name": "name"]);
+                            String name = attrPropMap?.get("name");
+                            builder.createNode("value", null, name);
+                        }
+
+                    }
+
                 }
             }
         }

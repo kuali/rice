@@ -248,6 +248,38 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
 
     }
 
+    /**
+     * Tests transformation of the duplicateIdentificationFields property to duplicateLinePropertyNames
+     *
+     */
+    @Test
+    public void transformDuplicateIdentificationFieldPropertyTest() {
+        def ddRootNode = getFileRootNode(defaultTestFilePath);
+        def parentBean = ddRootNode.bean.find { "AttachmentSampleMaintenanceDocument-parentBean".equals(it.@id) };
+        def attachmentListBean = parentBean.property.list.bean.
+                find { "MultiAttachmentSampleMaintenanceDocument-AttachmentList".equals(it.@id) };
+
+        attachmentListBean = attachmentListBean.replaceNode {
+            bean(id: "MultiAttachmentSampleMaintenanceDocument-AttachmentList") {
+                maintenanceDocumentEntryBeanTransformer.
+                        transformMaintainableSectionDefinitionBean(delegate, attachmentListBean);
+            }
+        }
+
+        def collectionDefBean = attachmentListBean.bean.find { "Uif-VerticalBoxSection".equals(it.@parent) }.property.
+                find { "items".equals(it.@name) }.
+                list.bean.find { "Uif-MaintenanceStackedCollectionSection".equals(it.@parent) };
+        def duplicateLinePropertyNamesSize = collectionDefBean?.property.findAll { "duplicateLinePropertyNames".equals(it.@name) }.size();
+        Assert.assertEquals("number of duplicateLinePropertyNames", 1, duplicateLinePropertyNamesSize);
+
+        def propertySize = collectionDefBean.property.find { "duplicateLinePropertyNames".equals(it.@name) }.list.value.size();
+        Assert.assertEquals("number of properties", 1, propertySize);
+
+        def propertyValue =  collectionDefBean.property.find { "duplicateLinePropertyNames".equals(it.@name) }.list.value.text();
+        Assert.assertEquals("Property value", "description", propertyValue);
+
+    }
+
     @Test
     public void testTransformMaintainableFieldDefinitionBean() {
         def ddRootNode = getFileRootNode(defaultTestFilePath);

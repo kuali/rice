@@ -60,8 +60,13 @@
                 <property name="summaryTitle" value="Multi Attachment"/>
                 <property name="maintainableFields">
                   <list>
-                    <bean parent="MaintainableFieldDefinition" p:name="description"/>
+                    <bean parent="MaintainableFieldDefinition" p:name="description" p:required="true"/>
                     <bean parent="MaintainableFieldDefinition" p:name="attachmentFile" p:template="newAttachmentFile"/>
+                  </list>
+                </property>
+                <property name="duplicateIdentificationFields">
+                  <list>
+                    <bean parent="MaintainableFieldDefinition" p:name="description"/>
                   </list>
                 </property>
               </bean>

@@ -15,24 +15,6 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.Attribute.PersistentAttributeType;
-import javax.persistence.metamodel.EmbeddableType;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.IdentifiableType;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
@@ -45,6 +27,22 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
+
+import javax.persistence.EntityManager;
+import javax.persistence.metamodel.Attribute.PersistentAttributeType;
+import javax.persistence.metamodel.EmbeddableType;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.IdentifiableType;
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the superclass which handles most of the JPA metadata extraction. It handles everything which can be done via
@@ -226,8 +224,7 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
             }
         }
 
-        if (CollectionUtils.isEmpty(pkFieldNames)
-                && type.getSuperclass() != null) {
+        if (pkFieldNames.isEmpty() && type.getSuperclass() != null) {
             getPrimaryKeyNamesInOrder(pkFieldNames, unsortedPks, type.getSuperclass().getDeclaredFields(), type.getSuperclass());
         }
     }

@@ -17,7 +17,6 @@ package org.kuali.rice.core.framework.persistence.jpa;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -126,12 +125,12 @@ public abstract class CompositePrimaryKeyBase implements Serializable {
 			for (Field field : this.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 				
-				if (field.isAnnotationPresent(Id.class)) {
-					s.append(field.getName());
-					s.append(": ");
-					s.append(field.get(this));
-					s.append(", ");
-				}
+//				if (field.isAnnotationPresent(Id.class)) {
+//					s.append(field.getName());
+//					s.append(": ");
+//					s.append(field.get(this));
+//					s.append(", ");
+//				}
 			}
 			
 			return s.substring(0, s.length() - 2).toString();

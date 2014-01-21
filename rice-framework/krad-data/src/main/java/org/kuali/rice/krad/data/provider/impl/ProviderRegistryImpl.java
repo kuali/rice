@@ -26,7 +26,6 @@ import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,7 +49,7 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         List<? extends Class> interfaces = ClassUtils.getAllInterfaces(provider.getClass());
         Iterable<? extends Class> providerInterfaces = Iterables.filter(interfaces, new Predicate<Class>() {
             @Override
-            public boolean apply(@Nullable Class input) {
+            public boolean apply(Class input) {
             return Provider.class.isAssignableFrom(input);
             }
         });

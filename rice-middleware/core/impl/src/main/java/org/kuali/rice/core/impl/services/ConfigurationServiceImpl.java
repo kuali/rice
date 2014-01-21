@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.Truth;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +40,11 @@ import java.util.ResourceBundle;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ConfigurationServiceImpl implements ConfigurationService {
+
+    // TODO - this was copied from KRADConstants to avoid a dependency between KRAD and the core, this needs to be
+    // examined to determine if we really want to be doing something like this in the configuration service
+    private static final String MESSAGE_RESOURCES = "rice.struts.message.resources";
+
     private final PropertyHolder propertyHolder = new PropertyHolder();
 
     /**
@@ -50,8 +54,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         this.propertyHolder.getHeldProperties().putAll(ConfigContext.getCurrentContextConfig().getProperties());
 
         // TODO: remove loading of property files once KNS legacy code is removed
-        String propertyConfig = (String) ConfigContext.getCurrentContextConfig().getProperties().get(
-                KRADConstants.MESSAGE_RESOURCES);
+        String propertyConfig = (String) ConfigContext.getCurrentContextConfig().getProperties().get(MESSAGE_RESOURCES);
         propertyConfig = removeSpacesAround(propertyConfig);
 
         String[] bundleNames = StringUtils.split(propertyConfig, ",");

@@ -18,8 +18,6 @@ package org.kuali.rice.core.framework.persistence.platform;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -99,24 +97,6 @@ public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
   			throw new RuntimeException("Error retrieving next option id for action list from sequence.", e);
   		}
   	}
-
-    @Override
-    protected Long getNextValSqlJpa(String sequenceName, EntityManager entityManager) {
-        int numResults = entityManager.createNativeQuery("INSERT INTO " + sequenceName + " VALUES (NULL)").executeUpdate();
-        if (numResults != 1) {
-            throw new RuntimeException("Failed to insert into sequence table to acquire next sequence value for sequence " + sequenceName);
-        }
-        try {
-            Object result = entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult();
-            if (!(result instanceof Number)) {
-                throw new RuntimeException("Fetched last insert id for sequence " + sequenceName + " but could not cast to " + Number.class.getName() + "!");
-            }
-            Number number = (Number)result;
-            return new Long(number.longValue());
-        } catch (PersistenceException e) {
-            throw new RuntimeException("Failed to fetch last insert id to acquire next sequence value for sequence " + sequenceName, e);
-        }
-    }
 
     public boolean isSITCacheSupported() {
     	return false;

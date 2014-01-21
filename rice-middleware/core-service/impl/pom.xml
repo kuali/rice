@@ -249,11 +249,6 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.resource</groupId>
-            <artifactId>connector-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
         </dependency>
@@ -304,7 +299,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.ow2.jotm</groupId>
+            <groupId>org.kuali.jotm</groupId>
             <artifactId>jotm-core</artifactId>
         </dependency>
 

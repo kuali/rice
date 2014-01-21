@@ -146,17 +146,4 @@ public class EmailMessageTest extends KEWTestCase {
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
     }
 
-    /**
-     * tests loading a custom stylesheet that has entities that causes XPath to get confused down the ingestion pipeline...
-     * @throws Exception
-     */
-    @Test
-    public void testBadCustomStyleSheet() throws Exception {
-    	try {
-    		loadXmlFile("badCustomEmailStyleData.xml");
-    		fail("Loading of badCustomEmailStyleData.xml should have failed!");
-    	} catch (Exception e) {}
-        // this doesn't get loaded
-        assertNull(CoreServiceApiServiceLocator.getStyleService().getStyle("bad.kew.email.style"));
-    }
 }

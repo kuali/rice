@@ -31,16 +31,17 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     String maintenanceViewBeanType = "Uif-MaintenanceView";
 
     // MDE Conversion Components
-    def mdeCopyProperties = ["businessObjectClass", "businessRulesClass", "maintainableClass", "documentTypeName",
+    def mdeCopyProperties = ["businessRulesClass", "maintainableClass", "documentTypeName",
              "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
-    def mdeRenameProperties = [:]
+    def mdeRenameProperties = ["businessObjectClass":"dataObjectClass"]
     def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
     def mdeIgnoreOnCarryoverAttributes = []
 
     // UMV Conversion Components - include
-    def umvCopyProperties = ["maintainableClass", "documentTypeName", "lockingKeys"]
+    def umvCopyProperties = []
     def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName"] // , "dataObjectClass": "dataObjectClassName"
-    def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections","documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
+    def umvIgnoreOnCarryoverProperties = ["title", "maintainableClass", "lockingKeys","maintainableSections",
+            "documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
     def umvIgnoreOnCarryoverAttributes = []
 
 

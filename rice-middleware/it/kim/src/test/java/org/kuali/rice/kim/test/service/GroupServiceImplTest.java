@@ -20,6 +20,8 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -38,11 +40,11 @@ import static org.junit.Assert.assertTrue;
  */
 public class GroupServiceImplTest extends KIMTestCase {
 
-	private GroupServiceImpl groupService;
+	private GroupService groupService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(KimApiConstants.ServiceNames.GROUP_SERVICE_SOAP);
+		groupService = KimApiServiceLocator.getGroupService();
 	}
 
 	@Test

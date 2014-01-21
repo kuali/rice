@@ -159,10 +159,11 @@
     <plugin.gmaven.version>1.5</plugin.gmaven.version>
     <joda-time.version>2.0</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
-    <jotm.version>2.1.10-kuali-1-SNAPSHOT</jotm.version>
+    <jotm.version>2.1.10-kuali-1</jotm.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
+    <validation.version>1.0.0.GA</validation.version>
 
     <!--
       KULRICE-7262: Bad jstl version in maven repository
@@ -1723,6 +1724,13 @@
         <artifactId>jsr311-api</artifactId>
         <version>${jsr311-api.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${validation.version}</version>
+      </dependency>
+
 
       <!-- explicitly including jaxen to change version number from what maven would have resolved it to -->
       <dependency>

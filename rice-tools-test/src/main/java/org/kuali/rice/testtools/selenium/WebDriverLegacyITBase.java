@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -29,13 +29,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -582,6 +584,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     @After
     public void tearDown() {
         try {
+//            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+//            FileUtils.copyFile(scrFile, new File(this.getClass().toString() + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png"));
+
             if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 waitAndClickLogoutIfPresent();
             } else {
@@ -1763,6 +1768,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
     }
 
+    protected String getDateTimeStampFormatted() {
+        Date now = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        return sdf.format(now);
+    }
+
     protected String getDateToday() {
         Date now = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -2708,43 +2719,36 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected void testUifTooltip(String NAME_FIELD_1, String NAME_FIELD_2) throws Exception {
-        // check if tooltip opens on focus
-        fireEvent(NAME_FIELD_1, "focus");
-        fireMouseOverEventByName(NAME_FIELD_1);
+    protected void testUifTooltipByName(String nameField1, String nameField2) throws Exception {
+        findElement(By.name(nameField2)); // fields must be in view for tooltips to be displayed
 
-        // assertTrue(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible("td.jquerybubblepopup-innerHtml"));
+        // check if tooltip opens on focus
+        fireEvent(nameField1, "focus");
+        fireMouseOverEventByName(nameField1);
+
         assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
                 "td.jquerybubblepopup-innerHtml"));
+        fireEvent(nameField1, "blur");
 
-        // check if tooltip closed on blur
-        fireEvent(NAME_FIELD_1, "blur");
-        assertFalse(isVisible("div.jquerybubblepopup.jquerybubblepopup-black") && isVisible(
-                "td.jquerybubblepopup-innerHtml"));
+        fireEvent(nameField2, "focus");
         Thread.sleep(5000);
-        fireEvent("field119", "focus");
 
         // check if tooltip opens on mouse over
-        fireMouseOverEventByName(NAME_FIELD_2);
+        fireMouseOverEventByName(nameField2);
         assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
-        // check if tooltip closed on mouse out
-        waitAndTypeByName(NAME_FIELD_2, "a");
+        // check if tooltip closed on mouse out of nameField2
+        fireEvent(nameField2, "blur");
+        waitAndTypeByName(nameField1, "");
         Thread.sleep(5000);
         assertFalse(isVisibleByXpath(
                 "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check that default tooltip does not display when there are an error message on the field
-        waitAndTypeByName(NAME_FIELD_1, "1");
-        fireEvent(NAME_FIELD_1, "blur");
-        fireMouseOverEventByName(NAME_FIELD_1);
+        waitAndTypeByName(nameField1, "1");
+        fireEvent(nameField1, "blur");
+        fireMouseOverEventByName(nameField1);
         Thread.sleep(10000);
-        assertTrue("https://jira.kuali.org/browse/KULRICE-8141 Investigate why UifTooltipIT.testTooltip fails around jquerybubblepopup",
-                isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']") &&
-                        !(isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black']")));
-
-        // TODO figure out this last assert     
-        passed();
     }
 
     protected void testValidCharsConstraintIT() throws Exception {

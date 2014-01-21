@@ -56,22 +56,22 @@ public class EmailMessageTest extends KEWTestCase {
     }
 
     private int generateDocs(String[] docTypes, Person user) throws Exception {
-        String nid = getPrincipalNameForId(user.getPrincipalName());
+        String principalId = user.getPrincipalId();
 
         for (String docType: docTypes) {
-            WorkflowDocument document = WorkflowDocumentFactory.createDocument(nid, docType);
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
         }

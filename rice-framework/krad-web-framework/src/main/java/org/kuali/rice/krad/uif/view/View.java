@@ -445,15 +445,6 @@ public class View extends ContainerBase {
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
         super.initializePendingTasks(phase, pendingTasks);
-
-        // TODO: this logic doesn't belong here, and could be problematic
-        if (!isRendered()) {
-            // do indexing                               
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("clearing indexes for view: " + getId() + " before phase " + phase);
-            }
-            clearIndex();
-        }
     }
 
     /**

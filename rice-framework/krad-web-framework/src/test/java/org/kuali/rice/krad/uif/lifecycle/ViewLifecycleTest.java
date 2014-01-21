@@ -30,6 +30,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -44,6 +45,7 @@ import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
@@ -63,6 +65,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTest.class);
 
+    @Override
+    protected int getRepetitions() {
+        return 2;
+    }
+
     @BeforeClass
     public static void setUpClass() throws Throwable {
         UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
@@ -71,6 +78,10 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Before
     public void setUp() throws Throwable {
         UifUnitTestUtils.establishMockUserSession("admin");
+        String async = Boolean.toString(getRepetition() == 1);
+        ProcessLogger.trace("async:" + async);
+        ConfigContext.getCurrentContextConfig().getProperties().setProperty(
+                KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, async);
     }
 
     @After

@@ -30,6 +30,23 @@ import org.junit.runners.model.Statement;
  */
 public class ProcessLoggingUnitTest {
 
+    /**
+     * Thread local, contains the current repetition index while running.
+     */
+    private static final ThreadLocal<Integer> REPETITION = new ThreadLocal<Integer>();
+
+    protected static int getRepetition() {
+        return REPETITION.get() == null ? 0 : REPETITION.get();
+    }
+
+    /**
+     * Provides the number of times the test should be run.  Subclasses may provide an alternate value.
+     * @return
+     */
+    protected int getRepetitions() {
+        return 1;
+    }
+
     @Rule
     public MethodRule processLogRule = new MethodRule() {
         @Override
@@ -38,32 +55,38 @@ public class ProcessLoggingUnitTest {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
-                    try {
-                        ProcessLogger.follow("test", "Test Run " + method.getName(), new Callable<Void>() {
+                    int repetitions = getRepetitions();
+                    for (int i=0;i < repetitions;i++) {
+                        REPETITION.set(i);
+                        try {
+                            ProcessLogger.follow("test", "Test Run " + method.getName(), new Callable<Void>() {
 
-                            @Override
-                            public Void call() throws Exception {
-                                try {
-                                    base.evaluate();
-                                } catch (Throwable e) {
-                                    if (e instanceof Error)
-                                        throw (Error) e;
-                                    else
-                                        throw (Exception) e;
+                                @Override
+                                public Void call() throws Exception {
+                                    try {
+                                        base.evaluate();
+                                    } catch (Throwable e) {
+                                        if (e instanceof Error)
+                                            throw (Error) e;
+                                        else
+                                            throw (Exception) e;
+                                    }
+                                    return null;
                                 }
-                                return null;
-                            }
 
-                            @Override
-                            public String toString() {
-                                return "Test Run " + method.getName();
-                            }
-                        });
-                    } catch (Throwable t) {
-                        System.err.println("Error running test "
-                                + method.getName());
-                        t.printStackTrace();
-                        throw t;
+                                @Override
+                                public String toString() {
+                                    return "Test Run " + method.getName();
+                                }
+                            });
+                        } catch (Throwable t) {
+                            System.err.println("Error running test "
+                                    + method.getName());
+                            t.printStackTrace();
+                            throw t;
+                        } finally {
+                            REPETITION.remove();
+                        }
                     }
                 }
             };

@@ -2381,6 +2381,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setPreRenderContent(this.preRenderContent);
         componentCopy.setProgressiveRender(this.progressiveRender);
         componentCopy.setProgressiveRenderViaAJAX(this.progressiveRenderViaAJAX);
+        componentCopy.setProgressiveRenderAndRefresh(this.progressiveRenderAndRefresh);
         componentCopy.setReadOnly(this.readOnly);
         componentCopy.setRefreshedByAction(this.refreshedByAction);
         componentCopy.setRefreshTimer(this.refreshTimer);

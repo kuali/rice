@@ -95,6 +95,7 @@ public class UifFormBase implements ViewModel {
     protected String state;
     protected boolean defaultsApplied;
     protected boolean renderedInLightBox;
+    protected boolean renderedInIframe;
 
     @SessionTransient
     protected String growlScript;
@@ -152,6 +153,7 @@ public class UifFormBase implements ViewModel {
     public UifFormBase() {
         defaultsApplied = false;
         renderedInLightBox = false;
+        renderedInIframe = false;
         requestRedirected = false;
 
         readOnlyFieldsList = new ArrayList<String>();
@@ -942,6 +944,22 @@ public class UifFormBase implements ViewModel {
      */
     public void setRenderedInLightBox(boolean renderedInLightBox) {
         this.renderedInLightBox = renderedInLightBox;
+    }
+
+    /**
+     * Indicates whether the view is rendered within an iframe (this setting must be passed to the View on the url)
+     *
+     * @return boolean true if view is rendered within a iframe, false if not
+     */
+    public boolean isRenderedInIframe() {
+        return renderedInIframe;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.web.form.UifFormBase#isRenderedInIframe()
+     */
+    public void setRenderedInIframe(boolean renderedInIframe) {
+        this.renderedInIframe = renderedInIframe;
     }
 
     /**

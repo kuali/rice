@@ -19,6 +19,7 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.util.DataTypeUtil;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public abstract class BaseAttributeValueReader implements AttributeValueReader {
 
         if (rawValue != null) {
             //if a date force the format
-            if (rawValue instanceof java.util.Date) {
+            if (rawValue instanceof Date && !(rawValue instanceof Timestamp)) {
                 attributeInValue = new SimpleDateFormat("MM-dd-yyyy").format(rawValue);
             } else {
                 attributeInValue = rawValue.toString();

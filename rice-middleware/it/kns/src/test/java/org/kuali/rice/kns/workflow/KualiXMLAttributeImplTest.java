@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -45,6 +46,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashSet;
@@ -52,6 +54,7 @@ import java.util.Set;
 
 import org.junit.Assert;
 
+import static org.junit.Assert.assertNotNull;
 
 /**
  * KualiXMLAttributeImplTest tests the {@link KualiXmlAttributeHelper} operations of getting data from the data dictionary for workflow
@@ -68,95 +71,31 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
     XPath myXPath = XPathHelper.newXPath();
     String ruleAttributeXml = "";
     String searchAttributeXml = "";
-//    private boolean testFailed = false;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        // read in the file and make it a string
 
-//        InputStream is = new FileInputStream(getBaseDir() + "/src/test/resources/org/kuali/rice/kew/batch/data/RuleAttributeContent.xml");
-//        is.
-//        if ((StringUtils.isNotBlank(ruleAttributeXml)) && (StringUtils.isNotBlank(searchAttributeXml))) {
-//            return;
-//        }
-//
-//        DataSource mySource = KEWServiceLocator.getDataSource();
-//        ruleAttributeXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data >\n<ruleAttributes>\n";
-//        searchAttributeXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<data >\n<ruleAttributes>\n";
-//        Connection dbCon = null;
-//        try {
-//
-//            dbCon = mySource.getConnection();
-//            Statement dbAsk = dbCon.createStatement();
-//            ResultSet dbAnswer = dbAsk.executeQuery("select * from EN_RULE_ATTRIB_T");
-//            // ResultSet dbAnswer = dbAsk.executeQuery("select * from EN_RULE_ATTRIB_T where RULE_ATTRIB_NM =
-//            // 'SystemParameterRoutingAttribute'");
-//
-//            while (dbAnswer.next()) {
-//                String className = dbAnswer.getString("RULE_ATTRIB_CLS_NM");
-//                if (StringUtils.isNotBlank(className)) {
-//                    try {
-//                        if (KualiXmlAttribute.class.isAssignableFrom(Class.forName(className))) {
-//                            LOG.debug("Adding attribute to test with class name " + className);
-//                            String attributeType = dbAnswer.getString("RULE_ATTRIB_TYP");
-//                            if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
-//                                ruleAttributeXml = ruleAttributeXml + "<ruleAttribute>\n\t<name>";
-//                                ruleAttributeXml = ruleAttributeXml + dbAnswer.getString("RULE_ATTRIB_NM");
-//                                ruleAttributeXml = ruleAttributeXml + "</name>\n\t<className>";
-//                                ruleAttributeXml = ruleAttributeXml + className;
-//                                ruleAttributeXml = ruleAttributeXml + "</className>\n\t<label>";
-//                                ruleAttributeXml = ruleAttributeXml + dbAnswer.getString("RULE_ATTRIB_LBL_TXT");
-//                                ruleAttributeXml = ruleAttributeXml + "</label>\n\t<description>";
-//                                ruleAttributeXml = ruleAttributeXml + dbAnswer.getString("RULE_ATTRIB_DESC");
-//                                ruleAttributeXml = ruleAttributeXml + "</description>\n\t<type>";
-//                                ruleAttributeXml = ruleAttributeXml + attributeType;
-//                                ruleAttributeXml = ruleAttributeXml + "</type>\n\t" + dbAnswer.getString("RULE_ATTRIB_XML_RTE_TXT") + "\n</ruleAttribute>\n";
-//
-//                            }
-//                            else if (KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
-//                                searchAttributeXml = searchAttributeXml + "<ruleAttribute>\n\t<name>";
-//                                searchAttributeXml = searchAttributeXml + dbAnswer.getString("RULE_ATTRIB_NM");
-//                                searchAttributeXml = searchAttributeXml + "</name>\n\t<className>";
-//                                searchAttributeXml = searchAttributeXml + className;
-//                                searchAttributeXml = searchAttributeXml + "</className>\n\t<label>";
-//                                searchAttributeXml = searchAttributeXml + dbAnswer.getString("RULE_ATTRIB_LBL_TXT");
-//                                searchAttributeXml = searchAttributeXml + "</label>\n\t<description>";
-//                                searchAttributeXml = searchAttributeXml + dbAnswer.getString("RULE_ATTRIB_DESC");
-//                                searchAttributeXml = searchAttributeXml + "</description>\n\t<type>";
-//                                searchAttributeXml = searchAttributeXml + attributeType;
-//                                searchAttributeXml = searchAttributeXml + "</type>\n\t" + dbAnswer.getString("RULE_ATTRIB_XML_RTE_TXT") + "\n</ruleAttribute>\n";
-//
-//                            }
-//                        }
-//                        else {
-//                            LOG.debug("Skipping attribute with class name " + className);
-//                        }
-//                    }
-//                    catch (ClassNotFoundException cnfe) {
-//                        LOG.debug("Could not find class for name '" + className + "'");
-//                    }
-//                }
-//            }
-//            ruleAttributeXml = ruleAttributeXml + "</ruleAttributes>\n</data>\n";
-//            searchAttributeXml = searchAttributeXml + "</ruleAttributes>\n</data>\n";
-//
-//            ruleAttributeXml = ruleAttributeXml.replaceAll(" & ", " &amp; ");
-//            searchAttributeXml = searchAttributeXml.replaceAll(" & ", " &amp; ");
-//
-//            loadDataDictionaryEntries();
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                dbCon.close();
-//            }
-//            catch (SQLException sqle2) {
-//                sqle2.printStackTrace();
-//            }
-//        }
+        InputStream ruleInputStream = null;
+        InputStream searchInputStream = null;
+
+        try {
+            ruleInputStream = getClass().getResourceAsStream("RuleAttributes.xml");
+            assertNotNull(ruleInputStream);
+            ruleAttributeXml = IOUtils.toString(ruleInputStream);
+
+            searchInputStream = getClass().getResourceAsStream("SearchAttributes.xml");
+            assertNotNull(searchInputStream);
+            searchAttributeXml = IOUtils.toString(searchInputStream);
+        } finally {
+            if (ruleInputStream != null) {
+                ruleInputStream.close();
+            }
+
+            if (searchInputStream != null) {
+                searchInputStream.close();
+            }
+        }
     }
 
     /**
@@ -311,7 +250,6 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
      */
     @Test public void testLabelSource() {
         DataDictionaryService myDDService = KRADServiceLocatorWeb.getDataDictionaryService();
-        XPath xpath = XPathHelper.newXPath();
         String nonsenseString = "BananaRama";
         for (Object tempEntity : myDDService.getDataDictionary().getBusinessObjectEntries().values()) {
 
@@ -329,7 +267,6 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
             }
 
         }
-        // KualiXmlAttributeHelper.buildDictionaryHash();
 
         boolean failed = false;
         Assert.assertFalse("At least one label was incorrect", failed);
@@ -342,21 +279,4 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
         Assert.assertFalse("At least one label was incorrect", failed);
     }
 
-    /*
-    unused method
-
-    private void loadDataDictionaryEntries() throws Exception {
-        KualiXmlRuleAttributeImpl myAttribute = new KualiXmlRuleAttributeImpl();
-        NamedNodeMap fieldDefAttributes = null;
-        NodeList tempList = (NodeList) myXPath.evaluate("//ruleAttribute", new InputSource(new StringReader(ruleAttributeXml)), XPathConstants.NODESET);
-        for (int i = 0; i < tempList.getLength(); i++) {
-            Node xmlNode = configureRuleAttribute(tempList.item(i), myAttribute);
-        }
-        KualiXmlSearchableAttributeImpl mySearchAttribute = new KualiXmlSearchableAttributeImpl();
-        fieldDefAttributes = null;
-        tempList = (NodeList) myXPath.evaluate("//ruleAttribute", new InputSource(new StringReader(searchAttributeXml)), XPathConstants.NODESET);
-        for (int i = 0; i < tempList.getLength(); i++) {
-            Node xmlNode = configureRuleAttribute(tempList.item(i), mySearchAttribute);
-        }
-    }*/
 }

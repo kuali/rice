@@ -52,18 +52,18 @@ import org.kuali.rice.krad.test.KRADTestConstants.TestConstants;
         value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'"),
+                        @UnitTestSql("delete from trv_acct_type")
+
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";"),
+                        @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
                 }
        )
 )
@@ -123,12 +123,14 @@ public class KualiLookupableTest extends KNSTestCase {
      * @throws Exception
      */
     @Test public void testReturnUrl() throws Exception {
-    	Map<String, String> lookupProps = new HashMap<String, String>();
-    	lookupProps.put("number", "b101");
-    	lookupProps.put("name", "b101");
-    	
-    	Account account = (Account) KRADServiceLocatorWeb.getLookupService().findObjectBySearch(Account.class, lookupProps);
-//        ObjectCode objCode = getObjectCodeService().getCountry(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
+        Map<String, String> lookupProps = new HashMap<String, String>();
+        lookupProps.put("number", "b101");
+        lookupProps.put("name", "b101");
+
+        List<Account> accounts = (List<Account>) KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(
+                Account.class, lookupProps);
+        Assert.assertTrue(accounts.size() == 1);
+        Account account = accounts.get(0);
 
         Map fieldConversions = new HashMap();
         lookupableImpl.setDocFormKey("8888888");

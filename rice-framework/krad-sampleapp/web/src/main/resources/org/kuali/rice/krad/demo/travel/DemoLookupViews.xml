@@ -42,6 +42,7 @@
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
       </list>
     </property>
+
   </bean>
 
   <bean id="LookupSampleViewURLSearch" parent="LookupSampleView">
@@ -213,4 +214,47 @@
       </value>
     </property>
   </bean>
+
+  <bean id="LookupSampleViewVerticalActions" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewVerticalActions"/>
+    <property name="headerText" value="Lookup Sample - basic  lookup with actions stacked vertically"/>
+    <property name="resultsGroup.layoutManager.actionFieldPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+    </property>
+    <property name="resultsGroup.lineActions">
+      <list>
+        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
+        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="20"/>
+
+      </list>
+    </property>
+
+  </bean>
+
+  <bean id="LookupSampleViewActionsHierarchy" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewActionsHierarchy"/>
+    <property name="headerText" value="Lookup Sample - with actions grouped in a hierarchy"/>
+    <property name="resultsGroup.lineActions">
+      <list>
+        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
+        <bean parent="Uif-LinkGroup" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"
+              p:linkSeparator="|"  p:style="clear: none;">
+          <property name="items">
+            <list>
+              <bean id="action-loan" parent="Uif-Link" p:linkText="loan" p:order="20"/>
+              <bean id="action-renew" parent="Uif-Link" p:linkText="renew" p:order="30"/>
+              <bean id="action-return" parent="Uif-Link" p:linkText="return" p:order="40"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="50"/>
+        <bean id="action-merge" parent="Uif-Link" p:linkText="merge" p:order="60"/>
+        <bean id="action-separate" parent="Uif-Link" p:linkText="separate" p:order="70"/>
+        <bean id="action-transfer" parent="Uif-Link" p:linkText="transfer" p:order="80"/>
+
+      </list>
+    </property>
+
+  </bean>
+
 </beans>

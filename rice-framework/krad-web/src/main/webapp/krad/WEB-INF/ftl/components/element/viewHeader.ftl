@@ -47,7 +47,7 @@
 
     <#-- Only render wrapper when upper and lower group content exist -->
     <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-        <div class="uif-viewHeader-contentWrapper ${view.contentContainerClassesAsString}" ${stickyDataAttribute}>
+        <div class="${view.contentContainerClassesAsString} uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
     </#if>

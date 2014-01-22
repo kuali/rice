@@ -47,82 +47,7 @@
     <!-- ex:Demo-AppHeader-Example1 start-->
     <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
     <property name="applicationHeader">
-      <bean parent="Uif-ApplicationHeaderBase">
-        <property name="applicationNavigation.brandImage">
-          <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/images/logo.png"/>
-        </property>
-
-        <property name="applicationNavigation.items">
-          <list>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Researcher" p:toggleCaretClass="">
-              <property name="menuGroup">
-                <bean parent="Demo-Menu-Researcher"/>
-              </property>
-            </bean>
-
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Unit" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Central Admin" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="Maintenance" p:toggleCaretClass=""/>
-            <bean parent="Uif-DropdownToggleMenu" p:toggleText="System Admin" p:toggleCaretClass=""/>
-          </list>
-        </property>
-
-        <property name="applicationToolbar.items">
-          <list>
-            <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Action list">
-                    <property name="wrapperCssClasses">
-                      <list merge="true">
-                        <value>pull-right</value>
-                      </list>
-                    </property>
-                    <property name="menuItems">
-                      <list>
-                        <bean parent="Uif-MenuAction"
-                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
-                              p:actionLabel="Approve: Doc #5547"/>
-
-                        <bean parent="Uif-MenuAction"
-                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
-                              p:actionLabel="Approve: Doc #5548"/>
-                      </list>
-                    </property>
-                  </bean>
-
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="Doc Search" p:toggleCaretClass="">
-                    <property name="wrapperCssClasses">
-                      <list merge="true">
-                        <value>pull-right</value>
-                      </list>
-                    </property>
-                  </bean>
-
-                  <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
-                    <property name="wrapperCssClasses">
-                      <list merge="true">
-                        <value>pull-right</value>
-                      </list>
-                    </property>
-                    <property name="menuItems">
-                      <list>
-                        <bean parent="Uif-MenuAction"
-                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
-                              p:actionLabel="Preferences"/>
-
-                        <bean parent="Uif-MenuAction"
-                              p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
-                              p:actionLabel="Logout"/>
-                      </list>
-                    </property>
-                  </bean>
-                </list>
-              </property>
-            </bean>
-          </list>
-        </property>
-      </bean>
+      <bean parent="Demo-KC-AppHeader"/>
     </property>
     <!-- ex:Demo-AppHeader-Example1 end-->
     <property name="items">
@@ -132,6 +57,68 @@
       </list>
     </property>
   </bean>
+
+  <!-- ex:Demo-AppHeader-Example1 start-->
+  <bean id="Demo-KC-AppHeader" parent="Uif-ApplicationHeaderBase">
+    <property name="applicationNavigation.brandImage">
+      <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/images/logo.png"/>
+    </property>
+
+    <property name="applicationNavigation.items">
+      <list>
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Researcher" p:toggleCaretClass="">
+          <property name="menuGroup">
+            <bean parent="Demo-Menu-Researcher"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Unit" p:toggleCaretClass=""/>
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Central Admin" p:toggleCaretClass=""/>
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Maintenance" p:toggleCaretClass=""/>
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="System Admin" p:toggleCaretClass=""/>
+      </list>
+    </property>
+
+    <property name="applicationToolbar.items">
+      <list>
+        <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
+          <property name="items">
+            <list>
+              <bean parent="Uif-MenuAction"
+                    p:actionUrl.viewId="Lab-ActionListView" p:wrapperCssClasses="pull-right"
+                    p:actionUrl.controllerMapping="/labs"
+                    p:actionLabel="Action List"/>
+
+              <bean parent="Uif-MenuAction"
+                    p:actionUrl.viewId="Lab-DocSearchView" p:wrapperCssClasses="pull-right"
+                    p:actionUrl.controllerMapping="/labs"
+                    p:actionLabel="Doc Search"/>
+
+              <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
+                <property name="wrapperCssClasses">
+                  <list merge="true">
+                    <value>pull-right</value>
+                  </list>
+                </property>
+                <property name="menuItems">
+                  <list>
+                    <bean parent="Uif-MenuAction"
+                          p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                          p:actionLabel="Preferences"/>
+
+                    <bean parent="Uif-MenuAction"
+                          p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                          p:actionLabel="Logout"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-AppHeader-Example1 end-->
 
   <!-- ex:Demo-AppHeader-Example1 start-->
   <bean id="Demo-Menu-Researcher" parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="3">

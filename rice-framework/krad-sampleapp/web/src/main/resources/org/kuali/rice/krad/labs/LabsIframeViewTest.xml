@@ -24,4 +24,18 @@
         p:location.controllerMapping="/lookup">
   </bean>
 
+  <bean id="Lab-ActionListView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/kew/ActionList.do">
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+  </bean>
+
+  <bean id="Lab-DocSearchView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/kew/DocumentSearch.do">
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+  </bean>
+
 </beans>

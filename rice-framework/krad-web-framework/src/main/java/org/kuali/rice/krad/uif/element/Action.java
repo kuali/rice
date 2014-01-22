@@ -171,6 +171,12 @@ public class Action extends ContentElementBase {
                     disabledExpression);
             disabled = (Boolean) expressionEvaluator.evaluateExpression(this.getContext(), disabledExpression);
         }
+
+        if (actionUrl != null) {
+            ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(actionUrl, false);
+            ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(ViewLifecycle.getView(),
+                    actionUrl, this.getContext());
+        }
     }
 
     /**

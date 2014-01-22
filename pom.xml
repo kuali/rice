@@ -791,6 +791,8 @@
                     <excludes>
                       <!-- using the kuali version of ojb -->
                       <exclude>ojb</exclude>
+                      <!-- using the kuali version of jotm-core -->
+                      <exclude>org.ow2.jotm:jotm-core</exclude>
 
                       <!-- renamed (decrecated) groupids -->
                       <exclude>struts</exclude>

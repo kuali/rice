@@ -70,6 +70,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.kuali.commons</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
@@ -138,26 +143,6 @@
       <artifactId>spring-context-support</artifactId>
     </dependency>
 
-    <!--
-    <dependency>
-      <groupId>org.springmodules</groupId>
-      <artifactId>spring-modules-ojb</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring</artifactId>
-        </exclusion>
-        <exclusion>
-          -->
-          <!-- we moved our patch to groupId org.kuali.db.ojb -->
-          <!--
-          <groupId>ojb</groupId>
-          <artifactId>db-ojb</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    -->
-
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
@@ -184,23 +169,6 @@
       <artifactId>aspectjweaver</artifactId>
     </dependency>
 
-    <!-- test dependencies -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
@@ -223,6 +191,25 @@
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
       <scope>runtime</scope>
+    </dependency>
+
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

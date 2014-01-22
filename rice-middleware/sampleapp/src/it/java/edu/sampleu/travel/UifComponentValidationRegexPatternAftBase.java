@@ -53,7 +53,8 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
     }
 
     protected void testValidCharacterConstraint() throws Exception {
-//        waitAndClickByXpath("//a[contains(text(),'Validation - Regex')][2]");
+        waitAndClickByLinkText("Validation");
+        waitAndClickByLinkText("Validation - Regex");
         waitAndClickById("UifCompView-Navigation4");
 
         //---------------------------------------------Fixed Point------------------------------//

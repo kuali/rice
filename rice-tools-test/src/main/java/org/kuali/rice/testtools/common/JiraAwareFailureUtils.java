@@ -154,8 +154,25 @@ public class JiraAwareFailureUtils {
      * @param failable to fail with the jiraMatches value if the contents or message is detected
      */
     public static void failOnMatchedJira(String contents, String message, JiraAwareFailable failable) {
-        failOnMatchedJira(contents, failable);
-        failOnMatchedJira(message, failable);
+        String match = findMatchedJiraContains(message);
+        if (match != null && !match.equals("")) {
+            failable.fail(match);
+        }
+
+        match = findMatchedJiraContains(contents);
+        if (match != null && !match.equals("")) {
+            failable.fail(match);
+        }
+
+        match = findMatchedJiraRegex(message);
+        if (match != null && !match.equals("")) {
+            failable.fail(match);
+        }
+
+        match = findMatchedJiraRegex(contents);
+        if (match != null && !match.equals("")) {
+            failable.fail(match);
+        }
     }
 
     /**
@@ -182,13 +199,20 @@ public class JiraAwareFailureUtils {
      * @return value for key which matches contents
      */
     public static String findMatchedJira(String contents) {
-        if (regexJiraMatches == null || regexJiraMatches.keySet() == null || jiraMatches == null || jiraMatches.keySet() == null) {
-            System.out.println("WARNING JiraAwareFailureUtils properties empty, findMatchesJira not available.");
+        String match = findMatchedJiraContains(contents);
+        if (match != null && !"".equals(match)) {
+            return match;
+        }
+
+        return findMatchedJiraRegex(contents);
+    }
+
+    protected static String findMatchedJiraContains(String contents) {
+        if (jiraMatches == null || jiraMatches.keySet() == null) {
+            System.out.println("WARNING JiraAwareFailureUtils contains properties empty, findMatchesJira contains not available.");
             return "";
         }
         String key = null;
-        Pattern pattern = null;
-        Matcher matcher = null;
 
         Iterator iter = jiraMatches.keySet().iterator();
 
@@ -199,7 +223,19 @@ public class JiraAwareFailureUtils {
             }
         }
 
-        iter = regexJiraMatches.keySet().iterator();
+        return "";
+    }
+
+    protected static String findMatchedJiraRegex(String contents) {
+        if (regexJiraMatches == null || regexJiraMatches.keySet() == null) {
+            System.out.println("WARNING JiraAwareFailureUtils Regex properties empty, findMatchesJiraRegex not available.");
+            return "";
+        }
+        String key = null;
+        Pattern pattern = null;
+        Matcher matcher = null;
+
+        Iterator iter = regexJiraMatches.keySet().iterator();
 
         while (iter.hasNext()) {
             key = (String)iter.next();
@@ -213,4 +249,5 @@ public class JiraAwareFailureUtils {
 
         return "";
     }
+
 }

@@ -796,6 +796,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocSearch(String docId, String docStatus) throws InterruptedException {
+        selectParentWindow();
         selectTopFrame();
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
@@ -1622,6 +1623,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void selectChildWindow() {
         selectWindow(driver.getWindowHandles().toArray()[1].toString());
+    }
+
+    protected void selectParentWindow() {
+        selectWindow(driver.getWindowHandles().toArray()[0].toString());
     }
 
     protected void selectByXpath(String locator, String selectText) throws InterruptedException {

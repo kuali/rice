@@ -171,7 +171,7 @@ public class AutomatedFunctionalTestUtils {
         String errorMessage = incidentReportMessage(contents, linkLocator, message);
 
         if (errorMessage != null) {
-            if (message != null && message.isEmpty()) {
+            if (message != null && !message.isEmpty()) {
                 failable.jiraAwareFail(errorMessage, message);
             } else {
                 failable.jiraAwareFail(errorMessage, contents);

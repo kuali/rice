@@ -44,7 +44,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Suggest-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField1" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField1" p:required="true" p:uppercaseValue="true">
           <property name="suggest">
             <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="accountTypeCode"
                   p:suggestQuery.dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>

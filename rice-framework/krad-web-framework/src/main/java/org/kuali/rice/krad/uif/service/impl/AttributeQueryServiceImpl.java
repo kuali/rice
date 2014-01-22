@@ -75,7 +75,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // add term as a like criteria
         Map<String, String> additionalCriteria = new HashMap<String, String>();
-        additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm + "*");
+        if (inputField.isUppercaseValue()) {
+            additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm.toUpperCase() + "*");
+        } else {
+            additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm + "*");
+        }
 
         // execute suggest query
         Collection<?> results = null;

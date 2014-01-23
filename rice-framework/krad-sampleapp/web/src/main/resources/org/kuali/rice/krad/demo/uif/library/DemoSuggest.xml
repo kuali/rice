@@ -128,10 +128,10 @@
         <!-- ex:Demo-Suggest-Example5 start-->
         <bean parent="Uif-InputField" p:propertyName="inputField6">
           <property name="suggest">
-            <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="subAccountName">
+            <bean parent="Uif-Suggest" p:render="true" p:valuePropertyName="name">
               <property name="suggestQuery">
-                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsBySubAcct"
-                      p:sortPropertyNames="subAccountName">
+                <bean parent="Uif-AttributeQueryConfig" p:queryMethodToCall="retrieveTravelAccountsByName"
+                      p:sortPropertyNames="name">
                   <property name="queryMethodInvokerConfig.targetObject">
                     <bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
                       <property name="serviceName" value="componentViewHelperService"/>

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice serviceregistry (jetty 7)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 7.5.1.v20110908">
+  <configuration default="false" name="rice serviceregistry (jetty 7)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 7.5.1.v20110908" ALTERNATIVE_JRE_ENABLED="false">
     <option name="OPEN_IN_BROWSER" value="false" />
     <option name="COMMON_VM_ARGUMENTS" value="-Dlog4j.configuration=/31938-log4j.properties -Dalt.config.location=/31938-serviceregistry-config.xml -Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:org/kuali/rice/serviceregistry/config/ServiceRegistrySpringBeans.xml" />
     <option name="UPDATING_POLICY" value="update-resources" />

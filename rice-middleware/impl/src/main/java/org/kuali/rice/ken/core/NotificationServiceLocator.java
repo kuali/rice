@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ken.core;
 
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.api.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.service.NotificationChannelService;
@@ -58,13 +57,7 @@ public interface NotificationServiceLocator {
      * @return NotificationMessageContentService
      */
     public NotificationMessageContentService getNotificationMessageContentService();
-    
-    /**
-     * This method returns an instance of the Spring configured impl for the BusinessObjectDao.
-     * @return GenericDao
-     */
-    public GenericDao getGenericDao();
-    
+
     /**
      * This method returns an instance of the Spring configured impl for the NotificationAuthorizationService.
      * @return NotificationAuthorizationService

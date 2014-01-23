@@ -18,11 +18,13 @@ package org.kuali.rice.kcb.bo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This class represents a recipient preferences in the system.  This is a generic Key/Value structure
@@ -41,6 +43,8 @@ public class RecipientPreference {
     public static final String PROPERTY_FIELD = "property";
     
 	@Id
+    @GeneratedValue(generator="KREN_RECIP_PREF_S")
+    @PortableSequenceGenerator(name="KREN_RECIP_PREF_S")
 	@Column(name="RECIP_PREFS_ID")
 	private Long id;
 	@Column(name="RECIP_ID", nullable=false)

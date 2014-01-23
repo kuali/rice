@@ -21,6 +21,7 @@ import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.ken.api.notification.NotificationProducerContract;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,6 +47,7 @@ import java.util.List;
 public class NotificationProducerBo extends PersistableBusinessObjectBase implements NotificationProducerContract {
     @Id
     @GeneratedValue(generator="KREN_PRODCR_S")
+    @PortableSequenceGenerator(name="KREN_PRODCR_S")
 	@Column(name="PRODCR_ID")
 	private Long id;
     @Column(name="NM", nullable=false)

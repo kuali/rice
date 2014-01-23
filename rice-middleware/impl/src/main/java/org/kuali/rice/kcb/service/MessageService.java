@@ -30,7 +30,7 @@ public interface MessageService {
      * Saves a message
      * @param message a Message
      */
-    public void saveMessage(Message message);
+    public Message saveMessage(Message message);
     
     /**
      * Deletes a message

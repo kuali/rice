@@ -51,14 +51,12 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
      * TODO: we'll need to implement a plugin registry discovery mechanism long term.
      */
     public MessageDelivererRegistryServiceImpl() {
-        //KEWActionListMessageDeliverer kewActionList = new KEWActionListMessageDeliverer();
         EmailMessageDeliverer email = new EmailMessageDeliverer();
         SMSMessageDeliverer sms = new SMSMessageDeliverer();
         AOLInstantMessageDeliverer aim = new AOLInstantMessageDeliverer();
         MockMessageDeliverer mock = new MockMessageDeliverer();
 
         messageDelivererTypes = new HashMap<String, Class<? extends MessageDeliverer>>(4);
-        //messageDelivererTypes.put(kewActionList.getName(), kewActionList.getClass());
         messageDelivererTypes.put(email.getName().toLowerCase(), email.getClass());
         messageDelivererTypes.put(sms.getName().toLowerCase(), sms.getClass());
         messageDelivererTypes.put(aim.getName().toLowerCase(), aim.getClass());

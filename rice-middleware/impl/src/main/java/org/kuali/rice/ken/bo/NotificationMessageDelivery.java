@@ -16,6 +16,7 @@
 package org.kuali.rice.ken.bo;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -31,6 +32,7 @@ import java.sql.Timestamp;
 public class NotificationMessageDelivery extends PersistableBusinessObjectBase implements Lockable {
     @Id
     @GeneratedValue(generator="KREN_NTFCTN_MSG_DELIV_S")
+    @PortableSequenceGenerator(name="KREN_NTFCTN_MSG_DELIV_S")
 	@Column(name="NTFCTN_MSG_DELIV_ID")
 	private Long id;
     @Column(name="STAT_CD", nullable=false)

@@ -162,7 +162,7 @@ public class ContentTypeController extends MultiActionController {
        notificationContentType.setXsd(xsd);
        notificationContentType.setXsl(xsl);
        
-       this.notificationContentTypeService.saveNotificationContentType(notificationContentType);
+       notificationContentTypeService.saveNotificationContentType(notificationContentType);
        
        Collection<NotificationContentTypeBo> contentTypes = this.notificationContentTypeService.getAllCurrentContentTypes();
        Map<String, Object> model = new HashMap<String, Object>();

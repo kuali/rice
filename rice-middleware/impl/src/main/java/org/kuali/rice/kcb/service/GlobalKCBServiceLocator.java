@@ -22,7 +22,7 @@ import org.kuali.rice.kcb.util.BeanFactoryInvocationHandler;
 import org.springframework.beans.factory.BeanFactory;
 
 /**
- * Class that holds a singleton reference to KCBServiceLocator 
+ * Class that holds a singleton reference to KCBServiceLocator
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GlobalKCBServiceLocator {
@@ -38,14 +38,14 @@ public class GlobalKCBServiceLocator {
      * @param beanFactory the beanFactory from which to construct the KCBServiceLocator
      */
     public static synchronized void init(BeanFactory beanFactory) {
-//        LOG.error("INITIALIZING", new Exception());
+        //        LOG.error("INITIALIZING", new Exception());
         if (locator != null) {
             throw new IllegalStateException("GlobalKCBServiceLocator already initialized");
         }
 
         locator = (KCBServiceLocator) Proxy.newProxyInstance(GlobalKCBServiceLocator.class.getClassLoader(),
-                                                             new Class[] { KCBServiceLocator.class },
-                                                             new BeanFactoryInvocationHandler(beanFactory));
+                new Class[] { KCBServiceLocator.class },
+                new BeanFactoryInvocationHandler(beanFactory));
     }
 
     /**

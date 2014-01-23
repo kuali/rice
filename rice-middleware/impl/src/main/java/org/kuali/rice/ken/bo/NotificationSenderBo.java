@@ -18,6 +18,8 @@ package org.kuali.rice.ken.bo;
 import org.kuali.rice.ken.api.notification.NotificationSender;
 import org.kuali.rice.ken.api.notification.NotificationSenderContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,16 +41,15 @@ import javax.persistence.Table;
 public class NotificationSenderBo extends PersistableBusinessObjectBase implements NotificationSenderContract {
     @Id
     @GeneratedValue(generator="KREN_SNDR_S")
+    @PortableSequenceGenerator(name="KREN_SNDR_S")
 	@Column(name="SNDR_ID")
 	private Long id;
-    @Column(name="NTFCTN_ID", nullable=false)
-	private Long notificationId;
     @Column(name="NM", nullable=false)
 	private String senderName;
 
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
+    @JoinColumn(name="NTFCTN_ID", nullable = false)
     private NotificationBo notification;
 
     /**
@@ -74,19 +75,11 @@ public class NotificationSenderBo extends PersistableBusinessObjectBase implemen
     }
 
     /**
-     * Gets the notificationId attribute. 
+     * Gets the notificationId attribute.
      * @return Returns the notificationId.
      */
     public Long getNotificationId() {
-        return notificationId;
-    }
-
-    /**
-     * Sets the notificationId attribute value.
-     * @param notificationId The notificationId to set.
-     */
-    public void setNotificationId(Long notificationId) {
-        this.notificationId = notificationId;
+        return (notification == null) ? null : notification.getId();
     }
 
     /**
@@ -103,6 +96,14 @@ public class NotificationSenderBo extends PersistableBusinessObjectBase implemen
      */
     public void setSenderName(String userId) {
         this.senderName = userId;
+    }
+
+    public NotificationBo getNotification() {
+        return notification;
+    }
+
+    public void setNotification(NotificationBo notification) {
+        this.notification = notification;
     }
 
     /**
@@ -133,7 +134,11 @@ public class NotificationSenderBo extends PersistableBusinessObjectBase implemen
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
         bo.setSenderName(im.getSenderName());
-        bo.setNotificationId(im.getNotificationId());
+        if (im.getNotificationId() != null) {
+            NotificationBo notification =
+                    KradDataServiceLocator.getDataObjectService().find(NotificationBo.class, im.getNotificationId());
+            bo.setNotification(notification);
+        }
         return bo;
     }
 }

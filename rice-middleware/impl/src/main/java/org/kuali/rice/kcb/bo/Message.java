@@ -21,6 +21,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -28,6 +29,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This class represents an abstract message that has been sent to a single user
@@ -45,7 +47,9 @@ public class Message {
     public static final String ORIGINID_FIELD = "originId";
 
     @Id
-	@Column(name="MSG_ID")
+    @GeneratedValue(generator="KREN_MSG_S")
+    @PortableSequenceGenerator(name="KREN_MSG_S")
+    @Column(name="MSG_ID")
 	private Long id;
     /**
      * The origin id is an id provided by the originating system that creates the message

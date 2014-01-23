@@ -24,6 +24,7 @@ import org.kuali.rice.ken.api.notification.NotificationRecipient;
 import org.kuali.rice.ken.api.notification.NotificationSender;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -34,6 +35,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -53,7 +55,8 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
    
     @Id
     @GeneratedValue(generator="KREN_NTFCTN_S")
-	@Column(name="NTFCTN_ID")
+    @PortableSequenceGenerator(name="KREN_NTFCTN_S")
+	@Column(name="NTFCTN_ID", nullable = false)
 	private Long id;
     @Column(name="DELIV_TYP", nullable=false)
 	private String deliveryType;
@@ -87,7 +90,7 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
 	@JoinColumn(name="PRIO_ID")
 	private NotificationPriorityBo priority;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
-	@JoinColumn(name="CNTNT_TYP_ID")
+	@JoinColumn(name="CNTNT_TYP_ID", nullable=false)
 	private NotificationContentTypeBo contentType;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="CHNL_ID")
@@ -98,9 +101,10 @@ public class NotificationBo extends PersistableBusinessObjectBase implements Not
     
     // lists
     @OneToMany(cascade={CascadeType.ALL},
-           targetEntity=NotificationRecipientBo.class, mappedBy="notification")
+            targetEntity=NotificationRecipientBo.class, mappedBy = "notification")
     @OrderBy("id ASC")
 	private List<NotificationRecipientBo> recipients;
+
     @OneToMany(cascade={CascadeType.ALL},
            targetEntity=NotificationSenderBo.class, mappedBy="notification")
 	@OrderBy("id ASC")

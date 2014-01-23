@@ -142,7 +142,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 
         NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name",
                 NotificationConstants.CONTENT_TYPES.EVENT_CONTENT_TYPE, NotificationContentTypeBo.class,
-                businessObjectDao);
+                dataObjectService, Boolean.TRUE);
         notification.setContentType(contentType);
 
         notification.setContent(NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_EVENT_OPEN

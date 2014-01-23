@@ -20,11 +20,9 @@ import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
-import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -41,46 +39,36 @@ public class NotificationAuthorizationServiceImplTest extends KENTestCase {
 
     @Test
     public void testIsProducerAuthorizedForNotificationChannel_validInput() {
-	HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannelBo
-            channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
-	primaryKeys.clear();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.PRODUCER_3.getId());
-	NotificationProducerBo
-            producer = (NotificationProducerBo) services.getGenericDao().findByPrimaryKey(NotificationProducerBo.class, primaryKeys);
+        NotificationChannelBo channel = KRADServiceLocator.getDataObjectService().find(NotificationChannelBo.class,
+                TestConstants.CHANNEL_ID_1);
+        NotificationProducerBo producer = KRADServiceLocator.getDataObjectService().find(NotificationProducerBo.class,
+                TestConstants.PRODUCER_3.getId());
 
-	assertTrue(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
+	    assertTrue(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }
 
     @Test
     public void testIsProducerAuthorizedForNotificationChannel_invalidInput() {
-	HashMap primaryKeys = new HashMap();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, TestConstants.CHANNEL_ID_1);
-	NotificationChannelBo
-            channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
 
-	primaryKeys.clear();
-	primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID,TestConstants. PRODUCER_4.getId());
-	NotificationProducerBo
-            producer = (NotificationProducerBo) services.getGenericDao().findByPrimaryKey(NotificationProducerBo.class, primaryKeys);
+        NotificationChannelBo channel = KRADServiceLocator.getDataObjectService().find(NotificationChannelBo.class, TestConstants.CHANNEL_ID_1);
+        NotificationProducerBo producer = KRADServiceLocator.getDataObjectService().find(NotificationProducerBo.class, TestConstants.PRODUCER_4.getId());
 
-	assertFalse(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
+	    assertFalse(services.getNotificationAuthorizationService().isProducerAuthorizedToSendNotificationForChannel(producer, channel));
     }
 
     @Test
     public void testIsUserAdministrator_validAdmin() {
-	assertTrue(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.ADMIN_USER_1));
+	    assertTrue(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.ADMIN_USER_1));
     }
 
     @Test
     public void testIsUserAdministrator_nonAdmin() {
-	assertFalse(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.NON_ADMIN_USER_1));
+	    assertFalse(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.NON_ADMIN_USER_1));
     }
 
     @Test
     public void testIsUserAdministrator_invalidUser() {
-	assertFalse(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.INVALID_USER_1));
+	    assertFalse(services.getNotificationAuthorizationService().isUserAdministrator(TestConstants.INVALID_USER_1));
     }
 }

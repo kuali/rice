@@ -18,6 +18,8 @@ package org.kuali.rice.ken.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationChannelBo;
@@ -27,6 +29,7 @@ import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.bo.NotificationRecipientBo;
 import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -51,8 +54,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * A general Utility class for the Notification system.
@@ -353,24 +359,40 @@ public final class Util {
      * @param keyName
      * @param keyValue
      * @param clazz
-     * @param boDao
+     * @param dataObjectService
      * @return T
      * @throws IllegalArgumentException
      */
-    public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz, GenericDao boDao) throws IllegalArgumentException {
+    public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz,
+            DataObjectService dataObjectService, Boolean searchCurrentField) throws RuntimeException {
+
         LOG.debug(fieldName + " key value: " + keyValue);
         if (StringUtils.isBlank(keyValue)) {
             throw new IllegalArgumentException(fieldName + " must be specified in notification");
         }
-        Map<String, Object> keys = new HashMap<String, Object>(1);
-        keys.put(keyName, keyValue);
-        T reference = (T) boDao.findByPrimaryKey(clazz, keys);
-        if (reference == null) {
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        predicates.add(equal(keyName, keyValue));
+        if (searchCurrentField) {
+            predicates.add(equal("current", Boolean.TRUE));
+        }
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+        List<T> references = dataObjectService.findMatching(clazz, criteria.build()).getResults();
+
+        if (references.isEmpty()) {
             throw new IllegalArgumentException(fieldName + " '" + keyValue + "' not found");
         }
-        return reference;
+        if (references.size() > 1) {
+            throw new RuntimeException("More than one item found for the given value: " + keyValue);
+        }
+
+        return references.get(0);
     }
 
+    public static <T> T retrieveFieldReference(String fieldName, String keyName, String keyValue, Class clazz, DataObjectService dataObjectService) throws RuntimeException {
+        return retrieveFieldReference(fieldName, keyName, keyValue, clazz, dataObjectService, false);
+    }
     /** date formats are not thread safe so creating a new one each time it is needed. */
     private static DateFormat createZulu() {
         final DateFormat df = new SimpleDateFormat(ZULU_FORMAT);

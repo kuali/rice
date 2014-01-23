@@ -19,15 +19,14 @@ import org.junit.Test;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
-import org.kuali.rice.kcb.test.BusinessObjectTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.KCBTestData;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Collection;
-
 import static org.junit.Assert.*;
-
 
 /**
  * Tests MessageService 
@@ -35,21 +34,20 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MessageServiceTest extends BusinessObjectTestCase {
+public class MessageServiceTest extends KCBTestCase {
     private MessageService messageService;
     private Message MESSAGE;
-    
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
     
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
         MESSAGE = KCBTestData.getMessage1();
-        messageService.saveMessage(MESSAGE);
+        MESSAGE = messageService.saveMessage(MESSAGE);
     }
 
     @Test
-    @Override
     public void testCreate() {
         Message m = new Message();
         m.setContent("test content 2");
@@ -59,7 +57,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         m.setRecipient("test recipient 2");
         m.setTitle("test title 2");
 
-        messageService.saveMessage(m);
+        m = messageService.saveMessage(m);
         assertNotNull(m.getId());
 
         Collection<Message> ms = messageService.getAllMessages();
@@ -84,7 +82,6 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     }
 
     @Test
-    @Override
     public void testDelete() {
         messageService.deleteMessage(MESSAGE);
         
@@ -98,46 +95,31 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     /* since OJB treats creates and updates the same, and we have no constraints,
        this test doesn't really test anything under OJB */
     @Test
-    @Override
     public void testDuplicateCreate() {
         Message m = new Message(MESSAGE);
-        messageService.saveMessage(m);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    @Override
-    public void testInvalidCreate() {
-        final Message m = new Message();
-        messageService.saveMessage(m);
+        KRADServiceLocator.getDataObjectService().save(MESSAGE, PersistenceOption.FLUSH);
     }
 
     @Test(expected = DataAccessException.class)
-    @Override
-    public void testInvalidDelete() {
+    public void testInvalidCreate() {
         final Message m = new Message();
-        m.setId(new Long(-1));
-        // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
-        // may have been deleted by somebody else
-        messageService.deleteMessage(m);
+        KRADServiceLocator.getDataObjectService().save(m, PersistenceOption.FLUSH);
     }
 
     @Test
-    @Override
     public void testInvalidRead() {
         Message m = messageService.getMessage(Long.valueOf(-1));
         assertNull(m);
     }
 
     @Test(expected = DataAccessException.class)
-    @Override
     public void testInvalidUpdate() {
         final Message m = messageService.getMessage(MESSAGE.getId());
         m.setChannel(null);
-        messageService.saveMessage(m);
+        KRADServiceLocator.getDataObjectService().save(m, PersistenceOption.FLUSH);
     }
 
     @Test
-    @Override
     public void testReadById() {
         Message m = messageService.getMessage(MESSAGE.getId());
 
@@ -145,12 +127,11 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     }
 
     @Test
-    @Override
     public void testUpdate() {
         Message m = messageService.getMessage(MESSAGE.getId());
         m.setTitle("A better title");
         m.setContent("different content");
-        messageService.saveMessage(m);
+        m = messageService.saveMessage(m);
         
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);

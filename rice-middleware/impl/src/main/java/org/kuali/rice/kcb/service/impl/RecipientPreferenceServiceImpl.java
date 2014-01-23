@@ -17,36 +17,45 @@ package org.kuali.rice.kcb.service.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
+import org.kuali.rice.krad.data.DataObjectService;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * RecipientPreferenceService implementation 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl implements RecipientPreferenceService {
+public class RecipientPreferenceServiceImpl implements RecipientPreferenceService {
+
+    private DataObjectService dataObjectService;
+
     /**
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#getRecipientPreference(java.lang.String, java.lang.String)
      */
     public RecipientPreference getRecipientPreference(String recipientId, String key) {
-        Map<String, String> fields = new HashMap<String, String>(2);
-        fields.put(RecipientPreference.RECIPIENT_FIELD, recipientId);
-        fields.put(RecipientPreference.PROPERTY_FIELD, key);
-
-        Collection<RecipientPreference> prefs = dao.findMatching(RecipientPreference.class, fields);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(
+                equal(RecipientPreference.RECIPIENT_FIELD, recipientId),
+                equal(RecipientPreference.PROPERTY_FIELD, key)
+        );
+        List<RecipientPreference> prefs = dataObjectService.findMatching(RecipientPreference.class, criteria.build()).getResults();
         assert(prefs.size() <= 1);
-        
-        if (prefs.size() > 0) {
-            return prefs.iterator().next();
-        } else {
+
+        if (prefs.isEmpty()) {
             return null;
+        } else {
+            return prefs.get(0);
         }
     }
 
@@ -54,17 +63,18 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#deleteRecipientPreference(org.kuali.rice.kcb.bo.RecipientPreference)
      */
     public void deleteRecipientPreference(RecipientPreference pref) {
-        dao.delete(pref);
+        dataObjectService.delete(pref);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#getRecipientPreferences(java.lang.String)
      */
     public HashMap<String, String> getRecipientPreferences(String recipientId) {
-        Map<String, String> fields = new HashMap<String, String>(1);
-        fields.put(RecipientPreference.RECIPIENT_FIELD, recipientId);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(RecipientPreference.RECIPIENT_FIELD, recipientId));
+        List<RecipientPreference> userPrefs = dataObjectService.findMatching(RecipientPreference.class, criteria.build()).getResults();
+
         HashMap<String, String> prefs = new HashMap<String,String>();
-        Collection<RecipientPreference> userPrefs =  dao.findMatching(RecipientPreference.class, fields);
         for (RecipientPreference p: userPrefs) {
             prefs.put(p.getProperty(), p.getValue());
         }
@@ -75,8 +85,8 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
     /**
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#saveRecipientPreference(org.kuali.rice.kcb.bo.RecipientPreference)
      */
-    public void saveRecipientPreference(RecipientPreference pref) {
-        dao.save(pref);
+    public RecipientPreference saveRecipientPreference(RecipientPreference pref) {
+        return dataObjectService.save(pref);
     }
 
     /**
@@ -97,13 +107,13 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
               currentPreference.setRecipientId(recipientId);
               currentPreference.setProperty(prop);
               currentPreference.setValue(value);
-              dao.save(currentPreference);
+              dataObjectService.save(currentPreference);
            } else {
               RecipientPreference recipientPreference = new RecipientPreference();
               recipientPreference.setRecipientId(recipientId);
               recipientPreference.setProperty(prop);
               recipientPreference.setValue(value);
-              dao.save(recipientPreference);
+              dataObjectService.save(recipientPreference);
            }
         }
     }
@@ -114,9 +124,9 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#removeRecipientDelivererConfigs(java.lang.String)
      */
     public void removeRecipientDelivererConfigs(String recipientId) {
-        Map<String, String> fields = new HashMap<String, String>(1);
-        fields.put(RecipientDelivererConfig.RECIPIENT_ID, recipientId);
-        dao.deleteMatching(RecipientDelivererConfig.class, fields);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(RecipientDelivererConfig.RECIPIENT_ID, recipientId));
+        dataObjectService.deleteMatching(RecipientDelivererConfig.class, criteria.build());
     }
 
     /**
@@ -143,7 +153,7 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
             		}
             	}
             }
-            dao.save(config);
+            dataObjectService.save(config);
         }
     }
 
@@ -151,19 +161,30 @@ public class RecipientPreferenceServiceImpl extends BusinessObjectServiceImpl im
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#getDeliverersForRecipient(java.lang.String)
      */
     public Collection<RecipientDelivererConfig> getDeliverersForRecipient(String recipientId) {
-        Map<String, String> fields = new HashMap<String, String>(1);
-        fields.put(RecipientDelivererConfig.RECIPIENT_ID, recipientId);
-        return dao.findMatching(RecipientDelivererConfig.class, fields);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(RecipientDelivererConfig.RECIPIENT_ID, recipientId));
+
+        return dataObjectService.findMatching(RecipientDelivererConfig.class, criteria.build()).getResults();
     }
 
     /**
      * @see org.kuali.rice.kcb.service.RecipientPreferenceService#getDeliverersForRecipientAndChannel(java.lang.String, java.lang.String)
      */
     public Collection<RecipientDelivererConfig> getDeliverersForRecipientAndChannel(String recipientId, String channel) {
-        Map<String, String> fields = new HashMap<String, String>(1);
-        fields.put(RecipientDelivererConfig.RECIPIENT_ID, recipientId);
-        fields.put(RecipientDelivererConfig.CHANNEL, channel);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(
+                equal(RecipientDelivererConfig.RECIPIENT_ID, recipientId),
+                equal(RecipientDelivererConfig.CHANNEL, channel)
+        );
 
-        return dao.findMatching(RecipientDelivererConfig.class, fields);
+        return dataObjectService.findMatching(RecipientDelivererConfig.class, criteria.build()).getResults();
+    }
+
+    /**
+     * Sets the data object service.
+     * @param dataObjectService service to persist data to the datasource.
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

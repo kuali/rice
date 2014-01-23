@@ -18,6 +18,7 @@ package org.kuali.rice.ken.bo;
 import org.kuali.rice.ken.api.notification.UserChannelSubscription;
 import org.kuali.rice.ken.api.notification.UserChannelSubscriptionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ import javax.persistence.Table;
 public class UserChannelSubscriptionBo extends PersistableBusinessObjectBase implements UserChannelSubscriptionContract {
     @Id
     @GeneratedValue(generator="KREN_CHNL_SUBSCRP_S")
+    @PortableSequenceGenerator(name="KREN_CHNL_SUBSCRP_S")
 	@Column(name="CHNL_SUBSCRP_ID")
 	private Long id;
     @Column(name="PRNCPL_ID", nullable=false)

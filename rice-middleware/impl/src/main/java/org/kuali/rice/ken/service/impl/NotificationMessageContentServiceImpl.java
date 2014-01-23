@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.bo.NotificationContentTypeBo;
@@ -40,6 +39,7 @@ import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -83,21 +83,22 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
     private static final DateFormat DATEFORMAT_CURR_TZ = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 
     /**
-     * Our BusinessObjectDao persistence layer
+     * Our DataObjectService persistence layer
      */
-    private GenericDao boDao;
+    private DataObjectService dataObjectService;
     /**
      * NotificationContentTypeService impl
      */
     private NotificationContentTypeService notificationContentTypeService;
 
     /**
-     * Constructor which takes a GenericDao
+     * Constructor which takes a {@link DataObjectService}
      * Constructs a NotificationMessageContentServiceImpl.java.
-     * @param boDao
+     * @param dataObjectService persistence layer
+     * @param notificationContentTypeService {@link NotificationContentTypeService}
      */
-    public NotificationMessageContentServiceImpl(GenericDao boDao,  NotificationContentTypeService notificationContentTypeService) {
-        this.boDao = boDao;
+    public NotificationMessageContentServiceImpl(DataObjectService dataObjectService,  NotificationContentTypeService notificationContentTypeService) {
+        this.dataObjectService = dataObjectService;
         this.notificationContentTypeService = notificationContentTypeService;
     }
 
@@ -174,6 +175,8 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         /* First parse immediate/primitive Notification member data */
         LOG.debug("URI: " + xpath.getNamespaceContext().getNamespaceURI("nreq"));
         try {
+            NotificationBo notification = new NotificationBo();
+
             String channelName = (String) xpath.evaluate("/nreq:notification/nreq:channel", root);
             LOG.debug("CHANNELNAME: "+ channelName);
             String producerName = xpath.evaluate("/nreq:notification/nreq:producer", root);
@@ -205,6 +208,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     throw new XmlException("Invalid 'recipientType' value: '" + node.getLocalName() +
                 	    "'.  Needs to either be 'user' or 'group'");
                 }
+                recipient.setNotification(notification);
                 recipients.add(recipient);
             }
 
@@ -218,7 +222,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
             /* Construct the Notification business object */
 
-            NotificationBo notification = new NotificationBo();
+
 
             if (!StringUtils.isBlank(title)) {
                 notification.setTitle(title);
@@ -227,21 +231,23 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             /* channel and producer require lookups in the system (i.e. we can't just create new instances out of whole cloth), so
                we call a helper method to retrieve references to the respective objects
              */
-            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, boDao);
+            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, dataObjectService);
             notification.setChannel(channel);
 
-            NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name", producerName, NotificationProducerBo.class, boDao);
+            NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name", producerName, NotificationProducerBo.class, dataObjectService);
             notification.setProducer(producer);
 
             for (String sender: senders) {
                 NotificationSenderBo ns = new NotificationSenderBo();
                 LOG.debug("Setting sender: " + sender);
                 ns.setSenderName(sender);
+                ns.setNotification(notification);
                 notification.addSender(ns);
             }
 
             for (NotificationRecipientBo recipient: recipients) {
                 LOG.debug("Setting recipient id: "+ recipient.getRecipientId());
+//                recipient.setNotification(notification);
                 notification.addRecipient(recipient);
             }
 
@@ -276,10 +282,11 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
 
             /* we have to look up priority and content type in the system also */
-            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, boDao);
+            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, dataObjectService);
             notification.setPriority(priority);
 
-            NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, boDao);
+            NotificationContentTypeBo contentType =
+                    Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, dataObjectService, Boolean.TRUE);
             notification.setContentType(contentType);
 
             /* Now handle and validate actual notification content.  This is a tricky part.
@@ -513,17 +520,17 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             String content = ((String) xpath.evaluate("//notification/content", root)).trim();
 
             // now populate the notification BO instance
-            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, boDao);
+            NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName, NotificationChannelBo.class, dataObjectService);
             notification.setChannel(channel);
 
-            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, boDao);
+            NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName, NotificationPriorityBo.class, dataObjectService);
             notification.setPriority(priority);
 
-            NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, boDao);
+            NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name", contentTypeName, NotificationContentTypeBo.class, dataObjectService, Boolean.TRUE);
             notification.setContentType(contentType);
 
             NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name", NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME,
-        	    NotificationProducerBo.class, boDao);
+                    NotificationProducerBo.class, dataObjectService);
             notification.setProducer(producer);
 
             for (String senderName: senders) {

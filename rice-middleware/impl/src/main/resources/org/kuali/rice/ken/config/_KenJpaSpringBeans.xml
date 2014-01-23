@@ -1,0 +1,95 @@
+<!--
+
+    Copyright 2005-2013 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+  <bean id="kenDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+    <property name="preferredDataSourceParams">
+      <list>
+        <value>ken.datasource</value>
+      </list>
+    </property>
+    <property name="preferredDataSourceJndiParams">
+      <list>
+        <value>ken.datasource.jndi.location</value>
+      </list>
+    </property>
+    <property name="serverDataSource" value="true"/>
+  </bean>
+
+  <!-- Enables Load-Time Weaving -->
+  <context:load-time-weaver />
+
+  <util:list id="rice.ken.managedClassNames">
+    <value>org.kuali.rice.ken.bo.NotificationBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationContentTypeBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationPriorityBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationChannelBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationProducerBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationRecipientBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationSenderBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationRecipientListBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationChannelReviewerBo</value>
+    <value>org.kuali.rice.ken.bo.NotificationMessageDelivery</value>
+    <value>org.kuali.rice.ken.bo.UserChannelSubscriptionBo</value>
+  </util:list>
+
+  <bean
+          id="rice.ken.entityManagerFactory"
+          class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+          p:jtaDataSource-ref="kenDataSource"
+          p:persistenceUnitName="rice.ken"
+          p:managedClassNames-ref="rice.ken.managedClassNames"/>
+
+  <bean
+          id="rice.ken.sharedEntityManager"
+          class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+          p:entityManagerFactory-ref="rice.ken.entityManagerFactory"/>
+
+  <bean
+          id="rice.ken.jpaPersistenceProvider"
+          class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+          p:dataObjectService-ref="dataObjectService"
+          p:sharedEntityManager-ref="rice.ken.sharedEntityManager"/>
+
+  <bean
+          id="rice.ken.metadataProviderJpa"
+          class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+          p:entityManager-ref="rice.ken.sharedEntityManager"/>
+
+  <bean id="org.kuali.rice.ken.providerRegister" class="org.kuali.rice.krad.data.config.ProviderRegistrationFactory">
+    <property name="providerRegistry" ref="providerRegistry" />
+    <property name="providers">
+      <util:list>
+        <ref bean="rice.ken.jpaPersistenceProvider" />
+        <ref bean="rice.ken.metadataProviderJpa" />
+      </util:list>
+    </property>
+  </bean>
+
+</beans>
+

@@ -18,6 +18,7 @@ package org.kuali.rice.ken.bo;
 import org.kuali.rice.ken.api.notification.NotificationListRecipient;
 import org.kuali.rice.ken.api.notification.NotificationListRecipientContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ import javax.persistence.Table;
 public class NotificationRecipientListBo extends PersistableBusinessObjectBase implements NotificationListRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_LIST_S")
+    @PortableSequenceGenerator(name="KREN_RECIP_LIST_S")
 	@Column(name="RECIP_LIST_ID")
 	private Long id;
     @Column(name="RECIP_TYP_CD", nullable=false)

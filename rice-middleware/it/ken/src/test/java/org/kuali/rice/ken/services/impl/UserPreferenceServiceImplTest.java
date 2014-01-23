@@ -16,17 +16,17 @@
 package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
+
 import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.bo.UserChannelSubscriptionBo;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
-import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -50,10 +50,7 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
     @Test
     public void testSubscribeToChannel() {
         UserPreferenceService impl = services.getUserPreferenceService();
-        HashMap primaryKeys = new HashMap();
-        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
-        NotificationChannelBo
-                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
+        NotificationChannelBo channel = KRADServiceLocator.getDataObjectService().find(NotificationChannelBo.class, VALID_CHANNEL_ID_LONG);
 
         UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();
         newSub.setUserId(VALID_USER_ID);
@@ -68,10 +65,9 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
     @Test
     public void testGetCurrentSubscriptions() {
         UserPreferenceService impl = services.getUserPreferenceService();
-        HashMap primaryKeys = new HashMap();
-        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
+
         NotificationChannelBo
-                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
+                channel = KRADServiceLocator.getDataObjectService().find(NotificationChannelBo.class, VALID_CHANNEL_ID_LONG);
 
         UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();
         newSub.setUserId(VALID_USER_ID);
@@ -84,10 +80,8 @@ public class UserPreferenceServiceImplTest extends KENTestCase {
     @Test
     public void testUnsubscribeFromChannel() {
         UserPreferenceService impl = services.getUserPreferenceService();
-        HashMap primaryKeys = new HashMap();
-        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, VALID_CHANNEL_ID_LONG);
         NotificationChannelBo
-                channel = (NotificationChannelBo) services.getGenericDao().findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
+                channel = KRADServiceLocator.getDataObjectService().find(NotificationChannelBo.class, VALID_CHANNEL_ID_LONG);
 
 
         UserChannelSubscriptionBo newSub = new UserChannelSubscriptionBo();

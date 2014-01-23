@@ -19,6 +19,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -26,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This class represents an instance of a MessageDelivery.  A Message gets delivered to 
@@ -48,6 +50,8 @@ public class MessageDelivery extends BaseLockable {
     public static final String PROCESS_COUNT = "processCount";
     
     @Id
+    @GeneratedValue(generator="KREN_MSG_DELIV_S")
+    @PortableSequenceGenerator(name="KREN_MSG_DELIV_S")
 	@Column(name="MSG_DELIV_ID")
 	private Long id;
     @Column(name="TYP_NM", nullable=false)
@@ -63,7 +67,7 @@ public class MessageDelivery extends BaseLockable {
      * This delivery's message
      */
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="MSG_ID")
+	@JoinColumn(name="MSG_ID", nullable=false)
 	private Message message;
 
     /**

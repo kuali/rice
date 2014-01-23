@@ -26,6 +26,8 @@ import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -83,7 +85,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
         //fail("Not yet implemented");
 
         notification.setCreationDateTimeValue(new Timestamp(System.currentTimeMillis()));
-        services.getGenericDao().save(notification);
+        KRADServiceLocator.getDataObjectService().save(notification, PersistenceOption.FLUSH);
         //setComplete();
     }
 

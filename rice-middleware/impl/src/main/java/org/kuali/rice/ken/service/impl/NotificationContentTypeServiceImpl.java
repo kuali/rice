@@ -15,14 +15,19 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
 
 //import org.apache.ojb.broker.query.QueryByCriteria;
 //import org.apache.ojb.broker.query.QueryFactory;
@@ -30,62 +35,73 @@ import java.util.Map;
 
 
 /**
- * NotificationContentTypeService implementation - uses the businessObjectDao to get at the underlying data in the stock DBMS.
+ * NotificationContentTypeService implementation - uses the dataObjectService to get at the underlying data in the stock DBMS.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationContentTypeServiceImpl implements NotificationContentTypeService {
-    private GenericDao businessObjectDao;
+
+    /** Service to persist data to and from the datasource. */
+    private DataObjectService dataObjectService;
 
     /**
      * Constructs a NotificationContentTypeServiceImpl.java.
-     * @param businessObjectDao
+     * @param dataObjectService Service to persist data to and from the datasource.
      */
-    public NotificationContentTypeServiceImpl(GenericDao businessObjectDao) {
-        this.businessObjectDao = businessObjectDao;
+    public NotificationContentTypeServiceImpl(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getNotificationContentType(java.lang.String)
      */
     //this is the one need to tweek on criteria
+    @Override
     public NotificationContentTypeBo getNotificationContentType(String name) {
-//        Criteria c = new Criteria();
-//        c.addEqualTo("name", name);
-//        c.addEqualTo("current", true);	
-//    	Criteria c = new Criteria(NotificationContentType.class.getName());
-//    	c.eq("name", name);
-//    	c.eq("current", true);
-    	Map<String, Object> c = new HashMap<String, Object>();
-    	c.put("name", name);
-    	c.put("current", new Boolean(true));
-    	
-        Collection<NotificationContentTypeBo> coll = businessObjectDao.findMatching(NotificationContentTypeBo.class, c);
-        if (coll.size() == 0) {
+        if (StringUtils.isBlank(name)) {
+            throw new RiceIllegalArgumentException("name is blank");
+        }
+
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("name", name), equal("current", new Boolean(true)));
+        List<NotificationContentTypeBo> coll= dataObjectService.findMatching(NotificationContentTypeBo.class, criteria.build()).getResults();
+        if (coll.isEmpty()) {
             return null;
         } else {
-            return coll.iterator().next();
+            return coll.get(0);
         }
     }
 
+    /**
+     * Returns the highest version found for the given name or negative one if the name is not found.
+     * @param name the name to query for
+     * @return the highest version number found or negative one if the name is not found.
+     */
     protected int findHighestContentTypeVersion(String name) {
-        // there's probably a better way...'report'? or direct SQL
-        Map<String, Object> fields = new HashMap<String, Object>(2);
-        fields.put("name", name);
-        Collection<NotificationContentTypeBo> types = businessObjectDao.findMatchingOrderBy(NotificationContentTypeBo.class, fields, "version", false);
-        if (types.size() > 0) {
-            return types.iterator().next().getVersion();
+
+        int highestVersion = -1;
+
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("name", name));
+        List<NotificationContentTypeBo> ntfyCntTypes = dataObjectService.findMatching(NotificationContentTypeBo.class, criteria.build()).getResults();
+
+        for (NotificationContentTypeBo ntfyCntType : ntfyCntTypes) {
+            if (ntfyCntType.getVersion() > highestVersion) {
+                highestVersion = ntfyCntType.getVersion();
+            }
         }
-        return -1;
+
+        return highestVersion;
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#saveNotificationContentType(org.kuali.rice.ken.bo.NotificationContentTypeBo)
      */
+    @Override
     public void saveNotificationContentType(NotificationContentTypeBo contentType) {
         NotificationContentTypeBo previous = getNotificationContentType(contentType.getName());
         if (previous != null) {
             previous.setCurrent(false);
-            businessObjectDao.save(previous);
+            previous = dataObjectService.save(previous);
         }
         int lastVersion = findHighestContentTypeVersion(contentType.getName());
         NotificationContentTypeBo next;
@@ -102,42 +118,56 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
 
         next.setVersion(lastVersion + 1);
         next.setCurrent(true);
-        businessObjectDao.save(next);
+        next = dataObjectService.save(next);
         
         // update all the old references
         if (previous != null) {
             Collection<NotificationBo> ns = getNotificationsOfContentType(previous);
             for (NotificationBo n: ns) {
                 n.setContentType(next);
-                businessObjectDao.save(n);
+                dataObjectService.save(n);
             }
         }
     }
 
+    /**
+     * Get notifications based on content type.
+     * @param ct Notification content type
+     * @return  a collection of {@link NotificationBo} for the given content type
+     */
     protected Collection<NotificationBo> getNotificationsOfContentType(NotificationContentTypeBo ct) {
-        Map<String, Object> fields = new HashMap<String, Object>(1);
-        fields.put("contentType", ct.getId());
-        return businessObjectDao.findMatching(NotificationBo.class, fields);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("contentType.id", ct.getId()));
+        return dataObjectService.findMatching(NotificationBo.class, criteria.build()).getResults();
     }
+
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllCurrentContentTypes()
      */
+    @Override
     public Collection<NotificationContentTypeBo> getAllCurrentContentTypes() {
-//        Criteria c = new Criteria();
-//        c.addEqualTo("current", true);
-////    	Criteria c = new Criteria(NotificationContentType.class.getName());
-////    	c.eq("current", true);
-    	
-    	Map<String, Boolean> c = new HashMap<String, Boolean>();
-    	c.put("current", new Boolean(true));
-   
-        return businessObjectDao.findMatching(NotificationContentTypeBo.class, c);
+    	QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("current", new Boolean(true)));
+
+        return dataObjectService.findMatching(NotificationContentTypeBo.class, criteria.build()).getResults();
     }
     
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllContentTypes()
      */
+    @Override
     public Collection<NotificationContentTypeBo> getAllContentTypes() {
-        return businessObjectDao.findAll(NotificationContentTypeBo.class);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(greaterThanOrEqual("version", 0));
+
+        return dataObjectService.findMatching(NotificationContentTypeBo.class, criteria.build()).getResults();
+    }
+
+    /**
+     * Sets the data object service
+     * @param dataObjectService {@link DataObjectService}
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

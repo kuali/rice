@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.ken.test;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
@@ -22,12 +24,11 @@ import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.BaselineTestCase.BaselineMode;
-import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.CompositeBeanFactory;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
-import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
+import org.kuali.rice.test.runners.BootstrapTest;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.BeanFactory;
@@ -42,7 +43,9 @@ import java.util.List;
  * Base test case for KEN that extends RiceTestCase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(KENTestCase.BootstrapTest.class)
 public abstract class KENTestCase extends BaselineTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
@@ -204,6 +207,11 @@ public abstract class KENTestCase extends BaselineTestCase {
         // these in our unit tests
         Scheduler scheduler = services.getScheduler();
         scheduler.start();
+    }
+
+    public static final class BootstrapTest extends KENTestCase {
+        @Test
+        public void bootstrapTest() {};
     }
 
 }

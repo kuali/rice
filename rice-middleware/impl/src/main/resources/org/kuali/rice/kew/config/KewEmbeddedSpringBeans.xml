@@ -146,11 +146,14 @@
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
+  <bean id="enActionRequestDao" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl"/>
+
   <!--  ActionRequestService -->
   <bean id="enActionRequestService"
         class="org.kuali.rice.kew.actionrequest.service.impl.ActionRequestServiceImpl"
         lazy-init="true"
-        p:dataObjectService-ref="dataObjectService"/>
+        p:dataObjectService-ref="dataObjectService"
+        p:actionRequestDAO-ref="enActionRequestDAO"/>
 
   <!--  ActionListService -->
   <bean id="enActionListService" class="org.kuali.rice.kew.actionlist.service.impl.ActionListServiceImpl" lazy-init="true"

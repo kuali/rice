@@ -17,11 +17,13 @@ package org.kuali.rice.kcb.bo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This class represents the enablement of a deliverer for a particular channel for a particular user.
@@ -40,6 +42,8 @@ public class RecipientDelivererConfig {
     public static final String CHANNEL = "channel";
     
     @Id
+    @GeneratedValue(generator="KREN_RECIP_DELIV_S")
+    @PortableSequenceGenerator(name="KREN_RECIP_DELIV_S")
 	@Column(name="RECIP_DELIV_ID")
 	private Long id;
     @Column(name="RECIP_ID", nullable=false)

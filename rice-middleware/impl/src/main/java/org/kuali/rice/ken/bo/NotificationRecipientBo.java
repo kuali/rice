@@ -19,6 +19,8 @@ import org.kuali.rice.ken.api.notification.NotificationListRecipient;
 import org.kuali.rice.ken.api.notification.NotificationRecipient;
 import org.kuali.rice.ken.api.notification.NotificationRecipientContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.*;
 
@@ -32,20 +34,19 @@ import javax.persistence.*;
 public class NotificationRecipientBo extends PersistableBusinessObjectBase implements NotificationRecipientContract {
     @Id
     @GeneratedValue(generator="KREN_RECIP_S")
+    @PortableSequenceGenerator(name="KREN_RECIP_S")
 	@Column(name="RECIP_ID")
 	private Long id;
-    @Column(name="NTFCTN_ID", nullable=false)
-	private Long notificationId;
     @Column(name="RECIP_TYP_CD", nullable=false)
 	private String recipientType;
     @Column(name="PRNCPL_ID", nullable=false)
 	private String recipientId;
-    
+
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="NTFCTN_ID", insertable=false, updatable=false)
+    @JoinColumn(name="NTFCTN_ID", nullable = false)
     private NotificationBo notification;
-    
+
     /**
      * Constructs a NotificationRecipient instance.
      */
@@ -73,15 +74,7 @@ public class NotificationRecipientBo extends PersistableBusinessObjectBase imple
      * @return Returns the notificationId.
      */
     public Long getNotificationId() {
-	    return notificationId;
-    }
-
-    /**
-     * Sets the notificationId attribute value.
-     * @param notificationId The notificationId to set.
-     */
-    public void setNotificationId(Long notificationId) {
-	    this.notificationId = notificationId;
+	    return (notification == null) ? null : notification.getId();
     }
 
     /**
@@ -116,6 +109,14 @@ public class NotificationRecipientBo extends PersistableBusinessObjectBase imple
 	    this.recipientType = recipientType;
     }
 
+    public NotificationBo getNotification() {
+        return notification;
+    }
+
+    public void setNotification(NotificationBo notification) {
+        this.notification = notification;
+    }
+
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
@@ -146,7 +147,11 @@ public class NotificationRecipientBo extends PersistableBusinessObjectBase imple
 
         bo.setRecipientType(im.getRecipientType());
         bo.setRecipientId(im.getRecipientId());
-        bo.setNotificationId(im.getNotificationId());
+        if (im.getNotificationId() != null) {
+            NotificationBo notification =
+                    KradDataServiceLocator.getDataObjectService().find(NotificationBo.class, im.getNotificationId());
+            bo.setNotification(notification);
+        }
         return bo;
     }
 }

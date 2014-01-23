@@ -17,6 +17,7 @@ package org.kuali.rice.ken.services.impl;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.ken.api.KenApiConstants;
@@ -24,18 +25,13 @@ import org.kuali.rice.ken.api.notification.Notification;
 import org.kuali.rice.ken.api.notification.NotificationResponse;
 import org.kuali.rice.ken.api.service.SendNotificationService;
 import org.kuali.rice.ken.bo.NotificationBo;
-import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.bo.NotificationResponseBo;
-import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
-import org.kuali.rice.ken.service.NotificationService;
-import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.test.KENTestCase;
-import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.quartz.SchedulerException;
 
@@ -47,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This class tests the notification service impl.
@@ -83,9 +81,10 @@ public class SendNotificationServiceImplTest extends KENTestCase {
         
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
 
-        Map map = new HashMap();
-        map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<NotificationBo> notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED));
+        Collection<NotificationBo> notifications = KRADServiceLocator.getDataObjectService().findMatching(
+                NotificationBo.class, criteria.build()).getResults();
         assertEquals(0, notifications.size());
         final String[] result = new String[1];
 
@@ -93,7 +92,7 @@ public class SendNotificationServiceImplTest extends KENTestCase {
 
         LOG.info("response XML: " + response);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
-        notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
+        notifications = KRADServiceLocator.getDataObjectService().findMatching(NotificationBo.class, criteria.build()).getResults();
         assertEquals(1, notifications.size());
         LOG.info("Notification: " + notifications.iterator().next());
 
@@ -170,9 +169,9 @@ public class SendNotificationServiceImplTest extends KENTestCase {
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
         NotificationBo notificationBo = services.getNotificationMessageContentService().parseNotificationRequestMessage(
                 notificationMessageAsXml);
-        Map map = new HashMap();
-        map.put(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-        Collection<NotificationBo> notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED));
+        Collection<NotificationBo> notifications = KRADServiceLocator.getDataObjectService().findMatching(NotificationBo.class, criteria.build()).getResults();
         assertEquals(0, notifications.size());
         final String[] result = new String[1];
         Notification notificiation = NotificationBo.to(notificationBo);
@@ -180,7 +179,7 @@ public class SendNotificationServiceImplTest extends KENTestCase {
 
         LOG.info("response XML: " + response);
         assertEquals(NotificationConstants.RESPONSE_STATUSES.SUCCESS, response.getStatus());
-        notifications = services.getGenericDao().findMatching(NotificationBo.class, map);
+        notifications = KRADServiceLocator.getDataObjectService().findMatching(NotificationBo.class, criteria.build()).getResults();
         assertEquals(1, notifications.size());
         LOG.info("Notification: " + notifications.iterator().next());
 

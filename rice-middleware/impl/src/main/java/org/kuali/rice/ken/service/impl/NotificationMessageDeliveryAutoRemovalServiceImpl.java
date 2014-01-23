@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.deliverer.NotificationMessageDeliverer;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
@@ -24,6 +23,7 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.sql.Timestamp;
@@ -37,21 +37,21 @@ import java.util.concurrent.ExecutorService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationMessageDeliveryAutoRemovalServiceImpl extends ConcurrentJob<NotificationMessageDelivery> implements NotificationMessageDeliveryAutoRemovalService {
-    private GenericDao businessObjectDao;
+    private DataObjectService dataObjectService;
     private NotificationMessageDeliveryService messageDeliveryService;
 
     /**
      * Constructs a NotificationMessageDeliveryDispatchServiceImpl instance.
-     * @param businessObjectDao
+     * @param dataObjectService service persists data to datasource
      * @param txManager
      * @param executor
-     * @param messageDeliveryRegistryService
+     * @param messageDeliveryService
      */
-    public NotificationMessageDeliveryAutoRemovalServiceImpl(GenericDao businessObjectDao, PlatformTransactionManager txManager,
+    public NotificationMessageDeliveryAutoRemovalServiceImpl(DataObjectService dataObjectService, PlatformTransactionManager txManager,
 	    ExecutorService executor, NotificationMessageDeliveryService messageDeliveryService) {
         super(txManager, executor);
         this.messageDeliveryService = messageDeliveryService;
-        this.businessObjectDao = businessObjectDao;
+        this.dataObjectService = dataObjectService;
     }
 
     /**
@@ -111,7 +111,7 @@ public class NotificationMessageDeliveryAutoRemovalServiceImpl extends Concurren
         messageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED);
         // mark as unlocked
         messageDelivery.setLockedDateValue(null);
-        businessObjectDao.save(messageDelivery);
+        dataObjectService.save(messageDelivery);
     }
 
     /**

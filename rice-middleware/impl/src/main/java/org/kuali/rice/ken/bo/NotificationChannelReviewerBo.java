@@ -18,6 +18,7 @@ package org.kuali.rice.ken.bo;
 import org.kuali.rice.ken.api.notification.NotificationChannelReviewer;
 import org.kuali.rice.ken.api.notification.NotificationChannelReviewerContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ import javax.persistence.Table;
 public class NotificationChannelReviewerBo extends PersistableBusinessObjectBase implements NotificationChannelReviewerContract {
     @Id
     @GeneratedValue(generator="KREN_RVWER_S")
+    @PortableSequenceGenerator(name="KREN_RVWER_S")
 	@Column(name="RVWER_ID")
 	private Long id;
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH })

@@ -21,9 +21,10 @@ import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataAccessException;
 
 import java.util.Collection;
 
@@ -75,10 +76,11 @@ public class RecipientDelivererConfigTest extends KCBTestCase {
         prefsvc.saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = DataAccessException.class)
     public void testInvalidUpdate() throws Exception {
         // null channel
         prefsvc.saveRecipientDelivererConfig("user1", null, new String[] { "channel2" });
+        KRADServiceLocator.getDataObjectService().flush(RecipientDelivererConfig.class);
     }
     
     @Test

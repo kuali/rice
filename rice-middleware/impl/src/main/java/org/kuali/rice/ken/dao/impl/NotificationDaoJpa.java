@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,19 @@
 package org.kuali.rice.ken.dao.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.dao.NotificationDao;
+import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -32,49 +39,45 @@ import java.util.Collection;
 public class NotificationDaoJpa implements NotificationDao{
 
 	private static final Logger LOG = Logger.getLogger(NotificationDaoJpa.class);
+
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotifications(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
+	 * @see NotificationDao#findMatchedNotificationsForResolution(java.sql.Timestamp, org.kuali.rice.krad.data.DataObjectService)
 	 */
 	@Override
-	public Collection findMatchedNotificationsForResolution(Timestamp tm, GenericDao dao) {
+	public Collection findMatchedNotificationsForResolution(Timestamp tm, DataObjectService dataObjectService) {
 
-		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
+		//LOG.info("************************calling JPANotificationDao.findMatchedNotificationsForResolution(************************ ");
 
-        // TODO commented these lines out when working on KULRICE-9336, once KEN conversion to JPA is merged in this dao should go away
-//		Criteria criteria = new Criteria(NotificationBo.class.getName());
-//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-//		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-//		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(
+            and(
+                equal(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED),
+                lessThanOrEqual(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis())),
+                isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE)
+            )
+        );
 
-
-//		Collection<NotificationBo> available_notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
-//
-//		return available_notifications;
-        return null;
+        return dataObjectService.findMatching(NotificationBo.class, criteria.build()).getResults();
 	}
 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.ken.dao.NotificationDao#findMatchedNotificationsForUnlock(java.sql.Timestamp, org.kuali.rice.core.framework.persistence.dao.GenericDao)
+	 * @see NotificationDao#findMatchedNotificationsForUnlock(org.kuali.rice.ken.bo.NotificationBo, org.kuali.rice.krad.data.DataObjectService)
 	 */
 	@Override
-	public Collection findMatchedNotificationsForUnlock(NotificationBo not, GenericDao dao) {
+	public Collection findMatchedNotificationsForUnlock(NotificationBo not, DataObjectService dataObjectService) {
 
-		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
+		//LOG.info("************************calling JPANotificationDao.findMatchedNotificationsForForUnlock************************ ");
 
-        // TODO commented these lines out when working on KULRICE-9336, once KEN conversion to JPA is merged in this dao should go away
-//		Criteria criteria = new Criteria(NotificationBo.class.getName());
-//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
+		QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId()));
 
+        Collection<NotificationBo> notifications = dataObjectService.findMatching(NotificationBo.class, criteria.build()).getResults();
 
-//		Collection<NotificationBo> notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
-//
-//		return notifications;
-        return null;
+		return notifications;
 	}
-
 }
 

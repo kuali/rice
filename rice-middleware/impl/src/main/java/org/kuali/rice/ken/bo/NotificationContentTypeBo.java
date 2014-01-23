@@ -18,8 +18,11 @@ package org.kuali.rice.ken.bo;
 import org.kuali.rice.ken.api.notification.NotificationContentType;
 import org.kuali.rice.ken.api.notification.NotificationContentTypeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -35,11 +38,14 @@ import javax.persistence.Table;
 public class NotificationContentTypeBo extends PersistableBusinessObjectBase implements NotificationContentTypeContract {
     @Id
     @GeneratedValue(generator="KREN_CNTNT_TYP_S")
-	@Column(name="CNTNT_TYP_ID")
+    @PortableSequenceGenerator(name="KREN_CNTNT_TYP_S")
+	@Column(name="CNTNT_TYP_ID", nullable=false)
 	private Long id;
     @Column(name="NM", nullable=false)
 	private String name;
-    //@Type(type="true_false")
+
+    @Convert(converter = BooleanTFConverter.class)
+    @Column(name="CUR_IND", nullable=false)
     private boolean current = true;
     @Column(name="CNTNT_TYP_VER_NBR", nullable=false)
     private Integer version = Integer.valueOf(0);

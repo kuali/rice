@@ -48,11 +48,7 @@ public class QuickLinksAft extends WebDriverLegacyITBase {
 
     protected void testQuickLinks() throws Exception {
         selectFrameIframePortlet();
-        assertTextPresent("Quick EDoc Search");
-        assertTextPresent("Created=");
-        assertTextPresent("Quick Action List");
-        assertTextPresent("ENROUTE");
-        assertElementPresentByXpath("//a[@href='RouteLog.do?documentId=3017']");
+        assertTextPresent(new String[] {"Quick EDoc Search", "Created=", "Quick Action List", "ENROUTE", "Route Log"});
     }
 
     @Test

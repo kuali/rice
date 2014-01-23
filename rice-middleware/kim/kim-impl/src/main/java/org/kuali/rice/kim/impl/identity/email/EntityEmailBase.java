@@ -15,46 +15,45 @@
  */
 package org.kuali.rice.kim.impl.identity.email;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public abstract class EntityEmailBase extends PersistableBusinessObjectBase implements EntityEmailContract {
+public abstract class EntityEmailBase extends DataObjectBase implements EntityEmailContract {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "ENTITY_ID")
     private String entityId;
+    
     @Column(name = "ENT_TYP_CD")
     private String entityTypeCode;
+    
     @Column(name = "EMAIL_TYP_CD")
     private String emailTypeCode;
+    
     @Column(name = "EMAIL_ADDR")
     private String emailAddress;
 
     @Transient
     private boolean suppressEmail;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    
+    @Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    
+    @Convert(converter=BooleanYNConverter.class)
     @Column(name = "DFLT_IND")
     private boolean defaultValue;
 

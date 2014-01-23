@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.visa;
 
-import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
-import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
@@ -30,32 +28,41 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "KRIM_ENTITY_VISA_T")
 public class EntityVisaBo extends PersistableBusinessObjectBase implements EntityVisaContract {
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_VISA_ID_S")
+    private static final long serialVersionUID = 839311156412785770L;
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_VISA_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_VISA_ID_S")
+    @Id
     @Column(name = "ID")
     private String id;
-    @Column(name = "VISA_TYP_CD")
+
+    @Transient
     private String visaTypeCode;
+
     @Column(name = "ENTITY_ID")
     private String entityId;
+
     @Column(name = "VISA_TYPE_KEY")
     private String visaTypeKey;
+
     @Column(name = "VISA_ENTRY")
     private String visaEntry;
+
     @Column(name = "VISA_ID")
     private String visaId;
-    @ManyToOne(targetEntity = EntityPhoneTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "VISA_TYP_CD", insertable = false, updatable = false)
-    private CodedAttribute visaType;
+
+    //@ManyToOne(fetch = FetchType.EAGER, cascade = {})
+    //@JoinColumn(name = "VISA_TYP_CD", insertable = false, updatable = false)
+    @Transient
+    private EntityVisaTypeBo visaType;
 
     @Override
-    public CodedAttribute getVisaType() {
+    public EntityVisaTypeBo getVisaType() {
         return this.visaType;
     }
 
@@ -63,7 +70,6 @@ public class EntityVisaBo extends PersistableBusinessObjectBase implements Entit
         if (bo == null) {
             return null;
         }
-
         return EntityVisa.Builder.create(bo).build();
     }
 
@@ -77,7 +83,6 @@ public class EntityVisaBo extends PersistableBusinessObjectBase implements Entit
         if (immutable == null) {
             return null;
         }
-
         EntityVisaBo bo = new EntityVisaBo();
         bo.id = immutable.getId();
         bo.entityId = immutable.getEntityId();
@@ -86,7 +91,6 @@ public class EntityVisaBo extends PersistableBusinessObjectBase implements Entit
         bo.visaId = immutable.getVisaId();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -143,7 +147,7 @@ public class EntityVisaBo extends PersistableBusinessObjectBase implements Entit
         this.visaId = visaId;
     }
 
-    public void setVisaType(CodedAttribute visaType) {
+    public void setVisaType(EntityVisaTypeBo visaType) {
         this.visaType = visaType;
     }
 }

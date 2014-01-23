@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.api.util.jaxb.PrimitiveBooleanDefaultToFalseAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;

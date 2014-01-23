@@ -16,9 +16,11 @@
 package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,4 +51,9 @@ public interface ResponsibilityInternalService {
      * to any member assigned to the responsibility.)
      */
    	boolean areActionsAtAssignmentLevel(Responsibility responsibility );
+   	
+   	/**
+   	 * Get all the role-responsibility records attached to the given role.
+   	 */
+   	public List<RoleResponsibility> getRoleResponsibilities(String roleId);
 }

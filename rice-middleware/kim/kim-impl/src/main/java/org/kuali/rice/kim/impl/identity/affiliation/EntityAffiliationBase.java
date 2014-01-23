@@ -31,10 +31,6 @@ public abstract class EntityAffiliationBase extends PersistableBusinessObjectBas
     private String affiliationTypeCode;
     @Column(name = "CAMPUS_CD")
     private String campusCode;
-    //@ManyToOne(targetEntity = EntityAffiliationTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    //@JoinColumn(
-    //        name = "AFLTN_TYP_CD", insertable = false, updatable = false)
-    //private EntityAffiliationTypeBo affiliationType;
     @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "DFLT_IND")
     private boolean defaultValue;

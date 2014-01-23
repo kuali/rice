@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.core.impl.component;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
@@ -47,6 +50,17 @@ public class ComponentServiceTest extends CORETestCase {
         componentService = CoreServiceApiServiceLocator.getComponentService();
         assertNotNull("Failed to locate ComponentService", componentService);
     }
+
+
+    @Test
+    public void testGetComponentByDataObjectService() {
+        QueryByCriteria.Builder qbc = QueryByCriteria.Builder.forAttribute("namespace.code", "KR-NS");
+        QueryResults<ComponentBo> results = KRADServiceLocator.getDataObjectService().findMatching(ComponentBo.class, qbc.build());
+
+        assertNotNull(results);
+        assertTrue(CollectionUtils.isNotEmpty(results.getResults()));
+    }
+
 
     @Test
     /**

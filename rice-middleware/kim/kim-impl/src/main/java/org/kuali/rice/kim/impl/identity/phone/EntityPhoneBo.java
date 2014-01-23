@@ -15,14 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity.phone;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Column;
@@ -33,53 +26,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "KRIM_ENTITY_PHONE_T")
-public class EntityPhoneBo extends PersistableBusinessObjectBase implements EntityPhoneContract {
+public class EntityPhoneBo extends EntityPhoneBase {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(generator = "KRIM_ENTITY_PHONE_ID_S")
     @PortableSequenceGenerator(name = "KRIM_ENTITY_PHONE_ID_S")
     @Column(name = "ENTITY_PHONE_ID")
     private String id;
 
-    @Column(name = "ENTITY_ID")
-    private String entityId;
-
-    @Column(name = "ENT_TYP_CD")
-    private String entityTypeCode;
-
-    @Column(name = "PHONE_TYP_CD")
-    private String phoneTypeCode;
-
-    @Column(name = "PHONE_NBR")
-    private String phoneNumber;
-
-    @Column(name = "PHONE_EXTN_NBR")
-    private String extensionNumber;
-
-    @Column(name = "POSTAL_CNTRY_CD")
-    private String countryCode;
-
     @ManyToOne(targetEntity = EntityPhoneTypeBo.class, fetch = FetchType.EAGER, cascade = {})
     @JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
     private EntityPhoneTypeBo phoneType;
-
-    @Transient
-    private boolean suppressPhone;
-
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
-    @Column(name = "ACTV_IND")
-    private boolean active;
-
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
-    @Column(name = "DFLT_IND")
-    private boolean defaultValue;
-
-    public String getPhoneTypeCode() {
-        return this.phoneTypeCode;
-    }
 
     public static EntityPhone to(EntityPhoneBo bo) {
         if (bo == null) {
@@ -92,7 +53,7 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
     /**
      * Creates a CountryBo business object from an immutable representation of a Country.
      *
-     * @param an immutable Country
+     * @param immutable immutable Country
      * @return a CountryBo
      */
     public static EntityPhoneBo from(EntityPhone immutable) {
@@ -101,24 +62,33 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
         }
 
         EntityPhoneBo bo = new EntityPhoneBo();
-        bo.id = immutable.getId();
-        bo.active = immutable.isActive();
+        bo.setId(immutable.getId());
+        bo.setActive(immutable.isActive());
 
-        bo.entityId = immutable.getEntityId();
-        bo.entityTypeCode = immutable.getEntityTypeCode();
+        bo.setEntityId(immutable.getEntityId());
+        bo.setEntityTypeCode(immutable.getEntityTypeCode());
         if (immutable.getPhoneType() != null) {
-            bo.phoneTypeCode = immutable.getPhoneType().getCode();
+            bo.setPhoneTypeCode(immutable.getPhoneType().getCode());
         }
 
-        bo.phoneType = EntityPhoneTypeBo.from(immutable.getPhoneType());
-        bo.defaultValue = immutable.isDefaultValue();
-        bo.countryCode = immutable.getCountryCodeUnmasked();
-        bo.phoneNumber = immutable.getPhoneNumberUnmasked();
-        bo.extensionNumber = immutable.getExtensionNumberUnmasked();
+        bo.setPhoneType(EntityPhoneTypeBo.from(immutable.getPhoneType()));
+        bo.setDefaultValue(immutable.isDefaultValue());
+        bo.setCountryCode(immutable.getCountryCodeUnmasked());
+        bo.setPhoneNumber(immutable.getPhoneNumberUnmasked());
+        bo.setExtensionNumber(immutable.getExtensionNumberUnmasked());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
 
         return bo;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -130,163 +100,5 @@ public class EntityPhoneBo extends PersistableBusinessObjectBase implements Enti
         this.phoneType = phoneType;
     }
 
-    @Override
-    public boolean isSuppressPhone() {
-        try {
-            EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(
-                    getEntityId());
-            if (privacy != null) {
-                this.suppressPhone = privacy.isSuppressPhone();
-            } else {
-                this.suppressPhone = false;
-            }
-
-        } catch (NullPointerException e) {
-            return false;
-        } catch (ClassCastException c) {
-            return false;
-        }
-        return this.suppressPhone;
-    }
-
-    @Override
-    public String getFormattedPhoneNumber() {
-        if (isSuppressPhone()) {
-            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
-        }
-
-        return getFormattedPhoneNumberUnmasked();
-    }
-
-    @Override
-    public String getPhoneNumberUnmasked() {
-        return this.phoneNumber;
-    }
-
-    @Override
-    public String getExtensionNumberUnmasked() {
-        return this.extensionNumber;
-    }
-
-    @Override
-    public String getCountryCodeUnmasked() {
-        return this.countryCode;
-    }
-
-    @Override
-    public String getFormattedPhoneNumberUnmasked() {
-        StringBuffer sb = new StringBuffer(30);
-
-        // TODO: get extension from country code table
-        // TODO: append "+xxx" if country is not the default country
-        sb.append(this.phoneNumber);
-        if (StringUtils.isNotBlank(this.extensionNumber)) {
-            sb.append(" x");
-            sb.append(this.extensionNumber);
-        }
-
-        return sb.toString();
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        if (isSuppressPhone()) {
-            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_PHONE;
-        }
-
-        return this.phoneNumber;
-    }
-
-    @Override
-    public String getCountryCode() {
-        if (isSuppressPhone()) {
-            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK_CODE;
-        }
-
-        return this.countryCode;
-    }
-
-    @Override
-    public String getExtensionNumber() {
-        if (isSuppressPhone()) {
-            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
-        }
-
-        return this.extensionNumber;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(String entityId) {
-        this.entityId = entityId;
-    }
-
-    public String getEntityTypeCode() {
-        return entityTypeCode;
-    }
-
-    public void setEntityTypeCode(String entityTypeCode) {
-        this.entityTypeCode = entityTypeCode;
-    }
-
-    public void setPhoneTypeCode(String phoneTypeCode) {
-        this.phoneTypeCode = phoneTypeCode;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setExtensionNumber(String extensionNumber) {
-        this.extensionNumber = extensionNumber;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public boolean getSuppressPhone() {
-        return suppressPhone;
-    }
-
-    public void setSuppressPhone(boolean suppressPhone) {
-        this.suppressPhone = suppressPhone;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean getDefaultValue() {
-        return defaultValue;
-    }
-
-    public boolean isDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(boolean defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    private static final long serialVersionUID = 1L;
 
 }

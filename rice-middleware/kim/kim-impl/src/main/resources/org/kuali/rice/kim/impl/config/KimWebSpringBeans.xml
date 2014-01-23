@@ -132,11 +132,10 @@
         </property>
     </bean>
 
-    <bean id="roleLookupable" class="org.kuali.rice.kim.lookup.RoleLookupableImpl" parent="kualiLookupable" scope="prototype">
+    <bean id="roleLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable" scope="prototype">
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl"
-                parent="lookupableHelperService"
-                p:roleDao-ref="rice.kim.import.kimRoleDao">
+                parent="lookupableHelperService">
             </bean>
         </property>
     </bean>

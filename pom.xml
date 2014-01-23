@@ -270,6 +270,34 @@
   </properties>
 
   <profiles>
+    <profile>
+        <id>full-build</id>
+        <activation>
+            <file>
+                <exists>pom.xml</exists>
+            </file>
+        </activation>
+        <modules>
+			<module>db</module>
+			<module>config</module>
+			<module>dist</module>
+        </modules>
+    </profile>
+
+    <profile>
+        <id>short-build</id>
+        <activation>
+            <file>
+                <exists>pom.xml</exists>
+            </file>
+        </activation>
+        <modules>
+			<module>development-tools</module>
+			<module>rice-tools-test</module>
+			<module>rice-middleware</module>
+			<module>rice-framework</module>
+        </modules>
+    </profile>
     <!-- Optimize the nightly build -->
     <profile>
       <id>nightly</id>
@@ -948,6 +976,10 @@
             <fork>true</fork>
             <meminitial>256</meminitial>
             <maxmem>1024</maxmem>
+<!-- 
+			  <source>1.7</source>
+			  <target>1.7</target>
+ -->
           </configuration>
         </plugin>
         <plugin>
@@ -1432,6 +1464,7 @@
     </plugins>
 
   </build>
+<!-- 
   <modules>
     <module>db</module>
     <module>development-tools</module>
@@ -1441,6 +1474,7 @@
     <module>config</module>
     <module>dist</module>
   </modules>
+ -->
 
   <repositories>
     <repository>

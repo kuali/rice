@@ -15,19 +15,8 @@
  */
 package org.kuali.rice.kim.document;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.document.TransactionalDocumentBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -37,7 +26,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.type.KimAttributeField;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -49,20 +49,17 @@ import java.util.List;
 @AttributeOverrides({
 	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR"))
 })
-@AssociationOverrides({
-	@AssociationOverride(name="documentHeader",joinColumns=@JoinColumn(name="FDOC_NBR",referencedColumnName="DOC_HDR_ID",insertable=false,updatable=false))
-})
 public class IdentityManagementKimDocument extends TransactionalDocumentBase {
+	private static final long serialVersionUID = 1L;
 
-	protected static final Logger LOG = Logger.getLogger(IdentityManagementKimDocument.class);
+    protected static final Logger LOG = Logger.getLogger(IdentityManagementKimDocument.class);
 	
 	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
-	protected List<RoleDocumentDelegation> delegations = new AutoPopulatingList(RoleDocumentDelegation.class);
+	protected List<RoleDocumentDelegation> delegations = new AutoPopulatingList<RoleDocumentDelegation>(RoleDocumentDelegation.class);
 	@Transient
-	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList(RoleDocumentDelegationMember.class);
+	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList<RoleDocumentDelegationMember>(RoleDocumentDelegationMember.class);
 	@Transient
-	protected transient SequenceAccessorService sequenceAccessorService;
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
 		RoleDocumentDelegation delegation;
@@ -94,7 +91,8 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	}
 
 	protected String getDelegationId(){
-		return getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_DLGN_ID_S, this.getClass()).toString();
+        DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_DLGN_ID_S);
+        return incrementer.nextStringValue();
 	}
 	
 	protected RoleDocumentDelegation getSecondaryDelegation(){
@@ -113,40 +111,21 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		return secondaryDelegation;
 	}
 
-	/**
-	 * @return the delegations
-	 */
 	public List<RoleDocumentDelegation> getDelegations() {
 		return this.delegations;
 	}
 
-	/**
-	 * @param delegations the delegations to set
-	 */
 	public void setDelegations(List<RoleDocumentDelegation> delegations) {
 		this.delegations = delegations;
 	}
 
-	/**
-	 * @return the delegationMembers
-	 */
 	public List<RoleDocumentDelegationMember> getDelegationMembers() {
 		return this.delegationMembers;
 	}
 
-	/**
-	 * @param delegationMembers the delegationMembers to set
-	 */
 	public void setDelegationMembers(
 			List<RoleDocumentDelegationMember> delegationMembers) {
 		this.delegationMembers = delegationMembers;
-	}
-	
-	protected SequenceAccessorService getSequenceAccessorService(){
-		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-		}
-		return this.sequenceAccessorService;
 	}
 
     public String getKimAttributeDefnId(KimAttributeField definition){

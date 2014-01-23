@@ -121,7 +121,7 @@ public class RoleNode extends RequestsNode {
         Predicate p = and(
                 equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                 equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-                equal("active", "Y"),
+                equal("active", Boolean.TRUE),
                 equal("attributes[routeNodeName]", node.getRouteNodeName())
                 // KULRICE-8538 -- Check the document type while we're looping through the results below.  If it is added
                 // into the predicate, no rows are ever returned.

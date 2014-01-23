@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.impl.common.delegate;
 
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,9 +30,10 @@ import javax.persistence.Table;
 @Table(name = "KRIM_DLGN_MBR_ATTR_DATA_T")
 public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
 
-    @Id
+    @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
     @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")
-    @Column(name="ATTR_DATA_ID")
+    @Id
+    @Column(name = "ATTR_DATA_ID")
     private String id;
 
     @Column(name = "DLGN_MBR_ID")
@@ -55,5 +56,4 @@ public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
     public void setAssignedToId(String assignedToId) {
         this.assignedToId = assignedToId;
     }
-
 }

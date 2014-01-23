@@ -16,8 +16,10 @@
 package org.kuali.rice.kim.bo.ui;
 
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -29,22 +31,19 @@ import javax.persistence.Transient;
  */
 @MappedSuperclass
 public class PersonDocumentBoDefaultBase extends KimDocumentBoActivatableEditableBase{
-    //@Type(type="yes_no")
+    private static final long serialVersionUID = 1L;
+
 	@Column(name="DFLT_IND")
+	@Convert(converter=BooleanYNConverter.class)
 	protected boolean dflt;
+	
     @Transient
 	protected IdentityManagementPersonDocument personDocument;
 	
-	/**
-	 * @return the personDocument
-	 */
 	public IdentityManagementPersonDocument getPersonDocument() {
 		return this.personDocument;
 	}
 
-	/**
-	 * @param personDocument the personDocument to set
-	 */
 	public void setPersonDocument(IdentityManagementPersonDocument personDocument) {
 		this.personDocument = personDocument;
 	}

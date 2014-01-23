@@ -24,9 +24,9 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -37,24 +37,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Entity
 @Cacheable(false)
-@Table(name="KRIM_GRP_T")
+@Entity
+@Table(name = "KRIM_GRP_T")
 public class GroupBo extends GroupBase {
+
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(generator = "KRIM_GRP_ID_S")
     @PortableSequenceGenerator(name = "KRIM_GRP_ID_S")
+    @GeneratedValue(generator = "KRIM_GRP_ID_S")
+    @Id
     @Column(name = "GRP_ID")
     private String id;
 
-    @OneToMany(fetch= FetchType.EAGER)
-    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID", insertable = true, updatable = true)
+    @OneToMany(targetEntity = GroupMemberBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID", insertable = false, updatable = false)
     private List<GroupMemberBo> members;
 
-    @OneToMany(fetch=FetchType.EAGER)
-    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID", insertable = true, updatable = true)
+    @OneToMany(targetEntity = GroupAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID", insertable = false, updatable = false)
     private List<GroupAttributeBo> attributeDetails;
 
     @Transient
@@ -64,7 +65,7 @@ public class GroupBo extends GroupBase {
     private List<Group> memberGroups;
 
     @Override
-    public Map<String,String> getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }
 
@@ -76,8 +77,6 @@ public class GroupBo extends GroupBase {
     public void setId(String id) {
         this.id = id;
     }
-
-
 
     public List<GroupMemberBo> getMembers() {
         return members;
@@ -95,7 +94,6 @@ public class GroupBo extends GroupBase {
         this.attributeDetails = attributeDetails;
     }
 
-
     /**
      * Converts a mutable bo to its immutable counterpart
      * @param bo the mutable business object
@@ -105,7 +103,6 @@ public class GroupBo extends GroupBase {
         if (bo == null) {
             return null;
         }
-
         return Group.Builder.create(bo).build();
     }
 
@@ -118,7 +115,6 @@ public class GroupBo extends GroupBase {
         if (im == null) {
             return null;
         }
-
         GroupBo bo = new GroupBo();
         bo.setId(im.getId());
         bo.setNamespaceCode(im.getNamespaceCode());
@@ -129,11 +125,10 @@ public class GroupBo extends GroupBase {
         bo.setAttributes(im.getAttributes());
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
-    //helper function to get Attribute Value with specific id
+    //helper function to get Attribute Value with specific id                      
     public String getGroupAttributeValueById(String attributeId) {
         for (GroupAttributeBo gad : getAttributeDetails()) {
             if (gad.getKimAttributeId().equals(attributeId.trim())) {
@@ -147,15 +142,15 @@ public class GroupBo extends GroupBase {
         memberPersons = new ArrayList<Person>();
         memberGroups = new ArrayList<Group>();
         if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
+            for (GroupMemberBo groupMember : getMembers()) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
-                        Person tempPerson =  KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId());
+                    if (KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
+                        Person tempPerson = KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId());
                         if (tempPerson != null && tempPerson.isActive()) {
                             memberPersons.add(tempPerson);
                         }
                     } else if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
-                        Group tempGroup =  KimApiServiceLocator.getGroupService().getGroup(groupMember.getMemberId());
+                        Group tempGroup = KimApiServiceLocator.getGroupService().getGroup(groupMember.getMemberId());
                         if (tempGroup != null && tempGroup.isActive()) {
                             memberGroups.add(tempGroup);
                         }
@@ -179,9 +174,9 @@ public class GroupBo extends GroupBase {
     public List<String> getMemberPrincipalIds() {
         List<String> principalIds = new ArrayList<String>();
         if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
+            for (GroupMemberBo groupMember : getMembers()) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
+                    if (KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
                         principalIds.add(groupMember.getMemberId());
                     }
                 }
@@ -193,9 +188,9 @@ public class GroupBo extends GroupBase {
     public List<String> getMemberGroupIds() {
         List<String> principalIds = new ArrayList<String>();
         if (getMembers() != null) {
-            for ( GroupMemberBo groupMember : getMembers() ) {
+            for (GroupMemberBo groupMember : getMembers()) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
+                    if (KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
                         principalIds.add(groupMember.getMemberId());
                     }
                 }
@@ -214,5 +209,4 @@ public class GroupBo extends GroupBase {
     public void setMemberGroups(List<Group> memberGroups) {
         this.memberGroups = memberGroups;
     }
-
 }

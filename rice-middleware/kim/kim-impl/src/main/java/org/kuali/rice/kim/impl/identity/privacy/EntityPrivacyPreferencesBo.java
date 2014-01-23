@@ -15,44 +15,50 @@
  */
 package org.kuali.rice.kim.impl.identity.privacy;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
 @Table(name = "KRIM_ENTITY_PRIV_PREF_T")
 public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase implements EntityPrivacyPreferencesContract {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "ENTITY_ID")
     private String entityId;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "SUPPRESS_NM_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean suppressName;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "SUPPRESS_EMAIL_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean suppressEmail;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "SUPPRESS_ADDR_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean suppressAddress;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "SUPPRESS_PHONE_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean suppressPhone;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "SUPPRESS_PRSNL_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean suppressPersonal;
 
     public static EntityPrivacyPreferences to(EntityPrivacyPreferencesBo bo) {
         if (bo == null) {
             return null;
         }
-
         return EntityPrivacyPreferences.Builder.create(bo).build();
     }
 
@@ -66,9 +72,7 @@ public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase im
         if (immutable == null) {
             return null;
         }
-
         EntityPrivacyPreferencesBo bo = new EntityPrivacyPreferencesBo();
-
         bo.entityId = immutable.getEntityId();
         bo.suppressAddress = immutable.isSuppressAddress();
         bo.suppressEmail = immutable.isSuppressEmail();
@@ -77,7 +81,6 @@ public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase im
         bo.suppressPhone = immutable.isSuppressPhone();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -154,5 +157,4 @@ public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase im
     public void setSuppressPersonal(boolean suppressPersonal) {
         this.suppressPersonal = suppressPersonal;
     }
-
 }

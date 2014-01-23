@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity.employment;
 
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,30 +24,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
+import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ENTITY_EMP_INFO_T")
 public class EntityEmploymentBo extends EntityEmploymentBase {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_EMP_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_EMP_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_EMP_ID_S")
+    @Id
     @Column(name = "ENTITY_EMP_ID")
     private String id;
 
-    @ManyToOne(targetEntity = EntityEmploymentTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "EMP_TYP_CD", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityEmploymentTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "EMP_TYP_CD", referencedColumnName = "EMP_TYP_CD", insertable = false, updatable = false)
     private EntityEmploymentTypeBo employeeType;
 
-    @ManyToOne(targetEntity = EntityEmploymentStatusBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "EMP_STAT_CD", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityEmploymentStatusBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "EMP_STAT_CD", referencedColumnName = "EMP_STAT_CD", insertable = false, updatable = false)
     private EntityEmploymentStatusBo employeeStatus;
 
-    @ManyToOne(targetEntity = EntityAffiliationBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityAffiliationBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ENTITY_AFLTN_ID", referencedColumnName = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
     private EntityAffiliationBo entityAffiliation;
 
     @Override
@@ -72,7 +73,6 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
         if (bo == null) {
             return null;
         }
-
         return EntityEmployment.Builder.create(bo).build();
     }
 
@@ -86,27 +86,22 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
         if (immutable == null) {
             return null;
         }
-
         EntityEmploymentBo bo = new EntityEmploymentBo();
         bo.id = immutable.getId();
         bo.setActive(immutable.isActive());
-
         bo.setEntityId(immutable.getEntityId());
         if (immutable.getEmployeeType() != null) {
             bo.setEmployeeTypeCode(immutable.getEmployeeType().getCode());
             bo.setEmployeeType(EntityEmploymentTypeBo.from(immutable.getEmployeeType()));
         }
-
         if (immutable.getEmployeeStatus() != null) {
             bo.setEmployeeStatusCode(immutable.getEmployeeStatus().getCode());
             bo.setEmployeeStatus(EntityEmploymentStatusBo.from(immutable.getEmployeeStatus()));
         }
-
         if (immutable.getEntityAffiliation() != null) {
             bo.setEntityAffiliationId(immutable.getEntityAffiliation().getId());
             bo.setEntityAffiliation(EntityAffiliationBo.from(immutable.getEntityAffiliation()));
         }
-
         bo.setPrimaryDepartmentCode(immutable.getPrimaryDepartmentCode());
         bo.setEmployeeId(immutable.getEmployeeId());
         bo.setEmploymentRecordId(immutable.getEmploymentRecordId());
@@ -115,7 +110,6 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
         bo.setTenured(immutable.isTenured());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -139,5 +133,4 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
     public void setEntityAffiliation(EntityAffiliationBo entityAffiliation) {
         this.entityAffiliation = entityAffiliation;
     }
-
 }

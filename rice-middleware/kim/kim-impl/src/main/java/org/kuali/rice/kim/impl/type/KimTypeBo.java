@@ -15,21 +15,52 @@
  */
 package org.kuali.rice.kim.impl.type;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeContract;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Entity
+@Table(name = "KRIM_TYP_T")
 public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeContract {
+    private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_TYP_ID_S")
+    @GeneratedValue(generator = "KRIM_TYP_ID_S")
+    @Id
+    @Column(name = "KIM_TYP_ID")
     private String id;
+
+    @Column(name = "SRVC_NM")
     private String serviceName;
+
+    @Column(name = "NMSPC_CD")
     private String namespaceCode;
+
+    @Column(name = "NM")
     private String name;
+
+    @OneToMany(targetEntity = KimTypeAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "KIM_TYP_ID", referencedColumnName = "KIM_TYP_ID", insertable = false, updatable = false)
     private List<KimTypeAttributeBo> attributeDefinitions;
+
+    @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     /**
@@ -42,7 +73,6 @@ public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeC
         if (bo == null) {
             return null;
         }
-
         return KimType.Builder.create(bo).build();
     }
 
@@ -56,7 +86,6 @@ public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeC
         if (im == null) {
             return null;
         }
-
         KimTypeBo bo = new KimTypeBo();
         bo.setId(im.getId());
         bo.setServiceName(im.getServiceName());
@@ -72,7 +101,6 @@ public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeC
         bo.setActive(im.isActive());
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 

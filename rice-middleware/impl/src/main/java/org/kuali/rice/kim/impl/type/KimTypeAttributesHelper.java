@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kim.impl.type;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
@@ -25,10 +29,6 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
  * 
@@ -36,6 +36,7 @@ import java.util.Map;
  *
  */
 public class KimTypeAttributesHelper implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private KimType kimType;
 	private transient KimTypeService kimTypeService;

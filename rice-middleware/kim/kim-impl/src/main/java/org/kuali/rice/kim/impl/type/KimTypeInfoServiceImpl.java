@@ -15,27 +15,29 @@
  */
 package org.kuali.rice.kim.impl.type;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.krad.service.BusinessObjectService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.krad.data.DataObjectService;
+
 public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 
-    private BusinessObjectService businessObjectService;
-
+    protected DataObjectService dataObjectService;
+    
     @Override
     public KimType getKimType(final String id) throws RiceIllegalArgumentException {
         incomingParamCheck(id, "id");
 
-        return KimTypeBo.to(businessObjectService.findBySinglePrimaryKey(KimTypeBo.class, id));
+        return KimTypeBo.to(dataObjectService.find(KimTypeBo.class, id));
     }
 
     @Override
@@ -43,38 +45,36 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(name, "name");
 
-        final Map<String, Object> crit = new HashMap<String, Object>();
+        final Map<String, Object> crit = new HashMap<String, Object>(3);
         crit.put("namespaceCode", namespaceCode);
         crit.put("name", name);
-        crit.put("active", "true");
+        crit.put("active", Boolean.TRUE);
 
-        final Collection<KimTypeBo> bos = businessObjectService.findMatching(KimTypeBo.class, crit);
+        QueryResults<KimTypeBo> bos = dataObjectService.findMatching(KimTypeBo.class, QueryByCriteria.Builder.andAttributes(crit).build());
 
-        if (bos != null && bos.size() > 1) {
+        if (bos.getResults().size() > 1) {
             throw new IllegalStateException("multiple active results were found for the namespace code: " + namespaceCode + " and name: " + name);
         }
 
-        return bos != null && bos.iterator().hasNext() ? KimTypeBo.to(bos.iterator().next()) : null;
+        return bos.getResults().size() > 0 ? KimTypeBo.to(bos.getResults().get(0)) : null;
     }
 
     @Override
     public Collection<KimType> findAllKimTypes() {
-        final Collection<KimTypeBo> bos
-                = businessObjectService.findMatching(KimTypeBo.class, Collections.singletonMap("active", "true"));
-        final Collection<KimType> ims = new ArrayList<KimType>();
+        QueryResults<KimTypeBo> bos
+                = dataObjectService.findMatching(KimTypeBo.class, QueryByCriteria.Builder.forAttribute("active", Boolean.TRUE).build());
+        Collection<KimType> ims = new ArrayList<KimType>(bos.getResults().size());
 
-        if (bos != null) {
-            for (KimTypeBo bo : bos) {
-                if (bo != null) {
-                    ims.add(KimTypeBo.to(bo));
-                }
+        for (KimTypeBo bo : bos.getResults()) {
+            if (bo != null) {
+                ims.add(KimTypeBo.to(bo));
             }
         }
         return Collections.unmodifiableCollection(ims);
     }
 
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     private void incomingParamCheck(Object object, String name) {

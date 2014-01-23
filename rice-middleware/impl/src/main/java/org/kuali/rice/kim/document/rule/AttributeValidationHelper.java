@@ -15,25 +15,28 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.type.KimTypeAttribute;
-import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.kim.api.common.attribute.KimAttribute;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -46,25 +49,52 @@ public class AttributeValidationHelper {
 
     private static final String DOCUMENT_PROPERTY_PREFIX = KRADConstants.DOCUMENT_PROPERTY_NAME + ".";
 
-    protected BusinessObjectService businessObjectService;
-    protected Map<String,KimAttributeBo> attributeDefinitionMap = new HashMap<String,KimAttributeBo>();
+//    protected Map<String,KimAttribute> attributeDefinitionMap = new HashMap<String,KimAttribute>();
     
-    protected KimAttributeBo getAttributeDefinition( String id ) {
-    	KimAttributeBo attributeImpl = attributeDefinitionMap.get( id );
-    	
-    	if ( attributeImpl == null ) {
-			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put( KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, id );
-			attributeImpl = (KimAttributeBo)getBusinessObjectService().findByPrimaryKey( KimAttributeBo.class, criteria );
-			attributeDefinitionMap.put( id, attributeImpl );
-    	}
-    	return attributeImpl;
+    
+    
+    protected KimAttribute getAttributeDefinitionById( String id ) {
+        CacheManager cm = CoreImplServiceLocator.getCacheManagerRegistry().getCacheManagerByCacheName(KimAttribute.Cache.NAME);
+        Cache cache = cm.getCache(KimAttribute.Cache.NAME);
+        String cacheKey = "id=" + id;
+        ValueWrapper valueWrapper = cache.get( cacheKey );
+        
+        if ( valueWrapper != null ) {
+            return (KimAttribute) valueWrapper.get();
+        }
+
+		KimAttributeBo attributeImpl = KradDataServiceLocator.getDataObjectService().find( KimAttributeBo.class, id );
+		KimAttribute attribute = KimAttributeBo.to(attributeImpl);
+		cache.put( cacheKey, attribute );
+
+    	return attribute;
+    }
+
+    protected KimAttribute getAttributeDefinitionByName( String attributeName ) {
+        CacheManager cm = CoreImplServiceLocator.getCacheManagerRegistry().getCacheManagerByCacheName(KimAttribute.Cache.NAME);
+        Cache cache = cm.getCache(KimAttribute.Cache.NAME);
+        String cacheKey = "name=" + attributeName;
+        ValueWrapper valueWrapper = cache.get( cacheKey );
+        
+        if ( valueWrapper != null ) {
+            return (KimAttribute) valueWrapper.get();
+        }
+
+        List<KimAttributeBo> attributeImpls = KradDataServiceLocator.getDataObjectService().findMatching( KimAttributeBo.class, QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ATTRIBUTE_NAME, attributeName).build()).getResults();
+        KimAttribute attribute = null;
+        if ( !attributeImpls.isEmpty() ) {
+            attribute = KimAttributeBo.to(attributeImpls.get(0)); 
+        }
+        
+        cache.put( cacheKey, attribute );
+
+        return attribute;
     }
     
 	public Map<String, String> convertAttributesToMap(List<? extends KimAttributeDataBo> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimAttributeDataBo data: attributes) {
-			KimAttributeBo attrib = getAttributeDefinition(data.getKimAttributeId());
+			KimAttribute attrib = getAttributeDefinitionById(data.getKimAttributeId());
 			if(attrib != null){
 				m.put(attrib.getAttributeName(), data.getAttributeValue());
 			} else {
@@ -77,7 +107,7 @@ public class AttributeValidationHelper {
 	public Map<String, String> convertQualifiersToMap( List<? extends KimDocumentAttributeDataBusinessObjectBase> qualifiers ) {
 		Map<String, String> m = new HashMap<String, String>();
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
-			KimAttributeBo attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			KimAttribute attrib = getAttributeDefinitionById( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), data.getAttrVal() );
 			} else {
@@ -90,7 +120,7 @@ public class AttributeValidationHelper {
 	public Map<String, String> getBlankValueQualifiersMap(List<KimTypeAttribute> attributes) {
 		Map<String, String> m = new HashMap<String, String>();
 		for(KimTypeAttribute attribute: attributes){
-   			KimAttributeBo attrib = getAttributeDefinition(attribute.getKimAttribute().getId());
+   			KimAttribute attrib = getAttributeDefinitionById(attribute.getKimAttribute().getId());
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), "" );
 			} else {
@@ -104,7 +134,7 @@ public class AttributeValidationHelper {
 		Map<String, String> m = new HashMap<String, String>();
 		int i = 0;
 		for ( KimDocumentAttributeDataBusinessObjectBase data : qualifiers ) {
-			KimAttributeBo attrib = getAttributeDefinition( data.getKimAttrDefnId() );
+			KimAttribute attrib = getAttributeDefinitionById( data.getKimAttrDefnId() );
 			if ( attrib != null ) {
 				m.put( attrib.getAttributeName(), Integer.toString(i) );
 			} else {
@@ -113,13 +143,6 @@ public class AttributeValidationHelper {
 			i++;
 		}
 		return m;
-	}
-	
-	public BusinessObjectService getBusinessObjectService() {
-		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
 	}
 	
     public void moveValidationErrorsToErrorMap(List<RemotableAttributeError> validationErrors) {
@@ -147,9 +170,7 @@ public class AttributeValidationHelper {
 			errorPath = errorPath + ".";
 		}
 		for ( RemotableAttributeError error : localErrors) {
-			Map<String,String> criteria = new HashMap<String,String>();
-			criteria.put(KRADPropertyConstants.ATTRIBUTE_NAME, error.getAttributeName());
-			KimAttributeBo attribute = getBusinessObjectService().findByPrimaryKey(KimAttributeBo.class, criteria);
+			KimAttribute attribute = getAttributeDefinitionByName(error.getAttributeName());
 			String attributeDefnId = attribute==null?"":attribute.getId();
 			errors.add(RemotableAttributeError.Builder.create(errorPath+"qualifier("+attributeDefnId+").attrVal", error.getErrors()).build());
 		}

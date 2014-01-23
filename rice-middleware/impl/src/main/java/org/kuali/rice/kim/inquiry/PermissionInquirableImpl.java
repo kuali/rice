@@ -15,10 +15,16 @@
  */
 package org.kuali.rice.kim.inquiry;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -29,16 +35,10 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -46,9 +46,9 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
-
-	transient private static PermissionService permissionService;
+@SuppressWarnings({"unchecked", "deprecation"})
+public class PermissionInquirableImpl extends KimInquirableImpl {
+    private static final long serialVersionUID = 1L;
 
 	@Override
 	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
@@ -62,10 +62,8 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 			primaryKeys.put(propertyName, "code");
 			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
         } else if(DETAIL_OBJECTS.equals(propertyName)){
-        	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
         } else if(ASSIGNED_TO_ROLES.equals(propertyName)){
-//        	return getAssignedRoleInquiryUrl(businessObject);
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
         }else{
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
@@ -80,15 +78,11 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		 *	- list of roles assigned: role type, role namespace, role name
     	 */
 		if(NAME.equals(attributeName) || NAME_TO_DISPLAY.equals(attributeName)){
-			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add(KimConstants.PrimaryKeyConstants.PERMISSION_ID);
-			return getInquiryUrlForPrimaryKeys(UberPermissionBo.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(UberPermissionBo.class, businessObject, Collections.singletonList(KimConstants.PrimaryKeyConstants.PERMISSION_ID), null);
 		} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
-			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add("code");
 			NamespaceBo parameterNamespace = new NamespaceBo();
 			parameterNamespace.setCode((String)DataObjectUtils.getPropertyValue(businessObject, attributeName));
-			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, Collections.singletonList(KRADPropertyConstants.CODE), null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         } else if(ASSIGNED_TO_ROLES.equals(attributeName)){
@@ -99,7 +93,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
-    	List<PermissionAttributeBo> permissionAttributeData =
+        List<PermissionAttributeBo> permissionAttributeData =
     		(List<PermissionAttributeBo>) DataObjectUtils.getPropertyValue(businessObject, attributeName);
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
@@ -117,13 +111,11 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     	UberPermissionBo permission = (UberPermissionBo)businessObject;
     	List<RoleBo> assignedToRoles = permission.getAssignedToRoles();
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
-		List<String> primaryKeys = new ArrayList<String>();
-		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
 			RoleService roleService = KimApiServiceLocator.getRoleService();
 			for(RoleBo roleImpl: assignedToRoles){
 				Role roleInfo = roleService.getRole(roleImpl.getId());
-				HtmlData.AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleBo.class, roleInfo, primaryKeys,
+				HtmlData.AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleBo.class, roleInfo, Collections.singletonList(ID),
         				roleInfo.getNamespaceCode()+ " " + roleInfo.getName());
 				inquiryHtmlData.setHref(RoleLookupableHelperServiceImpl.getCustomRoleInquiryHref(inquiryHtmlData.getHref()));
 				inquiryHtmlData.setTarget(HtmlData.AnchorHtmlData.TARGET_BLANK);
@@ -134,7 +126,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
     }
 
 	@Override
-	public Object retrieveDataObject(Map fieldValues){
+	public Object retrieveDataObject(@SuppressWarnings("rawtypes") Map fieldValues){
     	return getBusinessObject(fieldValues);
     }
     
@@ -143,22 +135,15 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 	 * 
 	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public BusinessObject getBusinessObject(Map fieldValues) {
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("id", fieldValues.get("id").toString());
-		PermissionBo permissionBo = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PermissionBo.class, criteria);
+	public BusinessObject getBusinessObject(@SuppressWarnings("rawtypes") Map fieldValues) {
+	    if ( fieldValues.get(ID) == null ) {
+	        return null;
+        }	    
+		PermissionBo permissionBo = getDataObjectService().find(PermissionBo.class, fieldValues.get(ID).toString());
 		return getPermissionsSearchResultsCopy(permissionBo);
 	}
 
-	public PermissionService getPermissionService() {
-		if (permissionService == null ) {
-			permissionService = KimApiServiceLocator.getPermissionService();
-		}
-		return permissionService;
-	}
-	
 	private PermissionBo getPermissionsSearchResultsCopy(PermissionBo permissionSearchResult){
 		UberPermissionBo permissionSearchResultCopy = new UberPermissionBo();
 		try{
@@ -166,13 +151,10 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		} catch(Exception ex){
 			throw new RuntimeException(ex);
 		}
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("permissionId", permissionSearchResultCopy.getId());
-		List<RolePermissionBo> rolePermissions =
-			(List<RolePermissionBo>) KNSServiceLocator.getBusinessObjectService().findMatching(RolePermissionBo.class, criteria);
+		List<RolePermissionBo> rolePermissions = getDataObjectService().findMatching(RolePermissionBo.class, QueryByCriteria.Builder.forAttribute("permissionId", permissionSearchResultCopy.getId()).build() ).getResults();
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RolePermissionBo rolePermissionImpl: rolePermissions){
-			assignedToRoles.add(getRoleImpl(rolePermissionImpl.getRoleId()));
+			assignedToRoles.add( getDataObjectService().find(RoleBo.class, rolePermissionImpl.getRoleId()) );
 		}
 		permissionSearchResultCopy.setAssignedToRoles(assignedToRoles);
 		return permissionSearchResultCopy;

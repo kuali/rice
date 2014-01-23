@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.inquiry;
 
 import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -95,7 +96,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 	 * 
 	 * @see Inquirable#retrieveDataObject(java.util.Map)
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object retrieveDataObject(Map fieldValues) {
 		if (getDataObjectClass() == null) {
@@ -104,7 +105,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 					"Data object class not set in inquirable.");
 		}
 
-		CollectionIncomplete<Object> searchResults = null;
+		Collection<Object> searchResults = null;
 		ModuleService moduleService = KRADServiceLocatorWeb
 				.getKualiModuleService().getResponsibleModuleService(
 						getDataObjectClass());
@@ -120,14 +121,13 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 		} else {
 			// TODO: If this is to get a single BO, why using the lookup
 			// service?
-			searchResults = (CollectionIncomplete<Object>) getLookupService()
-					.findCollectionBySearch(getBusinessObjectClass(),
-							fieldValues);
+			searchResults = getLookupService()
+					.findCollectionBySearch(getDataObjectClass(), fieldValues);
 		}
 		
-		BusinessObject foundObject = null;
-		if (searchResults != null && searchResults.size() > 0) {
-			foundObject = (BusinessObject) searchResults.get(0);
+		Object foundObject = null;
+		if (CollectionUtils.isNotEmpty(searchResults)) {
+			foundObject = searchResults.iterator().next();
 		}
 		
 		return foundObject;

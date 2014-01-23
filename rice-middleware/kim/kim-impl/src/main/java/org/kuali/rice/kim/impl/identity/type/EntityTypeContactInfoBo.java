@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -15,7 +16,27 @@
  */
 package org.kuali.rice.kim.impl.identity.type;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
@@ -28,65 +49,60 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@IdClass(EntityTypeContactInfoId.class)
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
+@IdClass(EntityTypeContactInfoBo.EntityTypeContactInfoBoId.class)
 public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase implements EntityTypeContactInfoContract {
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "ENTITY_ID")
     private String entityId;
+
     @Id
     @Column(name = "ENT_TYP_CD")
     private String entityTypeCode;
-    @ManyToOne(targetEntity = EntityTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "ENT_TYP_CD", insertable = false, updatable = false)
+
+    @ManyToOne(targetEntity = EntityTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false)
     private EntityTypeBo entityType;
-    @OneToMany(targetEntity = EntityTypeContactInfoBo.class, fetch = FetchType.EAGER,
-            cascade = {CascadeType.ALL})
-    @JoinColumns({
-            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
-    })
+
+    @OneToMany(targetEntity = EntityEmailBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    /*
+FIXME: JPA_CONVERSION
+For compound primary keys, make sure the join columns are in the correct order.
+*/
+    @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityEmailBo> emailAddresses;
-    @OneToMany(targetEntity = EntityPhoneBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumns({
-            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
-    })
+
+    @OneToMany(targetEntity = EntityPhoneBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    /*
+FIXME: JPA_CONVERSION
+For compound primary keys, make sure the join columns are in the correct order.
+*/
+    @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityPhoneBo> phoneNumbers;
-    @OneToMany(targetEntity = EntityAddressBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumns({
-            @JoinColumn(name = "ENTITY_ID", referencedColumnName="ENTITY_ID", insertable = false, updatable = false),
-            @JoinColumn(name = "ENT_TYP_CD", referencedColumnName="ENT_TYP_CD", insertable = false, updatable = false)
-    })
+
+    @OneToMany(targetEntity = EntityAddressBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    /*
+FIXME: JPA_CONVERSION
+For compound primary keys, make sure the join columns are in the correct order.
+*/
+    @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityAddressBo> addresses;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     public static EntityTypeContactInfo to(EntityTypeContactInfoBo bo) {
         if (bo == null) {
             return null;
         }
-
         return EntityTypeContactInfo.Builder.create(bo).build();
     }
 
@@ -94,9 +110,7 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
         if (bo == null) {
             return null;
         }
-
-        return new EntityTypeContactInfoDefault(bo.getEntityTypeCode(), EntityAddressBo.to(bo.getDefaultAddress()),
-                EntityEmailBo.to(bo.getDefaultEmailAddress()), EntityPhoneBo.to(bo.getDefaultPhoneNumber()));
+        return new EntityTypeContactInfoDefault(bo.getEntityTypeCode(), EntityAddressBo.to(bo.getDefaultAddress()), EntityEmailBo.to(bo.getDefaultEmailAddress()), EntityPhoneBo.to(bo.getDefaultPhoneNumber()));
     }
 
     /**
@@ -109,10 +123,8 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
         if (immutable == null) {
             return null;
         }
-
         EntityTypeContactInfoBo bo = new EntityTypeContactInfoBo();
         bo.active = immutable.isActive();
-
         bo.entityId = immutable.getEntityId();
         bo.entityTypeCode = immutable.getEntityTypeCode();
         bo.addresses = new ArrayList<EntityAddressBo>();
@@ -120,28 +132,21 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
             for (EntityAddress address : immutable.getAddresses()) {
                 bo.addresses.add(EntityAddressBo.from(address));
             }
-
         }
-
         bo.phoneNumbers = new ArrayList<EntityPhoneBo>();
         if (CollectionUtils.isNotEmpty(immutable.getPhoneNumbers())) {
             for (EntityPhone phone : immutable.getPhoneNumbers()) {
                 bo.phoneNumbers.add(EntityPhoneBo.from(phone));
             }
-
         }
-
         bo.emailAddresses = new ArrayList<EntityEmailBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEmailAddresses())) {
             for (EntityEmail email : immutable.getEmailAddresses()) {
                 bo.emailAddresses.add(EntityEmailBo.from(email));
             }
-
         }
-
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -227,4 +232,30 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
         this.active = active;
     }
 
+    public static class EntityTypeContactInfoBoId extends IdClassBase implements Comparable<EntityTypeContactInfoBoId> {
+
+        private static final long serialVersionUID = -6087504648008003050L;
+
+        private String entityId;
+        private String entityTypeCode;
+
+        public EntityTypeContactInfoBoId() {}
+
+        public EntityTypeContactInfoBoId(String entityId, String entityTypeCode) {
+            this.entityId = entityId;
+            this.entityTypeCode = entityTypeCode;
+        }
+
+        public String getEntityId() {
+            return this.entityId;
+        }
+        public String getEntityTypeCode() {
+            return this.entityTypeCode;
+        }
+
+        @Override
+        public int compareTo(EntityTypeContactInfoBoId other) {
+            return new CompareToBuilder().append(this.entityId, other.entityId).append(this.entityTypeCode, other.entityTypeCode).toComparison();
+        }
+    }
 }

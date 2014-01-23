@@ -15,32 +15,27 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.document.DocumentStatus;
-import org.kuali.rice.kew.api.document.DocumentStatusCategory;
-import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
-import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
+import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
+import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
+import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 /**
  * Unit test for the IdentityArchiveService
@@ -59,8 +54,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		final Map<String, Object> emptyMap = Collections.emptyMap();
-        KNSServiceLocator.getBusinessObjectService().deleteMatching(EntityDefaultInfoCacheBo.class, emptyMap);
+		KradDataServiceLocator.getDataObjectService().deleteMatching(EntityDefaultInfoCacheBo.class, QueryByCriteria.Builder.create().build() );
 		if (null == identityArchiveService) {
 			identityArchiveService = getIdentityArchiveService();
 		}
@@ -133,6 +127,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 		}
 	}
 
+    @SuppressWarnings("unused")
 	private static class MinimalKEDIBuilder {
 		private String entityId;
 		private String principalId;

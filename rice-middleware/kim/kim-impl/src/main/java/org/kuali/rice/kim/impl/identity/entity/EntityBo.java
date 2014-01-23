@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -15,6 +16,19 @@
  */
 package org.kuali.rice.kim.impl.identity.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -44,82 +58,79 @@ import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.persistence.Cacheable;
 @javax.persistence.Entity
+@Cacheable(false)
 @Table(name = "KRIM_ENTITY_T")
 public class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
+
     private static final long serialVersionUID = -2448541334029932773L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_ID_S")
+    @Id
     @Column(name = "ENTITY_ID")
     private String id;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityNameBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityNameBo> names = new ArrayList<EntityNameBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = PrincipalBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityExternalIdentifierBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityExternalIdentifierBo> externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityAffiliationBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityAffiliationBo> affiliations = new ArrayList<EntityAffiliationBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityEmploymentBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEmploymentBo> employmentInformation = new ArrayList<EntityEmploymentBo>();
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityTypeContactInfoBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityTypeContactInfoBo> entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
-    @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "ENTITY_ID", insertable = false,
-            updatable = false)
+
+    @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityPrivacyPreferencesBo privacyPreferences;
-    @OneToOne(targetEntity = EntityBioDemographicsBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToOne(targetEntity = EntityBioDemographicsBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityBioDemographicsBo bioDemographics;
-    @OneToMany(targetEntity = EntityCitizenshipBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityCitizenshipBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityCitizenshipBo> citizenships = new ArrayList<EntityCitizenshipBo>();
-    @OneToMany(targetEntity = EntityEthnicityBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityEthnicityBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEthnicityBo> ethnicities = new ArrayList<EntityEthnicityBo>();
-    @OneToMany(targetEntity = EntityResidencyBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityResidencyBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityResidencyBo> residencies = new ArrayList<EntityResidencyBo>();
-    @OneToMany(targetEntity = EntityVisaBo.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = EntityVisaBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityVisaBo> visas = new ArrayList<EntityVisaBo>();
+
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     public static org.kuali.rice.kim.api.identity.entity.Entity to(EntityBo bo) {
         if (bo == null) {
             return null;
         }
-
         return Entity.Builder.create(bo).build();
     }
 
@@ -127,7 +138,6 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         if (bo == null) {
             return null;
         }
-
         return EntityDefault.Builder.create(bo).build();
     }
 
@@ -145,106 +155,80 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         if (immutable == null) {
             return null;
         }
-
         EntityBo bo = toUpdate;
         if (toUpdate == null) {
             bo = new EntityBo();
         }
-
         bo.active = immutable.isActive();
         bo.id = immutable.getId();
-
         bo.names = new ArrayList<EntityNameBo>();
         if (CollectionUtils.isNotEmpty(immutable.getNames())) {
             for (EntityName name : immutable.getNames()) {
                 bo.names.add(EntityNameBo.from(name));
             }
-
         }
-
         bo.principals = new ArrayList<PrincipalBo>();
         if (CollectionUtils.isNotEmpty(immutable.getPrincipals())) {
             for (Principal principal : immutable.getPrincipals()) {
                 bo.principals.add(PrincipalBo.from(principal));
             }
-
         }
-
         bo.externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
         if (CollectionUtils.isNotEmpty(immutable.getExternalIdentifiers())) {
             for (EntityExternalIdentifier externalId : immutable.getExternalIdentifiers()) {
                 bo.externalIdentifiers.add(EntityExternalIdentifierBo.from(externalId));
             }
-
         }
-
         bo.affiliations = new ArrayList<EntityAffiliationBo>();
         if (CollectionUtils.isNotEmpty(immutable.getAffiliations())) {
             for (EntityAffiliation affiliation : immutable.getAffiliations()) {
                 bo.affiliations.add(EntityAffiliationBo.from(affiliation));
             }
-
         }
-
         bo.employmentInformation = new ArrayList<EntityEmploymentBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEmploymentInformation())) {
             for (EntityEmployment employment : immutable.getEmploymentInformation()) {
                 bo.employmentInformation.add(EntityEmploymentBo.from(employment));
             }
-
         }
-
         bo.entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEntityTypeContactInfos())) {
             for (EntityTypeContactInfo entityType : immutable.getEntityTypeContactInfos()) {
                 bo.entityTypeContactInfos.add(EntityTypeContactInfoBo.from(entityType));
             }
-
         }
-
         if (immutable.getPrivacyPreferences() != null) {
             bo.privacyPreferences = EntityPrivacyPreferencesBo.from(immutable.getPrivacyPreferences());
         }
-
         if (immutable.getBioDemographics() != null) {
             bo.bioDemographics = EntityBioDemographicsBo.from(immutable.getBioDemographics());
         }
-
         bo.citizenships = new ArrayList<EntityCitizenshipBo>();
         if (CollectionUtils.isNotEmpty(immutable.getCitizenships())) {
             for (EntityCitizenship citizenship : immutable.getCitizenships()) {
                 bo.citizenships.add(EntityCitizenshipBo.from(citizenship));
             }
-
         }
-
         bo.ethnicities = new ArrayList<EntityEthnicityBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEthnicities())) {
             for (EntityEthnicity ethnicity : immutable.getEthnicities()) {
                 bo.ethnicities.add(EntityEthnicityBo.from(ethnicity));
             }
-
         }
-
         bo.residencies = new ArrayList<EntityResidencyBo>();
         if (CollectionUtils.isNotEmpty(immutable.getResidencies())) {
             for (EntityResidency residency : immutable.getResidencies()) {
                 bo.residencies.add(EntityResidencyBo.from(residency));
             }
-
         }
-
         bo.visas = new ArrayList<EntityVisaBo>();
         if (CollectionUtils.isNotEmpty(immutable.getVisas())) {
             for (EntityVisa visa : immutable.getVisas()) {
                 bo.visas.add(EntityVisaBo.from(visa));
             }
-
         }
-
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -253,14 +237,11 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         if (CollectionUtils.isEmpty(this.entityTypeContactInfos)) {
             return null;
         }
-
         for (EntityTypeContactInfoBo entType : this.entityTypeContactInfos) {
             if (entType.getEntityTypeCode().equals(entityTypeCode)) {
                 return entType;
             }
-
         }
-
         return null;
     }
 
@@ -269,14 +250,11 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         if (CollectionUtils.isEmpty(this.employmentInformation)) {
             return null;
         }
-
         for (EntityEmploymentBo employment : this.employmentInformation) {
             if (employment.isPrimary() && employment.isActive()) {
                 return employment;
             }
-
         }
-
         return null;
     }
 
@@ -290,14 +268,11 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
         if (CollectionUtils.isEmpty(this.externalIdentifiers)) {
             return null;
         }
-
         for (EntityExternalIdentifierBo externalId : this.externalIdentifiers) {
             if (externalId.getExternalIdentifierTypeCode().equals(externalIdentifierTypeCode)) {
                 return externalId;
             }
-
         }
-
         return null;
     }
 
@@ -435,5 +410,4 @@ public class EntityBo extends PersistableBusinessObjectBase implements EntityCon
     public void setActive(boolean active) {
         this.active = active;
     }
-
 }

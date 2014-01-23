@@ -15,6 +15,24 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract;
@@ -26,51 +44,54 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 @Entity
 @Table(name = "KRIM_RSP_T")
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class ResponsibilityBo extends PersistableBusinessObjectBase implements ResponsibilityContract {
+
     private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_RSP_ID_S")
+    @GeneratedValue(generator = "KRIM_RSP_ID_S")
     @Id
     @Column(name = "RSP_ID")
-    private String id;
+    String id;
+
     @Column(name = "NMSPC_CD")
-    private String namespaceCode;
+    String namespaceCode;
+
     @Column(name = "NM")
-    private String name;
-    @Column(name = "DESC_TXT", length = 400)
-    private String description;
-    @Column(name = "PERM_TMPL_ID")
-    private String templateId;
+    String name;
+
+    @Column(name = "DESC_TXT")
+    String description;
+
+    @Column(name = "RSP_TMPL_ID")
+    String templateId;
+
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
-    private boolean active;
-    @OneToOne(targetEntity = ResponsibilityTemplateBo.class, cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
-    private ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
-    @OneToMany(targetEntity = ResponsibilityAttributeBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER,
-            mappedBy = "id")
-    private List<ResponsibilityAttributeBo> attributeDetails = new AutoPopulatingList(ResponsibilityAttributeBo.class);
-    @OneToMany(targetEntity = RoleResponsibilityBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER,
-            mappedBy = "id")
-    private List<RoleResponsibilityBo> roleResponsibilities = new AutoPopulatingList(RoleResponsibilityBo.class);
-    private Map<String, String> attributes;
+    @Convert(converter = BooleanYNConverter.class)
+    boolean active;
+
+    @ManyToOne(targetEntity = ResponsibilityTemplateBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "RSP_TMPL_ID", referencedColumnName = "RSP_TMPL_ID", insertable = false, updatable = false)
+    ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+
+    @OneToMany(targetEntity = ResponsibilityAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID")
+    List<ResponsibilityAttributeBo> attributeDetails = new AutoPopulatingList<ResponsibilityAttributeBo>(ResponsibilityAttributeBo.class);
+
+    @OneToMany(mappedBy = "kimResponsibility")
+    @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID", insertable = false, updatable = false)
+    List<RoleResponsibilityBo> roleResponsibilities = new AutoPopulatingList<RoleResponsibilityBo>(RoleResponsibilityBo.class);
+
+    @Transient
+    Map<String, String> attributes;
 
     @Override
     public Map<String, String> getAttributes() {
@@ -83,11 +104,10 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
      * @param bo the mutable business object
      * @return the immutable object
      */
-    public static Responsibility to(ResponsibilityBo bo) {
+    public static Responsibility to(ResponsibilityContract bo) {
         if (bo == null) {
             return null;
         }
-
         return Responsibility.Builder.create(bo).build();
     }
 
@@ -101,7 +121,6 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         if (im == null) {
             return null;
         }
-
         ResponsibilityBo bo = new ResponsibilityBo();
         bo.id = im.getId();
         bo.namespaceCode = im.getNamespaceCode();
@@ -113,7 +132,6 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         bo.attributes = im.getAttributes();
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
@@ -135,26 +153,21 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     }
 
     public String getDetailObjectsToDisplay() {
-        final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
-
+        final KimType kimType = getTypeInfoService().getKimType(getTemplate().getKimTypeId());
         StringBuffer detailObjects = new StringBuffer();
         Iterator<ResponsibilityAttributeBo> respIter = attributeDetails.iterator();
         while (respIter.hasNext()) {
             ResponsibilityAttributeBo bo = respIter.next();
-            detailObjects.append(getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(bo.getKimAttributeId())))
-                    .append(":")
-                    .append(bo.getAttributeValue());
+            detailObjects.append(getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(bo.getKimAttributeId()))).append(":").append(bo.getAttributeValue());
             if (respIter.hasNext()) {
                 detailObjects.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
             }
         }
-
         return detailObjects.toString();
     }
 
     private String getKimAttributeLabelFromDD(KimTypeAttribute attribute) {
-        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(),
-                attribute.getKimAttribute().getAttributeName());
+        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName());
     }
 
     private DataDictionaryService getDataDictionaryService() {
@@ -245,6 +258,4 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-
-
 }

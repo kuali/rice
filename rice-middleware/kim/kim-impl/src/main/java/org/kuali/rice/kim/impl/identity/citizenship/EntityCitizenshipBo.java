@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.citizenship;
 
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
+import java.sql.Timestamp;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,36 +25,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import javax.persistence.Transient;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
+import org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ENTITY_CTZNSHP_T")
 public class EntityCitizenshipBo extends EntityCitizenshipBase {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_CTZNSHP_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_CTZNSHP_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_CTZNSHP_ID_S")
+    @Id
     @Column(name = "ENTITY_CTZNSHP_ID")
     private String id;
 
-    @ManyToOne(targetEntity = EntityCitizenshipStatusBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityCitizenshipStatusBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "CTZNSHP_STAT_CD", referencedColumnName = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
     private EntityCitizenshipStatusBo status;
 
-    @ManyToOne(targetEntity = EntityCitizenshipChangeTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "CTZNSHP_CHNG_CD", insertable = false, updatable = false)
+    @Transient
     private EntityCitizenshipChangeTypeBo changeType;
-
-
-
 
     public static EntityCitizenship to(EntityCitizenshipBo bo) {
         if (bo == null) {
             return null;
         }
-
         return EntityCitizenship.Builder.create(bo).build();
     }
 
@@ -69,10 +66,8 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
         if (immutable == null) {
             return null;
         }
-
         EntityCitizenshipBo bo = new EntityCitizenshipBo();
         bo.setActive(immutable.isActive());
-
         if (immutable.getChangeType() != null) {
             bo.setChangeCode(immutable.getChangeType().getCode());
             bo.setChangeType(EntityCitizenshipChangeTypeBo.from(immutable.getChangeType()));
@@ -81,14 +76,12 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
             bo.setStatusCode(immutable.getStatus().getCode());
             bo.setStatus(EntityCitizenshipStatusBo.from(immutable.getStatus()));
         }
-
         bo.setId(immutable.getId());
         bo.setEntityId(immutable.getEntityId());
         bo.setCountryCode(immutable.getCountryCode());
         if (immutable.getStartDate() != null) {
             bo.setStartDateValue(new Timestamp(immutable.getStartDate().getMillis()));
         }
-
         if (immutable.getEndDate() != null) {
             bo.setEndDateValue(new Timestamp(immutable.getEndDate().getMillis()));
         }
@@ -98,11 +91,9 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
         if (immutable.getChangeDate() != null) {
             bo.setChangeDateValue(new Timestamp(immutable.getChangeDate().getMillis()));
         }
-
         bo.setActive(immutable.isActive());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 

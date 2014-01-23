@@ -158,11 +158,13 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
 
     private boolean isBidirectional(String thisClass, String itemClass) {
         final ClassDescriptor cd = OjbUtil.findClassDescriptor(itemClass, descriptorRepositories);
-        Collection<ObjectReferenceDescriptor> ords = cd.getObjectReferenceDescriptors();
-        if (ords != null) {
-            for (ObjectReferenceDescriptor ord : ords) {
-                if (ord.getItemClassName().equals(thisClass)) {
-                    return true;
+        if (cd != null) {
+            Collection<ObjectReferenceDescriptor> ords = cd.getObjectReferenceDescriptors();
+            if (ords != null) {
+                for (ObjectReferenceDescriptor ord : ords) {
+                    if (ord.getItemClassName().equals(thisClass)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -171,11 +173,13 @@ public class OneToOneResolver extends AbstractMappedFieldResolver {
 
     private String getMappedBy(String thisClass, String itemClass) {
         final ClassDescriptor cd = OjbUtil.findClassDescriptor(itemClass, descriptorRepositories);
-        Collection<ObjectReferenceDescriptor> ords = cd.getObjectReferenceDescriptors();
-        if (ords != null) {
-            for (ObjectReferenceDescriptor ord : ords) {
-                if (ord.getItemClassName().equals(thisClass)) {
-                    return ord.getAttributeName();
+        if (cd != null) {
+            Collection<ObjectReferenceDescriptor> ords = cd.getObjectReferenceDescriptors();
+            if (ords != null) {
+                for (ObjectReferenceDescriptor ord : ords) {
+                    if (ord.getItemClassName().equals(thisClass)) {
+                        return ord.getAttributeName();
+                    }
                 }
             }
         }

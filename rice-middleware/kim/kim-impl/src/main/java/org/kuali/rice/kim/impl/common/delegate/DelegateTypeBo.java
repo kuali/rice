@@ -15,43 +15,55 @@
  */
 package org.kuali.rice.kim.impl.common.delegate;
 
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.kim.api.common.delegate.DelegateMember;
-import org.kuali.rice.kim.api.common.delegate.DelegateType;
-import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.springframework.util.AutoPopulatingList;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
+import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_DLGN_T")
 public class DelegateTypeBo extends PersistableBusinessObjectBase implements DelegateTypeContract {
+
     private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_DLGN_ID_S")
+    @GeneratedValue(generator = "KRIM_DLGN_ID_S")
     @Id
     @Column(name = "DLGN_ID")
     private String delegationId;
+
     @Column(name = "ROLE_ID")
     private String roleId;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active = true;
+
     @Column(name = "KIM_TYP_ID")
     private String kimTypeId;
+
     @Column(name = "DLGN_TYP_CD")
     private String delegationTypeCode;
-    @OneToMany(targetEntity = DelegateMemberBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "DLGN_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = DelegateMemberBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID", insertable = false, updatable = false)
     private List<DelegateMemberBo> members = new AutoPopulatingList<DelegateMemberBo>(DelegateMemberBo.class);
 
     public void setDelegationType(DelegationType type) {
@@ -68,12 +80,11 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
     }
 
     public static DelegateTypeBo from(DelegateType immutable) {
-        // build list of DelegateMemberBo
+        // build list of DelegateMemberBo                      
         ArrayList<DelegateMemberBo> tmpMembers = new ArrayList<DelegateMemberBo>();
         for (DelegateMember member : immutable.getMembers()) {
             tmpMembers.add(DelegateMemberBo.from(member));
         }
-
         DelegateTypeBo bo = new DelegateTypeBo();
         bo.setDelegationId(immutable.getDelegationId());
         bo.setRoleId(immutable.getRoleId());
@@ -140,5 +151,4 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
     public void setMembers(List<DelegateMemberBo> members) {
         this.members = members;
     }
-
 }

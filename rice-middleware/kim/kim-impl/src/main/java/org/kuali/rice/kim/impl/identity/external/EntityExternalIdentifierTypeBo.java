@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kim.impl.identity.external;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierTypeContract;
@@ -22,21 +28,15 @@ import org.kuali.rice.kim.framework.identity.external.EntityExternalIdentifierTy
 import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
+@AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "EXT_ID_TYP_CD")) })
 @Entity
-@AttributeOverrides({
-        @AttributeOverride(name="code",column=@Column(name="EXT_ID_TYP_CD"))
-})
 @Table(name = "KRIM_EXT_ID_TYP_T")
 public class EntityExternalIdentifierTypeBo extends CodedAttributeBo implements EntityExternalIdentifierTypeEbo, EntityExternalIdentifierTypeContract {
+
     private static final long serialVersionUID = 1058518958597912170L;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "ENCR_REQ_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean encryptionRequired;
 
     @Override
@@ -58,10 +58,6 @@ public class EntityExternalIdentifierTypeBo extends CodedAttributeBo implements 
         if (bo == null) {
             return null;
         }
-
         return EntityExternalIdentifierType.Builder.create(bo).build();
     }
-
-
-
 }

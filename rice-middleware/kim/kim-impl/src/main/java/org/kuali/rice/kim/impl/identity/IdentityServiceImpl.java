@@ -15,10 +15,17 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.jws.WebParam;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -40,6 +47,7 @@ import org.kuali.rice.kim.api.identity.name.EntityNameQueryResults;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
+import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalQueryResults;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
@@ -67,22 +75,13 @@ import org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo;
 import org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
-import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
-
-import javax.jws.WebParam;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.krad.data.DataObjectService;
 
 /**
  * Base implementation of the identity (identity) service.  This version assumes the KimEntity
@@ -93,11 +92,10 @@ import java.util.Map;
 
 public class IdentityServiceImpl implements IdentityService {
 
-    private CriteriaLookupService criteriaLookupService;
-	private BusinessObjectService businessObjectService;
+    protected static final String UNAVAILABLE = "Unavailable";
 
-    private static final String UNAVAILABLE = "Unavailable";
-
+    protected DataObjectService dataObjectService;
+    
     @Override
 	public Entity getEntity(String entityId) throws RiceIllegalArgumentException {
         incomingParamCheck(entityId, "entityId");
@@ -195,10 +193,10 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
         criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
         criteria.put(KIMPropertyConstants.Principal.ACTIVE, Boolean.TRUE);
-        Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
+        QueryResults<PrincipalBo> principals = dataObjectService.findMatching(PrincipalBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
 
-        if (!principals.isEmpty()) {
-            return PrincipalBo.to(principals.iterator().next());
+        if (!principals.getResults().isEmpty()) {
+            return PrincipalBo.to(principals.getResults().get(0));
         }
         return null;
 	}
@@ -216,7 +214,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         PrincipalBo bo = PrincipalBo.from(principal);
-        return PrincipalBo.to(businessObjectService.save(bo));
+        return PrincipalBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -236,7 +234,7 @@ public class IdentityServiceImpl implements IdentityService {
         PrincipalBo bo = PrincipalBo.from(principal);
         //Password is not set on the principal DTO, so we need to make sure the value is kept from existing principal
         bo.setPassword(originalPrincipal.getPassword());
-        PrincipalBo updatedPrincipal = businessObjectService.save(bo);
+        PrincipalBo updatedPrincipal = dataObjectService.save(bo);
         if (originalPrincipal.isActive()
                 && !updatedPrincipal.isActive()) {
             KimImplServiceLocator.getRoleInternalService().principalInactivated(updatedPrincipal.getPrincipalId());
@@ -254,7 +252,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
         PrincipalBo bo = PrincipalBo.from(principal);
         bo.setActive(false);
-        return PrincipalBo.to(businessObjectService.save(bo));
+        return PrincipalBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -267,7 +265,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
         PrincipalBo bo = PrincipalBo.from(principal);
         bo.setActive(false);
-        return PrincipalBo.to(businessObjectService.save(bo));
+        return PrincipalBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -283,15 +281,19 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityTypeContactInfoBo bo = EntityTypeContactInfoBo.from(entityTypeData);
-        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
+        return EntityTypeContactInfoBo.to(dataObjectService.save(bo));
     }
 
-    private EntityTypeContactInfoBo getEntityTypeDataBo(String entityId, String entityTypeCode) {
+    protected EntityTypeContactInfoBo getEntityTypeDataBo(String entityId, String entityTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(3);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
          criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
          criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-         return businessObjectService.findByPrimaryKey(EntityTypeContactInfoBo.class, criteria);
+         List<EntityTypeContactInfoBo> results = dataObjectService.findMatching(EntityTypeContactInfoBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+         if ( results.isEmpty() ) {
+             return null;
+         }
+         return results.get(0);
     }
 
     @Override
@@ -307,7 +309,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityTypeContactInfoBo bo = EntityTypeContactInfoBo.from(entityTypeContactInfo);
-        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
+        return EntityTypeContactInfoBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -320,22 +322,24 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("EntityTypeData with entityId: " + entityId + " entityTypeCode: " + entityTypeCode + " does not exist");
         }
         bo.setActive(false);
-        return EntityTypeContactInfoBo.to(businessObjectService.save(bo));
+        return EntityTypeContactInfoBo.to(dataObjectService.save(bo));
     }
 
-    private EntityAddressBo getEntityAddressBo(String entityId, String entityTypeCode, String addressTypeCode) {
+    protected EntityAddressBo getEntityAddressBo(String entityId, String entityTypeCode, String addressTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("addressTypeCode", addressTypeCode);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-        return businessObjectService.findByPrimaryKey(EntityAddressBo.class, criteria);
+        List<EntityAddressBo> results = dataObjectService.findMatching(EntityAddressBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);        
     }
 
-    private EntityAddressBo getEntityAddressBo(String addressId) {
-        Map<String,Object> criteria = new HashMap<String,Object>(4);
-        criteria.put(KIMPropertyConstants.Entity.ID, addressId);
-        return businessObjectService.findByPrimaryKey(EntityAddressBo.class, criteria);
+    protected EntityAddressBo getEntityAddressBo(String addressId) {
+        return dataObjectService.find(EntityAddressBo.class, addressId);
     }
 
     @Override
@@ -354,7 +358,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityAddressBo bo = EntityAddressBo.from(address);
-        return EntityAddressBo.to(businessObjectService.save(bo));
+        return EntityAddressBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -374,7 +378,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityAddressBo bo = EntityAddressBo.from(address);
-        return EntityAddressBo.to(businessObjectService.save(bo));
+        return EntityAddressBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -386,22 +390,24 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("Address with addressId: " + addressId + " does not exist");
         }
         bo.setActive(false);
-        return EntityAddressBo.to(businessObjectService.save(bo));
+        return EntityAddressBo.to(dataObjectService.save(bo));
     }
 
-    private EntityEmailBo getEntityEmailBo(String entityId, String entityTypeCode, String emailTypeCode) {
+    protected EntityEmailBo getEntityEmailBo(String entityId, String entityTypeCode, String emailTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("emailTypeCode", emailTypeCode);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-        return businessObjectService.findByPrimaryKey(EntityEmailBo.class, criteria);
+        List<EntityEmailBo> results = dataObjectService.findMatching(EntityEmailBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
-    private EntityEmailBo getEntityEmailBo(String emailId) {
-        Map<String,Object> criteria = new HashMap<String,Object>(4);
-        criteria.put(KIMPropertyConstants.Entity.ID, emailId);
-        return businessObjectService.findByPrimaryKey(EntityEmailBo.class, criteria);
+    protected EntityEmailBo getEntityEmailBo(String emailId) {
+        return dataObjectService.find(EntityEmailBo.class, emailId);
     }
     @Override
     public EntityEmail addEmailToEntity(EntityEmail email) throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -419,7 +425,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEmailBo bo = EntityEmailBo.from(email);
-        return EntityEmailBo.to(businessObjectService.save(bo));
+        return EntityEmailBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -439,7 +445,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEmailBo bo = EntityEmailBo.from(email);
-        return EntityEmailBo.to(businessObjectService.save(bo));
+        return EntityEmailBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -451,22 +457,24 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("Email with emailId: " + emailId + " does not exist");
         }
         bo.setActive(false);
-        return EntityEmailBo.to(businessObjectService.save(bo));
+        return EntityEmailBo.to(dataObjectService.save(bo));
     }
 
-    private EntityPhoneBo getEntityPhoneBo(String entityId, String entityTypeCode, String phoneTypeCode) {
+    protected EntityPhoneBo getEntityPhoneBo(String entityId, String entityTypeCode, String phoneTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_TYPE_CODE, entityTypeCode);
         criteria.put("phoneTypeCode", phoneTypeCode);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-        return businessObjectService.findByPrimaryKey(EntityPhoneBo.class, criteria);
+        List<EntityPhoneBo> results = dataObjectService.findMatching(EntityPhoneBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
-    private EntityPhoneBo getEntityPhoneBo(String phoneId) {
-        Map<String,Object> criteria = new HashMap<String,Object>(4);
-        criteria.put(KIMPropertyConstants.Entity.ID, phoneId);
-        return businessObjectService.findByPrimaryKey(EntityPhoneBo.class, criteria);
+    protected EntityPhoneBo getEntityPhoneBo(String phoneId) {
+        return dataObjectService.find(EntityPhoneBo.class, phoneId);
     }
 
     @Override
@@ -485,7 +493,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityPhoneBo bo = EntityPhoneBo.from(phone);
-        return EntityPhoneBo.to(businessObjectService.save(bo));
+        return EntityPhoneBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -505,7 +513,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityPhoneBo bo = EntityPhoneBo.from(phone);
-        return EntityPhoneBo.to(businessObjectService.save(bo));
+        return EntityPhoneBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -517,15 +525,19 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("Phone with phoneId: " + phoneId + " does not exist");
         }
         bo.setActive(false);
-        return EntityPhoneBo.to(businessObjectService.save(bo));
+        return EntityPhoneBo.to(dataObjectService.save(bo));
     }
 
 
-    private EntityExternalIdentifierBo getEntityExternalIdentifierBo(String entityId, String externalIdentifierTypeCode) {
+    protected EntityExternalIdentifierBo getEntityExternalIdentifierBo(String entityId, String externalIdentifierTypeCode) {
         Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put("externalIdentifierTypeCode", externalIdentifierTypeCode);
-        return businessObjectService.findByPrimaryKey(EntityExternalIdentifierBo.class, criteria);
+        List<EntityExternalIdentifierBo> results = dataObjectService.findMatching(EntityExternalIdentifierBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
     @Override
@@ -541,7 +553,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityExternalIdentifierBo bo = EntityExternalIdentifierBo.from(externalId);
-        return EntityExternalIdentifierBo.to(businessObjectService.save(bo));
+        return EntityExternalIdentifierBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -558,14 +570,12 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityExternalIdentifierBo bo = EntityExternalIdentifierBo.from(externalId);
-        return EntityExternalIdentifierBo.to(businessObjectService.save(bo));
+        return EntityExternalIdentifierBo.to(dataObjectService.save(bo));
     }
 
 
-    private EntityAffiliationBo getEntityAffiliationBo(String id) {
-        Map<String,Object> criteria = new HashMap<String,Object>();
-        criteria.put(KIMPropertyConstants.Entity.ID, id);
-        return businessObjectService.findByPrimaryKey(EntityAffiliationBo.class, criteria);
+    protected EntityAffiliationBo getEntityAffiliationBo(String id) {
+        return dataObjectService.find(EntityAffiliationBo.class, id);
     }
 
     @Override
@@ -583,7 +593,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityAffiliationBo bo = EntityAffiliationBo.from(affiliation);
-        return EntityAffiliationBo.to(businessObjectService.save(bo));
+        return EntityAffiliationBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -602,7 +612,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityAffiliationBo bo = EntityAffiliationBo.from(affiliation);
-        return EntityAffiliationBo.to(businessObjectService.save(bo));
+        return EntityAffiliationBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -614,14 +624,14 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("EntityAffiliation with id: " + id + " does not exist");
         }
         bo.setActive(false);
-        return EntityAffiliationBo.to(businessObjectService.save(bo));
+        return EntityAffiliationBo.to(dataObjectService.save(bo));
     }
 
     @Override
 	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
 		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<EntityBo> results = criteriaLookupService.lookup(EntityBo.class, queryByCriteria);
+        QueryResults<EntityBo> results = dataObjectService.findMatching(EntityBo.class, queryByCriteria);
 
         EntityQueryResults.Builder builder = EntityQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -640,7 +650,7 @@ public class IdentityServiceImpl implements IdentityService {
 	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
 		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<EntityBo> results = criteriaLookupService.lookup(EntityBo.class, queryByCriteria);
+        QueryResults<EntityBo> results = dataObjectService.findMatching(EntityBo.class, queryByCriteria);
 
         EntityDefaultQueryResults.Builder builder = EntityDefaultQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -658,7 +668,7 @@ public class IdentityServiceImpl implements IdentityService {
 	protected EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
 		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<EntityNameBo> results = criteriaLookupService.lookup(EntityNameBo.class, queryByCriteria);
+        QueryResults<EntityNameBo> results = dataObjectService.findMatching(EntityNameBo.class, queryByCriteria);
 
         EntityNameQueryResults.Builder builder = EntityNameQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -676,9 +686,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
 	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) throws RiceIllegalArgumentException {
         incomingParamCheck(entityId, "entityId");
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-		return EntityPrivacyPreferencesBo.to(businessObjectService.findByPrimaryKey(EntityPrivacyPreferencesBo.class, criteria));
+		return EntityPrivacyPreferencesBo.to(dataObjectService.find(EntityPrivacyPreferencesBo.class, entityId));
 	}
 
     @Override
@@ -708,14 +716,12 @@ public class IdentityServiceImpl implements IdentityService {
         return ret;
     }
 	
-	private PrincipalBo getPrincipalBo(String principalId) {
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
-		return businessObjectService.findByPrimaryKey(PrincipalBo.class, criteria);
+    protected PrincipalBo getPrincipalBo(String principalId) {
+		return dataObjectService.find(PrincipalBo.class, principalId);
 	}
 
-	private EntityBo getEntityBo(String entityId) {
-		return businessObjectService.findByPrimaryKey(EntityBo.class, Collections.singletonMap("id", entityId));
+    protected EntityBo getEntityBo(String entityId) {
+		return dataObjectService.find(EntityBo.class, entityId);
 	}
 
 	@Override
@@ -725,13 +731,11 @@ public class IdentityServiceImpl implements IdentityService {
 		return PrincipalBo.to(getPrincipalBoByPrincipalName(principalName));
     }
 
-    private PrincipalBo getPrincipalBoByPrincipalName(String principalName) throws RiceIllegalArgumentException {
-
-        Map<String,Object> criteria = new HashMap<String,Object>(1);
-        criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
-        Collection<PrincipalBo> principals = businessObjectService.findMatching(PrincipalBo.class, criteria);
-        if (!principals.isEmpty() && principals.size() == 1) {
-            return principals.iterator().next();
+    protected PrincipalBo getPrincipalBoByPrincipalName(String principalName) throws RiceIllegalArgumentException {
+        QueryResults<PrincipalBo> principals = dataObjectService.findMatching(PrincipalBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase()).build());
+        if (!principals.getResults().isEmpty() && principals.getResults().size() == 1) {
+            return principals.getResults().get(0);
         }
         return null;
     }
@@ -741,13 +745,13 @@ public class IdentityServiceImpl implements IdentityService {
         incomingParamCheck(entityId, "entityId");
 
         List<Principal>  principals = new ArrayList<Principal>();
-        Map<String,Object> criteria = new HashMap<String,Object>(2);
+        Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Person.ENTITY_ID, entityId);
-        Collection<PrincipalBo> principalBos = businessObjectService.findMatching(PrincipalBo.class, criteria);
+        QueryResults<PrincipalBo> principalBos = dataObjectService.findMatching(PrincipalBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
 
-        if (principalBos != null && !principalBos.isEmpty()) {
+        if (!principalBos.getResults().isEmpty()) {
 
-            for(PrincipalBo principalBo: principalBos) {
+            for(PrincipalBo principalBo: principalBos.getResults()) {
                 Principal principal = PrincipalBo.to(principalBo);
                 principals.add(principal);
             }
@@ -761,13 +765,13 @@ public class IdentityServiceImpl implements IdentityService {
         incomingParamCheck(employeeId, "employeeId");
 
         List<Principal>  principals = new ArrayList<Principal>();
-        Map<String,Object> criteria = new HashMap<String,Object>(2);
+        Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId);
-        Collection<EntityEmploymentBo> entityEmploymentBos = businessObjectService.findMatching(EntityEmploymentBo.class, criteria);
+        QueryResults<EntityEmploymentBo> entityEmploymentBos = dataObjectService.findMatching(EntityEmploymentBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
 
-        if (entityEmploymentBos != null && !entityEmploymentBos.isEmpty()) {
+        if (!entityEmploymentBos.getResults().isEmpty()) {
             List<String>  entityIds = new ArrayList<String>();
-            for(EntityEmploymentBo entityEmploymentBo: entityEmploymentBos) {
+            for(EntityEmploymentBo entityEmploymentBo: entityEmploymentBos.getResults()) {
                 String entityId =  entityEmploymentBo.getEntityId();
                 if (StringUtils.isNotBlank(entityId) && !entityIds.contains(entityId)) {
                     entityIds.add(entityId);
@@ -790,7 +794,7 @@ public class IdentityServiceImpl implements IdentityService {
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getEntityByPrincipalName(java.lang.String)
 	 */
-	protected EntityBo getEntityBoByPrincipalName(String principalName) {
+    protected EntityBo getEntityBoByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank( principalName ) ) {
 			return null;
 		}
@@ -821,11 +825,10 @@ public class IdentityServiceImpl implements IdentityService {
 	 * Generic helper method for performing a lookup through the business object service.
 	 */
 	protected EntityBo getEntityByKeyValue(String key, String value) {
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(key, value);
-        Collection<EntityBo> entities = businessObjectService.findMatching(EntityBo.class, criteria);
-        if (entities != null && entities.size() >= 1) {
-        	return entities.iterator().next();
+        List<EntityBo> entities = dataObjectService.findMatching(EntityBo.class, 
+                QueryByCriteria.Builder.forAttribute(key, value).build()).getResults();
+        if (entities.size() >= 1) {
+        	return entities.get(0);
         }
 		return null;
 	}
@@ -833,7 +836,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
 	public CodedAttribute getAddressType( String code ) throws RiceIllegalArgumentException {
         incomingParamCheck(code, "code");
-		EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
+		EntityAddressTypeBo impl = dataObjectService.find(EntityAddressTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -842,8 +845,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllAddressTypes() {
-        List<EntityAddressTypeBo> bos = (List<EntityAddressTypeBo>)businessObjectService
-                .findMatching(EntityAddressTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityAddressTypeBo> bos = dataObjectService.findMatching(EntityAddressTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityAddressTypeBo bo : bos) {
@@ -856,7 +859,7 @@ public class IdentityServiceImpl implements IdentityService {
     public EntityAffiliationType getAffiliationType( String code ) throws RiceIllegalArgumentException {
         incomingParamCheck(code, "code");
 
-        EntityAffiliationTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAffiliationTypeBo.class, code);
+        EntityAffiliationTypeBo impl = dataObjectService.find(EntityAffiliationTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -865,8 +868,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<EntityAffiliationType> findAllAffiliationTypes() {
-        List<EntityAffiliationTypeBo> bos = (List<EntityAffiliationTypeBo>)businessObjectService
-                .findMatching(EntityAffiliationTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityAffiliationTypeBo> bos = dataObjectService.findMatching(EntityAffiliationTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<EntityAffiliationType> codedAttributes = new ArrayList<EntityAffiliationType>();
         for (EntityAffiliationTypeBo bo : bos) {
@@ -878,7 +881,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getCitizenshipStatus( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
+        EntityCitizenshipStatusBo impl = dataObjectService.find(EntityCitizenshipStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -887,8 +890,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllCitizenshipStatuses() {
-        List<EntityCitizenshipStatusBo> bos = (List<EntityCitizenshipStatusBo>)businessObjectService
-                .findMatching(EntityCitizenshipStatusBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityCitizenshipStatusBo> bos = dataObjectService.findMatching(EntityCitizenshipStatusBo.class, 
+                        QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityCitizenshipStatusBo bo : bos) {
@@ -900,7 +903,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getEmailType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityEmailTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmailTypeBo.class, code);
+        EntityEmailTypeBo impl = dataObjectService.find(EntityEmailTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -909,8 +912,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllEmailTypes() {
-        List<EntityEmailTypeBo> bos = (List<EntityEmailTypeBo>)businessObjectService
-                .findMatching(EntityEmailTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityEmailTypeBo> bos = dataObjectService.findMatching(EntityEmailTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityEmailTypeBo bo : bos) {
@@ -924,7 +927,7 @@ public class IdentityServiceImpl implements IdentityService {
             @WebParam(name = "query") QueryByCriteria query) throws RiceIllegalArgumentException {
         incomingParamCheck(query, "query");
 
-        GenericQueryResults<PrincipalBo> results = criteriaLookupService.lookup(PrincipalBo.class, query);
+        QueryResults<PrincipalBo> results = dataObjectService.findMatching(PrincipalBo.class, query);
 
         PrincipalQueryResults.Builder builder = PrincipalQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -942,7 +945,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getEmploymentStatus( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityEmploymentStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
+        EntityEmploymentStatusBo impl = dataObjectService.find(EntityEmploymentStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -951,8 +954,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllEmploymentStatuses() {
-        List<EntityEmploymentStatusBo> bos = (List<EntityEmploymentStatusBo>)businessObjectService
-                .findMatching(EntityEmploymentStatusBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityEmploymentStatusBo> bos = dataObjectService.findMatching(EntityEmploymentStatusBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityEmploymentStatusBo bo : bos) {
@@ -964,7 +967,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getEmploymentType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityEmploymentTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
+        EntityEmploymentTypeBo impl = dataObjectService.find(EntityEmploymentTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -973,8 +976,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllEmploymentTypes() {
-        List<EntityEmploymentTypeBo> bos = (List<EntityEmploymentTypeBo>)businessObjectService
-                .findMatching(EntityEmploymentTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityEmploymentTypeBo> bos = dataObjectService.findMatching(EntityEmploymentTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityEmploymentTypeBo bo : bos) {
@@ -986,7 +989,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getNameType(String code) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityNameTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityNameTypeBo.class, code);
+        EntityNameTypeBo impl = dataObjectService.find(EntityNameTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -995,8 +998,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllNameTypes() {
-        List<EntityNameTypeBo> bos = (List<EntityNameTypeBo>)businessObjectService
-                .findMatching(EntityNameTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityNameTypeBo> bos = dataObjectService.findMatching(EntityNameTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityNameTypeBo bo : bos) {
@@ -1008,7 +1011,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getEntityType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityTypeBo.class, code);
+        EntityTypeBo impl = dataObjectService.find(EntityTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -1017,8 +1020,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllEntityTypes() {
-        List<EntityTypeBo> bos = (List<EntityTypeBo>)businessObjectService
-                .findMatching(EntityTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityTypeBo> bos = dataObjectService.findMatching(EntityTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
         
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityTypeBo bo : bos) {
@@ -1031,7 +1034,7 @@ public class IdentityServiceImpl implements IdentityService {
     public EntityExternalIdentifierType getExternalIdentifierType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
 
-        EntityExternalIdentifierTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityExternalIdentifierTypeBo.class, code);
+        EntityExternalIdentifierTypeBo impl = dataObjectService.find(EntityExternalIdentifierTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -1040,8 +1043,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<EntityExternalIdentifierType> findAllExternalIdendtifierTypes() {
-        List<EntityExternalIdentifierTypeBo> bos = (List<EntityExternalIdentifierTypeBo>)businessObjectService
-                .findMatching(EntityExternalIdentifierTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityExternalIdentifierTypeBo> bos = dataObjectService.findMatching(EntityExternalIdentifierTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<EntityExternalIdentifierType> codedAttributes = new ArrayList<EntityExternalIdentifierType>();
         for (EntityExternalIdentifierTypeBo bo : bos) {
@@ -1053,7 +1056,7 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public CodedAttribute getPhoneType( String code ) throws RiceIllegalArgumentException {
 		incomingParamCheck(code, "code");
-        EntityPhoneTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityPhoneTypeBo.class, code);
+        EntityPhoneTypeBo impl = dataObjectService.find(EntityPhoneTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
 		}
@@ -1062,8 +1065,8 @@ public class IdentityServiceImpl implements IdentityService {
 
     @Override
     public List<CodedAttribute> findAllPhoneTypes() {
-        List<EntityPhoneTypeBo> bos = (List<EntityPhoneTypeBo>)businessObjectService
-                .findMatching(EntityPhoneTypeBo.class, Collections.singletonMap(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE));
+        List<EntityPhoneTypeBo> bos = dataObjectService.findMatching(EntityPhoneTypeBo.class, 
+                QueryByCriteria.Builder.forAttribute(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE).build()).getResults();
 
         List<CodedAttribute> codedAttributes = new ArrayList<CodedAttribute>();
         for (EntityPhoneTypeBo bo : bos) {
@@ -1081,7 +1084,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
 
         EntityBo bo = EntityBo.from(entity);
-        return EntityBo.to(businessObjectService.save(bo));
+        return EntityBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1105,7 +1108,7 @@ public class IdentityServiceImpl implements IdentityService {
         for (PrincipalBo principal : bo.getPrincipals()) {
             principal.setPassword(passwdMap.get(principal.getPrincipalId()));
         }
-        return EntityBo.to(businessObjectService.save(bo));
+        return EntityBo.to(dataObjectService.save(bo));
     }
 
 
@@ -1120,7 +1123,7 @@ public class IdentityServiceImpl implements IdentityService {
         }
 
         entity.setActive(false);
-        return EntityBo.to(businessObjectService.save(entity));
+        return EntityBo.to(dataObjectService.save(entity));
     }
 
     @Override
@@ -1135,7 +1138,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityPrivacyPreferencesBo bo = EntityPrivacyPreferencesBo.from(privacyPreferences);
-        return EntityPrivacyPreferencesBo.to(businessObjectService.save(bo));
+        return EntityPrivacyPreferencesBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1150,10 +1153,10 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityPrivacyPreferencesBo bo = EntityPrivacyPreferencesBo.from(privacyPreferences);
-        return EntityPrivacyPreferencesBo.to(businessObjectService.save(bo));
+        return EntityPrivacyPreferencesBo.to(dataObjectService.save(bo));
     }
 
-    private EntityCitizenshipBo getEntityCitizenshipBo(String entityId, String citizenshipStatusCode) {
+    protected EntityCitizenshipBo getEntityCitizenshipBo(String entityId, String citizenshipStatusCode) {
         if (StringUtils.isEmpty(entityId) || StringUtils.isEmpty(citizenshipStatusCode)) {
             return null;
         }
@@ -1161,17 +1164,26 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put("statusCode", citizenshipStatusCode);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-        return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
+        List<EntityCitizenshipBo> results = dataObjectService.findMatching(EntityCitizenshipBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
+
     }
 
-    private EntityCitizenshipBo getEntityCitizenshipBo(String id) {
+    protected EntityCitizenshipBo getEntityCitizenshipBo(String id) {
         if (StringUtils.isEmpty(id)) {
             return null;
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ID, id);
         criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
-        return businessObjectService.findByPrimaryKey(EntityCitizenshipBo.class, criteria);
+        List<EntityCitizenshipBo> results = dataObjectService.findMatching(EntityCitizenshipBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
     @Override
@@ -1189,7 +1201,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityCitizenshipBo bo = EntityCitizenshipBo.from(citizenship);
-        return EntityCitizenshipBo.to(businessObjectService.save(bo));
+        return EntityCitizenshipBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1207,7 +1219,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityCitizenshipBo bo = EntityCitizenshipBo.from(citizenship);
-        return EntityCitizenshipBo.to(businessObjectService.save(bo));
+        return EntityCitizenshipBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1219,16 +1231,14 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("the EntityCitizenship with id: " + id + " does not exist");
         }
         bo.setActive(false);
-        return EntityCitizenshipBo.to(businessObjectService.save(bo));
+        return EntityCitizenshipBo.to(dataObjectService.save(bo));
     }
 
-    private EntityEthnicityBo getEntityEthnicityBo(String ethnicityId) {
+    protected EntityEthnicityBo getEntityEthnicityBo(String ethnicityId) {
         if (StringUtils.isEmpty(ethnicityId)) {
             return null;
         }
-        Map<String,Object> criteria = new HashMap<String,Object>();
-        criteria.put(KIMPropertyConstants.Entity.ID, ethnicityId);
-        return businessObjectService.findByPrimaryKey(EntityEthnicityBo.class, criteria);
+        return dataObjectService.find(EntityEthnicityBo.class, ethnicityId);
     }
     @Override
     public EntityEthnicity addEthnicityToEntity(EntityEthnicity ethnicity) throws RiceIllegalArgumentException {
@@ -1242,7 +1252,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEthnicityBo bo = EntityEthnicityBo.from(ethnicity);
-        return EntityEthnicityBo.to(businessObjectService.save(bo));
+        return EntityEthnicityBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1257,16 +1267,14 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEthnicityBo bo = EntityEthnicityBo.from(ethnicity);
-        return EntityEthnicityBo.to(businessObjectService.save(bo));
+        return EntityEthnicityBo.to(dataObjectService.save(bo));
     }
 
-    private EntityResidencyBo getEntityResidencyBo(String residencyId) {
+    protected EntityResidencyBo getEntityResidencyBo(String residencyId) {
         if (StringUtils.isEmpty(residencyId)) {
             return null;
         }
-        Map<String,Object> criteria = new HashMap<String,Object>();
-        criteria.put(KIMPropertyConstants.Entity.ID, residencyId);
-        return businessObjectService.findByPrimaryKey(EntityResidencyBo.class, criteria);
+        return dataObjectService.find(EntityResidencyBo.class, residencyId);
     }
 
     @Override
@@ -1281,7 +1289,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityResidencyBo bo = EntityResidencyBo.from(residency);
-        return EntityResidencyBo.to(businessObjectService.save(bo));
+        return EntityResidencyBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1296,16 +1304,14 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityResidencyBo bo = EntityResidencyBo.from(residency);
-        return EntityResidencyBo.to(businessObjectService.save(bo));
+        return EntityResidencyBo.to(dataObjectService.save(bo));
     }
 
-    private EntityVisaBo getEntityVisaBo(String visaId) {
+    protected EntityVisaBo getEntityVisaBo(String visaId) {
         if (StringUtils.isEmpty(visaId)) {
             return null;
         }
-        Map<String,Object> criteria = new HashMap<String,Object>();
-        criteria.put(KIMPropertyConstants.Entity.ID, visaId);
-        return businessObjectService.findByPrimaryKey(EntityVisaBo.class, criteria);
+        return dataObjectService.find(EntityVisaBo.class, visaId);
     }
 
     @Override
@@ -1320,7 +1326,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityVisaBo bo = EntityVisaBo.from(visa);
-        return EntityVisaBo.to(businessObjectService.save(bo));
+        return EntityVisaBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1335,53 +1341,58 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityVisaBo bo = EntityVisaBo.from(visa);
-        return EntityVisaBo.to(businessObjectService.save(bo));
+        return EntityVisaBo.to(dataObjectService.save(bo));
     }
 
-    private EntityNameBo getEntityNameBo(String entityId, String nameTypeCode) {
+    protected EntityNameBo getEntityNameBo(String entityId, String nameTypeCode) {
         if (StringUtils.isEmpty(entityId) || StringUtils.isEmpty(nameTypeCode)) {
             return null;
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
         criteria.put("nameCode", nameTypeCode);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
-        return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
+        List<EntityNameBo> results = dataObjectService.findMatching(EntityNameBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
-    private EntityNameBo getEntityNameBo(String id) {
+    protected EntityNameBo getEntityNameBo(String id) {
         if (StringUtils.isEmpty(id)) {
             return null;
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ID, id);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
-        return businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
+        List<EntityNameBo> results = dataObjectService.findMatching(EntityNameBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
     
     @Override
     public EntityNamePrincipalName getDefaultNamesForPrincipalId(String principalId) {
-    	EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
-    	Map<String,String> criteria = new HashMap<String,String>();
-    	criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_ID, principalId);
-    	PrincipalBo principal = (PrincipalBo) businessObjectService.findByPrimaryKey(PrincipalBo.class, criteria);
+    	PrincipalBo principal = dataObjectService.find(PrincipalBo.class, principalId);
 
     	if (null != principal) {
+            EntityNamePrincipalName.Builder nameBuilder = EntityNamePrincipalName.Builder.create();
     		nameBuilder.setPrincipalName(principal.getPrincipalName());
 
-    		criteria.clear();
+    		Map<String,Object> criteria = new HashMap<String,Object>();
     		criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
-    		criteria.put("DFLT_IND", "Y");
-    		criteria.put("ACTV_IND", "Y");
-    		EntityNameBo name = (EntityNameBo) businessObjectService.findByPrimaryKey(EntityNameBo.class, criteria);
-
-    		if (name == null) {
+    		criteria.put("defaultValue", Boolean.TRUE);
+    		criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
+    		List<EntityNameBo> results = dataObjectService.findMatching(EntityNameBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+    		if ( results.isEmpty() ) {
     			// to make this simple for now, assume if there is no default name that this is a system entity we are dealing with here
     			EntityName.Builder defaultNameBuilder = EntityName.Builder.create();
     			defaultNameBuilder.setLastName(principal.getPrincipalName().toUpperCase());
     			nameBuilder.setDefaultName(defaultNameBuilder);
     		} else {
-    			nameBuilder.setDefaultName( EntityName.Builder.create(name) );
+    			nameBuilder.setDefaultName( EntityName.Builder.create(results.get(0)) );
     		}
     		EntityNamePrincipalName entityNamePrincipalName = nameBuilder.build(); 
     		return entityNamePrincipalName;
@@ -1404,7 +1415,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityNameBo bo = EntityNameBo.from(name);
-        return EntityNameBo.to(businessObjectService.save(bo));
+        return EntityNameBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1422,7 +1433,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityNameBo bo = EntityNameBo.from(name);
-        return EntityNameBo.to(businessObjectService.save(bo));
+        return EntityNameBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1435,10 +1446,10 @@ public class IdentityServiceImpl implements IdentityService {
         }
 
         bo.setActive(false);
-        return EntityNameBo.to(businessObjectService.save(bo));
+        return EntityNameBo.to(dataObjectService.save(bo));
     }
 
-    private EntityEmploymentBo getEntityEmploymentBo(String entityId, String employmentTypeCode,
+    protected EntityEmploymentBo getEntityEmploymentBo(String entityId, String employmentTypeCode,
                         String employmentStatusCode, String employmentAffiliationId) {
         if (StringUtils.isEmpty(entityId) || StringUtils.isEmpty(employmentTypeCode)
                 || StringUtils.isEmpty(employmentStatusCode) || StringUtils.isEmpty(employmentAffiliationId)) {
@@ -1449,18 +1460,26 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put("employeeTypeCode", employmentTypeCode);
         criteria.put("employeeStatusCode", employmentStatusCode);
         criteria.put("entityAffiliationId", employmentAffiliationId);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
-        return businessObjectService.findByPrimaryKey(EntityEmploymentBo.class, criteria);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
+        List<EntityEmploymentBo> results = dataObjectService.findMatching(EntityEmploymentBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
 
-    private EntityEmploymentBo getEntityEmploymentBo(String id) {
+    protected EntityEmploymentBo getEntityEmploymentBo(String id) {
         if (StringUtils.isEmpty(id)) {
             return null;
         }
         Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.Entity.ID, id);
-        criteria.put(KIMPropertyConstants.Entity.ACTIVE, "Y");
-        return businessObjectService.findByPrimaryKey(EntityEmploymentBo.class, criteria);
+        criteria.put(KIMPropertyConstants.Entity.ACTIVE, Boolean.TRUE);
+        List<EntityEmploymentBo> results = dataObjectService.findMatching(EntityEmploymentBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults();
+        if ( results.isEmpty() ) {
+            return null;
+        }
+        return results.get(0);
     }
     @Override
     public EntityEmployment addEmploymentToEntity(EntityEmployment employment) throws RiceIllegalArgumentException, RiceIllegalStateException {
@@ -1479,7 +1498,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEmploymentBo bo = EntityEmploymentBo.from(employment);
-        return EntityEmploymentBo.to(businessObjectService.save(bo));
+        return EntityEmploymentBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1499,7 +1518,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityEmploymentBo bo = EntityEmploymentBo.from(employment);
-        return EntityEmploymentBo.to(businessObjectService.save(bo));
+        return EntityEmploymentBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1511,16 +1530,14 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("the EntityEmployment to inactivate does not exist");
         }
         bo.setActive(false);
-        return EntityEmploymentBo.to(businessObjectService.save(bo));
+        return EntityEmploymentBo.to(dataObjectService.save(bo));
     }
 
-	private EntityBioDemographicsBo getEntityBioDemographicsBo(String entityId) {
+    protected EntityBioDemographicsBo getEntityBioDemographicsBo(String entityId) {
         if (StringUtils.isEmpty(entityId)) {
             return null;
         }
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-		return businessObjectService.findByPrimaryKey(EntityBioDemographicsBo.class, criteria);
+		return dataObjectService.find(EntityBioDemographicsBo.class, entityId);
 	}
 
     @Override
@@ -1535,7 +1552,7 @@ public class IdentityServiceImpl implements IdentityService {
             }
         }
         EntityBioDemographicsBo bo = EntityBioDemographicsBo.from(bioDemographics);
-        return EntityBioDemographicsBo.to(businessObjectService.save(bo));
+        return EntityBioDemographicsBo.to(dataObjectService.save(bo));
     }
 
     @Override
@@ -1546,24 +1563,19 @@ public class IdentityServiceImpl implements IdentityService {
             throw new RiceIllegalStateException("the EntityBioDemographics to update does not exist: " + bioDemographics);
         }
         EntityBioDemographicsBo bo = EntityBioDemographicsBo.from(bioDemographics);
-        return EntityBioDemographicsBo.to(businessObjectService.save(bo));
+        return EntityBioDemographicsBo.to(dataObjectService.save(bo));
     }
 
-
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
-
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    private void incomingParamCheck(Object object, String name) {
+    protected void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new RiceIllegalArgumentException(name + " was null");
         } else if (object instanceof String
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

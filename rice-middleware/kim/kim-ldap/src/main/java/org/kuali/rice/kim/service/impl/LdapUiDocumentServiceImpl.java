@@ -126,16 +126,12 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
     public void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument) {
-        final Entity kimEntity = getIdentityService().getEntity(identityManagementPersonDocument.getEntityId());
-		boolean creatingNew = false;
-
-		String initiatorPrincipalId = getInitiatorPrincipalId(identityManagementPersonDocument);
 		boolean inactivatingPrincipal = false;
 
 		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberBo>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
 		List <DelegateTypeBo> personDelegations = populateDelegations(identityManagementPersonDocument);
-		List <PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
+		List <Object> bos = new ArrayList<Object>();
 		List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataBo> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
 		//if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
@@ -145,10 +141,12 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		bos.addAll(roleRspActions);
 		bos.addAll(personDelegations);
 		// boservice.save(bos) does not handle deleteawarelist
-		getBusinessObjectService().save(bos);
+		for ( Object bo : bos ) {
+			getDataObjectService().save(bo);
+		}
 
-		if (!blankRoleMemberAttrs.isEmpty()) {
-			getBusinessObjectService().delete(blankRoleMemberAttrs);
+		for ( RoleMemberAttributeDataBo blankRoleMemberAttr : blankRoleMemberAttrs ) {
+			getDataObjectService().delete(blankRoleMemberAttr);
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
@@ -315,19 +313,16 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
 	}
 
-    public BusinessObject getMember(String memberTypeCode, String memberId){
-        Class<? extends BusinessObject> roleMemberTypeClass = null;
-        String roleMemberIdName = "";
+    public Object getMember(String memberTypeCode, String memberId){
+        Class<? extends Object> roleMemberTypeClass = null;
     	if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = PrincipalBo.class;
-        	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
 	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
 	 	 		
 	 	 	}
         } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = GroupBo.class;
-        	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
         	Group groupInfo = null;
 	 	 	groupInfo = getGroupService().getGroup(memberId);
 	 	 	if (groupInfo != null) {
@@ -335,15 +330,12 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	 	 	}
         } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = RoleBo.class;
-        	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
 	 	 	Role role = getRoleService().getRole(memberId);
 	 	 	if (role != null) {
 	 	 		
 	 	 	}
         }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(roleMemberIdName, memberId);
-        return getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
+        return getDataObjectService().find(roleMemberTypeClass, memberId);
     }
 
     /**

@@ -15,89 +15,92 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.permission.Permission;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import java.util.Iterator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Iterator;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@IdClass(KimDocumentRolePermissionId.class)
 @Entity
-@Table(name="KRIM_PND_ROLE_PERM_T")
+@Table(name = "KRIM_PND_ROLE_PERM_T")
 public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(generator="KRIM_ROLE_PERM_ID_S")
-	@Column(name="ROLE_PERM_ID")
-	protected String rolePermissionId;
-	@Column(name="ROLE_ID")
-	protected String roleId;
-	@Column(name="PERM_ID")
-	protected String permissionId;
-	@Transient
-	protected Permission permission;
+    private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_ROLE_PERM_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_PERM_ID_S")
+    @Id
+    @Column(name = "ROLE_PERM_ID")
+    protected String rolePermissionId;
+
+    @Column(name = "ROLE_ID")
+    protected String roleId;
+
+    @Column(name = "PERM_ID")
+    protected String permissionId;
+
+    @Transient
+    protected Permission permission;
+
     @Transient
     protected String name;
+
     @Transient
     protected String namespaceCode;
 
-	
-	public String getPermissionId() {
-		return permissionId;
-	}
+    public String getPermissionId() {
+        return permissionId;
+    }
 
-	public String getRoleId() {
-		return roleId;
-	}
+    public String getRoleId() {
+        return roleId;
+    }
 
-	public String getRolePermissionId() {
-		return rolePermissionId;
-	}
+    public String getRolePermissionId() {
+        return rolePermissionId;
+    }
 
-	public void setPermissionId(String permissionId) {
-		this.permissionId = permissionId;
-	}
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId;
+    }
 
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
 
-	public void setRolePermissionId(String rolePermissionId) {
-		this.rolePermissionId = rolePermissionId;
-	}
+    public void setRolePermissionId(String rolePermissionId) {
+        this.rolePermissionId = rolePermissionId;
+    }
 
-	/**
-	 * @return the permission
-	 */
-	public Permission getPermission() {
-        if(null != permissionId){
-            if ( permission == null || !StringUtils.equals( permission.getId(), permissionId ) ) {
+    public Permission getPermission() {
+        if (null != permissionId) {
+            if (permission == null || !StringUtils.equals(permission.getId(), permissionId)) {
                 permission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
             }
         }
-		return permission;
-	}
+        return permission;
+    }
 
     public String getPermissionDetailValues() {
         Permission perm = getPermission();
-        StringBuffer sb = new StringBuffer();
-        if ( perm.getAttributes() != null ) {
+        StringBuilder sb = new StringBuilder();
+        if (perm.getAttributes() != null) {
             Iterator<String> keyIter = perm.getAttributes().keySet().iterator();
-            while ( keyIter.hasNext() ) {
+            while (keyIter.hasNext()) {
                 String key = keyIter.next();
-                sb.append( key ).append( '=' ).append( perm.getAttributes().get(key) );
+                sb.append(key).append('=').append(perm.getAttributes().get(key));
                 if (keyIter.hasNext()) {
                     sb.append(KimConstants.KimUIConstants.COMMA_SEPARATOR).append(" ");
                 }
@@ -106,37 +109,27 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
         return sb.toString();
     }
 
-	/**
-	 * @param permission the permission to set
-	 */
-	public void setPermission(Permission permission) {
-		this.permission = permission;
-	}
-
-    public String getName(){
-        if( null == permission ) {
-             getPermission();
-        }
-
-        if (null == permission) {
-             return "";
-        }
-
-        return permission.getName();
-
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
 
-    public String getNamespaceCode(){
-
-        if( null == permission ) {
+    public String getName() {
+        if (null == permission) {
             getPermission();
         }
-
         if (null == permission) {
             return "";
         }
+        return permission.getName();
+    }
 
+    public String getNamespaceCode() {
+        if (null == permission) {
+            getPermission();
+        }
+        if (null == permission) {
+            return "";
+        }
         return permission.getNamespaceCode();
     }
-	
 }

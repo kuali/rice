@@ -15,52 +15,50 @@
  */
 package org.kuali.rice.kim.impl.common.attribute;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
-@Table(name="KRIM_ATTR_DEFN_T")
+@Table(name = "KRIM_ATTR_DEFN_T")
 public class KimAttributeBo extends PersistableBusinessObjectBase implements KimAttributeContract {
 
     private static final long serialVersionUID = 1L;
 
+    @PortableSequenceGenerator(name = "KRIM_ATTR_DEFN_ID_S")
+    @GeneratedValue(generator = "KRIM_ATTR_DEFN_ID_S")
     @Id
-    @GeneratedValue(generator="KRIM_ATTR_DEFN_ID_S")
-    @PortableSequenceGenerator(name="KRIM_ATTR_DEFN_ID_S")
-    @Column(name="KIM_ATTR_DEFN_ID")
+    @Column(name = "KIM_ATTR_DEFN_ID")
     private String id;
 
-    @Column(name="CMPNT_NM")
+    @Column(name = "CMPNT_NM")
     private String componentName;
 
-    @Column(name="NM")
+    @Column(name = "NM")
     private String attributeName;
 
-    @Column(name="NMSPC_CD")
+    @Column(name = "NMSPC_CD")
     private String namespaceCode;
 
-    @Column(name="LBL")
+    @Column(name = "LBL")
     private String attributeLabel;
 
-    @Column(name="ACTV_IND")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
-
 
     public static KimAttribute to(KimAttributeBo bo) {
         if (bo == null) {
             return null;
         }
-
         return KimAttribute.Builder.create(bo).build();
     }
 
@@ -68,7 +66,6 @@ public class KimAttributeBo extends PersistableBusinessObjectBase implements Kim
         if (im == null) {
             return null;
         }
-
         KimAttributeBo bo = new KimAttributeBo();
         bo.setId(im.getId());
         bo.setComponentName(im.getComponentName());
@@ -138,6 +135,4 @@ public class KimAttributeBo extends PersistableBusinessObjectBase implements Kim
     public void setActive(boolean active) {
         this.active = active;
     }
-
-
 }

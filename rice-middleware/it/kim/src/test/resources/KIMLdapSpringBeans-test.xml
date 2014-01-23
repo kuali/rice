@@ -230,9 +230,7 @@
       </property>
     </bean>
 
-    <bean id="kimLDAPIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
-    	p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService">
+    <bean id="kimLDAPIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl">
       <property name="principalDao" ref="ldapPrincipalDao" />
     </bean>
 

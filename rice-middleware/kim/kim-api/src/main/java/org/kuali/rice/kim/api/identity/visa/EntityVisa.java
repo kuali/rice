@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
-import org.kuali.rice.kim.api.identity.CodedAttributeHistory;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = EntityVisa.Constants.ROOT_ELEMENT_NAME)
@@ -45,7 +44,6 @@ import org.w3c.dom.Element;
     EntityVisa.Elements.VISA_TYPE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-@Deprecated
 public final class EntityVisa extends AbstractDataTransferObject
     implements EntityVisaContract
 {

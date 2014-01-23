@@ -15,15 +15,28 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
@@ -46,34 +59,20 @@ import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
 
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-
 public class PermissionServiceImpl implements PermissionService {
     private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
 
-	private RoleService roleService;
-    private PermissionTypeService defaultPermissionTypeService;
-    private KimTypeInfoService kimTypeInfoService;
-	private BusinessObjectService businessObjectService;
-	private CriteriaLookupService criteriaLookupService;
-    private CacheManager cacheManager;
+	protected RoleService roleService;
+	protected PermissionTypeService defaultPermissionTypeService;
+	protected KimTypeInfoService kimTypeInfoService;
+	protected DataObjectService dataObjectService;
+	protected CacheManager cacheManager;
 
  	private final CopyOnWriteArrayList<Template> allTemplates = new CopyOnWriteArrayList<Template>();
 
@@ -456,9 +455,7 @@ public class PermissionServiceImpl implements PermissionService {
 	protected PermissionBo getPermissionImpl(String permissionId) throws RiceIllegalArgumentException {
     	incomingParamCheck(permissionId, "permissionId");
 
-        HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
-        pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
-        return businessObjectService.findByPrimaryKey( PermissionBo.class, pk );
+        return dataObjectService.find( PermissionBo.class, permissionId );
     }
     
     protected List<Permission> getPermissionsByTemplateName( String namespaceCode, String permissionTemplateName ){
@@ -472,10 +469,10 @@ public class PermissionServiceImpl implements PermissionService {
         HashMap<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put("template.namespaceCode", namespaceCode);
         criteria.put("template.name", permissionTemplateName);
-        criteria.put("template.active", "Y");
-        criteria.put(KRADPropertyConstants.ACTIVE, "Y");
+        criteria.put("template.active", Boolean.TRUE);
+        criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
         List<Permission> permissions =
-                toPermissions(businessObjectService.findMatching(PermissionBo.class, criteria));
+                toPermissions(dataObjectService.findMatching(PermissionBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults());
         cacheManager.getCache(Permission.Cache.NAME).put(cacheKey, permissions);
         return permissions;
     }
@@ -491,9 +488,9 @@ public class PermissionServiceImpl implements PermissionService {
         HashMap<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
         criteria.put(KimConstants.UniqueKeyConstants.PERMISSION_NAME, permissionName);
-        criteria.put(KRADPropertyConstants.ACTIVE, "Y");
+        criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
         List<Permission> permissions =
-                toPermissions(businessObjectService.findMatching( PermissionBo.class, criteria ));
+                toPermissions(dataObjectService.findMatching( PermissionBo.class, QueryByCriteria.Builder.andAttributes(criteria).build() ).getResults());
         cacheManager.getCache(Permission.Cache.NAME).put(cacheKey, permissions);
         return permissions;
     }
@@ -502,7 +499,7 @@ public class PermissionServiceImpl implements PermissionService {
 	public Template getPermissionTemplate(String permissionTemplateId) throws RiceIllegalArgumentException {
         incomingParamCheck(permissionTemplateId, "permissionTemplateId");
 
-        PermissionTemplateBo impl = businessObjectService.findBySinglePrimaryKey( PermissionTemplateBo.class, permissionTemplateId );
+        PermissionTemplateBo impl = dataObjectService.find( PermissionTemplateBo.class, permissionTemplateId );
 		if ( impl != null ) {
 			return PermissionTemplateBo.to(impl);
 		}
@@ -518,21 +515,22 @@ public class PermissionServiceImpl implements PermissionService {
         Map<String,String> criteria = new HashMap<String,String>(2);
 		criteria.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
 		criteria.put( KimConstants.UniqueKeyConstants.PERMISSION_TEMPLATE_NAME, permissionTemplateName );
-		PermissionTemplateBo impl = businessObjectService.findByPrimaryKey( PermissionTemplateBo.class, criteria );
-		if ( impl != null ) {
-			return PermissionTemplateBo.to(impl);
-		}
-		return null;
+		QueryResults<PermissionTemplateBo> results = dataObjectService.findMatching( PermissionTemplateBo.class, QueryByCriteria.Builder.andAttributes(criteria).build() );
+        if ( results.getResults().isEmpty() ) {
+            return null;
+        }
+        return PermissionTemplateBo.to(results.getResults().get(0));
 	}
 
     @Override
 	public List<Template> getAllTemplates() {
 		if ( allTemplates.isEmpty() ) {
-			Map<String,String> criteria = new HashMap<String,String>(1);
-			criteria.put( KRADPropertyConstants.ACTIVE, "Y" );
-			List<PermissionTemplateBo> impls = (List<PermissionTemplateBo>) businessObjectService.findMatching( PermissionTemplateBo.class, criteria );
-			List<Template> infos = new ArrayList<Template>( impls.size() );
-			for ( PermissionTemplateBo impl : impls ) {
+			Map<String,Object> criteria = new HashMap<String,Object>(1);
+			criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
+			
+			QueryResults<PermissionTemplateBo> impls = dataObjectService.findMatching( PermissionTemplateBo.class, QueryByCriteria.Builder.andAttributes(criteria).build() );
+			List<Template> infos = new ArrayList<Template>( impls.getResults().size() );
+			for ( PermissionTemplateBo impl : impls.getResults() ) {
 				infos.add( PermissionTemplateBo.to(impl) );
 			}
 			Collections.sort(infos, new Comparator<Template>() {
@@ -570,7 +568,7 @@ public class PermissionServiceImpl implements PermissionService {
             bo.setTemplate(PermissionTemplateBo.from(getPermissionTemplate(bo.getTemplateId())));
         }
         bo.setAttributeDetails(attrBos);
-        return PermissionBo.to(businessObjectService.save(bo));
+        return PermissionBo.to(dataObjectService.save(bo));
 	}
 
 	@Override
@@ -612,7 +610,7 @@ public class PermissionServiceImpl implements PermissionService {
             bo.setTemplate(PermissionTemplateBo.from(getPermissionTemplate(bo.getTemplateId())));
         }
 
-        return PermissionBo.to(businessObjectService.save(bo));		
+        return PermissionBo.to(dataObjectService.save(bo));		
 	}
 	
     @Override
@@ -633,12 +631,16 @@ public class PermissionServiceImpl implements PermissionService {
                 || StringUtils.isBlank(permissionName)) {
             return null;
         }
-        Map<String, String> criteria = new HashMap<String, String>();
+        Map<String, Object> criteria = new HashMap<String, Object>(3);
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
         criteria.put(KimConstants.UniqueKeyConstants.NAME, permissionName);
-        criteria.put(KRADPropertyConstants.ACTIVE, "Y");
+        criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
         // while this is not actually the primary key - there will be at most one row with these criteria
-        return businessObjectService.findByPrimaryKey(PermissionBo.class, criteria);
+        QueryResults<PermissionBo> results = dataObjectService.findMatching(PermissionBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
+        if ( results.getResults().isEmpty() ) {
+            return null;
+        }
+        return results.getResults().get(0);
     }
 
     @Override
@@ -649,7 +651,7 @@ public class PermissionServiceImpl implements PermissionService {
         LookupCustomizer.Builder<PermissionBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<PermissionBo> results = criteriaLookupService.lookup(PermissionBo.class, queryByCriteria, lc.build());
+        QueryResults<PermissionBo> results = dataObjectService.findMatching(PermissionBo.class, queryByCriteria, lc.build());
 
         PermissionQueryResults.Builder builder = PermissionQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -669,7 +671,7 @@ public class PermissionServiceImpl implements PermissionService {
             throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<PermissionTemplateBo> results = criteriaLookupService.lookup(PermissionTemplateBo.class, queryByCriteria);
+        QueryResults<PermissionTemplateBo> results = dataObjectService.findMatching(PermissionTemplateBo.class, queryByCriteria);
 
         TemplateQueryResults.Builder builder = TemplateQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -706,8 +708,8 @@ public class PermissionServiceImpl implements PermissionService {
         if (cachedValue != null && cachedValue.get() instanceof List) {
             return ((List<String>)cachedValue.get());
         }
-        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", "true"), in("permissionId", permissionIds.toArray(new String[]{})));
-        GenericQueryResults<RolePermissionBo> results = criteriaLookupService.lookup(RolePermissionBo.class, query);
+        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(equal("active", Boolean.TRUE), in("permissionId", permissionIds.toArray(new String[]{})));
+        QueryResults<RolePermissionBo> results = dataObjectService.findMatching(RolePermissionBo.class, query);
         List<String> roleIds = new ArrayList<String>();
         for (RolePermissionBo bo : results.getResults()) {
             roleIds.add(bo.getRoleId());
@@ -745,21 +747,12 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
     /**
-     * Sets the businessObjectService attribute value.
+     * Sets the dataObjectService attribute value.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param dataObjectService The dataObjectService to set.
      */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    /**
-     * Sets the criteriaLookupService attribute value.
-     *
-     * @param criteriaLookupService The criteriaLookupService to set.
-     */
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**

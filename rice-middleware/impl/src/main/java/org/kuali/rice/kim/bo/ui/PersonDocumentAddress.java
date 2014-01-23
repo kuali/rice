@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Timestamp;
+
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -35,47 +38,47 @@ import java.sql.Timestamp;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@IdClass(PersonDocumentAddressId.class)
 @Entity
 @Table(name = "KRIM_PND_ADDR_MT")
 public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
-	@Id
-	@GeneratedValue(generator="KRIM_ENTITY_ADDR_ID_S")
+    private static final long serialVersionUID = 1L;
 
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_ADDR_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_ADDR_ID_S")
+    @Id
     @Column(name = "ENTITY_ADDR_ID")
-	protected String entityAddressId;
+    protected String entityAddressId;
 
+    @Column(name = "ADDR_TYP_CD")
+    protected String addressTypeCode;
 
-	@Column(name = "ADDR_TYP_CD")
-	protected String addressTypeCode;
+    //@Column(name = "ENT_TYP_CD")                       
+    @Transient
+    protected String entityTypeCode;
 
-	//@Column(name = "ENT_TYP_CD")
-	@Transient
-	protected String entityTypeCode;
+    @Column(name = "CITY")
+    protected String city;
 
-	@Column(name = "CITY_NM")
-	protected String city;
+    @Column(name = "STATE_PVC_CD")
+    protected String stateProvinceCode;
 
-	@Column(name = "STATE_PVC_CD")
-	protected String stateProvinceCode;
+    @Column(name = "POSTAL_CD")
+    protected String postalCode;
 
-	@Column(name = "POSTAL_CD")
-	protected String postalCode;
-
-	@Column(name = "POSTAL_CNTRY_CD")
-	protected String countryCode;
+    @Column(name = "POSTAL_CNTRY_CD")
+    protected String countryCode;
 
     @Column(name = "ATTN_LINE")
-	protected String attentionLine;
+    protected String attentionLine;
 
-	@Column(name = "ADDR_LINE_1")
-	protected String line1;
+    @Column(name = "ADDR_LINE_1")
+    protected String line1;
 
-	@Column(name = "ADDR_LINE_2")
-	protected String line2;
+    @Column(name = "ADDR_LINE_2")
+    protected String line2;
 
-	@Column(name = "ADDR_LINE_3")
-	protected String line3;
+    @Column(name = "ADDR_LINE_3")
+    protected String line3;
 
     @Column(name = "ADDR_FMT")
     protected String addressFormat;
@@ -86,87 +89,87 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
     @Column(name = "VALID_DT")
     protected Timestamp validatedDate;
 
-    //@Type(type="yes_no")
-	@Column(name="VALID_IND")
+    @Column(name = "VALID_IND")
+    @Convert(converter = BooleanYNConverter.class)
     protected boolean validated;
 
     @Column(name = "NOTE_MSG")
-	protected String noteMessage;
+    protected String noteMessage;
 
-	@ManyToOne(targetEntity=EntityAddressTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
-	private EntityAddressTypeBo addressType;
+    @ManyToOne(targetEntity = EntityAddressTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ADDR_TYP_CD", referencedColumnName = "ADDR_TYP_CD", insertable = false, updatable = false)
+    private EntityAddressTypeBo addressType;
 
-	// Waiting until we pull in from KFS
-	// protected State state;
-	// protected PostalCode postalCode;
-	// protected Country country;
-	public PersonDocumentAddress() {
-		this.active = true;
-	}
+    // Waiting until we pull in from KFS                       
+    // protected State state;                       
+    // protected PostalCode postalCode;                       
+    // protected Country country;                       
+    public PersonDocumentAddress() {
+        this.active = true;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getAddressTypeCode()
 	 */
-	public String getAddressTypeCode() {
-		return addressTypeCode;
-	}
+    public String getAddressTypeCode() {
+        return addressTypeCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCity()
 	 */
-	public String getCity() {
-		return city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getCountryCode()
 	 */
-	public String getCountryCode() {
-		return countryCode;
-	}
+    public String getCountryCode() {
+        return countryCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getEntityAddressId()
 	 */
-	public String getEntityAddressId() {
-		return entityAddressId;
-	}
+    public String getEntityAddressId() {
+        return entityAddressId;
+    }
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAttentionLine()
 	 */
-	public String getAttentionLine() {
-		return attentionLine;
-	}
+    public String getAttentionLine() {
+        return attentionLine;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine1()
 	 */
-	public String getLine1() {
-		return line1;
-	}
+    public String getLine1() {
+        return line1;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine2()
 	 */
-	public String getLine2() {
-		return line2;
-	}
+    public String getLine2() {
+        return line2;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getLine3()
 	 */
-	public String getLine3() {
-		return line3;
-	}
+    public String getLine3() {
+        return line3;
+    }
 
     /**
 	 * @see @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAddressFormat
 	 */
-	public String getAddressFormat() {
-		return addressFormat;
-	}
+    public String getAddressFormat() {
+        return addressFormat;
+    }
 
     public Timestamp getModifiedDate() {
         return modifiedDate;
@@ -184,77 +187,77 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
         return noteMessage;
     }
 
-	/**
+    /**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getPostalCode()
 	 */
-	public String getPostalCode() {
-		return postalCode;
-	}
+    public String getPostalCode() {
+        return postalCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#getStateCode()
 	 */
-	public String getStateProvinceCode() {
-		return stateProvinceCode;
-	}
+    public String getStateProvinceCode() {
+        return stateProvinceCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setAddressTypeCode(java.lang.String)
 	 */
-	public void setAddressTypeCode(String addressTypeCode) {
-		this.addressTypeCode = addressTypeCode;
-	}
+    public void setAddressTypeCode(String addressTypeCode) {
+        this.addressTypeCode = addressTypeCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setCity(java.lang.String)
 	 */
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setCountryCode(java.lang.String)
 	 */
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAttentionLine()
 	 */
-	public void setAttentionLine(String attentionLine) {
-		this.attentionLine = attentionLine;
-	}
+    public void setAttentionLine(String attentionLine) {
+        this.attentionLine = attentionLine;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine1(java.lang.String)
 	 */
-	public void setLine1(String line1) {
-		this.line1 = line1;
-	}
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine2(java.lang.String)
 	 */
-	public void setLine2(String line2) {
-		this.line2 = line2;
-	}
+    public void setLine2(String line2) {
+        this.line2 = line2;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setLine3(java.lang.String)
 	 */
-	public void setLine3(String line3) {
-		this.line3 = line3;
-	}
+    public void setLine3(String line3) {
+        this.line3 = line3;
+    }
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.address.EntityAddressContract#getAddressFormat()
 	 */
-	public void setAddressFormat(String addressFormat) {
-		this.addressFormat = addressFormat;
-	}
+    public void setAddressFormat(String addressFormat) {
+        this.addressFormat = addressFormat;
+    }
 
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
@@ -272,40 +275,40 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
         this.noteMessage = noteMessage;
     }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setPostalCode(java.lang.String)
 	 */
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAddress#setStateCode(java.lang.String)
 	 */
-	public void setStateProvinceCode(String stateProvinceCode) {
-		this.stateProvinceCode = stateProvinceCode;
-	}
+    public void setStateProvinceCode(String stateProvinceCode) {
+        this.stateProvinceCode = stateProvinceCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo#getEntityTypeCode()
 	 */
-	public String getEntityTypeCode() {
-		return entityTypeCode;
-	}
+    public String getEntityTypeCode() {
+        return entityTypeCode;
+    }
 
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
-	}
+    public void setEntityTypeCode(String entityTypeCode) {
+        this.entityTypeCode = entityTypeCode;
+    }
 
-	public void setEntityAddressId(String entityAddressId) {
-		this.entityAddressId = entityAddressId;
-	}
+    public void setEntityAddressId(String entityAddressId) {
+        this.entityAddressId = entityAddressId;
+    }
 
-	public EntityAddressTypeBo getAddressType() {
-		return this.addressType;
-	}
+    public EntityAddressTypeBo getAddressType() {
+        return this.addressType;
+    }
 
-	public void setAddressType(EntityAddressTypeBo addressType) {
-		this.addressType = addressType;
-	}
+    public void setAddressType(EntityAddressTypeBo addressType) {
+        this.addressType = addressType;
+    }
 }

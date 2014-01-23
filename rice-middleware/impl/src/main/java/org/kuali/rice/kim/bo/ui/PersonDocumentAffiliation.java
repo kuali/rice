@@ -15,23 +15,23 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -39,117 +39,115 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@IdClass(PersonDocumentAffiliationId.class)
 @Entity
 @Table(name = "KRIM_PND_AFLTN_MT")
 public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(generator="KRIM_ENTITY_AFLTN_ID_S")
-	@Column(name = "ENTITY_AFLTN_ID")
-	protected String entityAffiliationId;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "AFLTN_TYP_CD")
-	protected String affiliationTypeCode;
+    @PortableSequenceGenerator(name = "KRIM_ENTITY_AFLTN_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_AFLTN_ID_S")
+    @Id
+    @Column(name = "ENTITY_AFLTN_ID")
+    protected String entityAffiliationId;
 
-	@Column(name = "CAMPUS_CD")
-	protected String campusCode;
+    @Column(name = "AFLTN_TYP_CD")
+    protected String affiliationTypeCode;
 
-	@ManyToOne(targetEntity=EntityAffiliationTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "AFLTN_TYP_CD", insertable = false, updatable = false)
-	protected EntityAffiliationTypeBo affiliationType;
-	@Transient
-	protected PersonDocumentEmploymentInfo newEmpInfo;
+    @Column(name = "CAMPUS_CD")
+    protected String campusCode;
 
-	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE},fetch=FetchType.EAGER)
-	//@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
-	@JoinColumns({
-		@JoinColumn(name="FDOC_NBR",insertable=false,updatable=false),
-		@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
-	})
-	protected List<PersonDocumentEmploymentInfo> empInfos;
+    @ManyToOne(targetEntity = EntityAffiliationTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "AFLTN_TYP_CD", referencedColumnName = "AFLTN_TYP_CD", insertable = false, updatable = false)
+    protected EntityAffiliationTypeBo affiliationType;
 
-	public PersonDocumentAffiliation() {
-		empInfos = new ArrayList<PersonDocumentEmploymentInfo>();
-		setNewEmpInfo(new PersonDocumentEmploymentInfo());
-		this.active = true;
-	}
+    @Transient
+    protected PersonDocumentEmploymentInfo newEmpInfo;
 
-	/**
+    @OneToMany(targetEntity = PersonDocumentEmploymentInfo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumns({ 
+        @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
+        @JoinColumn(name = "ENTITY_AFLTN_ID", referencedColumnName = "ENTITY_AFLTN_ID", insertable = false, updatable = false) })
+    protected List<PersonDocumentEmploymentInfo> empInfos;
+
+    public PersonDocumentAffiliation() {
+        empInfos = new ArrayList<PersonDocumentEmploymentInfo>();
+        setNewEmpInfo(new PersonDocumentEmploymentInfo());
+    }
+
+    /**
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getAffiliationTypeCode()
 	 */
-	public String getAffiliationTypeCode() {
-		if(affiliationTypeCode == null) {
-			return "";
+    public String getAffiliationTypeCode() {
+        if (affiliationTypeCode == null) {
+            return "";
         }
-		return affiliationTypeCode;
-	}
+        return affiliationTypeCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getCampusCode()
 	 */
-	public String getCampusCode() {
-		return campusCode;
-	}
+    public String getCampusCode() {
+        return campusCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#getEntityAffiliationId()
 	 */
-	public String getEntityAffiliationId() {
-		if(entityAffiliationId == null) {
-			return "";
+    public String getEntityAffiliationId() {
+        if (entityAffiliationId == null) {
+            return "";
         }
-		return entityAffiliationId;
-	}
+        return entityAffiliationId;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#setAffiliationTypeCode(java.lang.String)
 	 */
-	public void setAffiliationTypeCode(String affiliationTypeCode) {
-		this.affiliationTypeCode = affiliationTypeCode;
-	}
+    public void setAffiliationTypeCode(String affiliationTypeCode) {
+        this.affiliationTypeCode = affiliationTypeCode;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.EntityAffiliationContract#setCampusCode(java.lang.String)
 	 */
-	public void setCampusCode(String campusCode) {
-		this.campusCode = campusCode;
-	}
+    public void setCampusCode(String campusCode) {
+        this.campusCode = campusCode;
+    }
 
-	public void setEntityAffiliationId(String entityAffiliationId) {
-		this.entityAffiliationId = entityAffiliationId;
-	}
+    public void setEntityAffiliationId(String entityAffiliationId) {
+        this.entityAffiliationId = entityAffiliationId;
+    }
 
-	public PersonDocumentEmploymentInfo getNewEmpInfo() {
-		return this.newEmpInfo;
-	}
+    public PersonDocumentEmploymentInfo getNewEmpInfo() {
+        return this.newEmpInfo;
+    }
 
-	public void setNewEmpInfo(PersonDocumentEmploymentInfo newEmpInfo) {
-		this.newEmpInfo = newEmpInfo;
-	}
+    public void setNewEmpInfo(PersonDocumentEmploymentInfo newEmpInfo) {
+        this.newEmpInfo = newEmpInfo;
+    }
 
-	public List<PersonDocumentEmploymentInfo> getEmpInfos() {
-		return this.empInfos;
-	}
+    public List<PersonDocumentEmploymentInfo> getEmpInfos() {
+        return this.empInfos;
+    }
 
-	public void setEmpInfos(List<PersonDocumentEmploymentInfo> empInfos) {
-		this.empInfos = empInfos;
-	}
+    public void setEmpInfos(List<PersonDocumentEmploymentInfo> empInfos) {
+        this.empInfos = empInfos;
+    }
 
-	public EntityAffiliationTypeBo getAffiliationType() {
-		return this.affiliationType;
-	}
+    public EntityAffiliationTypeBo getAffiliationType() {
+        return this.affiliationType;
+    }
 
-	public boolean isEmploymentAffiliationType() {
-		if(affiliationType == null) {
-			return false;
+    public boolean isEmploymentAffiliationType() {
+        if (affiliationType == null) {
+            return false;
         }
-		return this.affiliationType.isEmploymentAffiliationType();
-	}
-	 
-	public void setAffiliationType(EntityAffiliationTypeBo affiliationType) {
-		this.affiliationType = affiliationType;
-	}
+        return this.affiliationType.isEmploymentAffiliationType();
+    }
 
+    public void setAffiliationType(EntityAffiliationTypeBo affiliationType) {
+        this.affiliationType = affiliationType;
+    }
 }

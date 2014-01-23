@@ -37,19 +37,18 @@
 	</bean>
 
 	<util:list id="jpaPackagesToScan">
-	    <value>org.kuali.rice.kim.impl.common.attribute</value>
-	    <value>org.kuali.rice.kim.impl.membership</value>
-	    <value>org.kuali.rice.kim.impl.common.active</value>
-	    <value>org.kuali.rice.kim.impl.group</value>
+	    <value>org.kuali.rice.kim.impl</value>
+	    <value>org.kuali.rice.kim.document</value>
+	    <value>org.kuali.rice.kim.bo</value>
 	</util:list>
 
-	<util:list id="managedClassNames">
-		<value>org.kuali.rice.krad.bo.PersistableBusinessObjectBase</value>
-	</util:list>
-
+	<util:list id="managedClassNames" />
 	<util:list id="additionalMetadataProviders" />
 	<util:list id="springMetadataFileLocations" />
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
+	<bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoJpa" lazy-init="true">
+	    <property name="dataSource" ref="kimDataSource"/>
+	</bean>
 </beans>

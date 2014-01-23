@@ -15,43 +15,52 @@
  */
 package org.kuali.rice.kim.impl.common.delegate;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kim.api.common.delegate.DelegateMember;
-import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.springframework.util.AutoPopulatingList;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
+import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
+import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
 public class DelegateMemberBo extends AbstractMemberBo implements DelegateMemberContract {
+
+    @PortableSequenceGenerator(name = "KRIM_DLGN_MBR_ID_S")
+    @GeneratedValue(generator = "KRIM_DLGN_MBR_ID_S")
     @Id
     @Column(name = "DLGN_MBR_ID")
     private String delegationMemberId;
+
     @Column(name = "DLGN_ID")
     private String delegationId;
+
     @Column(name = "ROLE_MBR_ID")
     private String roleMemberId;
-    @OneToMany(targetEntity = DelegateMemberAttributeDataBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+
+    @OneToMany(targetEntity = DelegateMemberAttributeDataBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false)
     private List<DelegateMemberAttributeDataBo> attributeDetails = new AutoPopulatingList<DelegateMemberAttributeDataBo>(DelegateMemberAttributeDataBo.class);
+
     @Transient
     private Map<String, String> attributes;
 
@@ -63,15 +72,12 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
      */
     public Map<String, String> getQualifier() {
         Map<String, String> attribs = new HashMap<String, String>();
-
         if (attributeDetails == null) {
             return attribs;
         }
-
         for (DelegateMemberAttributeDataBo attr : attributeDetails) {
             attribs.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         }
-
         return attribs;
     }
 
@@ -79,7 +85,6 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
         if (this.attributeDetails == null) {
             return new AutoPopulatingList<DelegateMemberAttributeDataBo>(DelegateMemberAttributeDataBo.class);
         }
-
         return this.attributeDetails;
     }
 
@@ -89,15 +94,13 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
 
     @Override
     public Map<String, String> getAttributes() {
-        return CollectionUtils.isNotEmpty(attributeDetails) ? KimAttributeDataBo.toAttributes(attributeDetails) :
-                attributes;
+        return CollectionUtils.isNotEmpty(attributeDetails) ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }
 
     public static DelegateMember to(DelegateMemberBo bo) {
         if (bo == null) {
             return null;
         }
-
         return DelegateMember.Builder.create(bo).build();
     }
 
@@ -105,14 +108,10 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
         if (immutable == null) {
             return null;
         }
-
         DelegateMemberBo bo = new DelegateMemberBo();
-
         bo.setDelegationMemberId(immutable.getDelegationMemberId());
-        bo.setActiveFromDateValue(
-                immutable.getActiveFromDate() == null ? null : new Timestamp(immutable.getActiveFromDate().getMillis()));
-        bo.setActiveToDateValue(immutable.getActiveToDate() == null ? null : new Timestamp(
-                immutable.getActiveToDate().getMillis()));
+        bo.setActiveFromDateValue(immutable.getActiveFromDate() == null ? null : new Timestamp(immutable.getActiveFromDate().getMillis()));
+        bo.setActiveToDateValue(immutable.getActiveToDate() == null ? null : new Timestamp(immutable.getActiveToDate().getMillis()));
         bo.setDelegationId(immutable.getDelegationId());
         bo.setMemberId(immutable.getMemberId());
         bo.setRoleMemberId(immutable.getRoleMemberId());
@@ -125,7 +124,6 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
     @Override
     public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
         List<Collection<PersistableBusinessObject>> managedLists = super.buildListOfDeletionAwareLists();
-
         managedLists.add(new ArrayList<PersistableBusinessObject>(getAttributeDetails()));
         return managedLists;
     }
@@ -160,5 +158,4 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-
 }

@@ -123,21 +123,19 @@ public interface UiDocumentService {
     @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME, Role.Cache.NAME}, allEntries = true)
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 
-	public BusinessObject getMember(MemberType memberType, String memberId);
+	public Object getMember(MemberType memberType, String memberId);
 	
 	public String getMemberName(MemberType memberType, String memberId);
 	
 	public String getMemberNamespaceCode(MemberType memberType, String memberId);
 
-	public String getMemberName(MemberType memberType, BusinessObject member);
+	public String getMemberName(MemberType memberType, Object member);
 	
-	public String getMemberNamespaceCode(MemberType memberType, BusinessObject member);
+	public String getMemberNamespaceCode(MemberType memberType, Object member);
 
 	public List<RoleResponsibilityActionBo> getRoleMemberResponsibilityActionImpls(String roleMemberId);
 	
 	public List<DelegateTypeBo> getRoleDelegations(String roleId);
-	
-	public KimDocumentRoleMember getKimDocumentRoleMember(MemberType memberType, String memberId, String roleId);
 	
 	public String getMemberIdByName(MemberType memberType, String memberNamespaceCode, String memberName);
 

@@ -59,8 +59,8 @@
         p:jcdAlias="kimDataSource"
         p:dbPlatform-ref="rice.kim.import.dbPlatform"/>
 
-  <bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoOjb" parent="kimPlatformAwareDao">
+  <!-- <bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoOjb" parent="kimPlatformAwareDao">
     <property name="dataSource" ref="kimDataSource"/>
-  </bean>
+  </bean> -->
 
 </beans>

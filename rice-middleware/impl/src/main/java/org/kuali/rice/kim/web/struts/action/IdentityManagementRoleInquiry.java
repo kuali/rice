@@ -60,7 +60,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         if (role != null) {
         	getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
         } else {
-        	LOG.error("No records found for Role Inquiry.");
+        	LOG.error("No records found for Role Inquiry: " + request.getParameterMap());
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
         }
 	}

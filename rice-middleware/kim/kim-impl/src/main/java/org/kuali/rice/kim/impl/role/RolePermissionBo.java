@@ -15,36 +15,48 @@
  */
 package org.kuali.rice.kim.impl.role;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.role.RolePermission;
 import org.kuali.rice.kim.api.role.RolePermissionContract;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ROLE_PERM_T")
 public class RolePermissionBo extends PersistableBusinessObjectBase implements RolePermissionContract {
+
     private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_ROLE_PERM_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_PERM_ID_S")
     @Id
     @Column(name = "ROLE_PERM_ID")
     private String id;
+
     @Column(name = "ROLE_ID")
     private String roleId;
+
     @Column(name = "PERM_ID")
     private String permissionId;
+
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
-    @OneToOne(targetEntity = PermissionBo.class, cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
+
+    @ManyToOne(targetEntity = PermissionBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
     private PermissionBo permission;
 
     /**
@@ -57,7 +69,6 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
         if (bo == null) {
             return null;
         }
-
         return RolePermission.Builder.create(bo).build();
     }
 
@@ -71,7 +82,6 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
         if (im == null) {
             return null;
         }
-
         RolePermissionBo bo = new RolePermissionBo();
         bo.id = im.getId();
         bo.roleId = im.getRoleId();
@@ -79,7 +89,6 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
         bo.active = im.isActive();
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
@@ -130,6 +139,4 @@ public class RolePermissionBo extends PersistableBusinessObjectBase implements R
     public void setPermission(PermissionBo permission) {
         this.permission = permission;
     }
-
-
 }

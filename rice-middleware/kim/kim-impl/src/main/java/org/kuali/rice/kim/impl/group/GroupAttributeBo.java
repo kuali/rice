@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.kuali.rice.kim.api.common.attribute.KimAttribute;
-import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.kuali.rice.kim.api.common.attribute.KimAttribute;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_GRP_ATTR_DATA_T")
@@ -33,10 +32,10 @@ public class GroupAttributeBo extends KimAttributeDataBo {
 
     private static final long serialVersionUID = 6380313567330578976L;
 
-    @Id
-    @GeneratedValue(generator = "KRIM_GRP_ATTR_DATA_ID_S")
     @PortableSequenceGenerator(name = "KRIM_GRP_ATTR_DATA_ID_S")
-    @Column(name="ATTR_DATA_ID")
+    @GeneratedValue(generator = "KRIM_GRP_ATTR_DATA_ID_S")
+    @Id
+    @Column(name = "ATTR_DATA_ID")
     private String id;
 
     @Column(name = "GRP_ID")
@@ -66,7 +65,6 @@ public class GroupAttributeBo extends KimAttributeDataBo {
         if (bo == null) {
             return null;
         }
-
         return KimAttributeData.Builder.create(bo).build();
     }
 
@@ -74,7 +72,6 @@ public class GroupAttributeBo extends KimAttributeDataBo {
         if (im == null) {
             return null;
         }
-
         GroupAttributeBo bo = new GroupAttributeBo();
         bo.setId(im.getId());
         bo.setAssignedToId(im.getAssignedToId());
@@ -87,5 +84,4 @@ public class GroupAttributeBo extends KimAttributeDataBo {
         bo.setObjectId(im.getObjectId());
         return bo;
     }
-
 }

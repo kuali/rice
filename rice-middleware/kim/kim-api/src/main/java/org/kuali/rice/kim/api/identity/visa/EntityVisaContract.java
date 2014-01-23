@@ -26,7 +26,6 @@ import org.kuali.rice.kim.api.identity.CodedAttributeContract;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
-@Deprecated
 public interface EntityVisaContract extends Versioned, GloballyUnique, Identifiable {
 
 	/**

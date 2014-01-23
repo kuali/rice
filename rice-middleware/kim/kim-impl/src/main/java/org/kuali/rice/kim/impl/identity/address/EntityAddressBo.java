@@ -15,17 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.address;
 
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
-import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
-import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
+import java.sql.Timestamp;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +25,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.joda.time.DateTime;
+import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.identity.address.EntityAddress;
+import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
+import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,23 +43,23 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "KRIM_ENTITY_ADDR_T")
 public class EntityAddressBo extends EntityAddressBase {
+
     private static final long serialVersionUID = 0L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_ADDR_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_ADDR_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_ADDR_ID_S")
+    @Id
     @Column(name = "ENTITY_ADDR_ID")
     private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(name = "ADDR_TYP_CD", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityAddressTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ADDR_TYP_CD", referencedColumnName = "ADDR_TYP_CD", insertable = false, updatable = false)
     private EntityAddressTypeBo addressType;
-
 
     public static EntityAddress to(EntityAddressBo bo) {
         if (bo == null) {
             return null;
         }
-
         return EntityAddress.Builder.create(bo).build();
     }
 
@@ -72,14 +73,12 @@ public class EntityAddressBo extends EntityAddressBase {
         if (immutable == null) {
             return null;
         }
-
         EntityAddressBo bo = new EntityAddressBo();
         bo.setActive(immutable.isActive());
         bo.setEntityTypeCode(immutable.getEntityTypeCode());
         if (immutable.getAddressType() != null) {
             bo.setAddressTypeCode(immutable.getAddressType().getCode());
         }
-
         bo.setAddressType(EntityAddressTypeBo.from(immutable.getAddressType()));
         bo.setDefaultValue(immutable.isDefaultValue());
         bo.setAttentionLine(immutable.getAttentionLineUnmasked());
@@ -94,18 +93,15 @@ public class EntityAddressBo extends EntityAddressBase {
         if (immutable.getModifiedDate() != null) {
             bo.setModifiedDate(new Timestamp(immutable.getModifiedDate().getMillis()));
         }
-
         if (immutable.getValidatedDate() != null) {
             bo.setValidatedDate(new Timestamp(immutable.getValidatedDate().getMillis()));
         }
-
         bo.setValidated(immutable.isValidated());
         bo.setNoteMessage(immutable.getNoteMessage());
         bo.setId(immutable.getId());
         bo.setEntityId(immutable.getEntityId());
         bo.setActive(immutable.isActive());
         bo.setVersionNumber(immutable.getVersionNumber());
-
         return bo;
     }
 
@@ -118,7 +114,6 @@ public class EntityAddressBo extends EntityAddressBase {
         this.addressType = addressType;
     }
 
-
     @Override
     public String getId() {
         return id;
@@ -127,6 +122,4 @@ public class EntityAddressBo extends EntityAddressBase {
     public void setId(String id) {
         this.id = id;
     }
-
-
 }

@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.kim.impl.role;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityContract;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -35,27 +38,33 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "KRIM_ROLE_RSP_T")
 public class RoleResponsibilityBo extends PersistableBusinessObjectBase implements RoleResponsibilityContract {
+
     private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_ROLE_RSP_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_RSP_ID_S")
     @Id
     @Column(name = "ROLE_RSP_ID")
     private String roleResponsibilityId;
+
     @Column(name = "ROLE_ID")
     private String roleId;
+
     @Column(name = "RSP_ID")
     private String responsibilityId;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
-    @Column(name = "ACTV_IND")
-    private boolean active;
-    @ManyToOne(targetEntity = ResponsibilityBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(name = "RSP_ID", insertable = false, updatable = false)
-    private ResponsibilityBo kimResponsibility;
 
+    @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    private boolean active;
+
+    @ManyToOne(targetEntity = ResponsibilityBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID", insertable = false, updatable = false)
+    private ResponsibilityBo kimResponsibility;
 
     public static RoleResponsibility to(RoleResponsibilityBo bo) {
         if (bo == null) {
             return null;
         }
-
         return RoleResponsibility.Builder.create(bo).build();
     }
 
@@ -63,14 +72,12 @@ public class RoleResponsibilityBo extends PersistableBusinessObjectBase implemen
         if (immutable == null) {
             return null;
         }
-
         RoleResponsibilityBo bo = new RoleResponsibilityBo();
         bo.roleResponsibilityId = immutable.getRoleResponsibilityId();
         bo.roleId = immutable.getRoleId();
         bo.responsibilityId = immutable.getResponsibilityId();
         bo.active = immutable.isActive();
         bo.setVersionNumber(immutable.getVersionNumber());
-
         return bo;
     }
 
@@ -121,6 +128,4 @@ public class RoleResponsibilityBo extends PersistableBusinessObjectBase implemen
     public void setKimResponsibility(ResponsibilityBo kimResponsibility) {
         this.kimResponsibility = kimResponsibility;
     }
-
-
 }

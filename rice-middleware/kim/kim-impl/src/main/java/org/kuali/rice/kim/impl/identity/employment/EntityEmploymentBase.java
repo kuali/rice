@@ -15,45 +15,55 @@
  */
 package org.kuali.rice.kim.impl.identity.employment;
 
-import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.converters.EncryptionConverter;
-import org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter;
 
 @MappedSuperclass
-public abstract class EntityEmploymentBase extends PersistableBusinessObjectBase implements EntityEmploymentContract {
+public abstract class EntityEmploymentBase extends DataObjectBase implements EntityEmploymentContract {
     private static final long serialVersionUID = 1L;
+    
     @Column(name = "ENTITY_ID")
     private String entityId;
+    
     @Column(name = "EMP_ID")
     private String employeeId;
+    
     @Column(name = "EMP_REC_ID")
     private String employmentRecordId;
+    
     @Column(name = "ENTITY_AFLTN_ID")
     private String entityAffiliationId;
+    
     @Column(name = "EMP_STAT_CD")
     private String employeeStatusCode;
+    
     @Column(name = "EMP_TYP_CD")
     private String employeeTypeCode;
+    
     @Column(name = "PRMRY_DEPT_CD")
     private String primaryDepartmentCode;
+    
     @Convert(converter = KualiDecimalConverter.class)
     @Column(name = "BASE_SLRY_AMT")
     private KualiDecimal baseSalaryAmount;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    
+    @Convert(converter=BooleanYNConverter.class)
     @Column(name = "PRMRY_IND")
     private boolean primary;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    
+    @Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
-    @Column(name = "TNR_IND")
+    
+    @Transient
     private boolean tenured;
 
     @Override

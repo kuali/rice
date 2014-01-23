@@ -15,16 +15,30 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.kim.impl.identity.IdentityArchiveService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -32,22 +46,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This is the default implementation for the IdentityArchiveService.
@@ -58,31 +56,31 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IdentityArchiveServiceImpl implements IdentityArchiveService, InitializingBean, DisposableBean {
 	private static final Logger LOG = Logger.getLogger( IdentityArchiveServiceImpl.class );
 
-	private BusinessObjectService businessObjectService;
-	private ConfigurationService kualiConfigurationService;
-    private PlatformTransactionManager transactionManager;
+	protected DataObjectService dataObjectService;
+	protected ConfigurationService kualiConfigurationService;
+	protected PlatformTransactionManager transactionManager;
 
-	private static final String EXEC_INTERVAL_SECS = "kim.identityArchiveServiceImpl.executionIntervalSeconds";
-	private static final String MAX_WRITE_QUEUE_SIZE = "kim.identityArchiveServiceImpl.maxWriteQueueSize";
-	private static final int EXECUTION_INTERVAL_SECONDS_DEFAULT = 600; // by default, flush the write queue this often
-	private static final int MAX_WRITE_QUEUE_SIZE_DEFAULT = 300; // cache this many KEDI's before forcing write
+	protected static final String EXEC_INTERVAL_SECS = "kim.identityArchiveServiceImpl.executionIntervalSeconds";
+	protected static final String MAX_WRITE_QUEUE_SIZE = "kim.identityArchiveServiceImpl.maxWriteQueueSize";
+	protected static final int EXECUTION_INTERVAL_SECONDS_DEFAULT = 600; // by default, flush the write queue this often
+	protected static final int MAX_WRITE_QUEUE_SIZE_DEFAULT = 300; // cache this many KEDI's before forcing write
 
-	private final WriteQueue writeQueue = new WriteQueue();
-	private final EntityArchiveWriter writer = new EntityArchiveWriter();
+	protected final WriteQueue writeQueue = new WriteQueue();
+	protected final EntityArchiveWriter writer = new EntityArchiveWriter();
 
 	// all this ceremony just decorates the writer so it logs a message first, and converts the Callable to Runnable
-	private final Runnable maxQueueSizeExceededWriter =
+	protected final Runnable maxQueueSizeExceededWriter =
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "max size exceeded, flushing write queue"));
 
 	// ditto
-	private final Runnable scheduledWriter =
+	protected final Runnable scheduledWriter =
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "scheduled write out, flushing write queue"));
 
 	// ditto
-	private final Runnable shutdownWriter =
+	protected final Runnable shutdownWriter =
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "rice is shutting down, flushing write queue"));
 	
-	private int getExecutionIntervalSeconds() {
+	protected int getExecutionIntervalSeconds() {
 		final String prop = kualiConfigurationService.getPropertyValueAsString(EXEC_INTERVAL_SECS);
 		try {
 			return Integer.valueOf(prop).intValue();
@@ -91,7 +89,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 		}
 	}
 	
-	private int getMaxWriteQueueSize() {
+	protected int getMaxWriteQueueSize() {
 		final String prop = kualiConfigurationService.getPropertyValueAsString(MAX_WRITE_QUEUE_SIZE);
 		try {
 			return Integer.valueOf(prop).intValue();
@@ -106,9 +104,13 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
             throw new IllegalArgumentException("entityId is blank");
         }
 
-        Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId);
-    	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
+    	List<EntityDefaultInfoCacheBo> results = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+    	        QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId).build() ).getResults();
+        EntityDefaultInfoCacheBo cachedValue = null;
+        if ( !results.isEmpty() ) {
+            cachedValue = results.get(0);
+        }
+
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
@@ -118,9 +120,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
             throw new IllegalArgumentException("principalId is blank");
         }
 
-        Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put("principalId", principalId);
-    	EntityDefaultInfoCacheBo cachedValue = businessObjectService.findByPrimaryKey(EntityDefaultInfoCacheBo.class, criteria);
+    	EntityDefaultInfoCacheBo cachedValue = dataObjectService.find(EntityDefaultInfoCacheBo.class, principalId);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
@@ -130,10 +130,9 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
             throw new IllegalArgumentException("principalName is blank");
         }
 
-        Map<String,String> criteria = new HashMap<String, String>(1);
-    	criteria.put("principalName", principalName);
-    	Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
-    	return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
+    	List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+    	        QueryByCriteria.Builder.forAttribute("principalName", principalName).build()).getResults();
+    	return entities.isEmpty() ? null : entities.get(0).convertCacheToEntityDefaultInfo();
     }
     
     @Override
@@ -141,10 +140,9 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
         if (StringUtils.isBlank(employeeId)) {
             throw new IllegalArgumentException("employeeId is blank");
         }
-        Map<String,String> criteria = new HashMap<String, String>(1);
-        criteria.put("employeeId", employeeId);
-        Collection<EntityDefaultInfoCacheBo> entities = businessObjectService.findMatching(EntityDefaultInfoCacheBo.class, criteria);
-        return (entities == null || entities.isEmpty()) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
+        List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+                QueryByCriteria.Builder.forAttribute("employeeId", employeeId).build()).getResults();
+        return entities.isEmpty() ? null : entities.get(0).convertCacheToEntityDefaultInfo();
     }
     
     @Override
@@ -164,11 +162,6 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     public void flushToArchive() {
         writer.call();
     }
-
-
-	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-		this.businessObjectService = businessObjectService;
-	}
 
 	public void setKualiConfigurationService(
 			ConfigurationService kualiConfigurationService) {
@@ -200,7 +193,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	private class EntityArchiveWriter implements Callable {
+	protected class EntityArchiveWriter implements Callable {
 
 		// flag used to prevent multiple processes from being submitted at once
 		AtomicBoolean currentlySubmitted = new AtomicBoolean(false);
@@ -225,7 +218,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 		/**
 		 * Comparator that attempts to impose a total ordering on EntityDefault instances
 		 */
-		private final Comparator<EntityDefault> kediComparator = new Comparator<EntityDefault>() {
+		protected final Comparator<EntityDefault> kediComparator = new Comparator<EntityDefault>() {
 			/**
 			 * compares by entityId value
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
@@ -306,7 +299,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
                         for (EntityDefault entityToInsert : entitiesToInsert) {
                             entityCache.add(new EntityDefaultInfoCacheBo( entityToInsert ));
                         }
-                        businessObjectService.save(entityCache);
+                        dataObjectService.save(entityCache);
 						//for (EntityDefault entityToInsert : entitiesToInsert) {
 						//	businessObjectService.save( new EntityDefaultInfoCacheBo( entityToInsert ) );
 						//}
@@ -329,7 +322,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	private static class WriteQueue {
+	protected static class WriteQueue {
 		AtomicInteger writeQueueSize = new AtomicInteger(0);
 		ConcurrentLinkedQueue<EntityDefault> queue = new ConcurrentLinkedQueue<EntityDefault>();
 
@@ -338,7 +331,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			return writeQueueSize.incrementAndGet();
 		}
 
-		private EntityDefault poll() {
+		protected EntityDefault poll() {
 			EntityDefault result = queue.poll();
 			if (result != null) { writeQueueSize.decrementAndGet(); }
 			return result;
@@ -351,11 +344,11 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	private static class PreLogCallableWrapper<A> implements Callable<A> {
+	protected static class PreLogCallableWrapper<A> implements Callable<A> {
 		
-		private final Callable inner;
-		private final Level level;
-		private final String message;
+	    protected final Callable inner;
+	    protected final Level level;
+	    protected final String message;
 
 		public PreLogCallableWrapper(Callable inner, Level level, String message) {
 			this.inner = inner;
@@ -382,7 +375,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	private static class CallableAdapter implements Runnable {
+	protected static class CallableAdapter implements Runnable {
 
 		private final Callable callable;
 
@@ -399,4 +392,11 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			}
 		}
 	}
+
+    /**
+     * @param dataObjectService the dataObjectService to set
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 }

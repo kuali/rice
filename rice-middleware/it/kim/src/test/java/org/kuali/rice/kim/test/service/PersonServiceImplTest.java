@@ -31,12 +31,14 @@ import org.kuali.rice.kim.test.bo.BOContainingPerson;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.xml.namespace.QName;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +77,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
-        KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
+        KradDataServiceLocator.getDataObjectService().save(externalIdentifier);
 		
 		List<Person> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );

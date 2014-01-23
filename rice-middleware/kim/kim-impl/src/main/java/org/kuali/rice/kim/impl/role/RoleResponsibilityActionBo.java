@@ -15,20 +15,24 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
+import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -38,25 +42,36 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "KRIM_ROLE_RSP_ACTN_T")
 public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase implements RoleResponsibilityActionContract {
+
     private static final long serialVersionUID = 1L;
+
+    @PortableSequenceGenerator(name = "KRIM_ROLE_RSP_ACTN_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_RSP_ACTN_ID_S")
     @Id
     @Column(name = "ROLE_RSP_ACTN_ID")
     private String id;
+
     @Column(name = "ROLE_RSP_ID")
     private String roleResponsibilityId;
+
     @Column(name = "ROLE_MBR_ID")
     private String roleMemberId;
+
     @Column(name = "ACTN_TYP_CD")
     private String actionTypeCode;
+
     @Column(name = "ACTN_PLCY_CD")
     private String actionPolicyCode;
+
     @Column(name = "FRC_ACTN")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @Convert(converter = BooleanYNConverter.class)
     private boolean forceAction;
+
     @Column(name = "PRIORITY_NBR")
     private Integer priorityNumber;
-    @ManyToOne(targetEntity = RoleResponsibilityBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(name = "ROLE_RSP_ID", insertable = false, updatable = false)
+
+    @ManyToOne(targetEntity = RoleResponsibilityBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ROLE_RSP_ID", referencedColumnName = "ROLE_RSP_ID", insertable = false, updatable = false)
     private RoleResponsibilityBo roleResponsibility;
 
     @Override
@@ -68,7 +83,6 @@ public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase im
         if (bo == null) {
             return null;
         }
-
         return RoleResponsibilityAction.Builder.create(bo).build();
     }
 
@@ -76,7 +90,6 @@ public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase im
         if (immutable == null) {
             return null;
         }
-
         RoleResponsibilityActionBo bo = new RoleResponsibilityActionBo();
         bo.id = immutable.getId();
         bo.roleResponsibilityId = immutable.getRoleResponsibilityId();
@@ -94,23 +107,18 @@ public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase im
         if (!StringUtils.equals(roleRspActn.getRoleMemberId(), getRoleMemberId())) {
             return false;
         }
-
         if (!StringUtils.equals(roleRspActn.getRoleResponsibilityId(), getRoleResponsibilityId())) {
             return false;
         }
-
         if (!StringUtils.equals(roleRspActn.getActionTypeCode(), getActionTypeCode())) {
             return false;
         }
-
         if (!StringUtils.equals(roleRspActn.getActionPolicyCode(), getActionPolicyCode())) {
             return false;
         }
-
         if (!ObjectUtils.equals(roleRspActn.getPriorityNumber(), getPriorityNumber())) {
             return false;
         }
-
         return true;
     }
 
@@ -184,6 +192,4 @@ public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase im
     public void setRoleResponsibility(RoleResponsibilityBo roleResponsibility) {
         this.roleResponsibility = roleResponsibility;
     }
-
-
 }

@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.kim.impl.permission;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -23,72 +39,65 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 @Entity
 @Table(name = "KRIM_PERM_T")
 public class PermissionBo extends PersistableBusinessObjectBase implements PermissionContract {
+
     private static final long serialVersionUID = 1L;
 
+    @PortableSequenceGenerator(name = "KRIM_PERM_ID_S")
+    @GeneratedValue(generator = "KRIM_PERM_ID_S")
     @Id
     @Column(name = "PERM_ID")
-    private String id;
+    protected String id;
 
     @Column(name = "NMSPC_CD")
-    private String namespaceCode;
+    protected String namespaceCode;
 
     @Column(name = "NM")
-    private String name;
+    protected String name;
 
-    @Column(name = "DESC_TXT", length = 400)
-    private String description;
+    @Column(name = "DESC_TXT")
+    protected String description;
 
     @Column(name = "PERM_TMPL_ID")
-    private String templateId;
+    protected String templateId;
 
     @Column(name = "ACTV_IND")
-    //@javax.persistence.Convert(converter=org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter.class)
-    private boolean active;
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean active;
 
-    @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
-    private PermissionTemplateBo template = new PermissionTemplateBo();
+    @ManyToOne(targetEntity = PermissionTemplateBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "PERM_TMPL_ID", referencedColumnName = "PERM_TMPL_ID", insertable = false, updatable = false)
+    protected PermissionTemplateBo template = new PermissionTemplateBo();
 
-    @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "id")
-    private List<PermissionAttributeBo> attributeDetails;
+    @OneToMany(targetEntity = PermissionAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
+    protected List<PermissionAttributeBo> attributeDetails;
 
     @Transient
-    private Map<String,String> attributes;
+    protected Map<String, String> attributes;
 
-    @OneToMany(targetEntity = RolePermissionBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "id")
-    private List<RolePermissionBo> rolePermissions = new AutoPopulatingList(RolePermissionBo.class);
+    @OneToMany(mappedBy = "permission")
+    @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
+    protected List<RolePermissionBo> rolePermissions = new AutoPopulatingList<RolePermissionBo>(RolePermissionBo.class);
 
-
-
-    public Map<String,String> getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }
 
-    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
-    public Map<String,String> getDetails() {
+    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion                      
+    public Map<String, String> getDetails() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }
 
@@ -174,7 +183,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         if (bo == null) {
             return null;
         }
-
         return Permission.Builder.create(bo).build();
     }
 
@@ -187,7 +195,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         if (im == null) {
             return null;
         }
-
         PermissionBo bo = new PermissionBo();
         bo.setId(im.getId());
         bo.setNamespaceCode(im.getNamespaceCode());
@@ -199,7 +206,6 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
         bo.setAttributes(im.getAttributes());
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
@@ -226,33 +232,26 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     }
 
     public String getDetailObjectsToDisplay() {
-        final KimType kimType = getTypeInfoService().getKimType( getTemplate().getKimTypeId() );
-
-
+        final KimType kimType = getTypeInfoService().getKimType(getTemplate().getKimTypeId());
         StringBuffer detailObjects = new StringBuffer();
         Iterator<PermissionAttributeBo> permIter = attributeDetails.iterator();
         while (permIter.hasNext()) {
             PermissionAttributeBo bo = permIter.next();
-            detailObjects.append(getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(bo.getKimAttributeId())))
-                    .append(":")
-                    .append(bo.getAttributeValue());
+            detailObjects.append(getKimAttributeLabelFromDD(kimType.getAttributeDefinitionById(bo.getKimAttributeId()))).append(":").append(bo.getAttributeValue());
             if (permIter.hasNext()) {
                 detailObjects.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
             }
         }
-
         return detailObjects.toString();
     }
 
-    private String getKimAttributeLabelFromDD( KimTypeAttribute attribute ){
-        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName() );
+    private String getKimAttributeLabelFromDD(KimTypeAttribute attribute) {
+        return getDataDictionaryService().getAttributeLabel(attribute.getKimAttribute().getComponentName(), attribute.getKimAttribute().getAttributeName());
     }
-
 
     private DataDictionaryService getDataDictionaryService() {
         return KRADServiceLocatorWeb.getDataDictionaryService();
     }
-
 
     private KimTypeInfoService getTypeInfoService() {
         return KimApiServiceLocator.getKimTypeInfoService();

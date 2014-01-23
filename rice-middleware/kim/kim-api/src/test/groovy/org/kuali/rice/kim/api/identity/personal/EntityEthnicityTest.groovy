@@ -17,6 +17,7 @@ package org.kuali.rice.kim.api.identity.personal
 
 import junit.framework.Assert
 import org.junit.Test
+import org.kuali.rice.core.api.util.type.KualiPercent
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
 import org.kuali.rice.kim.api.test.JAXBAssert
@@ -36,7 +37,7 @@ class EntityEthnicityTest {
     private static final Long TYPE_VERSION_NUMBER = Integer.valueOf(1)
     private static final String TYPE_OBJECT_ID = UUID.randomUUID()
     private static final String LOCAL_ETHNICITY = "YOOPER";
-    private static final Double PERCENTAGE = Double.valueOf(33.3);
+    private static final Double PERCENTAGE = new Double(33.3);
 
     private static final Long VERSION_NUMBER = new Integer(1);
 	private static final String OBJECT_ID = UUID.randomUUID();

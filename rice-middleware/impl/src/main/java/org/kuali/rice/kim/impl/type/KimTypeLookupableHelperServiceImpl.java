@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.kim.impl.type;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.xml.ws.WebServiceException;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -33,16 +39,9 @@ import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.remoting.RemoteAccessException;
-
-import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
 /**
@@ -50,8 +49,8 @@ import java.util.Properties;
  *
  */
 public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
-
-	private static final long serialVersionUID = 1L;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimTypeLookupableHelperServiceImpl.class);
+    private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -83,7 +82,6 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		return searchResults;
 	}
 	
-    @SuppressWarnings("unchecked")
 	@Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
     	KimType kimType = KimApiServiceLocator.getKimTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));

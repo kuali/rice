@@ -15,52 +15,46 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleService;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.kim.inquiry.RoleMemberInquirableImpl;
-import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.uif.widget.Inquiry;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
+import org.apache.commons.beanutils.PropertyUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.kim.inquiry.KimInquirableImpl;
+import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.uif.widget.Inquiry;
 
-	protected final String KIM_RESPONSIBILITY_REQUIRED_ATTRIBUTE_ID = "kimResponsibilityRequiredAttributeId";
-	protected final String RESPONSIBILITY_ID = "id";
-	transient private static ResponsibilityService responsibilityService;
-
+@SuppressWarnings({"unchecked", "deprecation"})
+public class ResponsibilityInquirableImpl extends KimInquirableImpl {
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
 
 		if(NAME.equals(propertyName) || NAME_TO_DISPLAY.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
-			primaryKeys.put(RESPONSIBILITY_ID, RESPONSIBILITY_ID);
+			primaryKeys.put(ID, ID);
 			inquiry.buildInquiryLink(dataObject, propertyName, UberResponsibilityBo.class, primaryKeys);
     	} else if(NAMESPACE_CODE.equals(propertyName) || TEMPLATE_NAMESPACE_CODE.equals(propertyName)){
     		Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(propertyName, "code");
 			inquiry.buildInquiryLink(dataObject, propertyName, NamespaceBo.class, primaryKeys);
         } else if(DETAIL_OBJECTS.equals(propertyName)){
-        	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
         } else if(ASSIGNED_TO_ROLES.equals(propertyName)){
-//        	return getAssignedRoleInquiryUrl(dataObject);
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
         }else{
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
@@ -75,15 +69,11 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		 *	- list of roles assigned: role type, role namespace, role name
     	 */
     	if(NAME.equals(attributeName) || NAME_TO_DISPLAY.equals(attributeName)){
-			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add(RESPONSIBILITY_ID);
-			return getInquiryUrlForPrimaryKeys(UberResponsibilityBo.class, businessObject, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(UberResponsibilityBo.class, businessObject, Collections.singletonList(ID), null);
     	} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
-			List<String> primaryKeys = new ArrayList<String>();
-			primaryKeys.add("code");
 			NamespaceBo parameterNamespace = new NamespaceBo();
 			parameterNamespace.setCode((String)DataObjectUtils.getPropertyValue(businessObject, attributeName));
-			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
+			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, Collections.singletonList("code"), null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
         } else if(ASSIGNED_TO_ROLES.equals(attributeName)){
@@ -93,7 +83,6 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }
 
-    @SuppressWarnings("unchecked")
 	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
     	List<ResponsibilityAttributeBo> responsibilityAttributeData =
     		(List<ResponsibilityAttributeBo>) DataObjectUtils.getPropertyValue(businessObject, attributeName);
@@ -108,13 +97,12 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	return new HtmlData.MultipleAnchorHtmlData(htmlData);
     }
 
-    @SuppressWarnings("unchecked")
 	protected HtmlData getAssignedRoleInquiryUrl(BusinessObject businessObject){
     	UberResponsibilityBo responsibility = (UberResponsibilityBo)businessObject;
     	List<RoleBo> assignedToRoles = responsibility.getAssignedToRoles();
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
-			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
+			List<String> primaryKeys = Collections.singletonList(ID);
 			RoleService roleService = KimApiServiceLocator.getRoleService();
 			for(RoleBo roleImpl: assignedToRoles){
 				Role role = roleService.getRole(roleImpl.getId());
@@ -129,41 +117,32 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     }
 
     @Override
-	public Object retrieveDataObject(Map fieldValues){
+	public Object retrieveDataObject(@SuppressWarnings("rawtypes") Map fieldValues){
     	return getBusinessObject(fieldValues);
     }
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public BusinessObject getBusinessObject(Map fieldValues) {
-		ResponsibilityBo responsibilityImpl
-                = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, Collections.singletonMap(
-                "id", fieldValues.get("id").toString()));
+	public BusinessObject getBusinessObject(@SuppressWarnings("rawtypes") Map fieldValues) {
+        if ( fieldValues.get(ID) == null ) {
+            return null;
+        }       
+		ResponsibilityBo responsibilityImpl = getDataObjectService().find(ResponsibilityBo.class, fieldValues.get(ID).toString());
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
 
-	public ResponsibilityService getResponsibilityService() {
-		if (responsibilityService == null ) {
-			responsibilityService = KimApiServiceLocator.getResponsibilityService();
-		}
-		return responsibilityService;
-	}
-
-	@SuppressWarnings("unchecked")
-	private ResponsibilityBo getResponsibilitiesSearchResultsCopy(ResponsibilityBo responsibilitySearchResult){
+	private UberResponsibilityBo getResponsibilitiesSearchResultsCopy(ResponsibilityBo responsibilitySearchResult){
 		UberResponsibilityBo responsibilitySearchResultCopy = new UberResponsibilityBo();
 		try{
 			PropertyUtils.copyProperties(responsibilitySearchResultCopy, responsibilitySearchResult);
 		} catch(Exception ex){
             throw new RuntimeException(ex);
 		}
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("responsibilityId", responsibilitySearchResultCopy.getId());
-		List<RoleResponsibilityBo> roleResponsibilitys =
-			(List<RoleResponsibilityBo>) KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
+		List<RoleResponsibilityBo> roleResponsibilitys = 
+		        getDataObjectService().findMatching(RoleResponsibilityBo.class, 
+		                QueryByCriteria.Builder.forAttribute("responsibilityId", responsibilitySearchResultCopy.getId()).build()).getResults();
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RoleResponsibilityBo roleResponsibilityImpl: roleResponsibilitys){
-			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));
+			assignedToRoles.add( getDataObjectService().find(RoleBo.class, roleResponsibilityImpl.getRoleId()));
 		}
 		responsibilitySearchResultCopy.setAssignedToRoles(assignedToRoles);
 		return responsibilitySearchResultCopy;

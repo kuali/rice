@@ -15,27 +15,28 @@
  */
 package org.kuali.rice.kim.impl.group;
 
-import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.api.group.GroupMemberContract;
-import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupMemberContract;
+import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import javax.persistence.Cacheable;
 
 @Entity
+@Cacheable(false)
 @Table(name = "KRIM_GRP_MBR_T")
 public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContract {
 
     private static final long serialVersionUID = 6773749266062306217L;
 
-    @Id
-    @GeneratedValue(generator = "KRIM_GRP_MBR_ID_S")
     @PortableSequenceGenerator(name = "KRIM_GRP_MBR_ID_S")
+    @GeneratedValue(generator = "KRIM_GRP_MBR_ID_S")
+    @Id
     @Column(name = "GRP_MBR_ID")
     private String id;
 
@@ -46,7 +47,6 @@ public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContra
         if (bo == null) {
             return null;
         }
-
         return GroupMember.Builder.create(bo).build();
     }
 
@@ -54,16 +54,13 @@ public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContra
         if (im == null) {
             return null;
         }
-
         GroupMemberBo bo = new GroupMemberBo();
         bo.setId(im.getId());
         bo.setGroupId(im.getGroupId());
         bo.setMemberId(im.getMemberId());
         bo.setTypeCode(im.getType().getCode());
-        bo.setActiveFromDateValue(im.getActiveFromDate() == null? null : new Timestamp(
-                im.getActiveFromDate().getMillis()));
-        bo.setActiveToDateValue(im.getActiveToDate() == null ? null : new Timestamp(
-                im.getActiveToDate().getMillis()));
+        bo.setActiveFromDateValue(im.getActiveFromDate() == null ? null : new Timestamp(im.getActiveFromDate().getMillis()));
+        bo.setActiveToDateValue(im.getActiveToDate() == null ? null : new Timestamp(im.getActiveToDate().getMillis()));
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
         return bo;
@@ -86,7 +83,4 @@ public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContra
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
-
-
-
 }

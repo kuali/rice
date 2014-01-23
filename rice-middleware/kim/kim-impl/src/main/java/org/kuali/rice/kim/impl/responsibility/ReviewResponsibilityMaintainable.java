@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
@@ -33,6 +34,7 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.HashMap;
@@ -131,27 +133,27 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	public Class<? extends BusinessObject> getBoClass() {
 		return ReviewResponsibilityBo.class;
 	}
+	
+	@Override
+	public Class<?> getDataObjectClass() {
+        return ReviewResponsibilityBo.class;
+	}
 
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
         if ( businessObject == null ) {
             throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable.prepareBusinessObject passed a null object." );
         }
-        if ( businessObject instanceof ResponsibilityBo ) {
-            ResponsibilityBo resp = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ResponsibilityBo.class, ((ResponsibilityBo)businessObject).getId() );
+        if ( businessObject instanceof ResponsibilityContract ) {
+            ResponsibilityBo resp = KradDataServiceLocator.getDataObjectService().find(ResponsibilityBo.class, ((ResponsibilityContract)businessObject).getId() );
             businessObject = new ReviewResponsibilityBo( resp );
-            setBusinessObject( (PersistableBusinessObject)businessObject );
+            setDataObject(businessObject);
         } else {
             throw new RuntimeException( "Configuration ERROR: ReviewResponsibilityBoMaintainable passed an unsupported object type: " + businessObject.getClass() );
         }
         super.prepareBusinessObject(businessObject);
 	}
 
-    /**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
-	 */
 	@Override
 	public boolean isExternalBusinessObject() {
 		return true;

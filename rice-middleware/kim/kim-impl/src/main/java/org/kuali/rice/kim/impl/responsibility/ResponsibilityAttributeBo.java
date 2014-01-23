@@ -15,17 +15,19 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -34,13 +36,15 @@ import javax.persistence.Table;
 @Table(name = "KRIM_RSP_ATTR_DATA_T")
 public class ResponsibilityAttributeBo extends KimAttributeDataBo {
 
-    @Id
+    @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
     @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")
-    @Column(name="ATTR_DATA_ID")
+    @Id
+    @Column(name = "ATTR_DATA_ID")
     private String id;
 
-    @Column(name = "RSP_ID")
-    private String assignedToId;
+    @ManyToOne
+    @JoinColumn(name = "RSP_ID", nullable = false)
+    private ResponsibilityBo responsibilityBo;
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -52,7 +56,6 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
         if (bo == null) {
             return null;
         }
-
         return KimAttributeData.Builder.create(bo).build();
     }
 
@@ -66,10 +69,8 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
         if (im == null) {
             return null;
         }
-
         ResponsibilityAttributeBo bo = new ResponsibilityAttributeBo();
         bo.setId(im.getId());
-        bo.assignedToId = im.getAssignedToId();
         bo.setKimAttribute(KimAttributeBo.from(im.getKimAttribute()));
         final KimAttribute attribute = im.getKimAttribute();
         bo.setKimAttributeId((attribute == null ? null : attribute.getId()));
@@ -78,7 +79,6 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
         bo.setKimTypeId((type == null ? null : type.getId()));
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
@@ -93,13 +93,20 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
     }
 
     @Override
-    public String getAssignedToId() {
-        return assignedToId;
+    public void setAssignedToId(String assignedToId) {
     }
 
     @Override
-    public void setAssignedToId(String assignedToId) {
-        this.assignedToId = assignedToId;
+    public String getAssignedToId() {
+        return getResponsibilityBo().getId();
     }
 
+
+    public ResponsibilityBo getResponsibilityBo() {
+        return responsibilityBo;
+    }
+
+    public void setResponsibilityBo(ResponsibilityBo responsibilityBo) {
+        this.responsibilityBo = responsibilityBo;
+    }
 }

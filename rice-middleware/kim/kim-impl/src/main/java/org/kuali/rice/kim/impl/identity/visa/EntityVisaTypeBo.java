@@ -25,11 +25,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@AttributeOverrides({
-        @AttributeOverride(name="code",column=@Column(name="RES_TYP_CD"))
-})
-@Table(name = "")
+//@Entity
+//@AttributeOverrides({
+//        @AttributeOverride(name="code",column=@Column(name="VISA_TYP_CD"))
+//})
+//@Table(name = "KRIM_VISA_TYP_T")
 public class EntityVisaTypeBo extends CodedAttributeBo {
     private static final long serialVersionUID = -7999904356580992741L;
 

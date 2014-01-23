@@ -61,6 +61,7 @@ import org.springframework.util.AutoPopulatingList;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -765,22 +766,32 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                 // get a map of the pk field names and values
                 Map<String, ?> newPkFields = getLegacyDataAdapter().getPrimaryKeyFieldValuesDOMDS(newDataObject);
 
-                // TODO: Good suggestion from Aaron, dont bother checking the DB, if all of the
-                // objects PK fields dont have values. If any are null or empty, then
-                // we're done. The current way wont fail, but it will make a wasteful
-                // DB call that may not be necessary, and we want to minimize these.
+                //Remove any parts of the pk that has a null value as JPA will throw an error
+                Map<String, Object> filteredPkFields = new HashMap<String, Object>();
+                filteredPkFields.putAll(newPkFields);
 
-                // attempt to do a lookup, see if this object already exists by these Primary Keys
-                Object testBo = getLegacyDataAdapter().findByPrimaryKey(dataObjectClass, newPkFields);
-
-                // if the retrieve was successful, then this object already exists, and we need
-                // to complain
-                if (testBo != null) {
-                    putDocumentError(KRADConstants.DOCUMENT_ERRORS,
-                            RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW,
-                            getHumanReadablePrimaryKeyFieldNames(dataObjectClass));
-                    success &= false;
+                Iterator it = newPkFields.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry pairs = (Map.Entry)it.next();
+                    if(pairs.getValue() == null){
+                       filteredPkFields.remove(pairs.getKey());
+                    }
                 }
+
+                if(!filteredPkFields.isEmpty()){
+                    // attempt to do a lookup, see if this object already exists by these Primary Keys
+                    Object testBo = getLegacyDataAdapter().findByPrimaryKey(dataObjectClass, filteredPkFields);
+
+                    // if the retrieve was successful, then this object already exists, and we need
+                    // to complain
+                    if (testBo != null) {
+                        putDocumentError(KRADConstants.DOCUMENT_ERRORS,
+                                RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_KEYS_ALREADY_EXIST_ON_CREATE_NEW,
+                                getHumanReadablePrimaryKeyFieldNames(dataObjectClass));
+                        success &= false;
+                    }
+                }
+
             }
         }
 

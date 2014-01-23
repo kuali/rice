@@ -15,6 +15,22 @@
  */
 package org.kuali.rice.kim.impl.role;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebParam;
+import javax.sql.DataSource;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -24,6 +40,7 @@ import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
@@ -62,21 +79,6 @@ import org.springframework.cache.support.NoOpCacheManager;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.jws.WebParam;
-import javax.sql.DataSource;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-
 public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
 
@@ -105,7 +107,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalStateException("the role to create already exists: " + role);
         }
         RoleBo bo = RoleBo.from(role);
-        return RoleBo.to(getBusinessObjectService().save(bo));
+        return RoleBo.to(getDataObjectService().save(bo));
     }
 
     @Override
@@ -119,7 +121,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         RoleBo bo = RoleBo.from(role);
 
-        RoleBo updatedRole = getBusinessObjectService().save(bo);
+        RoleBo updatedRole = getDataObjectService().save(bo);
         if (originalRole.isActive()
                 && !updatedRole.isActive()) {
             KimImplServiceLocator.getRoleInternalService().roleInactivated(updatedRole.getId());
@@ -158,7 +160,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class, queryByCriteria, lc.build());
 
         RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -190,7 +192,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(memberType, "memberType");
         incomingParamCheck(memberId, "memberId");
 
-        List<RoleMemberBo> parentRoleMembers = getRoleDao().getRoleMembershipsForMemberId(memberType, memberId,
+        List<RoleMemberBo> parentRoleMembers = getRoleMembershipsForMemberId(memberType, memberId,
                 Collections.<String, String>emptyMap());
 
         List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
@@ -205,14 +207,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) throws RiceIllegalStateException  {
         incomingParamCheck(roleMemberId, "roleMemberId");
 
-        Map<String, String> criteria = new HashMap<String, String>(1);
-        criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-
-        List<RoleResponsibilityActionBo> responsibilityActionBoList = (List<RoleResponsibilityActionBo>)
-                getBusinessObjectService().findMatching(RoleResponsibilityActionBo.class, criteria);
+        QueryResults<RoleResponsibilityActionBo> responsibilityActionBoList = getDataObjectService().findMatching(RoleResponsibilityActionBo.class, QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId).build());
 
         List<RoleResponsibilityAction> roleResponsibilityActionsList = new ArrayList<RoleResponsibilityAction>();
-        for (RoleResponsibilityActionBo roleResponsibilityActionBo : responsibilityActionBoList) {
+        for (RoleResponsibilityActionBo roleResponsibilityActionBo : responsibilityActionBoList.getResults()) {
             RoleResponsibilityAction roleResponsibility = RoleResponsibilityActionBo.to(roleResponsibilityActionBo);
             roleResponsibilityActionsList.add(roleResponsibility);
         }
@@ -227,7 +225,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         LookupCustomizer.Builder<DelegateMemberBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<DelegateMemberBo> results = getCriteriaLookupService().lookup(DelegateMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<DelegateMemberBo> results = getDataObjectService().findMatching(DelegateMemberBo.class, queryByCriteria, lc.build());
 
         DelegateMemberQueryResults.Builder builder = DelegateMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -630,7 +628,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleQueryResults findRoles(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<RoleBoLite> results = getCriteriaLookupService().lookup(RoleBoLite.class, queryByCriteria);
+        QueryResults<RoleBoLite> results = getDataObjectService().findMatching(RoleBoLite.class, queryByCriteria);
 
         RoleQueryResults.Builder builder = RoleQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -674,7 +672,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<RoleMemberBo> results = getCriteriaLookupService().lookup(RoleMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class, queryByCriteria, lc.build());
 
         RoleMembershipQueryResults.Builder builder = RoleMembershipQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -734,10 +732,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public List<RoleResponsibility> getRoleResponsibilities(String roleId) throws RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
 
-        Map<String, String> criteria = new HashMap<String, String>(1);
-        criteria.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId);
-        List<RoleResponsibilityBo> roleResponsibilityBos = (List<RoleResponsibilityBo>)
-                getBusinessObjectService().findMatching(RoleResponsibilityBo.class, criteria);
+        List<RoleResponsibilityBo> roleResponsibilityBos =
+                getDataObjectService().findMatching(RoleResponsibilityBo.class, QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId).build()).getResults();
         List<RoleResponsibility> roleResponsibilities = new ArrayList<RoleResponsibility>();
 
         for (RoleResponsibilityBo roleResponsibilityImpl : roleResponsibilityBos) {
@@ -1230,18 +1226,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             for (Role role : roles) {
                 // if we didn't do an exact match, we need to do a manual match
                 if (!rolesCheckedForExactMatch.contains(role.getId())) {
-                    List<RoleMemberBo> matchingPrincipalRoleMembers = getRoleMembersForPrincipalId(role.getId(), principalId);
+                    List<RoleMemberBo> matchingPrincipalRoleMembers = getRoleMembersForPrincipalId(Collections.singletonList(role.getId()), principalId);
                     List<RoleMemberBo> matchingGroupRoleMembers = getRoleMembersForGroupIds(role.getId(), context.getPrincipalGroupIds());
                     List<RoleMembership> roleMemberships = convertToRoleMemberships(matchingPrincipalRoleMembers, matchingGroupRoleMembers);
-                    for (RoleMembership roleMembership : roleMemberships) {
-                        try {
-                            RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
-                            if (!roleTypeService.getMatchingRoleMemberships(qualification, roleMemberships).isEmpty()) {
-                                return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
-                            }
-                        } catch (Exception ex) {
-                            LOG.warn("Unable to find role type service with id: " + role.getKimTypeId());
+                    try {
+                        RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
+                        if (!roleTypeService.getMatchingRoleMemberships(qualification, roleMemberships).isEmpty()) {
+                            return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
                         }
+                    } catch (Exception ex) {
+                        LOG.warn("Unable to find role type service with id: " + role.getKimTypeId());
                     }
                 }
             }
@@ -1622,8 +1616,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return null;
         }
 
-        return getBusinessObjectService().findByPrimaryKey(DelegateTypeBo.class,
-                Collections.singletonMap(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId));
+        return getDataObjectService().find(DelegateTypeBo.class,delegationId);
     }
 
     protected DelegationTypeService getDelegationTypeService(String delegationId) {
@@ -1683,13 +1676,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             return null;
         }
 
-        Map<String, String> searchCriteria = new HashMap<String, String>();
+        Map<String, String> searchCriteria = new HashMap<String, String>(2);
         searchCriteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
         searchCriteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
-        List<DelegateMemberBo> memberList =
-                (List<DelegateMemberBo>) getBusinessObjectService().findMatching(DelegateMemberBo.class, searchCriteria);
-        if (memberList != null && !memberList.isEmpty()) {
-            return memberList.get(0);
+        QueryResults<DelegateMemberBo> memberList = getDataObjectService().findMatching(DelegateMemberBo.class, QueryByCriteria.Builder.andAttributes(searchCriteria).build());
+        if (!memberList.getResults().isEmpty()) {
+            return memberList.getResults().get(0);
         }
         return null;
     }
@@ -2067,7 +2059,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
-        return RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+        return RoleResponsibilityActionBo.to(getDataObjectService().save(bo));
     }
 
     /**
@@ -2091,7 +2083,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         RoleResponsibilityActionBo bo = RoleResponsibilityActionBo.from(roleResponsibilityAction);
-        roleResponsibilityAction = RoleResponsibilityActionBo.to(getBusinessObjectService().save(bo));
+        roleResponsibilityAction = RoleResponsibilityActionBo.to(getDataObjectService().save(bo));
 
         // update action requests
         updateActionRequestsForRoleResponsibilityActionChange(bo);
@@ -2109,7 +2101,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalStateException("the roleResponsibilityAction to delete does not exist: " + roleResponsibilityActionId);
         }
 
-        getBusinessObjectService().delete(bo);
+        getDataObjectService().delete(bo);
 
         // update action requests
         updateActionRequestsForRoleResponsibilityActionChange(bo);
@@ -2125,48 +2117,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         DelegateTypeBo bo = DelegateTypeBo.from(delegateType);
-        return DelegateTypeBo.to(getBusinessObjectService().save(bo));
-        // look up the role
-        /*RoleBo role = getRoleBo(delegationType.getRoleId());
-    	DelegateTypeBo delegation = getDelegationOfType(role.getId(), delegationType.getDelegationTypeCode());
-    	// create the new role member object
-    	DelegateMemberBo newDelegationMember = new DelegateMemberBo();
-
-    	DelegateMemberBo origDelegationMember;
-    	if(StringUtils.isNotEmpty(delegationMemberId)){
-    		origDelegationMember = getDelegateMemberBo(delegationMemberId);
-    	} else{
-    		List<DelegateMemberBo> origDelegationMembers =
-                    this.getDelegationMemberBoListByMemberAndDelegationId(memberId, delegation.getDelegationId());
-	    	origDelegationMember =
-	    		(origDelegationMembers!=null && !origDelegationMembers.isEmpty()) ? origDelegationMembers.get(0) : null;
-    	}
-    	if(origDelegationMember!=null){
-    		newDelegationMember.setDelegationMemberId(origDelegationMember.getDelegationMemberId());
-    		newDelegationMember.setVersionNumber(origDelegationMember.getVersionNumber());
-    	}
-    	newDelegationMember.setMemberId(memberId);
-    	newDelegationMember.setDelegationId(delegation.getDelegationId());
-    	newDelegationMember.setRoleMemberId(roleMemberId);
-    	newDelegationMember.setTypeCode(memberTypeCode);
-		if (activeFromDate != null) {
-			newDelegationMember.setActiveFromDateValue(new java.sql.Timestamp(activeFromDate.getMillis()));
-		}
-		if (activeToDate != null) {
-			newDelegationMember.setActiveToDateValue(new java.sql.Timestamp(activeToDate.getMillis()));
-		}
-
-    	// build role member attribute objects from the given Map<String, String>
-    	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
-
-    	List<DelegateMemberBo> delegationMembers = new ArrayList<DelegateMemberBo>();
-    	delegationMembers.add(newDelegationMember);
-    	delegation.setMembers(delegationMembers);
-
-    	getBusinessObjectService().save(delegation);
-    	for(DelegateMemberBo delegationMember: delegation.getMembers()){
-    		deleteNullDelegationMemberAttributeData(delegationMember.getAttributes());
-    	}*/
+        return DelegateTypeBo.to(getDataObjectService().save(bo));
     }
 
     @Override
@@ -2179,7 +2130,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         DelegateTypeBo bo = DelegateTypeBo.from(delegateType);
-        return DelegateTypeBo.to(getBusinessObjectService().save(bo));
+        return DelegateTypeBo.to(getDataObjectService().save(bo));
     }
 
 
@@ -2194,7 +2145,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     private List<RoleMemberBo> getRoleMembersByDefaultStrategy(String roleId, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
-        List<RoleMemberBo> roleMem= getRoleDao().getRoleMembershipsForMemberId(memberTypeCode,memberId,qualifier);
+        List<RoleMemberBo> roleMem = getRoleMembershipsForMemberId(memberTypeCode,memberId,qualifier);
         for ( RoleMemberBo rm : roleMem ) {
             if ( rm.getRoleId().equals(roleId) ) {
                 // if found, remove
@@ -2298,7 +2249,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         newRolePermission.setPermissionId(permissionId);
         newRolePermission.setActive(true);
 
-        getBusinessObjectService().save(newRolePermission);
+        getDataObjectService().save(newRolePermission);
     }
 
     @Override
@@ -2310,14 +2261,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         params.put("roleId", roleId);
         params.put("permissionId", permissionId);
         params.put("active", Boolean.TRUE);
-        Collection<RolePermissionBo> rolePermissionBos = getBusinessObjectService().findMatching(RolePermissionBo.class, params);
+        QueryResults<RolePermissionBo> rolePermissionBos = getDataObjectService().findMatching(RolePermissionBo.class, QueryByCriteria.Builder.andAttributes(params).build());
         List<RolePermissionBo> rolePermsToSave = new ArrayList<RolePermissionBo>();
-        for (RolePermissionBo rolePerm : rolePermissionBos) {
+        for (RolePermissionBo rolePerm : rolePermissionBos.getResults()) {
             rolePerm.setActive(false);
             rolePermsToSave.add(rolePerm);
         }
 
-        getBusinessObjectService().save(rolePermsToSave);
+        getDataObjectService().save(rolePermsToSave);
     }
 
     protected void addMemberAttributeData(RoleMemberBo roleMember, Map<String, String> qualifier, String kimTypeId) {
@@ -2334,10 +2285,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, roleMemberAttrBo.getKimAttributeId());
             //criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMember.getId());
             criteria.put("assignedToId", roleMember.getId());
-            List<RoleMemberAttributeDataBo> origRoleMemberAttributes =
-                    (List<RoleMemberAttributeDataBo>) getBusinessObjectService().findMatching(RoleMemberAttributeDataBo.class, criteria);
+            QueryResults<RoleMemberAttributeDataBo> origRoleMemberAttributes =
+                    getDataObjectService().findMatching(RoleMemberAttributeDataBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
             RoleMemberAttributeDataBo origRoleMemberAttribute =
-                    (origRoleMemberAttributes != null && !origRoleMemberAttributes.isEmpty()) ? origRoleMemberAttributes.get(0) : null;
+                    (!origRoleMemberAttributes.getResults().isEmpty()) ? origRoleMemberAttributes.getResults().get(0) : null;
             if (origRoleMemberAttribute != null) {
                 roleMemberAttrBo.setId(origRoleMemberAttribute.getId());
                 roleMemberAttrBo.setVersionNumber(origRoleMemberAttribute.getVersionNumber());
@@ -2359,10 +2310,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             Map<String, String> criteria = new HashMap<String, String>();
             criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, delegateMemberAttrBo.getKimAttributeId());
             criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());
-            List<DelegateMemberAttributeDataBo> origDelegationMemberAttributes =
-                    (List<DelegateMemberAttributeDataBo>)getBusinessObjectService().findMatching(DelegateMemberAttributeDataBo.class, criteria);
+            QueryResults<DelegateMemberAttributeDataBo> origDelegationMemberAttributes =
+                    getDataObjectService().findMatching(DelegateMemberAttributeDataBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
             DelegateMemberAttributeDataBo origDelegationMemberAttribute =
-                    (origDelegationMemberAttributes!=null && !origDelegationMemberAttributes.isEmpty()) ? origDelegationMemberAttributes.get(0) : null;
+                    (!origDelegationMemberAttributes.getResults().isEmpty()) ? origDelegationMemberAttributes.getResults().get(0) : null;
             if(origDelegationMemberAttribute!=null){
                 delegateMemberAttrBo.setId(origDelegationMemberAttribute.getId());
                 delegateMemberAttrBo.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
@@ -2385,7 +2336,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 attributesToDelete.add(attribute);
             }
         }
-        getBusinessObjectService().delete(attributesToDelete);
+        getDataObjectService().delete(attributesToDelete);
     }
 
     private void deleteNullDelegationMemberAttributeData(List<DelegateMemberAttributeDataBo> attributes) {
@@ -2396,7 +2347,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 attributesToDelete.add(attribute);
             }
         }
-        getBusinessObjectService().delete(attributesToDelete);
+        getDataObjectService().delete(attributesToDelete);
     }
 
     protected void logPrincipalHasRoleCheck(String principalId, List<String> roleIds, Map<String, String> roleQualifiers ) {

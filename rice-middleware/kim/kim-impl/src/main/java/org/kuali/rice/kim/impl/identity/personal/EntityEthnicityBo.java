@@ -15,40 +15,68 @@
  */
 package org.kuali.rice.kim.impl.identity.personal;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.converters.KualiPercentConverter;
 import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "KRIM_ENTITY_ETHNIC_T")
 public class EntityEthnicityBo extends PersistableBusinessObjectBase implements EntityEthnicityContract {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_ETHNIC_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_ETHNIC_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_ETHNIC_ID_S")
+    @Id
     @Column(name = "ID")
     private String id;
+
     @Column(name = "ENTITY_ID")
     private String entityId;
+
     @Column(name = "ETHNCTY_CD")
     private String ethnicityCode;
+
     @Column(name = "SUB_ETHNCTY_CD")
     private String subEthnicityCode;
+
+    //@javax.persistence.Convert(converter=BooleanYNConverter.class)
+    //@Column(name = "HSPNC_LTNO_IND" )
+    @Transient
     private boolean hispanicOrLatino;
+
+    //@Column(name="RACE_ETH_CD", length=40)
+    @Transient
     private String raceEthnicityTypeCode;
+
+    //@ManyToOne(fetch = FetchType.EAGER, cascade = {})
+    //@JoinColumn(name = "RACE_ETH_CD", insertable = false, updatable = false)
+
+    @Transient
     private EntityEthnicityRaceTypeBo raceEthnicityCode;
+
+    //@Column(name="LOCAL_RACE_ETH_CD", length=40)
+    @Transient
     private String localRaceEthnicityCode;
+
+    //@Column(name = "PRCNT")
+    @Transient
     private Double percentage;
 
     @Transient
@@ -58,7 +86,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (bo == null) {
             return null;
         }
-
         return EntityEthnicity.Builder.create(bo).build();
     }
 
@@ -72,18 +99,15 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (immutable == null) {
             return null;
         }
-
         EntityEthnicityBo bo = new EntityEthnicityBo();
         bo.entityId = immutable.getEntityId();
         bo.id = immutable.getId();
         bo.ethnicityCode = immutable.getEthnicityCodeUnmasked();
         bo.subEthnicityCode = immutable.getSubEthnicityCodeUnmasked();
-
-        //convert list of raceEthnicity types
+        //convert list of raceEthnicity types                      
         if (immutable.getRaceEthnicityCodeUnmasked() != null) {
             bo.raceEthnicityCode = EntityEthnicityRaceTypeBo.from(immutable.getRaceEthnicityCodeUnmasked());
         }
-
         bo.hispanicOrLatino = immutable.isHispanicOrLatino();
         bo.localRaceEthnicityCode = immutable.getLocalRaceEthnicityCodeUnmasked();
         bo.setVersionNumber(immutable.getVersionNumber());
@@ -95,8 +119,7 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
     @Override
     public boolean isSuppressPersonal() {
         try {
-            EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(
-                    getEntityId());
+            EntityPrivacyPreferences privacy = KimApiServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
             if (privacy != null) {
                 this.suppressPersonal = privacy.isSuppressPersonal();
             } else {
@@ -107,7 +130,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         } catch (ClassCastException c) {
             return false;
         }
-
         return suppressPersonal;
     }
 
@@ -116,7 +138,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
-
         return this.ethnicityCode;
     }
 
@@ -125,7 +146,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
-
         return this.subEthnicityCode;
     }
 
@@ -144,7 +164,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (isSuppressPersonal()) {
             return null;
         }
-
         return this.raceEthnicityCode;
     }
 
@@ -158,7 +177,6 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         if (isSuppressPersonal()) {
             return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
         }
-
         return this.localRaceEthnicityCode;
     }
 
@@ -246,5 +264,4 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
     public void setSuppressPersonal(boolean suppressPersonal) {
         this.suppressPersonal = suppressPersonal;
     }
-
 }

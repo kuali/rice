@@ -127,8 +127,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 searchValue = formProp.getValue();
             }
 
-            if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
-                Class<?> propertyType = getPropertyType(example, propertyName);
+            Object instanObject = instantiateLookupDataObject((Class<?>)example);
+            if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(instanObject, propertyName)) {
+                Class<?> propertyType = getPropertyType(instanObject, propertyName);
                 if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ) {
                     addEqualNumeric(criteria, propertyName, propertyType, searchValue);
                 } else if (TypeUtils.isTemporalClass(propertyType)) {
@@ -177,7 +178,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
         // get property type which is used to determine type of criteria
         Class<?> propertyType = getPropertyType(example, propertyName);
         if (propertyType == null) {
-            return false;
+        	// Instead of skipping the property if we can't determine a type, assume it's a String
+        	// so that the criteria does not get dropped
+            propertyType = String.class;
         }
 
         // build criteria

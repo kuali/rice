@@ -221,7 +221,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 			if ( permissions == null ) {
                 Predicate p = and(
                         equal("attributeName", "documentTypeName"),
-                        equal("active", "Y"),
+                        equal("active", Boolean.TRUE),
                         equal("detailCriteria",
 						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()));
 				permissions = KimApiServiceLocator.getPermissionService().findPermissions( QueryByCriteria.Builder.fromPredicates(p)).getResults();
@@ -340,7 +340,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
                 Predicate p = and(
                     equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
                     equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-                    equal("active", "Y"),
+                    equal("active", Boolean.TRUE),
                     equal("attributes[documentTypeName]", getDocumentType().getName())
                     // KULRICE-8538 -- Check the route node by looping through the results below.  If it is added
                     // into the predicate, no rows are ever returned.

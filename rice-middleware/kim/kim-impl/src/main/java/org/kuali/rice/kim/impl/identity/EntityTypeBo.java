@@ -15,28 +15,29 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
-@Table(name = "KRIM_ADDR_TYP_T")
+@Table(name = "KRIM_ENT_TYP_T")
 public class EntityTypeBo extends PersistableBusinessObjectBase implements EntityTypeEbo {
+
     @Id
-    @Column(name = "ADDR_TYP_CD")
+    @Column(name = "ENT_TYP_CD")
     private String code;
 
     @Column(name = "NM")
     private String name;
 
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     @Column(name = "DISPLAY_SORT_CD")
@@ -52,7 +53,6 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         if (bo == null) {
             return null;
         }
-
         return CodedAttribute.Builder.create(bo).build();
     }
 
@@ -66,7 +66,6 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         if (immutable == null) {
             return null;
         }
-
         EntityTypeBo bo = new EntityTypeBo();
         bo.code = immutable.getCode();
         bo.name = immutable.getName();
@@ -74,7 +73,6 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         bo.active = immutable.isActive();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -113,6 +111,4 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
     public void setSortCode(String sortCode) {
         this.sortCode = sortCode;
     }
-
-
 }

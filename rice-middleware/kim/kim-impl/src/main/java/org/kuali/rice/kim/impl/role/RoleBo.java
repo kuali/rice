@@ -15,21 +15,11 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.kim.framework.role.RoleEbo;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-import org.springframework.util.AutoPopulatingList;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -38,61 +28,92 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.List;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.kim.framework.role.RoleEbo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_ROLE_T")
 public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ROLE_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ROLE_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_ID_S")
+    @Id
     @Column(name = "ROLE_ID")
     private String id;
+
     @Column(name = "ROLE_NM")
     private String name;
-    @Column(name = "DESC_TXT", length = 4000)
+
+    @Column(name = "DESC_TXT")
     private String description;
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
+
     @Column(name = "KIM_TYP_ID")
     private String kimTypeId;
+
     @Column(name = "NMSPC_CD")
     private String namespaceCode;
-    @OneToMany(targetEntity = RoleMemberBo.class, cascade = {CascadeType.MERGE, CascadeType.REFRESH},
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = RoleMemberBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID", insertable = false, updatable = false)
     private List<RoleMemberBo> members = new AutoPopulatingList<RoleMemberBo>(RoleMemberBo.class);
+
     @Transient
     private String principalName;
+
     @Transient
     private String groupNamespaceCode;
+
     @Transient
     private String groupName;
+
     @Transient
     private String permNamespaceCode;
+
     @Transient
     private String permName;
+
     @Transient
     private String permTmplNamespaceCode;
+
     @Transient
     private String permTmplName;
+
     @Transient
     private String respNamespaceCode;
+
     @Transient
     private String respName;
+
     @Transient
     private String respTmplNamespaceCode;
+
     @Transient
     private String respTmplName;
+
+    @Transient
     private transient KimTypeInfoService kimTypeInfoService;
 
-    protected List<String> getMembersOfType(String memberTypeCode) {List<String> roleMembers = new ArrayList<String>();
-        for (RoleMemberBo member: getMembers()) {
-            if (member.getType().equals(MemberType.valueOf(memberTypeCode))
-                    && member.isActive(new DateTime())) {
+    protected List<String> getMembersOfType(String memberTypeCode) {
+        List<String> roleMembers = new ArrayList<String>();
+        for (RoleMemberBo member : getMembers()) {
+            if (member.getType().equals(MemberType.valueOf(memberTypeCode)) && member.isActive(new DateTime())) {
                 roleMembers.add(member.getMemberId());
             }
         }
@@ -103,12 +124,10 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         if (kimTypeId == null) {
             return null;
         }
-
         KimType type = getTypeInfoService().getKimType(kimTypeId);
         if (type == null) {
             return null;
         }
-
         return KimTypeBo.from(type);
     }
 
@@ -116,7 +135,6 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         if (kimTypeInfoService == null) {
             kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
         }
-
         return kimTypeInfoService;
     }
 
@@ -124,7 +142,6 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         if (bo == null) {
             return null;
         }
-
         return Role.Builder.create(bo).build();
     }
 
@@ -132,7 +149,6 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         if (immutable == null) {
             return null;
         }
-
         RoleBo bo = new RoleBo();
         bo.id = immutable.getId();
         bo.name = immutable.getName();
@@ -142,7 +158,6 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         bo.active = immutable.isActive();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -293,6 +308,4 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
     public void setRespTmplName(String respTmplName) {
         this.respTmplName = respTmplName;
     }
-
-
 }

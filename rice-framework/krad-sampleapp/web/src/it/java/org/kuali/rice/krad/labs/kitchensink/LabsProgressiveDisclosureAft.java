@@ -60,8 +60,8 @@ public class LabsProgressiveDisclosureAft extends LabsKitchenSinkBase {
     	waitForElementPresentByName("field36");
     	waitAndClickByXpath("//input[@name='field34' and @value='show3']");
     	waitForElementPresentByName("field37");
-    	assertElementPresentByXpath("//input[@name='field48' and @disabled]");
-    	assertElementPresentByXpath("//input[@name='field49' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='field48' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='field49' and @disabled]");
     	waitAndTypeByName("field47","A");
     	assertTextPresent("Cancel");
     	waitForElementPresentByName("field48");

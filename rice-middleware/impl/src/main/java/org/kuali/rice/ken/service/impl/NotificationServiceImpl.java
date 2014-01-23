@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipientBo;
+import org.kuali.rice.ken.bo.NotificationSenderBo;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.bo.NotificationResponseBo;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
@@ -121,6 +122,9 @@ public class NotificationServiceImpl implements NotificationService {
 		// make sure that the recipients are valid
 		for(int i = 0; i < notification.getRecipients().size(); i++) {
 			NotificationRecipientBo recipient = notification.getRecipient(i);
+            if (recipient.getNotification() == null) {
+                recipient.setNotification(notification);
+            }
 			boolean validRecipient = notificationRecipientService.isRecipientValid(recipient.getRecipientId(), recipient.getRecipientType());
 			if(!validRecipient) {
 				response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
@@ -129,6 +133,11 @@ public class NotificationServiceImpl implements NotificationService {
 				return response;
 			}
 		}
+
+        // ensure the notification is set for all the senders
+        for (NotificationSenderBo sender : notification.getSenders()) {
+            sender.setNotification(notification);
+        }
 
 		// set the creationDateTime attribute to the current timestamp if it's currently null
 		if (notification.getCreationDateTime() == null) {

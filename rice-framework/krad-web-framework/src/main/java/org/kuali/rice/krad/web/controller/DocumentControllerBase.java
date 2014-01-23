@@ -235,7 +235,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         performWorkflowAction(documentForm, WorkflowAction.CANCEL, false);
 
-        return returnToPrevious(form);
+        return returnToHub(form);
     }
 
     /**

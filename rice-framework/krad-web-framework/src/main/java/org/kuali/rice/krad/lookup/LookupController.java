@@ -171,7 +171,7 @@ public class LookupController extends UifControllerBase {
         // clear current form from session
         GlobalVariables.getUifFormManager().removeSessionForm(form);
 
-        return performRedirect(lookupForm, lookupForm.getReturnLocation(), props);
+        return returnToHub(form);
     }
 
     /**

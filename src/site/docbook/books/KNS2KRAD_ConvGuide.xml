@@ -50,7 +50,8 @@
       <title>Process Overview</title>
       <para>There are five main steps involved in converting from KNS to KRAD: <orderedlist>
           <listitem>
-            <para><link linkend="ojb_to_jpa">Convert OJB BusinessObject Mappings to JPA Annotations.</link><itemizedlist>
+            <para><link linkend="ojb_to_jpa">Convert OJB BusinessObject Mappings to JPA
+                Annotations.</link><itemizedlist>
                 <listitem>
                   <para>Configure and run provided automated conversion script.</para>
                 </listitem>
@@ -1274,12 +1275,12 @@
           </listitem>
           <listitem xml:id="IBB5">
             <para>The <emphasis role="keyword">authorizerClass</emphasis> has now moved to the view.
-              Conversion will copy the property.  [KNS line: 4, KRAD line: 5]  <inlinemediaobject>
+              Conversion will copy the property. [KNS line: 4, KRAD line: 5] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
-              </inlinemediaobject>  Custom implementations of the <emphasis role="keyword"
-                >InquiryAuthorizer</emphasis> class will need refactoring.  See InquiryAuthorizer
+              </inlinemediaobject> Custom implementations of the <emphasis role="keyword"
+                >InquiryAuthorizer</emphasis> class will need refactoring. See InquiryAuthorizer
               below for more information. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
@@ -1288,13 +1289,13 @@
           </listitem>
           <listitem xml:id="IBB6">
             <para>The <emphasis role="keyword">presentationControllerClass</emphasis> has now moved
-              to the view.  Conversion will copy the property.  [KNS line: 5, KRAD line: 6] <inlinemediaobject>
+              to the view. Conversion will copy the property. [KNS line: 5, KRAD line: 6] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
-              </inlinemediaobject>  Custom implementations of the <emphasis role="keyword"
+              </inlinemediaobject> Custom implementations of the <emphasis role="keyword"
                 >InquiryPresentationController</emphasis> class will need refactoring. See
-              InquiryPresentationController below for more information.   <inlinemediaobject>
+              InquiryPresentationController below for more information. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1677,14 +1678,14 @@
   <section>
     <title>Lookup Conversion</title>
     <para>Lookups allow users to search for data entries (typically ones created by a maintenance
-      document) in order to view the results and take actions (if any) on those entries.  They
-      allow controlling how much information is shown and what actions the user can currently
-      take on the entry.  KRAD moves all lookup definitions to a view.  The conversion script
-      will automate part of the conversion for your lookups to the view format, but some lookup
-      attributes require no conversion since they are virtually identical between the KNS and KRAD.
-      The following sections provide a typical conversion sample and identify the business object
-      bean properties, criteria fields, result fields, helper classes, and other features which
-      are converted by the script and those that require manual conversion.</para>
+      document) in order to view the results and take actions (if any) on those entries. They allow
+      controlling how much information is shown and what actions the user can currently take on the
+      entry. KRAD moves all lookup definitions to a view. The conversion script will automate part
+      of the conversion for your lookups to the view format, but some lookup attributes require no
+      conversion since they are virtually identical between the KNS and KRAD. The following sections
+      provide a typical conversion sample and identify the business object bean properties, criteria
+      fields, result fields, helper classes, and other features which are converted by the script
+      and those that require manual conversion.</para>
     <section>
       <title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
       <note>
@@ -1833,12 +1834,15 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LBB5">
-            <para><emphasis role="keyword">multipleValuesSelectResultSetLimit</emphasis> [KRAD line
-              51] overrides the MULTIPLE_VALUE_RESULTS_LIMIT application/system parameter. This
-              parameter restricts the number of results returned from a lookup that can return
-              multiple values. The parameter defaults to 100 results, but can either be changed in
-              the database or be overridden by setting <emphasis role="keyword"
-                >multipleValuesSelectResultSetLimit</emphasis>. <inlinemediaobject>
+            <para role="keyword"><emphasis role="keyword"
+                >multipleValuesSelectResultSetLimit</emphasis> [KRAD line 51] overrides the
+              MULTIPLE_VALUE_RESULTS_LIMIT application/system parameter. This parameter restricts
+              the number of results returned from a lookup that can return multiple values. The
+              parameter defaults to 100 results, but can either be changed in the database or be
+              overridden by setting <emphasis role="keyword"
+                >multipleValuesSelectResultSetLimit</emphasis>. The namespace of the parameter used
+              in KRAD is <emphasis role="keyword">KR-KRAD</emphasis> instead of <emphasis
+                role="keyword">KR-NS</emphasis>. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -1849,7 +1853,9 @@
               application/system parameter RESULTS_LIMIT. This parameter restricts the number of
               results returned from a lookup that can return one value. The parameter defaults to
               100 results, but can either be changed in the database or be overridden by setting
-                <emphasis role="keyword">resultSetLimit</emphasis>. <inlinemediaobject>
+                <emphasis role="keyword">resultSetLimit</emphasis>. The namespace of the parameter
+              used in KRAD is <emphasis role="keyword">KR-KRAD</emphasis> instead of <emphasis
+                role="keyword">KR-NS</emphasis>. <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2535,18 +2541,17 @@
   </section>
   <section>
     <title>Maintenance Conversion</title>
-    <para>Maintenance documents provide an easy way to create and edit simple data entries.
-      They provide layout definitions to display base objects and collections for entering data
-      and editing it, as well as controlling access to data, providing links to attachments,
-      applying rules, and routing the document through several reviewers before finalizing
-      and applying the changes to the database.  KRAD modifies the maintenance document entries
-      and moves all relevant display definitions to a view.  The conversion script will automate
-      part of the conversion for your maintenance documents to the view format, but some
-      maintenance attributes require no conversion since they are virtually identical between
-      the KNS and KRAD.  The following sections provide a typical conversion sample and identify
-      the business object bean properties, sections, collections, lookup definitions, helper
-      classes, and other features which are converted by the script and those that require manual
-      conversion.</para>
+    <para>Maintenance documents provide an easy way to create and edit simple data entries. They
+      provide layout definitions to display base objects and collections for entering data and
+      editing it, as well as controlling access to data, providing links to attachments, applying
+      rules, and routing the document through several reviewers before finalizing and applying the
+      changes to the database. KRAD modifies the maintenance document entries and moves all relevant
+      display definitions to a view. The conversion script will automate part of the conversion for
+      your maintenance documents to the view format, but some maintenance attributes require no
+      conversion since they are virtually identical between the KNS and KRAD. The following sections
+      provide a typical conversion sample and identify the business object bean properties,
+      sections, collections, lookup definitions, helper classes, and other features which are
+      converted by the script and those that require manual conversion.</para>
     <section>
       <title>MaintenanceDefinition in KNS Data Dictionary to MaintenanceView in KRAD</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
@@ -2766,24 +2771,23 @@
         </itemizedlist>
       </para>
     </section>
-  <section>
-    <title>Collections</title>
+    <section>
+      <title>Collections</title>
       <para>
         <itemizedlist>
           <listitem xml:id="MC1">
             <para>The class of the collection is now specified by the <emphasis role="keyword"
-                    >collectionObjectCLass</emphasis> property instead of the <emphasis role="keyword"
-                    >businessObjectClass</emphasis> property. [KNS line: 41, KRAD line: 43] <inlinemediaobject>
-              <imageobject>
-                <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
-              </imageobject>
-            </inlinemediaobject></para>
+                >collectionObjectCLass</emphasis> property instead of the <emphasis role="keyword"
+                >businessObjectClass</emphasis> property. [KNS line: 41, KRAD line: 43] <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="MC2">
             <para>The name of the collection within the parent object is now specified by the
-              <emphasis role="keyword">propertyName</emphasis> property instead of the
-              <emphasis role="keyword">name</emphasis> property. [KNS line: 42, KRAD line: 44]
-              <inlinemediaobject>
+                <emphasis role="keyword">propertyName</emphasis> property instead of the <emphasis
+                role="keyword">name</emphasis> property. [KNS line: 42, KRAD line: 44] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2791,20 +2795,19 @@
           </listitem>
           <listitem xml:id="MC3">
             <para>The list of fields is now specified by the <emphasis role="keyword"
-                    >items</emphasis> property instead of the <emphasis role="keyword"
-                    >maintainableFields</emphasis> property. [KNS line: 43-47, KRAD line: 50-55]
-              <inlinemediaobject>
+                >items</emphasis> property instead of the <emphasis role="keyword"
+                >maintainableFields</emphasis> property. [KNS line: 43-47, KRAD line: 50-55] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="MC4">
-            <para>To indicate which fields should be used to check for duplicate records is
-              now specified by the <emphasis role="keyword">duplicateLinePropertyNames</emphasis>
-              and is a simple list of property names, instead of the <emphasis role="keyword">
-              duplicateIdentificationFields</emphasis> property. [KNS line: 49-54, KRAD line: 56-61]
-              <inlinemediaobject>
+            <para>To indicate which fields should be used to check for duplicate records is now
+              specified by the <emphasis role="keyword">duplicateLinePropertyNames</emphasis> and is
+              a simple list of property names, instead of the <emphasis role="keyword">
+                duplicateIdentificationFields</emphasis> property. [KNS line: 49-54, KRAD line:
+              56-61] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2988,21 +2991,21 @@
       <para>
         <itemizedlist>
           <listitem>
-            <para>The in KNS the <emphasis role="keyword">MaintainableCollectionDefinition</emphasis>
-              is used to specify collections on a maintenance document. With KRAD one of the Uif
-              collection groups is used.
-            </para>
+            <para>The in KNS the <emphasis role="keyword"
+                >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
+              maintenance document. With KRAD one of the Uif collection groups is used. </para>
           </listitem>
           <listitem>
             <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
               was set to true and the <emphasis role="keyword">sourceClassName</emphasis> was
               specified to enable multiple value lookups on the collection, using the <emphasis
-              role="keyword">template</emphasis> fields for the field conversions. In KRAD these properties
-              do no longer exist.  Instead the <emphasis role="keyword">collectionLookup</emphasis>
-              property is initialized with the <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis>
-              bean. <emphasis role="keyword">Uif-CollectionQuickfinder</emphasis> has the following
-              properties but do not need to be specified if the collectionObjectClass of the collection
-              group is the same as the dataObjectClassName of the multi value lookup:</para>
+                role="keyword">template</emphasis> fields for the field conversions. In KRAD these
+              properties do no longer exist. Instead the <emphasis role="keyword"
+                >collectionLookup</emphasis> property is initialized with the <emphasis
+                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
+                >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
+              to be specified if the collectionObjectClass of the collection group is the same as
+              the dataObjectClassName of the multi value lookup:</para>
             <itemizedlist>
               <listitem>
                 <para>dataObjectClassName - the data object that should be looked up</para>
@@ -3289,9 +3292,9 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
       <para>In the KNS an external business object was set up using <emphasis role="bold"
           >org.kuali.rice.kns.maintenance.Maintainable.prepareBusinessObject</emphasis>. To activate
         this, implementers also had to override <emphasis role="bold"
-          >org.kuali.rice.kns.maintenance.Maintainable.isExternalBusinessObject</emphasis>
-        to return true.  In KRAD this functionality has been moved to <emphasis role="bold"
-          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced.  Different methods
+          >org.kuali.rice.kns.maintenance.Maintainable.isExternalBusinessObject</emphasis> to return
+        true. In KRAD this functionality has been moved to <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable</emphasis> and replaced. Different methods
         should be overridden depending on whether the external BO being loaded is from the database
         or not.</para>
       <para><emphasis role="bold">KNS BO Preparation:</emphasis>
@@ -3307,13 +3310,12 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
     <section xml:id="MPBO">
       <title>Custom BO setup</title>
       <para>While external Business Objects have methods to handle their setup, there is no way to
-        change the old Business Object after it is loaded but before it is copied into the new Business
-        Object.  In edge cases where this needs to happen, the above methods can be used, but it is
-        better to use <emphasis role="bold"
-          >org.kuali.rice.krad.maintenance.Maintainable.processAfterCopy</emphasis> or
-        <emphasis role="bold"
-          >org.kuali.rice.krad.maintenance.Maintainable.processAfterEdit</emphasis> if processing can
-        wait until the new Business Object has been created.</para>
+        change the old Business Object after it is loaded but before it is copied into the new
+        Business Object. In edge cases where this needs to happen, the above methods can be used,
+        but it is better to use <emphasis role="bold"
+          >org.kuali.rice.krad.maintenance.Maintainable.processAfterCopy</emphasis> or <emphasis
+          role="bold">org.kuali.rice.krad.maintenance.Maintainable.processAfterEdit</emphasis> if
+        processing can wait until the new Business Object has been created.</para>
     </section>
     <section xml:id="MRR">
       <title>Refreshing references </title>
@@ -3722,24 +3724,25 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       independent from each other and can be converted independently to allow for some amount of
       testing.</para>
     <section>
-        <title>JPA Conversion Tool</title>
-        <para>As part of the upgrade to use KRAD, you will need to update all your OJB-mapped 
-        <emphasis role="keyword">BusinessObject</emphasis> classes into JPA-mapped data objects.</para>
-        <para>For this, the Rice project has provided a tool which should extract most of your 
-        OJB metadata and use it to annotate your Java classes.</para>
-        <para>The script is written in Groovy and uses a Groovy configuration file for the more
+      <title>JPA Conversion Tool</title>
+      <para>As part of the upgrade to use KRAD, you will need to update all your OJB-mapped
+          <emphasis role="keyword">BusinessObject</emphasis> classes into JPA-mapped data
+        objects.</para>
+      <para>For this, the Rice project has provided a tool which should extract most of your OJB
+        metadata and use it to annotate your Java classes.</para>
+      <para>The script is written in Groovy and uses a Groovy configuration file for the more
         verbose elements.</para>
-        <section>
-            <title>Running the Conversion Tool</title>
-            <orderedlist>
-                <listitem><para>In the project distribution, copy the contents of the 
-            <emphasis role="keyword">scripts/jpaconverter</emphasis> directory to a working 
-            directory.</para></listitem>
-                <listitem>
-                    <para>
-                        If you do not have your own Groovy Grapes setup, place the XML content below into <emphasis role="keyword">$HOME/.groovy/grapeConfig.xml</emphasis>.                        
-                    </para>
-                    <programlisting><![CDATA[
+      <section>
+        <title>Running the Conversion Tool</title>
+        <orderedlist>
+          <listitem>
+            <para>In the project distribution, copy the contents of the <emphasis role="keyword"
+                >scripts/jpaconverter</emphasis> directory to a working directory.</para>
+          </listitem>
+          <listitem>
+            <para> If you do not have your own Groovy Grapes setup, place the XML content below into
+                <emphasis role="keyword">$HOME/.groovy/grapeConfig.xml</emphasis>. </para>
+            <programlisting><![CDATA[
 <ivysettings>
   <property name="ivy.cache.ttl.default" value="24h"/>
   <settings defaultResolver="downloadGrapes"/>
@@ -3756,70 +3759,67 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
   </resolvers>
 </ivysettings>
                     ]]></programlisting>
+          </listitem>
+          <listitem>
+            <para> Update (and rename) the <emphasis role="keyword">config-sample.groovy</emphasis>
+              script with the appropriate values for your project. </para>
+            <para> All the elements below should be set in the Groovy configuration file. See the
+              provided <emphasis role="keyword">config-sample.groovy</emphasis> for examples and use
+              it as a starting point. <itemizedlist>
+                <listitem>
+                  <para>
+                    <emphasis role="keyword">classpathDirectories</emphasis> : This is a list of
+                    directories, relative to the base path passed in on the command line, which will
+                    be used to resolve your compiled classes. The converter inspects the code to
+                    obtain needed information, and so needs a compiled version of all business
+                    object classes. Each directory is expected to be the base of a class file output
+                    directory. (E.g., <emphasis role="keyword">target/classes</emphasis>) </para>
                 </listitem>
                 <listitem>
-                    <para>
-                        Update (and rename) the <emphasis role="keyword">config-sample.groovy</emphasis> 
-                        script with the appropriate values for your project.
-                    </para>
-                    <para>
-						All the elements below should be set in the Groovy configuration file.  See 
-						the provided <emphasis role="keyword">config-sample.groovy</emphasis> for 
-						examples and use it as a starting point.
-						<itemizedlist>
-                          <listitem><para>
-                            <emphasis role="keyword">classpathDirectories</emphasis> : This is a 
-                            list of directories, relative to the base path passed in on the command 
-                            line, which will be used to resolve your compiled classes.  The
-                            converter inspects the code to obtain needed information, and so needs a
-                            compiled version of all business object classes.  Each directory is 
-                            expected to be the base of a class file output directory.  
-                            (E.g., <emphasis role="keyword">target/classes</emphasis>)
-                          </para></listitem>
-                          <listitem><para>
-                            <emphasis role="keyword">classpathJarDirectories</emphasis> : A list of 
-                            directories, relative to the base path, which will be scanned for jar 
-                            files.  Each jar file found will be added to the classpath.  This should
-                            contain paths to all the libraries used by your project in order to
-                            resolve dependencies of your business objects.  
-                            (E.g., a <emphasis role="keyword">WEB-INF/lib</emphasis> directory)
-                          </para></listitem>
-                          <listitem><para>
-                            <emphasis role="keyword">sourceDirectories</emphasis> :  A list of 
-                            directories, relative to the base path, which will be scanned for the 
-                            matching source files for your business objects.  The first 
-                            <emphasis role="keyword">.java</emphasis> file
-                            which matches a given class will be used and modified by this tool.
-                          </para></listitem>
-                          <listitem><para>
-                            <emphasis role="keyword">repositoryFiles</emphasis> : A list of the 
-                            files, relative to the base path, of the OJB files you want to scan and 
-                            process.  Only classes referenced in 
-                            <emphasis role="keyword">&lt;class-descriptor&gt;</emphasis> elements 
-                            in these files will be touched by the conversion process.
-                          </para></listitem>
-                          <listitem><para>
-                            <emphasis role="keyword">converterMappings</emphasis> : A mapping of 
-                            class name to new JPA converter names.  If you edit this map, leave all
-                            the existing entries in place and add your application-specific 
-                            converters to the end of the list.  If you have converters in your 
-                            application which are not covered by the implementations already in the 
-                            conversion list, you will need to create a new JPA converter class 
-                            (<emphasis role="keyword">javax.persistence.AttributeConverter</emphasis>) 
-                            and then add the fully qualified class name in this map.
-                          </para></listitem>
-						</itemizedlist>
-                    </para>
+                  <para>
+                    <emphasis role="keyword">classpathJarDirectories</emphasis> : A list of
+                    directories, relative to the base path, which will be scanned for jar files.
+                    Each jar file found will be added to the classpath. This should contain paths to
+                    all the libraries used by your project in order to resolve dependencies of your
+                    business objects. (E.g., a <emphasis role="keyword">WEB-INF/lib</emphasis>
+                    directory) </para>
                 </listitem>
                 <listitem>
-                    <para>
-                        Run the <emphasis role="keyword">JpaConverter.groovy</emphasis> tool as
-                        shown below.  See the README.md in the same directory as the scripts for 
-                        troubleshooting information and further recommendations.
-                    </para>
-                    <para>
-                        <emphasis role="bold">Tool Usage</emphasis>
-                        <programlisting><![CDATA[usage: groovy JpaConverter.groovy -b <project base directory> -c <location of config file> [options]
+                  <para>
+                    <emphasis role="keyword">sourceDirectories</emphasis> : A list of directories,
+                    relative to the base path, which will be scanned for the matching source files
+                    for your business objects. The first <emphasis role="keyword">.java</emphasis>
+                    file which matches a given class will be used and modified by this tool. </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="keyword">repositoryFiles</emphasis> : A list of the files,
+                    relative to the base path, of the OJB files you want to scan and process. Only
+                    classes referenced in <emphasis role="keyword"
+                      >&lt;class-descriptor&gt;</emphasis> elements in these files will be touched
+                    by the conversion process. </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="keyword">converterMappings</emphasis> : A mapping of class name
+                    to new JPA converter names. If you edit this map, leave all the existing entries
+                    in place and add your application-specific converters to the end of the list. If
+                    you have converters in your application which are not covered by the
+                    implementations already in the conversion list, you will need to create a new
+                    JPA converter class (<emphasis role="keyword"
+                      >javax.persistence.AttributeConverter</emphasis>) and then add the fully
+                    qualified class name in this map. </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para> Run the <emphasis role="keyword">JpaConverter.groovy</emphasis> tool as shown
+              below. See the README.md in the same directory as the scripts for troubleshooting
+              information and further recommendations. </para>
+            <para>
+              <emphasis role="bold">Tool Usage</emphasis>
+              <programlisting><![CDATA[usage: groovy JpaConverter.groovy -b <project base directory> -c <location of config file> [options]
  -b,--base <base directory>   Absolute path to the base directory for the
                               conversion.
  -c,--config <config file>    Location of groovy configuration file
@@ -3833,17 +3833,17 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
     --replace                 Replace all existing JPA annotations on
                               classes referenced by OJB files.
                         ]]></programlisting>
-                    </para>
-                </listitem>
-            </orderedlist>
-            
-        </section>
+            </para>
+          </listitem>
+        </orderedlist>
+
+      </section>
     </section>
     <section>
       <title>JPA Configuration</title>
-      <para>Create a new spring file for your JPA configuration.
-      Add a uniqueJpaPersistenceUnitName that is unique for the module(location in example).
-      To include classes or whole packages add managedClassNames listed out or add the package prefix.</para>
+      <para>Create a new spring file for your JPA configuration. Add a uniqueJpaPersistenceUnitName
+        that is unique for the module(location in example). To include classes or whole packages add
+        managedClassNames listed out or add the package prefix.</para>
       <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -3936,7 +3936,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       <title>Entity Conversion</title>
       <para>To convert your entity from OJB to JPA you have two options. One is to use the script
         that will autoconvert for you or to manually convert based on the OJB-repository.xml file
-        for the module.  To start here is a sample OJB descripotor for Postal Code in Rice.</para>
+        for the module. To start here is a sample OJB descripotor for Postal Code in Rice.</para>
       <programlisting>&lt;class-descriptor class="org.kuali.rice.location.impl.postalcode.PostalCodeBo" table="KRLC_PSTL_CD_T">
 	&lt;field-descriptor name="countryCode" column="POSTAL_CNTRY_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
     &lt;ield-descriptor name="code" column="POSTAL_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
@@ -3989,8 +3989,9 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
 
     @Column(name = "ACTV_IND")
     boolean active;</programlisting>
-    <para>Next is to declare the ID columns.  This class has a compound primary key so it uses an more advanced feature of JPA called an IdClass.</para>
-    <programlisting>@IdClass(PostalCodeId.class)
+      <para>Next is to declare the ID columns. This class has a compound primary key so it uses an
+        more advanced feature of JPA called an IdClass.</para>
+      <programlisting>@IdClass(PostalCodeId.class)
 @Entity
 @Table(name = "KRLC_PSTL_CD_T")
 class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEbo {
@@ -4014,8 +4015,9 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
     
     @Column(name = "ACTV_IND")
     boolean active;</programlisting>
-    <para>The active indicator used an OJB converter to handle the Y/N conversion into boolean.  This is done with a customized EclipseLink Converter now.</para>
-    <programlisting>@IdClass(PostalCodeId.class)
+      <para>The active indicator used an OJB converter to handle the Y/N conversion into boolean.
+        This is done with a customized EclipseLink Converter now.</para>
+      <programlisting>@IdClass(PostalCodeId.class)
 @Entity
 @Table(name = "KRLC_PSTL_CD_T")
 class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEbo {
@@ -4057,7 +4059,7 @@ public class BooleanYNConverter implements AttributeConverter&lt;Boolean, String
     
     </programlisting>
       <para>The next part is to map the relationships that are defined by the reference-descriptor
-        in OJB.  The CountyBo has 3 columns as its primary key so it is described as follows.</para>
+        in OJB. The CountyBo has 3 columns as its primary key so it is described as follows.</para>
       <programlisting>@IdClass(PostalCodeId.class)
 @Entity
 @Table(name = "KRLC_PSTL_CD_T")
@@ -4309,8 +4311,9 @@ public class RouteNodeInstance implements Serializable {
     </section>
     <section>
       <title>Query Customizer</title>
-      <para>In OJB you could add a query customizer that would allow you to add additional criteria or sort a collection.  This is facilitated in KRAD Data with the QueryCustomizerGenerator annotation.
-      <programlisting>&lt;!-- Example in OJB -->
+      <para>In OJB you could add a query customizer that would allow you to add additional criteria
+        or sort a collection. This is facilitated in KRAD Data with the QueryCustomizerGenerator
+        annotation. <programlisting>&lt;!-- Example in OJB -->
  &lt;collection-descriptor name="sourceAccountingLines" proxy="true" 
   element-class-ref="org.kuali.kfs.sys.businessobject.SourceAccountingLine" 
   collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true">
@@ -4327,8 +4330,9 @@ public class RouteNodeInstance implements Serializable {
         <programlisting>
 @QueryCustomizerGenerator(attributeName="testCol",attributeResolverClass="org.kuali.bar.Foo")
         </programlisting>
-        To define sorting behavior on fetch translate this previous usage to use the @OrderBy annotation in JPA.  To chain multiple columns together 
-        add a comma between them (column1,column2, etc)
+        To define sorting behavior on fetch translate this previous usage to use the @OrderBy
+        annotation in JPA. To chain multiple columns together add a comma between them
+        (column1,column2, etc)
         <programlisting>&lt;!-- Example in OJB -->
 &lt;collection-descriptor name="items" proxy="true" element-class-ref="org.kuali.kfs.module.purap.businessobject.PurchaseOrderItem" 
       collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true">
@@ -4346,7 +4350,7 @@ public class RouteNodeInstance implements Serializable {
 private List&lt;PurchaseOrderItem> items;
         </programlisting>
       </para>
-    
+
     </section>
   </section>
 </article>

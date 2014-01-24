@@ -52,19 +52,19 @@ import org.kuali.rice.krad.test.KRADTestConstants.TestConstants;
         value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'"),
-                        @UnitTestSql("delete from trv_acct_type")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        ,@UnitTestSql("delete from trv_acct_type")
 
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";"),
-                        @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
+                        ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'"),
-                        @UnitTestSql("delete from trv_acct_type")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        ,@UnitTestSql("delete from trv_acct_type")
                 }
        )
 )

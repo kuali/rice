@@ -2557,7 +2557,7 @@
       <para><emphasis role="bold">KNS Code example:</emphasis></para>
       <para>
         <programlisting linenumbering="numbered">&lt;bean id="EntityTypeMaintenanceDocument" parent="MaintenanceDocumentEntry">
-  &lt;property name="dataObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="documentTypeName" value="EntityTypeMaintenanceDocument"/>
   &lt;property name="maintainableClass" value="org.kuali.rice.kim.maintenance.EntityTypeMaintainableImpl"/>
 
@@ -2617,29 +2617,28 @@
       </para>
       <para><emphasis role="bold">KRAD code example:</emphasis></para>
       <para>
-        <programlisting linenumbering="numbered">&lt;bean id="EntityTypeMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
-  &lt;property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-  &lt;property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
+        <programlisting linenumbering="numbered">&lt;bean id="EntityTypeMaintenanceDocument-uifMaintenanceDocumentEntry" parent="uifMaintenanceDocumentEntry">
+  &lt;property name="dataObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="documentTypeName" value="EntityTypeMaintenanceDocument"/>
   &lt;property name="maintainableClass" value="org.kuali.rice.kim.maintenance.EntityTypeMaintainableImpl"/>
 &lt;/bean>
 
-&lt;bean id="EntityType-MaintenanceView" parent="Uif-MaintenanceView">
+&lt;bean id="EntityTypeMaintenanceDocument-MaintenanceView" parent="Uif-MaintenanceView">
   &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="additionalScriptFiles">
     &lt;list>
       &lt;value>entityType.js&lt;/value>
     &lt;/list>
   &lt;/property>
-
   &lt;property name="items">
     &lt;list>
-      &lt;ref bean="EntityType-MaintenanceView-General"/>
-      &lt;ref bean="EntityType-MaintenanceView-Details"/>
+      &lt;ref bean="EntityTypeMaintenanceDocument-General"/>
+      &lt;ref bean="EntityTypeMaintenanceDocument-Details"/>
     &lt;/list>
   &lt;/property>
 &lt;/bean>
 
-&lt;bean id="EntityType-MaintenanceView-General" parent="Uif-MaintenanceGridSection">
+&lt;bean parent="Uif-MaintenanceGridSection" id="EntityTypeMaintenanceDocument-General">
   &lt;property name="headerText" value="Entity Type"/>
   &lt;property name="disclosure.defaultOpen" value="true"/>
   &lt;property name="help">
@@ -2649,18 +2648,16 @@
   &lt;/property>
   &lt;property name="items">
     &lt;list>
-      &lt;bean parent="Uif-InputField" p:propertyName="code"/>
-      &lt;bean parent="Uif-InputField" p:propertyName="name"/>
-      &lt;bean parent="Uif-InputField" p:propertyName="active"/>
+      &lt;bean p:propertyName="code" parent="Uif-InputField"/>
+      &lt;bean p:required="true" p:propertyName="name" parent="Uif-InputField"/>
+      &lt;bean p:required="true" p:propertyName="active" parent="Uif-InputField"/>
     &lt;/list>
   &lt;/property>
 &lt;/bean>
 
-&lt;bean id="EntityType-MaintenanceView-Details" parent="Uif-Disclosure-StackedCollectionSection">
+&lt;bean parent="Uif-VerticalBoxSection" id="EntityTypeMaintenanceDocument-Details">
   &lt;property name="headerText" value="Entity Type Details"/>
   &lt;property name="disclosure.defaultOpen" value="false"/>
-  &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
-  &lt;property name="propertyName" value="entityTypeDetails"/>
   &lt;property name="help">
     &lt;bean parent="Uif-Help">
       &lt;property name="externalHelpUrl" value="docs/entityTypeDetails.html"/>
@@ -2668,14 +2665,28 @@
   &lt;/property>
   &lt;property name="items">
     &lt;list>
-      &lt;bean parent="Uif-DataField" p:attributeName="name"/>
-      &lt;bean parent="Uif-DataField" p:attributeName="value"/>
-    &lt;/list>
-  &lt;/property>
-  &lt;property name="duplicateLinePropertyNames">
-    &lt;list>
-      &lt;value>name&lt;/value>
-      &lt;value>value&lt;/value>
+      &lt;bean parent="Uif-MaintenanceStackedCollectionSection">
+        &lt;property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
+        &lt;property name="propertyName" value="entityTypeDetails"/>
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean p:propertyName="name" parent="Uif-InputField"/>
+            &lt;bean p:propertyName="value" parent="Uif-InputField"/>
+          &lt;/list>
+        &lt;/property>
+        &lt;property name="lineActions">
+          &lt;list>
+            &lt;bean parent="Uif-DeleteLineAction" p:render="@{isAddedCollectionItem(#line)}"/>
+            &lt;bean parent="Uif-SaveLineAction"/>
+          &lt;/list>
+        &lt;/property>
+        &lt;property name="duplicateLinePropertyNames">
+          &lt;list>
+            &lt;value>name&lt;/value>
+            &lt;value>value&lt;/value>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
     &lt;/list>
   &lt;/property>
 &lt;/bean></programlisting>
@@ -2740,7 +2751,7 @@
           <listitem xml:id="MS1">
             <para>The title of the view is specified via the <emphasis role="keyword"
                 >headerText</emphasis> property instead of the <emphasis role="keyword"
-                >title</emphasis> property. [KNS line: 21, KRAD line: 24] <inlinemediaobject>
+                >title</emphasis> property. [KNS line: 21, KRAD line: 23] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2750,7 +2761,7 @@
             <para>The property that controls whether the section defaults to open has moved from
                 <emphasis role="keyword">defaultOpen</emphasis> to the <emphasis role="keyword"
                 >Disclosure</emphasis> object and is now accessed via <emphasis role="keyword"
-                >disclosure.defaultOpen</emphasis>. [KNS line: 22, KRAD line: 25] <inlinemediaobject>
+                >disclosure.defaultOpen</emphasis>. [KNS line: 22, KRAD line: 24] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2761,7 +2772,7 @@
             <para>Help links specified by <emphasis role="keyword">helpUrl</emphasis> have now been
               changed to a full <emphasis role="keyword">Uif-Help</emphasis> which contains a
               property <emphasis role="keyword">externalHelpUrl</emphasis> where the link is now
-              stored. [KNS line: 23, KRAD line: 26-30] <inlinemediaobject>
+              stored. [KNS line: 23, KRAD line: 25-29] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2778,7 +2789,7 @@
           <listitem xml:id="MC1">
             <para>The class of the collection is now specified by the <emphasis role="keyword"
                 >collectionObjectCLass</emphasis> property instead of the <emphasis role="keyword"
-                >businessObjectClass</emphasis> property. [KNS line: 41, KRAD line: 43] <inlinemediaobject>
+                >businessObjectClass</emphasis> property. [KNS line: 41, KRAD line: 50] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2787,7 +2798,7 @@
           <listitem xml:id="MC2">
             <para>The name of the collection within the parent object is now specified by the
                 <emphasis role="keyword">propertyName</emphasis> property instead of the <emphasis
-                role="keyword">name</emphasis> property. [KNS line: 42, KRAD line: 44] <inlinemediaobject>
+                role="keyword">name</emphasis> property. [KNS line: 42, KRAD line: 51] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2796,7 +2807,7 @@
           <listitem xml:id="MC3">
             <para>The list of fields is now specified by the <emphasis role="keyword"
                 >items</emphasis> property instead of the <emphasis role="keyword"
-                >maintainableFields</emphasis> property. [KNS line: 43-47, KRAD line: 50-55] <inlinemediaobject>
+                >maintainableFields</emphasis> property. [KNS line: 43-47, KRAD line: 52-57] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2807,7 +2818,7 @@
               specified by the <emphasis role="keyword">duplicateLinePropertyNames</emphasis> and is
               a simple list of property names, instead of the <emphasis role="keyword">
                 duplicateIdentificationFields</emphasis> property. [KNS line: 49-54, KRAD line:
-              56-61] <inlinemediaobject>
+              64-69] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
                 </imageobject>

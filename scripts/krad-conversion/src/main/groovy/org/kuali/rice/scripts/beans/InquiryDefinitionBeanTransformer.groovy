@@ -129,7 +129,8 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
      */
     def transformInquirySectionDefinitionBean(NodeBuilder builder, Node beanNode) {
         // if it contains a inquiry collection add a uif stack collection, else replace with a Uif-Disclosure-GridSection
-        if (!beanNode.property.list.bean.find { it.@parent == "InquiryCollectionDefinition" }) {
+        def inquiryFieldsBeans = beanNode?.property?.find { "inquiryFields".equals(it.@name) }?.list?.bean;
+        if (!inquiryFieldsBeans?.find { it.@parent == "InquiryCollectionDefinition" }) {
             transformInquirySectionDefinitionFields(builder, beanNode);
         } else {
             transformInquiryCollectionDefinitionBean(builder, beanNode);
@@ -175,7 +176,7 @@ class InquiryDefinitionBeanTransformer extends SpringBeanTransformer {
         def attributes = gatherIdAttribute(beanNode) + [parent: 'Uif-StackedCollectionSection'];
         builder.bean(attributes) {
             renameProperties(builder, beanNode, ["title": "headerText", "defaultOpen": "disclosure.defaultOpen"]);
-            transformNumberOfColumns(builder, beanNode);
+            //transformNumberOfColumns(builder, beanNode);
             def inquiryFieldsPropertyNode = beanNode.property.find { it.@name == "inquiryFields" }
             if (inquiryFieldsPropertyNode != null) {
                 inquiryFieldsPropertyNode.list.'*'.each { beanOrRefNode ->

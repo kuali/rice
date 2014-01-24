@@ -2883,8 +2883,7 @@
           <listitem xml:id="MDD4">
             <para>While default values can be specified via finders, they can also be specified
               directly on the Uif with complete expression support.
-              <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:defaultValue="@{field2}"/></programlisting>
-            </para>
+              <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:defaultValue="@{field2}"/></programlisting></para>
           </listitem>
           <listitem xml:id="MDD5">
             <para>Several fields have been removed in favor of the new conditional <emphasis

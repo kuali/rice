@@ -22,7 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * /**

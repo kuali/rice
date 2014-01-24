@@ -19,7 +19,7 @@ import org.kuali.rice.coreservice.api.style.Style;
 import org.kuali.rice.coreservice.api.style.StyleContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

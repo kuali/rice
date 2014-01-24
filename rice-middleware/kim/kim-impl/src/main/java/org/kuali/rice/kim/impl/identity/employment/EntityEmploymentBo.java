@@ -18,7 +18,6 @@ package org.kuali.rice.kim.impl.identity.employment;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,9 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
-import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ENTITY_EMP_INFO_T")

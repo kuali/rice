@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.impl.identity.phone;
 
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

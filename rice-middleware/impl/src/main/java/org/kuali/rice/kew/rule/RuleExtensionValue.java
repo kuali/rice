@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

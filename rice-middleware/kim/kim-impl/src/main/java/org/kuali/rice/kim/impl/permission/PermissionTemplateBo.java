@@ -23,7 +23,7 @@ import javax.persistence.Table;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateContract;
 import org.kuali.rice.kim.impl.common.template.TemplateBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_PERM_TMPL_T")

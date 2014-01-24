@@ -3,6 +3,7 @@ package org.kuali.rice.krad.data.jpa.eclipselink;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.SimpleAccount;

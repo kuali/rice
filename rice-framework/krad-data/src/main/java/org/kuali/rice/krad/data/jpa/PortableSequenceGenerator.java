@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
+package org.kuali.rice.krad.data.jpa;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -39,10 +39,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *   &#064;PortableSequenceGenerator(name="EMP_SEQ", sequenceName="EMP_SEQ", initialValue = 1)
  * </pre>
  *
- * <p>Current, in order for this annotation to work properly, the {@link KradEclipseLinkCustomizer} must be configured
+ * <p>Current, in order for this annotation to work properly, the {@link org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkCustomizer} must be configured
  * for the EclipseLink persistence unit. This can be done manually using
  * {@link org.eclipse.persistence.config.PersistenceUnitProperties#SESSION_CUSTOMIZER}, or it will be done automatically
- * when using {@link KradEclipseLinkEntityManagerFactoryBean}</p>
+ * when using {@link org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean}</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

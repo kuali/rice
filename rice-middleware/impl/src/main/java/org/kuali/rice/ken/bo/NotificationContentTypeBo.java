@@ -19,7 +19,7 @@ import org.kuali.rice.ken.api.notification.NotificationContentType;
 import org.kuali.rice.ken.api.notification.NotificationContentTypeContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

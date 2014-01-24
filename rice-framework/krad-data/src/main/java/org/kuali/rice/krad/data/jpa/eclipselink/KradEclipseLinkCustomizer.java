@@ -21,8 +21,6 @@ import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.exceptions.DescriptorException;
 import org.eclipse.persistence.internal.databaseaccess.Accessor;
 import org.eclipse.persistence.internal.descriptors.OptimisticLockingPolicy;
-import org.eclipse.persistence.internal.helper.DatabaseField;
-import org.eclipse.persistence.internal.jpa.metadata.listeners.EntityClassListener;
 import org.eclipse.persistence.internal.sessions.AbstractSession;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.sequencing.Sequence;
@@ -30,6 +28,7 @@ import org.eclipse.persistence.sessions.DatabaseLogin;
 import org.eclipse.persistence.sessions.JNDIConnector;
 import org.eclipse.persistence.sessions.Session;
 import org.kuali.rice.krad.data.jpa.DisableVersioning;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.RemoveMapping;
 import org.kuali.rice.krad.data.jpa.RemoveMappings;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
@@ -37,7 +36,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 import javax.sql.DataSource;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -49,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * EclipseLink Session Customizer which understands {@link PortableSequenceGenerator} annotations and automatically
+ * EclipseLink Session Customizer which understands {@link org.kuali.rice.krad.data.jpa.PortableSequenceGenerator} annotations and automatically
  * registers custom EclipseLink Sequences.
  *
  * <p>Since SessionCustomizers are stateless instances, and because concrete

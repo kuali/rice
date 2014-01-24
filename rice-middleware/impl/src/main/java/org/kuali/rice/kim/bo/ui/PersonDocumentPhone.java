@@ -26,7 +26,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

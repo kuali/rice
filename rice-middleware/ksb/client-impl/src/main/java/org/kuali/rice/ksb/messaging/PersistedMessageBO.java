@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging;
 
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCall;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

@@ -26,7 +26,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * This class is the base class for KIM documents sub-business objects that store attribute/qualifier data

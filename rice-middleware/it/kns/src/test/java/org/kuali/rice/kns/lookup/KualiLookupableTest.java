@@ -63,7 +63,8 @@ import org.kuali.rice.krad.test.KRADTestConstants.TestConstants;
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'"),
+                        @UnitTestSql("delete from trv_acct_type")
                 }
        )
 )

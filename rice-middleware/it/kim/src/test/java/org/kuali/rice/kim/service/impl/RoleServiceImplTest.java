@@ -143,19 +143,19 @@ public class RoleServiceImplTest extends KIMTestCase {
         DateTime dateTimeTo = DateTime.now().plusDays(3);
         delegateMemberInfo.setActiveToDate(dateTimeTo);
         inDelegateMember = delegateMemberInfo.build();
-        DelegateMember updatedDelegateMember = roleService.updateDelegateMember(inDelegateMember);
+        roleService.updateDelegateMember(inDelegateMember);
+        DelegateMember updatedDelegateMember = DelegateMember.Builder.create( KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, inDelegateMember.getDelegationMemberId()) ).build();
+
         assertEquals("Delegate member was updated",newDelegateMember.getDelegationMemberId(),updatedDelegateMember.getDelegationMemberId());
         assertNotNull("updateDelegateMember not created",updatedDelegateMember);
         assertEquals("activeFromDate not updated",dateTimeFrom,updatedDelegateMember.getActiveFromDate());
         assertEquals("activeToDate not updated",dateTimeTo,updatedDelegateMember.getActiveToDate());
 
         //remove (inactivate) delegate member
-        List<DelegateMember>  removeDelegateMembers = new ArrayList<DelegateMember>();
-        removeDelegateMembers.add(updatedDelegateMember);
-        roleService.removeDelegateMembers(removeDelegateMembers);
-        DelegateMember removedDelegateMember = roleService.getDelegationMemberById(updatedDelegateMember.getDelegationMemberId()) ;
-        assertEquals("removeDelegateMembers did not remove the existing member",updatedDelegateMember.getDelegationMemberId(), removedDelegateMember.getDelegationMemberId() );
-        assertEquals("removeDelegateMembers did not remove the existing member", new Long(updatedDelegateMember.getVersionNumber() + 1), removedDelegateMember.getVersionNumber() );
+        roleService.removeDelegateMembers(Collections.singletonList(updatedDelegateMember));
+        DelegateMemberBo removedDelegateMember = KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, updatedDelegateMember.getDelegationMemberId());
+        //assertEquals("removeDelegateMembers did not remove the existing member",updatedDelegateMember.getDelegationMemberId(), removedDelegateMember.getDelegationMemberId() );
+        assertEquals("removeDelegateMembers did not update the existing member", new Long(updatedDelegateMember.getVersionNumber() + 1), removedDelegateMember.getVersionNumber() );
         assertTrue("removeDelegateMembers did not update activeToDate",removedDelegateMember.getActiveToDate().isBeforeNow());
     }
 
@@ -228,7 +228,7 @@ public class RoleServiceImplTest extends KIMTestCase {
                 if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
                         newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
                     assertEquals(oldRoleMemberAttrDataBo.getAttributeValue(), newRoleMemberAttrDataBo.getAttributeValue());
-                    assertEquals("updated role member version number incorrect", new Long(2), newRoleMemberAttrDataBo.getVersionNumber());
+                    assertEquals("updated role member version number incorrect (since no update - should not have been changed)", new Long(1), newRoleMemberAttrDataBo.getVersionNumber());
                 }
             }
         }
@@ -330,7 +330,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegate.setDelegationType(DelegationType.PRIMARY);
         delegate.setRoleId(r2.getId());
         delegate.setActive(true);
-        delegate.setKimTypeId("" + kimTypeId);
+        delegate.setKimTypeId(kimTypeId);
         delegate = KradDataServiceLocator.getDataObjectService().save(delegate);
 
         //Create delegate member
@@ -348,13 +348,13 @@ public class RoleServiceImplTest extends KIMTestCase {
         DelegateMember newDelegateMember = roleService.createDelegateMember(inDelegateMember);
         assertNotNull("delegateMember not created",newDelegateMember);
 
-        DelegateMemberBo originalDelegateMemberBo = getDelegateMemberBo(newDelegateMember.getDelegationMemberId());
+//        DelegateMemberBo originalDelegateMemberBo = getDelegateMemberBo(newDelegateMember.getDelegationMemberId());
 
         //Update delegate member
-        DateTime dateTimeFrom   = DateTime.now().minusDays(3);
-        delegateMemberInfo.setActiveFromDate(dateTimeFrom);
-        DateTime dateTimeTo = DateTime.now().plusDays(3);
-        delegateMemberInfo.setActiveToDate(dateTimeTo);
+        DateTime threeDaysAgo   = DateTime.now().minusDays(3);
+        DateTime threeDaysFromNow = DateTime.now().plusDays(3);
+        delegateMemberInfo.setActiveFromDate(threeDaysAgo);
+        delegateMemberInfo.setActiveToDate(threeDaysFromNow);
         delegateMemberInfo.setDelegationMemberId(newDelegateMember.getDelegationMemberId());
         Map<String,String> newAttributes = new HashMap<String,String>();
         newAttributes.put("parameterName", "parameterNameAfter");
@@ -363,9 +363,10 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegateMemberInfo.setAttributes(newAttributes);
         newDelegateMember = delegateMemberInfo.build();
         DelegateMember updateDelegateMember = roleService.updateDelegateMember(newDelegateMember);
+
         assertNotNull("updateDelegateMember not updated", updateDelegateMember);
-        assertEquals("activeFromDate not updated",dateTimeFrom,updateDelegateMember.getActiveFromDate());
-        assertEquals("activeToDate not updated",dateTimeTo,updateDelegateMember.getActiveToDate());
+        assertEquals("activeFromDate not updated",threeDaysAgo,updateDelegateMember.getActiveFromDate());
+        assertEquals("activeToDate not updated",threeDaysFromNow,updateDelegateMember.getActiveToDate());
 
         DelegateMemberBo updatedDelegateMemberBo = getDelegateMemberBo(updateDelegateMember.getDelegationMemberId());
 

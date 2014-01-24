@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1905,9 +1906,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             throw new RiceIllegalStateException("the roleMember to update does not exists: " + roleMember);
         }
 
-        String kimTypeId = getRoleBoLite(roleMember.getRoleId()).getKimTypeId();
-        List<RoleMemberAttributeDataBo> attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
-
         //RoleMemberBo bo = RoleMemberBo.from(roleMember);
         //List<RoleMemberAttributeDataBo> updateAttrBos =   new ArrayList<RoleMemberAttributeDataBo>();
 
@@ -1917,33 +1915,82 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         roleMemberBo.setActiveFromDateValue(roleMember.getActiveFromDate() == null ? null : new Timestamp(roleMember.getActiveFromDate().getMillis()));
         roleMemberBo.setActiveToDateValue(roleMember.getActiveToDate() == null ? null : new Timestamp(roleMember.getActiveToDate().getMillis()));
 
-        // TODO
-        for (RoleResponsibilityAction roleRespActn : roleMember.getRoleRspActions()) {
-            // loop over records already on
-        }
-//        List<RoleResponsibilityActionBo> actions = new ArrayList<RoleResponsibilityActionBo>();
-//        if (CollectionUtils.isNotEmpty(roleMember.getRoleRspActions())) {
-//            for (RoleResponsibilityAction roleRespActn : roleMember.getRoleRspActions()) {
-//                actions.add(RoleResponsibilityActionBo.from(roleRespActn));
-//            }
-//        }
-
-        // FIXME : this code does not delete removed attributes
-        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo : attrBos) {
+        Iterator<RoleResponsibilityActionBo> actions = roleMemberBo.getRoleRspActions().iterator();
+        List<RoleResponsibilityAction> newActionList = new ArrayList( roleMember.getRoleRspActions() );
+        // loop over the existing actions
+        while ( actions.hasNext() ) {
+            RoleResponsibilityActionBo action = actions.next();
+            // look for a match in the new list
             boolean matched = false;
-            for (RoleMemberAttributeDataBo roleMemberAttrDataBo :  roleMemberBo.getAttributeDetails()) {
-                if (newRoleMemberAttrDataBo.getKimTypeId().equals(roleMemberAttrDataBo.getKimTypeId())
-                        && newRoleMemberAttrDataBo.getKimAttributeId().equals(roleMemberAttrDataBo.getKimAttributeId())) {
-                    roleMemberAttrDataBo.setAttributeValue( newRoleMemberAttrDataBo.getAttributeValue() );
+            Iterator<RoleResponsibilityAction> newActions = newActionList.iterator();
+            while ( newActions.hasNext() ) {
+                RoleResponsibilityAction newAction = newActions.next();
+                if (newAction.getId().equals(action.getId())) {
                     matched = true;
+                    action.setActionPolicyCode( newAction.getActionPolicyCode() );
+                    action.setActionTypeCode( newAction.getActionTypeCode() );
+                    action.setPriorityNumber( newAction.getPriorityNumber() );
+                    action.setForceAction( newAction.isForceAction() );
+                    newActions.remove(); // processed this one - we don't want to see it again
                     break;
                 }
             }
-            if (!matched) {
-                newRoleMemberAttrDataBo.setAssignedToId(roleMemberBo.getId());
-                roleMemberBo.getAttributeDetails().add(newRoleMemberAttrDataBo);
+            if ( !matched ) {
+                // nothing in the new list matched - this means this action was deleted
+                actions.remove();
             }
         }
+        // now - anything left in the new attribute list needs to be added
+        for ( RoleResponsibilityAction rra : newActionList ) {
+            roleMemberBo.getRoleRspActions().add(RoleResponsibilityActionBo.from(rra));
+        }
+
+        String kimTypeId = getRoleBoLite(roleMember.getRoleId()).getKimTypeId();
+        List<RoleMemberAttributeDataBo> newAttributeBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
+        Iterator<RoleMemberAttributeDataBo> attributes = roleMemberBo.getAttributeDetails().iterator();
+        // loop over the existing attributes
+        while ( attributes.hasNext() ) {
+            RoleMemberAttributeDataBo attr = attributes.next();
+            // look for a match in the new list
+            boolean matched = false;
+            Iterator<RoleMemberAttributeDataBo> newAttributes = newAttributeBos.iterator();
+            while ( newAttributes.hasNext() ) {
+                RoleMemberAttributeDataBo newAttr = newAttributes.next();
+                if (newAttr.getKimTypeId().equals(attr.getKimTypeId())
+                        && newAttr.getKimAttributeId().equals(attr.getKimAttributeId())) {
+                    matched = true;
+                    attr.setAttributeValue( newAttr.getAttributeValue() );
+                    newAttributes.remove(); // processed this one - we don't want to see it again
+                    break;
+                }
+            }
+            if ( !matched ) {
+                // nothing in the new list matched - this means this attribute was deleted
+                attributes.remove();
+            }
+        }
+        // now - anything left in the new attribute list needs to be added
+        roleMemberBo.getAttributeDetails().addAll(newAttributeBos);
+
+        // FIXME : this code does not delete removed attributes
+//        while ( newAttributes.hasNext() ) {
+//            RoleMemberAttributeDataBo newAttr = newAttributes.next();
+//            boolean matched = false;
+//            for (RoleMemberAttributeDataBo roleMemberAttrDataBo :  roleMemberBo.getAttributeDetails()) {
+//                if (newAttr.getKimTypeId().equals(roleMemberAttrDataBo.getKimTypeId())
+//                        && newAttr.getKimAttributeId().equals(roleMemberAttrDataBo.getKimAttributeId())) {
+//                    roleMemberAttrDataBo.setAttributeValue( newAttr.getAttributeValue() );
+//                    matched = true;
+//                    newAttributes.remove();
+//                    break;
+//                }
+//            }
+//            if (!matched) {
+//                newAttr.setAssignedToId(roleMemberBo.getId());
+//                roleMemberBo.getAttributeDetails().add(newAttr);
+//                newAttributes.remove();
+//            }
+//        }
 
         return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(roleMemberBo));
     }
@@ -1958,49 +2005,52 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         //check delegate exists
         String delegationId =  delegateMember.getDelegationId();
         incomingParamCheck(delegationId,"delegationId");
+
         DelegateTypeBo delegate = getKimDelegationImpl(delegationId);
-        DelegateMemberBo  originalDelegateMemberBo = null;
-        String delegationMemberId = delegateMember.getDelegationMemberId();
-        if (StringUtils.isNotEmpty(delegationMemberId)) {
-            originalDelegateMemberBo = getDelegateMemberBo(delegateMember.getDelegationMemberId());
+        DelegateMemberBo  delegateMemberBo = null;
+
+        if (StringUtils.isNotEmpty(delegateMember.getDelegationMemberId())) {
+            delegateMemberBo = getDelegateMemberBo(delegateMember.getDelegationMemberId());
         }
-        if(delegate==null)   {
+        if(delegateMemberBo==null)   {
             throw new RiceIllegalStateException("the delegate does not exist: " + delegationId);
         }
 
-        //save the delegateMember  (actually updates)
-        String kimTypeId = getRoleBoLite(delegate.getRoleId()).getKimTypeId();
-        List<DelegateMemberAttributeDataBo> attrBos = Collections.emptyList();
-        attrBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
-        DelegateMemberBo bo = DelegateMemberBo.from(delegateMember);
+        // copy the main data
+        delegateMemberBo.setActiveFromDateValue(delegateMember.getActiveFromDate() == null ? null : new Timestamp(delegateMember.getActiveFromDate().getMillis()));
+        delegateMemberBo.setActiveToDateValue(delegateMember.getActiveToDate() == null ? null : new Timestamp(delegateMember.getActiveToDate().getMillis()));
+        delegateMemberBo.setMemberId(delegateMember.getMemberId());
+        delegateMemberBo.setRoleMemberId(delegateMember.getRoleMemberId());
+        delegateMemberBo.setTypeCode(delegateMember.getType().getCode());
 
-        List<DelegateMemberAttributeDataBo> updateAttrBos =   new ArrayList<DelegateMemberAttributeDataBo>();
-
-        boolean matched = false;
-        if (originalDelegateMemberBo !=null ) {
-            bo.setVersionNumber(originalDelegateMemberBo.getVersionNumber());
-            for (DelegateMemberAttributeDataBo newDelegateMemberAttrDataBo :  attrBos) {
-                for (DelegateMemberAttributeDataBo oldDelegateMemberAttrDataBo :  originalDelegateMemberBo.getAttributeDetails()) {
-                    if (newDelegateMemberAttrDataBo.getKimTypeId().equals(oldDelegateMemberAttrDataBo.getKimTypeId()) &&
-                            newDelegateMemberAttrDataBo.getKimAttributeId().equals(oldDelegateMemberAttrDataBo.getKimAttributeId())) {
-                        newDelegateMemberAttrDataBo.setAssignedToId(oldDelegateMemberAttrDataBo.getAssignedToId());
-                        newDelegateMemberAttrDataBo.setVersionNumber(oldDelegateMemberAttrDataBo.getVersionNumber());
-                        newDelegateMemberAttrDataBo.setId(oldDelegateMemberAttrDataBo.getId());
-                        updateAttrBos.add(newDelegateMemberAttrDataBo);
-                        matched = true;
-                        break;
-                    }
-                }
-                if (!matched) {
-                    updateAttrBos.add(newDelegateMemberAttrDataBo);
-                } else  {
-                    matched = false;
+        String kimTypeId = delegate.getKimTypeId();
+        List<DelegateMemberAttributeDataBo> newAttributeBos = KimAttributeDataBo.createFrom(DelegateMemberAttributeDataBo.class, delegateMember.getAttributes(), kimTypeId);
+        Iterator<DelegateMemberAttributeDataBo> attributes = delegateMemberBo.getAttributeDetails().iterator();
+        // loop over the existing attributes
+        while ( attributes.hasNext() ) {
+            DelegateMemberAttributeDataBo attr = attributes.next();
+            // look for a match in the new list
+            boolean matched = false;
+            Iterator<DelegateMemberAttributeDataBo> newAttributes = newAttributeBos.iterator();
+            while ( newAttributes.hasNext() ) {
+                DelegateMemberAttributeDataBo newAttr = newAttributes.next();
+                if (newAttr.getKimTypeId().equals(attr.getKimTypeId())
+                        && newAttr.getKimAttributeId().equals(attr.getKimAttributeId())) {
+                    matched = true;
+                    attr.setAttributeValue( newAttr.getAttributeValue() );
+                    newAttributes.remove(); // processed this one - we don't want to see it again
+                    break;
                 }
             }
+            if ( !matched ) {
+                // nothing in the new list matched - this means this attribute was deleted
+                attributes.remove();
+            }
         }
+        // now - anything left in the new attribute list needs to be added
+        delegateMemberBo.getAttributeDetails().addAll(newAttributeBos);
 
-        bo.setAttributeDetails(updateAttrBos);
-        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(bo));
+        return DelegateMemberBo.to(getResponsibilityInternalService().saveDelegateMember(delegateMemberBo));
     }
 
     @Override

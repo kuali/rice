@@ -103,7 +103,7 @@ public class Header extends ContentElementBase {
             Message message = ComponentFactory.getMessage();
             message.setMessageText(headerText);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateSpan(false);
+            message.setGenerateWrapperElement(false);
             
             ViewLifecycle.spawnSubLifecyle(model, message, this);
 

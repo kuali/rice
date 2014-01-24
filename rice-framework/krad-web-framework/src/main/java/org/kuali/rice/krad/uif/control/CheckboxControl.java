@@ -60,7 +60,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
             Message message = ComponentFactory.getMessage();
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateSpan(false);
+            message.setGenerateWrapperElement(false);
             ViewLifecycle.spawnSubLifecyle(model, message, this);
             this.setRichLabelMessage(message);
         }

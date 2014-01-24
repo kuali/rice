@@ -35,7 +35,6 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -100,7 +99,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
 
         // special message component case
         if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
-                .isGenerateSpan()) {
+                .isGenerateWrapperElement()) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 

@@ -223,7 +223,7 @@
     <property name="template" value="/krad/WEB-INF/ftl/components/field/colGroupingField.ftl"/>
     <property name="label" value="Group"/>
     <property name="templateName" value="uif_colGroupingField"/>
-    <property name="message.generateSpan" value="false"/>
+    <property name="message.generateWrapperElement" value="false"/>
   </bean>
 
   <bean id="Uif-LinkField" parent="Uif-LinkField-parentBean"/>

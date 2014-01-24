@@ -144,7 +144,7 @@
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Multiple ways to get an image inline within a message:
+                    value="Multiple ways to get an image &lt;span class='test'&gt; inline &lt;/span&gt; within a message:
                     [ul]
                     [li]By inlineComponents[0][/li]
                     [li]By id[id=Demo-RichMessagesImage][/li]

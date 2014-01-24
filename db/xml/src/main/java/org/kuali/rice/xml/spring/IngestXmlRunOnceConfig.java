@@ -18,12 +18,17 @@ package org.kuali.rice.xml.spring;
 import java.util.Properties;
 
 import org.kuali.common.util.execute.Executable;
+import org.kuali.common.util.properties.spring.EnvironmentPropertySourceConfig;
 import org.kuali.common.util.runonce.smart.RunOnce;
 import org.kuali.common.util.runonce.smart.RunOnceExecutable;
+import org.kuali.common.util.spring.SpringExecUtils;
 import org.kuali.common.util.spring.event.ApplicationEventListenerConfig;
 import org.kuali.common.util.spring.event.ExecutableApplicationEventListener;
+import org.kuali.common.util.spring.service.SpringService;
+import org.kuali.common.util.spring.service.SpringServiceConfig;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.sql.spring.SourceSqlExecConfig;
 import org.kuali.rice.xml.ingest.ParameterServiceRunOnce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +37,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.core.Ordered;
+import org.springframework.core.env.PropertySource;
 
 /**
  * Set up an {@code SmartApplicationListener} that ingests XML when it receives a {@code ContextRefreshedEvent}.
@@ -39,11 +45,14 @@ import org.springframework.core.Ordered;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Configuration
-@Import({ IngestXmlExecConfig.class })
+@Import({ SpringServiceConfig.class, EnvironmentPropertySourceConfig.class })
 public class IngestXmlRunOnceConfig implements ApplicationEventListenerConfig {
 
-	@Autowired
-	IngestXmlExecConfig config;
+    @Autowired
+    SpringService service;
+
+    @Autowired
+    PropertySource<?> propertySource;
 
 	private static final String ORDER_KEY = "rice.ingest.order";
 	private static final String NAMESPACE_KEY = "rice.ingest.param.namespace";
@@ -73,7 +82,8 @@ public class IngestXmlRunOnceConfig implements ApplicationEventListenerConfig {
 
 		RunOnce runOnce = ParameterServiceRunOnce.builder().applicationId(applicationId).namespace(namespace).component(component).name(name).description(description)
 				.runOnMissingParameter(runOnMissingParameter).build();
-		Executable executable = RunOnceExecutable.builder(config.ingestXmlExecutable(), runOnce).build();
+		Executable springExecutable = SpringExecUtils.getSpringExecutable(service, propertySource, IngestXmlExecConfig.class);
+        Executable executable = RunOnceExecutable.builder(springExecutable, runOnce).build();
 
 		// Setup the application event listener
 		int order = Integer.parseInt(properties.getProperty(ORDER_KEY, Ordered.LOWEST_PRECEDENCE + ""));

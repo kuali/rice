@@ -21,7 +21,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
@@ -51,29 +50,6 @@ public class EntityEthnicityBo extends DataObjectBase implements EntityEthnicity
     @Column(name = "SUB_ETHNCTY_CD")
     private String subEthnicityCode;
 
-    //@javax.persistence.Convert(converter=BooleanYNConverter.class)
-    //@Column(name = "HSPNC_LTNO_IND" )
-    @Transient
-    private boolean hispanicOrLatino;
-
-    //@Column(name="RACE_ETH_CD", length=40)
-    @Transient
-    private String raceEthnicityTypeCode;
-
-    //@ManyToOne(fetch = FetchType.EAGER, cascade = {})
-    //@JoinColumn(name = "RACE_ETH_CD", insertable = false, updatable = false)
-
-    @Transient
-    private EntityEthnicityRaceTypeBo raceEthnicityCode;
-
-    //@Column(name="LOCAL_RACE_ETH_CD", length=40)
-    @Transient
-    private String localRaceEthnicityCode;
-
-    //@Column(name = "PRCNT")
-    @Transient
-    private Double percentage;
-
     @Transient
     private boolean suppressPersonal;
 
@@ -99,15 +75,8 @@ public class EntityEthnicityBo extends DataObjectBase implements EntityEthnicity
         bo.id = immutable.getId();
         bo.ethnicityCode = immutable.getEthnicityCodeUnmasked();
         bo.subEthnicityCode = immutable.getSubEthnicityCodeUnmasked();
-        //convert list of raceEthnicity types
-        if (immutable.getRaceEthnicityCodeUnmasked() != null) {
-            bo.raceEthnicityCode = EntityEthnicityRaceTypeBo.from(immutable.getRaceEthnicityCodeUnmasked());
-        }
-        bo.hispanicOrLatino = immutable.isHispanicOrLatino();
-        bo.localRaceEthnicityCode = immutable.getLocalRaceEthnicityCodeUnmasked();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-        bo.setPercentage(immutable.getPercentage());
         return bo;
     }
 
@@ -155,63 +124,12 @@ public class EntityEthnicityBo extends DataObjectBase implements EntityEthnicity
     }
 
     @Override
-    public EntityEthnicityRaceTypeBo getRaceEthnicityCode() {
-        if (isSuppressPersonal()) {
-            return null;
-        }
-        return this.raceEthnicityCode;
-    }
-
-    @Override
-    public EntityEthnicityRaceTypeBo getRaceEthnicityCodeUnmasked() {
-        return this.raceEthnicityCode;
-    }
-
-    @Override
-    public String getLocalRaceEthnicityCode() {
-        if (isSuppressPersonal()) {
-            return KimApiConstants.RestrictedMasks.RESTRICTED_DATA_MASK;
-        }
-        return this.localRaceEthnicityCode;
-    }
-
-    @Override
-    public String getLocalRaceEthnicityCodeUnmasked() {
-        return this.localRaceEthnicityCode;
-    }
-
-    @Override
-    public Double getPercentage() {
-        if (isSuppressPersonal()) {
-            return null;
-        }
-        return this.percentage;
-    }
-
-    @Override
-    public Double getPercentageUnmasked() {
-        return this.percentage;
-    }
-
-    @Override
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setPercentage(Double percentage) {
-        this.percentage = percentage;
-    }
-
-    public String getRaceEthnicityTypeCode() {
-        return raceEthnicityTypeCode;
-    }
-
-    public void setRaceEthnicityTypeCode(String raceEthnicityTypeCode) {
-        this.raceEthnicityTypeCode = raceEthnicityTypeCode;
     }
 
     @Override
@@ -229,27 +147,6 @@ public class EntityEthnicityBo extends DataObjectBase implements EntityEthnicity
 
     public void setSubEthnicityCode(String subEthnicityCode) {
         this.subEthnicityCode = subEthnicityCode;
-    }
-
-    public boolean getHispanicOrLatino() {
-        return hispanicOrLatino;
-    }
-
-    @Override
-    public boolean isHispanicOrLatino() {
-        return hispanicOrLatino;
-    }
-
-    public void setHispanicOrLatino(boolean hispanicOrLatino) {
-        this.hispanicOrLatino = hispanicOrLatino;
-    }
-
-    public void setRaceEthnicityCodes(EntityEthnicityRaceTypeBo raceEthnicityCode) {
-        this.raceEthnicityCode = raceEthnicityCode;
-    }
-
-    public void setLocalRaceEthnicityCode(String localRaceEthnicityCode) {
-        this.localRaceEthnicityCode = localRaceEthnicityCode;
     }
 
     public boolean getSuppressPersonal() {

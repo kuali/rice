@@ -182,29 +182,6 @@ public interface EntityBioDemographicsContract extends Versioned, GloballyUnique
     String getGenderChangeCodeUnmasked();
 
     /**
-     * Get the {@link EntityBioDemographicsContract}'s disabilities
-     */
-    List<? extends EntityDisabilityContract> getDisabilities();
-
-    /**
-     * Returns an indicator that signifies if the {@link EntityBioDemographicsContract}'s entity is disabled.
-     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s disabilities values
-     */
-    boolean isDisabled();
-
-    /**
-     * Returns if the {@link EntityBioDemographicsContract}'s entity is disabled.
-     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s disabilities values
-     */
-    List<? extends EntityMilitaryContract> getMilitaryRecords();
-
-    /**
-     * Returns an indicator that signifies if the {@link EntityBioDemographicsContract}'s entity is a veteran.
-     * This value is determined by the contents of the {@link EntityBioDemographicsContract}'s military values
-     */
-    boolean isVeteran();
-
-    /**
      * Returns a boolean value that determines if personal fields should be suppressed.
      * @return boolean value that determines if personal fields should be suppressed.
      */

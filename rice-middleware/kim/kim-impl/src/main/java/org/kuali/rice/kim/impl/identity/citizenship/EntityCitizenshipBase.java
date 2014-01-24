@@ -51,14 +51,6 @@ public abstract class EntityCitizenshipBase extends DataObjectBase implements En
     @Column(name = "ACTV_IND")
     private boolean active;
 
-    //@Column(name = "CHNG_DT")
-    @Transient
-    private Timestamp changeDateValue;
-
-    //@Column(name = "CTZNSHP_CHNG_CD")
-    @Transient
-    private String changeCode;
-
 
     @Override
     public DateTime getStartDate() {
@@ -76,28 +68,6 @@ public abstract class EntityCitizenshipBase extends DataObjectBase implements En
         }
 
         return null;
-    }
-
-
-    public String getChangeCode() {
-        return changeCode;
-    }
-
-    public void setChangeCode(String changeCode) {
-        this.changeCode = changeCode;
-    }
-
-    @Override
-    public DateTime getChangeDate() {
-        return this.changeDateValue == null ? null : new DateTime(changeDateValue.getTime());
-    }
-
-    public Timestamp getChangeDateValue() {
-        return changeDateValue;
-    }
-
-    public void setChangeDateValue(Timestamp changeDateValue) {
-        this.changeDateValue = changeDateValue;
     }
 
     @Override

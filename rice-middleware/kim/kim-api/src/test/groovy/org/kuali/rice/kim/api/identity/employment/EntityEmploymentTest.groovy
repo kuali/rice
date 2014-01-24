@@ -66,7 +66,6 @@ class EntityEmploymentTest {
     private static final KualiDecimal BASE_SALARY_AMOUNT = new KualiDecimal(1000000.00);
     private static final String PRIMARY = "false"
     private static final String ACTIVE = "true"
-    private static final String TENURED = "true"
     private static final Long VERSION_NUMBER = new Integer(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
 
@@ -116,7 +115,6 @@ class EntityEmploymentTest {
         <active>${ACTIVE}</active>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
-        <tenured>${TENURED}</tenured>
     </entityEmployment>
     """
 
@@ -190,7 +188,6 @@ class EntityEmploymentTest {
             def boolean active = EntityEmploymentTest.ACTIVE.toBoolean()
             def Long versionNumber = EntityEmploymentTest.VERSION_NUMBER;
 			def String objectId = EntityEmploymentTest.OBJECT_ID
-            def boolean tenured = EntityEmploymentTest.TENURED
         }).build()
 
 	}

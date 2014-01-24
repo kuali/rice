@@ -68,10 +68,6 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
         }
         EntityCitizenshipBo bo = new EntityCitizenshipBo();
         bo.setActive(immutable.isActive());
-        if (immutable.getChangeType() != null) {
-            bo.setChangeCode(immutable.getChangeType().getCode());
-            bo.setChangeType(EntityCitizenshipChangeTypeBo.from(immutable.getChangeType()));
-        }
         if (immutable.getStatus() != null) {
             bo.setStatusCode(immutable.getStatus().getCode());
             bo.setStatus(EntityCitizenshipStatusBo.from(immutable.getStatus()));
@@ -85,25 +81,10 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
         if (immutable.getEndDate() != null) {
             bo.setEndDateValue(new Timestamp(immutable.getEndDate().getMillis()));
         }
-        if (immutable.getChangeDate() != null) {
-            bo.setChangeDateValue(new Timestamp(immutable.getEndDate().getMillis()));
-        }
-        if (immutable.getChangeDate() != null) {
-            bo.setChangeDateValue(new Timestamp(immutable.getChangeDate().getMillis()));
-        }
         bo.setActive(immutable.isActive());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
         return bo;
-    }
-
-    @Override
-    public EntityCitizenshipChangeTypeBo getChangeType() {
-        return this.changeType;
-    }
-
-    public void setChangeType(EntityCitizenshipChangeTypeBo changeType) {
-        this.changeType = changeType;
     }
 
     @Override

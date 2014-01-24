@@ -53,15 +53,6 @@ public class EntityVisaBo extends DataObjectBase implements EntityVisaContract {
     @Column(name = "VISA_ID")
     private String visaId;
 
-    //@ManyToOne(fetch = FetchType.EAGER, cascade = {})
-    //@JoinColumn(name = "VISA_TYP_CD", insertable = false, updatable = false)
-    @Transient
-    private EntityVisaTypeBo visaType;
-
-    @Override
-    public EntityVisaTypeBo getVisaType() {
-        return this.visaType;
-    }
 
     public static EntityVisa to(EntityVisaBo bo) {
         if (bo == null) {
@@ -144,7 +135,4 @@ public class EntityVisaBo extends DataObjectBase implements EntityVisaContract {
         this.visaId = visaId;
     }
 
-    public void setVisaType(EntityVisaTypeBo visaType) {
-        this.visaType = visaType;
-    }
 }

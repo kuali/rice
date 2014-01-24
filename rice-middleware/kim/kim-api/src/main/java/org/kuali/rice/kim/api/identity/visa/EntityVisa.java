@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = EntityVisa.Constants.ROOT_ELEMENT_NAME)
@@ -41,7 +40,6 @@ import org.w3c.dom.Element;
     EntityVisa.Elements.VISA_ID,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
-    EntityVisa.Elements.VISA_TYPE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityVisa extends AbstractDataTransferObject
@@ -62,8 +60,6 @@ public final class EntityVisa extends AbstractDataTransferObject
     private final String objectId;
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
-    @XmlElement(name = Elements.VISA_TYPE, required = false)
-    private final CodedAttribute visaType;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -80,7 +76,6 @@ public final class EntityVisa extends AbstractDataTransferObject
         this.versionNumber = null;
         this.objectId = null;
         this.id = null;
-        this.visaType = null;
     }
 
     private EntityVisa(Builder builder) {
@@ -91,7 +86,6 @@ public final class EntityVisa extends AbstractDataTransferObject
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
         this.id = builder.getId();
-        this.visaType = builder.getVisaType() == null ? null : builder.getVisaType().build();
     }
 
     @Override
@@ -129,11 +123,6 @@ public final class EntityVisa extends AbstractDataTransferObject
         return this.id;
     }
 
-    @Override
-    public CodedAttribute getVisaType() {
-        return this.visaType;
-    }
-
 
 
     /**
@@ -151,7 +140,6 @@ public final class EntityVisa extends AbstractDataTransferObject
         private Long versionNumber;
         private String objectId;
         private String id;
-        private CodedAttribute.Builder visaType;
 
         private Builder() { }
 
@@ -171,9 +159,6 @@ public final class EntityVisa extends AbstractDataTransferObject
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
             builder.setId(contract.getId());
-            if (contract.getVisaType() != null) {
-                builder.setVisaType(CodedAttribute.Builder.create(contract.getVisaType()));
-            }
             return builder;
         }
 
@@ -216,11 +201,6 @@ public final class EntityVisa extends AbstractDataTransferObject
             return this.id;
         }
 
-        @Override
-        public CodedAttribute.Builder getVisaType() {
-            return this.visaType;
-        }
-
         public void setEntityId(String entityId) {
             this.entityId = entityId;
         }
@@ -252,11 +232,7 @@ public final class EntityVisa extends AbstractDataTransferObject
             this.id = id;
         }
 
-        public void setVisaType(CodedAttribute.Builder visaType) {
-            this.visaType = visaType;
         }
-
-    }
 
 
     /**
@@ -280,7 +256,6 @@ public final class EntityVisa extends AbstractDataTransferObject
         final static String VISA_TYPE_KEY = "visaTypeKey";
         final static String VISA_ENTRY = "visaEntry";
         final static String VISA_ID = "visaId";
-        final static String VISA_TYPE = "visaType";
         final static String ID = "id";
 
     }

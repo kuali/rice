@@ -401,7 +401,6 @@ class EntityTest {
                         <versionNumber>${EMPLOYMENT.versionNumber}</versionNumber>
                         <objectId>${EMPLOYMENT.objectId}</objectId>
                         <active>${EMPLOYMENT.active}</active>
-                        <tenured>${EMPLOYMENT.tenured}</tenured>
                     </employment>
                 </employmentInformation>
                 <privacyPreferences>
@@ -439,64 +438,6 @@ class EntityTest {
                     <geographicOriginUnmasked>${BIO.geographicOriginUnmasked}</geographicOriginUnmasked>
                     <noteMessage>${BIO.noteMessage}</noteMessage>
                     <suppressPersonal>${BIO.suppressPersonal}</suppressPersonal>
-                    <disabled>${BIO.disabled}</disabled>
-                    <disabilities>
-                        <disability>
-                            <id>${BIO.disabilities[0].id}</id>
-                            <entityId>${BIO.disabilities[0].entityId}</entityId>
-                            <statusCode>${BIO.disabilities[0].statusCode}</statusCode>
-                            <determinationSourceType>
-                                <code>${BIO.disabilities[0].determinationSourceType.code}</code>
-                                <name>${BIO.disabilities[0].determinationSourceType.name}</name>
-                                <sortCode>${BIO.disabilities[0].determinationSourceType.sortCode}</sortCode>
-                                <active>${BIO.disabilities[0].determinationSourceType.active}</active>
-                                <versionNumber>${BIO.disabilities[0].determinationSourceType.versionNumber}</versionNumber>
-                                <objectId>${BIO.disabilities[0].determinationSourceType.objectId}</objectId>
-                            </determinationSourceType>
-                            <accommodationsNeeded>
-                              <accommodationNeeded>
-                                <code>${BIO.disabilities[0].accommodationsNeeded[0].code}</code>
-                                <name>${BIO.disabilities[0].accommodationsNeeded[0].name}</name>
-                                <sortCode>${BIO.disabilities[0].accommodationsNeeded[0].sortCode}</sortCode>
-                                <active>${BIO.disabilities[0].accommodationsNeeded[0].active}</active>
-                                <versionNumber>${BIO.disabilities[0].accommodationsNeeded[0].versionNumber}</versionNumber>
-                                <objectId>${BIO.disabilities[0].accommodationsNeeded[0].objectId}</objectId>
-                              </accommodationNeeded>
-                            </accommodationsNeeded>
-                            <conditionType>
-                                <code>${BIO.disabilities[0].conditionType.code}</code>
-                                <name>${BIO.disabilities[0].conditionType.name}</name>
-                                <sortCode>${BIO.disabilities[0].conditionType.sortCode}</sortCode>
-                                <active>${BIO.disabilities[0].conditionType.active}</active>
-                                <versionNumber>${BIO.disabilities[0].conditionType.versionNumber}</versionNumber>
-                                <objectId>${BIO.disabilities[0].conditionType.objectId}</objectId>
-                            </conditionType>
-                            <active>${BIO.disabilities[0].active}</active>
-                            <versionNumber>${BIO.disabilities[0].versionNumber}</versionNumber>
-                            <objectId>${BIO.disabilities[0].objectId}</objectId>
-                        </disability>
-                    </disabilities>
-                    <veteran>${BIO.veteran}</veteran>
-                    <militaryRecords>
-                        <militaryRecord>
-                            <id>${BIO.militaryRecords[0].id}</id>
-                            <entityId>${BIO.militaryRecords[0].entityId}</entityId>
-                            <selectiveService>${BIO.militaryRecords[0].selectiveService}</selectiveService>
-                            <selectiveServiceNumber>${BIO.militaryRecords[0].selectiveServiceNumber}</selectiveServiceNumber>
-                            <dischargeDate>${BIO.militaryRecords[0].dischargeDate}</dischargeDate>
-                            <relationshipStatus>
-                                <code>${BIO.militaryRecords[0].relationshipStatus.code}</code>
-                                <name>${BIO.militaryRecords[0].relationshipStatus.name}</name>
-                                <sortCode>${BIO.militaryRecords[0].relationshipStatus.sortCode}</sortCode>
-                                <active>${BIO.militaryRecords[0].relationshipStatus.active}</active>
-                                <versionNumber>${BIO.militaryRecords[0].relationshipStatus.versionNumber}</versionNumber>
-                                <objectId>${BIO.militaryRecords[0].relationshipStatus.objectId}</objectId>
-                            </relationshipStatus>
-                            <active>${BIO.militaryRecords[0].active}</active>
-                            <versionNumber>${BIO.militaryRecords[0].versionNumber}</versionNumber>
-                            <objectId>${BIO.militaryRecords[0].objectId}</objectId>
-                        </militaryRecord>
-                    </militaryRecords>
                     <versionNumber>${BIO.versionNumber}</versionNumber>
                     <objectId>${BIO.objectId}</objectId>
                 </bioDemographics>
@@ -512,15 +453,6 @@ class EntityTest {
                             <versionNumber>${CITIZENSHIP.status.versionNumber}</versionNumber>
                             <objectId>${CITIZENSHIP.status.objectId}</objectId>
                         </status>
-                         <changeDate>${CITIZENSHIP.changeDate.toString()}</changeDate>
-                        <changeType>
-                            <code>${CITIZENSHIP.changeType.code}</code>
-                            <name>${CITIZENSHIP.changeType.name}</name>
-                            <active>${CITIZENSHIP.changeType.active}</active>
-                            <sortCode>${CITIZENSHIP.changeType.sortCode}</sortCode>
-                            <versionNumber>${CITIZENSHIP.changeType.versionNumber}</versionNumber>
-                            <objectId>${CITIZENSHIP.changeType.objectId}</objectId>
-                        </changeType>
                         <countryCode>${CITIZENSHIP.countryCode}</countryCode>
                         <startDate>${CITIZENSHIP.startDate.toString()}</startDate>
                         <endDate>${CITIZENSHIP.endDate.toString()}</endDate>
@@ -589,27 +521,6 @@ class EntityTest {
                         <subEthnicityCode>${ETHNICITY.subEthnicityCode}</subEthnicityCode>
                         <subEthnicityCodeUnmasked>${ETHNICITY.subEthnicityCodeUnmasked}</subEthnicityCodeUnmasked>
                         <suppressPersonal>${ETHNICITY.suppressPersonal}</suppressPersonal>
-                        <hispanicOrLatino>${ETHNICITY.hispanicOrLatino}</hispanicOrLatino>
-                        <raceEthnicityCode>
-                            <code>${ETHNICITY.raceEthnicityCode.code}</code>
-                            <name>${ETHNICITY.raceEthnicityCode.name}</name>
-                            <active>${ETHNICITY.raceEthnicityCode.active}</active>
-                            <sortCode>${ETHNICITY.raceEthnicityCode.sortCode}</sortCode>
-                            <versionNumber>${ETHNICITY.raceEthnicityCode.versionNumber}</versionNumber>
-                            <objectId>${ETHNICITY.raceEthnicityCode.objectId}</objectId>
-                        </raceEthnicityCode>
-                        <raceEthnicityCodeUnmasked>
-                            <code>${ETHNICITY.raceEthnicityCodeUnmasked.code}</code>
-                            <name>${ETHNICITY.raceEthnicityCodeUnmasked.name}</name>
-                            <active>${ETHNICITY.raceEthnicityCodeUnmasked.active}</active>
-                            <sortCode>${ETHNICITY.raceEthnicityCodeUnmasked.sortCode}</sortCode>
-                            <versionNumber>${ETHNICITY.raceEthnicityCodeUnmasked.versionNumber}</versionNumber>
-                            <objectId>${ETHNICITY.raceEthnicityCodeUnmasked.objectId}</objectId>
-                        </raceEthnicityCodeUnmasked>
-                        <localRaceEthnicityCode>${ETHNICITY.localRaceEthnicityCode}</localRaceEthnicityCode>
-                        <localRaceEthnicityCodeUnmasked>${ETHNICITY.localRaceEthnicityCodeUnmasked}</localRaceEthnicityCodeUnmasked>
-                        <percentage>${ETHNICITY.percentage}</percentage>
-                        <percentageUnmasked>${ETHNICITY.percentageUnmasked}</percentageUnmasked>
                         <versionNumber>${ETHNICITY.versionNumber}</versionNumber>
                         <objectId>${ETHNICITY.objectId}</objectId>
                     </ethnicity>
@@ -622,27 +533,6 @@ class EntityTest {
                         <inState>${RESIDENCY.inState}</inState>
                         <versionNumber>${RESIDENCY.versionNumber}</versionNumber>
                         <objectId>${RESIDENCY.objectId}</objectId>
-                        <establishedDate>${RESIDENCY.establishedDate}</establishedDate>
-                        <changeDate>${RESIDENCY.changeDate}</changeDate>
-                        <countryCode>${RESIDENCY.countryCode}</countryCode>
-                        <countyCode>${RESIDENCY.countyCode}</countyCode>
-                        <stateProvinceCode>${RESIDENCY.stateProvinceCode}</stateProvinceCode>
-                        <residencyType>
-                            <code>${RESIDENCY.residencyType.code}</code>
-                            <name>${RESIDENCY.residencyType.name}</name>
-                            <active>${RESIDENCY.residencyType.active}</active>
-                            <sortCode>${RESIDENCY.residencyType.sortCode}</sortCode>
-                            <versionNumber>${RESIDENCY.residencyType.versionNumber}</versionNumber>
-                            <objectId>${RESIDENCY.residencyType.objectId}</objectId>
-                        </residencyType>
-                        <residencyStatus>
-                            <code>${RESIDENCY.residencyStatus.code}</code>
-                            <name>${RESIDENCY.residencyStatus.name}</name>
-                            <active>${RESIDENCY.residencyStatus.active}</active>
-                            <sortCode>${RESIDENCY.residencyStatus.sortCode}</sortCode>
-                            <versionNumber>${RESIDENCY.residencyStatus.versionNumber}</versionNumber>
-                            <objectId>${RESIDENCY.residencyStatus.objectId}</objectId>
-                        </residencyStatus>
                     </residency>
                 </residencies>
                 <visas>
@@ -652,14 +542,6 @@ class EntityTest {
                         <visaTypeKey>${VISA.visaTypeKey}</visaTypeKey>
                         <visaEntry>${VISA.visaEntry}</visaEntry>
                         <visaId>${VISA.visaId}</visaId>
-                        <visaType>
-                            <code>${VISA.visaType.code}</code>
-                            <name>${VISA.visaType.name}</name>
-                            <active>${VISA.visaType.active}</active>
-                            <sortCode>${VISA.visaType.sortCode}</sortCode>
-                            <versionNumber>${VISA.visaType.versionNumber}</versionNumber>
-                            <objectId>${VISA.visaType.objectId}</objectId>
-                        </visaType>
                         <versionNumber>${VISA.versionNumber}</versionNumber>
                         <objectId>${VISA.objectId}</objectId>
                     </visa>

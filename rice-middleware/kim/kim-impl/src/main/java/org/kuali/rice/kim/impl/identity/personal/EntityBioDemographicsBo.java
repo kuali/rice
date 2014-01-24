@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.personal;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
@@ -35,6 +24,16 @@ import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
@@ -83,12 +82,6 @@ public class EntityBioDemographicsBo extends DataObjectBase implements EntityBio
 
     @Column(name = "NOTE_MSG")
     private String noteMessage;
-
-    @Transient
-    private List<EntityMilitaryBo> militaryRecords;
-
-    @Transient
-    private List<EntityDisabilityBo> disabilities;
 
     @Transient
     private boolean suppressPersonal;
@@ -309,16 +302,6 @@ public class EntityBioDemographicsBo extends DataObjectBase implements EntityBio
     }
 
     @Override
-    public boolean isVeteran() {
-        return false;
-    }
-
-    @Override
-    public boolean isDisabled() {
-        return false;
-    }
-
-    @Override
     public String getEntityId() {
         return entityId;
     }
@@ -386,24 +369,6 @@ public class EntityBioDemographicsBo extends DataObjectBase implements EntityBio
 
     public void setNoteMessage(String noteMessage) {
         this.noteMessage = noteMessage;
-    }
-
-    @Override
-    public List<EntityMilitaryBo> getMilitaryRecords() {
-        return militaryRecords;
-    }
-
-    public void setMilitaryRecords(List<EntityMilitaryBo> militaryRecords) {
-        this.militaryRecords = militaryRecords;
-    }
-
-    @Override
-    public List<EntityDisabilityBo> getDisabilities() {
-        return disabilities;
-    }
-
-    public void setDisabilities(List<EntityDisabilityBo> disabilities) {
-        this.disabilities = disabilities;
     }
 
     public void setSuppressPersonal(boolean suppressPersonal) {

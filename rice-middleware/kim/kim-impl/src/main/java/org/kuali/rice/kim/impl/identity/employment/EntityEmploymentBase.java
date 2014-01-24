@@ -62,18 +62,6 @@ public abstract class EntityEmploymentBase extends DataObjectBase implements Ent
     @Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-    
-    @Transient
-    private boolean tenured;
-
-    @Override
-    public boolean isTenured() {
-        return tenured;
-    }
-
-    public void setTenured(boolean tenured) {
-        this.tenured = tenured;
-    }
 
     @Override
     public String getEntityId() {

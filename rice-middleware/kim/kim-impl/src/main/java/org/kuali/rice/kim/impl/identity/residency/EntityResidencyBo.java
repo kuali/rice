@@ -77,41 +77,6 @@ public class EntityResidencyBo extends DataObjectBase implements EntityResidency
     }
 
     @Override
-    public DateTime getEstablishedDate() {
-        return null;
-    }
-
-    @Override
-    public DateTime getChangeDate() {
-        return null;
-    }
-
-    @Override
-    public String getCountryCode() {
-        return null;
-    }
-
-    @Override
-    public String getCountyCode() {
-        return null;
-    }
-
-    @Override
-    public String getStateProvinceCode() {
-        return null;
-    }
-
-    @Override
-    public CodedAttributeContract getResidencyStatus() {
-        return null;
-    }
-
-    @Override
-    public CodedAttributeContract getResidencyType() {
-        return null;
-    }
-
-    @Override
     public String getId() {
         return id;
     }

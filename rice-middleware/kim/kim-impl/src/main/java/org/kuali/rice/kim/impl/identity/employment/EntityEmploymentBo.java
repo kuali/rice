@@ -105,7 +105,6 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
         bo.setEmploymentRecordId(immutable.getEmploymentRecordId());
         bo.setBaseSalaryAmount(immutable.getBaseSalaryAmount());
         bo.setPrimary(immutable.isPrimary());
-        bo.setTenured(immutable.isTenured());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
         return bo;

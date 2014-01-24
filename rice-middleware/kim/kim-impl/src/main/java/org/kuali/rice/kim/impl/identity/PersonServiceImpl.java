@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -45,20 +56,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
- * 
+ * This is a description of what this class does - kellerj don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -76,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
 	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
 	// KULRICE-4442 Special handling for extension objects
 	protected static final String EXTENSION = "extension";
-	
+
 	private IdentityService identityService;
 	private RoleService roleService;
 	private BusinessObjectMetaDataService businessObjectMetaDataService;
@@ -85,7 +85,7 @@ public class PersonServiceImpl implements PersonService {
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
 	// String that can be passed to the lookup framework to create an type = X OR type = Y criteria
 	private String personEntityTypeLookupCriteria = null;
-    
+
 	protected Map<String,String> baseLookupCriteria = new HashMap<String,String>();
 	protected Map<String,String> criteriaConversion = new HashMap<String,String>();
 	protected ArrayList<String> personCachePropertyNames = new ArrayList<String>();
@@ -94,7 +94,7 @@ public class PersonServiceImpl implements PersonService {
 		// the identity data tables
 		baseLookupCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
 		baseLookupCriteria.put( ENTITY_TYPE_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE, "Y" );
-		
+
 		// create the field mappings between the Person object and the KimEntity object
 		criteriaConversion.put( KIMPropertyConstants.Person.ENTITY_ID, KIMPropertyConstants.Entity.ID);
 		criteriaConversion.put( KIMPropertyConstants.Person.ACTIVE, PRINCIPAL_PROPERTY_PREFIX + KRADPropertyConstants.ACTIVE );
@@ -115,7 +115,7 @@ public class PersonServiceImpl implements PersonService {
 		criteriaConversion.put( KIMPropertyConstants.Person.CAMPUS_CODE, "affiliations.campusCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.AFFILIATION_TYPE_CODE, "affiliations.affiliationTypeCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_IDENTIFIER_TYPE_CODE, "externalIdentifiers.externalIdentifierTypeCode" );
-		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_ID, "externalIdentifiers.externalId" );		
+		criteriaConversion.put( KIMPropertyConstants.Person.EXTERNAL_ID, "externalIdentifiers.externalId" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_TYPE_CODE, "employmentInformation.employeeTypeCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_STATUS_CODE, "employmentInformation.employeeStatusCode" );
 		criteriaConversion.put( KIMPropertyConstants.Person.EMPLOYEE_ID, "employmentInformation.employeeId" );
@@ -133,11 +133,12 @@ public class PersonServiceImpl implements PersonService {
 		personCachePropertyNames.add( KIMPropertyConstants.Person.PRIMARY_DEPARTMENT_CODE );
 	}
 
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#getPerson(java.lang.String)
 	 */
-	public Person getPerson(String principalId) {
+	@Override
+    public Person getPerson(String principalId) {
 		if ( StringUtils.isBlank(principalId) ) {
 			return null;
 		}
@@ -178,12 +179,13 @@ public class PersonServiceImpl implements PersonService {
 			throw new RuntimeException( "Problem building person object", ex );
 		}
 	}
-	
-	
+
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#getPersonByPrincipalName(java.lang.String)
 	 */
-	public Person getPersonByPrincipalName(String principalName) {
+	@Override
+    public Person getPersonByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank(principalName) ) {
 			return null;
 		}
@@ -202,7 +204,8 @@ public class PersonServiceImpl implements PersonService {
 		return null;
 	}
 
-	public Person getPersonByEmployeeId(String employeeId) {
+	@Override
+    public Person getPersonByEmployeeId(String employeeId) {
 		if ( StringUtils.isBlank( employeeId  ) ) {
 			return null;
 		}
@@ -212,7 +215,7 @@ public class PersonServiceImpl implements PersonService {
 			return people.get(0);
 
 		}
-		
+
 	    // If no person was found above, check for inactive records
         EntityDefault entity = getIdentityService().getEntityDefaultByEmployeeId(employeeId);
         if (entity != null) {
@@ -220,24 +223,26 @@ public class PersonServiceImpl implements PersonService {
                 Principal principal = getIdentityService().getPrincipal(entity.getPrincipals().get(0).getPrincipalId());
                 if (principal != null) {
                     return convertEntityToPerson( entity, principal );
-                }  
+                }
             }
         }
 
 		return null;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#findPeople(Map)
 	 */
-	public List<Person> findPeople(Map<String, String> criteria) {
+	@Override
+    public List<Person> findPeople(Map<String, String> criteria) {
 		return findPeople(criteria, true);
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#findPeople(java.util.Map, boolean)
 	 */
-	public List<Person> findPeople(Map<String, String> criteria, boolean unbounded) {
+	@Override
+    public List<Person> findPeople(Map<String, String> criteria, boolean unbounded) {
 		List<Person> people = null;
 		// protect from NPEs
 		if ( criteria == null ) {
@@ -245,7 +250,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 		// make a copy so it can be modified safely in this method
 		criteria = new HashMap<String, String>( criteria );
-		
+
 		// extract the role lookup parameters and then remove them since later code will not know what to do with them
 		String roleName = criteria.get( "lookupRoleName" );
 		String namespaceCode = criteria.get( "lookupRoleNamespaceCode" );
@@ -270,11 +275,13 @@ public class PersonServiceImpl implements PersonService {
 				Iterator<String> pi = principalIds.iterator();
 				while ( pi.hasNext() ) {
 					sb.append( pi.next() );
-					if ( pi.hasNext() ) sb.append( '|' );
+					if ( pi.hasNext() ) {
+                        sb.append( '|' );
+                    }
 				}
 				// add the list of principal IDs to the lookup so that only matching Person objects are returned
 				criteria.put( KIMPropertyConstants.Person.PRINCIPAL_ID, sb.toString() );
-				people = findPeopleInternal(criteria, false); // can allow internal method to filter here since no more filtering necessary				
+				people = findPeopleInternal(criteria, false); // can allow internal method to filter here since no more filtering necessary
 			} else if ( !criteria.isEmpty() ) { // i.e., person criteria are specified
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "Person criteria also specified, running that search first" );
@@ -318,11 +325,11 @@ public class PersonServiceImpl implements PersonService {
 			}
 			people = findPeopleInternal(criteria, unbounded);
 		}
-			
-		// The following change is for KULRICE-5694 - It prevents duplicate rows from being returned for the 
-		// person inquiry (In this case, duplicate meaning same entityId, principalId, and principalNm).  
+
+		// The following change is for KULRICE-5694 - It prevents duplicate rows from being returned for the
+		// person inquiry (In this case, duplicate meaning same entityId, principalId, and principalNm).
 		// This allows for multiple rows to be returned if an entityID has more then one principal name
-		// or more than one principal ID.  
+		// or more than one principal ID.
         Set<String> peopleNoDupsSet = new HashSet<String>();
         List<Person> peopleNoDupsList = new ArrayList<Person>();
 
@@ -332,13 +339,13 @@ public class PersonServiceImpl implements PersonService {
 	            peopleNoDupsList.add(person);
 	        }
 	    }
-	     
+
 	    people.clear();
 	    people.addAll(peopleNoDupsList);
-		
+
 	    return people;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected List<Person> findPeopleInternal(Map<String,String> criteria, boolean unbounded ) {
 		// convert the criteria to a form that can be used by the ORM layer
@@ -350,7 +357,7 @@ public class PersonServiceImpl implements PersonService {
 
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
         queryBuilder.setPredicates(predicate);
-        
+
 		if (!unbounded) {
 			Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(PersonImpl.class);
     		if (searchResultsLimit != null && searchResultsLimit >= 0) {
@@ -358,7 +365,7 @@ public class PersonServiceImpl implements PersonService {
     			queryBuilder.setCountFlag(CountFlag.INCLUDE);
 			}
 		}
-		
+
 		List<Person> people = new ArrayList<Person>();
 
 		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );
@@ -432,7 +439,7 @@ public class PersonServiceImpl implements PersonService {
 	                    newCriteria.remove( KIMPropertyConstants.Person.ACTIVE );
 	                }
 	            }
-	            
+
 				// if no value was passed, skip the entry in the Map
 				if ( StringUtils.isEmpty( criteria.get(key) ) ) {
 					continue;
@@ -456,12 +463,12 @@ public class PersonServiceImpl implements PersonService {
                                     }
 								} catch (GeneralSecurityException ex) {
 									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );
-								}								
+								}
 							}
 						}
 					}
 				}
-				
+
 				// convert the property to the Entity data model
 				String entityProperty = criteriaConversion.get( key );
 				if ( entityProperty != null ) {
@@ -492,14 +499,14 @@ public class PersonServiceImpl implements PersonService {
 				}
 				if ( isEmployeeIdEntityCriteria( entityProperty ) ) {
 					employeeIdCriteria = true;
-				}				
+				}
 				// special handling for the campus code, since that forces the query to look
 				// at the default affiliation record only
 				if ( key.equals( "campusCode" ) ) {
 					affiliationDefaultOnlyCriteria = true;
 				}
-			} 
-			
+			}
+
 			if ( nameCriteria ) {
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "defaultValue", "Y" );
@@ -526,13 +533,13 @@ public class PersonServiceImpl implements PersonService {
 			}
 			if ( affiliationDefaultOnlyCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "defaultValue", "Y" );
-			} 
-        }   
-		
+			}
+        }
+
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Converted: " + newCriteria );
 		}
-		return newCriteria;		
+		return newCriteria;
 	}
 
 	protected boolean isNameEntityCriteria( String propertyName ) {
@@ -556,7 +563,7 @@ public class PersonServiceImpl implements PersonService {
 	protected boolean isExternalIdentifierEntityCriteria( String propertyName ) {
 		return propertyName.startsWith( ENTITY_EXT_ID_PROPERTY_PREFIX );
 	}
-	
+
 	/**
 	 * Get the entityTypeCode that can be associated with a Person.  This will determine
 	 * where EntityType-related data is pulled from within the KimEntity object.  The codes
@@ -578,7 +585,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 	}
 
-	
+
 	protected List<Person> getPeople( Collection<String> principalIds ) {
 		List<Person> people = new ArrayList<Person>( principalIds.size() );
 		for ( String principalId : principalIds ) {
@@ -586,21 +593,22 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return people;
 	}
-	
+
 	protected List<String> peopleToPrincipalIds( List<Person> people ) {
 		List<String> principalIds = new ArrayList<String>();
-		
+
 		for ( Person person : people ) {
 			principalIds.add( person.getPrincipalId() );
 		}
-		
+
 		return principalIds;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
-	public List<Person> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
+	@Override
+    public List<Person> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
 		if (StringUtils.isBlank( externalIdentifierTypeCode ) || StringUtils.isBlank( externalId ) ) {
 			return null;
 		}
@@ -609,10 +617,11 @@ public class PersonServiceImpl implements PersonService {
 		criteria.put( KIMPropertyConstants.Person.EXTERNAL_ID, externalId );
 		return findPeople( criteria );
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.PersonService#updatePersonIfNecessary(java.lang.String, org.kuali.rice.kim.api.identity.Person)
 	 */
+    @Override
     public Person updatePersonIfNecessary(String sourcePrincipalId, Person currentPerson ) {
         if (currentPerson  == null // no person set
                 || !StringUtils.equals(sourcePrincipalId, currentPerson.getPrincipalId() ) // principal ID mismatch
@@ -644,7 +653,7 @@ public class PersonServiceImpl implements PersonService {
      * Builds a map containing entries from the passed in Map that do NOT represent properties on an embedded
      * Person object.
      */
-    private Map<String,String> getNonPersonSearchCriteria( BusinessObject bo, Map<String,String> fieldValues) {
+    private Map<String,String> getNonPersonSearchCriteria( Object bo, Map<String,String> fieldValues) {
         Map<String,String> nonUniversalUserSearchCriteria = new HashMap<String,String>();
         for ( String propertyName : fieldValues.keySet() ) {
             if (!isPersonProperty(bo, propertyName)) {
@@ -655,7 +664,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
-    private boolean isPersonProperty(BusinessObject bo, String propertyName) {
+    private boolean isPersonProperty(Object bo, String propertyName) {
         try {
         	if ( DataObjectUtils.isNestedAttribute( propertyName ) // is a nested property
             		&& !StringUtils.contains(propertyName, "add.") ) {// exclude add line properties (due to path parsing problems in PropertyUtils.getPropertyType)
@@ -673,10 +682,11 @@ public class PersonServiceImpl implements PersonService {
         }
         return false;
     }
-    
+
     /**
      * @see org.kuali.rice.kim.api.identity.PersonService#resolvePrincipalNamesToPrincipalIds(org.kuali.rice.krad.bo.BusinessObject, java.util.Map)
      */
+    @Override
     @SuppressWarnings("unchecked")
 	public Map<String,String> resolvePrincipalNamesToPrincipalIds(BusinessObject businessObject, Map<String,String> fieldValues) {
     	if ( fieldValues == null ) {
@@ -689,19 +699,19 @@ public class PersonServiceImpl implements PersonService {
     	// save off all criteria which are not references to Person properties
     	// leave person properties out so they can be resolved and replaced by this method
         Map<String,String> processedFieldValues = getNonPersonSearchCriteria(businessObject, fieldValues);
-        for ( String propertyName : fieldValues.keySet() ) {        	
+        for ( String propertyName : fieldValues.keySet() ) {
             if (	!StringUtils.isBlank(fieldValues.get(propertyName))  // property has a value
             		&& isPersonProperty(businessObject, propertyName) // is a property on a Person object
             		) {
             	// strip off the prefix on the property
                 String personPropertyName = DataObjectUtils.getNestedAttributePrimitive( propertyName );
-                // special case - the user ID 
+                // special case - the user ID
                 if ( StringUtils.equals( KIMPropertyConstants.Person.PRINCIPAL_NAME, personPropertyName) ) {
                     Class targetBusinessObjectClass = null;
                     BusinessObject targetBusinessObject = null;
                     resolvedPrincipalIdPropertyName.setLength( 0 ); // clear the buffer without requiring a new object allocation on each iteration
                 	// get the property name up until the ".principalName"
-                	// this should be a reference to the Person object attached to the BusinessObject                	
+                	// this should be a reference to the Person object attached to the BusinessObject
                 	String personReferenceObjectPropertyName = DataObjectUtils.getNestedAttributePrefix( propertyName );
                 	// check if the person was nested within another BO under the master BO.  If so, go up one more level
                 	// otherwise, use the passed in BO class as the target class
@@ -719,7 +729,7 @@ public class PersonServiceImpl implements PersonService {
                         targetBusinessObjectClass = businessObject.getClass();
                         targetBusinessObject = businessObject;
                     }
-                    
+
                     if (targetBusinessObjectClass != null) {
                     	// use the relationship metadata in the KNS to determine the property on the
                     	// host business object to put back into the map now that the principal ID
@@ -768,7 +778,7 @@ public class PersonServiceImpl implements PersonService {
                         containerPropertyName = StringUtils.substringAfter( propertyName, KRADConstants.MAINTENANCE_ADD_PREFIX );
                     }
                     // get the class of the object that is referenced by the property name
-                    // if this is not true then there's a principalName collection or primitive attribute 
+                    // if this is not true then there's a principalName collection or primitive attribute
                     // directly on the BO on the add line, so we just ignore that since something is wrong here
                     if ( DataObjectUtils.isNestedAttribute( containerPropertyName ) ) {
                     	// the first part of the property is the collection name
@@ -781,7 +791,7 @@ public class PersonServiceImpl implements PersonService {
                         				getMaintenanceDocumentDictionaryService()
                         						.getDocumentTypeName(businessObject.getClass()), collectionName);
                         if (collectionBusinessObjectClass != null) {
-                            // we are adding to a collection; get the relationships for that object; 
+                            // we are adding to a collection; get the relationships for that object;
                         	// is there one for personUniversalIdentifier?
                             List<DataObjectRelationship> relationships =
                             		getBusinessObjectMetaDataService().getBusinessObjectRelationships( collectionBusinessObjectClass );
@@ -826,7 +836,7 @@ public class PersonServiceImpl implements PersonService {
         }
         return processedFieldValues;
     }
-	
+
 	// OTHER METHODS
 
 	protected IdentityService getIdentityService() {
@@ -844,10 +854,11 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 
-	public Class<? extends Person> getPersonImplementationClass() {
+	@Override
+    public Class<? extends Person> getPersonImplementationClass() {
 		return PersonImpl.class;
 	}
-	
+
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if ( businessObjectMetaDataService == null ) {
 			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();

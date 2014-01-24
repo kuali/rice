@@ -24,16 +24,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.role.RolePermission;
 import org.kuali.rice.kim.api.role.RolePermissionContract;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ROLE_PERM_T")
-public class RolePermissionBo extends PersistableBusinessObjectBase implements RolePermissionContract {
+public class RolePermissionBo extends DataObjectBase implements RolePermissionContract {
 
     private static final long serialVersionUID = 1L;
 

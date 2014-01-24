@@ -21,17 +21,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicity;
 import org.kuali.rice.kim.api.identity.personal.EntityEthnicityContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ENTITY_ETHNIC_T")
-public class EntityEthnicityBo extends PersistableBusinessObjectBase implements EntityEthnicityContract {
+public class EntityEthnicityBo extends DataObjectBase implements EntityEthnicityContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -98,7 +99,7 @@ public class EntityEthnicityBo extends PersistableBusinessObjectBase implements 
         bo.id = immutable.getId();
         bo.ethnicityCode = immutable.getEthnicityCodeUnmasked();
         bo.subEthnicityCode = immutable.getSubEthnicityCodeUnmasked();
-        //convert list of raceEthnicity types                      
+        //convert list of raceEthnicity types
         if (immutable.getRaceEthnicityCodeUnmasked() != null) {
             bo.raceEthnicityCode = EntityEthnicityRaceTypeBo.from(immutable.getRaceEthnicityCodeUnmasked());
         }

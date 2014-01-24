@@ -30,10 +30,6 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.Query;
-import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -63,8 +59,6 @@ import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-
-import com.lowagie.text.pdf.Pfm2afm;
 
 abstract class RoleServiceBase {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
@@ -127,10 +121,10 @@ abstract class RoleServiceBase {
     protected List<RoleMemberBo> getRoleMembersForPrincipalId(Collection<String> roleIds, String principalId) {
         return getRoleMembersForPrincipalId(roleIds, principalId, new HashMap<String, String>(0) );
     }
-    
+
     protected List<RoleMemberBo> getRoleMembersForPrincipalId(Collection<String> roleIds, String principalId, Map<String,String> qualification ) {
         List<Predicate> criteria = new ArrayList<Predicate>();
-        
+
         if (CollectionUtils.isNotEmpty(roleIds)) {
             if (roleIds.size() == 1) {
                 criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds.iterator().next()) );
@@ -142,7 +136,7 @@ abstract class RoleServiceBase {
             criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId) );
         }
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
-        
+
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {
             criteria.add( roleQualificationPredicate );
@@ -162,7 +156,7 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isEmpty(groupIds)) {
             return new ArrayList<RoleMemberBo>();
         }
-        List<RoleMemberBo> coll = dataObjectService.findMatching( RoleMemberBo.class, 
+        List<RoleMemberBo> coll = dataObjectService.findMatching( RoleMemberBo.class,
                 QueryByCriteria.Builder.fromPredicates(
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.ROLE_ID, roleId),
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()),
@@ -214,7 +208,7 @@ abstract class RoleServiceBase {
                 throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
         }
     }
-    
+
     public List<RoleMemberBo> getRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Map<String, String> qualification) {
         List<Predicate> criteria = new ArrayList<Predicate>();
 
@@ -225,7 +219,7 @@ abstract class RoleServiceBase {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds) );
         }
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()));
-        
+
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {
             criteria.add( roleQualificationPredicate );
@@ -244,18 +238,18 @@ abstract class RoleServiceBase {
     /**
      * Attempts to add predicates to the query to filter based on a subquery against the attribute
      * data table.
-     * 
+     *
      * FIXME: This has not been re-implemented in JPA.  We need subquery support in the Predicate APIs.
-     * 
+     *
      *  This should not be too difficult.  See the first answer here:
      *  http://stackoverflow.com/questions/4483576/jpa-2-0-criteria-api-subqueries-in-expressions
-     *  
+     *
      *  PredicateFactory.subquery( String parentAttributeName, Class subQueryDataObject, Predicate... predicates )
      *  (or something like that - could also pass in a build QueryByCriteria object)
-     *  
+     *
      *  Other consideration used in the code below which the above does not address...
      *      What about referencing the outer query?  What's the syntax for that.  OJB had a special constant.
-     * 
+     *
      * @param c
      * @param qualification
      */
@@ -269,7 +263,7 @@ abstract class RoleServiceBase {
 //                            PredicateFactory.like("attributeValue", value),
 //                            PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
 //                            PredicateFactory.equal("attributeValue", value),
-//                            
+//
 //                    subCrit.addLike("attributeValue", value);
 //                    subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
 //                    subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "id");
@@ -289,7 +283,7 @@ abstract class RoleServiceBase {
 
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, memberId) );
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberType) );
-        
+
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {
             criteria.add( roleQualificationPredicate );
@@ -365,12 +359,12 @@ abstract class RoleServiceBase {
     }
 
     /**
-     * 
+     *
      */
     protected Map<String, DelegateTypeBo> getStoredDelegationImplMapFromRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             Map<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
-            Collection<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class, 
+            Collection<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class,
                     QueryByCriteria.Builder.fromPredicates(
                             PredicateFactory.in(KIMPropertyConstants.Delegation.ROLE_ID, roleIds),
                             PredicateFactory.equal(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE) ) ).getResults();
@@ -384,18 +378,18 @@ abstract class RoleServiceBase {
     }
 
     /**
-     * 
+     *
      */
     protected List<DelegateTypeBo> getStoredDelegationImplsForRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
-            List<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class, 
+            List<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class,
                     QueryByCriteria.Builder.fromPredicates(
                             PredicateFactory.in(KIMPropertyConstants.Delegation.ROLE_ID, roleIds),
                             PredicateFactory.equal(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE) ) ).getResults();
-            
+
             return new ArrayList<DelegateTypeBo>( coll );
         }
-        
+
         return Collections.emptyList();
     }
 
@@ -496,7 +490,7 @@ abstract class RoleServiceBase {
         }
         return getDataObjectService().find(RoleBo.class, roleId);
     }
-    
+
     protected RoleBoLite getRoleBoLite(String roleId) {
         if (StringUtils.isBlank(roleId)) {
             return null;
@@ -592,7 +586,7 @@ abstract class RoleServiceBase {
         }
         return results.getResults().get(0);
     }
-    
+
     protected RoleBoLite getRoleBoLiteByName(String namespaceCode, String roleName) {
         if (StringUtils.isBlank(namespaceCode)
                 || StringUtils.isBlank(roleName)) {
@@ -625,7 +619,7 @@ abstract class RoleServiceBase {
 
 		return Collections.emptyList();
 	}
-	
+
 	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
 		List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
 		RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
@@ -642,7 +636,7 @@ abstract class RoleServiceBase {
 	    			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for roles as role members only.
 	    				List<RoleMemberBo> allRoleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(role.getId()), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
 	        			for(RoleMemberBo rm : allRoleMembers) {
-	        				if ( rm.getMemberId().equals(memberId) ) { 
+	        				if ( rm.getMemberId().equals(memberId) ) {
 	        					rms.add(rm);
 	        				}
 	        			}
@@ -650,12 +644,12 @@ abstract class RoleServiceBase {
 	    			default : // The daoActionToTake parameter is invalid; throw an exception.
 	    				throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
     			}
-    			
-    		} 
+
+    		}
 		}
 		return rms;
 	}
-    
+
     //return roleMemberId of match or null if no match
     protected RoleMember doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
         for (RoleMemberBo rm : roleMembers) {
@@ -681,7 +675,7 @@ abstract class RoleServiceBase {
         }
         return false;
     }
-    
+
     /**
      * Retrieves the role type service associated with the given role ID
      *
@@ -736,7 +730,7 @@ abstract class RoleServiceBase {
         }
         return KimImplServiceLocator.getDefaultRoleTypeService();
     }
-    
+
     protected Map<String, String> populateQualifiersForExactMatch(Map<String, String> defaultQualification, List<String> attributes) {
         Map<String,String> qualifiersForExactMatch = new HashMap<String,String>();
         if (defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
@@ -759,7 +753,7 @@ abstract class RoleServiceBase {
         return result;
     }
 
-    
+
     protected IdentityService getIdentityService() {
         if (identityService == null) {
             identityService = KimApiServiceLocator.getIdentityService();
@@ -767,7 +761,7 @@ abstract class RoleServiceBase {
 
         return identityService;
     }
-    
+
     protected GroupService getGroupService() {
         if (groupService == null) {
             groupService = KimApiServiceLocator.getGroupService();

@@ -20,14 +20,15 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ENTITY_PRIV_PREF_T")
-public class EntityPrivacyPreferencesBo extends PersistableBusinessObjectBase implements EntityPrivacyPreferencesContract {
+public class EntityPrivacyPreferencesBo extends DataObjectBase implements EntityPrivacyPreferencesContract {
 
     private static final long serialVersionUID = 1L;
 

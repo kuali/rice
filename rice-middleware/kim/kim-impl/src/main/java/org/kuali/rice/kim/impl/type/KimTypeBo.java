@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.type;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -26,17 +27,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_TYP_T")
-public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeContract {
+public class KimTypeBo extends DataObjectBase implements KimTypeContract, BusinessObject {
     private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_TYP_ID_S")
@@ -159,5 +162,9 @@ public class KimTypeBo extends PersistableBusinessObjectBase implements KimTypeC
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public void refresh() {
     }
 }

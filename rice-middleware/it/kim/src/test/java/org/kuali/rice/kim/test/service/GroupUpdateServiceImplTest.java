@@ -15,7 +15,21 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
@@ -26,17 +40,9 @@ import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.springframework.util.CollectionUtils;
-
-import javax.xml.namespace.QName;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * Unit test for {@link groupServiceImpl}
@@ -49,7 +55,8 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 	private GroupService groupService;
 	private BusinessObjectService businessObjectService;
 
-	public void setUp() throws Exception {
+	@Override
+    public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupService)GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.GROUP_SERVICE_SOAP));
@@ -224,7 +231,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 
-        return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
+        return new ArrayList<GroupMemberBo>(KradDataServiceLocator.getDataObjectService().findMatching(GroupMemberBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults());
 	}
 
 	private List<GroupMemberBo> getActiveAndInactivePrincipalTypeMembers(String groupId) {
@@ -233,7 +240,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
         criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
 
-        return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
+        return new ArrayList<GroupMemberBo>(KradDataServiceLocator.getDataObjectService().findMatching(GroupMemberBo.class, QueryByCriteria.Builder.andAttributes(criteria).build()).getResults());
 	}
 
     private Group createGroup() {

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.identity.citizenship;
 
 import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 

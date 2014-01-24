@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -46,23 +57,12 @@ import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -78,7 +78,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     /**
      * This method doesn't actually sort the column - it's just that we need a sort method in
      * order to exploit the existing methodToCall logic. The sorting is handled in the execute
-     * method below, and delegated to the KualiTableRenderFormMetadata object. 
+     * method below, and delegated to the KualiTableRenderFormMetadata object.
      *
      * @param mapping
      * @param form
@@ -219,6 +219,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     /**
      * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
      */
+    @Override
     public String getActionName() {
         return KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION;
     }
@@ -264,9 +265,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleResponsibility newResponsibility = roleDocumentForm.getResponsibility();
         if (newResponsibility != null && StringUtils.isNotBlank(newResponsibility.getResponsibilityId())) {
-            Map<String, String> criteria = new HashMap<String, String>();
-            criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, newResponsibility.getResponsibilityId());
-            ResponsibilityBo responsibilityImpl = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ResponsibilityBo.class, criteria);
+            ResponsibilityBo responsibilityImpl = KradDataServiceLocator.getDataObjectService().find(ResponsibilityBo.class, newResponsibility.getResponsibilityId());
             newResponsibility.setKimResponsibility(responsibilityImpl);
         }
 

@@ -22,11 +22,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -40,7 +42,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name = "KRIM_ROLE_T")
-public class RoleBoLite extends PersistableBusinessObjectBase implements RoleEbo {
+public class RoleBoLite extends DataObjectBase implements RoleEbo {
     private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_ROLE_ID_S")
@@ -273,5 +275,9 @@ public class RoleBoLite extends PersistableBusinessObjectBase implements RoleEbo
 
     public void setRespTmplName(String respTmplName) {
         this.respTmplName = respTmplName;
+    }
+
+    @Override
+    public void refresh() {
     }
 }

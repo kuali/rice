@@ -21,15 +21,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ATTR_DEFN_T")
-public class KimAttributeBo extends PersistableBusinessObjectBase implements KimAttributeContract {
+public class KimAttributeBo extends DataObjectBase implements KimAttributeContract {
 
     private static final long serialVersionUID = 1L;
 

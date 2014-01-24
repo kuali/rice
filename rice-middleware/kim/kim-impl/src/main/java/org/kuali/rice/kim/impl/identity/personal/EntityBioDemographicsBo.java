@@ -15,35 +15,30 @@
  */
 package org.kuali.rice.kim.impl.identity.personal;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
 import org.joda.time.DateTime;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographics;
 import org.kuali.rice.kim.api.identity.personal.EntityBioDemographicsContract;
-import org.kuali.rice.kim.api.identity.personal.EntityDisability;
-import org.kuali.rice.kim.api.identity.personal.EntityMilitary;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 
 @Entity
 @Table(name = "KRIM_ENTITY_BIO_T")
-public class EntityBioDemographicsBo extends PersistableBusinessObjectBase implements EntityBioDemographicsContract {
+public class EntityBioDemographicsBo extends DataObjectBase implements EntityBioDemographicsContract {
 
     private static final long serialVersionUID = 1L;
 

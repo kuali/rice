@@ -24,17 +24,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_TYP_ATTR_T")
-public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements KimTypeAttributeContract {
+public class KimTypeAttributeBo extends DataObjectBase implements KimTypeAttributeContract {
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_TYP_ATTR_ID_S")
     @GeneratedValue(generator = "KRIM_TYP_ATTR_ID_S")

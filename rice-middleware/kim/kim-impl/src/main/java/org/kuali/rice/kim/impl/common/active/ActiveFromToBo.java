@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kim.impl.common.active;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.sql.Timestamp;
+
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
+import org.kuali.rice.krad.bo.DataObjectBase;
 
 @MappedSuperclass
-public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
+public abstract class ActiveFromToBo extends DataObjectBase {
     private static final long serialVersionUID = -7272085876524380076L;
     @Column(name = "ACTV_FRM_DT")
     private Timestamp activeFromDateValue;

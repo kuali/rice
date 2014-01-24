@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity.personal;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.identity.personal.EntityMilitaryContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,11 +27,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.Date;
+
+import org.joda.time.DateTime;
+import org.kuali.rice.kim.api.identity.personal.EntityMilitaryContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ENTITY_MLTRY_T")
-public class EntityMilitaryBo extends PersistableBusinessObjectBase implements EntityMilitaryContract {
+public class EntityMilitaryBo extends DataObjectBase implements EntityMilitaryContract {
     private static final long serialVersionUID = -287520618905316980L;
 
 

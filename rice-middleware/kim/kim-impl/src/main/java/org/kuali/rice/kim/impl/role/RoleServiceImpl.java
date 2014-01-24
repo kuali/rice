@@ -37,7 +37,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
@@ -1898,44 +1897,55 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(roleMember, "roleMember");
 
-        RoleMemberBo originalRoleMemberBo = null;
+        RoleMemberBo roleMemberBo = null;
         if (StringUtils.isNotBlank(roleMember.getId())) {
-            originalRoleMemberBo = getRoleMemberBo(roleMember.getId());
+            roleMemberBo = getRoleMemberBo(roleMember.getId());
         }
-        if (StringUtils.isBlank(roleMember.getId()) || originalRoleMemberBo == null) {
+        if (StringUtils.isBlank(roleMember.getId()) || roleMemberBo == null) {
             throw new RiceIllegalStateException("the roleMember to update does not exists: " + roleMember);
         }
 
         String kimTypeId = getRoleBoLite(roleMember.getRoleId()).getKimTypeId();
-        List<RoleMemberAttributeDataBo> attrBos = Collections.emptyList();
-        attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
+        List<RoleMemberAttributeDataBo> attrBos = KimAttributeDataBo.createFrom(RoleMemberAttributeDataBo.class, roleMember.getAttributes(), kimTypeId);
 
-        RoleMemberBo bo = RoleMemberBo.from(roleMember);
-        List<RoleMemberAttributeDataBo> updateAttrBos =   new ArrayList<RoleMemberAttributeDataBo>();
+        //RoleMemberBo bo = RoleMemberBo.from(roleMember);
+        //List<RoleMemberAttributeDataBo> updateAttrBos =   new ArrayList<RoleMemberAttributeDataBo>();
 
-        boolean matched = false;
-        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo :  attrBos) {
-            for (RoleMemberAttributeDataBo oldRoleMemberAttrDataBo :  originalRoleMemberBo.getAttributeDetails()) {
-                if (newRoleMemberAttrDataBo.getKimTypeId().equals(oldRoleMemberAttrDataBo.getKimTypeId()) &&
-                        newRoleMemberAttrDataBo.getKimAttributeId().equals(oldRoleMemberAttrDataBo.getKimAttributeId())) {
-                    newRoleMemberAttrDataBo.setAssignedToId(oldRoleMemberAttrDataBo.getAssignedToId());
-                    newRoleMemberAttrDataBo.setVersionNumber(oldRoleMemberAttrDataBo.getVersionNumber());
-                    newRoleMemberAttrDataBo.setId(oldRoleMemberAttrDataBo.getId());
-                    updateAttrBos.add(newRoleMemberAttrDataBo);
+        // Copy the main data
+        roleMemberBo.setMemberId(roleMember.getMemberId());
+        roleMemberBo.setTypeCode(roleMember.getType().getCode());
+        roleMemberBo.setActiveFromDateValue(roleMember.getActiveFromDate() == null ? null : new Timestamp(roleMember.getActiveFromDate().getMillis()));
+        roleMemberBo.setActiveToDateValue(roleMember.getActiveToDate() == null ? null : new Timestamp(roleMember.getActiveToDate().getMillis()));
+
+        // TODO
+        for (RoleResponsibilityAction roleRespActn : roleMember.getRoleRspActions()) {
+            // loop over records already on
+        }
+//        List<RoleResponsibilityActionBo> actions = new ArrayList<RoleResponsibilityActionBo>();
+//        if (CollectionUtils.isNotEmpty(roleMember.getRoleRspActions())) {
+//            for (RoleResponsibilityAction roleRespActn : roleMember.getRoleRspActions()) {
+//                actions.add(RoleResponsibilityActionBo.from(roleRespActn));
+//            }
+//        }
+
+        // FIXME : this code does not delete removed attributes
+        for (RoleMemberAttributeDataBo newRoleMemberAttrDataBo : attrBos) {
+            boolean matched = false;
+            for (RoleMemberAttributeDataBo roleMemberAttrDataBo :  roleMemberBo.getAttributeDetails()) {
+                if (newRoleMemberAttrDataBo.getKimTypeId().equals(roleMemberAttrDataBo.getKimTypeId())
+                        && newRoleMemberAttrDataBo.getKimAttributeId().equals(roleMemberAttrDataBo.getKimAttributeId())) {
+                    roleMemberAttrDataBo.setAttributeValue( newRoleMemberAttrDataBo.getAttributeValue() );
                     matched = true;
                     break;
                 }
             }
             if (!matched) {
-                updateAttrBos.add(newRoleMemberAttrDataBo);
-            } else  {
-                matched = false;
+                newRoleMemberAttrDataBo.setAssignedToId(roleMemberBo.getId());
+                roleMemberBo.getAttributeDetails().add(newRoleMemberAttrDataBo);
             }
         }
 
-        bo.setAttributeDetails(updateAttrBos);
-
-        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(bo));
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(roleMemberBo));
     }
 
     @Override

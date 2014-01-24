@@ -15,21 +15,21 @@
  */
 package org.kuali.rice.kim.impl.identity.phone;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 @MappedSuperclass
-public abstract class EntityPhoneBase extends PersistableBusinessObjectBase implements EntityPhoneContract {
+public abstract class EntityPhoneBase extends DataObjectBase implements EntityPhoneContract {
 
     @Column(name = "ENTITY_ID")
     private String entityId;

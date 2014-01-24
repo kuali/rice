@@ -16,14 +16,7 @@
 package org.kuali.rice.kim.impl.identity.visa;
 
 import org.kuali.rice.kim.api.identity.CodedAttribute;
-import org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo;
 import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 //@Entity
 //@AttributeOverrides({

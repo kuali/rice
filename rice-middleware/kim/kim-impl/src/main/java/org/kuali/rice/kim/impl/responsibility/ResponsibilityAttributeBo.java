@@ -22,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.type.KimType;
@@ -35,6 +36,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 @Entity
 @Table(name = "KRIM_RSP_ATTR_DATA_T")
 public class ResponsibilityAttributeBo extends KimAttributeDataBo {
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
     @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")

@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.personal;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kim.api.identity.CodedAttribute;
-import org.kuali.rice.kim.api.identity.personal.EntityDisability;
-import org.kuali.rice.kim.api.identity.personal.EntityDisabilityContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,12 +26,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.kim.api.identity.personal.EntityDisability;
+import org.kuali.rice.kim.api.identity.personal.EntityDisabilityContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ENTITY_DSBTY_T")
-public class EntityDisabilityBo extends PersistableBusinessObjectBase implements EntityDisabilityContract {
+public class EntityDisabilityBo extends DataObjectBase implements EntityDisabilityContract {
     private static final long serialVersionUID = -575024049319370685L;
     @Id
     @GeneratedValue(generator = "KRIM_ENTITY_DSBTY_ID_S")

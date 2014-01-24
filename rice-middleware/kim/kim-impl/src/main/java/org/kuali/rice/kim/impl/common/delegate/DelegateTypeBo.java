@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.common.delegate;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -26,18 +27,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_DLGN_T")
-public class DelegateTypeBo extends PersistableBusinessObjectBase implements DelegateTypeContract {
+public class DelegateTypeBo extends DataObjectBase implements DelegateTypeContract {
 
     private static final long serialVersionUID = 1L;
 

@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.kim.impl.common.attribute;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
@@ -23,24 +36,13 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @MappedSuperclass
 @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
-public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
+public abstract class KimAttributeDataBo extends DataObjectBase implements KimAttributeDataContract {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimAttributeDataBo.class);
     private static final long serialVersionUID = 1L;
@@ -71,7 +73,7 @@ public abstract class KimAttributeDataBo extends PersistableBusinessObjectBase i
     public KimAttributeBo getKimAttribute() {
         if(this.kimAttribute == null
                 && StringUtils.isNotBlank(kimAttributeId)) {
-            this.refreshReferenceObject("kimAttribute");
+            KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("kimAttribute");
         }
         return kimAttribute;
     }

@@ -15,22 +15,23 @@
  */
 package org.kuali.rice.kim.impl.group;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import java.util.List;
-import java.util.Map;
-
 @MappedSuperclass
-public abstract class GroupBase extends PersistableBusinessObjectBase implements GroupEbo {
+public abstract class GroupBase extends DataObjectBase implements GroupEbo {
     private static final long serialVersionUID = 1L;
 
     @Column(name="GRP_NM")
@@ -115,5 +116,9 @@ public abstract class GroupBase extends PersistableBusinessObjectBase implements
 
     public KimTypeBo getKimTypeInfo() {
         return KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(this.kimTypeId));
+    }
+
+    @Override
+    public void refresh() {
     }
 }

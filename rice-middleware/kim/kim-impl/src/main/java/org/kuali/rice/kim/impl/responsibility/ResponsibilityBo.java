@@ -42,7 +42,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -52,7 +52,7 @@ import org.springframework.util.AutoPopulatingList;
 @Entity
 @Table(name = "KRIM_RSP_T")
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class ResponsibilityBo extends PersistableBusinessObjectBase implements ResponsibilityContract {
+public class ResponsibilityBo extends DataObjectBase implements ResponsibilityContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -135,6 +135,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         return bo;
     }
 
+    @Override
     public ResponsibilityTemplateBo getTemplate() {
         return template;
     }

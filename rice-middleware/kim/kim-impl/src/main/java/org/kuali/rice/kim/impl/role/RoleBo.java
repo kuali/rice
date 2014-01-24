@@ -17,6 +17,7 @@ package org.kuali.rice.kim.impl.role;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -27,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.role.Role;
@@ -35,14 +37,14 @@ import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_ROLE_T")
-public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
+public class RoleBo extends DataObjectBase implements RoleEbo {
 
     private static final long serialVersionUID = 1L;
 
@@ -159,6 +161,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         return bo;
     }
 
+    @Override
     public String getId() {
         return id;
     }
@@ -167,6 +170,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -175,6 +179,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -187,6 +192,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -195,6 +201,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         this.active = active;
     }
 
+    @Override
     public String getKimTypeId() {
         return kimTypeId;
     }
@@ -203,6 +210,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
         this.kimTypeId = kimTypeId;
     }
 
+    @Override
     public String getNamespaceCode() {
         return namespaceCode;
     }
@@ -305,5 +313,9 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleEbo {
 
     public void setRespTmplName(String respTmplName) {
         this.respTmplName = respTmplName;
+    }
+
+    @Override
+    public void refresh() {
     }
 }

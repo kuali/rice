@@ -29,6 +29,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 @Entity
 @Table(name = "KRIM_DLGN_MBR_ATTR_DATA_T")
 public class DelegateMemberAttributeDataBo extends KimAttributeDataBo {
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
     @GeneratedValue(generator = "KRIM_ATTR_DATA_ID_S")

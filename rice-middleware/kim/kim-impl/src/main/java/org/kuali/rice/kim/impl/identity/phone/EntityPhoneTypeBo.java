@@ -20,10 +20,10 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.framework.identity.phone.EntityPhoneTypeEbo;
 import org.kuali.rice.kim.impl.identity.CodedAttributeBo;
-import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 
 @AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "PHONE_TYP_CD")), @AttributeOverride(name = "name", column = @Column(name = "PHONE_TYP_NM")) })
 @Entity

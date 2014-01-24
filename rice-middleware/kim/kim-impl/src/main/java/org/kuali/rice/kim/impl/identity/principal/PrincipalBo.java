@@ -21,9 +21,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -32,8 +33,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name = "KRIM_PRNCPL_T")
-public class PrincipalBo extends PersistableBusinessObjectBase implements PrincipalContract {
-
+public class PrincipalBo extends DataObjectBase implements PrincipalContract {
     private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_PRNCPL_ID_S")

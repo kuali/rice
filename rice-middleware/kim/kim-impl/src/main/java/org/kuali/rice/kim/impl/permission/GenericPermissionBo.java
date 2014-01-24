@@ -19,11 +19,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -88,7 +90,6 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         setDetails(perm.getAttributes());
         setVersionNumber(perm.getVersionNumber());
         setObjectId(perm.getObjectId());
-        setExtension(perm.getExtension());
     }
 
     public String getDetailValues() {
@@ -179,7 +180,7 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         String detailValuesTemp = this.detailValues;
         Map<String, String> detailsTemp = new HashMap<String, String>();
         if (detailValuesTemp != null) {
-            // ensure that all line delimiters are single linefeeds                      
+            // ensure that all line delimiters are single linefeeds
             detailValuesTemp = detailValuesTemp.replace("\r\n", "\n");
             detailValuesTemp = detailValuesTemp.replace('\r', '\n');
             if (StringUtils.isNotBlank(detailValuesTemp)) {
@@ -252,7 +253,6 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
         permission.setAttributes(bo.getDetails());
         permission.setVersionNumber(bo.versionNumber);
         permission.setObjectId(bo.getObjectId());
-        permission.setExtension(bo.getExtension());
         return permission;
     }
 }

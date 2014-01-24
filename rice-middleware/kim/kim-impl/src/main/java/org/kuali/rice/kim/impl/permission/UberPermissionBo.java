@@ -26,10 +26,11 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.springframework.util.AutoPopulatingList;
 
 //strange - hacky non-PBO
-public class UberPermissionBo extends PermissionBo {
+public class UberPermissionBo extends PermissionBo implements BusinessObject {
 
     private static final long serialVersionUID = 1L;
 
@@ -161,6 +162,8 @@ public class UberPermissionBo extends PermissionBo {
         this.detailCriteria = detailCriteria;
     }
 
-
+    @Override
+    public void refresh() {
+    }
 }
 

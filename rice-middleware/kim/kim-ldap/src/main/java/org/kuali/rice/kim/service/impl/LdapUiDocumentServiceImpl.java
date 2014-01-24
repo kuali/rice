@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
@@ -32,7 +36,6 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
 import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
@@ -53,19 +56,10 @@ import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.KRADUtils;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/** 
+/**
  * Customized version of the UiDocumentServiceImpl to support LDAP communcation
  *
  * @author Leo Przybylski (przybyls@arizona.edu)
@@ -76,6 +70,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	 *
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
+	@Override
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
 		Principal principal = this.getIdentityService().getPrincipal(principalId);
         if(principal==null) {
@@ -125,7 +120,8 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	/**
 	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
 	 */
-    public void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument) {
+    @Override
+	public void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		boolean inactivatingPrincipal = false;
 
 		List <GroupMemberBo>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
@@ -154,7 +150,8 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		}
 	}
 
-    protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument,EntityBo kimEntity, List<PrincipalBo> origPrincipals) {
+    @Override
+	protected boolean setupPrincipal(IdentityManagementPersonDocument identityManagementPersonDocument,EntityBo kimEntity, List<PrincipalBo> origPrincipals) {
     	boolean inactivatingPrincipal = false;
 		List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
 		Principal.Builder principal = Principal.Builder.create(identityManagementPersonDocument.getPrincipalName());
@@ -180,6 +177,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		return inactivatingPrincipal;
 	}
 
+	@Override
 	protected List<PersonDocumentAffiliation> loadAffiliations(List <EntityAffiliation> affiliations, List<EntityEmployment> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(KRADUtils.isNotNull(affiliations)){
@@ -229,8 +227,9 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
 	}
 
-    
-    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <EntityName> names, boolean suppressDisplay ) {
+
+    @Override
+	protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <EntityName> names, boolean suppressDisplay ) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 		if(KRADUtils.isNotNull(names)){
 			for (EntityName name: names) {
@@ -258,7 +257,8 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		return docNames;
 	}
 
-    protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityEmail> entityEmails, boolean suppressDisplay ) {
+    @Override
+	protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityEmail> entityEmails, boolean suppressDisplay ) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
 		if(KRADUtils.isNotNull(entityEmails)){
 			for (EntityEmail email: entityEmails) {
@@ -285,7 +285,8 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		return emails;
 	}
 
-    protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityPhone> entityPhones, boolean suppressDisplay ) {
+    @Override
+	protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<EntityPhone> entityPhones, boolean suppressDisplay ) {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
 		if(KRADUtils.isNotNull(entityPhones)){
 			for (EntityPhone phone: entityPhones) {
@@ -319,20 +320,20 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
         	roleMemberTypeClass = PrincipalBo.class;
 	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
-	 	 		
+
 	 	 	}
         } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = GroupBo.class;
         	Group groupInfo = null;
 	 	 	groupInfo = getGroupService().getGroup(memberId);
 	 	 	if (groupInfo != null) {
-	 	 		
+
 	 	 	}
         } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = RoleBo.class;
 	 	 	Role role = getRoleService().getRole(memberId);
 	 	 	if (role != null) {
-	 	 		
+
 	 	 	}
         }
         return getDataObjectService().find(roleMemberTypeClass, memberId);
@@ -340,7 +341,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 
     /**
      * Overridden to only check permission - users should not be able to edit themselves.
-     * 
+     *
      * @see org.kuali.rice.kim.service.impl.UiDocumentServiceImpl#canModifyEntity(java.lang.String, java.lang.String)
      */
     @Override
@@ -353,8 +354,9 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 						KimConstants.PermissionNames.MODIFY_ENTITY,
 						Collections.singletonMap(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
 	}
-    
-    protected List<RoleMemberBo> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> origRoleMembers){
+
+    @Override
+	protected List<RoleMemberBo> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> origRoleMembers){
         List<RoleMemberBo> roleMembers = new ArrayList<RoleMemberBo>();
         RoleMemberBo newRoleMember;
         RoleMemberBo origRoleMemberImplTemp;

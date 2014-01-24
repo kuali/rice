@@ -20,16 +20,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.kuali.rice.kim.api.identity.residency.EntityResidency;
 import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Table(name = "KRIM_ENTITY_RESIDENCY_T")
-public class EntityResidencyBo extends PersistableBusinessObjectBase implements EntityResidencyContract {
+public class EntityResidencyBo extends DataObjectBase implements EntityResidencyContract {
 
     private static final long serialVersionUID = 1L;
 

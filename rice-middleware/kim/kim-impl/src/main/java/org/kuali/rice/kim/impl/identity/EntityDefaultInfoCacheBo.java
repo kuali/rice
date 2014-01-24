@@ -119,12 +119,11 @@ public class EntityDefaultInfoCacheBo {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public EntityDefault convertCacheToEntityDefaultInfo() {
         EntityDefault.Builder info = EntityDefault.Builder.create(this.entityId);
-        // identity info                       
+        // identity info
         info.setActive(this.isActive());
-        // principal info                       
+        // principal info
         Principal.Builder principalInfo = null;
         if (this.getPrincipalName() != null) {
             principalInfo = Principal.Builder.create(this.getPrincipalName());
@@ -135,31 +134,31 @@ public class EntityDefaultInfoCacheBo {
         principalInfo.setPrincipalId(this.getPrincipalId());
         principalInfo.setActive(this.isActive());
         info.setPrincipals(Collections.singletonList(principalInfo));
-        // name info                       
+        // name info
         EntityName.Builder nameInfo = EntityName.Builder.create();
         nameInfo.setEntityId(this.getEntityId());
         nameInfo.setFirstName(this.getFirstName());
         nameInfo.setLastName(this.getLastName());
         nameInfo.setMiddleName(this.getMiddleName());
         info.setName(nameInfo);
-        // identity type information                       
+        // identity type information
         EntityTypeContactInfoDefault.Builder entityTypeInfo = EntityTypeContactInfoDefault.Builder.create();
         entityTypeInfo.setEntityTypeCode(this.getEntityTypeCode());
         info.setEntityTypeContactInfos(Collections.singletonList(entityTypeInfo));
-        // affiliations                       
+        // affiliations
         EntityAffiliation.Builder aff = EntityAffiliation.Builder.create();
         aff.setCampusCode(this.getCampusCode());
         aff.setDefaultValue(true);
         aff.setEntityId(info.getEntityId());
         info.setDefaultAffiliation(aff);
         info.setAffiliations(Collections.singletonList(aff));
-        // employment information                       
+        // employment information
         EntityEmployment.Builder empInfo = EntityEmployment.Builder.create();
         empInfo.setEmployeeId(this.getEmployeeId());
         empInfo.setPrimary(true);
         empInfo.setPrimaryDepartmentCode(this.getPrimaryDepartmentCode());
         info.setEmployment(empInfo);
-        // external identifiers                       
+        // external identifiers
         info.setExternalIdentifiers(Collections.singletonList(EntityExternalIdentifier.Builder.create()));
         return info.build();
     }
@@ -175,7 +174,7 @@ public class EntityDefaultInfoCacheBo {
     protected void preUpdate() {
         lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
     }
-    
+
     public boolean isActive() {
         return false;
     }

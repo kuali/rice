@@ -23,7 +23,8 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class AbstractMemberBo extends ActiveFromToBo {
-
+    private static final long serialVersionUID = 1L;
+    
     @Column(name = "MBR_ID")
     private String memberId;
     @Column(name = "MBR_TYP_CD")

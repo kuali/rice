@@ -18,6 +18,7 @@ package org.kuali.rice.kim.impl.permission;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -29,6 +30,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -38,7 +40,7 @@ import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -47,7 +49,7 @@ import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_PERM_T")
-public class PermissionBo extends PersistableBusinessObjectBase implements PermissionContract {
+public class PermissionBo extends DataObjectBase implements PermissionContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -88,11 +90,12 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
     protected List<RolePermissionBo> rolePermissions = new AutoPopulatingList<RolePermissionBo>(RolePermissionBo.class);
 
+    @Override
     public Map<String, String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }
 
-    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion                      
+    //TODO: rename/fix later - only including this method and attributeDetails field for Role conversion
     public Map<String, String> getDetails() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes;
     }

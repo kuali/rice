@@ -41,8 +41,8 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
+ * This is a description of what this class does - bhargavp don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -52,7 +52,7 @@ public class PermissionInquirableImpl extends KimInquirableImpl {
 
 	@Override
 	public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry){
-		
+
 		if(NAME.equals(propertyName) || NAME_TO_DISPLAY.equals(propertyName)){
 			Map<String, String> primaryKeys = new HashMap<String, String>();
 			primaryKeys.put(KimConstants.PrimaryKeyConstants.PERMISSION_ID, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
@@ -69,7 +69,7 @@ public class PermissionInquirableImpl extends KimInquirableImpl {
         	super.buildInquirableLink(dataObject, propertyName, inquiry);
         }
 	}
-	
+
     @Override
     public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
     	/*
@@ -88,7 +88,7 @@ public class PermissionInquirableImpl extends KimInquirableImpl {
         } else if(ASSIGNED_TO_ROLES.equals(attributeName)){
         	return getAssignedRoleInquiryUrl(businessObject);
         }
-		
+
         return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
     }
 
@@ -127,22 +127,12 @@ public class PermissionInquirableImpl extends KimInquirableImpl {
 
 	@Override
 	public Object retrieveDataObject(@SuppressWarnings("rawtypes") Map fieldValues){
-    	return getBusinessObject(fieldValues);
+        if ( fieldValues.get(ID) == null ) {
+            return null;
+        }
+        PermissionBo permissionBo = getDataObjectService().find(PermissionBo.class, fieldValues.get(ID).toString());
+        return getPermissionsSearchResultsCopy(permissionBo);
     }
-    
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
-	 */
-	@Override
-	public BusinessObject getBusinessObject(@SuppressWarnings("rawtypes") Map fieldValues) {
-	    if ( fieldValues.get(ID) == null ) {
-	        return null;
-        }	    
-		PermissionBo permissionBo = getDataObjectService().find(PermissionBo.class, fieldValues.get(ID).toString());
-		return getPermissionsSearchResultsCopy(permissionBo);
-	}
 
 	private PermissionBo getPermissionsSearchResultsCopy(PermissionBo permissionSearchResult){
 		UberPermissionBo permissionSearchResultCopy = new UberPermissionBo();

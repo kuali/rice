@@ -18,6 +18,8 @@ package org.kuali.rice.kim.impl.identity.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -28,6 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -56,15 +59,14 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
-import javax.persistence.Cacheable;
 @javax.persistence.Entity
 @Cacheable(false)
 @Table(name = "KRIM_ENTITY_T")
-public class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
+public class EntityBo extends DataObjectBase implements EntityContract {
 
     private static final long serialVersionUID = -2448541334029932773L;
 

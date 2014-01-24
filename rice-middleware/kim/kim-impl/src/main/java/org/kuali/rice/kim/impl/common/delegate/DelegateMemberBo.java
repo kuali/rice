@@ -16,11 +16,10 @@
 package org.kuali.rice.kim.impl.common.delegate;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,18 +29,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
 public class DelegateMemberBo extends AbstractMemberBo implements DelegateMemberContract {
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_DLGN_MBR_ID_S")
     @GeneratedValue(generator = "KRIM_DLGN_MBR_ID_S")
@@ -117,13 +117,6 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setAttributes(immutable.getAttributes());
         return bo;
-    }
-
-    @Override
-    public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
-        List<Collection<PersistableBusinessObject>> managedLists = super.buildListOfDeletionAwareLists();
-        managedLists.add(new ArrayList<PersistableBusinessObject>(getAttributeDetails()));
-        return managedLists;
     }
 
     @Override

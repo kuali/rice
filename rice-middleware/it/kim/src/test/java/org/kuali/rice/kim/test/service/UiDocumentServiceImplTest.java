@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -62,17 +74,8 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -111,10 +114,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		Entity entity = KimApiServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
         EntityTypeContactInfo entityType = entity.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
-		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
-		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
-		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName) personDoc.getNames().get(0), entity.getNames().get(0));
+		assertAddressTrue(personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
+		assertPhoneTrue(personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
+		assertEmailTrue(personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
+		assertNameTrue(personDoc.getNames().get(0), entity.getNames().get(0));
 		assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
 
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
@@ -127,10 +130,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
                 personDoc.getEntityId());
         EntityTypeContactInfo entityType2 = entity2.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
-        assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType2.getAddresses().get(0));
-        assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType2.getPhoneNumbers().get(0));
-        assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType2.getEmailAddresses().get(0));
-        assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity2.getNames().get(0));
+        assertAddressTrue(personDoc.getAddrs().get(0), entityType2.getAddresses().get(0));
+        assertPhoneTrue(personDoc.getPhones().get(0), entityType2.getPhoneNumbers().get(0));
+        assertEmailTrue(personDoc.getEmails().get(0), entityType2.getEmailAddresses().get(0));
+        assertNameTrue(personDoc.getNames().get(0), entity2.getNames().get(0));
         assertPrincipalTrue(personDoc, entity2.getPrincipals().get(0));
 
 
@@ -156,10 +159,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
         EntityTypeContactInfo entityType = entity.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();
-		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
-		assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
-		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
-		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), entity.getNames().get(0));
+		assertAddressTrue(personDoc.getAddrs().get(0), entityType.getAddresses().get(0));
+		assertPhoneTrue(personDoc.getPhones().get(0), entityType.getPhoneNumbers().get(0));
+		assertEmailTrue(personDoc.getEmails().get(0), entityType.getEmailAddresses().get(0));
+		assertNameTrue(personDoc.getNames().get(0), entity.getNames().get(0));
 		//assertPrincipalTrue(personDoc, identity.getPrincipals().get(0));
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
 		assertEmpInfoTrue(personDoc.getAffiliations().get(0).getEmpInfos().get(0), entity.getEmploymentInformation().get(0));
@@ -202,9 +205,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		kimType.setId("roleType1");
 		kimType.setServiceName("kimRoleTypeService");
 		List<KimTypeAttributeBo> attributeDefinitions = new ArrayList<KimTypeAttributeBo>();
-		Map pkMap = new HashMap();
-		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeBo attr1 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
+		KimTypeAttributeBo attr1 = KradDataServiceLocator.getDataObjectService().find(KimTypeAttributeBo.class, "kimAttr3");
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
@@ -216,8 +217,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		attr1.setSortCode("b");
 //		attr1.setKimTypeAttributeId("kimAttr4");
 
-		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeBo attr2 = (KimTypeAttributeBo) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeBo.class, pkMap);
+		KimTypeAttributeBo attr2 = KradDataServiceLocator.getDataObjectService().find(KimTypeAttributeBo.class, "kimAttr4");
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);

@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.visa;
 
-import org.kuali.rice.kim.api.identity.visa.EntityVisa;
-import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,9 +22,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.api.identity.visa.EntityVisa;
+import org.kuali.rice.kim.api.identity.visa.EntityVisaContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+
 @Entity
 @Table(name = "KRIM_ENTITY_VISA_T")
-public class EntityVisaBo extends PersistableBusinessObjectBase implements EntityVisaContract {
+public class EntityVisaBo extends DataObjectBase implements EntityVisaContract {
     private static final long serialVersionUID = 839311156412785770L;
 
     @PortableSequenceGenerator(name = "KRIM_ENTITY_VISA_ID_S")

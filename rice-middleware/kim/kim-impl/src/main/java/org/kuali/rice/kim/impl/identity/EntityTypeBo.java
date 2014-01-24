@@ -20,14 +20,16 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ENT_TYP_T")
-public class EntityTypeBo extends PersistableBusinessObjectBase implements EntityTypeEbo {
+public class EntityTypeBo extends DataObjectBase implements EntityTypeEbo {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "ENT_TYP_CD")
@@ -76,6 +78,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         return bo;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
@@ -84,6 +87,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         this.code = code;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -96,6 +100,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -104,11 +109,16 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         this.active = active;
     }
 
+    @Override
     public String getSortCode() {
         return sortCode;
     }
 
     public void setSortCode(String sortCode) {
         this.sortCode = sortCode;
+    }
+
+    @Override
+    public void refresh() {
     }
 }

@@ -24,13 +24,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -39,7 +40,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name = "KRIM_ROLE_RSP_ACTN_T")
-public class RoleResponsibilityActionBo extends PersistableBusinessObjectBase implements RoleResponsibilityActionContract {
+public class RoleResponsibilityActionBo extends DataObjectBase implements RoleResponsibilityActionContract {
 
     private static final long serialVersionUID = 1L;
 

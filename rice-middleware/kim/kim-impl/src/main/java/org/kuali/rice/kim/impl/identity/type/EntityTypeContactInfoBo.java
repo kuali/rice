@@ -16,27 +16,23 @@
  */
 package org.kuali.rice.kim.impl.identity.type;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
@@ -48,14 +44,14 @@ import org.kuali.rice.kim.impl.identity.EntityTypeBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailBo;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.IdClassBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
 @IdClass(EntityTypeContactInfoBo.EntityTypeContactInfoBoId.class)
-public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase implements EntityTypeContactInfoContract {
+public class EntityTypeContactInfoBo extends DataObjectBase implements EntityTypeContactInfoContract {
 
     private static final long serialVersionUID = 1L;
 
@@ -72,26 +68,14 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
     private EntityTypeBo entityType;
 
     @OneToMany(targetEntity = EntityEmailBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    /*
-FIXME: JPA_CONVERSION
-For compound primary keys, make sure the join columns are in the correct order.
-*/
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityEmailBo> emailAddresses;
 
     @OneToMany(targetEntity = EntityPhoneBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    /*
-FIXME: JPA_CONVERSION
-For compound primary keys, make sure the join columns are in the correct order.
-*/
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityPhoneBo> phoneNumbers;
 
     @OneToMany(targetEntity = EntityAddressBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    /*
-FIXME: JPA_CONVERSION
-For compound primary keys, make sure the join columns are in the correct order.
-*/
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityAddressBo> addresses;
 

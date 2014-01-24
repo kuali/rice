@@ -288,7 +288,6 @@ public class KimDocumentRoleMember extends KimDocumentBoActivatableToFromEditabl
             copyToKimDocRoleMember.setActive(copyFromRoleMbrBo.isActive());
             copyToKimDocRoleMember.setActiveFromDate(copyFromRoleMbrBo.getActiveFromDateValue());
             copyToKimDocRoleMember.setActiveToDate(copyFromRoleMbrBo.getActiveToDateValue());
-            copyToKimDocRoleMember.setExtension(copyFromRoleMbrBo.getExtension());
             copyToKimDocRoleMember.setVersionNumber(copyFromRoleMbrBo.getVersionNumber());
             copyToKimDocRoleMember.setObjectId(copyFromRoleMbrBo.getObjectId());
         }

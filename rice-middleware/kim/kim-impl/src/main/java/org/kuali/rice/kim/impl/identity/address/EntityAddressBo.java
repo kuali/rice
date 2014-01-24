@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.impl.identity.address;
 
 import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

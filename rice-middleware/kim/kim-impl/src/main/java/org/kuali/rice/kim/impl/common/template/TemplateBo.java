@@ -20,12 +20,12 @@ import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.kim.api.common.template.TemplateContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.provider.annotation.BusinessKey;
 
 @MappedSuperclass
-public abstract class TemplateBo extends PersistableBusinessObjectBase implements TemplateContract {
+public abstract class TemplateBo extends DataObjectBase implements TemplateContract {
 
     private static final long serialVersionUID = 1L;
 

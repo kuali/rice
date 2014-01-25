@@ -82,7 +82,7 @@ public class ComponentLibraryView extends FormView {
      * Initializes the TabGroup that contains description and usage.  Processes ths source code marked with the
      * ex: comment tags and adds them to the ComponentExhibit for this view.
      *
-     * @see Component#performInitialization(org.kuali.rice.krad.uif.view.View, Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -760,7 +760,7 @@ public class ComponentLibraryView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

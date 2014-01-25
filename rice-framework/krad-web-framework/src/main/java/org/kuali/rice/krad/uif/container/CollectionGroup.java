@@ -186,7 +186,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Do not process remote field holders for collections. Collection items will be processed as
      * the lines are built
      * 
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#isProcessRemoteFieldHolders()
+     * {@inheritDoc}
      */
     @Override
     protected boolean isProcessRemoteFieldHolders() {
@@ -297,8 +297,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Calls the configured <code>CollectionGroupBuilder</code> to build the
      * necessary components based on the collection data
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -357,7 +356,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
@@ -401,7 +400,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -424,7 +423,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentPrototypes() {
@@ -957,7 +956,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
+     * {@inheritDoc}
      */
     @Override
     protected void initializeComponentSecurity() {
@@ -1367,7 +1366,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1477,7 +1476,7 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

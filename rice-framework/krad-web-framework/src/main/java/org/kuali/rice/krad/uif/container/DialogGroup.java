@@ -96,8 +96,7 @@ public class DialogGroup extends Group {
      * are not already present</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -139,8 +138,7 @@ public class DialogGroup extends Group {
      * </ul>
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -205,7 +203,7 @@ public class DialogGroup extends Group {
     /**
      * Override to add the handler script for the dialog response and show dialog events
      *
-     * @see org.kuali.rice.krad.uif.component.Component#getEventHandlerScript()
+     * {@inheritDoc}
      */
     @Override
     public String getEventHandlerScript() {
@@ -434,7 +432,7 @@ public class DialogGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

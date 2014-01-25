@@ -50,7 +50,7 @@ public class Disclosure extends WidgetBase {
     /**
      * Sets forceSessionPersistence when using the ajax retrieval option
      *
-     * @see Component#performApplyModel(Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -174,7 +174,7 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

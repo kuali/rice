@@ -133,8 +133,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * <li>Default the model path if not set</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -177,8 +176,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * readOnlyReplacement cases, as well.</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -230,7 +228,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
@@ -475,7 +473,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -1284,7 +1282,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#copy()
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1335,7 +1333,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

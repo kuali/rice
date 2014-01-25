@@ -48,9 +48,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * Sets up rich message content for the label, if any exists
-     *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -67,7 +65,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -182,7 +180,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -205,7 +203,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer){

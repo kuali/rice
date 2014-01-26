@@ -95,7 +95,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_VER_T")
     @DisableVersioning
     public static class DisableVersion extends PersistableBusinessObjectBase {
 
@@ -132,7 +132,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_NO_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_NO_VER_T")
     @DisableVersioning
     public static class DisableNoVersion extends PersistableBusinessObjectBase {
 
@@ -168,7 +168,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_NO_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_NO_VER_T")
     @DisableVersioning
     @RemoveMapping(name = "versionNumber")
     public static class DisableNoVersionRemoveMapping extends PersistableBusinessObjectBase {

@@ -185,7 +185,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -276,8 +276,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * <li>Disable native autocomplete with the suggest widget is configured</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -424,7 +423,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * Overriding to check quickfinder when masked is being applied. If quickfinder is configured set the component
      * to widgetInputOnly, else set to readOnly
      *
-     * @see DataField#setAlternateAndAdditionalDisplayValue(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
@@ -633,7 +632,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -653,7 +652,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see DataField#isInputAllowed()
+     * {@inheritDoc}
      */
     @Override
     public boolean isInputAllowed() {
@@ -1283,7 +1282,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getRequired()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "required")
@@ -1292,7 +1291,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#setRequired(java.lang.Boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRequired(Boolean required) {
@@ -1440,7 +1439,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -1535,7 +1534,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

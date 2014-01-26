@@ -100,8 +100,7 @@ public class FormView extends View {
      * up the validator for this view</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -192,7 +191,7 @@ public class FormView extends View {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

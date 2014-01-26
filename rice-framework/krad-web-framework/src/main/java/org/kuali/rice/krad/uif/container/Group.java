@@ -219,7 +219,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -232,7 +232,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -244,7 +244,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     * {@inheritDoc}
      */
     @Override
     public String getComponentTypeName() {
@@ -347,7 +347,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -377,7 +377,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -403,7 +403,7 @@ public class Group extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

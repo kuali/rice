@@ -48,7 +48,7 @@ public class Growls extends WidgetBase {
     /**
      * Override to add property values to the template options
      *
-     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> getTemplateOptions() {
@@ -124,7 +124,7 @@ public class Growls extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

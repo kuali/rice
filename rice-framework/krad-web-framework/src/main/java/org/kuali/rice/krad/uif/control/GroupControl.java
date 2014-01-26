@@ -141,7 +141,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
     }
 
     /**
-     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
@@ -169,7 +169,7 @@ public class GroupControl extends TextControl implements FilterableLookupCriteri
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

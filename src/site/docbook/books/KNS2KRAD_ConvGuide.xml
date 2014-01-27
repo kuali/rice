@@ -2866,16 +2866,17 @@
             </para>
           </listitem>
           <listitem xml:id="MDD3">
-            <para>The KNS <emphasis role="keyword">LookupReadonlyControlDefinition</emphasis> which
-              only had a quickfinder icon and no text field has been replaced with other fields on
-              the generic <emphasis role="keyword">InputField</emphasis>. <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:widgetInputOnly="true">
+            <para>The KNS <emphasis role="keyword">LookupReadonlyControlDefinition</emphasis>which
+              displayed only a quickfinder icon has been replaced. To create quickfinder only input
+              with no text input field, set the widgetInputOnly property on the <emphasis
+                role="keyword">InputField</emphasis>. <programlisting linenumbering="numbered">&lt;bean parent="Uif-InputField" p:propertyName="field" p:widgetInputOnly="true">
   &lt;property name="quickfinder">
     &lt;bean parent="Uif-QuickFinder"/>
   &lt;/property>
 &lt;/bean></programlisting>
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject>
             </para>
@@ -2972,6 +2973,7 @@
   ...
   &lt;property name="businessObjectClass" value="org.kuali.rice.kim.impl.identity.EntityTypeDetailsBo"/>
   &lt;property name="sourceClassName" value="org.kuali.rice.kim.impl.identity.CustomEntityTypeDetailsBo"/>
+  &lt;property name="includeMultipleLookupLine" value="true"/> 
   &lt;property name="maintainableFields">
     &lt;list>
       &lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="true" p:template="detailName"/>
@@ -3001,9 +3003,13 @@
       <para>
         <itemizedlist>
           <listitem>
-            <para>The in KNS the <emphasis role="keyword"
-                >MaintainableCollectionDefinition</emphasis> is used to specify collections on a
-              maintenance document. With KRAD one of the Uif collection groups is used. </para>
+            <para>In KNS the <emphasis role="keyword">MaintainableCollectionDefinition</emphasis> is
+              used to specify collections on a maintenance document. With KRAD, one of the Uif
+              collection groups is used. <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
           </listitem>
           <listitem>
             <para>In KNS the <emphasis role="keyword">includeMultipleLookupLine</emphasis> property
@@ -3012,17 +3018,31 @@
                 role="keyword">template</emphasis> fields for the field conversions. In KRAD these
               properties do no longer exist. Instead the <emphasis role="keyword"
                 >collectionLookup</emphasis> property is initialized with the <emphasis
-                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <emphasis role="keyword"
-                >Uif-CollectionQuickfinder</emphasis> has the following properties but do not need
-              to be specified if the collectionObjectClass of the collection group is the same as
-              the dataObjectClassName of the multi value lookup:</para>
+                role="keyword">Uif-CollectionQuickfinder</emphasis> bean. <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="keyword">Uif-CollectionQuickfinder</emphasis> has the following
+              properties but do not need to be specified if the collectionObjectClass of the
+              collection group is the same as the dataObjectClassName of the multi value
+              lookup:</para>
             <itemizedlist>
               <listitem>
-                <para>dataObjectClassName - the data object that should be looked up</para>
+                <para>dataObjectClassName - the data object that should be looked up<inlinemediaobject>
+                    <imageobject>
+                      <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                    </imageobject>
+                  </inlinemediaobject></para>
               </listitem>
               <listitem>
-                <para>fieldConversions - from-to mapping of the returned data
-                  (&lt;lookup-field>:&lt;maintenance-collection-field>)</para>
+                <para>fieldConversions - from-to mapping of the returned data (&lt;lookup-field>:&lt;maintenance-collection-field>)<inlinemediaobject>
+                    <imageobject>
+                      <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+                    </imageobject>
+                  </inlinemediaobject></para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -3057,11 +3077,11 @@
     </section>
     <section xml:id="MCC">
       <title>Collection Customization</title>
-      <para>The KNS provided the container <emphasis role="keyword"
+      <para>KNS provided the container <emphasis role="keyword"
           >Maintainable.newCollectionLines</emphasis> for lines being added to a collection to
-        prevent them from being persisted until added. KRAD provides a similar <emphasis
-          role="keyword">UifFormBase.newCollectionLines</emphasis> but also allows customizing the
-        property names and <emphasis role="keyword">BindingInfo</emphasis> via <emphasis
+        prevent them from being persisted until added. KRAD provides <emphasis role="keyword"
+          >UifFormBase.newCollectionLines</emphasis> which is similar but also allows customizing
+        the property names and <emphasis role="keyword">BindingInfo</emphasis> via <emphasis
           role="keyword">CollectionGroup.addLinePropertyName</emphasis> and <emphasis role="keyword"
           >CollectionGroup.addLineBindingInfo</emphasis>. </para>
     </section>
@@ -3126,10 +3146,21 @@
       <para> In KNS this was achieved using <emphasis role="bold"
           >MaintainableFieldDefinition.webUILeaveFieldFunction</emphasis>.
         <programlisting linenumbering="numbered">&lt;bean parent="MaintainableFieldDefinition" p:name="name" p:required="false"
-  p:webUILeaveFieldFunction="alert('you are out')"/></programlisting>
-        However in KRAD Component classes include properties for events that are applicable to the
-        generate HTML elements. The same functionality can be obtained using the <emphasis
-          role="bold">ComponentBase.onBlurScript</emphasis>
+  p:webUILeaveFieldFunction="alert('you are out')"/></programlisting>However
+        in KRAD Component classes include properties for events that are applicable to the generate
+        HTML elements. The same functionality can be obtained using the <emphasis role="bold"
+          >ComponentBase.onBlurScript</emphasis>.  The <emphasis role="bold"
+          >MaintainableFieldDefinition.webUILeaveFieldFunction</emphasis> is transformed to a
+          <emphasis role="bold">onBlurScript</emphasis> property.<inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>  A TODO  comment will be added "TODO - Check if javascript is still
+        relevant and correct".   <inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
         <programlisting>&lt;bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
   &lt;property name="onBlurScript" value="jq(this).stop().animate({'height':'-=50px'},100);"/>
 &lt;/bean></programlisting>
@@ -3340,7 +3371,12 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       <title>Permission Checks</title>
       <para>Permission checks for maintenance documents in KRAD can be setup the same way as
         specified in the Other Lookup Features. Note that if any implementers are extending a KNS
-        base class, they need to move that logic over to a KRAD base class. Examples below.</para>
+        base class, they need to move that logic over to a KRAD base class. Examples below.  <inlinemediaobject>
+          <imageobject>
+            <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+          </imageobject>
+        </inlinemediaobject>
+      </para>
       <itemizedlist>
         <listitem xml:id="MPC1">
           <para> Partial Unmask Field checks if a security-masked field can be partially displayed.
@@ -3350,7 +3386,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
               <emphasis>ViewAuthorizer.canPartialUnmaskField.</emphasis> Enabled by setting
               <emphasis>attributeSecurity.partialMask</emphasis> to true on the data field security
             object of the data. Implementers will have manually do the conversion and move any
-            custom logic in the new method. </para>
+            custom logic in the new method.  </para>
         </listitem>
         <listitem xml:id="MPC2">
           <para> Full Unmask Field checks if a security-masked field can be displayed in the clear.

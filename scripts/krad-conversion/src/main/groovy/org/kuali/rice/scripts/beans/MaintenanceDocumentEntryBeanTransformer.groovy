@@ -533,7 +533,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         def mfdCopyProperties = ["required", "defaultValueFinderClass","quickfinder.fieldConversions"];
         def mfdRenameProperties = ["name":"propertyName",
                 "alternateDisplayAttributeName": "readOnlyDisplayReplacement",
-                "additionalDisplayAttributeName": "readOnlyDisplaySuffix",
+                "additionalDisplayAttributeName": "readOnlyDisplayReplacementPropertyName",
                 "overrideLookupClass": "quickfinder.dataObjectClassName"];
 
         def mfdIgnoreProperties = ["externalHelpUrl", "unconditionallyReadOnly","readOnlyAfterAdd"];

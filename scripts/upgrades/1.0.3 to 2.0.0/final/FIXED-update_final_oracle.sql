@@ -9155,7 +9155,7 @@ insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values (
 /
 
 --
--- Copyright 2005-2012 The Kuali Foundation
+-- Copyright 2005-2014 The Kuali Foundation
 --
 --
 

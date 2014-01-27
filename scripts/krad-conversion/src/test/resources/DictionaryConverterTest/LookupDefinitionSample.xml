@@ -428,4 +428,42 @@
     </property>
   </bean>
 
+  <bean id="TestCase-lookupDefinition" parent="TestCase-lookupDefinition-parentBean" />
+  <bean id="TestCase-lookupDefinition-parentBean" abstract="true"
+        parent="LookupDefinition">
+    <property name="title" value="Traveler Detail Lookup" />
+    <property name="disableSearchButtons" value="true"/>
+    <property name="defaultSort">
+      <bean parent="SortDefinition">
+        <property name="attributeNames">
+          <list>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lookupFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="principalId" />
+        <bean parent="FieldDefinition" p:attributeName="firstName" />
+        <bean parent="FieldDefinition" p:attributeName="lastName" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="FieldDefinition" p:attributeName="principalName" />
+        <bean parent="FieldDefinition" p:attributeName="principalId" />
+        <bean parent="FieldDefinition" p:attributeName="firstName" />
+        <bean parent="FieldDefinition" p:attributeName="lastName" />
+        <bean parent="FieldDefinition" p:attributeName="streetAddressLine1" />
+        <bean parent="FieldDefinition" p:attributeName="cityName" />
+        <bean parent="FieldDefinition" p:attributeName="stateCode" />
+        <bean parent="FieldDefinition" p:attributeName="zipCode" />
+        <bean parent="FieldDefinition" p:attributeName="countryCode" />
+        <bean parent="FieldDefinition" p:attributeName="emailAddress" />
+        <bean parent="FieldDefinition" p:attributeName="phoneNumber" />
+      </list>
+    </property>
+  </bean>
+
 </beans>

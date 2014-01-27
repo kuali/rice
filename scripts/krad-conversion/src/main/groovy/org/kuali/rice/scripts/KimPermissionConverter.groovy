@@ -64,13 +64,18 @@ class KimPermissionConverter {
     String selectPermissionsByTemplate = "SELECT * FROM KRIM_PERM_T WHERE PERM_TMPL_ID = ?";
     String selectPermissionAttributes = "SELECT * FROM KRIM_PERM_ATTR_DATA_T WHERE PERM_ID = ?";
     String selectRoleMembersByPermId = "SELECT * FROM KRIM_ROLE_PERM_T WHERE PERM_ID = ?";
-    String selectAttributeDefinitionIds = "SELECT NM, NMSPC_CD, KIM_ATTR_DEFN_ID FROM KRIM_ATTR_DEFN_T WHERE NMSPC_CD='KR-NS' OR NMSPC_CD='KR-KRAD' AND ACTV_IND = 'Y'";
+    String selectAttributeDefinitionIds = "SELECT NM, NMSPC_CD, KIM_ATTR_DEFN_ID FROM KRIM_ATTR_DEFN_T WHERE ACTV_IND = 'Y'";
 
     // insert statement help strings
     String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR) VALUES ('";
     String insertIntoPermissionAttributesTable = "INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR) VALUES ('";
     String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, VER_NBR) VALUES ('";
 
+    // map old and new permission templates
+    def permTemplateMap = ["View Inquiry or Maintenance Document Field":"View Field", "View Inquiry or Maintenance Document Section":"View Group", "Inquire Into Records":"Open View",
+            "Modify Maintenance Document Field":"Edit Field","Modify Maintenance Document Section":"Edit Group","Perform Custom Maintenance Document Function":"Perform Action"]
+    //old and new attribute type name
+    def permAttributeDetailsMap = ["componentName":"viewId","sectionId":"groupId","buttonName":"actionEvent"]
     public KimPermissionConverter(config) {
         init(config);
     }
@@ -100,16 +105,14 @@ class KimPermissionConverter {
 
         // select kim attributes for later use
         kimAttributeDefinitions = sql.rows(selectAttributeDefinitionIds);
-
-        // transform inquiry permissions
-        transformViewMaintenanceInquiryFieldPermissions();
-        transformViewMaintenanceInquirySectionPermissions();
+        permTemplateMap.each{
+            key, value -> transformPermissions(key,value);
+        }
 
         // just for debug to know it completed w/o runtime error, remove when completed
         log.finer("finished converting KIM Permissions.")
         outputFile << "-- Finished\n" ;
     }
-
 
     /**
      * creates a SQL connection to the rice database
@@ -117,24 +120,6 @@ class KimPermissionConverter {
     public void connectToDb() {
         log.finer("connecting to database: " + url + " as user: " + username);
         sql = Sql.newInstance(url, username, password, driver)
-    }
-
-    /**
-     * Transforms KNS permission used to override the hide field security attribute into the KRAD equivalent.
-     * KNS version uses VIEW_MAINTENANCE_INQUIRY_FIELD permission template.
-     * KRAD equivalent uses VIEW_FIELD permission template.
-     */
-    protected void transformViewMaintenanceInquiryFieldPermissions() {
-        transformPermissions(viewInquiryFieldPermTemplateName, viewFieldPermTemplateName)
-    }
-
-    /**
-     * Transforms KNS permission used to override the hide field security attribute into the KRAD equivalent.
-     * KNS version uses VIEW_MAINTENANCE_INQUIRY_SECTION permission template.
-     * KRAD equivalent uses VIEW_GROUP permission template.
-     */
-    protected void transformViewMaintenanceInquirySectionPermissions() {
-        transformPermissions(viewInquirySectionPermTemplateName, viewGroupPermTemplateName)
     }
 
     /**
@@ -208,19 +193,17 @@ class KimPermissionConverter {
         Map newAttribute = [:];
         newAttribute.put('ATTR_DATA_ID', sequencePrefix + oldAttr.ATTR_DATA_ID);
 
-        //  convert KNS componentName, to a KRAD veiwID attribute with a wildCard * appended to the value.
-        if (oldAttr.KIM_ATTR_DEFN_ID == getAttributeDefinitionId("componentName")){
-            newAttribute.put('KIM_ATTR_DEFN_ID', getAttributeDefinitionId("viewId"));
-            newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL + '*');
-        } else if (oldAttr.KIM_ATTR_DEFN_ID == getAttributeDefinitionId("sectionId")){
-            newAttribute.put('KIM_ATTR_DEFN_ID', getAttributeDefinitionId("groupId"));
-            newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL);
-        } else {
-            // copy the old Id and Value into the new
-            newAttribute.put('KIM_ATTR_DEFN_ID', oldAttr.KIM_ATTR_DEFN_ID);
-            newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL);
+        permAttributeDetailsMap.each{
+            oldAttrNm, newAttrNm ->
+                if (oldAttr.KIM_ATTR_DEFN_ID == getAttributeDefinitionId(oldAttrNm)){
+                    newAttribute.put('KIM_ATTR_DEFN_ID', getAttributeDefinitionId(newAttrNm));
+                    newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL + '*');
+                } else {
+                    // copy the old Id and Value into the new
+                    newAttribute.put('KIM_ATTR_DEFN_ID', oldAttr.KIM_ATTR_DEFN_ID);
+                    newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL);
+                }
         }
-
         return newAttribute;
     }
 

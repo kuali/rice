@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebParam;
+import javax.xml.namespace.QName;
 import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -37,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -46,6 +48,9 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -72,7 +77,11 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.NoOpCacheManager;
@@ -531,7 +540,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     //it is possible that the the roleTypeService is coming from a remote application
                     // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
                     try {
-                        nestedQualification = roleTypeService.convertQualificationForMemberRoles(roleBo.getNamespaceCode(), roleBo.getName(), nestedRole.getNamespaceCode(), nestedRole.getName(), qualification);
+                        nestedQualification = getNestedQualification(nestedRole,
+                                roleBo.getNamespaceCode(), roleBo.getName(), nestedRole.getNamespaceCode(),
+                                nestedRole.getName(), qualification, roleMemberBo.getAttributes());
                     } catch (Exception ex) {
                         LOG.warn("Not able to retrieve RoleTypeService from remote system for roleBo Id: " + roleBo.getId(), ex);
                     }
@@ -814,12 +825,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     if (roleTypeService != null) {
                         // get the member role object
                         RoleBoLite memberRole = getRoleBoLite(mi.getMemberId());
-                        nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-                                roles.get(roleMemberBo.getRoleId()).getNamespaceCode(),
-                                roles.get(roleMemberBo.getRoleId()).getName(),
-                                memberRole.getNamespaceCode(),
-                                memberRole.getName(),
-                                qualification);
+                        nestedRoleQualification = getNestedQualification(memberRole, roles.get(
+                                roleMemberBo.getRoleId()).getNamespaceCode(), roles.get(roleMemberBo.getRoleId())
+                                .getName(), memberRole.getNamespaceCode(), memberRole.getName(), qualification, roleMemberBo.getAttributes());
                     }
                     if (this.getProxiedRoleService().isRoleActive(roleMemberBo.getRoleId())) {
                         Collection<RoleMembership> nestedRoleMembers = getNestedRoleMembers(nestedRoleQualification, mi, foundRoleTypeMembers);
@@ -863,12 +871,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             // get the member role object
                             RoleBoLite memberRole = getRoleBoLite(roleMemberships.getMemberId());
                             if (memberRole.isActive()) {
-                                Map<String, String> nestedRoleQualification = roleTypeService.convertQualificationForMemberRoles(
-                                        roles.get(roleMemberships.getRoleId()).getNamespaceCode(),
-                                        roles.get(roleMemberships.getRoleId()).getName(),
-                                        memberRole.getNamespaceCode(),
-                                        memberRole.getName(),
-                                        qualification);
+                                Map<String, String> nestedRoleQualification = getNestedQualification(memberRole,
+                                        roles.get(roleMemberships.getRoleId()).getNamespaceCode(), roles.get(
+                                        roleMemberships.getRoleId()).getName(), memberRole.getNamespaceCode(),
+                                        memberRole.getName(), qualification, roleMemberships.getQualifier());
                                 Collection<RoleMembership> nestedRoleMembers = getNestedRoleMembers(nestedRoleQualification, roleMemberships, foundRoleTypeMembers);
                                 if (!nestedRoleMembers.isEmpty()) {
                                     results.addAll(nestedRoleMembers);
@@ -1261,9 +1267,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                                 roleMemberBo.getAttributes())) {
                             RoleBoLite memberRole = getRoleBoLite(roleMemberBo.getMemberId());
                             Map<String, String> nestedRoleQualification =
-                                    roleTypeService.convertQualificationForMemberRoles(role.getNamespaceCode(),
+                                    getNestedQualification(memberRole, role.getNamespaceCode(),
                                             role.getName(), memberRole.getNamespaceCode(), memberRole.getName(),
-                                            qualification);
+                                            qualification, roleMemberBo.getAttributes());
                             if (principalHasRole(context, principalId,
                                     Collections.singletonList(roleMemberBo.getMemberId()), nestedRoleQualification, true)) {
                                 return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
@@ -2485,4 +2491,71 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected DataSource getDataSource() {
         return KimImplServiceLocator.getDataSource();
     }
+
+    private static class VersionedService<T> {
+
+        String version;
+        T service;
+
+        VersionedService(String version, T service) {
+            this.version = version;
+            this.service = service;
+        }
+
+        T getService() {
+            return this.service;
+        }
+
+        String getVersion() {
+            return this.version;
+        }
+
+    }
+
+    protected VersionedService<RoleTypeService> getVersionedRoleTypeService(KimType typeInfo) {
+        String serviceName = typeInfo.getServiceName();
+        if (serviceName != null) {
+            // default version since the base services have been available since then
+            String version = CoreConstants.Versions.VERSION_2_0_0;
+            RoleTypeService roleTypeService = null;
+
+            try {
+
+                ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
+                Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(serviceName));
+                if (endpoint != null) {
+                    version = endpoint.getServiceConfiguration().getServiceVersion();
+                }
+                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                if (service != null && service instanceof RoleTypeService) {
+                    roleTypeService = (RoleTypeService) service;
+                } else {
+                    roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+                }
+            } catch (Exception ex) {
+                roleTypeService = (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
+            }
+
+            return new VersionedService<RoleTypeService>(version, roleTypeService);
+        }
+
+        return null;
+    }
+
+    private Map<String, String> getNestedQualification(RoleBoLite memberRole, String namespaceCode, String roleName,
+            String memberNamespaceCode, String memberName, Map<String, String> qualification,
+            Map<String, String> memberQualification) {
+        VersionedService<RoleTypeService> versionedRoleTypeService = getVersionedRoleTypeService(KimTypeBo.to(memberRole.getKimRoleType()));
+        boolean versionOk = VersionHelper.compareVersion(versionedRoleTypeService.getVersion(),
+                CoreConstants.Versions.VERSION_2_3_4) != -1;
+        if (versionOk) {
+            return versionedRoleTypeService.getService().convertQualificationForMemberRolesAndMemberAttributes(namespaceCode, roleName,
+                    memberNamespaceCode, memberName, qualification, memberQualification);
+        } else {
+            return versionedRoleTypeService.getService().convertQualificationForMemberRoles(namespaceCode, roleName,
+                    memberNamespaceCode, memberName, qualification);
+        }
+
+    }
+
 }

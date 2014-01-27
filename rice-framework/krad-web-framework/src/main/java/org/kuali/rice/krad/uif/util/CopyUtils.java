@@ -186,6 +186,7 @@ public final class CopyUtils {
                             ViewLifecycleTask task = phase.getCurrentTask();
                             phaseTask += "-" + phase.getViewPhase()
                                     + "-" + obj.getClass().getSimpleName()
+                                    + "@" + phase.getViewPath()
                                     + (task == null ? "" : "-" + task.getClass().getSimpleName());
                         }
                     }

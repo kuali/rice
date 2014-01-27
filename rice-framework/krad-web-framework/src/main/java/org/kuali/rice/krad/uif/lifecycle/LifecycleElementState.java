@@ -57,6 +57,6 @@ public interface LifecycleElementState {
      * 
      * @return path relative the predecessor phase's component
      */
-    String getPath();
+    String getParentPath();
 
 }

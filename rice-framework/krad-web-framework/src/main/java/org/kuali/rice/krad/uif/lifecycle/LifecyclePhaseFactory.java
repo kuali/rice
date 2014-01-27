@@ -194,7 +194,7 @@ public final class LifecyclePhaseFactory {
             FinalizeComponentPhase finalizePhase, RenderComponentPhase renderParent, int pendingChildren) {
         LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
-        renderPhase.prepare(element, finalizePhase.getModel(), finalizePhase.getPath(),
+        renderPhase.prepare(element, finalizePhase.getModel(), finalizePhase.getParentPath(),
                 finalizePhase.getParent(), renderParent, pendingChildren);
         return renderPhase;
     }

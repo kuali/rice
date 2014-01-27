@@ -162,7 +162,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * {@inheritDoc}
      */
     @Override
-    public String getPath() {
+    public String getParentPath() {
         return this.path;
     }
 
@@ -298,7 +298,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                         }
                     }
                 }
-                element.setPath(getPath());
                 element.setViewPath(getViewPath());
 
                 Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();

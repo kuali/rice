@@ -76,7 +76,6 @@ public class ViewLifecycleComponentBuild implements Runnable {
 
         String viewPath = origComponent.getViewPath();
         assert origComponent == ObjectPropertyUtils.getPropertyValue(view, viewPath);
-        component.setPath(origComponent.getPath());
         component.setViewPath(origComponent.getViewPath());
         ObjectPropertyUtils.setPropertyValue(view, viewPath, component);
 
@@ -153,7 +152,17 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ProcessLogger.trace("ready:" + component.getId());
         }
 
-        processor.performPhase(LifecyclePhaseFactory.initialize(component, model, origComponent.getPath(), parent, null));
+        String origViewPath = origComponent.getViewPath();
+        String parentPath;
+        if (!origViewPath.startsWith(parent.getViewPath() + ".")) {
+            ViewLifecycle.reportIllegalState("orig component and parent are not related " + origViewPath + " "
+                    + parent.getViewPath());
+            parentPath = origViewPath;
+        } else {
+            parentPath = origViewPath.substring(parent.getViewPath().length() + 1);
+        }
+        
+        processor.performPhase(LifecyclePhaseFactory.initialize(component, model, parentPath, parent, null));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("initialize:" + component.getId());
@@ -212,7 +221,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.HIDDEN, false);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.applyModel(component, model, parent, component.getPath()));
+        processor.performPhase(LifecyclePhaseFactory.applyModel(component, model, parent, parentPath));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("apply-model:" + component.getId());
@@ -225,7 +234,7 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.finalize(component, model, component.getPath(), parent));
+        processor.performPhase(LifecyclePhaseFactory.finalize(component, model, parentPath, parent));
 
         if (ViewLifecycle.isTrace()) {
             ProcessLogger.trace("finalize:" + component.getId());

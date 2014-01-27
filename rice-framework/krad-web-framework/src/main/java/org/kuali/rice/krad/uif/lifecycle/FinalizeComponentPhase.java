@@ -143,7 +143,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
             nestedPathPrefix = "";
         } else {
             nestedParent = getParent();
-            nestedPathPrefix = element.getPath() + ".";
+            nestedPathPrefix = getParentPath() + ".";
         }
 
         // initialize nested components

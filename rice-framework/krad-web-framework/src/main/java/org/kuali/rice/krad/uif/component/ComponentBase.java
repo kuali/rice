@@ -83,7 +83,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String id;
     private String baseId;
-    private String path;
     private String viewPath;
     private String template;
     private String templateName;
@@ -623,23 +622,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setViewPath(String viewPath) {
         checkMutable(true);
         this.viewPath = viewPath;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getPath() {
-        return this.path;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPath(String path) {
-        checkMutable(true);
-        this.path = path;
     }
 
     /**

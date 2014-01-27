@@ -132,7 +132,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
             nestedPathPrefix = "";
         } else {
             nestedParent = getParent();
-            nestedPathPrefix = element.getPath() + ".";
+            nestedPathPrefix = getParentPath() + ".";
         }
         
         Map<String, LifecycleElement> nestedElements =

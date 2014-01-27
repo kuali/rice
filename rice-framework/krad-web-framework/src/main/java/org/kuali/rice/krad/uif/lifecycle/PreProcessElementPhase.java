@@ -95,7 +95,7 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
             nestedPathPrefix = "";
         } else {
             nestedParent = getParent();
-            nestedPathPrefix = element.getPath() + ".";
+            nestedPathPrefix = getParentPath() + ".";
         }
 
         Map<String, LifecycleElement> nestedElements =

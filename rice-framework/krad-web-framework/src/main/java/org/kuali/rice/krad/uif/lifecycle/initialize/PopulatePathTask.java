@@ -49,7 +49,6 @@ public class PopulatePathTask extends ViewLifecycleTaskBase<LifecycleElement> {
         if (element instanceof Component) {
             ((Component) element).setBaseId(element.getId());
         }
-        element.setPath(elementState.getPath());
         element.setViewPath(elementState.getViewPath());
     }
 

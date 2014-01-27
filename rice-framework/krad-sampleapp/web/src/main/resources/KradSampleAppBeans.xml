@@ -21,8 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-
-	<bean id="bootstrapConfig"
+  <bean id="bootstrapConfig"
         class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean"
         p:configLocations="classpath:META-INF/krad-sampleapp-config.xml"
         p:initialize="true"/>
@@ -30,10 +29,14 @@
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
         p:properties="#{bootstrapConfig.getProperties()}"/>
 
+  <bean class="org.kuali.rice.sql.spring.SourceSqlRunOnceConfig" init-method="executable"/>
+
 	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
 
 	<import resource="classpath:KradSampleAppModuleBeans.xml"/>
-	
+
+  <bean class="org.kuali.rice.xml.spring.IngestXmlRunOnceConfig" />
+
 </beans>

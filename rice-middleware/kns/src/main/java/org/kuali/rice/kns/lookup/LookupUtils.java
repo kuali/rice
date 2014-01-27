@@ -167,20 +167,6 @@ public class LookupUtils {
     }
 
     /**
-     * Applies the search results limit to the search criteria for this BO (JPA)
-     *
-     * @param businessObjectClass BO class to search on / get limit for
-     * @param criteria search criteria
-     */
-    public static void applySearchResultsLimit(Class businessObjectClass,
-            org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
-        Integer limit = getSearchResultsLimit(businessObjectClass);
-        if (limit != null) {
-            criteria.setSearchLimit(limit);
-        }
-    }
-
-    /**
      * This method the maximum rows per page in a multiple value lookup
      *
      * @see org.kuali.KRADConstants.SystemGroupParameterNames#MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE

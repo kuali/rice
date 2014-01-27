@@ -38,7 +38,6 @@ import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.impl.RemoteModuleServiceBase;
 
 import java.lang.reflect.InvocationTargetException;

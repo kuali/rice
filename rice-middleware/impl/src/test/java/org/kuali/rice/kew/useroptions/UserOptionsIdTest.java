@@ -28,18 +28,9 @@ public class UserOptionsIdTest {
 
     @Test
     public void testEquals() throws Exception {
-        UserOptionsId options1 = new UserOptionsId();
-        options1.setOptionId("one");
-        options1.setWorkflowId("two");
-
-        UserOptionsId options2 = new UserOptionsId();
-        options2.setOptionId("two");
-        options2.setWorkflowId("one");
-
-        UserOptionsId options3 = new UserOptionsId();
-        options3.setOptionId("one");
-        options3.setWorkflowId("two");
-
+        UserOptionsId options1 = new UserOptionsId("one", "two");
+        UserOptionsId options2 = new UserOptionsId("two", "one");
+        UserOptionsId options3 = new UserOptionsId("one", "two");
         UserOptionsId options4 = new UserOptionsId();
 
         assertFalse(options1.equals(null));
@@ -52,18 +43,9 @@ public class UserOptionsIdTest {
 
     @Test
     public void testHashCode() throws Exception {
-        UserOptionsId options1 = new UserOptionsId();
-        options1.setOptionId("one");
-        options1.setWorkflowId("two");
-
-        UserOptionsId options2 = new UserOptionsId();
-        options2.setOptionId("two");
-        options2.setWorkflowId("one");
-
-        UserOptionsId options3 = new UserOptionsId();
-        options3.setOptionId("one");
-        options3.setWorkflowId("two");
-
+        UserOptionsId options1 = new UserOptionsId("one", "two");
+        UserOptionsId options2 = new UserOptionsId("two", "one");
+        UserOptionsId options3 = new UserOptionsId("one", "two");
         UserOptionsId options4 = new UserOptionsId();
 
         assertNotEquals(options1.hashCode(), options2.hashCode());

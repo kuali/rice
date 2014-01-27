@@ -122,6 +122,6 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         File file = temporaryFolder.newFile(fileName);
         FileUtils.writeStringToFile(file, content);
         String path = file.getAbsolutePath().toString();
-        driver.findElement(By.name("attachmentFile")).sendKeys(path);
+        waitAndTypeByName("attachmentFile", path);
     }
 }

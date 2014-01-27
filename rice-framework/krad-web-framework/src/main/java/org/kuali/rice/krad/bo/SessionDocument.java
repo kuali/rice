@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -30,7 +31,7 @@ import org.eclipse.persistence.annotations.Index;
 /*
  * Defines methods a business object should implement.
  */
-//@IdClass(org.kuali.rice.krad.bo.SessionDocumentId.class)
+@IdClass(SessionDocumentId.class)
 @Entity
 @Table(name="KRNS_SESN_DOC_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_SESN_DOC_TC0",columnNames="OBJ_ID")

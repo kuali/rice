@@ -50,12 +50,12 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         return "People Flow";
     }
 
-    public void testPeopleFlowCreateNewBookmark(JiraAwareFailable failable) throws Exception {
-        testPeopleFlow();
+    public void testPeopleFlowBlanketApproveBookmark(JiraAwareFailable failable) throws Exception {
+        testPeopleFlowBlanketApprove();
         passed();
     }
-    public void testPeopleFlowCreateNewNav(JiraAwareFailable failable) throws Exception {
-        testPeopleFlow();
+    public void testPeopleFlowBlanketApproveNav(JiraAwareFailable failable) throws Exception {
+        testPeopleFlowBlanketApprove();
         passed();
     }
 }

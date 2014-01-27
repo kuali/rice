@@ -15,22 +15,27 @@
  */
 package org.kuali.rice.core.web.listener;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
+import org.kuali.rice.core.web.util.PropertySources;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.springframework.core.env.PropertySource;
 import org.springframework.util.Log4jConfigurer;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Properties;
+import com.google.common.base.Optional;
 
 /**
  * A ServletContextListener responsible for initializing the a Kuali Rice application.
@@ -50,13 +55,13 @@ public class KualiInitializeListener implements ServletContextListener {
      * ServletContextListener interface implementation that schedules the start of the lifecycle
      */
     @Override
-	public void contextInitialized(ServletContextEvent sce) {
+    public void contextInitialized(ServletContextEvent sce) {
         long startInit = System.currentTimeMillis();
         LOG.info("Initializing Kuali Rice Application...");
 
         // Stop Quartz from "phoning home" on every startup
         System.setProperty("org.terracotta.quartz.skipUpdateCheck", "true");
-        
+
         List<String> configLocations = new ArrayList<String>();
         String additionalConfigLocations = System.getProperty(KewApiConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
         if (!StringUtils.isBlank(additionalConfigLocations)) {
@@ -73,8 +78,8 @@ public class KualiInitializeListener implements ServletContextListener {
             String bootstrapSpringInitParam = sce.getServletContext().getInitParameter(WEB_BOOTSTRAP_SPRING_FILE);
             // if the value comes through as ${bootstrap.spring.beans}, we ignore it
             if (!DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE.equals(bootstrapSpringInitParam)) {
-            	bootstrapSpringBeans = bootstrapSpringInitParam;
-            	LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
+                bootstrapSpringBeans = bootstrapSpringInitParam;
+                LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
             }
         }
 
@@ -83,12 +88,18 @@ public class KualiInitializeListener implements ServletContextListener {
         baseProps.putAll(System.getProperties());
         JAXBConfigImpl config = new JAXBConfigImpl(baseProps);
         ConfigContext.init(config);
-        
+
         context = new XmlWebApplicationContext();
         if (!StringUtils.isEmpty(bootstrapSpringBeans)) {
             context.setConfigLocation(bootstrapSpringBeans);
         }
         context.setServletContext(sce.getServletContext());
+
+        // Provide an optional method for bootstrapping a Spring property source
+        Optional<PropertySource<?>> ps = PropertySources.getPropertySource(sce, "web.bootstrap.spring.psc");
+        if (ps.isPresent()) {
+            PropertySources.addFirst(context, ps.get());
+        }
 
         try {
             context.refresh();
@@ -108,6 +119,7 @@ public class KualiInitializeListener implements ServletContextListener {
      */
     protected Properties getContextParameters(ServletContext context) {
         Properties properties = new Properties();
+        @SuppressWarnings("unchecked")
         Enumeration<String> paramNames = context.getInitParameterNames();
         while (paramNames.hasMoreElements()) {
             String paramName = paramNames.nextElement();
@@ -117,7 +129,7 @@ public class KualiInitializeListener implements ServletContextListener {
     }
 
     @Override
-	public void contextDestroyed(ServletContextEvent sce) {
+    public void contextDestroyed(ServletContextEvent sce) {
         LOG.info("Shutting down Kuali Rice...");
         if (context != null) {
             context.close();

@@ -17,11 +17,6 @@
 -- KULRICE-11268 Travel Demo App maintenance document security not defined.
 --
 
-INSERT INTO KREW_DOC_TYP_T (ACTV_IND,CUR_IND,DOC_TYP_DESC,DOC_TYP_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,LBL,OBJ_ID,PARNT_ID,RTE_VER_NBR,VER_NBR)
-  VALUES (1,1,'Parent Document Type for all Travel Documents','KRSAP1000','TravelDocument',0,'Travel Document',uuid(),'2680','2',1)
-/
-
-
 INSERT INTO KRIM_PERM_T (ACTV_IND,DESC_TXT,NM,NMSPC_CD,OBJ_ID,PERM_ID,PERM_TMPL_ID,VER_NBR)
   VALUES ('Y','Allows a user to receive ad hoc requests for Travel Documents.','Ad Hoc Review Travel Document','KR-SAP',uuid(),'KRSAP10017','9',1)
 /

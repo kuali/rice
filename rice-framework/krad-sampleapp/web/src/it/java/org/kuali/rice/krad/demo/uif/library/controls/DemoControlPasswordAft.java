@@ -32,47 +32,47 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
     /**
      * //div[@id='Demo-PasswordControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']
      */
-    private static final String DEFAULT_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example1']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']";
+    private static final String DEFAULT_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example1']/div/input[@type='password' and @name='inputField2']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']
      */
-    private static final String SIZE_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']";
+    private static final String SIZE_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example2']/div/input[@type='password' and @name='inputField2']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']
      */
-    private static final String DISABLED_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example3']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
+    private static final String DISABLED_PWD_FIELD_XPATH = "//div[@id='Demo-PasswordControl-Example3']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
 
     /**
      * //div[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']
      */
-    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
+    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']
      */
-    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']";
+    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField4' and @disabled='disabled']
      */
-    private static final String ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField4' and @disabled='disabled']";
+    private static final String ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example5']/div/input[@type='password' and @name='inputField4' and @disabled='disabled']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField4']
      */
-    private static final String ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField4']";
+    private static final String ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example5']/div/input[@type='password' and @name='inputField4']";
     
     /**
      * //div[@id='Demo-PasswordControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField6' and @disabled='disabled']
      */
-    private static final String DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField6' and @disabled]";
+    private static final String DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER = "//div[@id='Demo-PasswordControl-Example6']/div/input[@type='password' and @name='inputField6' and @disabled]";
     
     /**
      * //div[@id='Demo-PasswordControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField6']
      */
-    private static final String DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example6']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField6']";
+    private static final String DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE = "//div[@id='Demo-PasswordControl-Example6']/div/input[@type='password' and @name='inputField6']";
     
     @Override
     protected String getBookmarkUrl() {

@@ -98,7 +98,7 @@ public class LocationDataJPATest extends KRADTestCase {
         assertTrue("StateBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(StateBo.class));
         setupStateBoDataObjectAndSave();
 
-        StateBo stateBo = KRADServiceLocator.getDataObjectService().find(StateBo.class,new StateId("US","IN"));
+        StateBo stateBo = KRADServiceLocator.getDataObjectService().find(StateBo.class,new StateId("IN","US"));
         assertTrue("State BO fetched after save", stateBo != null && StringUtils.equals(stateBo.getName(),"Indiana"));
         assertTrue("State BO fetched Country BO correctly",stateBo.getCountry() != null && StringUtils.equals(stateBo.getCountry().getAlternateCode(),"USA"));
     }

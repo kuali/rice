@@ -377,7 +377,7 @@ public interface ViewHelperService {
     /**
      * Gets an expression evaluator factory for use with the current view.
      *
-     * @return expression evaluator factory
+     * @returns expression evaluator factory
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
 

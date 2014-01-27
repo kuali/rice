@@ -16,8 +16,6 @@
 package org.kuali.rice.krad.data.jpa;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.springframework.util.ClassUtils;
 
 import javax.persistence.EntityManager;
@@ -27,7 +25,7 @@ import java.util.Collection;
 class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
     protected EntityManager entityManager;
 
-    public JpaQueryTranslator(EntityManager entityManager) {
+    JpaQueryTranslator(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

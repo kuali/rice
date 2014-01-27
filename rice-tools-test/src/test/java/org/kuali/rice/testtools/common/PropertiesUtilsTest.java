@@ -17,9 +17,7 @@ package org.kuali.rice.testtools.common;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -55,10 +53,13 @@ public class PropertiesUtilsTest {
         Assert.assertTrue(props.keySet().size() > 0);
     }
 
-    @Ignore // deal with path
     @Test
     public void testLoadPropertiesFile() throws IOException {
-        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null);
+        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null); // intellij
+        if (props == null) { // mvn
+            props = propUtils.loadProperties("src/main/resources/JiraAwareRegexFailures.properties", null);
+        }
+        Assert.assertNotNull(props);
         Assert.assertTrue(props.keySet().size() > 0);
     }
 

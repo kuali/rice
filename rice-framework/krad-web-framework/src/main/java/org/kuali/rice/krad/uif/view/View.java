@@ -1626,7 +1626,7 @@ public class View extends ContainerBase {
         checkMutable(true);
         
         if (items == null) {
-            items = Collections.emptyList();
+            this.items = Collections.emptyList();
         } else {
             // TODO: Fix this unchecked condition.
             this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
@@ -1640,6 +1640,10 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "dialogs", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getDialogs() {
+        if (dialogs == Collections.EMPTY_LIST && isMutable(true)) {
+            dialogs = new LifecycleAwareList<Group>(this);
+        }
+        
         return dialogs;
     }
 
@@ -1650,7 +1654,12 @@ public class View extends ContainerBase {
      */
     public void setDialogs(List<Group> dialogs) {
         checkMutable(true);
-        this.dialogs = Collections.unmodifiableList(dialogs);
+        
+        if (dialogs == null) {
+            this.dialogs = Collections.emptyList();
+        } else {
+            this.dialogs = new LifecycleAwareList<Group>(this, dialogs);
+        }
     }
 
     /**

@@ -22,13 +22,12 @@ import org.junit.Ignore
  * Tests DocumentSecurityService
  */
 class DocumentSecurityServiceTest {
-    @Test @Ignore
+
+    @Test @Ignore // TODO: test that getRouteHeaderVariableValue is resolving variables correctly
     void testRouteHeaderVariableSubstitution() {
-       // TODO: test that getRouteHeaderVariableValue is resolving variables correctly
     }
 
-    @Test @Ignore
+    @Test @Ignore // TODO: test that isAuthenticatedByPermission is working correctly
     void testPermissionAuthentication() {
-       // TODO: test that isAuthenticatedByPermission is working correctly
     }
 }

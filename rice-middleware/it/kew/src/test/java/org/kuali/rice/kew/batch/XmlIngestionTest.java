@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.kuali.rice.kew.batch;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
@@ -114,7 +113,6 @@ public class XmlIngestionTest extends KEWTestCase {
     }
     
 
-    @Ignore
     public void testXmlReIngestion() throws Exception {
 
         // Define the path for the test environment

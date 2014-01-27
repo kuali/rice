@@ -23,7 +23,7 @@ INSERT INTO KRIM_ROLE_T (ACTV_IND,DESC_TXT, KIM_TYP_ID, LAST_UPDT_DT, NMSPC_CD, 
 /
 
  INSERT INTO KRIM_RSP_T(RSP_ID, OBJ_ID, RSP_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND)
-    VALUES('KRSAP10000', sys_guid(), '1', 'KR-IDM', 'Review Travel Authorization Document', '', 'Y')
+    VALUES('KRSAP10000', sys_guid(), '1', 'KR-SAP', 'Review Travel Authorization Document', '', 'Y')
 /
 
 INSERT INTO KRIM_ROLE_RSP_T(ROLE_RSP_ID, OBJ_ID, ROLE_ID, RSP_ID, ACTV_IND)

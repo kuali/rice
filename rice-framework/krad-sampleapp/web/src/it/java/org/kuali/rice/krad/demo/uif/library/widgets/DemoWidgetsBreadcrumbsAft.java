@@ -115,6 +115,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue("Path-based", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
         waitAndClickByLinkText("Page 2");
+        waitForElementPresentByName("inputField9");
         assertElementPresentByName("inputField9");
         driver.close();
         switchToWindow(START_PAGE_TITLE);
@@ -128,7 +129,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
-        waitAndClickByXpath("//div[@class='uif-verticalBoxLayout clearfix']/a[contains(text(),'Sibling Breadcrumbs')]");
+        waitAndClickByXpath("//div[@id='Demo-Breadcrumbs-Example10']/a[contains(text(),'Sibling Breadcrumbs')]");
         assertNewWindow("10", "Sibling Breadcrumbs");
     }
 
@@ -157,6 +158,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     private void testAllBreadcrumb() throws Exception {
+        testWidgetsBreadcrumbSiblingBreadcrumbs();
         testWidgetsBreadcrumbDefault();
         testWidgetsBreadcrumbParentLocation();
         testWidgetsBreadcrumbParentLocationChain();
@@ -166,7 +168,6 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         testWidgetsBreadcrumbHomewardPath();
         testWidgetsBreadcrumbPathBased();
         testWidgetsBreadcrumbOverrides();
-        testWidgetsBreadcrumbSiblingBreadcrumbs();
         driver.close();
     }
 

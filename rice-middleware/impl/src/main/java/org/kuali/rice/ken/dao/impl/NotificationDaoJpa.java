@@ -16,12 +16,9 @@
 package org.kuali.rice.ken.dao.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.dao.NotificationDao;
-import org.kuali.rice.ken.util.NotificationConstants;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -45,14 +42,17 @@ public class NotificationDaoJpa implements NotificationDao{
 
 		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
 
-		Criteria criteria = new Criteria(NotificationBo.class.getName());
-		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+        // TODO commented these lines out when working on KULRICE-9336, once KEN conversion to JPA is merged in this dao should go away
+//		Criteria criteria = new Criteria(NotificationBo.class.getName());
+//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+//		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+//		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
 
-		Collection<NotificationBo> available_notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
-		return available_notifications;
+//		Collection<NotificationBo> available_notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
+//
+//		return available_notifications;
+        return null;
 	}
 
 	/**
@@ -65,12 +65,15 @@ public class NotificationDaoJpa implements NotificationDao{
 
 		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
 
-		Criteria criteria = new Criteria(NotificationBo.class.getName());
-		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
+        // TODO commented these lines out when working on KULRICE-9336, once KEN conversion to JPA is merged in this dao should go away
+//		Criteria criteria = new Criteria(NotificationBo.class.getName());
+//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
 
-		Collection<NotificationBo> notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
 
-		return notifications;
+//		Collection<NotificationBo> notifications = dao.findMatching(NotificationBo.class, criteria, true, RiceConstants.NO_WAIT);
+//
+//		return notifications;
+        return null;
 	}
 
 }

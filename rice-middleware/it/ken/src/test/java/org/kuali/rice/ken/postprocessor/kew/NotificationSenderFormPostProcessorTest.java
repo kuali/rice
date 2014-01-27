@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,6 @@ package org.kuali.rice.ken.postprocessor.kew;
 import org.junit.Ignore;
 import org.kuali.rice.ken.test.KENTestCase;
 
-@Ignore
+@Ignore // no test methods
 public class NotificationSenderFormPostProcessorTest extends KENTestCase {
 }

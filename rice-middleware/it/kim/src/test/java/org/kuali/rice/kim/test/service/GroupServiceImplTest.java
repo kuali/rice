@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
@@ -37,7 +36,6 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Ignore
 public class GroupServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;
@@ -147,6 +145,4 @@ public class GroupServiceImplTest extends KIMTestCase {
 		assertTrue( "Group C should be a parent of Group A", gIds.contains("g103"));
 		assertTrue( "Since these groups have a circular membership, Group A should be a parent of itself", gIds.contains("g101"));
 	}
-
-	
 }

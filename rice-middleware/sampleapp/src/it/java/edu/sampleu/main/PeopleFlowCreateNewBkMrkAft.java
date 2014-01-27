@@ -28,7 +28,12 @@ public class PeopleFlowCreateNewBkMrkAft extends PeopleFlowCreateNewAftBase {
     }
 
     @Test
+    public void testPeopleFlowBlanketApproveBookmark() throws Exception {
+        testPeopleFlowBlanketApproveBookmark(this);
+    }
+
+    @Test
     public void testPeopleFlowCreateNewBookmark() throws Exception {
-        testPeopleFlowCreateNewBookmark(this);
+        testPeopleFlowCreateNew();
     }
 }

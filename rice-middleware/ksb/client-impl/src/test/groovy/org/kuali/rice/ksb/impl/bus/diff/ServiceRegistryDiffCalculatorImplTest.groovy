@@ -237,7 +237,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	}
 	
 	@Test
-    @Ignore
+    @Ignore // java.lang.UnsupportedOperationException: Parsing is no longer supported by BaseConfig, please see JAXBConfigImpl instead.
 	void testCalculateLocalServicesDiff_emptyRegistryServices() {
 				
 		List<LocalService> localServices = [
@@ -264,7 +264,7 @@ class ServiceRegistryDiffCalculatorImplTest {
 	}
 	
 	@Test
-    @Ignore
+    @Ignore // java.lang.UnsupportedOperationException: Parsing is no longer supported by BaseConfig, please see JAXBConfigImpl instead.
 	void testCalculateLocalServicesDiff_fullDiff() {
 				
 		List<LocalService> localServices = [

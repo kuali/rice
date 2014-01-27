@@ -19,7 +19,7 @@
 
 
 INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR)
- VALUES ('KRSAP12000',  UUID(), '56', 'KR-KRAD', 'ViewTravelPerDiem_AuthDocId', 'This permissions allows display of the hidden authorization document id', 'Y', 1)
+ VALUES ('KRSAP12000',  UUID(), '56', 'KR-SAP', 'ViewTravelPerDiem_AuthDocId', 'This permissions allows display of the hidden authorization document id', 'Y', 1)
 /
 
 INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR)
@@ -35,7 +35,7 @@ INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, 
 /
 
 INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR)
- VALUES ('KRSAP13000', UUID(), '58', 'KR-KRAD', 'ViewTravelPerDiem_CostEstimates', 'This permissions allows display of the hidden cost estimates section', 'Y', 1)
+ VALUES ('KRSAP13000', UUID(), '58', 'KR-SAP', 'ViewTravelPerDiem_CostEstimates', 'This permissions allows display of the hidden cost estimates section', 'Y', 1)
 /
 
 INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR)

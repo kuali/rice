@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.testtools.selenium;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -41,8 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -80,6 +83,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * "//input[@aria-invalid]"
      */
     public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid]";
+
+    /**
+     * backdoorId
+     */
+    public static final String BACKDOOR_ID_TEXT = "backdoorId";
+
+    /**
+     * "//input[@title='Click to login.']"
+     */
+    public static final String BACKDOOR_LOGIN_BUTTON_XPATH = "//input[@title='Click to login.']";
 
     /**
      * methodToCall.blanketApprove
@@ -412,6 +425,23 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     String sessionId = null;
 
+    private static final Map<String, String> actionRequestLabelMap;
+    private static Map<String, String> actionRequestButtonMap;
+    static{
+        actionRequestLabelMap = new HashMap();
+        actionRequestLabelMap.put("A","APPROVE");
+        actionRequestLabelMap.put("F","FYI");
+        actionRequestLabelMap.put("C","COMPLETE");
+        actionRequestLabelMap.put("K","ACKNOWLEDGE");
+        actionRequestLabelMap.put("D","APPROVE");
+        actionRequestButtonMap = new HashMap();
+        actionRequestButtonMap.put("A","methodToCall.approve");
+        actionRequestButtonMap.put("F","methodToCall.fyi");
+        actionRequestButtonMap.put("C","methodToCall.complete");
+        actionRequestButtonMap.put("K","methodToCall.acknowledge");
+        actionRequestButtonMap.put("D","methodToCall.disapprove");
+    }
+    
     /**
      * If WebDriverUtils.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
      * {@link WebDriverUtils#chromeDriverCreateCheck()}
@@ -610,6 +640,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // No-op for convenience
     }
 
+    protected void impersonateUser(String user) throws InterruptedException {
+        waitAndTypeByName(BACKDOOR_ID_TEXT,user);
+        waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
+    }
+
     /**
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
@@ -626,19 +661,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String nextYear = sdf.format(nextYearCal.getTime());
 
         waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
         for (int i = 0, s = adHocRecipients.length; i < s; i++) {
             selectOptionByName("newAdHocRoutePerson.actionRequested", adHocRecipients[i][1]);
             waitAndTypeByName("newAdHocRoutePerson.id", adHocRecipients[i][0]);
-            if (isElementPresentByName("member.activeFromDate")) {
-                waitAndTypeByName("member.activeFromDate", today);
-            }
-            if (isElementPresentByName("member.activeFromDate")) {
-                waitAndTypeByName("member.activeFromDate", nextYear);
-            }
+//            if (isElementPresentByName("member.activeFromDate")) {
+//                waitAndTypeByName("member.activeFromDate", today);
+//            }
+//            if (isElementPresentByName("member.activeFromDate")) {
+//                waitAndTypeByName("member.activeFromDate", nextYear);
+//            }
             WebDriverUtils.jGrowl(getDriver(), "Click Add Person", false, "Click Add Person");
             waitAndClickByName("methodToCall.insertAdHocRoutePerson");
         }
@@ -691,23 +726,30 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectTopFrame();
         waitAndClickActionList();
         selectFrameIframePortlet();
-        if ("F".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "FYI"});
-            selectOptionByName("defaultActionToTake", actionListOptionValue);
-            WebDriverUtils.jGrowl(getDriver(), "Click Apply Default Action", false, "Click Apply Default Action");
-            waitAndClickByXpath("//img[@src='images/tinybutton-applydflt.gif']");
-            WebDriverUtils.jGrowl(getDriver(), "Click Take Mass Action", false, "Click Take Mass Action");
-            waitAndClickById("takeMassActions");
-            waitForTextNotPresent(docId);
-        } else if ("A".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "APPROVE"});
+        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
+        waitAndClickLinkContainingText(docId);
+        selectChildWindow();
+        waitAndClickByName(actionRequestButtonMap.get(actionListOptionValue));
+
+        // Disapprove requires another step before checking outbox
+        if ("D".equals(actionListOptionValue)) {
+            waitAndTypeByName("reason","blah");
+            waitAndClickByName("methodToCall.processAnswer.button0");
         } else if ("C".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "COMPLETE"});
-        } else if ("K".equals(actionListOptionValue)) {
-            assertTextPresent(new String[]{docId, "ACKNOWLEDGE"});
-        } else {
-            throw new IllegalArgumentException(actionListOptionValue + " is not a valid action list option VALUE");
+            waitAndClickByName("methodToCall.close");
         }
+        waitForTextNotPresent(docId);
+        assertOutbox(docId);
+    }
+
+    protected void assertOutbox(String docId) throws InterruptedException {
+        // find it in outbox
+        waitAndClickLinkContainingText("Outbox");
+        waitForTextPresent(docId);
+
+        // clear all items in the outbox
+        waitAndClickAllByName("outboxItems");
+        waitAndClickByName("methodToCall.removeOutboxItems");
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
@@ -792,7 +834,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
-        waitForElementPresent(By.className("jGrowl-message"));
+        waitForElementPresentByClassName("jGrowl-message");
+
+        // wait for any flash not present errors to fade out
+        while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
+            driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+        }
 
         // get growl texts
         StringBuilder sb = new StringBuilder("");
@@ -1568,6 +1615,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.switchTo().window(locator);
     }
 
+    protected void selectChildWindow() {
+        selectWindow(driver.getWindowHandles().toArray()[1].toString());
+    }
+
     protected void selectByXpath(String locator, String selectText) throws InterruptedException {
         select(By.xpath(locator), selectText);
     }
@@ -1714,14 +1765,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected String getDateToday() {
         Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         return sdf.format(now);
     }
 
     protected String getDateTomorrow() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DATE, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         return sdf.format(now.getTime());
     }
 
@@ -2374,40 +2425,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected void testPeopleFlow() throws Exception {
-        selectFrameIframePortlet();
+    protected void testPeopleFlowBlanketApprove() throws Exception {
+        String docId = peopleFlowCreateNew();
 
-        //Click Main Menu and Create New
-        // waitAndCreateNew();
-        // waitForPageToLoad();
-        jGrowl("Create New");
-        waitAndClickByLinkText("Create New");
-
-        //jiraAwareWaitAndClick(By.linkText("Create New"));
-        //Save docId
-        waitForElementPresent("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-        String docId = getText("div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
-        jGrowlSticky("Doc Id is " + docId);
-        findElement(By.name("document.documentHeader.documentDescription")).clear();
-        findElement(By.name("document.documentHeader.documentDescription")).sendKeys("Description for Document");
-        new Select(findElement(By.name("document.newMaintainableObject.dataObject.namespaceCode"))).selectByVisibleText("KUALI - Kuali Systems");
-        findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        findElement(By.name("document.newMaintainableObject.dataObject.name")).sendKeys("Document Name" + AutomatedFunctionalTestUtils.DTS);
-
-        jGrowl("Add Member kr");
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("kr");
-        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
-        Thread.sleep(3000);
-        checkForIncidentReport();
-
-        jGrowl("Add Member admin");
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).sendKeys("admin");
-        findElement(By.cssSelector("button[data-loadingmessage='Adding Line...']")).click();
-        Thread.sleep(3000);
-
-        findElement(By.cssSelector("div[data-parent='PeopleFlow-MaintenanceView'] > div.uif-footer button~button~button")).click();
+        waitAndClickButtonByText("blanket approve");
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");
@@ -2429,6 +2450,63 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         findElement(By.name("imageField")).click();
         Thread.sleep(5000);
         // TODO open the document and verify data is as we expect.
+    }
+
+    protected void testPeopleFlowCreateNew() throws Exception {
+        String docId = peopleFlowCreateNew();
+
+        waitAndClickButtonByText("submit");
+        Thread.sleep(3000);
+        checkForIncidentReport();
+
+        //Close the Doc
+        //findElement(By.id("uif-close")).click();
+        //Thread.sleep(3000);
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
+        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Document Search is " + docId + " present?");
+        selectFrameIframePortlet();
+        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        Thread.sleep(5000);
+        jGrowl("Is doc status enroute?");
+        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        driver.switchTo().defaultContent();
+        findElement(By.name("imageField")).click();
+        Thread.sleep(5000);
+        // TODO open the document and verify data is as we expect.
+    }
+
+    private String peopleFlowCreateNew() throws InterruptedException {
+        selectFrameIframePortlet();
+
+        waitAndClickByLinkText("Create New");
+
+        //Save docId
+        waitForElementPresent("div[data-label='Document Number']");
+        String docId = getText("div[data-label='Document Number']");
+        assertTrue(docId != null);
+        jGrowlSticky("Doc Id is " + docId);
+
+        findElement(By.name("document.documentHeader.documentDescription")).clear();
+        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
+        findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" + AutomatedFunctionalTestUtils.DTS);
+
+        jGrowl("Add Member kr");
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "kr");
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
+        Thread.sleep(3000);
+        checkForIncidentReport();
+
+        jGrowl("Add Member admin");
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
+        Thread.sleep(3000);
+        return docId;
     }
 
     protected void testTermLookupAssertions() throws Exception {
@@ -2798,8 +2876,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(5000); //allow for ajax refresh
         waitAndClickByXpath(allDaySelector);
         Thread.sleep(5000); //allow for ajax refresh
+        checkForIncidentReport();
         waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
-        Thread.sleep(5000); //allow for line to be added           
+        Thread.sleep(5000); //allow for line to be added
     }
 
     protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
@@ -4213,6 +4292,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
         jGrowl("Click " + buttonText + " button.");
         waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
+    }
+
+    protected void waitAndClickAllByName(String name) throws InterruptedException{
+        List<WebElement> elements = driver.findElements(By.name(name));
+        for(WebElement ele : elements){
+            ele.click();
+        }
     }
 
     /**

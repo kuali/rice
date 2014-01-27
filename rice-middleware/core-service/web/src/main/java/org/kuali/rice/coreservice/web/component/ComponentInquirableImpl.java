@@ -20,8 +20,6 @@ import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 import java.util.HashMap;
 import java.util.Map;

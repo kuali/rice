@@ -43,7 +43,8 @@
         <bean parent="Uif-InputField-LabelTop" p:label="Field 1A" p:propertyName="inputField1"/>
         <bean parent="Uif-InputField-LabelTop" p:label="Field 2A" p:propertyName="inputField2"/>
         <bean parent="Uif-InputField-LabelTop" p:label="Field 2B" p:propertyName="inputField3"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field with MustOccurConstraint" p:propertyName="inputField4">
+        <bean parent="Uif-InputField-LabelTop" p:label="Field with MustOccurConstraint" p:propertyName="inputField4"
+              p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">

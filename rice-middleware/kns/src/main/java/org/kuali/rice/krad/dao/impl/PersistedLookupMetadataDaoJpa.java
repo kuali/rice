@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
-import java.sql.Timestamp;
+import org.kuali.rice.krad.dao.PersistedLookupMetadataDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
-import org.kuali.rice.kns.lookup.LookupResults;
-import org.kuali.rice.kns.lookup.SelectedObjectIds;
-import org.kuali.rice.krad.dao.PersistedLookupMetadataDao;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
+import javax.persistence.Query;
+import java.sql.Timestamp;
 
 @Deprecated
 public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao {
@@ -35,22 +29,18 @@ public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao
     @PersistenceContext
 	private EntityManager entityManager;
     
-    /**
-     * @see org.kuali.rice.krad.dao.PersistedLookupMetadataDao#deleteOldLookupResults(java.sql.Timestamp)
-     */
+    @Override
     public void deleteOldLookupResults(Timestamp expirationDate) {
-        Criteria criteria = new Criteria(LookupResults.class.getName());
-        criteria.lt(KRADPropertyConstants.LOOKUP_DATE, expirationDate);
-        new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
+        Query query = entityManager.createNamedQuery("LookupResults.deleteOldLookupResults");
+        query.setParameter("expirationDate", expirationDate);
+        query.executeUpdate();
     }
 
-    /**
-     * @see org.kuali.rice.krad.dao.PersistedLookupMetadataDao#deleteOldSelectedObjectIds(java.sql.Timestamp)
-     */
+    @Override
     public void deleteOldSelectedObjectIds(Timestamp expirationDate) {
-        Criteria criteria = new Criteria(SelectedObjectIds.class.getName());
-        criteria.lt(KRADPropertyConstants.LOOKUP_DATE, expirationDate);
-        new QueryByCriteria(entityManager, criteria, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
+        Query query = entityManager.createNamedQuery("SelectedObjectIds.deleteOldSelectedObjectIds");
+        query.setParameter("expirationDate", expirationDate);
+        query.executeUpdate();
     }
 
     /**

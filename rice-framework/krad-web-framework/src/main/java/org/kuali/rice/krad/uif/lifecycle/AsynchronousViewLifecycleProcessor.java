@@ -31,12 +31,16 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -267,8 +271,28 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         expressionEvaluator = expressionEvaluatorPool.poll();
         if (expressionEvaluator == null) {
             // Create a new expression evaluator if a pooled instance is not available.
-            expressionEvaluator = ViewLifecycle.getHelper().getExpressionEvaluatorFactory().createExpressionEvaluator();
-            expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
+            ExpressionEvaluatorFactory expressionEvaluatorFactory;
+            ViewHelperService helper = ViewLifecycle.getHelper();
+            if (helper != null) {
+                expressionEvaluatorFactory = helper.getExpressionEvaluatorFactory();
+            } else {
+                expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+            }
+
+            if (expressionEvaluatorFactory == null) {
+                expressionEvaluator = new DefaultExpressionEvaluator();
+            } else {
+                expressionEvaluator = expressionEvaluatorFactory.createExpressionEvaluator();
+            }
+
+            if (ViewLifecycle.isActive()) {
+                try {
+                    expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
+                } catch (IllegalStateException e) {
+                    // Model is unavailable - may happen in unit test environments
+                    LOG.warn("Model is not available", e);
+                }
+            }
         }
 
         // Assign the rendering context to the current thread.
@@ -402,6 +426,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         aphase.processor = null;
         aphase.phase = null;
         aphase.globalVariables = null;
+        aphase.expressionEvaluator = null;
         RecycleUtils.recycle(aphase);
     }
 

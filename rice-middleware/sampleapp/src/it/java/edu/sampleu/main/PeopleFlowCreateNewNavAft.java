@@ -23,7 +23,12 @@ import org.junit.Test;
 public class PeopleFlowCreateNewNavAft extends PeopleFlowCreateNewAftBase {
 
     @Test
+    public void testPeopleFlowBlanketApproveNav() throws Exception {
+        testPeopleFlowBlanketApproveNav(this);
+    }
+
+    @Test
     public void testPeopleFlowCreateNewNav() throws Exception {
-        testPeopleFlowCreateNewNav(this);
+        testPeopleFlowCreateNew();
     }
 }

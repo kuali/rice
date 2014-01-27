@@ -20,8 +20,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,6 +67,9 @@ public class JiraIssueCreation {
         driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         driver.get(jiraBase + "/secure/Dashboard.jspa");
 
+        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.className("login-link"),
+                this.getClass().toString()).click();
+
         // CAS
         WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("username"),
                 this.getClass().toString());
@@ -83,7 +89,6 @@ public class JiraIssueCreation {
     public void testCreateJira() throws InterruptedException, IOException {
         List<JiraData> jiraDatas = new LinkedList();
         String summary;
-        StringBuilder description = null;
 
         for (File dir: jiraDataDirs) {
 
@@ -100,63 +105,122 @@ public class JiraIssueCreation {
 
             // Jira
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("create_link"), this.getClass().toString());
-            driver.get("/secure/CreateIssue!default.jspa");
+            driver.get(jiraBase + "/secure/CreateIssue!default.jspa");
+
+            // Project
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("project-field"),
                     this.getClass().toString()).sendKeys(System.getProperty("jira.project", "Kuali Rice Development"));
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issuetype-field"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.issuetype", "Bug Fix"));
+
+            // Issue type
+            WebElement issue = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id(
+                    "issuetype-field"), this.getClass().toString());
+            issue.click();
+            issue.sendKeys(Keys.BACK_SPACE);
+            issue.sendKeys(System.getProperty("jira.issuetype", "Bug Fix"));
+//            issue.sendKeys(Keys.ARROW_DOWN);
+            issue.sendKeys(Keys.TAB);
+
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issue-create-submit"),
                     this.getClass().toString()).click();
 
-            // uncheck include in release notes
+            // Summary // TODO remove things that look like java object references
+            // TODO if the error messages are the same for all jiras then include it in the summary
+            String testClass = jiraDatas.get(0).fullTestName.substring(0, jiraDatas.get(0).fullTestName.lastIndexOf("."));
+            testClass = testClass.replace("org.kuali.rice.", "");
+            testClass = testClass.replace("edu.sampleu.", "");
+            summary = System.getProperty("jira.summary.start", "").replaceAll("_", " ") + " "  + testClass;
+            if (jiraDatas.size() == 1) {
+                summary += " " + jiraDatas.get(0).testDetails;
+            }
+            summary = summary.replace("java.lang.AssertionError: ", "");
+            summary = summary.replace("org.eclipse.persistence.exceptions.DatabaseException: \nInternal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: ", "");
+            if (summary.indexOf("\n") > -1) {
+                summary = summary.substring(0, summary.indexOf("\n")).trim();
+            } else if (summary.indexOf("\t") > -1) {
+                summary = summary.substring(0, summary.indexOf("\t")).trim();
+            }
+            if (summary.length() > 180) {
+                summary = summary.substring(0, 179);
+            }
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("summary"),
+                    this.getClass().toString()).sendKeys(summary);
+            StringBuilder description = new StringBuilder(summary).append(" ").append(System.getProperty("jira.description.start", "").replaceAll("_", " ")).append("\n");
+
+            // Components
+            WebElement component = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id(
+                    "components-textarea"), this.getClass().toString());
+            String components = System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " ");
+            StringTokenizer tokens = new StringTokenizer(components);
+            while (tokens.hasMoreElements()) {
+                component.click();
+                component.sendKeys(tokens.nextToken());
+//                component.sendKeys(Keys.ARROW_DOWN);
+                component.sendKeys(Keys.TAB);
+            }
+
+            // Description
+            for (JiraData jiraData : jiraDatas) {
+                if (!"".equals(jiraData.aftSteps)) {
+                    description.append("\n").append(jiraData.aftSteps);
+                }
+                description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
+                description.append(jiraData.testUrl).append("\n");
+                description.append("\n{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}\n");
+            }
+
+            WebElement descriptionElement = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("description"),
+                    this.getClass().toString());
+            descriptionElement.click();
+            descriptionElement.sendKeys(description);
+
+            // Priority
+            WebElement priority = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
+                    this.getClass().toString());
+            priority.click();
+            priority.sendKeys(Keys.BACK_SPACE);
+            priority.sendKeys(System.getProperty("jira.priority", "Critical"));
+//            priority.sendKeys(Keys.ARROW_DOWN);
+            priority.sendKeys(Keys.TAB);
+
+            // Version
+            WebElement version = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("versions-textarea"),
+                    this.getClass().toString());
+            version.click();
+            version.sendKeys(System.getProperty("jira.versions", "2.4.0-m3").replaceAll(",", " "));
+//            version.sendKeys(Keys.ARROW_DOWN);
+            version.sendKeys(Keys.TAB);
+
+            // Fix version
+            WebElement fixVersion = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
+                    this.getClass().toString());
+            fixVersion.click();
+            fixVersion.sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+//            fixVersion.sendKeys(Keys.ARROW_DOWN);
+            fixVersion.sendKeys(Keys.TAB);
+
+            // Release notes unchecked
             WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("customfield_11621-1"),
                     this.getClass().toString()).click();
 
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("components-textarea"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " "));
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.priority", "Critical"));
+            WebDriverUtils.waitFor(driver, 8, By.id("issue-create-submit"), this.getClass().toString());
 
-
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("versions-textarea"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.versions", "2.4.0-m3").replaceAll(",",
-                    " "));
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
-
-
-            summary = description + jiraDatas.get(0).errorMessage;
-            if (summary.length() > 80) {
-                summary = summary.substring(0, 79);
-            }
-
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("summary"),
-                    this.getClass().toString()).sendKeys(summary);
-
-            for (JiraData jiraData : jiraDatas) {
-                description.append("\n").append(jiraData.aftSteps);
-                description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
-                description.append(jiraData.testUrl).append("\n");
-            }
-
-            description.append("{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}");
-
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("description"),
-                    this.getClass().toString()).sendKeys(description);
-
-            WebDriverUtils.waitFor(driver, 600000, By.id("issue-create-submit"), this.getClass().toString());
+//            WebDriverUtils.acceptAlertIfPresent(driver); // Dialog present when running Se.....
         }
     }
 
     protected JiraData parseJiraData(File inputFile) throws IOException {
         String rawData = FileUtils.readFileToString(inputFile, null);
         JiraData jiraData = new JiraData();
-        jiraData.aftSteps = rawData.substring(rawData.indexOf("AFT Step:"), rawData.indexOf("Abbreviated test name: "));
+        try {
+            jiraData.aftSteps = rawData.substring(rawData.indexOf("AFT Step:"), rawData.indexOf("Abbreviated test name: "));
+        } catch (IndexOutOfBoundsException ioobe) {
+            // ignore only AFTs have AFT steps
+        }
         jiraData.shortTestName = rawData.substring(rawData.indexOf("Abbreviated test name: ") + 23, rawData.indexOf("Full test name: ")).trim(); // Abbreviated test name:
         jiraData.fullTestName = rawData.substring(rawData.indexOf("Full test name: ") + 16, rawData.indexOf("Test results url: ")).trim();
         jiraData.testUrl = rawData.substring(rawData.indexOf("Test results url: ") + 18, rawData.indexOf("Error Message: ")).trim();
         jiraData.errorMessage = rawData.substring(rawData.indexOf("Error Message: ") + 15, rawData.indexOf("Test Details: ")).trim();
-        jiraData.testDetails = rawData.substring(rawData.indexOf("Test Details: ") + 14, rawData.length()).trim();
+        jiraData.testDetails = rawData.substring(rawData.indexOf("Test Details: ") + 14, rawData.length()).trim().replace("\t", "       ");
         return jiraData;
     }
 
@@ -179,7 +243,7 @@ public class JiraIssueCreation {
     }
 
     class JiraData {
-        String aftSteps;
+        String aftSteps = ""; // only AFTs have AFT Steps
         String shortTestName;
         String fullTestName;
         String testUrl;

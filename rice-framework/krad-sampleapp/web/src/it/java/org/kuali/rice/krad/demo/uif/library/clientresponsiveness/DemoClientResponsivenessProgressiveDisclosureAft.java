@@ -92,7 +92,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitForElementPresentByXpath("//input[@name='inputField11']");
     	waitForElementPresentByXpath("//input[@name='inputField12']");
     	waitAndClickByXpath("//input[@name='inputField9' and @value='show2']");
-    	waitForTextPresent("Loading...");
+    	waitForTextNotPresent("Loading...");
     	waitForElementPresentByXpath("//input[@name='inputField13']");
     	waitForElementPresentByXpath("//input[@name='inputField14']");
     }
@@ -104,7 +104,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndTypeByName("inputField16","Hello World!");
     	waitAndTypeByName("inputField17","Hello Deep!");
     	waitAndClickByXpath("//input[@name='inputField15' and @value='show2']");
-    	waitForTextPresent("Loading...");
+        waitForTextNotPresent("Loading...");
     	waitForTextPresent("Hello Deep!");
     }
     
@@ -112,12 +112,12 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndClickByLinkText("Conditional Options");
     	selectByName("inputField19","Apples");
     	waitAndClickButtonByText("Refresh Group");
-    	waitForTextPresent("Loading...");
+        waitForTextNotPresent("Loading...");
     	Thread.sleep(10000);		
     	selectByName("inputField4","Vegetables");
     	// Test page gives exception after this step.
         waitAndClickButtonByText("Refresh Field");
-        waitForTextPresent("Loading...");
+        waitForTextNotPresent("Loading...");
         Thread.sleep(10000);
         waitAndClickButtonByText("Refresh Field but with Server Errors");
         waitForTextPresent("Field 1: Intended message with key: serverTestError not found. [+1 warning] [+1 message]");
@@ -135,7 +135,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndClickByLinkText("Collection Group With Refresh");
     	waitAndTypeByXpath(CWGR_GENERIC_XPATH+"/div/table/tbody/tr[2]/td/div/input","ref");
         fireEvent("focus", "collection1[0].field1");
-    	waitForTextPresent("Loading...");
+        waitForTextNotPresent("Loading...");
     	//Test cannot be written ahead as there is a freemarker error in page
         checkForIncidentReport();
     }

@@ -37,9 +37,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Growls-Example1 start-->
-        <!--GlobalVariables.getMessageMap().addGrowlMessage("Growl Message", "demo.fakeGrowl", extraInfo);-->
-        <!-- ex:Demo-Growls-Example1 end-->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="addGrowl" p:actionLabel="Growl"/>
+        <!-- ex:Demo-Growls-Example1 end-->
       </list>
     </property>
   </bean>
@@ -47,9 +46,9 @@
   <bean id="Demo-Growls-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <!-- ex:Demo-Growls-Example1 start-->
+        <!-- ex:Demo-Growls-Example2 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Growl" p:actionScript='jQuery.growlUI("Growl Test", "This is a test growl message");'/>
-        <!-- ex:Demo-Growls-Example1 end-->
+        <!-- ex:Demo-Growls-Example2 end-->
       </list>
     </property>
   </bean>

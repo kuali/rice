@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.data;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.orm.ObjectRetrievalFailureException;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * Some simple utility methods for use with data objects.
@@ -34,8 +34,6 @@ public final class DataObjectUtils {
 
     private DataObjectUtils() {}
 
-    ;
-
     /**
      * This method is a proxy-safe null check. Some data access technologies might implement proxy for things such as
      * lazy loading of a relationship. In these cases, it may not be possible to know that the underlying proxy will
@@ -44,19 +42,19 @@ public final class DataObjectUtils {
      *
      * <p>Note that this might have side-affects, such as materializing an underlying lazy relationship.</p>
      *
-     * @param object the object to check if it is null or will resolve to null
+     * @param dataObject the object to check if it is null or will resolve to null
      * @return true if the object is null or will resolve to null, false otherwise
      */
-    public static boolean isNull(Object object) {
+    public static boolean isNull(Object dataObject) {
         // regardless, if its null, then its null
-        if (object == null) {
+        if (dataObject == null) {
             return true;
         }
 
         // TODO - this is kind of JPA specific right now, need to delegate this down to the provider layer, probably
         // need to add something to the persistence or metadata provider for this...
         try {
-            object.equals(null);
+            dataObject.equals(null);
         } catch (ObjectRetrievalFailureException e) {
             return true;
         }
@@ -72,26 +70,26 @@ public final class DataObjectUtils {
      *
      * <p>Note that this might have side-affects, such as materializing an underlying lazy relationship.</p>
      *
-     * @param object the object to check if it is not null or will resolve to a non-null value
+     * @param dataObject the object to check if it is not null or will resolve to a non-null value
      * @return true if the object is not null or will resolve to a non-null value, false otherwise
      */
-    public static boolean isNotNull(Object object) {
-        return !isNull(object);
+    public static boolean isNotNull(Object dataObject) {
+        return !isNull(dataObject);
     }
 
     /**
      * Returns the value of the property in the object.
      *
-     * @param businessObject
+     * @param dataObject
      * @param propertyName
      * @return Object will be null if any parent property for the given property is null.
      */
-    public static Object getPropertyValue(Object businessObject, String propertyName) {
-        if (businessObject == null || propertyName == null) {
+    public static Object getPropertyValue(Object dataObject, String propertyName) {
+        if (dataObject == null || propertyName == null) {
             throw new RuntimeException("Business object and property name can not be null");
         }
 
-        DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(businessObject);
+        DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(dataObject);
 
         return wrapper.getPropertyValueNullSafe(propertyName);
     }
@@ -99,15 +97,15 @@ public final class DataObjectUtils {
     /**
      *   Get property type for the given object and property name.
      *
-     * @param businessObject
+     * @param dataObject
      * @param propertyName
      * @return
      */
-     public static Class<?> getPropertyType(Object businessObject, String propertyName) {
-         if (businessObject == null || propertyName == null) {
+     public static Class<?> getPropertyType(Object dataObject, String propertyName) {
+         if (dataObject == null || propertyName == null) {
              throw new RuntimeException("Business object and property name can not be null");
          }
-         DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(businessObject);
+         DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(dataObject);
          return wrapper.getPropertyType(propertyName);
      }
 
@@ -176,13 +174,13 @@ public final class DataObjectUtils {
      * constant
      * amount of memory, no matter how deeply nested it goes.
      *
-     * @param bo
+     * @param dataObject
      * @param fieldName
      * @return The field value if it exists. If it doesnt, and the name is invalid, and
      */
-    public static Object getNestedValue(Object bo, String fieldName) {
+    public static Object getNestedValue(Object dataObject, String fieldName) {
 
-        if (bo == null) {
+        if (dataObject == null) {
             throw new IllegalArgumentException("The bo passed in was null.");
         }
         if (StringUtils.isBlank(fieldName)) {
@@ -195,7 +193,7 @@ public final class DataObjectUtils {
         // final value.
         String[] fieldNameParts = fieldName.split("\\.");
         Object currentObject = null;
-        Object priorObject = bo;
+        Object priorObject = dataObject;
         for (int i = 0; i < fieldNameParts.length; i++) {
             String fieldNamePart = fieldNameParts[i];
 
@@ -227,17 +225,17 @@ public final class DataObjectUtils {
     /**
      * This method safely creates a object from a class
      *
-     * @param clazz
-     * @return a newInstance() of clazz
+     * @param type
+     * @return a newInstance() of type
      */
-    public static Object createNewObjectFromClass(Class clazz) {
-        if (clazz == null) {
-            throw new RuntimeException("BO class was passed in as null");
+    public static Object createNewObjectFromClass(Class<?> type) {
+        if (type == null) {
+            throw new RuntimeException("Class was passed in as null");
         }
         try {
-            return clazz.newInstance();
+            return type.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Error occured while trying to create a new instance for class " + clazz, e);
+            throw new RuntimeException("Error occured while trying to create a new instance for class " + type, e);
         }
     }
 
@@ -268,18 +266,18 @@ public final class DataObjectUtils {
     /**
      * Helper method for creating a new instance of the given class
      *
-     * @param clazz - class of object to create
+     * @param type - class of object to create
      * @return T object of type given by the clazz parameter
      */
-    public static <T> T newInstance(Class<T> clazz) {
+    public static <T> T newInstance(Class<T> type) {
         T object = null;
         try {
-            object = clazz.newInstance();
+            object = type.newInstance();
         } catch (InstantiationException e) {
-            LOG.error("Unable to create new instance of class: " + clazz.getName());
+            LOG.error("Unable to create new instance of class: " + type.getName());
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
-            LOG.error("Unable to create new instance of class: " + clazz.getName());
+            LOG.error("Unable to create new instance of class: " + type.getName());
             throw new RuntimeException(e);
         }
 

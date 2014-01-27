@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,7 @@ import static org.junit.Assert.assertTrue;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-// deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
-@Ignore
+@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
 	// NOTE: this value is highly dependent on test data 
 	private static final int EXPECTED_SUCCESSES = 6;

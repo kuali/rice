@@ -105,21 +105,21 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // link has been removed
+    @Ignore // link removed
     public void testInquiryCollapseExpandNav() throws Exception {
         testCollapseExpand();
         passed();
     }
 
     @Test
-    @Ignore // link has been removed
+    @Ignore // link removed
     public void testInquiryLightBoxNav() throws Exception {
         testInquiryLightBox();
         passed();
     }
 
     @Test
-    @Ignore // link has been removed
+    @Ignore // link removed
     public void testInquiryBackButtonNav() throws Exception {
         testInquiryBackButton();
         passed();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
     
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -1123,8 +1123,8 @@
       inquiry definitions to a view and displays all inquiries in a lightbox by default. The
       conversion script will automate part of the conversion for your inquiries to the view format,
       but some inquiry attributes require no conversion since they are virtually identical between
-      KNS and KRAD. The following sections provide a typical conversion sample and identify the
-      Business Object bean properties, Sections, Collections, helper classes, and other features
+      the KNS and KRAD. The following sections provide a typical conversion sample and identify the
+      business object bean properties, sections, collections, helper classes, and other features
       which are converted by the script and those which require manual conversion. </para>
     <section>
       <title>InquiryDefinition in KNS Data Dictionary to InquiryView in KRAD</title>
@@ -1676,7 +1676,15 @@
   </section>
   <section>
     <title>Lookup Conversion</title>
-    <para>&lt;add overview here></para>
+    <para>Lookups allow users to search for data entries (typically ones created by a maintenance
+      document) in order to view the results and take actions (if any) on those entries.  They
+      allow controlling how much information is shown and what actions the user can currently
+      take on the entry.  KRAD moves all lookup definitions to a view.  The conversion script
+      will automate part of the conversion for your lookups to the view format, but some lookup
+      attributes require no conversion since they are virtually identical between the KNS and KRAD.
+      The following sections provide a typical conversion sample and identify the business object
+      bean properties, criteria fields, result fields, helper classes, and other features which
+      are converted by the script and those that require manual conversion.</para>
     <section>
       <title>LookupDefinition in KNS Data Dictionary to LookupView in KRAD</title>
       <note>
@@ -1727,12 +1735,12 @@
       <para>
         <emphasis role="bold">KRAD code example:</emphasis>
         <programlisting linenumbering="numbered">&lt;bean id="EntityTypeLookupView" parent="Uif-LookupView">
-&lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.EntityTypeBo"/>
   &lt;property name="headerText" value="Entity Type Lookup" />
   &lt;property name="page.header.lowerGroup.items">
     &lt;list merge="true">
-      &lt;bean parent="Uif-SecondaryActionButton" p:actionLabel="Custom Button"
-               p:actionScript="alert('JavaScript triggered action.')"/>
+      &lt;bean parent="Uif-Message" value="[&amp;lt;a href=&amp;quot;javascript:void(0)&amp;quot;
+        onclick=&amp;quot;alert('JavaScript triggered action.')&amp;quot;&amp;gt;Custom Button&amp;lt;/a&amp;gt;]"/>
     &lt;/list>
   &lt;/property>
   &lt;property name="renderLookupCriteria" value="false"/>
@@ -1882,8 +1890,8 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LCF4">
-            <para>Not rendering a quickfinder on a lookup criteria field is specified via
-                the<emphasis role="keyword">enableAutoQuickfinder</emphasis> property instead of the
+            <para>Not rendering a quickfinder on a lookup criteria field is specified via the
+                <emphasis role="keyword">enableAutoQuickfinder</emphasis> property instead of the
                 <emphasis role="keyword">noLookup</emphasis> property. [KNS line: 12, KRAD line 25] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-scriptconv.png" contentdepth="15"/>
@@ -1950,16 +1958,16 @@
                 >&lt;attribute-name></emphasis> parameter to the URL. In KRAD the URL parameter
               naming convention changed to <emphasis role="keyword"
                 >lookupCriteria[&lt;attribute-name>]</emphasis>. Alternatively the defaultValue can
-              be set on the Uif-LookupCriteriaInputField. [KNS line: n/a, KRAD line: 14] <inlinemediaobject>
+              be set on the Uif-LookupCriteriaInputField. [KNS line: n/a, KRAD line: 27] <inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
               </inlinemediaobject></para>
-            <para><emphasis role="bold">KNS
-              example:</emphasis><programlisting linenumbering="numbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
+            <para><emphasis role="bold">KNS URL
+              example:</emphasis><programlisting linenumbering="unnumbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
   &amp;businessObjectClassName=org.kuali.rice.location.impl.country.CountryBo&amp;<emphasis role="bold">code=us</emphasis></programlisting></para>
-            <para><emphasis role="bold">KRAD
-              example:</emphasis><programlisting linenumbering="numbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
+            <para><emphasis role="bold">KRAD URL
+              example:</emphasis><programlisting linenumbering="unnumbered">http://demo.rice.kuali.org/kr/lookup.do?methodToCall=start
   &amp;businessObjectClassName=org.kuali.rice.location.impl.country.CountryBo<emphasis role="bold">&amp;lookupCriteria[code]=us</emphasis></programlisting></para>
           </listitem>
         </itemizedlist>
@@ -2038,9 +2046,8 @@
           <listitem xml:id="LRF7">
             <para>To display the maintenance links (create new, edit, copy, delete) on non
               maintenance documents the <emphasis role="keyword">renderMaintenanceLinks</emphasis>
-              on the LookupForm needs to be set. Not however the framework has logic based on
-              whether a quickfinder is used to determine whether to show the return links or
-              maintenance links.<inlinemediaobject>
+              on the LookupForm needs to be set. Note, the quickfinder logic in the framework
+              automatically determines wether to show the return links or the maintenance links.<inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>
@@ -2166,9 +2173,10 @@
                   >Constraints</link>) </para>
             </listitem>
             <listitem xml:id="LLA6">
-              <para><emphasis role="keyword">performLookup</emphasis> has been renamed to
-                performSearch. The resultTable parameter has been removed and takes searchCriteria
-                as an additional parameter. </para>
+              <para><emphasis role="keyword">performLookup</emphasis> has been renamed to <emphasis
+                  role="keyword">performSearch</emphasis> which takes the LookupForm as an
+                additional parameter. The resultTable parameter has been removed and takes
+                searchCriteria as an additional parameter. </para>
             </listitem>
             <listitem xml:id="LLA7">
               <para><emphasis role="keyword">getSearchResults</emphasis> and <emphasis
@@ -2185,9 +2193,9 @@
             </listitem>
             <listitem xml:id="LLA9">
               <para><emphasis role="keyword">getReturnUrl</emphasis> has been renamed to
-                  <emphasis>buildReturnUrlForResult</emphasis> which accepts the Link that returns
-                the result from the lookup and the model. Configuration via the Uif-LookupView is
-                also possible:
+                  <emphasis>buildReturnUrlForResult</emphasis> which accepts the Link and sets the
+                result from the lookup and the model. Configuration via the Uif-LookupView is also
+                possible:
                 <programlisting linenumbering="numbered">&lt;bean id="Sample-LookupView" parent="Uif-LookupView">
   ...
   &lt;property name="resultsReturnField">
@@ -2224,7 +2232,7 @@
 &lt;/bean></programlisting></para>
             </listitem>
             <listitem xml:id="LLA12">
-              <para><emphasis role="keyword">getReturnKeys</emphasis> takes the <emphasis
+              <para><emphasis role="keyword">getReturnKeyValues</emphasis> takes the <emphasis
                   role="keyword">LookupView, LookupForm</emphasis> and the data object as an
                 additional parameter.</para>
             </listitem>
@@ -2405,11 +2413,12 @@
             <listitem xml:id="LLH2">
               <para>The functionality of <emphasis role="keyword">getActionUrl</emphasis> and
                   <emphasis role="keyword">getMaintenanceUrl</emphasis> is handled by <emphasis
-                  role="keyword">getMaintenanceActionLink</emphasis>.</para>
+                  role="keyword">buildMaintenanceActionLink</emphasis>.</para>
             </listitem>
             <listitem xml:id="LLH4">
-              <para>The method <emphasis role="keyword">getSearchResults</emphasis> now accepts the
-                form, search criteria and the unbounded indicator.</para>
+              <para>The logic of <emphasis role="keyword">getSearchResults</emphasis> is now part of
+                  <emphasis role="keyword">performSearch</emphasis> which accepts the form, search
+                criteria and the unbounded indicator.</para>
             </listitem>
           </itemizedlist></para>
       </section>
@@ -2526,7 +2535,18 @@
   </section>
   <section>
     <title>Maintenance Conversion</title>
-    <para>&lt;add overview here></para>
+    <para>Maintenance documents provide an easy way to create and edit simple data entries.
+      They provide layout definitions to display base objects and collections for entering data
+      and editing it, as well as controlling access to data, providing links to attachments,
+      applying rules, and routing the document through several reviewers before finalizing
+      and applying the changes to the database.  KRAD modifies the maintenance document entries
+      and moves all relevant display definitions to a view.  The conversion script will automate
+      part of the conversion for your maintenance documents to the view format, but some
+      maintenance attributes require no conversion since they are virtually identical between
+      the KNS and KRAD.  The following sections provide a typical conversion sample and identify
+      the business object bean properties, sections, collections, lookup definitions, helper
+      classes, and other features which are converted by the script and those that require manual
+      conversion.</para>
     <section>
       <title>MaintenanceDefinition in KNS Data Dictionary to MaintenanceView in KRAD</title>
       <para><emphasis role="bold">KNS Code example:</emphasis></para>

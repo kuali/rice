@@ -15,30 +15,22 @@
  */
 package org.kuali.rice.krad.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
-import org.kuali.rice.core.framework.persistence.jpa.CompositePrimaryKeyBase;
+import org.kuali.rice.krad.data.jpa.IdClassBase;
 
 /**
- * PK for SessionDocument.  'Cause we love the JPAness.
+ * ID Class for SessionDocument.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class SessionDocumentId extends CompositePrimaryKeyBase {
-    @Id
-    @Column(name="SESN_DOC_ID",length=40)
-    protected String sessionId;
-	@Id
-	@Column(name="DOC_HDR_ID",length=14)
-	protected String documentNumber;
-	@Id
-	@Column(name="PRNCPL_ID",length=40)
-	protected String principalId;
-	@Id
-	@Column(name="IP_ADDR",length=60)
-	protected String ipAddress;
+public class SessionDocumentId extends IdClassBase {
+
+    private static final long serialVersionUID = 2455522802669321846L;
+
+    private String sessionId;
+	private String documentNumber;
+	private String principalId;
+	private String ipAddress;
 
 	public SessionDocumentId() {}
 
@@ -49,53 +41,20 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 		this.ipAddress = ipAddress;
 	}
 
-	/**
-	 * @return the documentNumber
-	 */
 	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
-	/**
-	 * @return the sessionId
-	 */
+
 	public String getSessionId() {
 		return this.sessionId;
 	}
-	/**
-	 * @return the principalId
-	 */
+
 	public String getPrincipalId() {
 		return this.principalId;
 	}
-	/**
-	 * @return the ipAddress
-	 */
+
 	public String getIpAddress() {
 		return this.ipAddress;
-	}
-	/**
-	 * @param documentNumber the documentNumber to set
-	 */
-	public void setDocumentNumber(String documentNumber) {
-		this.documentNumber = documentNumber;
-	}
-	/**
-	 * @param sessionId the sessionId to set
-	 */
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
-	/**
-	 * @param principalId the principalId to set
-	 */
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
-	}
-	/**
-	 * @param ipAddress the ipAddress to set
-	 */
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
 	}
 
 }

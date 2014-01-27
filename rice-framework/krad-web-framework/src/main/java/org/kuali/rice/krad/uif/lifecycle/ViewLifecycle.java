@@ -462,6 +462,7 @@ public class ViewLifecycle implements Serializable {
 
         if (processor == null) {
             ExpressionEvaluatorFactory expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+
             if (expressionEvaluatorFactory == null) {
                 return new DefaultExpressionEvaluator();
             } else {
@@ -489,7 +490,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the servlet request for this lifecycle.
-     * 
+     *
      * @return servlet request for this lifecycle
      */
     public static HttpServletRequest getRequest() {
@@ -504,7 +505,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the current phase of the active lifecycle, or null if no phase is currently active.
-     * 
+     *
      * @return current phase of the active lifecycle
      */
     public static ViewLifecyclePhase getPhase() {
@@ -514,7 +515,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the rendering context for this lifecycle.
-     * 
+     *
      * @return rendering context for this lifecycle
      */
     public static LifecycleRenderingContext getRenderingContext() {

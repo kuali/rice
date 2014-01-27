@@ -160,6 +160,13 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     /**
+     * Provide an Immutable view of the raw properties for debugging purposes
+     */
+    public Properties getRawProperties() {
+        return new ImmutableProperties(rawProperties);
+    }
+
+    /**
      * 
      * This overrides the property. Takes the place of the now deprecated overrideProperty
      * 
@@ -378,9 +385,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             this.setProperty(prefix + "  ", p.getName(), randStr);
             LOG.info(prefix + "  --- " + "generating random string " + randStr + " for system property " + p.getName());
         } else {
-            // resolve and set system params immediately so they can override
-            // existing system params. Add to rawProperties resolved as well to
-            // prevent possible mismatch
+            // Resolve and set system params immediately so they can override existing system params. 
+            // Update rawProperties with the resolved value as well. (to prevent possible mismatch)
             HashSet<String> set = new HashSet<String>();
             set.add(p.getName());
             String value = parseValue(p.getValue(), set);
@@ -590,10 +596,11 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         // Create some log friendly strings
         String displayOld = flatten(ConfigLogger.getDisplaySafeValue(key, oldValue));
         String displayNew = flatten(ConfigLogger.getDisplaySafeValue(key, newValue));
+        String displayRaw = flatten(rawValue);
 
         // Log what happened to this property value
         if (StringUtils.contains(rawValue, "$")) {
-            LOG.info(msg + key + "(" + rawValue + ")=[" + displayOld + "]->[" + displayNew + "]");
+            LOG.info(msg + key + "(" + displayRaw + ")=[" + displayOld + "]->[" + displayNew + "]");
         } else {
             LOG.info(msg + key + "=[" + displayOld + "]->[" + displayNew + "]");
         }

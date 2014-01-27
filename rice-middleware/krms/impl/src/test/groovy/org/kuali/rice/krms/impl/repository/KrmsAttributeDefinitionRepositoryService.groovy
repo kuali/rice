@@ -80,7 +80,7 @@ class KrmsAttributeDefinitionRepositoryService {
       }
   }
 
-//  @Ignore
+//  @Ignore // commented out block of tests
 //  @Test
 //  public void testGetByNameAndNamespace() {
 //    mockBusinessObjectService.demand.findMatching(1..2) {

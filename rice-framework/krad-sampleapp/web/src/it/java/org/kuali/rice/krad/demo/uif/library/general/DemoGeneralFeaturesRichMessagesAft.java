@@ -56,7 +56,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesCompById() throws Exception {
         waitAndClickByLinkText("Comp by id");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example3']/div/span/label");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example3']/div/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example3']/div/input");
     }
     
@@ -111,7 +111,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesInLabels() throws Exception {
         waitAndClickByLinkText("In Labels");
-        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example7']/span/label/span[@style='color: green;']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example7']/label/span[@style='color: green;']");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example7']/input");
     }
     
@@ -159,7 +159,6 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
         testGeneralFeaturesRichMessagesColor();
         testGeneralFeaturesRichMessagesCss();
         testGeneralFeaturesRichMessagesLink();
-        testGeneralFeaturesRichMessagesAction();
         testGeneralFeaturesRichMessagesCombine();
         testGeneralFeaturesRichMessagesWInputField();
         testGeneralFeaturesRichMessagesWSpringEL();
@@ -168,5 +167,6 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
         testGeneralFeaturesRichMessagesEscapeCheckboxRadio();
         testGeneralFeaturesRichMessagesInLabels();
         testGeneralFeaturesRichMessagesCompById();
+        testGeneralFeaturesRichMessagesAction(); // flakiest last
     }
 }

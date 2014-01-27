@@ -363,7 +363,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param booleanToAssertTrue
      */
     protected void assertTrue(boolean booleanToAssertTrue) {
-        JiraAwareWebDriverUtils.assertTrue(booleanToAssertTrue, this);
+        JiraAwareWebDriverUtils.assertTrue(getClass().toString(), booleanToAssertTrue, this);
     }
 
     /**
@@ -511,10 +511,12 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to call fail on
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
-        String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
-        if (errorMessage != null) {
-            JiraAwareFailureUtils.failOnMatchedJira(errorMessage, message, failable);
-            JiraAwareFailureUtils.fail(errorMessage, message, throwable, failable);
+        if (!contents.startsWith("\nIncident report") && !message.startsWith("\nIncident report")) {
+            String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
+            if (errorMessage != null) {
+                JiraAwareFailureUtils.failOnMatchedJira(errorMessage, message, failable);
+                JiraAwareFailureUtils.fail(errorMessage, message, throwable, failable);
+            }
         }
         JiraAwareFailureUtils.fail(contents, message, throwable, failable);
     }

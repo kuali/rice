@@ -20,18 +20,11 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.krad.service.BusinessObjectService
-import org.kuali.rice.krad.util.KRADPropertyConstants
-import org.kuali.rice.location.api.country.Country
-import org.kuali.rice.location.api.country.CountryService
+import org.kuali.rice.core.api.criteria.GenericQueryResults
 import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.kuali.rice.krad.data.DataObjectService
-import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria
-import org.kuali.rice.core.api.criteria.QueryResults
-import org.kuali.rice.location.api.country.CountryQueryResults
-import org.junit.Ignore
-import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.location.api.country.Country
+import org.kuali.rice.location.api.country.CountryService
 
 class CountryServiceImplTest {
 

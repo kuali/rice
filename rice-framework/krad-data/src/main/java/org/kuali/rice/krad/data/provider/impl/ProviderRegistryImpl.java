@@ -21,11 +21,18 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
+import org.springframework.aop.framework.Advised;
+import org.springframework.aop.support.AopUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +42,12 @@ import java.util.List;
  * ProviderRegistry implementation
  */
 public class ProviderRegistryImpl implements ProviderRegistry {
+
+    private static final Logger LOG = Logger.getLogger(ProviderRegistry.class);
+
+    private static final String GET_DATA_OBJECT_SERVICE_METHOD_NAME = "getDataObjectService";
+    private static final String SET_DATA_OBJECT_SERVICE_METHOD_NAME = "setDataObjectService";
+
     // Multimap of Provider type -> Provider instance mappings
     // Since all Providers implement Provider, map doubles as list of all registered Providers
     // The implementation is a LinkedHashMultimap to enforce the ordering semantic for PersistenceProvider selection
@@ -59,6 +72,11 @@ public class ProviderRegistryImpl implements ProviderRegistry {
     @Override
     public synchronized void registerProvider(Provider provider) {
         Validate.notNull(provider, "Provider must be non-null");
+
+        if (hasDataObjectServiceMethod(provider, GET_DATA_OBJECT_SERVICE_METHOD_NAME, new Class[] { })) {
+            injectDataObjectService(provider);
+        }
+
         // all providers implement Provider, therefore the Provider.class key will map to the list of
         // every registered Provider instance
         for (Class<? extends Provider> providerInterface: enumerateProviderInterfaces(provider)) {
@@ -126,5 +144,67 @@ public class ProviderRegistryImpl implements ProviderRegistry {
 		}
 		return null;
 	}
+
+    /**
+     * Determines if the given {@link org.kuali.rice.krad.data.provider.Provider} has the given method.
+     * @param provider the {@link org.kuali.rice.krad.data.provider.Provider} to check.
+     * @param methodName the method name to check for.
+     * @return TRUE if the Provider has the given method name, FALSE otherwirse.
+     */
+    protected boolean hasDataObjectServiceMethod(Provider provider, String methodName, Class[] args) {
+        Method methodToFind;
+
+        try {
+            methodToFind = unwrapProxy(provider).getClass().getMethod(methodName, args);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return (methodToFind != null);
+    }
+
+    /**
+     * Returns the object being proxied, otherwise the given object is returned.
+     * @param bean The proxy to get the underlying object.
+     * @return object being proxied, otherwise the given object is returned.
+     * @throws Exception if errors while getting the underlying object.
+     */
+    private Object unwrapProxy(Object bean) throws Exception {
+
+		/*
+		 * If the given object is a proxy, set the return value as the object
+		 * being proxied, otherwise return the given object.
+		 */
+        if (AopUtils.isAopProxy(bean) && bean instanceof Advised) {
+
+            Advised advised = (Advised) bean;
+
+            bean = advised.getTargetSource().getTarget();
+        }
+
+        return bean;
+    }
+
+    /**
+     * Method attempts to inject a {@link org.kuali.rice.krad.data.DataObjectService} if the getter method returns
+     *  null and a setter method exists.
+     * @param provider The {@link org.kuali.rice.krad.data.provider.Provider} to check for getter and setter methods.
+     */
+    private void injectDataObjectService(Provider provider) {
+        try {
+            Method getterMethod = unwrapProxy(provider).getClass().getMethod(GET_DATA_OBJECT_SERVICE_METHOD_NAME);
+            if (getterMethod.invoke(unwrapProxy(provider)) == null) {
+                if (hasDataObjectServiceMethod(provider, SET_DATA_OBJECT_SERVICE_METHOD_NAME,
+                        new Class[] { DataObjectService.class })) {
+
+                    Method setterMethod = unwrapProxy(provider).getClass().getMethod(
+                            SET_DATA_OBJECT_SERVICE_METHOD_NAME, new Class[]{DataObjectService.class});
+                    setterMethod.invoke(unwrapProxy(provider), KradDataServiceLocator.getDataObjectService());
+                }
+            }
+        } catch (Exception e) {
+            LOG.warn("Error injecting DataObjectService while registering provider:  " + provider.getClass());
+        }
+    }
 
 }

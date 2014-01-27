@@ -34,6 +34,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.ChainedPersistenceExceptionTranslator;
@@ -90,9 +91,16 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
         this.sharedEntityManager = sharedEntityManager;
     }
 
-    @Required
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
+    }
+
+    /**
+     * Returns the {@link org.kuali.rice.krad.data.DataObjectService}
+     * @return a {@link org.kuali.rice.krad.data.DataObjectService}
+     */
+    public DataObjectService getDataObjectService() {
+        return this.dataObjectService;
     }
 
     @Override

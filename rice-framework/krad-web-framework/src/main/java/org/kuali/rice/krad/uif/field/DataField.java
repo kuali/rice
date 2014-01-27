@@ -958,7 +958,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return additional display attribute name
      */
-    @BeanTagAttribute(name = "readOnlyDisplaceSuffixPropertyName")
+    @BeanTagAttribute(name = "readOnlyDisplaySuffixPropertyName")
     public String getReadOnlyDisplaySuffixPropertyName() {
         return this.readOnlyDisplaySuffixPropertyName;
     }
@@ -1007,7 +1007,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      *
      * @return the additional display value set for this field
      */
-    @BeanTagAttribute(name = "readOnlyDispalySuffix")
+    @BeanTagAttribute(name = "readOnlyDisplaySuffix")
     public String getReadOnlyDisplaySuffix() {
         return readOnlyDisplaySuffix;
     }

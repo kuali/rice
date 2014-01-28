@@ -837,7 +837,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void deleteDocumentAttachmentList() {
         if (CollectionUtils.isNotEmpty(attachments)) {
-            KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachments);
+            for (MultiDocumentAttachment attachment : attachments) {
+                KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachment);
+            }
             attachments = null;
         }
     }

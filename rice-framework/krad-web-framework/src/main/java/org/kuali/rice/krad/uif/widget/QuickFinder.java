@@ -410,8 +410,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * Adds post context data for the quickfinder so when the lookup return occurs the focus and jump point
      * of the quickfinder action can be retrieved.
      *
-     * @see org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener#processEvent(org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent,
-     *      org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
@@ -826,7 +825,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -70,7 +70,7 @@ public class RoleBo extends DataObjectBase implements RoleEbo {
     @Column(name = "NMSPC_CD")
     private String namespaceCode;
 
-    @OneToMany(targetEntity = RoleMemberBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = RoleMemberBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID", insertable = false, updatable = false)
     private List<RoleMemberBo> members = new AutoPopulatingList<RoleMemberBo>(RoleMemberBo.class);
 

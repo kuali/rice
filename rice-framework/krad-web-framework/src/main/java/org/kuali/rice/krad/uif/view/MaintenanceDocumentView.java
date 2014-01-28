@@ -74,7 +74,7 @@ public class MaintenanceDocumentView extends DocumentView {
      * <li>Set the abstractTypeClasses map for the maintenance object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -175,7 +175,7 @@ public class MaintenanceDocumentView extends DocumentView {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -80,7 +80,7 @@ public class Message extends ContentElementBase {
      * Message perfom apply model parses message text for rich text functionality if the messageText contains
      * [ or ] special characters
      *
-     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -115,7 +115,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -128,7 +128,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -147,7 +147,7 @@ public class Message extends ContentElementBase {
      * Override to render only if the message text has been given or there is a conditional expression on the
      * message text
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
+     * {@inheritDoc}
      */
     @Override
     public boolean isRender() {
@@ -307,7 +307,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -332,7 +332,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

@@ -44,7 +44,7 @@ public class MessageView extends FormView {
      * <li>Set the message text onto the message component and add to the page items</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View, java.lang.Object)
+     * {@inheritDoc}
      */
     public void performInitialization(Object model) {
         super.performInitialization(model);
@@ -55,7 +55,7 @@ public class MessageView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -98,7 +98,7 @@ public class MessageView extends FormView {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -222,7 +222,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);
 
-        Field fld = PersonDocumentRole.class.getField("kimRoleType");
+        Field fld = PersonDocumentRole.class.getDeclaredField("kimRoleType");
+        fld.setAccessible(true);
         fld.set(docRole, kimType);
 
 		return docRole;

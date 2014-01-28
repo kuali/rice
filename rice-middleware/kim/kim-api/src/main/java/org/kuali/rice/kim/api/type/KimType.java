@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kim.api.type;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kim.api.KimConstants;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,11 +28,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kim.api.KimConstants;
+import org.w3c.dom.Element;
 
 /**
  * An immutable representation of a {@link KimTypeContract}.
@@ -256,7 +257,9 @@ public final class KimType extends AbstractDataTransferObject implements KimType
             if (contract.getAttributeDefinitions() != null) {
                 final List<KimTypeAttribute.Builder> temp = new ArrayList<KimTypeAttribute.Builder>();
                 for (KimTypeAttributeContract attr : contract.getAttributeDefinitions()) {
-                    temp.add(KimTypeAttribute.Builder.create(attr));
+                    if ( attr != null ) {
+                        temp.add(KimTypeAttribute.Builder.create(attr));
+                    }
                 }
 
                 builder.setAttributeDefinitions(Collections.unmodifiableList(temp));

@@ -13,21 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
+package org.kuali.rice.krad.data.jpa;
 
 /**
- * Operators used in the QueryCustomizerGenerator annotation
- *
- */
-public enum QueryCustomizerOperators {
-    EQUAL("=");
-
-    private String value;
-    QueryCustomizerOperators(String value){
-        this.value = value;
-    }
-
-    public String getValue(){
-        return this.value;
-    }
+ * Used to provide a common interface for Filter annotation(attributeResolverClass element)
+ * on a data object field that you want to customize and want to dynamically generate a value.
+ **/
+public interface FilterValue {
+    public abstract Object getValue();
 }

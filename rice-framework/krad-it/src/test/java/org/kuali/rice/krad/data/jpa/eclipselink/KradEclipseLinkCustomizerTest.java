@@ -3,6 +3,8 @@ package org.kuali.rice.krad.data.jpa.eclipselink;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.FilterGenerator;
+import org.kuali.rice.krad.data.jpa.FilterGenerators;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.test.KRADTestCase;
@@ -668,7 +670,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
     public static class TestEntity6 extends ParentTestEntity2 {
 
         @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
-                insertable = false, updatable = false) @QueryCustomizerGenerator(attributeName = "accountTypeCode",
+                insertable = false, updatable = false) @FilterGenerator(attributeName = "accountTypeCode",
                 attributeValue = "TS")
         private TestRelatedExtension accountExtension;
 
@@ -813,7 +815,7 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
     public static class TestEntity8 extends ParentTestEntity2 {
 
         @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
-                insertable = false, updatable = false) @QueryCustomizerGenerator(attributeName = "accountTypeCode",
+                insertable = false, updatable = false) @FilterGenerator(attributeName = "accountTypeCode",
                 attributeResolverClass = org.kuali.rice.krad.data.jpa.testbo.TestQueryCustomizerValue.class)
         private TestRelatedExtension accountExtension;
 
@@ -854,9 +856,9 @@ public class KradEclipseLinkCustomizerTest extends KRADTestCase {
 
         @ManyToOne(targetEntity = TestRelatedExtension.class, fetch = FetchType.EAGER) @JoinColumn(name = "ACCT_NUM",
                 insertable = false, updatable = false)
-        @QueryCustomizerGenerators({
-        @QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeValue = "TS"),
-        @QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeValue = "NM")})
+        @FilterGenerators({
+        @FilterGenerator(attributeName = "accountTypeCode",attributeValue = "TS"),
+        @FilterGenerator(attributeName = "accountTypeCode",attributeValue = "NM")})
         private TestRelatedExtension accountExtension;
 
         @Column(name = "ACCT_NAME")

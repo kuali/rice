@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.data.jpa.testbo;
 
-import org.kuali.rice.krad.data.jpa.eclipselink.QueryCustomizerValue;
+import org.kuali.rice.krad.data.jpa.FilterValue;
 
 /**
  * Test attributeClass resolver
  */
-public class TestQueryCustomizerValue implements QueryCustomizerValue {
+public class TestQueryCustomizerValue implements FilterValue {
     @Override
     public Object getValue() {
         return "testVal";

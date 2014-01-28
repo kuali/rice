@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
+package org.kuali.rice.krad.data.jpa;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Used to provide a common interface for QueryCustomizer annotation(attributeResolverClass element)
- * on a data object field that you want to customize and want to dynamically generate a value.
+ * Annotation for chaining multiple filter generators
  **/
-public interface QueryCustomizerValue {
-    public abstract Object getValue();
+@Target({TYPE, METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface FilterGenerators {
+    FilterGenerator[] value();
 }

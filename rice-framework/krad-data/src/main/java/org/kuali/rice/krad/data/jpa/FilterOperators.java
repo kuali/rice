@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package org.kuali.rice.krad.data.jpa;
 
 /**
- * Annotation for chaining multiple query customizers
- **/
-@Target({TYPE, METHOD, FIELD})
-@Retention(RUNTIME)
-public @interface QueryCustomizerGenerators {
-    QueryCustomizerGenerator[] value();
+ * Operators used in the FilterGenerator annotation
+ *
+ */
+public enum FilterOperators {
+    EQUAL("=");
+
+    private String value;
+    FilterOperators(String value){
+        this.value = value;
+    }
+
+    public String getValue(){
+        return this.value;
+    }
 }

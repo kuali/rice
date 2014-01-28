@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
+package org.kuali.rice.krad.data.jpa;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.expressions.Expression;
 import org.eclipse.persistence.expressions.ExpressionBuilder;
@@ -26,12 +25,12 @@ import org.eclipse.persistence.mappings.OneToOneMapping;
 import java.util.List;
 
 /**
- * Implementation that takes the query customizer generator and executes the changes on the class descriptor
+ * Implementation that takes the filter generator and executes the changes on the class descriptor
  * for a field
  */
-public class QueryCustomizer {
+public class Filter {
 
-    public static void customizeField(List<QueryCustomizerGenerator> queryCustomizerGenerators,
+    public static void customizeField(List<FilterGenerator> filterGenerators,
             ClassDescriptor descriptor, String propertyName) {
 
         Expression exp = null;
@@ -50,23 +49,23 @@ public class QueryCustomizer {
             throw new RuntimeException("Mapping type not implemented for query customizer for property "+propertyName);
         }
 
-        for (QueryCustomizerGenerator queryCustomizerGenerator : queryCustomizerGenerators) {
-            QueryCustomizerOperators operator = queryCustomizerGenerator.operator();
-            if(!operator.equals(QueryCustomizerOperators.EQUAL)){
+        for (FilterGenerator filterGenerator : filterGenerators) {
+            FilterOperators operator = filterGenerator.operator();
+            if(!operator.equals(FilterOperators.EQUAL)){
                 throw new UnsupportedOperationException("Operator "+operator.getValue()
-                        +" not supported in QueryCustomizer");
+                        +" not supported in Filter");
             }
-            String attributeName = queryCustomizerGenerator.attributeName();
-            Object attributeValue = queryCustomizerGenerator.attributeValue();
-            Class<?> attributeValueClass = queryCustomizerGenerator.attributeResolverClass();
+            String attributeName = filterGenerator.attributeName();
+            Object attributeValue = filterGenerator.attributeValue();
+            Class<?> attributeValueClass = filterGenerator.attributeResolverClass();
 
             if (exp != null && mapping != null) {
                 ExpressionBuilder builder = exp.getBuilder();
                 if (!attributeValueClass.equals(Void.class)) {
                     try {
-                        QueryCustomizerValue queryCustomizerValue =
-                                (QueryCustomizerValue) attributeValueClass.newInstance();
-                        attributeValue = queryCustomizerValue.getValue();
+                        FilterValue filterValue =
+                                (FilterValue) attributeValueClass.newInstance();
+                        attributeValue = filterValue.getValue();
                     } catch (Exception e) {
                         throw new RuntimeException(
                                 "Cannot find query customizer attribute class" + attributeValueClass);

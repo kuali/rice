@@ -4356,10 +4356,9 @@ public class RouteNodeInstance implements Serializable {
       </para>
     </section>
     <section>
-      <title>Query Customizer</title>
+      <title>Filter</title>
       <para>In OJB you could add a query customizer that would allow you to add additional criteria
-        or sort a collection. This is facilitated in KRAD Data with the QueryCustomizerGenerator
-        annotation. <programlisting>&lt;!-- Example in OJB -->
+        or sort a collection. This is facilitated in KRAD Data with the FilterGenerator annotation. <programlisting>&lt;!-- Example in OJB -->
  &lt;collection-descriptor name="sourceAccountingLines" proxy="true" 
   element-class-ref="org.kuali.kfs.sys.businessobject.SourceAccountingLine" 
   collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true">
@@ -4369,12 +4368,12 @@ public class RouteNodeInstance implements Serializable {
 		&lt;/query-customizer></emphasis>
  &lt;/collection-descriptor></programlisting>
         <programlisting>&lt;!-- Example in KRAD Data, Simply add the annotation with the appropriate criteria -->
- <emphasis role="bold">@QueryCustomizerGenerator(attributeName="financialDocumentLineTypeCode",attributeValue="F")</emphasis>
+ <emphasis role="bold">@QFilterGenerator(attributeName="financialDocumentLineTypeCode",attributeValue="F")</emphasis>
  protected List&lt;SourceAccountingLine> sourceAccountingLines;
         </programlisting>
         To resolve a value using a class instead of attributeValue define a full qualified class.
         <programlisting>
-@QueryCustomizerGenerator(attributeName="testCol",attributeResolverClass="org.kuali.bar.Foo")
+@FilterGenerator(attributeName="testCol",attributeResolverClass="org.kuali.bar.Foo")
         </programlisting>
         To define sorting behavior on fetch translate this previous usage to use the @OrderBy
         annotation in JPA. To chain multiple columns together add a comma between them

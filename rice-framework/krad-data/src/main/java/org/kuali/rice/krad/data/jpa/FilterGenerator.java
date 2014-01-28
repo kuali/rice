@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.jpa.eclipselink;
+package org.kuali.rice.krad.data.jpa;
 
 /**
- *  Defines a query customizer generator that will alter the query for an annotated field
+ *  Defines a filter generator that will alter the query for an annotated field
  *
  * <pre>
  *   Examples:
  *
- *   &#064;QueryCustomizerGenerator(attributeName = "accountTypeCode",attributeResolverClass =
+ *   &#064;FilterGenerator(attributeName = "accountTypeCode",attributeResolverClass =
  *         "org.kuali.rice.krad.data.bo.TestQueryCustomizerValue")
  *         private TestRelatedExtension accountExtension;
  * </pre>
@@ -44,7 +44,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE, METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface QueryCustomizerGenerator {
+public @interface FilterGenerator {
 
     /**
      * (Required) The attribute name to have the customization applied in the query
@@ -54,7 +54,7 @@ public @interface QueryCustomizerGenerator {
     /**
      * (Optional) Operator that will be used for this fragment expression
      */
-    QueryCustomizerOperators operator() default QueryCustomizerOperators.EQUAL;
+    FilterOperators operator() default FilterOperators.EQUAL;
 
     /**
      * (Optional) The value that the attribute named will be used to build expression fragment

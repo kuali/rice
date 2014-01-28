@@ -49,7 +49,7 @@ public class NavigationGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -81,7 +81,7 @@ public class NavigationGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

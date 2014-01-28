@@ -62,8 +62,7 @@ public class PageGroup extends Group {
     /**
      * Setup various breadcrumbOptions inherited from view if not explicitly set.
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -92,8 +91,7 @@ public class PageGroup extends Group {
      * setupValidator js function for setting up the validator for this view.  Also setup various breadcrumb related
      * settings for the page.
      *
-     * @see ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -117,7 +115,7 @@ public class PageGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -247,7 +245,7 @@ public class PageGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -269,7 +267,7 @@ public class PageGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

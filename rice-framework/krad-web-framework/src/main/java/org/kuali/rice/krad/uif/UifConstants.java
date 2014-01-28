@@ -416,7 +416,9 @@ public class UifConstants {
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
     }
-    
+
+    public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");
+
     public static final class ActionDataAttributes {
         public static final String AJAX_SUBMIT = "ajaxSubmit";
         public static final String SUCCESS_CALLBACK = "successCallback";

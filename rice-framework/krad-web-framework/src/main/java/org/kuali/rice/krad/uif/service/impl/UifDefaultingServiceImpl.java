@@ -63,6 +63,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     protected static final String DATE_PATTERN_CONSTRAINT = "BasicDatePatternConstraint";
     protected static final String FLOATING_POINT_PATTERN_CONSTRAINT = "FloatingPointPatternConstraintTemplate";
     protected static final String TIMESTAMP_PATTERN_CONSTRAINT = "TimestampPatternConstraint";
+    protected static final String CURRENCY_PATTERN_CONSTRAINT = "CurrencyPatternConstraint";
 
     @Override
     public String deriveHumanFriendlyNameFromPropertyName(String camelCasedName) {
@@ -225,7 +226,10 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // if not, make an intelligent guess from the data type
         if (validCharactersConstraint == null) {
             if (attrDef.getDataType() != null) {
-                if (attrDef.getDataType().isNumeric()) {
+                if (attrDef.getDataType() == DataType.CURRENCY) {
+                    validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                            .getDictionaryObject(CURRENCY_PATTERN_CONSTRAINT);
+                } else if (attrDef.getDataType().isNumeric()) {
                     validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
                             .getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
                 } else if (attrDef.getDataType().isTemporal()) {

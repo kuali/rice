@@ -294,6 +294,13 @@
         class="org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint"
         p:messageKey="validation.floatingPoint" p:patternTypeKey="validationPatternRegex.floatingPoint"/>
 
+
+  <bean id="CurrencyPatternConstraint"
+        scope="prototype"
+        class="org.kuali.rice.krad.datadictionary.validation.constraint.CurrencyPatternConstraint"
+        p:messageKey="validation.floatingPoint" p:patternTypeKey="validationPatternRegex.floatingPoint"/>
+
+
   <bean id="FloatingPointPatternConstraintTemplate" parent="FloatingPointPatternConstraint" scope="prototype"
   		p:allowNegative="true" />
 

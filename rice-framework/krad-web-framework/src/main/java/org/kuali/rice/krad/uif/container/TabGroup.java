@@ -46,7 +46,7 @@ public class TabGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -66,7 +66,7 @@ public class TabGroup extends Group {
     /**
      * Only groups are supported for this group.
      *
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -95,7 +95,7 @@ public class TabGroup extends Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

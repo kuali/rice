@@ -54,8 +54,7 @@ public class TextAreaControl extends ControlBase {
      * <li>Defaults maxLength, minLength (if not set) to maxLength of parent field</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -198,7 +197,7 @@ public class TextAreaControl extends ControlBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

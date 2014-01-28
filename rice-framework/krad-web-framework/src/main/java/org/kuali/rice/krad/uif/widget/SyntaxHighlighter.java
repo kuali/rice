@@ -50,7 +50,7 @@ public class SyntaxHighlighter extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -152,7 +152,7 @@ public class SyntaxHighlighter extends WidgetBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -196,7 +196,7 @@ public class TreeGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -209,7 +209,7 @@ public class TreeGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentPrototypes() {
@@ -318,7 +318,7 @@ public class TreeGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

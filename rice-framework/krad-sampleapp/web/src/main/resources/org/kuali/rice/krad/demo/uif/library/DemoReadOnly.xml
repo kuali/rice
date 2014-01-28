@@ -44,7 +44,7 @@
   <!-- ex:Demo-ReadOnly-Example1 start-->
   <bean id="Demo-ReadOnly-View1" parent="Uif-FormView">
     <property name="parentLocation">
-      <bean parent="Uif-RicePortalParentLocation"/>
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
     </property>
     <property name="headerText" value="ReadOnly Test"/>
     <property name="items">

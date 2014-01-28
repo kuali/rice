@@ -23,7 +23,7 @@
 
   <bean id="LookupSampleView" parent="Uif-LookupView">
     <property name="parentLocation">
-      <bean parent="Uif-RicePortalParentLocation"/>
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
     </property>
     <property name="viewName" value="LookupSampleView"/>
     <property name="headerText" value="Lookup Sample"/>

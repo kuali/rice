@@ -41,6 +41,12 @@
     </property>
   </bean>
 
+  <bean id="Uif-KradSampleAppPortalParentLocation" parent="Uif-KradSampleAppPortalParentLocation-parentBean"/>
+  <bean id="Uif-KradSampleAppPortalParentLocation-parentBean" parent="Uif-ParentLocation">
+    <property name="parentViewLabel" value="Home"/>
+    <property name="parentViewUrl.href" value="@{#ConfigProperties['application.url']}"/>
+  </bean>
+
   <!-- SampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
     <property name="unifiedHeader" value="false"/>

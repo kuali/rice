@@ -15,31 +15,29 @@
  */
 package org.kuali.rice.test.persistence
 
-import org.kuali.rice.kns.service.KNSServiceLocator
-import org.kuali.rice.krad.service.KRADServiceLocator
-import org.kuali.rice.krad.service.BusinessObjectService
+import java.sql.Timestamp
 
 import javax.sql.DataSource
 
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.krad.bo.PersistableBusinessObject
-
-import java.sql.Timestamp
-
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
-import org.joda.time.DateTime
+import org.eclipse.persistence.jpa.jpql.parser.DateTime
 import org.junit.Assert
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.krad.bo.DataObjectBase
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krad.data.KradDataServiceLocator
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
+
+
 
 /**
  * Helps with BO persistence tests
  */
-@Deprecated
-class PersistenceTestHelper {
-    def BusinessObjectService boService;
+class JpaPersistenceTestHelper {
+    def DataObjectService boService;
     def DataSource datasource;
 
-    PersistenceTestHelper(String dsName) {
-        boService = (BusinessObjectService) KNSServiceLocator.getBusinessObjectService()
+    JpaPersistenceTestHelper(String dsName) {
+        boService = KradDataServiceLocator.getDataObjectService()
         datasource = (DataSource) GlobalResourceLoader.getService(dsName)
         if (!datasource) {
             throw new RuntimeException("DataSource bean not found: " + dsName)
@@ -59,12 +57,12 @@ class PersistenceTestHelper {
         bool(bo.edit, 'EDIT_FLAG')
     }
 
-    def basic_fields(PersistableBusinessObject bo) {
+    def basic_fields(DataObjectBase bo) {
         [ OBJ_ID: bo.objectId,
           VER_NBR: new BigDecimal(bo.versionNumber) ]
     }
 
-    def standard_fields(PersistableBusinessObject bo) {
+    def standard_fields(DataObjectBase bo) {
         active_field(bo) + basic_fields(bo)
     }
 

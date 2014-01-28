@@ -43,7 +43,7 @@ public class LocationSuggest extends Suggest {
     /**
      * Process the objectIdPropertyName, if set
      *
-     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {
@@ -225,7 +225,7 @@ public class LocationSuggest extends Suggest {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T locationSuggest) {

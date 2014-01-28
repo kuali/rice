@@ -63,8 +63,7 @@ public class Link extends ContentElementBase {
      * <li>Initialize the nested lightBox widget if open in lightbox is true</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(java.lang.Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -100,7 +99,7 @@ public class Link extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -252,8 +251,9 @@ public class Link extends ContentElementBase {
     public void setLinkIconPlacement(String linkIconPlacement) {
         this.linkIconPlacement = linkIconPlacement;
     }
+
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -276,7 +276,7 @@ public class Link extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer){

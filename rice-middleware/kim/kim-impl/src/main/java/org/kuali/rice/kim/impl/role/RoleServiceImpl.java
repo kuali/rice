@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebParam;
-import javax.xml.namespace.QName;
 import javax.sql.DataSource;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +48,6 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
-import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.VersionHelper;
 import org.kuali.rice.kim.api.KimConstants;
@@ -2546,6 +2545,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             String memberNamespaceCode, String memberName, Map<String, String> qualification,
             Map<String, String> memberQualification) {
         VersionedService<RoleTypeService> versionedRoleTypeService = getVersionedRoleTypeService(KimTypeBo.to(memberRole.getKimRoleType()));
+        // if null service - just return the original qualification (pre 2.3.4 - ignoring memberQualifications)
+        if ( versionedRoleTypeService == null ) {
+            return qualification;
+        }
         boolean versionOk = VersionHelper.compareVersion(versionedRoleTypeService.getVersion(),
                 CoreConstants.Versions.VERSION_2_3_4) != -1;
         if (versionOk) {

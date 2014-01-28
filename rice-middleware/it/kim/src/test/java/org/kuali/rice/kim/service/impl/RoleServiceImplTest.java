@@ -52,9 +52,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
 
 import com.google.common.collect.Maps;
 
@@ -71,7 +69,6 @@ public class RoleServiceImplTest extends KIMTestCase {
     static final String ACTIVE_TO_STRING2 = "2014-01-01 12:00:00";
     static final DateTime ACTIVE_TO1 = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING1));
     static final DateTime ACTIVE_TO2 = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING2));
-    private BusinessObjectService businessObjectService;
 
     @Override
     public void setUp() throws Exception {
@@ -155,7 +152,9 @@ public class RoleServiceImplTest extends KIMTestCase {
         roleService.removeDelegateMembers(Collections.singletonList(updatedDelegateMember));
         DelegateMemberBo removedDelegateMember = KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, updatedDelegateMember.getDelegationMemberId());
         //assertEquals("removeDelegateMembers did not remove the existing member",updatedDelegateMember.getDelegationMemberId(), removedDelegateMember.getDelegationMemberId() );
+        assertNotNull("after removal, versionNumber should not be null", removedDelegateMember.getVersionNumber());
         assertEquals("removeDelegateMembers did not update the existing member", new Long(updatedDelegateMember.getVersionNumber() + 1), removedDelegateMember.getVersionNumber() );
+        assertNotNull("after removal, active to date should not be null", removedDelegateMember.getActiveToDate());
         assertTrue("removeDelegateMembers did not update activeToDate",removedDelegateMember.getActiveToDate().isBeforeNow());
     }
 
@@ -385,7 +384,9 @@ public class RoleServiceImplTest extends KIMTestCase {
         roleService.removeDelegateMembers(removeDelegateMembers);
         DelegateMember removedDelegateMember = roleService.getDelegationMemberById(updateDelegateMember.getDelegationMemberId()) ;
         assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getDelegationMemberId().equals(updateDelegateMember.getDelegationMemberId()));
+        assertNotNull("after removal, versionNumber should not be null", removedDelegateMember.getVersionNumber());
         assertTrue("removeDelegateMembers did not remove the existing member",removedDelegateMember.getVersionNumber().equals(updateDelegateMember.getVersionNumber() + 1));
+        assertNotNull("after removal, active to date should not be null", removedDelegateMember.getActiveToDate());
         assertTrue("removeDelegateMembers did not update activeToDate",removedDelegateMember.getActiveToDate().isBeforeNow());
     }
 
@@ -405,14 +406,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         return KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, delegationMemberId);
     }
 
-    protected BusinessObjectService getBusinessObjectService() {
-        if (businessObjectService == null) {
-            businessObjectService = KNSServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
-    }
-
-	@Test
+    @Test
 	public void testPrincipalHasRoleContainsGroupAssigned() {
 		// "p2" is in "g1" and "g1" assigned to "r2"
 		List <String>roleIds = new ArrayList<String>();

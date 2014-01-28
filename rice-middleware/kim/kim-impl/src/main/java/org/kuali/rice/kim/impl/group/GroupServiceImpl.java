@@ -15,12 +15,25 @@
  */
 package org.kuali.rice.kim.impl.group;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebParam;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -41,20 +54,6 @@ import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
-
-import javax.jws.WebParam;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     private static final Logger LOG = Logger.getLogger(GroupServiceImpl.class);

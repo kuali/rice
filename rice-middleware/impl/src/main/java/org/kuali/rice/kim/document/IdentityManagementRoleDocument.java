@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
@@ -40,21 +53,9 @@ import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.util.AutoPopulatingList;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
+ * This is a description of what this class does - bhargavp don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -64,7 +65,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 
     private static final long serialVersionUID = 1L;
 
-    // principal data                       
+    // principal data
     @Column(name = "ROLE_ID")
     protected String roleId;
 
@@ -228,6 +229,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     /**
 	 * @return the delegationMembers
 	 */
+    @Override
     public List<RoleDocumentDelegationMember> getDelegationMembers() {
         return this.delegationMembers;
     }
@@ -235,6 +237,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     /**
 	 * @param delegationMembers the delegationMembers to set
 	 */
+    @Override
     public void setDelegationMembers(List<RoleDocumentDelegationMember> delegationMembers) {
         this.delegationMembers = delegationMembers;
     }
@@ -565,9 +568,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                             }
                         }
                     }
-                    if (roleRespAction.getVersionNumber() == null) {
-                        roleRespAction.setVersionNumber(new Long(1));
-                    }
+                    // This will cause a problem with JPA
+//                    if (roleRespAction.getVersionNumber() == null) {
+//                        roleRespAction.setVersionNumber(new Long(1));
+//                    }
                 }
             }
         }
@@ -630,6 +634,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     /**
 	 * @return the delegations
 	 */
+    @Override
     public List<RoleDocumentDelegation> getDelegations() {
         return this.delegations;
     }
@@ -637,10 +642,12 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     /**
 	 * @param delegations the delegations to set
 	 */
+    @Override
     public void setDelegations(List<RoleDocumentDelegation> delegations) {
         this.delegations = delegations;
     }
 
+    @Override
     public void setKimType(KimType kimType) {
         super.setKimType(kimType);
         if (kimType != null) {

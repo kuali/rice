@@ -79,7 +79,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	// ditto
 	protected final Runnable shutdownWriter =
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "rice is shutting down, flushing write queue"));
-	
+
 	protected int getExecutionIntervalSeconds() {
 		final String prop = kualiConfigurationService.getPropertyValueAsString(EXEC_INTERVAL_SECS);
 		try {
@@ -88,7 +88,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 			return EXECUTION_INTERVAL_SECONDS_DEFAULT;
 		}
 	}
-	
+
 	protected int getMaxWriteQueueSize() {
 		final String prop = kualiConfigurationService.getPropertyValueAsString(MAX_WRITE_QUEUE_SIZE);
 		try {
@@ -104,7 +104,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
             throw new IllegalArgumentException("entityId is blank");
         }
 
-    	List<EntityDefaultInfoCacheBo> results = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+    	List<EntityDefaultInfoCacheBo> results = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class,
     	        QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.SUB_ENTITY_ID, entityId).build() ).getResults();
         EntityDefaultInfoCacheBo cachedValue = null;
         if ( !results.isEmpty() ) {
@@ -130,21 +130,21 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
             throw new IllegalArgumentException("principalName is blank");
         }
 
-    	List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+    	List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class,
     	        QueryByCriteria.Builder.forAttribute("principalName", principalName).build()).getResults();
     	return entities.isEmpty() ? null : entities.get(0).convertCacheToEntityDefaultInfo();
     }
-    
+
     @Override
     public EntityDefault getEntityDefaultFromArchiveByEmployeeId(String employeeId) {
         if (StringUtils.isBlank(employeeId)) {
             throw new IllegalArgumentException("employeeId is blank");
         }
-        List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class, 
+        List<EntityDefaultInfoCacheBo> entities = dataObjectService.findMatching(EntityDefaultInfoCacheBo.class,
                 QueryByCriteria.Builder.forAttribute("employeeId", employeeId).build()).getResults();
         return entities.isEmpty() ? null : entities.get(0).convertCacheToEntityDefaultInfo();
     }
-    
+
     @Override
 	public void saveEntityDefaultToArchive(EntityDefault entity) {
     	if (entity == null) {
@@ -171,7 +171,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
     public void setTransactionManager(PlatformTransactionManager txMgr) {
         this.transactionManager = txMgr;
     }
-    
+
     /** schedule the writer on the KSB scheduled pool. */
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -295,14 +295,9 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 						}
 
 						Collections.sort(entitiesToInsert, kediComparator);
-                        List<EntityDefaultInfoCacheBo> entityCache = new ArrayList<EntityDefaultInfoCacheBo>(entitiesToInsert.size());
-                        for (EntityDefault entityToInsert : entitiesToInsert) {
-                            entityCache.add(new EntityDefaultInfoCacheBo( entityToInsert ));
-                        }
-                        dataObjectService.save(entityCache);
-						//for (EntityDefault entityToInsert : entitiesToInsert) {
-						//	businessObjectService.save( new EntityDefaultInfoCacheBo( entityToInsert ) );
-						//}
+						for (EntityDefault entityToInsert : entitiesToInsert) {
+							dataObjectService.save( new EntityDefaultInfoCacheBo( entityToInsert ) );
+						}
 						return null;
 					}
 				});
@@ -345,7 +340,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	 *
 	 */
 	protected static class PreLogCallableWrapper<A> implements Callable<A> {
-		
+
 	    protected final Callable inner;
 	    protected final Level level;
 	    protected final String message;
@@ -358,7 +353,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
 		/**
 		 * logs the message then calls the inner Callable
-		 * 
+		 *
 		 * @see java.util.concurrent.Callable#call()
 		 */
 		@Override

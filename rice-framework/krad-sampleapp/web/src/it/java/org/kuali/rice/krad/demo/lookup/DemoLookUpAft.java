@@ -66,6 +66,14 @@ public class DemoLookUpAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//a[contains(text(), 'a6')]");
     }
 
+    protected void testLookUpFancy() throws InterruptedException {
+        waitAndTypeByName("lookupCriteria[name]","*");
+        waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
+        waitAndClickButtonByText(SEARCH);
+        Thread.sleep(3000);
+        waitForElementPresentByXpath("//a[contains(text(), 'a10')]");
+    }
+
     @Test
     public void testLookUpBookmark() throws Exception {
         testLookUp();
@@ -75,6 +83,12 @@ public class DemoLookUpAft extends WebDriverLegacyITBase {
     @Test
     public void testLookUpNav() throws Exception {
         testLookUp();
+        passed();
+    }
+
+    @Test
+    public void testLookUpFancyNav() throws Exception {
+        testLookUpFancy();
         passed();
     }
 }

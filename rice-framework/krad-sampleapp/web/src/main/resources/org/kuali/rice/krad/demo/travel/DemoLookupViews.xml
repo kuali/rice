@@ -32,6 +32,7 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:label="Fiscal Officer User ID"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
       </list>
     </property>
@@ -39,6 +40,7 @@
       <list>
         <bean parent="Uif-DataField" p:propertyName="number"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
       </list>
     </property>
@@ -62,22 +64,6 @@
               value="Lookup Sample - Multiple Value Specified in View with result set limit of 5 rows"/>
     <property name="multipleValuesSelectResultSetLimit" value="5"/>
     <property name="multipleValuesSelect" value="true"/>
-  </bean>
-
-  <bean id="FancyLookupSampleView" parent="LookupSampleView">
-    <property name="viewName" value="FancyLookupSampleView"/>
-    <property name="headerText" value="Lookup Sample - Fancy Lookup Sample"/>
-    <property name="renderCriteriaActions" value="false"/>
-    <property name="criteriaFields">
-      <list merge="true">
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list merge="true">
-        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
   </bean>
   
   <bean id="OperatorsLookupSampleView" parent="LookupSampleView">

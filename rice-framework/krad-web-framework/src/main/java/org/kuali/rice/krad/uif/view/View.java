@@ -438,6 +438,12 @@ public class View extends ContainerBase {
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.VIEW);
+
+        // Add state mapping to post metadata
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateObjectBindingPath",
+                stateObjectBindingPath);
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping",
+                stateMapping);
     }
 
     /**

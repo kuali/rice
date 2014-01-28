@@ -574,7 +574,7 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=checkForm")
     public ModelAndView checkForm(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form.getPostedView(), form);
+        KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form);
 
         return getUIFModelAndView(form);
     }

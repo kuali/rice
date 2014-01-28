@@ -358,6 +358,43 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         if (validationMessages != null) {
             validationMessages.generateMessages(view, model, this);
         }
+
+        ViewLifecycle.getViewPostMetadata().getInputFieldIds().add(this.getId());
+
+        if (this.getLabel() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "label",
+                this.getLabel());
+        }
+
+        if (this.getName() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "path",
+                this.getName());
+        }
+
+        if (this.getSimpleConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "simpleConstraint",
+                    this.getSimpleConstraint());
+        }
+
+        if (this.getValidCharactersConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "validCharacterConstraint",
+                    this.getValidCharactersConstraint());
+        }
+
+        if (this.getCaseConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "caseConstraint",
+                    this.getCaseConstraint());
+        }
+
+        if (this.getMustOccurConstraints() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "mustOccurConstraints",
+                    this.getMustOccurConstraints());
+        }
+
+        if (this.getPrerequisiteConstraints() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "prerequisiteConstraints",
+                    this.getPrerequisiteConstraints());
+        }
     }
 
     /**

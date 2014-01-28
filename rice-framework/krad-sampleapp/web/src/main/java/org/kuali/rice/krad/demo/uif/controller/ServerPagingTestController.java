@@ -78,7 +78,6 @@ public class ServerPagingTestController extends UifControllerBase {
                     theme));
 
             if (newTheme != null) {
-                form.getPostedView().setTheme(newTheme);
                 form.getView().setTheme(newTheme);
             }
         }

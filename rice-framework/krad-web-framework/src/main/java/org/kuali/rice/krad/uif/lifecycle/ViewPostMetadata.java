@@ -19,7 +19,9 @@ import org.kuali.rice.krad.uif.component.Component;
 
 import java.beans.PropertyEditor;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,11 +37,12 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> fieldPropertyEditors;
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
-   // private Set<String> inputFieldIds;
+    private List<String> inputFieldIds;
 
     public ViewPostMetadata() {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
+        inputFieldIds = new ArrayList<String>();
     }
 
     public ViewPostMetadata(String id) {
@@ -186,5 +189,13 @@ public class ViewPostMetadata implements Serializable {
         }
 
         secureFieldPropertyEditors.put(propertyPath, propertyEditor);
+    }
+
+    public List<String> getInputFieldIds() {
+        return inputFieldIds;
+    }
+
+    public void setInputFieldIds(List<String> inputFieldIds) {
+        this.inputFieldIds = inputFieldIds;
     }
 }

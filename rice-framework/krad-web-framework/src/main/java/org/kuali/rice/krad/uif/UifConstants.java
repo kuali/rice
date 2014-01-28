@@ -215,6 +215,11 @@ public class UifConstants {
         public static final String FINAL = "F";
         public static final String RENDERED = "R";
     }
+    
+    public static class PostMetadata {
+        public static final String FIELD_LABEL = "FIELD_LABEL";
+        public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "INPUT_FIELD_ATTRIBUTE_QUERY";
+    }
 
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";

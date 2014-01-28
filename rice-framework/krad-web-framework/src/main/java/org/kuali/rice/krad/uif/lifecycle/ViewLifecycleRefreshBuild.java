@@ -88,14 +88,14 @@ public class ViewLifecycleRefreshBuild implements Runnable {
         if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
             String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
 
-            String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
+            String focusId = (String) form.getViewPostMetadata().getComponentPostData(quickfinderId,
+                                UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
             if (StringUtils.isNotBlank(focusId)) {
                 form.setFocusId(focusId);
             }
 
-            String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
+            String jumpToId = (String) form.getViewPostMetadata().getComponentPostData(quickfinderId,
+                                UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
             if (StringUtils.isNotBlank(jumpToId)) {
                 form.setJumpToId(jumpToId);
             }

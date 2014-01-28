@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -114,6 +117,13 @@ public interface ViewModel extends Serializable {
     public void setView(View view);
 
     /**
+     * Returns the view helper service instance that was configured for the current view.
+     *
+     * @return instance of view helper service, null if view is null
+     */
+    public ViewHelperService getViewHelperService() throws IllegalAccessException, InstantiationException;
+
+    /**
      * View instance for the page that made a request. Since a new view instance
      * gets initialized for each request before the controller logic is invoked,
      * any state about the previous view is lost. This could be needed to read
@@ -130,6 +140,23 @@ public interface ViewModel extends Serializable {
      * @param previousView
      */
     public void setPostedView(View previousView);
+
+    /**
+     * Gets the {@link org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata} that has been built up from processing
+     * of a view.
+     *
+     * <p>The view post metadata is used to read information about the view that was rendered when a post occurs. For
+     * example, you might need to check whether a particular flag was enabled for the rendered view when processing
+     * the post logic</p>
+     *
+     * @return ViewPostMetadata instance for the previously processed view
+     */
+    public ViewPostMetadata getViewPostMetadata();
+
+    /**
+     * @see ViewModel#getViewPostMetadata()
+     */
+    public void setViewPostMetadata(ViewPostMetadata viewPostMetadata);
 
     /**
      * Id for the current page being displayed within the view
@@ -348,6 +375,23 @@ public interface ViewModel extends Serializable {
      * @param updateComponentId
      */
     public void setUpdateComponentId(String updateComponentId);
+
+    /**
+     * Component instance that been built for a refresh/disclosure request.
+     *
+     * <p>This is generally set by org.kuali.rice.krad.uif.lifecycle.ViewLifecycle#performComponentLifecycle(org.kuali.rice.krad.uif.view.View,
+     * java.lang.Object, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+     * org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata, java.lang.String) after processing the lifecycle. The form
+     * property provides access to the rendering layer.</p>
+     *
+     * @return component instance for updating
+     */
+    public Component getUpdateComponent();
+
+    /**
+     * @see ViewModel#getUpdateComponent()
+     */
+    public void setUpdateComponent(Component updateComponent);
 
     /**
      * Indicates whether the request was made by an ajax call

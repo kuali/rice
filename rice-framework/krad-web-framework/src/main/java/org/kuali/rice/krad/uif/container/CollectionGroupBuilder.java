@@ -104,7 +104,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         // get the collection for this group from the model
         List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
-                ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
+                collectionGroup.getBindingInfo().getBindingPath());
 
         if (modelCollection != null) {
             // filter inactive model
@@ -342,7 +342,7 @@ public class CollectionGroupBuilder implements Serializable {
         boolean canEditLine = !collectionGroup.isReadOnly();
 
         // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
+        ComponentUtils.updateContextsForLine(lineFields, collectionGroup, currentLine, lineIndex, lineSuffix);
 
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
@@ -444,7 +444,7 @@ public class CollectionGroupBuilder implements Serializable {
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex,
+                ComponentUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup, currentLine, lineIndex,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 ComponentUtils.pushObjectToContext(subCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
                         currentLine);
@@ -800,7 +800,7 @@ public class CollectionGroupBuilder implements Serializable {
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         initializeActions(actions, collectionGroup, lineIndex);
 
-        ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
+        ComponentUtils.updateContextsForLine(actionComponents, collectionGroup, collectionLine, lineIndex, lineSuffix);
 
         return actionComponents;
     }
@@ -914,7 +914,7 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActionComponents, addLine, -1, lineSuffix);
+        ComponentUtils.updateContextsForLine(lineActionComponents, collectionGroup, addLine, -1, lineSuffix);
 
         return lineActionComponents;
     }

@@ -182,12 +182,10 @@ public interface WorkflowDocumentActionsService {
     @WebMethod(operationName = "create")
     @WebResult(name = "document")
     @XmlElement(name = "document", required = true)
-    Document create(
-            @WebParam(name = "documentTypeName") String documentTypeName,
+    Document create(@WebParam(name = "documentTypeName") String documentTypeName,
             @WebParam(name = "initiatorPrincipalId") String initiatorPrincipalId,
-            @WebParam(name = "documentUpdate") DocumentUpdate documentUpdate,
-            @WebParam(name = "documentContentUpdate") DocumentContentUpdate documentContentUpdate)
-            throws RiceIllegalArgumentException, IllegalDocumentTypeException, InvalidActionTakenException;
+            @WebParam(name = "documentUpdate") DocumentUpdate documentUpdate, @WebParam(
+            name = "documentContentUpdate") DocumentContentUpdate documentContentUpdate) throws RiceIllegalArgumentException, IllegalDocumentTypeException, InvalidActionTakenException;
 
     /**
      * Determines which actions against the document with the given id are valid for the principal

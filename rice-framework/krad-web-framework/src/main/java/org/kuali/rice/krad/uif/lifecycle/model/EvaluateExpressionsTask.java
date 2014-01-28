@@ -88,7 +88,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
 
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers != null) {
-            for (ComponentModifier modifier : component.getComponentModifiers()) {
+            for (ComponentModifier modifier : componentModifiers) {
                 expressionEvaluator.evaluateExpressionsOnConfigurable(view, modifier, component.getContext());
             }
         }

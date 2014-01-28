@@ -639,7 +639,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         int rowSpan = rowCount + subCollectionFields.size();
 
         if (actionColumnIndex == 1 && renderActions) {
-            addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+            addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
         }
 
         // sequence field is always first and should span all rows for the line
@@ -673,13 +673,13 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             setCellAttributes(sequenceField);
 
-            ComponentUtils.updateContextForLine(sequenceField, currentLine, lineIndex, idSuffix);
+            ComponentUtils.updateContextForLine(sequenceField, collectionGroup, currentLine, lineIndex, idSuffix);
             allRowFields.add(sequenceField);
             
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
-                addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+                addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
             }
         }
 
@@ -688,7 +688,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             Field selectField = ComponentUtils.copy(getSelectFieldPrototype(), idSuffix);
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
-            ComponentUtils.updateContextForLine(selectField, currentLine, lineIndex, idSuffix);
+            ComponentUtils.updateContextForLine(selectField, collectionGroup, currentLine, lineIndex, idSuffix);
             setCellAttributes(selectField);
 
             allRowFields.add(selectField);
@@ -698,7 +698,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             if (renderActions) {
                 if ((actionColumnIndex == 3 && renderSequenceField) || (actionColumnIndex == 2
                         && !renderSequenceField)) {
-                    addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+                    addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
                 }
             }
         }
@@ -739,7 +739,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             } else {
                 // If the row wraps before the last element
                 if (insertActionField) {
-                    addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+                    addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
                 }
 
                 allRowFields.add(lineField);
@@ -747,7 +747,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             // action field
             if (!renderActionsLast && cellPosition == (actionColumnIndex - extraColumns - 1)) {
-                addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+                addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
             }
 
             //details action
@@ -781,7 +781,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
 
         if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
-            addActionColumn(idSuffix, currentLine, lineIndex, rowSpan, actions);
+            addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
         }
 
         // update colspan on sub-collection fields
@@ -794,19 +794,22 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Adds the action field in a row
+     * Creates a field group wrapper for the given actions based on
+     * {@link TableLayoutManagerBase#getActionFieldPrototype()}.
      *
-     * @param idSuffix
-     * @param currentLine
-     * @param lineIndex
-     * @param rowSpan
-     * @param actions
+     * @param collectionGroup collection group being built
+     * @param idSuffix id suffix for the action field
+     * @param currentLine line object for the current line being built
+     * @param lineIndex index of the line being built
+     * @param rowSpan number of rows the action field should span
+     * @param actions action components that should be to the field group
      */
-    private void addActionColumn(String idSuffix, Object currentLine, int lineIndex, int rowSpan,
-            List<? extends Component> actions) {
+    private void addActionColumn(CollectionGroup collectionGroup, String idSuffix, Object currentLine, int lineIndex,
+            int rowSpan, List<? extends Component> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
-        ComponentUtils.updateContextForLine(lineActionsField, currentLine, lineIndex, idSuffix);
+        ComponentUtils.updateContextForLine(lineActionsField, collectionGroup, currentLine, lineIndex, idSuffix);
+
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);
         if (lineActionsField.getWrapperCssClasses() != null && !lineActionsField.getWrapperCssClasses().contains(
@@ -1453,8 +1456,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
         toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
 
-        this.getRowDetailsGroup().setHidden(true);
-
         FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
 
         TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
@@ -1476,6 +1477,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         if (ajaxDetailsRetrieval) {
             this.getRowDetailsGroup().setRender(false);
             this.getRowDetailsGroup().setDisclosedByAction(true);
+        } else {
+            this.getRowDetailsGroup().setHidden(true);
         }
 
         detailsItems.add(getRowDetailsGroup());

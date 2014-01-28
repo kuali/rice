@@ -83,7 +83,7 @@ public class KradSampleAppController extends UifControllerBase {
     private void changeTheme(UifFormBase form) {
         String theme = ((KradSampleAppForm) form).getThemeName();
         if (theme != null) {
-            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                     theme));
             if (newTheme != null) {
                 form.getPostedView().setTheme(newTheme);
@@ -118,7 +118,7 @@ public class KradSampleAppController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section1", "errorSectionTest");
             GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section2", "errorSectionTest");
 
-        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
+        Map<String, PropertyEditor> propertyEditors = form.getViewPostMetadata().getFieldPropertyEditors();
         for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putError(key, "error1Test");
         }

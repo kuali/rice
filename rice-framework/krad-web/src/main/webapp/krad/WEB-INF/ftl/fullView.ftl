@@ -93,7 +93,7 @@
         <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
                     performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
                         '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
-                });" component=Component/>
+                });" component=KualiForm.view.currentPage/>
     </#if>
 
     </div>

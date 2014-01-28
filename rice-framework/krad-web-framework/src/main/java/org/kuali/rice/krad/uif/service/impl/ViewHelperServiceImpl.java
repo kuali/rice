@@ -87,11 +87,8 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@SuppressWarnings("deprecation")
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
-    
     private static final long serialVersionUID = 1772618197133239852L;
-    
     private static final Logger LOG = Logger.getLogger(ViewHelperServiceImpl.class);
     
     private transient ConfigurationService configurationService;

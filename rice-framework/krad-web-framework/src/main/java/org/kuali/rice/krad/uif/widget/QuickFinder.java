@@ -404,10 +404,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         Action finalQuickfinderAction = (Action) eventComponent;
 
         // add post metadata for focus point when the associated lookup returns
-        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID,
-                finalQuickfinderAction.getFocusOnIdAfterSubmit());
-        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID,
-                finalQuickfinderAction.getJumpToIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
     }
 
     /**

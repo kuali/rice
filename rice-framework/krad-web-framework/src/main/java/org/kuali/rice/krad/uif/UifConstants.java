@@ -27,6 +27,9 @@ public class UifConstants {
     public static final String COMPONENT_MODEL_NAME = "Component";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
+    public static final String BASE_ID_PREFIX = "b";
+    public static final String SUFFIX_SEPARATOR = "_";
+    public static final String REFRESH_ELEMENT_NODE_LABEL = "REFRESH_ELEMENT";
 
     public static final String DEFAULT_THEMES_DIRECTORY = "/themes";
     public static final String DEFAULT_IMAGES_DIRECTORY = "images";
@@ -454,6 +457,7 @@ public class UifConstants {
         public static final String REDIRECT = "redirect";
         public static final String SET_CONFIG_PARM = "setConfigParam";
         public static final String SET_VALUE = "setValue";
+        public static final String SHOW_GROWL = "showGrowl";
     }
 
     public static final String EVENT_NAMESPACE = "uif";

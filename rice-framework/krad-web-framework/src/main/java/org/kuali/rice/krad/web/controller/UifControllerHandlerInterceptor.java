@@ -117,7 +117,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
             // view wasn't rendered, just set to null and leave previous posted view
             uifForm.setView(null);
-        } else if (uifForm.isBuildViewRequest()) {
+        } else {
             // full view render, clean view and back up
             View view = uifForm.getView();
             if (view != null) {
@@ -126,12 +126,6 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
             uifForm.setPostedView(view);
             uifForm.setView(null);
-        } else {
-            // partial refresh on posted view
-            View postedView = uifForm.getPostedView();
-            if (postedView != null) {
-                ViewCleaner.cleanView(postedView);
-            }
         }
 
         // remove the session transient variables from the request form before adding it to the list of

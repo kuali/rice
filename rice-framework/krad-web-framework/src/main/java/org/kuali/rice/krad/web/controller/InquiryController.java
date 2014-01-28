@@ -85,11 +85,12 @@ public class InquiryController extends UifControllerBase {
 
         // if request is not a redirect, determine if we need to redirect for an externalizable object inquiry
         if (!inquiryForm.isRedirectedInquiry()) {
-            Class inquiryObjectClass = null;
+            Class<?> inquiryObjectClass;
             try {
                 inquiryObjectClass = Class.forName(inquiryForm.getDataObjectClassName());
             } catch (ClassNotFoundException e) {
-                throw new RiceRuntimeException("Unable to get class for name: " + inquiryForm.getDataObjectClassName());
+                throw new RiceRuntimeException("Unable to get class for name: " + inquiryForm.getDataObjectClassName(),
+                        e);
             }
 
             ModuleService responsibleModuleService =
@@ -106,15 +107,6 @@ public class InquiryController extends UifControllerBase {
 
                 return performRedirect(form, inquiryUrl, redirectUrlProps);
             }
-        }
-
-        // initialize data object class in inquirable
-        try {
-            inquiryForm.getInquirable().setDataObjectClass(Class.forName(inquiryForm.getDataObjectClassName()));
-        } catch (ClassNotFoundException e) {
-            LOG.error("Unable to get new instance for object class: " + inquiryForm.getDataObjectClassName(), e);
-            throw new RuntimeException(
-                    "Unable to get new instance for object class: " + inquiryForm.getDataObjectClassName(), e);
         }
 
         // invoke inquirable to retrieve inquiry data object

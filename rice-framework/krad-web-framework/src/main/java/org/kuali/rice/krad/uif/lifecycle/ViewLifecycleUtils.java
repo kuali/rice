@@ -42,24 +42,24 @@ import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Utilities for working with {@link LifecycleElement} instances.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ViewLifecycleUtils {
-    
+
     private static final Logger LOG = Logger.getLogger(ViewLifecycleUtils.class);
 
     /**
      * Gets property names of all bean properties on the lifecycle element restricted for the
      * indicated view phase.
-     * 
+     *
      * @param element The lifecycle element.
      * @param viewPhase The view phase to retrieve restrictions for.
      * @return set of property names
      */
     public static Set<String> getLifecycleRestrictedProperties(LifecycleElement element, String viewPhase) {
-        Set<String> restrictedPropertyNames =
-                getMetadata(element.getClass()).lifecycleRestrictedProperties.get(viewPhase);
+        Set<String> restrictedPropertyNames = getMetadata(element.getClass()).lifecycleRestrictedProperties.get(
+                viewPhase);
         if (restrictedPropertyNames == null) {
             return Collections.emptySet();
         } else {
@@ -68,8 +68,18 @@ public final class ViewLifecycleUtils {
     }
 
     /**
+     * Gets property names of the lifecycle element that are annotated as lifecycle prototypes.
+     *
+     * @param element lifecycle element to find prototype properties for
+     * @return Set of property names or empty set if none exist
+     */
+    public static Set<String> getLifecyclePrototypeProperties(LifecycleElement element) {
+        return getMetadata(element.getClass()).lifecyclePrototypeProperties;
+    }
+
+    /**
      * Gets the next lifecycle phase to be executed on the provided element.
-     * 
+     *
      * <dl>
      * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CREATED CREATED}</dt>
      * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED CACHED}</dt>
@@ -84,12 +94,12 @@ public final class ViewLifecycleUtils {
      * <dt>{@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#FINAL FINAL}</dt>
      * <dd>{@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#RENDER RENDER}</dd>
      * </dl>
-     * 
+     *
      * <p>
      * If the view status is null, invalid, or {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#RENDERED RENDERED},
      * then {@link org.kuali.rice.krad.uif.UifConstants.ViewPhases#INITIALIZE} will be returned and a warning logged.
      * </p>
-     * 
+     *
      * @param element The lifecycle element.
      * @return The next phase in the element's lifecycle based on view status
      * @see LifecycleElement#getViewStatus()
@@ -99,12 +109,11 @@ public final class ViewLifecycleUtils {
         if (element == null) {
             return UifConstants.ViewPhases.INITIALIZE;
         }
-        
+
         String viewStatus = element.getViewStatus();
 
-        if (viewStatus == null
-                || UifConstants.ViewStatus.CACHED.equals(viewStatus)
-                || UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+        if (viewStatus == null || UifConstants.ViewStatus.CACHED.equals(viewStatus) || UifConstants.ViewStatus.CREATED
+                .equals(viewStatus)) {
             return UifConstants.ViewPhases.INITIALIZE;
 
         } else if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
@@ -113,8 +122,8 @@ public final class ViewLifecycleUtils {
         } else if (UifConstants.ViewStatus.MODEL_APPLIED.equals(viewStatus)) {
             return UifConstants.ViewPhases.FINALIZE;
 
-        } else if (UifConstants.ViewStatus.FINAL.equals(viewStatus)
-                || UifConstants.ViewStatus.RENDERED.equals(viewStatus)) {
+        } else if (UifConstants.ViewStatus.FINAL.equals(viewStatus) || UifConstants.ViewStatus.RENDERED.equals(
+                viewStatus)) {
             return UifConstants.ViewPhases.RENDER;
 
         } else {
@@ -125,7 +134,7 @@ public final class ViewLifecycleUtils {
 
     /**
      * Gets sub-elements for lifecycle processing.
-     * 
+     *
      * @param element The element to scan.
      * @return map of lifecycle elements
      */
@@ -135,21 +144,20 @@ public final class ViewLifecycleUtils {
 
     /**
      * Helper method for {@link #getElementsForLifecycle(LifecycleElement, String)}.
-     * 
+     *
      * <p>
      * Unwraps the lifecycle element if not null, and dynamically creates the lifecycle map when the
      * first non-null element is added.
      * </p>
-     * 
+     *
      * @param map The lifecycle map.
      * @param propertyName The property path to the nested element.
      * @param nestedElement The nested element to add.
      * @return map, or a newly created map if the provided map was empty and the nested element was
-     *         not null.
+     * not null.
      */
-    @SuppressWarnings("unchecked")
-    private static Map<String, LifecycleElement> addElementToLifecycleMap(
-            Map<String, LifecycleElement> map, String propertyName, LifecycleElement nestedElement) {
+    private static Map<String, LifecycleElement> addElementToLifecycleMap(Map<String, LifecycleElement> map,
+            String propertyName, LifecycleElement nestedElement) {
         if (nestedElement == null) {
             return map;
         }
@@ -163,9 +171,38 @@ public final class ViewLifecycleUtils {
         return returnMap;
     }
 
+    public static Map<String, LifecycleElement> getPrototypeElementsForRefreshLifecycle(LifecycleElement element) {
+        if (element == null) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, LifecycleElement> elements = Collections.emptyMap();
+
+        Set<String> prototypePropertyNames = getLifecyclePrototypeProperties(element);
+        for (String propertyName : prototypePropertyNames) {
+            Object nestedElement = ObjectPropertyUtils.getPropertyValue(element, propertyName);
+
+            if (nestedElement instanceof List) {
+                for (int i = 0; i < ((List<?>) nestedElement).size(); i++) {
+                    elements = addElementToLifecycleMap(elements, propertyName + "[" + i + "]",
+                            (LifecycleElement) ((List<?>) nestedElement).get(i));
+                }
+            } else if (nestedElement instanceof Map) {
+                for (Entry<?, ?> entry : ((Map<?, ?>) nestedElement).entrySet()) {
+                    elements = addElementToLifecycleMap(elements, propertyName + "[" + entry.getKey() + "]",
+                            (LifecycleElement) entry.getValue());
+                }
+            } else {
+                elements = addElementToLifecycleMap(elements, propertyName, (LifecycleElement) nestedElement);
+            }
+        }
+
+        return elements == Collections.EMPTY_MAP ? elements : Collections.unmodifiableMap(elements);
+    }
+
     /**
      * Gets subcomponents for lifecycle processing.
-     * 
+     *
      * @param element The component to scan.
      * @param viewPhase The view phase to return subcomponents for.
      * @return lifecycle components
@@ -175,10 +212,10 @@ public final class ViewLifecycleUtils {
             return Collections.emptyMap();
         }
 
-        Set<String> nestedElementProperties = ObjectPropertyUtils
-                .getReadablePropertyNamesByType(element, LifecycleElement.class);
-        Set<String> nestedElementCollectionProperties = ObjectPropertyUtils
-                .getReadablePropertyNamesByCollectionType(element, LifecycleElement.class);
+        Set<String> nestedElementProperties = ObjectPropertyUtils.getReadablePropertyNamesByType(element,
+                LifecycleElement.class);
+        Set<String> nestedElementCollectionProperties = ObjectPropertyUtils.getReadablePropertyNamesByCollectionType(
+                element, LifecycleElement.class);
         if (nestedElementProperties.isEmpty() && nestedElementCollectionProperties.isEmpty()) {
             return Collections.emptyMap();
         }
@@ -237,13 +274,13 @@ public final class ViewLifecycleUtils {
 
     /**
      * Return the lifecycle elements of the specified type from the given list
-     * 
+     *
      * <p>
      * Elements that match, implement or are extended from the specified {@code elementType} are
      * returned in the result. If an element is a parent to other elements then these child elements
      * are searched for matching types as well.
      * </p>
-     * 
+     *
      * @param items list of elements from which to search
      * @param elementType the class or interface of the element type to return
      * @param <T> the type of the elements that are returned
@@ -257,8 +294,8 @@ public final class ViewLifecycleUtils {
 
         List<T> elements = Collections.emptyList();
 
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         elementQueue.addAll(items);
 
         try {
@@ -287,38 +324,38 @@ public final class ViewLifecycleUtils {
 
     /**
      * Returns the lifecycle elements of the specified type from the given list.
-     * 
+     *
      * <p>
      * Elements that match, implement or are extended from the specified {@code elementType} are
      * returned in the result. If an element is a parent to other elements then these child
      * components are searched for matching component types as well.
      * </p>
-     * 
+     *
      * @param element The elements to search
      * @param elementType the class or interface of the elements type to return
      * @param <T> the type of the elements that are returned
      * @return List of matching elements
      */
-    public static <T extends LifecycleElement> List<T> getElementsOfTypeDeep(
-            LifecycleElement element, Class<T> elementType) {
+    public static <T extends LifecycleElement> List<T> getElementsOfTypeDeep(LifecycleElement element,
+            Class<T> elementType) {
         return getElementsOfTypeDeep(Collections.singletonList(element), elementType);
     }
 
     /**
      * Returns elements of the given type that are direct children of the given element including
      * itself, or a child of a non-component child of the given element.
-     * 
+     *
      * <p>
      * Deep search is only performed on non-component nested elements.
      * </p>
-     * 
+     *
      * @param element instance to get children for
      * @param elementType type for component to return
      * @param <T> type of component that will be returned
      * @return list of child components with the given type
      */
-    public static <T extends LifecycleElement> List<T> getElementsOfTypeShallow(
-            LifecycleElement element, Class<T> elementType) {
+    public static <T extends LifecycleElement> List<T> getElementsOfTypeShallow(LifecycleElement element,
+            Class<T> elementType) {
         if (element == null) {
             return Collections.emptyList();
         }
@@ -340,22 +377,22 @@ public final class ViewLifecycleUtils {
      * Get nested elements of the type specified one layer deep; this defers from
      * getElementsOfTypeShallow because it does NOT include itself as a match if it also matches the
      * type being requested.
-     * 
+     *
      * @param element instance to get children for
      * @param elementType type for element to return
      * @param <T> type of element that will be returned
      * @return list of child elements with the given type
      */
-    public static <T extends LifecycleElement> List<T> getNestedElementsOfTypeShallow(
-            LifecycleElement element, Class<T> elementType) {
+    public static <T extends LifecycleElement> List<T> getNestedElementsOfTypeShallow(LifecycleElement element,
+            Class<T> elementType) {
         if (element == null) {
             return Collections.emptyList();
         }
 
         List<T> elements = Collections.emptyList();
 
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         try {
             elementQueue.add(element);
 
@@ -394,12 +431,12 @@ public final class ViewLifecycleUtils {
     /**
      * Internal metadata cache.
      */
-    private static final Map<Class<?>, ElementMetadata> METADATA_CACHE = Collections
-            .synchronizedMap(new WeakHashMap<Class<?>, ElementMetadata>(2048));
+    private static final Map<Class<?>, ElementMetadata> METADATA_CACHE = Collections.synchronizedMap(
+            new WeakHashMap<Class<?>, ElementMetadata>(2048));
 
     /**
      * Gets the element metadata for a lifecycle element implementation class.
-     * 
+     *
      * @param elementClass The {@link LifecycleElement} class.
      * @return {@link ElementMetadata} instance for elementClass
      */
@@ -416,7 +453,7 @@ public final class ViewLifecycleUtils {
 
     /**
      * Stores metadata related to a lifecycle element class, for reducing overhead.
-     * 
+     *
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class ElementMetadata {
@@ -451,26 +488,37 @@ public final class ViewLifecycleUtils {
          */
         private final Map<String, Set<String>> lifecycleRestrictedProperties;
 
+        // set of all properties on the element class that are annotated as prototypes
+        private final Set<String> lifecyclePrototypeProperties;
+
         /**
          * Creates a new metadata wrapper for a bean class.
          * 
          * @param elementClass The element class.
          */
         private ElementMetadata(Class<?> elementClass) {
-            Set<String> restrictedPropertyNames = ObjectPropertyUtils
-                    .getReadablePropertyNamesByAnnotationType(elementClass, ViewLifecycleRestriction.class);
+            Set<String> prototypeProperties = ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(elementClass,
+                    ViewLifecyclePrototype.class);
+            if (prototypeProperties.isEmpty()) {
+                lifecyclePrototypeProperties = Collections.emptySet();
+            } else {
+                lifecyclePrototypeProperties = Collections.unmodifiableSet(prototypeProperties);
+            }
+
+            Set<String> restrictedPropertyNames = ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(
+                    elementClass, ViewLifecycleRestriction.class);
             if (restrictedPropertyNames.isEmpty()) {
                 lifecycleRestrictedProperties = Collections.emptyMap();
+
                 return;
             }
 
-            Map<String, Set<String>> mutableLifecycleRestrictedProperties =
-                    new HashMap<String, Set<String>>(restrictedPropertyNames.size());
-            Set<String> origRestrictedPropertyNames = restrictedPropertyNames;
-            for (String restrictedPropertyName : origRestrictedPropertyNames) {
-                ViewLifecycleRestriction restriction = ObjectPropertyUtils
-                        .getReadMethod(elementClass, restrictedPropertyName)
-                        .getAnnotation(ViewLifecycleRestriction.class);
+            Map<String, Set<String>> mutableLifecycleRestrictedProperties = new HashMap<String, Set<String>>(
+                    restrictedPropertyNames.size());
+
+            for (String restrictedPropertyName : restrictedPropertyNames) {
+                ViewLifecycleRestriction restriction = ObjectPropertyUtils.getReadMethod(elementClass,
+                        restrictedPropertyName).getAnnotation(ViewLifecycleRestriction.class);
                 for (String phase : restriction.value()) {
                     Set<String> restrictedByPhase = mutableLifecycleRestrictedProperties.get(phase);
 
@@ -491,8 +539,7 @@ public final class ViewLifecycleUtils {
                 if (restrictedByPhase == null) {
                     mutableLifecycleRestrictedProperties.put(phase, immutableRestrictedPropertyNames);
                 } else {
-                    mutableLifecycleRestrictedProperties.put(phase,
-                            Collections.unmodifiableSet(restrictedByPhase));
+                    mutableLifecycleRestrictedProperties.put(phase, Collections.unmodifiableSet(restrictedByPhase));
                 }
             }
 

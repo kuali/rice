@@ -67,10 +67,8 @@ import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@SuppressWarnings("deprecation")
 public class MaintainableImpl extends ViewHelperServiceImpl implements Maintainable {
     private static final long serialVersionUID = 9125271369161634992L;
-
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintainableImpl.class);
 
     private String documentNumber;

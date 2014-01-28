@@ -162,7 +162,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     public void performInitialization(Object model) {
         super.performInitialization(model);
 
-        if (!isReadOnly()) {
+//        if (!isReadOnly()) {
             if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
                     constraintMessage
                         == null)) {
@@ -175,9 +175,9 @@ public class InputFieldBase extends DataFieldBase implements InputField {
                         == null)) {
                 instructionalMessage = ComponentFactory.getInstructionalMessage();
             }
-        } else {
-            setValidationMessages(null);
-        }
+//        } else {
+//            setValidationMessages(null);
+//        }
 
     }
 
@@ -333,7 +333,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             stateObject = model;
         }
         StateMapping stateMapping = view.getStateMapping();
-        String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.REQUIRED_NEXT_STATE_INDICATOR_ID);
 
         if (stateMapping != null) {
@@ -356,7 +356,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         // Generate validation messages
         if (validationMessages != null) {
-            validationMessages.generateMessages(true, view, model, this);
+            validationMessages.generateMessages(view, model, this);
         }
     }
 

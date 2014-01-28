@@ -23,7 +23,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.View;
@@ -101,8 +106,10 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String lightboxScript;
 
+    @SessionTransient
     protected View view;
     protected View postedView;
+    protected ViewPostMetadata viewPostMetadata;
 
     protected Map<String, String> viewRequestParameters;
     protected List<String> readOnlyFieldsList;
@@ -144,8 +151,11 @@ public class UifFormBase implements ViewModel {
 
     @SessionTransient
     protected boolean requestRedirected;
+
     @SessionTransient
     protected String updateComponentId;
+    @SessionTransient
+    private Component updateComponent;
 
     protected Map<String, Object> extensionData;
 
@@ -772,6 +782,20 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getUpdateComponent()
+     */
+    public Component getUpdateComponent() {
+        return updateComponent;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setUpdateComponent(org.kuali.rice.krad.uif.component.Component)
+     */
+    public void setUpdateComponent(Component updateComponent) {
+        this.updateComponent = updateComponent;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getView()
      */
     @Override
@@ -788,6 +812,49 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Returns an instance of the view's configured view helper service.
+     *
+     * <p>First checks if there is an initialized view containing a view helper instance. If not, and there is
+     * a view id on the form, a call is made to retrieve the view helper instance or class configuration.</p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewHelperService getViewHelperService() {
+        if ((getView() != null) && (getView().getViewHelperService() != null)) {
+            return getView().getViewHelperService();
+        }
+
+        String viewId = getViewId();
+        if (StringUtils.isBlank(viewId) && (getView() != null)) {
+            viewId = getView().getId();
+        }
+
+        if (StringUtils.isBlank(viewId)) {
+            return null;
+        }
+
+        ViewHelperService viewHelperService =
+                (ViewHelperService) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBeanProperty(viewId,
+                        UifPropertyPaths.VIEW_HELPER_SERVICE);
+        if (viewHelperService == null) {
+            Class<?> viewHelperServiceClass =
+                    (Class<?>) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBeanProperty(viewId,
+                            UifPropertyPaths.VIEW_HELPER_SERVICE_CLASS);
+
+            if (viewHelperServiceClass != null) {
+                try {
+                    viewHelperService = (ViewHelperService) viewHelperServiceClass.newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to instantiate view helper class: " + viewHelperServiceClass, e);
+                }
+            }
+        }
+
+        return viewHelperService;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getPostedView()
      */
     @Override
@@ -801,6 +868,22 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setPostedView(View postedView) {
         this.postedView = postedView;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewPostMetadata()
+     */
+    @Override
+    public ViewPostMetadata getViewPostMetadata() {
+        return viewPostMetadata;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewPostMetadata(org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata)
+     */
+    @Override
+    public void setViewPostMetadata(ViewPostMetadata viewPostMetadata) {
+        this.viewPostMetadata = viewPostMetadata;
     }
 
     /**
@@ -1106,25 +1189,6 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
-    }
-
-    /**
-     * True if the current request is attempting to retrieve the originally generated component; the request
-     * must be an update-component request for this to be taken into account
-     *
-     * @return true if retrieving the original component
-     */
-    public boolean isOriginalComponentRequest() {
-        return originalComponentRequest;
-    }
-
-    /**
-     * Set the originalComponentRequest flag
-     *
-     * @param originalComponentRequest
-     */
-    public void setOriginalComponentRequest(boolean originalComponentRequest) {
-        this.originalComponentRequest = originalComponentRequest;
     }
 
     /**

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.layout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -55,6 +56,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     private String id;
     private String viewPath;
+    private Map<String, String> phasePathMapping;
+
     private String template;
     private String templateName;
 
@@ -73,6 +76,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
 
     public LayoutManagerBase() {
         super();
+
+        phasePathMapping = new HashMap<String, String>();
         context = Collections.emptyMap();
         cssClasses = Collections.emptyList();
         libraryCssClasses = Collections.emptyList();
@@ -274,6 +279,22 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public void setViewPath(String viewPath) {
         checkMutable(true);
         this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getPhasePathMapping() {
+        return phasePathMapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPhasePathMapping(Map<String, String> phasePathMapping) {
+        this.phasePathMapping = phasePathMapping;
     }
 
     /**
@@ -616,6 +637,11 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         }
 
         layoutManagerBaseCopy.setId(this.id);
+
+        if (this.phasePathMapping != null) {
+            layoutManagerBaseCopy.setPhasePathMapping(new HashMap<String, String>(this.phasePathMapping));
+        }
+
         layoutManagerBaseCopy.setTemplate(this.template);
         layoutManagerBaseCopy.setTemplateName(this.templateName);
         layoutManagerBaseCopy.setStyle(this.style);

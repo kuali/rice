@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
+package org.kuali.rice.krad.datadictionary.uif;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -58,9 +59,9 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
             Component component = (Component) bean;
 
             if (StringUtils.isBlank(component.getId())) {
-                if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#")) {
+                if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#") && !beanName
+                        .startsWith(UifConstants.BASE_ID_PREFIX)) {
                     component.setId(beanName);
-                    component.setBaseId(beanName);
                 }
             }
         }

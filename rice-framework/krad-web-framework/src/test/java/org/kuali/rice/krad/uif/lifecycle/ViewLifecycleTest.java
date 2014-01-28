@@ -127,9 +127,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
         view = form.getView();
-        if (initialStateId != null) {
-            assertNotNull(initialStateId, view.getViewIndex().getInitialComponentStates().get(initialStateId));
-        }
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
         ViewCleaner.cleanView(view);
         return form;
@@ -186,7 +183,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getHelper().performCustomViewInitialization(tform);
 
                 ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
-                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, ""));
+                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, "", null));
 
                 ProcessLogger.trace("end-init");
             }

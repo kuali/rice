@@ -153,7 +153,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
         // Generate validation messages
         if (validationMessages != null) {
-            validationMessages.generateMessages(true, ViewLifecycle.getView(), model, this);
+            validationMessages.generateMessages(ViewLifecycle.getView(), model, this);
         }
  	}
 

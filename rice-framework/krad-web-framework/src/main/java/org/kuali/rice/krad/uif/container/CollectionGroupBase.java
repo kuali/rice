@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -334,10 +335,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         if (isRender()) {
             getCollectionGroupBuilder().build(view, model, this);
         }
-
-        // TODO: is this necessary to call again?
-        // This may be necessary to call in case getCollectionGroupBuilder().build resets the context map
-        pushCollectionGroupToReference();
     }
 
     /**
@@ -379,6 +376,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    @ViewLifecyclePrototype
     public List<? extends Component> getItems() {
         return super.getItems();
     }

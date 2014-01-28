@@ -26,12 +26,17 @@ public class UifPropertyPaths {
 
     public static final String ACTION_PARAMETERS = "actionParameters";
     public static final String ACTIVE = "active";
+    public static final String AUTO_ADD_ACTIVE_CRITERIA = "autoAddActiveCriteria";
+    public static final String BASE_ID = "baseId";
     public static final String BIND_OBJECT_PATH = "bindingInfo.bindingObjectPath";
     public static final String BIND_TO_FORM = "bindingInfo.bindToForm";
+    public static final String CRITERIA_FIELDS = "criteriaFields";
     public static final String COL_SPAN = "colSpan";
     public static final String COMPONENT_MODIFIERS = "componentModifiers";
     public static final String CONTEXT = "context";
     public static final String CONTROL = "control";
+    public static final String DATA_OBJECT_CLASS = "dataObjectClass";
+    public static final String DIALOGS = "dialogs";
     public static final String DOCUMENT_ID = "documentId";
     public static final String EXPRESSION_GRAPH = "expressionGraph";
     public static final String HIDDEN = "hidden";
@@ -49,7 +54,10 @@ public class UifPropertyPaths {
     public static final String OBJECT_ID = "objectId";
     public static final String PROPERTY_EXPRESSIONS = "propertyExpressions";
     public static final String LOOKUP_CRITERIA = "lookupCriteria";
+    public static final String RANGED_TO_MESSAGE = "rangedToMessage";
+    public static final String RANGE_FIELD_GROUP_PROTOTYPE = "rangeFieldGroupPrototype";
     public static final String RENDER = "render";
+    public static final String RESULT_FIELDS = "resultFields";
     public static final String REQUIRED = "required";
     public static final String READ_ONLY = "readOnly";
     public static final String ROW_SPAN = "rowSpan";
@@ -63,5 +71,6 @@ public class UifPropertyPaths {
     public static final String STYLE = "style";
     public static final String TITLE = "title";
     public static final String VALIDATION_MESSAGES = "validationMessages";
+    public static final String VIEW_HELPER_SERVICE = "viewHelperService";
     public static final String VIEW_HELPER_SERVICE_CLASS = "viewHelperServiceClass";
 }

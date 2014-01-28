@@ -465,18 +465,27 @@ public interface DataDictionaryService {
     /**
      * Returns an object from the dictionary by its spring bean name or id
      *
-     * @param id - id or name for the bean definition
+     * @param id id or name for the bean definition
      * @return Object object instance created or the singleton being maintained
      */
-    Object getDictionaryObject(String id);
+    Object getDictionaryBean(String id);
 
     /**
      * Indicates whether the data dictionary contains a bean with the given id
      *
-     * @param id - id of the bean to check for
+     * @param id id of the bean to check for
      * @return boolean true if dictionary contains bean, false otherwise
      */
-    boolean containsDictionaryObject(String id);
+    boolean containsDictionaryBean(String id);
+
+    /**
+     * Returns a property value for the bean with the given name from the dictionary.
+     *
+     * @param beanName id or name for the bean definition
+     * @param propertyName name of the property to retrieve
+     * @return Object property value for property
+     */
+    Object getDictionaryBeanProperty(String beanName, String propertyName);
 
     /**
      * Returns View instance identified by the view type name and index

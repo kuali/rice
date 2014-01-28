@@ -22,13 +22,13 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
+import org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
@@ -426,14 +426,14 @@ public class Validator {
             xmlReader.loadBeanDefinitions(core);
         } catch (Exception e) {
             LOG.error("Error loading bean definitions", e);
-            throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
+            throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage(), e);
         }
 
         try {
             xmlReader.loadBeanDefinitions(getResources(test));
         } catch (Exception e) {
             LOG.error("Error loading bean definitions", e);
-            throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage());
+            throw new DataDictionaryException("Error loading bean definitions: " + e.getLocalizedMessage(), e);
         }
 
         UifBeanFactoryPostProcessor factoryPostProcessor = new UifBeanFactoryPostProcessor();

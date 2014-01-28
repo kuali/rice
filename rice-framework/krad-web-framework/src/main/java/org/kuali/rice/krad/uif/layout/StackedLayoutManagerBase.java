@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -177,10 +178,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         List<Action> lineGroupActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineGroup, Action.class);
         if (lineGroupActions != null) {
             collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup, lineIndex);
-            ComponentUtils.updateContextsForLine(lineGroupActions, currentLine, lineIndex, idSuffix);
+            ComponentUtils.updateContextsForLine(lineGroupActions, collectionGroup, currentLine, lineIndex, idSuffix);
         }
 
-        ComponentUtils.updateContextForLine(lineGroup, currentLine, lineIndex, idSuffix);
+        ComponentUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
 
         // build header for the group
         if (isAddLine) {
@@ -320,6 +321,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    @ViewLifecyclePrototype
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return this.addLineGroup;
@@ -338,6 +340,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    @ViewLifecyclePrototype
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;

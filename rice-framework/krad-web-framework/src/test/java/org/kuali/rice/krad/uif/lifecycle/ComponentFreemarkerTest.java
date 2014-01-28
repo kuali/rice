@@ -118,7 +118,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 //                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
-                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, "");
+                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, "", null);
                 
                 ViewLifecycle.getProcessor().performPhase(renderPhase);
 

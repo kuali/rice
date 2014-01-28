@@ -64,8 +64,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         String dictionaryAttributeName = field.getDictionaryAttributeName();
         String dictionaryObjectEntry = field.getDictionaryObjectEntry();
 
-        // if entry given but not attribute name, use field name as attribute
-        // name
+        // if entry given but not attribute name, use field name as attribute name
         if (StringUtils.isNotBlank(dictionaryObjectEntry) && StringUtils.isBlank(dictionaryAttributeName)) {
             dictionaryAttributeName = field.getPropertyName();
         }
@@ -78,11 +77,10 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
         // if definition not found, recurse through path
         if (attributeDefinition == null) {
-
             BindingInfo fieldBindingInfo = field.getBindingInfo();
             String collectionPath = fieldBindingInfo.getCollectionPath();
-            String propertyPath;
 
+            String propertyPath;
             if (StringUtils.isNotBlank(collectionPath)) {
                 StringBuilder propertyPathBuilder = new StringBuilder();
 
@@ -133,8 +131,8 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      */
     private String getDictionaryEntryName(String rootPath, String parentPath) {
         Map<String, Class<?>> modelClasses = ViewLifecycle.getView().getObjectPathToConcreteClassMapping();
-        String modelClassPath = getModelClassPath(rootPath, parentPath);
 
+        String modelClassPath = getModelClassPath(rootPath, parentPath);
         if (modelClassPath == null) {
             return null;
         }
@@ -254,8 +252,8 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      * @return AttributeDefinition if found, or Null
      */
     protected AttributeDefinition findNestedDictionaryAttribute(String propertyPath) {
-        // attempt to find definition for parent and property
         DataField field = (DataField) getElementState().getElement();
+
         String fieldBindingPrefix = null;
         String dictionaryAttributePath = propertyPath;
 
@@ -280,42 +278,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
             return null;
         }
 
-        final DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        final String rootPath = fieldBindingPrefix;
-
-        class AttributePathEntry implements PathEntry {
-            AttributeDefinition attributeDefinition;
-            String dictionaryAttributeName;
-            String dictionaryObjectEntry;
-
-            @Override
-            public Object parse(String parentPath, Object node, String next) {
-                if (next == null) {
-                    return node;
-                }
-
-                if (attributeDefinition != null || node == null) {
-                    return null;
-                }
-
-                String dictionaryEntryName = getDictionaryEntryName(rootPath, parentPath);
-
-                if (dictionaryEntryName != null) {
-                    attributeDefinition = dataDictionaryService
-                            .getAttributeDefinition(dictionaryEntryName, next);
-
-                    if (attributeDefinition != null) {
-                        dictionaryObjectEntry = dictionaryEntryName;
-                        dictionaryAttributeName = next;
-                        return null;
-                    }
-                }
-
-                return node;
-            }
-        }
-
-        AttributePathEntry attributePathEntry = new AttributePathEntry();
+        AttributePathEntry attributePathEntry = new AttributePathEntry(fieldBindingPrefix);
         ObjectPathExpressionParser
                 .parsePathExpression(attributePathEntry, dictionaryAttributePath, attributePathEntry);
 
@@ -326,6 +289,46 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         }
 
         return attributePathEntry.attributeDefinition;
+    }
+
+    protected class AttributePathEntry implements PathEntry {
+        AttributeDefinition attributeDefinition;
+
+        String dictionaryAttributeName;
+        String dictionaryObjectEntry;
+
+        String rootPath;
+
+        public AttributePathEntry(String rootPath) {
+             this.rootPath = rootPath;
+        }
+
+        @Override
+        public Object parse(String parentPath, Object node, String next) {
+            if (next == null) {
+                return node;
+            }
+
+            if (attributeDefinition != null || node == null) {
+                return null;
+            }
+
+            String dictionaryEntryName = getDictionaryEntryName(rootPath, parentPath);
+
+            if (dictionaryEntryName != null) {
+                attributeDefinition = KRADServiceLocatorWeb.getDataDictionaryService()
+                        .getAttributeDefinition(dictionaryEntryName, next);
+
+                if (attributeDefinition != null) {
+                    dictionaryObjectEntry = dictionaryEntryName;
+                    dictionaryAttributeName = next;
+
+                    return null;
+                }
+            }
+
+            return node;
+        }
     }
 
 }

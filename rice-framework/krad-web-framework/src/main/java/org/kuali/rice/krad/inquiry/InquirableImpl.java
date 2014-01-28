@@ -303,20 +303,19 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
     }
 
     /**
-     * @see Inquirable#setDataObjectClass(java.lang.Class)
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<?> getDataObjectClass() {
+        return this.dataObjectClass;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setDataObjectClass(Class<?> dataObjectClass) {
         this.dataObjectClass = dataObjectClass;
-    }
-
-    /**
-     * Retrieves the data object class configured for this inquirable
-     *
-     * @return Class<?> of configured data object, or null if data object class not configured
-     */
-    protected Class<?> getDataObjectClass() {
-        return this.dataObjectClass;
     }
 
     protected LegacyDataAdapter getLegacyDataAdapter() {

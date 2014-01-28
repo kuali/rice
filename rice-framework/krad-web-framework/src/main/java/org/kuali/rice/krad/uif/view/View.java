@@ -250,6 +250,7 @@ public class View extends ContainerBase {
     public void performInitialization(Object model) {
         if (model instanceof UifFormBase) {
             UifFormBase form = (UifFormBase) model;
+
             // set view page to page requested on form
             if (StringUtils.isNotBlank(form.getPageId())) {
                 setCurrentPageId(form.getPageId());
@@ -416,13 +417,13 @@ public class View extends ContainerBase {
         breadcrumbOptions.finalizeBreadcrumbs(model, this, breadcrumbItem);
 
         // Add validation default js options for validation framework to View's data attributes
-        Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        Object groupValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.GROUP_VALIDATION_DEFAULTS_MAP_ID);
-        Object fieldValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        Object fieldValidationDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.FIELD_VALIDATION_DEFAULTS_MAP_ID);
-        Object actionDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        Object actionDataDefaults = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.ACTION_DEFAULTS_MAP_ID);
-        Object requiredIndicator = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        Object requiredIndicator = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.REQUIRED_INDICATOR_ID);
 
         // Add data defaults for common components to the view for use in js (to reduce size of individual components)

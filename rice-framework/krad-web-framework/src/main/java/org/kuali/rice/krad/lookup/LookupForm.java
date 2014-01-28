@@ -74,12 +74,12 @@ public class LookupForm extends UifFormBase {
     public void postBind(HttpServletRequest request) {
         super.postBind(request);
 
+        if (StringUtils.isBlank(getDataObjectClassName())) {
+            setDataObjectClassName(((LookupView) getView()).getDataObjectClass().getName());
+        }
+
         Lookupable lookupable = getLookupable();
         if ((lookupable != null) && (lookupable.getDataObjectClass() == null)) {
-            if (StringUtils.isBlank(getDataObjectClassName())) {
-                setDataObjectClassName(((LookupView) getView()).getDataObjectClass().getName());
-            }
-
             Class<?> dataObjectClass;
             try {
                 dataObjectClass = Class.forName(getDataObjectClassName());
@@ -101,15 +101,11 @@ public class LookupForm extends UifFormBase {
     /**
      * Returns an {@link Lookupable} instance associated with the lookup view.
      *
-     * @return Lookupable instance or null if one cannnot be created
+     * @return Lookupable instance or null if one does not exist
      */
     public Lookupable getLookupable() {
-        if ((getView() != null) && (getView().getViewHelperService() != null) && Lookupable.class.isAssignableFrom(
-                getView().getViewHelperService().getClass())) {
-            return (Lookupable) getView().getViewHelperService();
-        } else if ((getPostedView() != null) && (getPostedView().getViewHelperService() != null) && Lookupable.class
-                .isAssignableFrom(getPostedView().getViewHelperService().getClass())) {
-            return (Lookupable) getPostedView().getViewHelperService();
+        if (getViewHelperService() != null) {
+            return (Lookupable) getViewHelperService();
         }
 
         return null;

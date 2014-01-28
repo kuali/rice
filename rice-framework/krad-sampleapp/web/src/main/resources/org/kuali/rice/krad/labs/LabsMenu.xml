@@ -90,6 +90,8 @@
                     p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Tables"/>
               <bean parent="Uif-Link" p:linkText="Stacked Collection" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Stacked"/>
+              <bean parent="Uif-Link" p:linkText="Refresh" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
             </list>
           </property>
         </bean>

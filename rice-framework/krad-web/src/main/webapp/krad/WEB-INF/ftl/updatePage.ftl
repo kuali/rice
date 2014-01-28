@@ -22,21 +22,21 @@
             <#include "${viewTemplate}" parse=true/>
         </#list>
 
-            <#-- rerun view pre-load script to get new state variables for component -->
-            <@krad.script value="${view.preLoadScript!}" component=Component/>
+        <#-- rerun view pre-load script to get new state variables for component -->
+        <@krad.script value="${view.preLoadScript!}" component=KualiForm.updateComponent/>
 
-            <@krad.template componentUpdate=true component=Component/>
+        <@krad.template componentUpdate=true component=KualiForm.updateComponent/>
 
-            <@krad.script value="${KualiForm.lightboxScript!}" component=Component/>
+        <@krad.script value="${KualiForm.lightboxScript!}" component=KualiForm.updateComponent/>
 
-            <#-- show added growls -->
-            <@krad.script value="${KualiForm.growlScript!}" component=Component/>
+        <#-- show added growls -->
+        <@krad.script value="${KualiForm.growlScript!}" component=KualiForm.updateComponent/>
 
-            <#-- set focus and perform jump to -->
-            <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
-                    performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
-                        '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
-                    dirtyFormState.setDirty(${KualiForm.dirtyForm?string});
-                 });" component=Component/>
+        <#-- set focus and perform jump to -->
+        <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
+                performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
+                    '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
+                dirtyFormState.setDirty(${KualiForm.dirtyForm?string});
+             });" component=KualiForm.updateComponent/>
     </div>
 </html>

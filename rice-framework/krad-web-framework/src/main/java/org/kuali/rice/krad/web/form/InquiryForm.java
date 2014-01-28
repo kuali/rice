@@ -44,8 +44,7 @@ public class InquiryForm extends UifFormBase {
     }
 
     /**
-     * Picks out business object name from the request to get retrieve a
-     * lookupable and set properties
+     * Sets data object class on the form and/or inquirable.
      */
     @Override
     public void postBind(HttpServletRequest request) {
@@ -54,6 +53,31 @@ public class InquiryForm extends UifFormBase {
         if (StringUtils.isBlank(getDataObjectClassName())) {
             setDataObjectClassName(((InquiryView) getView()).getDataObjectClassName().getName());
         }
+
+        Inquirable inquirable = getInquirable();
+        if ((inquirable != null) && (inquirable.getDataObjectClass() == null)) {
+            Class<?> dataObjectClass;
+            try {
+                dataObjectClass = Class.forName(getDataObjectClassName());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Object class " + getDataObjectClassName() + " not found", e);
+            }
+
+            inquirable.setDataObjectClass(dataObjectClass);
+        }
+    }
+
+    /**
+     * Returns an {@link org.kuali.rice.krad.inquiry.Inquirable} instance associated with the inquiry view.
+     *
+     * @return Inquirable instance or null if one does not exist
+     */
+    public Inquirable getInquirable() {
+        if (getViewHelperService() != null) {
+            return (Inquirable) getViewHelperService();
+        }
+
+        return null;
     }
 
     /**
@@ -114,16 +138,6 @@ public class InquiryForm extends UifFormBase {
      */
     public void setRedirectedInquiry(boolean redirectedInquiry) {
         this.redirectedInquiry = redirectedInquiry;
-    }
-
-    /**
-     * <code>Inquirable</code>  instance that will be used to perform
-     * the inquiry
-     *
-     * @return Inquirable instance
-     */
-    public Inquirable getInquirable() {
-        return (Inquirable) getView().getViewHelperService();
     }
 
 }

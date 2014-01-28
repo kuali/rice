@@ -42,7 +42,15 @@ public class MockInquirable implements Inquirable {
     }
 
     /**
-     * @see org.kuali.rice.krad.inquiry.Inquirable#setDataObjectClass(java.lang.Class)
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<?> getDataObjectClass() {
+        return dataObjectClass;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void setDataObjectClass(Class<?> dataObjectClass) {

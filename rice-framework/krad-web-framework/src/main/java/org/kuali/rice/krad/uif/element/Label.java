@@ -97,7 +97,7 @@ public class Label extends ContentElementBase {
             setRender(false);
         }
 
-        String defaultRequiredIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        String defaultRequiredIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 UifConstants.REQUIRED_INDICATOR_ID);
 
         if (requiredIndicator != null && !requiredIndicator.equals(defaultRequiredIndicator)) {

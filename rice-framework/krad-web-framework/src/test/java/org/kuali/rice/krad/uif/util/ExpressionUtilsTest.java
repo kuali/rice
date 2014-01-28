@@ -102,13 +102,6 @@ public class ExpressionUtilsTest {
         configurable.setExpressionGraph(expressionGraph);
 
         ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(configurable, true);
-
-        assertEquals("Refresh expression count not correct in root configurable", 5,
-                configurable.getRefreshExpressionGraph().size());
-        assertEquals("Refresh expression count not correct in nested configurable", 2,
-                configurable.getProperty4().getRefreshExpressionGraph().size());
-        assertEquals("Refresh expression count not correct in two level nested configurable", 1,
-                configurable.getProperty4().getProperty4().getRefreshExpressionGraph().size());
     }
 
     /**

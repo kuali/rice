@@ -27,25 +27,11 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
-import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
-import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AddComponentStateToViewIndexTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.lifecycle.model.ApplyAuthAndPresentationLogicTask;
-import org.kuali.rice.krad.uif.lifecycle.model.ComponentDefaultApplyModelTask;
-import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
-import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
-import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
@@ -84,6 +70,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String id;
     private String baseId;
     private String viewPath;
+    private Map<String, String> phasePathMapping;
+
     private String template;
     private String templateName;
 
@@ -215,6 +203,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         disableSessionPersistence = false;
         forceSessionPersistence = false;
 
+        phasePathMapping = new HashMap<String, String>();
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
         scriptDataAttributes = Collections.emptyMap();
@@ -622,6 +611,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setViewPath(String viewPath) {
         checkMutable(true);
         this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getPhasePathMapping() {
+        return phasePathMapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPhasePathMapping(Map<String, String> phasePathMapping) {
+        this.phasePathMapping = phasePathMapping;
     }
 
     /**
@@ -2324,6 +2329,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setId(this.id);
         componentCopy.setBaseId(this.baseId);
 
+        if (this.phasePathMapping != null) {
+            componentCopy.setPhasePathMapping(new HashMap<String, String>(this.phasePathMapping));
+        }
+
         // Copy initialized status, but reset to created for others.
         // This allows prototypes to bypass repeating the initialized phase.
         if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
@@ -2396,6 +2405,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         componentCopy.setPreRenderContent(this.preRenderContent);
         componentCopy.setProgressiveRender(this.progressiveRender);
         componentCopy.setProgressiveRenderViaAJAX(this.progressiveRenderViaAJAX);
+        componentCopy.setProgressiveRenderAndRefresh(this.progressiveRenderAndRefresh);
         componentCopy.setReadOnly(this.readOnly);
         componentCopy.setRefreshedByAction(this.refreshedByAction);
         componentCopy.setRefreshTimer(this.refreshTimer);

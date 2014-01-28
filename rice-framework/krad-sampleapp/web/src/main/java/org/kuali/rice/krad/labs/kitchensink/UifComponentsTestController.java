@@ -173,7 +173,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("field5", "richValidationMessageTest2");
         }
 
-        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
+        Map<String, PropertyEditor> propertyEditors = form.getViewPostMetadata().getFieldPropertyEditors();
         for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putError(key, "error1Test");
         }
@@ -195,7 +195,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putWarning("badKey", "unmatchedTest");
         }
 
-        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
+        Map<String, PropertyEditor> propertyEditors = form.getViewPostMetadata().getFieldPropertyEditors();
         for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putWarning(key, "warning1Test");
         }
@@ -217,7 +217,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("badKey", "unmatchedTest");
         }
 
-        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
+        Map<String, PropertyEditor> propertyEditors = form.getViewPostMetadata().getFieldPropertyEditors();
         for (String key : propertyEditors.keySet()) {
             GlobalVariables.getMessageMap().putInfo(key, "info1Test");
         }

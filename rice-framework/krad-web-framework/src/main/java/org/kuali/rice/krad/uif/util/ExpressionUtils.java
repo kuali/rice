@@ -39,7 +39,7 @@ public class ExpressionUtils {
      * map for the expressionConfigurable or a nested expressionConfigurable (for the case of nested expression property names)
      *
      * <p>
-     * Expressions that are configured on properties and pulled out by the {@link org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor}
+     * Expressions that are configured on properties and pulled out by the {@link org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor}
      * and put in the {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getExpressionGraph()} for the bean that is
      * at root (non nested) level. Before evaluating the expressions, they need to be moved to the
      * {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions()} map for the expressionConfigurable that
@@ -48,9 +48,8 @@ public class ExpressionUtils {
      * </p>
      *
      * @param expressionConfigurable expressionConfigurable instance to process expressions for
-     * @param buildRefreshGraphs indicates whether the expression graphs for component refresh should be built
      */
-    public static void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable, boolean buildRefreshGraphs) {
+    public static void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable) {
         if (expressionConfigurable == null || expressionConfigurable.getExpressionGraph() == null) {
             return;
         }
@@ -77,55 +76,14 @@ public class ExpressionUtils {
                 if ((nestedObject == null) || !(nestedObject instanceof UifDictionaryBean)) {
                     throw new RiceRuntimeException(
                             "Object for which expression is configured on is null or does not implement UifDictionaryBean: '"
-                                    + configurablePath
-                                    + "'");
+                                    + configurablePath + "'");
                 }
 
                 // use nested object as the expressionConfigurable which will get the property expression
                 configurableWithExpression = (UifDictionaryBean) nestedObject;
-
-                // now add the expression to the refresh graphs
-                if (buildRefreshGraphs) {
-                    String currentPath = "";
-
-                    String[] configurablePathNames = StringUtils.split(configurablePath, ".");
-                    for (String configurablePathName : configurablePathNames) {
-                        if (StringUtils.isNotBlank(currentPath)) {
-                            currentPath += ".";
-                        }
-                        currentPath += configurablePathName;
-
-                        Map<String, String> graphExpressions = null;
-                        if (refreshExpressionGraphs.containsKey(currentPath)) {
-                            graphExpressions = refreshExpressionGraphs.get(currentPath);
-                        } else {
-                            graphExpressions = new HashMap<String, String>();
-                            refreshExpressionGraphs.put(currentPath, graphExpressions);
-                        }
-
-                        // property name in refresh graph should be relative to expressionConfigurable
-                        String configurablePropertyName = StringUtils.substringAfter(propertyName, currentPath + ".");
-                        graphExpressions.put(configurablePropertyName, expression);
-                    }
-                }
             }
 
             configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
-        }
-
-        // set the refreshExpressionGraph property on each expressionConfigurable an expression was found for
-        if (buildRefreshGraphs) {
-            for (String configurablePath : refreshExpressionGraphs.keySet()) {
-                Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
-                // note if nested object is not a expressionConfigurable, then it can't be refresh and we can safely ignore
-                if ((nestedObject != null) && (nestedObject instanceof UifDictionaryBean)) {
-                    ((UifDictionaryBean) nestedObject).setRefreshExpressionGraph(refreshExpressionGraphs.get(
-                            configurablePath));
-                }
-            }
-
-            // the expression graph for the passed in expressionConfigurable will be its refresh graph as well
-            expressionConfigurable.setRefreshExpressionGraph(expressionGraph);
         }
     }
 

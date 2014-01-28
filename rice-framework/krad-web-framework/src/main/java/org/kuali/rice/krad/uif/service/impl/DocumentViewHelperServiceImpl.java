@@ -30,7 +30,7 @@ import org.kuali.rice.krad.web.form.DocumentFormBase;
  */
 public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
 
-    private KualiRuleService kualiRuleService;
+    private transient KualiRuleService kualiRuleService;
 
     /**
      * Performs validation on the new collection line before it is added to the
@@ -70,6 +70,7 @@ public class DocumentViewHelperServiceImpl extends ViewHelperServiceImpl {
         if (kualiRuleService == null) {
             kualiRuleService = KRADServiceLocatorWeb.getKualiRuleService();
         }
+
         return this.kualiRuleService;
     }
 }

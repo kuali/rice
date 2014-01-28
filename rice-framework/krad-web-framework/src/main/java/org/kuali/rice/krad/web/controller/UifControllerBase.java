@@ -1136,36 +1136,6 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Retrieves the original component as it exists in postedView without attempting to refresh it; fast and
-     * consistent when this is all that is needed
-     *
-     * <p>By passing in the "changeProperties" parameter to this controller method, properties can be changed on
-     * the retrieved component.  However, keep in mind that since this method does not call the lifecycle on
-     * the returned component, properties which require a lifecycle to be run to affect the output of a component
-     * should not be set.  Main use case is to affect attributes which are only used by the ftl.  The
-     * "changeProperties" parameter must be in JSON in string from, ie "{\"propertyPath\": true}"; note the use
-     * of escaping, as this is required.  The propertyPath defines the property on the component that needs to be
-     * changed during this retrieval.  This call must be using the "update-component" return type.</p>
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
-     */
-    @RequestMapping(params = "methodToCall=retrieveOriginalComponent")
-    public ModelAndView retrieveOriginalComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String componentId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
-        form.setOriginalComponentRequest(true);
-
-        return getUIFModelAndView(form);
-    }
-
-    /**
      * Reviews and returns a valid format type, defaults to csv
      *
      * @param formatType

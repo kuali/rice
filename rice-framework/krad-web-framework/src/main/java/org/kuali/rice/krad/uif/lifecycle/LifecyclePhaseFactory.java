@@ -196,7 +196,7 @@ public final class LifecyclePhaseFactory {
      * their rendering parent.
      * @return lifecycle processing task for processing the render phase on the component
      */
-    public static RenderComponentPhase render(FinalizeComponentPhase finalizePhase, RenderComponentPhase parent,
+    public static RenderComponentPhase render(FinalizeComponentPhase finalizePhase,
             Tree<String, String> refreshPaths, RenderComponentPhase renderParent, int pendingChildren) {
         LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);

@@ -185,6 +185,11 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         }
     }
 
+    /**
+     * Initializes only the lifecycle successors applicable to a refresh operation.
+     * 
+     * @param successors The successor queue.
+     */
     protected void initializeRefreshSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
 
@@ -226,6 +231,11 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         }
     }
 
+    /**
+     * Initializes all lifecycle phase successors.
+     * 
+     * @param successors The successor queue.
+     */
     protected void initializeAllLifecycleSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
 
@@ -251,6 +261,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         }
     }
 
+    /**
+     * Initializes a successor of this phase for a given nested element.
+     * 
+     * @param nestedElement The lifecycle element.
+     * @param nestedPath The path, relative to the parent element.
+     * @param nestedParent The parent component of the nested element.
+     * 
+     * @return successor phase
+     */
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
 
@@ -622,7 +641,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * @param step The step in processing the phase that has been reached.
      * @see ViewLifecycle#isTrace()
      */
-    private void trace(String step) {
+    protected void trace(String step) {
         if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
             String msg = System.identityHashCode(this) + " " + getClass() + " " + step + " " + path + " " +
                     (element == null ? "(recycled)" : element.getClass() + " " + element.getId());

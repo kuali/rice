@@ -16,8 +16,6 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -31,7 +29,6 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.RegisterPropertyEditorTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -152,7 +149,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                 parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
             }
 
-            renderPhase = LifecyclePhaseFactory.render(this, parentRenderPhase, getRefreshPaths(), null, 0);
+            renderPhase = LifecyclePhaseFactory.render(this, getRefreshPaths(), parentRenderPhase, successors.size());
+            trace("create-render " + successors.size());
         }
 
         if (successors.isEmpty() && renderPhase != null) {

@@ -35,6 +35,8 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> fieldPropertyEditors;
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
+   // private Set<String> inputFieldIds;
+
     public ViewPostMetadata() {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();

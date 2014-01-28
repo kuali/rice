@@ -183,6 +183,8 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
         Map<String, PropertyEditor> securePropertyEditors =
                 ViewLifecycle.getViewPostMetadata().getSecureFieldPropertyEditors();
 
+        List<String> masterKeyList = new ArrayList<String>();
+
 //        List<String> allPossibleKeys = new ArrayList<String>(propertyEditors.keySet());
 //        allPossibleKeys.addAll(securePropertyEditors.keySet());
 //

@@ -113,7 +113,8 @@ public class ViewIndex implements Serializable {
             Container container = (Container) component;
             if (container.getLayoutManager() != null) {
                 synchronized (lifecycleElementsByPath) {
-                    lifecycleElementsByPath.put(container.getLayoutManager().getViewPath(), container.getLayoutManager());
+                    lifecycleElementsByPath.put(container.getLayoutManager().getViewPath(),
+                            container.getLayoutManager());
                 }
             }
         }
@@ -234,7 +235,7 @@ public class ViewIndex implements Serializable {
      *
      * @return Set<String> set of property paths for data fields
      */
-    public Set<String> getAllDisplayPropertyPaths() {
+    public Set<String> getAllDisplayedPropertyPaths() {
         Set<String> propertyPaths = new HashSet<String>();
 
         for (DataField field : dataFieldIndex.values()) {

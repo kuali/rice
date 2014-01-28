@@ -85,9 +85,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         PropertyEditor propertyEditor = null;
         boolean requiresEncryption = false;
 
-        if (viewPostMetadata.getFieldPropertyEditors().containsKey(propertyName)) {
+        if ((viewPostMetadata.getFieldPropertyEditors() != null) && viewPostMetadata.getFieldPropertyEditors()
+                .containsKey(propertyName)) {
             propertyEditor = viewPostMetadata.getFieldPropertyEditors().get(propertyName);
-        } else if (viewPostMetadata.getSecureFieldPropertyEditors().containsKey(propertyName)) {
+        } else if ((viewPostMetadata.getSecureFieldPropertyEditors() != null) && viewPostMetadata
+                .getSecureFieldPropertyEditors().containsKey(propertyName)) {
             propertyEditor = viewPostMetadata.getSecureFieldPropertyEditors().get(propertyName);
             requiresEncryption = true;
         }

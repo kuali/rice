@@ -188,7 +188,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected void initializeRefreshSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
 
-        Component parent = getElement() instanceof Component ? (Component) getElement() : getParent();
+        String nestedPathPrefix;
+        Component nestedParent;
+        if (element instanceof Component) {
+            nestedParent = (Component) element;
+            nestedPathPrefix = "";
+        } else {
+            nestedParent = getParent();
+            nestedPathPrefix = getParentPath() + ".";
+        }
 
         Node<String, String> currentPathNode = getRefreshNodeForCurrentPath();
         if (currentPathNode == null) {
@@ -207,16 +215,11 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         } else if (currentPathNode.getChildren() != null) {
             for (Node<String, String> nodeChild : currentPathNode.getChildren()) {
                 String nestedProperty = nodeChild.getData();
+                String nestedPath = nestedPathPrefix + nestedProperty;
 
                 LifecycleElement nestedElement = ObjectPropertyUtils.getPropertyValue(element, nestedProperty);
-
-                String nestedPath = nestedProperty;
-                if (StringUtils.isNotBlank(getViewPath())) {
-                    nestedPath = getViewPath() + "." + nestedProperty;
-                }
-
                 if (nestedElement != null) {
-                    ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, parent);
+                    ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, nestedParent);
                     successors.add(nestedPhase);
                 }
             }
@@ -226,17 +229,23 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected void initializeAllLifecycleSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
 
-        Component parent = getElement() instanceof Component ? (Component) getElement() : getParent();
+        String nestedPathPrefix;
+        Component nestedParent;
+        if (element instanceof Component) {
+            nestedParent = (Component) element;
+            nestedPathPrefix = "";
+        } else {
+            nestedParent = getParent();
+            nestedPathPrefix = getParentPath() + ".";
+        }
 
         for (Map.Entry<String, LifecycleElement> nestedElementEntry : ViewLifecycleUtils.getElementsForLifecycle(
                 element, getViewPhase()).entrySet()) {
-            String path = getViewPath();
-            String nestedPath = (StringUtils.isBlank(path) ? "" : path + ".") + nestedElementEntry.getKey();
-
+            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
             if (nestedElement != null) {
-                ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, parent);
+                ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, nestedParent);
                 successors.offer(nestedPhase);
             }
         }

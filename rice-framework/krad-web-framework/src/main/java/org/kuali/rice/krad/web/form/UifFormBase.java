@@ -208,19 +208,19 @@ public class UifFormBase implements ViewModel {
 
         // get any sent client view state and parse into map
         if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
-            String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
-            if (StringUtils.isNotBlank(clientStateJSON)) {
-                // change single quotes to double quotes (necessary because the reverse was done for sending)
-                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
+                    String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
+                    if (StringUtils.isNotBlank(clientStateJSON)) {
+                        // change single quotes to double quotes (necessary because the reverse was done for sending)
+                        clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
 
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable to decode client side state JSON", e);
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException("Unable to decode client side state JSON", e);
+                        }
+                    }
                 }
-            }
-        }
 
         // populate read only fields list
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {

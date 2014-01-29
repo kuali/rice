@@ -41,7 +41,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
    * piping SAX events from one Transformer to another. Each Transformer
    * operates as a SAX2 XMLFilter/XMLReader.
    */
-public class Pipe extends KEWTestCase
+public class PipeTest extends KEWTestCase
 {
 	@Test
 	public void testPipe()
@@ -57,9 +57,9 @@ public class Pipe extends KEWTestCase
       // Cast the TransformerFactory to SAXTransformerFactory.
       SAXTransformerFactory saxTFactory = ((SAXTransformerFactory) tFactory);	  
       // Create a TransformerHandler for each stylesheet.
-      TransformerHandler tHandler1 = saxTFactory.newTransformerHandler(new StreamSource(Pipe.class.getResourceAsStream("foo1.xsl")));
-      TransformerHandler tHandler2 = saxTFactory.newTransformerHandler(new StreamSource(Pipe.class.getResourceAsStream("foo2.xsl")));
-      TransformerHandler tHandler3 = saxTFactory.newTransformerHandler(new StreamSource(Pipe.class.getResourceAsStream("foo3.xsl")));
+      TransformerHandler tHandler1 = saxTFactory.newTransformerHandler(new StreamSource(PipeTest.class.getResourceAsStream("foo1.xsl")));
+      TransformerHandler tHandler2 = saxTFactory.newTransformerHandler(new StreamSource(PipeTest.class.getResourceAsStream("foo2.xsl")));
+      TransformerHandler tHandler3 = saxTFactory.newTransformerHandler(new StreamSource(PipeTest.class.getResourceAsStream("foo3.xsl")));
     
       // Create an XMLReader.
 	    XMLReader reader = XMLReaderFactory.createXMLReader();
@@ -79,7 +79,7 @@ public class Pipe extends KEWTestCase
 
 	    // Parse the XML input document. The input ContentHandler and output ContentHandler
       // work in separate threads to optimize performance.   
-      reader.parse(new InputSource(Pipe.class.getResourceAsStream("foo.xml")));
+      reader.parse(new InputSource(PipeTest.class.getResourceAsStream("foo.xml")));
     }
   }
 }

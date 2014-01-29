@@ -223,6 +223,9 @@ public class UifConstants {
         public static final String INPUT_FIELD_SUGGEST_QUERY = "INPUT_FIELD_SUGGEST_QUERY";
         public static final String INPUT_FIELD_IS_UPPERCASE = "INPUT_FIELD_IS_UPPERCASE";
         public static final String BINDING_PATH = "BINDING_PATH";
+        public static final String BASE_ID = "BASE_ID";
+        public static final String COLL_DISPLAY_START = "COLL_DISPLAY_START";
+        public static final String COLL_DISPLAY_LENGTH = "COLL_DISPLAY_LENGTH";
     }
 
     public static class ContextVariableNames {

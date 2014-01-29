@@ -105,13 +105,12 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
-        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getPostedView() == null)) {
+        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getViewPostMetadata() == null)) {
             return;
         }
 
         // perform form session handling
-        boolean persistFormToSession = uifForm.getView() != null ? uifForm.getView().isPersistFormToSession() :
-                uifForm.getPostedView().isPersistFormToSession();
+        boolean persistFormToSession = uifForm.getViewPostMetadata().isPersistFormToSession();
 
         // cleaning of view structure
         if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {

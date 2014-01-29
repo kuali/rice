@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.HelperCustomInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.PopulatePathTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
@@ -95,6 +96,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
         tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(PopulatePathTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(PopulateComponentFromExpressionGraphTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(ComponentDefaultInitializeTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, this));

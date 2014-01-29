@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 import org.kuali.rice.core.api.util.tree.Tree;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public class ComponentPostMetadata implements Serializable {
     private String path;
 
     private Map<String, Tree<String, String>> refreshPathMappings;
+    private Map<String, Object> unmodifiableData;
     private Map<String, Object> data;
 
     public ComponentPostMetadata(String id) {
@@ -62,19 +64,32 @@ public class ComponentPostMetadata implements Serializable {
     }
 
     public Map<String, Object> getData() {
-        return data;
+        if (unmodifiableData == null) {
+            if (data == null) {
+                unmodifiableData = Collections.emptyMap();
+            } else {
+                unmodifiableData = Collections.unmodifiableMap(data);
+            }
+        }
+        
+        return unmodifiableData;
     }
 
     public void setData(Map<String, Object> data) {
+        this.unmodifiableData = null;
         this.data = data;
     }
 
     public void addData(String key, Object value) {
         if (this.data == null) {
-            this.data = new HashMap<String, Object>();
+            setData(new HashMap<String, Object>());
         }
 
-        this.data.put(key, value);
+        if (this.data.get(key) != value) {
+            synchronized (this.data) {
+                this.data.put(key, value);
+            }
+        }
     }
 
     public Object getData(String key) {

@@ -192,7 +192,8 @@ public class ComponentFactory {
      * @return Component new instance
      */
     public static Component getNewInstanceForRefresh(ViewPostMetadata viewPostMetadata, String id) {
-        String baseId = null;//= viewPostMetadata.getComponentBaseId(id);
+        String baseId = (String) viewPostMetadata.getComponentPostMetadata(id)
+                .getData(UifConstants.PostMetadata.BASE_ID);
         if (baseId == null) {
             throw new RuntimeException(
                     "Cannot create new instance for refresh. Base id not found for component id: " + id);

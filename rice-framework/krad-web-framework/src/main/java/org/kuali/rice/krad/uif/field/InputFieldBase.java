@@ -395,6 +395,21 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "prerequisiteConstraints",
                     this.getPrerequisiteConstraints());
         }
+
+        Suggest suggest = getSuggest();
+        if (suggest != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.INPUT_FIELD_SUGGEST, suggest);
+            
+            AttributeQuery suggestQuery = suggest.getSuggestQuery();
+            if (suggestQuery != null) {
+                ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                        UifConstants.PostMetadata.INPUT_FIELD_SUGGEST_QUERY, suggestQuery);
+            }
+        }
+
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE, isUppercaseValue());
     }
 
     /**

@@ -444,6 +444,8 @@ public class View extends ContainerBase {
                 stateObjectBindingPath);
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping",
                 stateMapping);
+        
+        ViewLifecycle.getViewPostMetadata().setPersistFormToSession(isPersistFormToSession());
     }
 
     /**

@@ -33,6 +33,8 @@ public class ViewPostMetadata implements Serializable {
     private static final long serialVersionUID = -515221881981451818L;
 
     private String id;
+    
+    private boolean persistFormToSession;
 
     private Map<String, ComponentPostMetadata> componentPostMetadataMap;
 
@@ -200,5 +202,13 @@ public class ViewPostMetadata implements Serializable {
 
     public void setInputFieldIds(Set<String> inputFieldIds) {
         this.inputFieldIds = inputFieldIds;
+    }
+
+    public boolean isPersistFormToSession() {
+        return persistFormToSession;
+    }
+
+    public void setPersistFormToSession(boolean persistFormToSession) {
+        this.persistFormToSession = persistFormToSession;
     }
 }

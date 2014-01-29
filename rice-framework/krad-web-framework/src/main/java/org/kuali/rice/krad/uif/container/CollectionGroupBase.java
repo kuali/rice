@@ -348,6 +348,11 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(
                     this, UifConstants.PostMetadata.BINDING_PATH, getBindingInfo().getBindingPath());
         }
+
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(
+                this, UifConstants.PostMetadata.COLL_DISPLAY_START, getDisplayStart());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(
+                this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH, getDisplayLength());
     }
     
     /**

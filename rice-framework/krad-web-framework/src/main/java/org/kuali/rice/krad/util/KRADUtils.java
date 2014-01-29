@@ -805,6 +805,39 @@ public final class KRADUtils {
     }
 
     /**
+     * Logs the error messages if any in the message map
+     */
+    public static void logErrors() {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+
+            for (Iterator<Map.Entry<String, List<ErrorMessage>>> i =
+                         GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext(); ) {
+                Map.Entry<String, List<ErrorMessage>> e = i.next();
+
+                StringBuffer logMessage = new StringBuffer();
+                logMessage.append("[" + e.getKey() + "] ");
+                boolean first = true;
+
+                List<ErrorMessage> errorList = e.getValue();
+                for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext(); ) {
+                    ErrorMessage em = j.next();
+
+                    // if its the first message for the key
+                    if (first) {
+                        first = false;
+                    } else {
+                        logMessage.append(";");
+                    }
+                    logMessage.append(em);
+                }
+
+                LOG.error(logMessage);
+            }
+        }
+
+    }
+
+    /**
      * Generate the request parameter portion of the url based on the map of key value pairs passed in
      *
      * @param requestParameters the request parameters to use in the string

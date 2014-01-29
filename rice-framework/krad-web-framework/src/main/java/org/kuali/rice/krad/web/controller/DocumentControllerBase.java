@@ -448,8 +448,13 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                 GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey);
             }
         } catch (ValidationException e) {
-            // if errors in map, swallow exception so screen will draw with errors
-            // if not then throw runtime because something bad happened
+            // log the error and swallow exception so screen will draw with errors.
+            // we don't want the exception to bubble up and the user to see an incident page, but instead just return to
+            // the page and display the actual errors. This would need a fix to the API at some point.
+            KRADUtils.logErrors();
+            LOG.error("Validation Exception occured for document :"+document.getDocumentNumber(),e);
+
+            // if no errors in map then throw runtime because something bad happened
             if (GlobalVariables.getMessageMap().hasNoErrors()) {
                 throw new RiceRuntimeException("Validation Exception with no error message.", e);
             }

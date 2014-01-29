@@ -19,6 +19,7 @@ import org.junit.Test
 import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo
 import org.kuali.rice.kim.test.BoPersistenceTest
+import org.kuali.rice.kim.test.Factory
 
 /**
  * Tests persisting PersonDocumentName object in order to verify ORM mappings

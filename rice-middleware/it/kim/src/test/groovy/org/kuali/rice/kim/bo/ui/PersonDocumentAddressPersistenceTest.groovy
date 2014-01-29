@@ -20,6 +20,7 @@ import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.test.BoPersistenceTest
+import org.kuali.rice.kim.test.Factory
 
 /**
  * Tests persisting PersonDocumentAddress object in order to verify ORM mappings
@@ -38,7 +39,7 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             addressType: addr.addressType,
             addressTypeCode: addr.addressTypeCode,
             entityTypeCode: ent_type.entityTypeCode,
-            documentNumber: System.currentTimeMillis(),
+            documentNumber: new Date().getTime(),
             city: addr.cityUnmasked,
             stateProvinceCode: addr.stateProvinceCodeUnmasked,
             postalCode: addr.postalCodeUnmasked,
@@ -48,8 +49,8 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             line2: addr.line2Unmasked,
             line3: addr.line3Unmasked,
             addressFormat: addr.addressFormat,
-            modifiedDate: addr.modifiedDate,
-            validatedDate: addr.validatedDate,
+            modifiedDate: addr.modifiedTimestamp,
+            validatedDate: addr.validatedTimestamp,
             validated: addr.validated,
             noteMessage: addr.noteMessage
         ])

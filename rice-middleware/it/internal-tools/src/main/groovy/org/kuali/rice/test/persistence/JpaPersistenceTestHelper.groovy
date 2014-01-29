@@ -22,7 +22,6 @@ import javax.sql.DataSource
 import org.eclipse.persistence.jpa.jpql.parser.DateTime
 import org.junit.Assert
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.krad.bo.DataObjectBase
 import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krad.data.KradDataServiceLocator
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
@@ -57,12 +56,12 @@ class JpaPersistenceTestHelper {
         bool(bo.edit, 'EDIT_FLAG')
     }
 
-    def basic_fields(DataObjectBase bo) {
+    def basic_fields(bo) {
         [ OBJ_ID: bo.objectId,
-          VER_NBR: new BigDecimal(bo.versionNumber) ]
+          VER_NBR: bo.versionNumber ]
     }
 
-    def standard_fields(DataObjectBase bo) {
+    def standard_fields(bo) {
         active_field(bo) + basic_fields(bo)
     }
 

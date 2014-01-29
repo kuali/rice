@@ -54,8 +54,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -124,7 +123,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
     }
 
     /**
-     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
@@ -249,7 +248,7 @@ public class UserControl extends TextControl implements FilterableLookupCriteria
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

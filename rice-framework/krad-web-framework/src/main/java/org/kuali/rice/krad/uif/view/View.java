@@ -239,8 +239,7 @@ public class View extends ContainerBase {
      * views list of dialog groups</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -335,8 +334,7 @@ public class View extends ContainerBase {
      * up the validator for this view</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -438,7 +436,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#initializePendingTasks(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase, java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
@@ -450,7 +448,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
@@ -484,7 +482,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @NoLifecycle
     @Override
@@ -553,7 +551,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -564,7 +562,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     * {@inheritDoc}
      */
     @Override
     public String getComponentTypeName() {
@@ -1658,7 +1656,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
+     * {@inheritDoc}
      */
     @Override
     @NoLifecycle
@@ -2194,7 +2192,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -2368,7 +2366,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

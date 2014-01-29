@@ -66,9 +66,8 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
         waitAndClickByLinkText("Additional unified header options");
         switchToWindow("Kuali :: View Header");
         assertTextPresent(new String[]{"metadata information", "Custom Support/Page title"});
-        assertElementPresentByXpath("//h1/span[@class='uif-viewHeader-areaTitle']");
+        assertElementPresentByXpath("//h1/p[@class='uif-viewHeader-areaTitle']");
         assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
-        assertElementPresentByXpath("//h1/span[@class='uif-supportTitle-wrapper']/span");
         driver.close();
         switchToWindow("Kuali");
     }

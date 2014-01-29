@@ -76,16 +76,16 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     	//Mouse over events
     	fireMouseOverEventByXpath("//div[@style='border: 0px solid #999999; width:10%;']");
     
-    	//Mouse Event on Button
-    	waitAndClickByXpath("//button[@style='margin-top:10px;']");
-    	alertAccept();
-    	
     	//Other div elements
     	fireMouseOverEventByXpath("//div[@style='background-color:red;height:200px; width:300px;']");
     	waitForElementPresentByXpath("//div[@style='background-color: rgb(255, 255, 255); height: 200px; width: 300px;']");
     	
     	//OnKeyPress, KeyUp, KeyDown
         waitAndTypeByXpath("(//input[@name='field100'])[3]", "a"); // Field Label:
+        alertAccept();
+
+        //Mouse Event on Button
+        waitAndClickByXpath("//button[@style='margin-top:10px;']");
         alertAccept();
     }
 }

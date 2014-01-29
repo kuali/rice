@@ -42,7 +42,7 @@ public class DemoElementsMessageAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsMessageDefault() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Message-Example1']/span[@class='uif-message uif-boxLayoutVerticalItem clearfix']");
+        assertElementPresentByXpath("//div[@id='Demo-Message-Example1']/p[@class='uif-message uif-boxLayoutVerticalItem clearfix']");
     }
     
     protected void testLibraryElementsMessageWithExpression() throws Exception {

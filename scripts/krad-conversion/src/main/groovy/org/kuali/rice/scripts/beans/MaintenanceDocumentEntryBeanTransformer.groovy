@@ -27,20 +27,22 @@ import org.apache.commons.lang.StringUtils
 class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
     String maintenanceDefinitionBeanType = "MaintenanceDocumentEntry";
-    String maintenanceDocEntryBeanType = "uifMaintenanceDocumentEntry"
+    String maintenanceDocEntryBeanType = "uifMaintenanceDocumentEntry";
     String maintenanceViewBeanType = "Uif-MaintenanceView";
 
     // MDE Conversion Components
-    def mdeCopyProperties = ["businessObjectClass", "businessRulesClass", "maintainableClass", "documentTypeName",
+    def mdeCopyProperties = ["businessRulesClass", "maintainableClass", "documentTypeName",
              "lockingKeys", "allowsRecordDeletion", "preserveLockingKeysOnCopy","allowsNewOrCopy","documentClass"];
-    def mdeRenameProperties = [:]
-    def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
+    def mdeRenameProperties = ["businessObjectClass": "dataObjectClass"];
+    def mdeIgnoreOnCarryoverProperties = ["documentAuthorizerClass","documentPresentationControllerClass",
+             "webScriptFiles","maintainableSections"]
     def mdeIgnoreOnCarryoverAttributes = []
 
     // UMV Conversion Components - include
-    def umvCopyProperties = ["maintainableClass", "documentTypeName", "lockingKeys"]
+    def umvCopyProperties = []
     def umvRenameProperties = ["title": "headerText", "businessObjectClass": "dataObjectClassName"] // , "dataObjectClass": "dataObjectClassName"
-    def umvIgnoreOnCarryoverProperties = ["title", "maintainableSections","documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles"]
+    def umvIgnoreOnCarryoverProperties = ["title", "maintainableClass", "lockingKeys","maintainableSections",
+            "documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles", "documentTypeName"]
     def umvIgnoreOnCarryoverAttributes = []
 
 
@@ -82,6 +84,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance Document Entry")
                 bean(mdeBeanAttributes) {
                     copyProperties(delegate, beanNode, mdeCopyProperties + mdeCarryoverProperties) ;
+                    renameProperties(delegate, beanNode, mdeRenameProperties) ;
                     transformDocumentAuthorizerClassProperty(delegate, beanNode);
                     transformDocumentPresentationControllerClassProperty(delegate, beanNode);
 
@@ -147,9 +150,9 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             beanAttrs.put("id", beanNode.@id);
         }
         builder.bean(beanAttrs) {
-            copyProperties(delegate, beanNode, ["title"]);
-            renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
-            transformHelpUrlProperty(delegate, beanNode)
+            // copyProperties(delegate, beanNode, ["title"]);
+            renameProperties(delegate, beanNode, ["title": "headerText", "defaultOpen": "disclosure.defaultOpen" ]);
+            transformHelpUrlProperty(delegate, beanNode);
             property(name: "items") {
                 list {
                     beanNode.property.find { it.@name == "maintainableItems" }.list.bean.each { beanItem ->
@@ -159,14 +162,16 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                             transformMaintainableItems(builder, beanNode, itemsList, null);
                             itemsList = [];
                             builder.bean(parent: 'Uif-MaintenanceStackedCollectionSection') {
-                                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"]);
-                                renameProperties(delegate, beanNode, ["title": "headerText", "businessObjectClass": "collectionObjectClass"]);
+                                copyProperties(delegate, beanItem, ["collectionObjectClass", "propertyName"]);
+                                renameProperties(delegate, beanItem, ["businessObjectClass": "collectionObjectClass",
+                                    "name": "propertyName"]);
                                 renameProperties(delegate, beanItem, ["defaultOpen": "disclosure.defaultOpen"]);
                                 transformMaintainableFieldsProperty(delegate, beanItem);
                                 transformSummaryFieldsProperty(delegate, beanNode);
                                 transformIncludeAddLineProperty(delegate,beanItem);
                                 transformAlwaysAllowCollectionDeletion(delegate, beanItem)
                                 transformIncludeMultipleLookupLineProperty(delegate,beanItem);
+                                transformDuplicateIdentificationFieldsProperty(delegate,beanItem);
 
                             }
                         }
@@ -196,10 +201,11 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             }
 
             builder.bean(beanAttributes) {
-                copyProperties(delegate, beanNode, ["title", "collectionObjectClass", "propertyName"])
+                copyProperties(delegate, beanNode, ["collectionObjectClass", "propertyName"])
 
-                renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen"]);
-                transformHelpUrlProperty(delegate, beanNode)
+                renameProperties(delegate, beanNode, ["defaultOpen": "disclosure.defaultOpen",
+                        "title": "headerText" ]);
+                transformHelpUrlProperty(delegate, beanNode);
 
                 property(name: "items") {
                     list {
@@ -361,6 +367,36 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
     }
 
     /**
+     * Transforms duplicateIdentificationFields property to duplicateLinePropertyName. The fields that should be used to
+     * check for duplicate records are converted in a list of  property names
+     *
+     * @param builder
+     * @param beanNode
+     * @return
+     *
+     */
+
+    def transformDuplicateIdentificationFieldsProperty(NodeBuilder builder, Node beanNode) {
+        if (beanNode?.property?.findAll { "duplicateIdentificationFields".equals(it.@name) }?.size > 0) {
+            def duplicateIdentificationFieldsProperty = beanNode.property.find { "duplicateIdentificationFields".equals(it.@name) };
+            builder.property(name: "duplicateLinePropertyNames") {
+                list {
+                    if (duplicateIdentificationFieldsProperty) {
+
+                        duplicateIdentificationFieldsProperty.list.bean.each { fieldBean ->
+                            def attrPropMap = gatherPropertyTagsAndPropertyAttributes(fieldBean, ["*name": "name"]);
+                            String name = attrPropMap?.get("name");
+                            builder.createNode("value", null, name);
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
+
+    /**
      *
      *
      * @param builder
@@ -494,10 +530,11 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      */
     def transformMaintainableFieldDefinitionBean(NodeBuilder builder, Node beanNode) {
         // copy and rename properties
-        def mfdCopyProperties = ["required", "defaultValueFinderClass"];
+        def mfdCopyProperties = ["required", "defaultValueFinderClass","quickfinder.fieldConversions"];
         def mfdRenameProperties = ["name":"propertyName",
                 "alternateDisplayAttributeName": "readOnlyDisplayReplacement",
-                "additionalDisplayAttributeName": "readOnlyDisplaySuffix"];
+                "additionalDisplayAttributeName": "readOnlyDisplayReplacementPropertyName",
+                "overrideLookupClass": "quickfinder.dataObjectClassName"];
 
         def mfdIgnoreProperties = ["externalHelpUrl", "unconditionallyReadOnly","readOnlyAfterAdd"];
 
@@ -506,6 +543,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 mfdCopyProperties, mfdRenameProperties, []);
         beanAttributes.putAt("parent", "Uif-InputField");
         builder.bean(beanAttributes) {
+            renameProperties(beanNode,  ["overrideFieldConversions": "quickfinder.fieldConversions"])
             copyProperties(builder, beanNode, mfdCopyProperties)
             renameProperties(builder, beanNode, mfdRenameProperties)
             transformReadOnlyProperty(delegate,beanNode)

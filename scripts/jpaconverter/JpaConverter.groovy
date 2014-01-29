@@ -26,7 +26,7 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.visitor.EntityVisitor
 import groovy.util.ConfigSlurper
 
 @Grapes([
-	@Grab(group="org.kuali.rice",module="rice-development-tools",version="2.4.0-M3-SNAPSHOT")
+	@Grab(group="org.kuali.rice",module="rice-development-tools",version="2.4.0-M4-SNAPSHOT")
 	//,@Grab(group="log4j",module="log4j",version="1.2.16")
 	//,@GrabExclude('log4j:log4j')
     ,@GrabExclude('commons-transaction:commons-transaction')

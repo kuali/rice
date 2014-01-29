@@ -94,7 +94,8 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationBlanketApprove() throws Exception {
     	testTravelAccountAuthorization();
     	waitAndClickButtonByText("blanket approve");
-    	waitForTextPresent("Document was successfully approved.");
+// blaket approve redirects to hub so can no longer test for message
+//    	waitForTextPresent("Document was successfully approved.");
     }
 
     protected void testTravelAccountAuthorization() throws Exception {
